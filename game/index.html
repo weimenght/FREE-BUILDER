@@ -1070,34 +1070,15 @@
     /* =========================================================================
        MAINFRAME REPERTORY CATALOG STATE
        ========================================================================= */
-    const DEFAULT_GAMES = [
-      {
-        code: 'CLIMB',
-        altCode: 'CM-01',
-        title: 'CLIMB MASTER',
-        author: 'FREE//BUILDER',
-        genre: 'TACTICAL FREE-SOLO CLIMBER',
-        desc: 'Tactical stone ascent engine from 5.6 to 5.15d. Manage forearm pump, chalk up, plan crux sequences, and shake out on jugs.',
-        url: 'climb'
-      },
-      {
-        code: 'DJ',
-        altCode: 'RD-02',
-        title: 'RETRO DJ',
-        author: 'FREE//BUILDER',
-        genre: '8-BIT VINYL & TURNTABLE MIXER',
-        desc: 'Spin analog acetate discs, beatmatch tempo oscillators, and drop synth loops across retro radio frequencies.',
-        url: 'dj'
-      },
-      {
-        code: 'BAR',
-        altCode: 'TB-03',
-        title: 'BAR & COFFEE',
-        genre: 'HOSPITALITY SIMULATION',
-        author: 'FREE//BUILDER',
-        desc: 'Taste the cocktails, chat with the bartender, spend some chill time in the speakeasy.',
-        url: 'bar'
-      }
+    const DEFAULT_GAMES = [   /* fallback when game.txt can't be read: keep in step with game.txt */
+      { code: 'CLIMB', altCode: 'CM-01', title: 'CRAG MASTER', author: 'FREE//BUILDER', genre: 'ROUTE-READING CLIMBING TACTICS',
+        desc: 'Read the wall, plan your hands, then commit. Ten real crags from Montserrat to El Capitan, 5.6 to 5.15d. Clip every bolt, chalk at the rests and shake out on the jugs before the pump wins.', url: 'climb/' },
+      { code: 'DJ', altCode: 'RD-02', title: 'RETRO DJ WORLD TOUR', author: 'FREE//BUILDER', genre: '8-BIT RHYTHM AND TURNTABLES',
+        desc: 'Hit the records as they cross the line, scratch through the bars and drop the bass when the hype is full. Tour city to city, each with its own twist, or jam on pads and loops.', url: 'dj/' },
+      { code: 'BAR', altCode: 'WB-03', title: "WEI'S BAR & COFFEE", author: 'FREE//BUILDER', genre: 'COSY HUTONG HANGOUT',
+        desc: 'A tiny hutong counter: coffee by day, cocktails by night. Chat with Wei, mix a drink, pet the cats, play a record and leave a note for the next guest.', url: 'bar/' },
+      { code: 'HANDOFF', altCode: 'HO-04', title: 'HANDOFF', author: 'FREE//BUILDER', genre: 'TWO PEOPLE, TWO TIME ZONES',
+        desc: "For two people who live apart. Send a thought and your partner sees only its ending; they guess the rest before it opens. Voice notes, shared skies and each other's sleep hours keep you in step.", url: 'love/' }
     ];
 
     const POLL_MS = 4000;

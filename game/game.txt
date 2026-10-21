@@ -1,36 +1,36 @@
-{
-        code: 'CLIMB',
-        altCode: 'CM-01',
-        title: 'CRAG MASTER',
-        author: 'FREE//BUILDER',
-        genre: 'TACTICAL FREE-SOLO CLIMBER',
-        desc: 'Tactical stone ascent engine from 5.6 to 5.15d. Manage forearm pump, chalk up, plan crux sequences, and shake out on jugs.',
-        url: climb
-      },
-      {
-        code: 'DJ',
-        altCode: 'RD-02',
-        title: 'RETRO DJ',
-        author: 'FREE//BUILDER',
-        genre: '8-BIT VINYL & TURNTABLE MIXER',
-        desc: 'Spin analog acetate discs, beatmatch tempo oscillators, and drop synth loops across retro radio frequencies.',
-        url: dj
-      },
-      {
-        code: 'BAR',
-        altCode: 'TB-03',
-        title: 'THE SPEAKEASY BAR TENDER',
-        genre: 'HOSPITALITY SIMULATION',
-        author: 'FREE//BUILDER',
-        desc: 'Taste the cocktails, chat with the bartender, spend some chill time in the speakeasy.',
-        url: bar
-      },
-      {
-        code: 'Couple',
-        altCode: 'TB-04',
-        title: 'TWILIGHT HANDOFF',
-        genre: 'RELATIONSHIP +',
-        author: 'FREE//BUILDER',
-        desc: 'Interact with your partner, feel their emotion and guess what they want to say to you.',
-        url: love
-      },
+# FREE//BUILDER · GAME REPERTORY
+# Read live by freebuilder.net/game — edit here and the terminal picks it up within seconds.
+# One block per game, blank line between blocks. Keys: CODE, ID, TITLE, GENRE, AUTHOR, DESC, URL.
+# CODE is what players type (RUN CLIMB). Keep TITLE the same as the name shown inside the game.
+
+CODE: CLIMB
+ID: CM-01
+TITLE: Crag Master
+GENRE: Route-reading climbing tactics
+AUTHOR: FREE//BUILDER
+DESC: Read the wall, plan your hands, then commit. Ten real crags from Montserrat to El Capitan, 5.6 to 5.15d. Clip every bolt, chalk at the rests and shake out on the jugs before the pump wins.
+URL: climb/
+
+CODE: DJ
+ID: RD-02
+TITLE: Retro DJ World Tour
+GENRE: 8-bit rhythm and turntables
+AUTHOR: FREE//BUILDER
+DESC: Hit the records as they cross the line, scratch through the bars and drop the bass when the hype is full. Tour city to city, each with its own twist, or jam on pads and loops.
+URL: dj/
+
+CODE: BAR
+ID: WB-03
+TITLE: Wei's Bar & Coffee
+GENRE: Cosy hutong hangout
+AUTHOR: FREE//BUILDER
+DESC: A tiny hutong counter: coffee by day, cocktails by night. Chat with Wei, mix a drink, pet the cats, play a record and leave a note for the next guest.
+URL: bar/
+
+CODE: HANDOFF
+ID: HO-04
+TITLE: Handoff
+GENRE: Two people, two time zones
+AUTHOR: FREE//BUILDER
+DESC: For two people who live apart. Send a thought and your partner sees only its ending; they guess the rest before it opens. Voice notes, shared skies and each other's sleep hours keep you in step.
+URL: love/
