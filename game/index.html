@@ -465,16 +465,28 @@
     var host = (window.FBG_CREDIT_IN && document.querySelector(window.FBG_CREDIT_IN)) || null;
     var box = document.createElement("div"); box.className = "fbg" + (host ? " fbg-in" : ""); box.setAttribute("data-fbt-skip", "");
     var a = document.createElement("a"); a.href = REPERTORY; a.className = "fbg-a";
-    function paint() { a.textContent = "← " + w("back") + " · " + w("made"); a.setAttribute("aria-label", w("back") + " — " + w("made")); if (chip) chip.lastChild.textContent = (window.FBL && FBL.SHORT[lang()]) || "EN"; }
+    var paint = function () { a.textContent = "← " + w("back") + " · " + w("made"); a.setAttribute("aria-label", w("back") + " — " + w("made")); if (chip) chip.lastChild.textContent = (window.FBL && FBL.SHORT[lang()]) || "EN"; };
     var chip = null;
     if (window.FBT_DICT) { chip = document.createElement("button"); chip.type = "button"; chip.className = "fbg-lang"; chip.setAttribute("data-fbl-btn", ""); chip.innerHTML = '<span aria-hidden="true">🌐 </span><span data-fbl-label></span>'; box.appendChild(chip); }
+    if (!host && !chip) {   /* corner placement: just a faint ♥ until someone asks */
+      box.className = "fbg fbg-mini";
+      var heart = document.createElement("button"); heart.type = "button"; heart.className = "fbg-heart"; heart.textContent = "♥";
+      heart.setAttribute("aria-expanded", "false");
+      heart.addEventListener("click", function () { var open = box.classList.toggle("open"); heart.setAttribute("aria-expanded", String(open)); });
+      document.addEventListener("click", function (e) { if (!box.contains(e.target)) { box.classList.remove("open"); heart.setAttribute("aria-expanded", "false"); } });
+      box.appendChild(heart);
+      var p0 = paint; paint = function () { p0(); heart.setAttribute("aria-label", w("made")); heart.title = w("made"); };
+    }
     box.appendChild(a); (host || document.body).appendChild(box); paint();
     var L0 = lang(); setInterval(function () { if (lang() !== L0) { L0 = lang(); paint(); } }, 400);
   }
   var css = ".fbg{position:fixed;right:8px;bottom:calc(6px + env(safe-area-inset-bottom));z-index:40;display:flex;align-items:center;gap:6px;font:400 10px/1.2 'Space Mono',ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.02em;opacity:.42;transition:opacity .2s}" +
     ".fbg:hover,.fbg:focus-within{opacity:1}.fbg.fbg-in{position:static;justify-content:center;flex-wrap:wrap;margin:14px auto 6px;width:100%}" +
     ".fbg a,.fbg button{color:#fff;text-decoration:none;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:4px 9px;font:inherit;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}" +
-    ".fbg a:focus-visible,.fbg button:focus-visible{outline:2px solid #F28C76;outline-offset:2px}.fbg-lang.fbl-has::after{display:none}";
+    ".fbg a:focus-visible,.fbg button:focus-visible{outline:2px solid #F28C76;outline-offset:2px}.fbg-lang.fbl-has::after{display:none}" +
+    ".fbg-mini{right:6px;bottom:calc(4px + env(safe-area-inset-bottom));opacity:.22;flex-direction:row-reverse;gap:4px}.fbg-mini:hover,.fbg-mini:focus-within,.fbg-mini.open{opacity:.9}" +
+    ".fbg-mini .fbg-heart{background:none;border:0;padding:4px 6px;font-size:11px;line-height:1;color:inherit;-webkit-backdrop-filter:none;backdrop-filter:none}" +
+    ".fbg-mini .fbg-a{display:none}.fbg-mini.open .fbg-a{display:inline-block}.fbg-mini{color:#fff}";
   var st = document.createElement("style"); st.textContent = css; (document.head || document.documentElement).appendChild(st);
 
   window.FBG = { tr: tr, refresh: function () { all(); } };
