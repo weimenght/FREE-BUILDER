@@ -880,6 +880,23 @@
       font-weight: bold;
     }
 
+    /* ---------- Tape keys: each game is a cartridge you load ---------- */
+    .tape {
+      position: relative; display: inline-flex; align-items: center; gap: 7px;
+      padding: 4px 10px 4px 8px; overflow: hidden;
+    }
+    .tape .led { width: 7px; height: 7px; border-radius: 50%; background: var(--term-dim); box-shadow: 0 0 0 1px var(--term-dim) inset; flex: 0 0 auto; }
+    .tape:hover .led, .tape:focus-visible .led, .tape.loading .led { background: var(--term-green); box-shadow: 0 0 6px var(--term-green); animation: ledBlink .5s steps(2) infinite; }
+    .tape .reel { display: inline-block; width: 1ch; text-align: center; }
+    .tape .sector { font-size: .62em; opacity: .7; letter-spacing: .06em; align-self: flex-start; margin-top: 1px; }
+    .tape .bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--term-green); }
+    .tape.loading .bar { width: 100%; transition: width .55s linear; }
+    .tape.loading { pointer-events: none; }
+    .btn-key.wild { border-style: dashed; }
+    .dial-sep { align-self: stretch; width: 1px; background: var(--term-dim); margin: 2px 2px; flex: 0 0 1px; }
+    @keyframes ledBlink { 50% { opacity: .35; } }
+    @media (prefers-reduced-motion: reduce) { .tape .led { animation: none !important; } .tape.loading .bar { transition: none; } }
+
     /* ---------- Phones & narrow windows ---------- */
     @media (max-width: 600px) {
       :root {
@@ -1307,10 +1324,59 @@
         container.appendChild(b);
       };
 
-      // Game keys first: they're the reason anyone opens this terminal
-      GAME_CATALOG.forEach(game => {
-        addBtn(`RUN ${game.code}`, `RUN ${game.code}`, 'btn-key game-btn', `${game.title} (${game.url})`);
-      });
+      // Game keys first: each one is a tape cartridge. Hover decrypts its label, tap loads it.
+      const GLYPHS = '#$%&@*+=?/\\<>[]{}01';
+      const REELS = ['◐', '◓', '◑', '◒'];
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const scramble = (el, text, ms = 260) => {
+        if (reduceMotion) { el.textContent = text; return; }
+        const t0 = performance.now();
+        (function tick(now) {
+          const k = Math.min(1, (now - t0) / ms), keep = Math.floor(k * text.length);
+          el.textContent = text.split('').map((c, i) => i < keep || c === ' ' ? c : GLYPHS[(Math.random() * GLYPHS.length) | 0]).join('');
+          if (k < 1) requestAnimationFrame(tick);
+        })(t0);
+      };
+      const loadTape = (b, cmd) => {
+        if (b.classList.contains('loading')) return;
+        b.classList.add('loading');
+        try { sound.playTapeMotor && sound.playTapeMotor(); } catch (e) {}
+        const reel = b.querySelector('.reel'); let r = 0;
+        const spin = reduceMotion ? null : setInterval(() => { reel.textContent = REELS[r++ % 4]; }, 70);
+        setTimeout(() => { clearInterval(spin); b.classList.remove('loading'); reel.textContent = '▶'; executeCmd(cmd); if (!isCoarse) focusInput(); }, reduceMotion ? 0 : 560);
+      };
+      const addTape = (game) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'btn-key game-btn tape';
+        b.title = `${game.title} · ${game.genre}`;
+        b.setAttribute('aria-label', `Run ${game.title}`);
+        b.innerHTML = '<span class="led" aria-hidden="true"></span><span class="reel" aria-hidden="true">▶</span><span class="lbl"></span><span class="sector" aria-hidden="true"></span><span class="bar" aria-hidden="true"></span>';
+        const lbl = b.querySelector('.lbl'); lbl.textContent = game.code; b.querySelector('.sector').textContent = game.altCode;
+        const ghost = () => { scramble(lbl, game.code); if (!isCoarse) input.placeholder = `RUN ${game.code}`; };
+        b.addEventListener('mouseenter', ghost); b.addEventListener('focus', ghost);
+        b.addEventListener('mouseleave', () => { input.placeholder = ''; }); b.addEventListener('blur', () => { input.placeholder = ''; });
+        b.addEventListener('click', () => loadTape(b, `RUN ${game.code}`));
+        container.appendChild(b);
+      };
+      GAME_CATALOG.forEach(addTape);
+      // A wildcard tape: spins through the catalog, then loads whatever it lands on
+      if (GAME_CATALOG.length > 1) {
+        const w = document.createElement('button');
+        w.type = 'button'; w.className = 'btn-key wild'; w.textContent = 'RUN ???'; w.title = 'Random tape';
+        w.addEventListener('click', () => {
+          if (w.disabled) return; w.disabled = true;
+          const pick = GAME_CATALOG[(Math.random() * GAME_CATALOG.length) | 0];
+          let n = 0; const steps = reduceMotion ? 0 : 12;
+          (function spin() {
+            if (n++ < steps) { w.textContent = 'RUN ' + GAME_CATALOG[n % GAME_CATALOG.length].code; try { sound.playKeyClick(); } catch (e) {} setTimeout(spin, 40 + n * 9); return; }
+            w.textContent = 'RUN ' + pick.code; setTimeout(() => { w.textContent = 'RUN ???'; w.disabled = false; }, 900);
+            executeCmd(`RUN ${pick.code}`); if (!isCoarse) focusInput();
+          })();
+        });
+        container.appendChild(w);
+      }
+      const sep = document.createElement('span'); sep.className = 'dial-sep'; sep.setAttribute('aria-hidden', 'true'); container.appendChild(sep);
       coreActions.forEach(a => addBtn(a.label, a.cmd, 'btn-key'));
 
       container.scrollLeft = keepScroll;
