@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="MEMEX-68 Game Repertory">
+  <rect width="512" height="512" rx="112" fill="#060906"/>
+  <g fill="none" stroke="#33ff66" stroke-width="18" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="92" y="138" width="328" height="236" rx="26"/>
+    <rect x="150" y="196" width="212" height="84" rx="14"/>
+    <path d="M150 374l28-52h156l28 52"/>
+  </g>
+  <g fill="#33ff66">
+    <circle cx="200" cy="238" r="24"/><circle cx="312" cy="238" r="24"/>
+    <rect x="236" y="232" width="40" height="12" rx="6" opacity=".55"/>
+  </g>
+  <g fill="#060906"><circle cx="200" cy="238" r="9"/><circle cx="312" cy="238" r="9"/></g>
+  <rect x="226" y="338" width="14" height="22" rx="3" fill="#33ff66"/><rect x="272" y="338" width="14" height="22" rx="3" fill="#33ff66"/>
+  <g stroke="#33ff66" stroke-opacity=".10" stroke-width="4"><path d="M24 96h464M24 128h464M24 400h464M24 432h464"/></g>
+</svg>

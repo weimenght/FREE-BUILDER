@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Crag Master">
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#1a2a46"/></linearGradient></defs>
+  <rect width="512" height="512" rx="112" fill="url(#sky)"/>
+  <circle cx="384" cy="132" r="34" fill="#facc15" opacity=".9"/>
+  <path d="M40 440L176 170l52 70 70-150 174 350z" fill="#334155"/><path d="M298 90l40 120-60 90 50 140h144z" fill="#1e293b"/>
+  <path d="M298 90l-70 150-52-70" fill="none" stroke="#22d3ee" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M206 440l26-60-22-52 34-48-14-44" fill="none" stroke="#f8fafc" stroke-width="7" stroke-dasharray="2 14" stroke-linecap="round"/>
+  <g fill="#22d3ee"><circle cx="232" cy="380" r="9"/><circle cx="244" cy="280" r="9"/></g>
+  <g transform="translate(226 214) scale(1.55)">
+    <rect x="-11" y="-30" width="22" height="22" rx="4" fill="#facc15"/>
+    <rect x="-14" y="-6" width="28" height="34" rx="6" fill="#f43f5e"/>
+    <path d="M-12 -2l-22-26M12 -2l20-30M-8 28l-14 26M8 28l18 22" stroke="#f8fafc" stroke-width="9" stroke-linecap="round"/>
+  </g>
+</svg>

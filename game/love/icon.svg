@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="128" fill="#090d16"/><circle cx="256" cy="256" r="140" fill="none" stroke="#fbbf24" stroke-width="20"/><circle cx="256" cy="256" r="24" fill="#ffffff"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Handoff">
+  <rect width="512" height="512" rx="112" fill="#090d16"/>
+  <path d="M236 116a140 140 0 0 0 0 280" fill="none" stroke="#fbbf24" stroke-width="22" stroke-linecap="round"/>
+  <path d="M276 116a140 140 0 0 1 0 280" fill="none" stroke="#7dd3fc" stroke-width="22" stroke-linecap="round"/>
+  <g fill="#fbbf24" opacity=".5"><circle cx="152" cy="150" r="5"/><circle cx="118" cy="232" r="4"/></g>
+  <g fill="#7dd3fc" opacity=".6"><circle cx="372" cy="360" r="5"/><circle cx="398" cy="280" r="4"/><circle cx="350" cy="152" r="3"/></g>
+  <rect x="216" y="236" width="80" height="40" rx="20" fill="#ffffff"/>
+  <path d="M256 236v40" stroke="#090d16" stroke-width="6"/>
+  <path d="M206 256h-42M348 256h-42" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-dasharray="1 16" opacity=".8"/>
+</svg>
