@@ -195,7 +195,7 @@
   };
   /* every feature that sends something off the device */
   var DATA = [
-    { k: "bar", site: "freebuilder.net", name: "Wei's Bar", m: /freebuilder\.net\/game\/bar\//, ask: "load", to: "supabase",
+    { k: "bar", site: "freebuilder.net", offline: true, name: "Wei's Bar", m: /freebuilder\.net\/game\/bar\//, ask: "load", to: "supabase",
       what: ["The name you give at the door and what you leave in the bar: notes, drawings, cocktails, tracks, arcade scores, plus a simple log of what you do there.", "你在门口留下的名字，以及你在酒吧留下的东西：便条、涂鸦、鸡尾酒、曲子、街机分数，还有你在酒吧里做了什么的简单记录。", "你在門口留下的名字，以及你在酒吧留下的東西：便條、塗鴉、雞尾酒、曲子、街機分數，還有你在酒吧裡做了什麼的簡單紀錄。", "El nombre que das en la puerta y lo que dejas en el bar: notas, dibujos, cócteles, temas, puntuaciones arcade, más un registro sencillo de lo que haces allí.", "El nom que dones a la porta i el que deixes al bar: notes, dibuixos, còctels, temes, puntuacions arcade, més un registre senzill del que hi fas."],
       who: ["Other visitors see your name next to what you leave. The log is only for Wei.", "其他访客会在你留下的东西旁看到你的名字。活动记录只有 Wei 能看。", "其他訪客會在你留下的東西旁看到你的名字。活動紀錄只有 Wei 能看。", "Otros visitantes ven tu nombre junto a lo que dejas. El registro solo lo ve Wei.", "Altres visitants veuen el teu nom al costat del que deixes. El registre només el veu en Wei."] },
     { k: "handoff", name: "Handoff", m: /(game\/love\/|\/bcnpek\/)/, ask: "load", to: "supabase",
@@ -242,8 +242,11 @@
     var item = { d: d }; item.p = new Promise(function (res) { item.res = res; }); queue.push(item);
     if (queue.length === 1) show(item); return item.p;
   }
+  /* a page that already said no never even creates its database client, so its own status shows "on this device" */
+  if (page && page.offline && choice(page.k) === false) try { Object.defineProperty(window, "supabase", { configurable: true, get: function () { return undefined; }, set: function () {} }); } catch (e) {}
   function answer(yes) {
     var item = queue.shift(); if (!item) return; memo[item.d.k] = yes; save(item.d.k, yes);
+    if (!yes && item.d === page && page.offline && window.supabase) { location.reload(); return; }   /* restart offline so the page tells the truth */
     if (sheet) { sheet.remove(); sheet = null; } item.res(yes); if (queue.length) show(queue[0]);
   }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -371,6 +374,107 @@
     if (page && page.ask === "load" && window.self === window.top) ask(page);
     var L1 = lang(); setInterval(function () { if (lang() !== L1) paintFooter(); if (sheet && lang() !== L1 && queue[0]) { L1 = lang(); sheet.remove(); sheet = null; show(queue[0]); } else L1 = lang(); }, 600);
   }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+
+/* FBG · FREE//BUILDER game kit (inlined after FBL + FBC in every game page).
+   1) A quiet "Made with AI & ♥ by FREE//BUILDER" credit that leads back to the Game Repertory (wei-meng.org/game).
+   2) A five-language layer for games written in English only: window.FBT_DICT maps each visible English string
+      (numbers written as {#}) to [简中, 繁中, ES, CA]. Text on the page, a few attributes and canvas text are
+      translated on the fly, so the game's own code never changes. Games with their own language system leave
+      FBT_DICT unset and only get the credit. */
+(function () {
+  "use strict";
+  if (window.FBG) return;
+  var LI = { "zh": 0, "zh-Hant": 1, "es": 2, "ca": 3 };
+  var REPERTORY = "https://www.wei-meng.org/game/";
+  function lang() { var F = window.FBL || {}; return (F.get && F.get()) || "en"; }
+
+  /* ---------- translation ---------- */
+  var NUM = /\d+(?:[.,]\d+)?/g, cache = {}, cacheLang = "";
+  function tr(s) {
+    if (typeof s !== "string" || !s || !window.FBT_DICT) return s;
+    var l = lang(); if (l === "en" || !(l in LI)) return s;
+    if (cacheLang !== l) { cache = {}; cacheLang = l; }
+    if (s in cache) return cache[s];
+    var m = /^(\s*)([\s\S]*?)(\s*)$/.exec(s), core = m[2].replace(/\s+/g, " "), nums = core.match(NUM) || [];
+    var D = window.FBT_DICT, v = D[core.replace(NUM, "{#}")], out = s;
+    if (!v) {   /* try again without leading emoji/quotes and trailing quotes or brackets with numbers */
+      var mm = /^([^A-Za-z]*?)([A-Za-z][\s\S]*?)((?:\s*\(\d+(?:[.,]\d+)?%?\))?["”']?)$/.exec(core);
+      if (mm && D[mm[2].replace(NUM, "{#}")]) { var inner = tr(mm[2]); return (cache[s] = m[1] + mm[1] + inner + mm[3] + m[3]); }
+    }
+    if (v && v[LI[l]]) { var i = 0; out = m[1] + v[LI[l]].replace(/\{(#|\d)\}/g, function (_, k) { return k === "#" ? (nums[i++] || "") : (nums[+k] || ""); }) + m[3]; }
+    return (cache[s] = out);
+  }
+  /* canvas text goes through the same table (measureText too, so layouts still fit) */
+  try {
+    var C = CanvasRenderingContext2D.prototype;
+    ["fillText", "strokeText", "measureText"].forEach(function (fn) { var o = C[fn]; C[fn] = function (t) { var a = Array.prototype.slice.call(arguments); a[0] = tr(String(t)); return o.apply(this, a); }; });
+  } catch (e) {}
+  /* page text: remember each node's English, show the current language */
+  var orig = new WeakMap(), shown = new WeakMap(), ATTR = ["placeholder", "title", "aria-label"], busy = false;
+  function doText(n) {
+    var cur = n.data, o = orig.get(n);
+    if (o === undefined || cur !== shown.get(n)) { o = cur; orig.set(n, o); }      /* the game wrote new text */
+    var v = tr(o); shown.set(n, v); if (v !== cur) n.data = v;
+  }
+  function doAttrs(el) {
+    for (var i = 0; i < ATTR.length; i++) { var a = ATTR[i]; if (!el.hasAttribute(a)) continue;
+      var key = "fbt-" + a, cur = el.getAttribute(a), o = el[key + "o"];
+      if (o === undefined || cur !== el[key + "s"]) { o = cur; el[key + "o"] = o; }
+      var v = tr(o); el[key + "s"] = v; if (v !== cur) el.setAttribute(a, v); }
+  }
+  var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, NOSCRIPT: 1 };
+  function walk(root) {
+    if (!root) return;
+    if (root.nodeType === 3) { if (root.parentNode && !SKIP[root.parentNode.nodeName]) doText(root); return; }
+    if (root.nodeType !== 1 || SKIP[root.nodeName] || root.closest && root.closest("[data-fbt-skip],.fbc,.fbl-menu")) return;
+    doAttrs(root);
+    var tw = document.createTreeWalker(root, 5, null), n;
+    while ((n = tw.nextNode())) { if (n.nodeType === 3) { if (!SKIP[n.parentNode.nodeName]) doText(n); } else if (!SKIP[n.nodeName]) doAttrs(n); }
+  }
+  var docTitle = null;
+  function all() { busy = true; try { walk(document.body); if (docTitle === null) docTitle = document.title; document.title = tr(docTitle); document.documentElement.lang = lang() === "zh-Hant" ? "zh-Hant" : lang(); } finally { busy = false; } }
+  function startText() {
+    if (!window.FBT_DICT) return;
+    all();
+    new MutationObserver(function (list) {
+      if (busy) return; busy = true;
+      try { list.forEach(function (r) {
+        if (r.type === "characterData") doText(r.target);
+        else if (r.type === "attributes") doAttrs(r.target);
+        else r.addedNodes.forEach(walk);
+      }); } finally { busy = false; }
+    }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ATTR });
+    var L0 = lang(); setInterval(function () { if (lang() !== L0) { L0 = lang(); all(); } }, 400);
+  }
+
+  /* ---------- the quiet credit (+ a language chip when the game has no picker of its own) ---------- */
+  var W = {
+    made: ["Made with AI & ♥ by FREE//BUILDER", "由 FREE//BUILDER 用 AI 与 ♥ 制作", "由 FREE//BUILDER 用 AI 與 ♥ 製作", "Hecho con IA y ♥ por FREE//BUILDER", "Fet amb IA i ♥ per FREE//BUILDER"],
+    back: ["All games", "全部游戏", "全部遊戲", "Todos los juegos", "Tots els jocs"]
+  };
+  function w(k) { var i = { "en": 0, "zh": 1, "zh-Hant": 2, "es": 3, "ca": 4 }[lang()] || 0; return W[k][i]; }
+  function credit() {
+    var host = (window.FBG_CREDIT_IN && document.querySelector(window.FBG_CREDIT_IN)) || null;
+    var box = document.createElement("div"); box.className = "fbg" + (host ? " fbg-in" : ""); box.setAttribute("data-fbt-skip", "");
+    var a = document.createElement("a"); a.href = REPERTORY; a.className = "fbg-a";
+    function paint() { a.textContent = "← " + w("back") + " · " + w("made"); a.setAttribute("aria-label", w("back") + " — " + w("made")); if (chip) chip.lastChild.textContent = (window.FBL && FBL.SHORT[lang()]) || "EN"; }
+    var chip = null;
+    if (window.FBT_DICT) { chip = document.createElement("button"); chip.type = "button"; chip.className = "fbg-lang"; chip.setAttribute("data-fbl-btn", ""); chip.innerHTML = '<span aria-hidden="true">🌐 </span><span data-fbl-label></span>'; box.appendChild(chip); }
+    box.appendChild(a); (host || document.body).appendChild(box); paint();
+    var L0 = lang(); setInterval(function () { if (lang() !== L0) { L0 = lang(); paint(); } }, 400);
+  }
+  var css = ".fbg{position:fixed;right:8px;bottom:calc(6px + env(safe-area-inset-bottom));z-index:40;display:flex;align-items:center;gap:6px;font:400 10px/1.2 'Space Mono',ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.02em;opacity:.42;transition:opacity .2s}" +
+    ".fbg:hover,.fbg:focus-within{opacity:1}.fbg.fbg-in{position:static;justify-content:center;flex-wrap:wrap;margin:14px auto 6px;width:100%}" +
+    ".fbg a,.fbg button{color:#fff;text-decoration:none;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:4px 9px;font:inherit;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}" +
+    ".fbg a:focus-visible,.fbg button:focus-visible{outline:2px solid #F28C76;outline-offset:2px}.fbg-lang.fbl-has::after{display:none}";
+  var st = document.createElement("style"); st.textContent = css; (document.head || document.documentElement).appendChild(st);
+
+  window.FBG = { tr: tr, refresh: function () { all(); } };
+  function boot() {
+    if (window.FBT_DICT && !window.FBL_SET) { window.FBL_SET = function (l) { window.FBL.set(l); all(); }; window.FBL_GET = function () { return lang(); }; }
+    startText(); if (window.self === window.top && !/^\/game\/?(index\.html)?$/.test(location.pathname)) credit(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
 </script>
