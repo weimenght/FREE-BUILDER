@@ -57,6 +57,7 @@
     ".mx-new{position:absolute;top:4px;right:4px;padding:3px 5px;background:#ffd23f;color:#3a2a00;font:400 8px/1 " + PX + ";border:2px solid #000;z-index:2;animation:mxBlink2 .8s steps(2) infinite}@keyframes mxBlink2{50%{background:#fff27a}}" +
     ".mx-fly{position:fixed;z-index:60;pointer-events:none;transition:transform .45s steps(6),opacity .45s steps(3)}" +
     ".mx-back{position:fixed;right:14px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:49;width:54px;height:54px;border:3px solid #000;background:#3a3428;color:#7dff9a;font-size:26px;cursor:pointer;box-shadow:4px 4px 0 #000}" +
+    ".mx-made{margin:18px 0 0;text-align:center;font:400 8px/1.6 " + PX + ";color:rgba(243,234,214,.55)}.mx-made a{color:#f3ead6;text-decoration:none}.mx-made .fbf-heart{color:#ff6b6b}.mx-made .fbf-ai{border-bottom:2px dotted currentColor}" +
     "@media (max-width:640px){.mx-row{grid-template-columns:1fr}.mx-side{flex-direction:row;min-width:0}.mx-slot{flex:1;width:auto}.mx-play{width:80px;height:80px;flex:none}.mx-crt{min-height:128px}.mx-shelf{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 12px;padding:14px 10px 18px}.mx-tape .lab{padding-left:34px}.mx-tape .pic{font-size:20px}.mx-tape .t{font-size:8px}}" +
     "@media (prefers-reduced-motion:reduce){.mx-idle,.mx-led,.mx-machine.loaded .reel,.mx-machine.loaded .mx-play,.mx-new{animation:none}}";
   var st = el("style"); st.textContent = css; document.head.appendChild(st);
@@ -69,11 +70,13 @@
     '<div class="mx-machine" id="mxM"><div class="mx-row"><div class="mx-crt" id="mxCrt" aria-live="polite"><div class="mx-idle">▼ ▼ ▼</div></div>' +
     '<div class="mx-side"><div class="mx-slot" aria-hidden="true"><div class="reels"><span class="reel"></span><span class="reel"></span></div></div>' +
     '<button class="mx-play" type="button" id="mxPlay" aria-label="Play" disabled>▶</button></div></div></div>' +
-    '<div class="mx-shelf" id="mxShelf" role="list"></div></div>';
+    '<div class="mx-shelf" id="mxShelf" role="list"></div><p class="mx-made" id="mxMade"></p></div>';
   var back = el("button", "mx-back", "📼"); back.type = "button"; back.setAttribute("aria-label", "Tapes"); back.hidden = true;
 
+  var MADE = { en: "MADE WITH AI & ♥", zh: "用 AI 与 ♥ 制作", "zh-Hant": "用 AI 與 ♥ 製作", es: "HECHO CON IA Y ♥", ca: "FET AMB IA I ♥" };
+  function made() { var e = deck.querySelector("#mxMade"), l = (window.FBL && FBL.get()) || "en", t = MADE[l] || MADE.en; if (e.getAttribute("data-l") === l) return; e.setAttribute("data-l", l); if (window.FBMade) window.FBMade(e, t); else e.textContent = t; }
   function mount() {
-    document.body.appendChild(deck); document.body.appendChild(back);
+    document.body.appendChild(deck); document.body.appendChild(back); made(); setInterval(made, 800);
     var showTerm = ls("mx_view") === "term";
     view(showTerm ? "term" : "deck");
     shelf(); setInterval(function () { if (sig() !== lastSig) shelf(); }, 2000);
