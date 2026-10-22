@@ -802,7 +802,6 @@
         <button id="btn-atmo-trigger" onclick="toggleAtmosphereDrawer()" class="icon-btn">
           <span id="weather-display-icon">🌧️</span><span id="time-display-badge" class="show-400 font-retro text-[15px] text-[var(--amber-2)]">22:30</span>
         </button>
-        <button onclick="toggleCodexModal(true)" class="icon-btn" aria-label="Menu">📖</button>
         <button onclick="returnToDoor()" class="icon-btn hide-sm" aria-label="Door" data-tt="name.change">🚪</button>
         <button class="icon-btn" onclick="openLangMenu(this)" aria-haspopup="menu"><span class="lang-short font-retro text-[15px]">EN</span></button>
         <span class="db-dot" id="db-dot" title=""></span>
@@ -865,6 +864,7 @@
               </button>
 
               <div id="stage-floor">
+                <a id="wei-note" href="/game/cloud/" aria-label=""><b id="wei-note-h"></b><span id="wei-note-t"></span><i>— W.</i></a>
                 <div id="wei-anchor" onclick="tapBartender()" class="cursor-pointer">
                   <div id="wei-bubble-wrap" class="hidden"><div id="wei-bubble"></div></div>
                   <div id="heart-float" class="hidden absolute -top-3 -right-5 z-30 pointer-events-none text-[#f08a7a] font-retro text-[18px]"></div>
@@ -985,7 +985,8 @@
                 <p id="sleep-story-text" class="text-[14px] leading-snug mt-1"></p>
                 <p id="sleep-poke-tip" class="label mt-1"></p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3 gap-1.5 mt-2">
-                  <button onclick="wakeUpBartender()" class="opt-btn">🔔 <span id="sleep-btn-wake" class="flex-1"></span></button>
+                  <button id="sleep-wake" onclick="wakeUpBartender()" class="opt-btn">🔔 <span id="sleep-btn-wake" class="flex-1"></span></button>
+                  <a id="away-go" class="opt-btn" href="/game/cloud/" style="display:none">↗ <span id="away-go-lbl" class="flex-1"></span></a>
                   <button onclick="askCatToBartend()" class="opt-btn">🐾 <span id="sleep-btn-cats" class="flex-1"></span></button>
                   <button onclick="openSneakMixer()" class="opt-btn">🤫 <span id="sleep-btn-diy" class="flex-1"></span></button>
                 </div>
@@ -1177,6 +1178,7 @@
 
     <nav id="app-dock" class="dock" aria-label="Rooms">
       <button class="dock-btn active" data-room="counter" onclick="go('counter')"><span class="ic">🍸</span><span class="lbl" data-t="dock.counter">Counter</span></button>
+      <button class="dock-btn" data-room="menu" onclick="toggleCodexModal(true)"><span class="ic">📖</span><span class="lbl" data-t="dock.menu">Menu</span></button>
       <button class="dock-btn" data-room="lab" onclick="go('lab')"><span class="ic">🧪</span><span class="lbl" data-t="dock.lab">Lab</span></button>
       <button class="dock-btn" data-room="studio" onclick="go('studio')"><span class="ic">🎶</span><span class="lbl" data-t="dock.studio">Studio</span></button>
       <button class="dock-btn" data-room="wall" onclick="go('wall')"><span class="ic">🧱</span><span class="lbl" data-t="dock.wall">Wall</span></button>
@@ -1214,14 +1216,14 @@
         <button onclick="toggleCodexModal(false)" class="btn-ghost px-2 text-[var(--muted)]">✕</button>
       </div>
       <div class="tabs my-2">
-        <button id="tab-btn-gt" class="tab active" onclick="switchAlbumTab('gt')" data-t="menu.signatures">Signatures</button>
+        <button id="tab-btn-guest" class="tab active" onclick="switchAlbumTab('guest')" data-t="menu.guest">From the lab</button>
+        <button id="tab-btn-gt" class="tab" onclick="switchAlbumTab('gt')" data-t="menu.signatures">Signatures</button>
         <button id="tab-btn-classic" class="tab" onclick="switchAlbumTab('classic')" data-t="menu.classics">Classics</button>
-        <button id="tab-btn-guest" class="tab" onclick="switchAlbumTab('guest')" data-t="menu.guest">Guest creations</button>
       </div>
       <p class="hint mb-2" data-t="menu.hint">Tap any drink and Wei will make it.</p>
-      <div id="album-pane-gt" class="flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
+      <div id="album-pane-gt" class="hidden flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
       <div id="album-pane-classic" class="hidden flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
-      <div id="album-pane-guest" class="hidden flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
+      <div id="album-pane-guest" class="flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
     </div>
   </div>
 
@@ -3146,6 +3148,7 @@
       'db.online':        ["Synced", "已同步", "已同步", "已同步", "Sincronizado", "Sincronitzat"],
       'db.local':         ["Saved on this device", "保存在本机", "儲存在本機", "儲咗喺呢部機", "Guardado en este dispositivo", "Desat en aquest dispositiu"],
       'dock.counter':     ["Counter", "吧台", "吧台", "吧枱", "Barra", "Barra"],
+      'dock.menu':        ["Menu", "菜单", "菜單", "餐牌", "Carta", "Carta"],
       'dock.lab':         ["Lab", "调酒台", "調酒台", "調酒枱", "Laboratorio", "Laboratori"],
       'dock.studio':      ["Jukebox", "点唱机", "點唱機", "點唱機", "Gramola", "Gramola"],
       'dock.wall':        ["Wall", "涂鸦墙", "塗鴉牆", "塗鴉牆", "Pared", "Paret"],
@@ -3166,7 +3169,7 @@
       'menu.title':       ["Tonight's menu", "今日菜单", "今日菜單", "今日餐牌", "La carta de hoy", "La carta d'avui"],
       'menu.signatures':  ["Signatures", "招牌", "招牌", "招牌", "De la casa", "De la casa"],
       'menu.classics':    ["Classics", "经典", "經典", "經典", "Clásicos", "Clàssics"],
-      'menu.guest':       ["Guest creations", "客人原创", "客人原創", "客人自創", "Creaciones de clientes", "Creacions de clients"],
+      'menu.guest':       ["From the lab", "实验室出品", "實驗室出品", "實驗室出品", "Del laboratorio", "Del laboratori"],
       'menu.hint':        ["Tap any drink and Wei will make it.", "点一杯，Wei 马上做。", "點一杯，Wei 馬上做。", "揀一杯，Wei 即刻整。", "Toca una bebida y Wei la prepara.", "Toca una beguda i en Wei la prepara."],
 
       // Lab
@@ -7117,7 +7120,8 @@
     function toggleCodexModal(show) {
       SoundEngine.playClick();
       document.getElementById('codex-modal').classList.toggle('hidden', !show);
-      if (show) populateCodexContent();
+      if (show) { populateCodexContent(); switchAlbumTab('guest'); }
+      document.querySelectorAll('.dock-btn[data-room="menu"]').forEach(b => b.classList.toggle('active', !!show));
     }
 
     function switchAlbumTab(tab) {
@@ -7160,7 +7164,8 @@
     async function loadGuestMenu() {
       const pane = document.getElementById('album-pane-guest');
       pane.innerHTML = `<p class="label">${esc(T('common.loading'))}</p>`;
-      let rows = await DB.list('cocktails', { order: 'likes', limit: 30 });
+      const [mine, loved] = await Promise.all([DB.list('cocktails', { eq: { patron: Patron.name }, limit: 12 }), DB.list('cocktails', { order: 'likes', limit: 30 })]);
+      const seen = new Set(); let rows = mine.concat(loved).filter(r => { const k = r.id || r.name + r.patron; if (seen.has(k)) return false; seen.add(k); return true; });
       if (!rows.length) rows = SEEDS.cocktails.slice();
       pane.innerHTML = '';
       rows.forEach(r => pane.appendChild(menuItem(GARNISHES[r.garnish] && r.garnish !== 'none' ? GARNISHES[r.garnish] : '🍸', `${r.name} · ${T('lab.by')} ${r.patron}`, `${r.profile ? r.profile.abv + '% · ' : ''}${Lab.describe(r)}`, () => { toggleCodexModal(false); Lab.serveRecord(r); })));
@@ -7507,7 +7512,7 @@
   /* the lab is behind the counter: you only get in while Wei is asleep and you sneak round */
   (function () {
     var btn = document.querySelector('.dock-btn[data-room="lab"]'); if (!btn) return;
-    var st = document.createElement("style"); st.textContent = '.dock-btn[data-room="lab"]{display:none!important}body.lab-open .dock-btn[data-room="lab"]{display:flex!important;animation:labIn .5s steps(3)}@keyframes labIn{0%{transform:translateY(12px);opacity:0}}';
+    var st = document.createElement("style"); st.textContent = '.dock-btn[data-room="lab"]{display:none!important}body.lab-open .dock-btn[data-room="lab"]{display:flex!important;animation:labIn .5s steps(3)}body.lab-open .dock-btn[data-room="menu"]{display:none!important}@keyframes labIn{0%{transform:translateY(12px);opacity:0}}';
     document.head.appendChild(st);
     var L = { en: "Wei woke up — back to your side of the counter!", zh: "Wei 醒了，快回到吧台外面！", tw: "Wei 醒了，快回到吧台外面！", yue: "Wei 醒咗！快啲返出吧枱！", es: "¡Wei se ha despertado! Vuelve a tu lado de la barra.", ca: "En Wei s'ha despertat! Torna al teu costat de la barra." };
     function lang() { try { return localStorage.getItem("weis-lang") || "en"; } catch (e) { return "en"; } }
@@ -7522,6 +7527,96 @@
         if (currentRoom === "lab") { go0("counter"); try { showToast(L[lang()] || L.en); } catch (e) {} }
       }
     }, 1000);
+  })();
+</script>
+<script>
+  /* sometimes Wei isn't in: a note on the counter says where he went (one of the other games).
+     The cats can serve, or you can help yourself, which opens the lab. ?away=climb forces it. */
+  (function () {
+    var PLACES = {
+      cloud:    { url: "/game/cloud/",    t: ["Gone cloud-watching in Sora.", "去 Sora 看云了。", "去 Sora 看雲了。", "去咗 Sora 睇雲。", "He ido a ver nubes a Sora.", "He anat a mirar núvols a Sora."], g: ["Find Wei in Sora", "去 Sora 找 Wei", "去 Sora 找 Wei", "去 Sora 搵 Wei", "Busca a Wei en Sora", "Busca en Wei a Sora"] },
+      climb:    { url: "/game/climb/",    t: ["Gone climbing at Crag Master.", "去 Crag Master 攀岩了。", "去 Crag Master 攀岩了。", "去咗 Crag Master 攀石。", "Me he ido a escalar a Crag Master.", "He anat a escalar a Crag Master."], g: ["Climb with Wei", "和 Wei 一起攀岩", "和 Wei 一起攀岩", "同 Wei 一齊攀石", "Escala con Wei", "Escala amb en Wei"] },
+      kintsugi: { url: "/game/kintsugi/", t: ["Mending bowls at the Kintsugi studio.", "在金继工作室修碗。", "在金繼工作室修碗。", "喺金繼工作室補碗。", "Reparando cuencos en el taller de Kintsugi.", "Reparant bols al taller de Kintsugi."], g: ["Visit the Kintsugi studio", "去金继工作室", "去金繼工作室", "去金繼工作室", "Ve al taller de Kintsugi", "Ves al taller de Kintsugi"] },
+      train:    { url: "/game/train/",    t: ["On the slow train. Window seat.", "在慢车上，靠窗。", "在慢車上，靠窗。", "坐緊慢車，揀咗窗口位。", "En el tren lento. Ventanilla.", "Al tren lent. Finestra."], g: ["Catch the train", "去赶火车", "去趕火車", "去搭火車", "Coge el tren", "Agafa el tren"] },
+      books:    { url: "/game/books/",    t: ["At the bookshop round the corner.", "在街角的书店。", "在街角的書店。", "喺街角間書店。", "En la librería de la esquina.", "A la llibreria de la cantonada."], g: ["Go to the bookshop", "去书店", "去書店", "去書店", "Ve a la librería", "Ves a la llibreria"] },
+      dj:       { url: "/game/dj/",       t: ["DJing somewhere far away tonight.", "今晚去远方打碟了。", "今晚去遠方打碟了。", "今晚去咗好遠打碟。", "Pinchando lejos esta noche.", "Punxant lluny aquesta nit."], g: ["Join Wei's DJ tour", "加入 Wei 的打碟巡演", "加入 Wei 的打碟巡演", "加入 Wei 嘅打碟巡迴", "Únete a la gira DJ", "Uneix-te a la gira DJ"] }
+    };
+    var W = { head: ["BACK SOON", "马上回来", "馬上回來", "好快返", "VUELVO ENSEGUIDA", "TORNO DE SEGUIDA"],
+              story: ["A note on the counter. Miso and Yuzu can serve, or slip behind the bar and make your own.", "吧台上留了张字条。可以让味噌和柚子招待，或者溜进吧台自己调一杯。", "吧台上留了張字條。可以讓味噌和柚子招待，或者溜進吧台自己調一杯。", "吧枱有張字條。可以叫味噌同柚子招呼你，或者自己入吧枱調一杯。", "Una nota en la barra. Miso y Yuzu pueden servirte, o pasa detrás de la barra y prepáratelo tú.", "Una nota a la barra. En Miso i la Yuzu et poden servir, o passa darrere la barra i fes-te'l tu."],
+              back: ["Wei's back! 👋", "Wei 回来了！👋", "Wei 回來了！👋", "Wei 返嚟喇！👋", "¡Wei ha vuelto! 👋", "En Wei ha tornat! 👋"] };
+    var IX = { en: 0, zh: 1, tw: 2, yue: 3, es: 4, ca: 5 };
+    function tx(a) { return a[IX[AppState.lang] || 0] || a[0]; }
+    var KEY = "weis-away", st = null, MIN = 15 * 60000;
+    try {
+      var q = new URLSearchParams(location.search).get("away");
+      var saved = JSON.parse(sessionStorage.getItem(KEY) || "null");
+      if (q && PLACES[q]) st = { p: q, until: Date.now() + MIN };
+      else if (saved) st = saved.p ? saved : null;
+      else {
+        var keys = Object.keys(PLACES);
+        st = Math.random() < 0.3 ? { p: keys[Math.floor(Math.random() * keys.length)], until: Date.now() + MIN } : { p: "" };
+        sessionStorage.setItem(KEY, JSON.stringify(st)); if (!st.p) st = null;
+      }
+    } catch (e) {}
+    function away() { return !!(st && st.p && Date.now() < st.until); }
+    window.WeiAway = { on: away, place: function () { return away() ? st.p : null; } };
+
+    var css = document.createElement("style");
+    css.textContent = '#wei-note{display:none;position:absolute;left:50%;bottom:6px;transform:translateX(-50%) rotate(-4deg);z-index:6;width:128px;padding:8px 9px 6px;background:#f6ecd2;color:#3a2a1c;border:2px solid #000;box-shadow:3px 3px 0 rgba(0,0,0,.45);font:17px/1.1 Caveat,"Kaiti SC",STKaiti,KaiTi,cursive;text-decoration:none;image-rendering:pixelated}'
+      + '#wei-note::before{content:"";position:absolute;top:-7px;left:50%;width:22px;height:10px;margin-left:-11px;background:rgba(242,165,65,.75);border:1px solid #000}'
+      + '#wei-note b{display:block;font:15px/1 VT323,"PingFang SC",monospace;letter-spacing:.05em;color:#b4472c;margin-bottom:4px}#wei-note span{display:block;text-decoration:underline;text-decoration-style:dotted}#wei-note i{display:block;text-align:right;font-style:normal;opacity:.7}'
+      + '#wei-note:hover,#wei-note:focus-visible{transform:translateX(-50%) rotate(0) scale(1.05)}'
+      + 'body.wei-away #wei-note{display:block;animation:noteIn .5s steps(4)}@keyframes noteIn{0%{transform:translateX(-50%) translateY(-30px) rotate(-14deg);opacity:0}}'
+      + 'body.wei-away #wei-anchor,body.wei-away #wei-zzz-particles{visibility:hidden}';
+    document.head.appendChild(css);
+
+    function paintNote() {
+      var p = PLACES[st.p], n = document.getElementById("wei-note"), g = document.getElementById("away-go");
+      n.href = g.href = p.url;
+      document.getElementById("wei-note-h").textContent = tx(W.head);
+      document.getElementById("wei-note-t").textContent = tx(p.t);
+      n.setAttribute("aria-label", tx(p.g));
+      document.getElementById("away-go-lbl").textContent = tx(p.g);
+    }
+    function apply() {
+      var on = away(); document.body.classList.toggle("wei-away", on);
+      document.getElementById("sleep-wake").style.display = on ? "none" : "";
+      document.getElementById("away-go").style.display = on ? "" : "none";
+      if (!on) return;
+      paintNote();
+      var pill = document.getElementById("host-mood-pill"); if (pill) pill.textContent = "Wei · ✈️";
+    }
+
+    var eval0 = window.evaluateWeiState;
+    window.evaluateWeiState = function () {
+      var r = eval0.apply(this, arguments);
+      if (away()) { var was = AppState.weiState; AppState.weiState = "asleep"; if (was !== "asleep" && window.Cats && Cats.st) try { Cats.syncSleep(); } catch (e) {} }
+      apply(); return r;
+    };
+    var render0 = window.renderCurrentDialogue;
+    window.renderCurrentDialogue = function () {
+      if (!away()) { apply(); return render0.apply(this, arguments); }
+      var snore = SoundEngine.playSnore; SoundEngine.playSnore = function () {};
+      try { render0.apply(this, arguments); } finally { SoundEngine.playSnore = snore; }
+      setText("sleep-header-title", tx(W.head));
+      setText("sleep-header-badge", "✈️");
+      setText("sleep-story-text", tx(W.story));
+      setText("sleep-poke-tip", "");
+      apply();
+    };
+    var lang0 = window.setLanguage;
+    window.setLanguage = function () { var r = lang0.apply(this, arguments); if (away()) { apply(); if (!document.getElementById("sleep-mode-screen").classList.contains("hidden")) renderCurrentDialogue(); } return r; };
+
+    /* he comes back after a while */
+    setInterval(function () {
+      if (st && st.p && Date.now() >= st.until) {
+        st = null; try { sessionStorage.setItem(KEY, JSON.stringify({ p: "" })); } catch (e) {}
+        evaluateWeiState(); AppState.currentTopic = null;
+        if (document.getElementById("sleep-mode-screen") && !document.getElementById("sleep-mode-screen").classList.contains("hidden")) renderCurrentDialogue();
+        if (AppState.weiState === "awake") try { showToast(tx(W.back)); } catch (e) {}
+      }
+    }, 5000);
+    if (away()) { try { evaluateWeiState(); if (AppState.inSanctuary) renderCurrentDialogue(); } catch (e) {} }
   })();
 </script>
 </body>

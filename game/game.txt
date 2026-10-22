@@ -33,7 +33,7 @@ ID: WB-03
 TITLE: Wei's Bar & Coffee
 GENRE: Cosy hutong hangout
 AUTHOR: FREE//BUILDER
-DESC: A tiny hutong counter: coffee by day, cocktails by night. Chat with Wei, mix a drink, pet the cats, drop a coin in the jukebox and leave a note for the next guest.
+DESC: A tiny hutong counter: coffee by day, cocktails by night. Chat with Wei, pet the cats, drop a coin in the jukebox and leave a note for the next guest. If Wei's out, sneak behind the bar and mix your own.
 URL: bar/
 
 CODE: BOOKS
