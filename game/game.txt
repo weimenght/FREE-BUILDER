@@ -36,23 +36,23 @@ DESC: For two people who live apart. Send a thought and your partner sees only i
 URL: love/
 
 CODE: BOOKS
-ID: 
-TITLE: 
-GENRE: 
+ID: DE-05
+TITLE: The Dog-Eared Corner
+GENRE: Second-hand book swap
 AUTHOR: FREE//BUILDER
-DESC: 
+DESC: A four-room book house next door to Wei's Bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one and pass it on by hand. The cats come over from the bar.
 URL: books/
 
 CODE: TRAIN
-ID: 
-TITLE: 
-GENRE: 
+ID: TW-06
+TITLE: Train Window
+GENRE: Sleeper car daydream
 AUTHOR: FREE//BUILDER
-DESC: 
+DESC: Board a night sleeper and just look out. Hours pass, the weather drifts, tunnels open onto new landscapes. Write on the fogged glass, and share your cabin so friends ride the same window, live.
 URL: train/
 
 CODE: KINTSUGI
-ID: 
+ID: __
 TITLE: 
 GENRE: 
 AUTHOR: FREE//BUILDER
