@@ -2,46 +2,15 @@
 # Read live by freebuilder.net/game — edit here and the terminal picks it up within seconds.
 # One block per game, blank line between blocks. Keys: CODE, ID, TITLE, GENRE, AUTHOR, DESC, URL.
 # CODE is what players type (RUN CLIMB). Keep TITLE the same as the name shown inside the game.
+# Listed easiest and most fun first; the hardest last.
 
-CODE: CLIMB
-ID: CM-01
-TITLE: Crag Master
-GENRE: Route-reading climbing tactics
+CODE: SORA
+ID: SK-08
+TITLE: Sora
+GENRE: Cloud watching for a blank mind
 AUTHOR: FREE//BUILDER
-DESC: Read the wall, plan your hands, then commit. Ten real crags from Montserrat to El Capitan, 5.6 to 5.15d. Clip every bolt, chalk at the rests and shake out on the jugs before the pump wins.
-URL: climb/
-
-CODE: DJ
-ID: RD-02
-TITLE: Retro DJ World Tour
-GENRE: 8-bit rhythm and turntables
-AUTHOR: FREE//BUILDER
-DESC: Hit the records as they cross the line, scratch through the bars and drop the bass when the hype is full. Tour city to city, each with its own twist, or jam on pads and loops.
-URL: dj/
-
-CODE: BAR
-ID: WB-03
-TITLE: Wei's Bar & Coffee
-GENRE: Cosy hutong hangout
-AUTHOR: FREE//BUILDER
-DESC: A tiny hutong counter: coffee by day, cocktails by night. Chat with Wei, mix a drink, pet the cats, play a record and leave a note for the next guest.
-URL: bar/
-
-CODE: HANDOFF
-ID: HO-04
-TITLE: Handoff
-GENRE: Two people, two time zones
-AUTHOR: FREE//BUILDER
-DESC: For two people who live apart. Send a thought and your partner sees only its ending; they guess the rest before it opens. Voice notes, shared skies and each other's sleep hours keep you in step.
-URL: love/
-
-CODE: BOOKS
-ID: DE-05
-TITLE: The Dog-Eared Corner
-GENRE: Second-hand book swap
-AUTHOR: FREE//BUILDER
-DESC: A four-room book house next door to Wei's Bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one and pass it on by hand. The cats come over from the bar.
-URL: books/
+DESC: Lie back under an open sky that keeps your own time. Draw on it and watch your scribble puff into a cloud and drift off, hold still to breathe, double-tap and the clouds take a shape.
+URL: cloud/
 
 CODE: TRAIN
 ID: TW-06
@@ -51,6 +20,22 @@ AUTHOR: FREE//BUILDER
 DESC: Board a night sleeper and just look out. Hours pass, the weather drifts, tunnels open onto new landscapes. Write on the fogged glass, and share your cabin so friends ride the same window, live.
 URL: train/
 
+CODE: BAR
+ID: WB-03
+TITLE: Wei's Bar & Coffee
+GENRE: Cosy hutong hangout
+AUTHOR: FREE//BUILDER
+DESC: A tiny hutong counter: coffee by day, cocktails by night. Chat with Wei, mix a drink, pet the cats, play a record and leave a note for the next guest.
+URL: bar/
+
+CODE: BOOKS
+ID: DE-05
+TITLE: The Dog-Eared Corner
+GENRE: Second-hand book swap
+AUTHOR: FREE//BUILDER
+DESC: A four-room book house next door to Wei's Bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one and pass it on by hand. The cats come over from the bar.
+URL: books/
+
 CODE: KINTSUGI
 ID: KS-07
 TITLE: Kintsugi Studio
@@ -59,10 +44,26 @@ AUTHOR: FREE//BUILDER
 DESC: Pick a broken bowl and mend it the old way. Fit the shards, seal the cracks with lacquer, then dust the seams with gold until the break becomes the best part. Finished pieces rest on your tokonoma shelf.
 URL: kintsugi/
 
-CODE: SORA
-ID: SK-08
-TITLE: Sora
-GENRE: Cloud watching for a blank mind
+CODE: HANDOFF
+ID: HO-04
+TITLE: Handoff
+GENRE: Two people, two time zones
 AUTHOR: FREE//BUILDER
-DESC: Lie back under an open sky that keeps your own time. Draw on it and watch your scribble puff into a cloud and drift off, hold still to breathe, double-tap and the clouds take a shape.
-URL: cloud/
+DESC: For two people who live apart. Send a thought and your partner sees only its ending; they guess the rest before it opens. Voice notes, shared skies and each other's sleep hours keep you in step.
+URL: love/
+
+CODE: DJ
+ID: RD-02
+TITLE: Retro DJ World Tour
+GENRE: 8-bit rhythm and turntables
+AUTHOR: FREE//BUILDER
+DESC: Hit the records as they cross the line, scratch through the bars and drop the bass when the hype is full. Tour city to city, each with its own twist, or jam on pads and loops.
+URL: dj/
+
+CODE: CLIMB
+ID: CM-01
+TITLE: Crag Master
+GENRE: Route-reading climbing tactics
+AUTHOR: FREE//BUILDER
+DESC: Read the wall, plan your hands, then commit. Ten real crags from Montserrat to El Capitan, 5.6 to 5.15d. Clip every bolt, chalk at the rests and shake out on the jugs before the pump wins.
+URL: climb/
