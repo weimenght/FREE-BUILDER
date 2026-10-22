@@ -34,3 +34,19 @@ GENRE: Two people, two time zones
 AUTHOR: FREE//BUILDER
 DESC: For two people who live apart. Send a thought and your partner sees only its ending; they guess the rest before it opens. Voice notes, shared skies and each other's sleep hours keep you in step.
 URL: love/
+
+CODE: BOOKS
+ID: 
+TITLE: 
+GENRE: 
+AUTHOR: FREE//BUILDER
+DESC: 
+URL: books/
+
+CODE: TRAIN
+ID: 
+TITLE: 
+GENRE: 
+AUTHOR: FREE//BUILDER
+DESC: 
+URL: train/
