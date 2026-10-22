@@ -527,10 +527,11 @@
     var st = state.station || {}, style = STYLE[state.biome] || "halt", cx = cw * 0.5 + sx, wid = cw * (style === "city" ? 2.6 : 1.6), x0 = cx - wid / 2, x1 = cx + wid / 2;
     var py = ch * 0.8, lit = L.lights, seed = (st.name || "x").length * 7 + (st.name || "x").charCodeAt(0);
     /* back wall for the big city stations */
-    if (style === "city") { ctx.fillStyle = css(land("#3a3c44", 0.15)); ctx.fillRect(x0, ch * 0.14, wid, py - ch * 0.14);
+    if (style === "city" && !st.look) { ctx.fillStyle = css(land("#3a3c44", 0.15)); ctx.fillRect(x0, ch * 0.14, wid, py - ch * 0.14);
       for (var a = x0 + 80 * S; a < x1 - 120 * S; a += 260 * S) { ctx.fillStyle = css(lit > 0.3 ? [250, 245, 230] : land("#d8d2c4", 0.1), 0.85); ctx.fillRect(a, ch * 0.34, 150 * S, 80 * S); ctx.fillStyle = css([[200, 80, 70], [60, 120, 180], [230, 170, 60], [90, 150, 100]][(hash(a | 0, seed) * 4) | 0], 0.75); ctx.fillRect(a + 10 * S, ch * 0.34 + 10 * S, 130 * S, 50 * S); }
       for (var v = x0 + 40 * S; v < x1; v += 700 * S) { ctx.fillStyle = css(land("#c8443a", 0.1)); ctx.fillRect(v, py - 90 * S, 40 * S, 90 * S); if (lit > 0.2) { ctx.fillStyle = "rgba(220,240,255," + 0.8 * lit + ")"; ctx.fillRect(v + 5 * S, py - 82 * S, 30 * S, 44 * S); } } }
     if (st.name === "Gulou Hutong") shopfronts(cx, py, 1.25);
+    if (st.look) facade(st.look, x0, x1, wid, py, style, seed, lit);
     /* platform */
     ctx.fillStyle = css(land(style === "halt" ? "#8a8070" : "#9a9890", 0.08)); ctx.fillRect(x0, py, wid, ch - py);
     ctx.fillStyle = css(land("#e8c84a", 0.05)); ctx.fillRect(x0, py + 8 * S, wid, 5 * S);
@@ -554,17 +555,110 @@
     var bw = Math.min(360 * S, cw * 0.5), bh = 70 * S, by = roofY ? roofY + 40 * S : st.name === "Gulou Hutong" ? ch * 0.06 : ch * 0.26, bx = cx - bw / 2;
     if (!roofY) { ctx.fillStyle = css(land("#2a2a30", 0.05)); ctx.fillRect(bx + 20 * S, by + bh, 5 * S, py - by - bh); ctx.fillRect(bx + bw - 25 * S, by + bh, 5 * S, py - by - bh); }
     else { ctx.strokeStyle = roofCol; ctx.beginPath(); ctx.moveTo(bx + 30 * S, roofY); ctx.lineTo(bx + 30 * S, by); ctx.moveTo(bx + bw - 30 * S, roofY); ctx.lineTo(bx + bw - 30 * S, by); ctx.stroke(); }
+    if (st.look) { board(st, bx, by, bw, bh, lit); } else {
     ctx.fillStyle = css(mix([246, 244, 236], L.low, 0.1)); ctx.fillRect(bx, by, bw, bh); if (lit > 0.3) glowDot(cx, by + bh / 2, bw * 0.7, [255, 250, 230], 0.25 * lit);
     ctx.fillStyle = st.ink || "#1d4ed8"; ctx.fillRect(bx, by + bh - 9 * S, bw, 9 * S);
     ctx.fillStyle = "#1c1c22"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.font = "600 " + Math.round(24 * S) + "px 'Plus Jakarta Sans','PingFang SC','Microsoft YaHei',system-ui,sans-serif"; fitText(st.name || "", cx, by + bh * 0.38, bw - 24 * S);
     if (st.jp) { ctx.font = Math.round(12 * S) + "px 'Hiragino Sans','Noto Sans JP','PingFang SC',sans-serif"; ctx.fillStyle = "#55555e"; ctx.fillText(st.jp, cx, by + bh * 0.74); }
-    ctx.textAlign = "start"; ctx.textBaseline = "alphabetic";
+    ctx.textAlign = "start"; ctx.textBaseline = "alphabetic"; }
+    if (st.look) props(st.look, x0, x1, wid, cx, py, roofY, seed, lit, now);
     /* benches, a clock, people waiting */
     for (var bi = 0; bi < 3; bi++) { var bxx = x0 + wid * (0.18 + bi * 0.3); ctx.fillStyle = css(land("#5a3e2a", 0.05)); ctx.fillRect(bxx, py - 22 * S, 60 * S, 6 * S); ctx.fillRect(bxx, py - 36 * S, 60 * S, 4 * S); ctx.fillRect(bxx + 4 * S, py - 16 * S, 4 * S, 16 * S); ctx.fillRect(bxx + 52 * S, py - 16 * S, 4 * S, 16 * S); }
     var n = 2 + (hash(seed, 2) * 5 | 0), umb = WX.rain > 0.4 && !roofY;
     for (var k = 0; k < n; k++) person(st.name === "Gulou Hutong" ? x0 + wid * (hash(k, seed) < 0.5 ? 0.06 + hash(k, seed) * 0.4 : 0.54 + hash(k, seed) * 0.4) : x0 + wid * (0.1 + hash(k, seed) * 0.8), py, 0.85 + hash(k, seed + 1) * 0.3, k + seed, umb, now);
     if (hash(seed, 9) < 0.5) { var catX = x0 + wid * (0.3 + hash(seed, 10) * 0.4); ctx.fillStyle = hash(seed, 11) < 0.5 ? "#e8913a" : "#231b17"; ctx.beginPath(); ctx.ellipse(catX, py - 7 * S, 11 * S, 7 * S, 0, 0, TAU); ctx.arc(catX + 10 * S, py - 13 * S, 6 * S, 0, TAU); ctx.fill(); ctx.beginPath(); ctx.moveTo(catX + 6 * S, py - 17 * S); ctx.lineTo(catX + 8 * S, py - 24 * S); ctx.lineTo(catX + 11 * S, py - 18 * S); ctx.moveTo(catX + 11 * S, py - 18 * S); ctx.lineTo(catX + 15 * S, py - 24 * S); ctx.lineTo(catX + 16 * S, py - 15 * S); ctx.fill(); ctx.lineWidth = 3 * S; ctx.strokeStyle = ctx.fillStyle; ctx.beginPath(); ctx.moveTo(catX - 10 * S, py - 6 * S); ctx.quadraticCurveTo(catX - 22 * S, py - 10 * S, catX - 18 * S, py - 22 * S + Math.sin(now * 0.003) * 3 * S); ctx.stroke(); }
+  }
+  /* ---------- a station looks like its country ---------- */
+  function swin(x, y, w, h, arch, lit, frame) {
+    ctx.fillStyle = lit > 0.3 ? css([255, 214, 150], 0.55 + lit * 0.35) : css(land("#2b3440", 0.08));
+    ctx.beginPath(); if (arch) { ctx.moveTo(x, y + h); ctx.lineTo(x, y + w / 2); ctx.arc(x + w / 2, y + w / 2, w / 2, Math.PI, 0); ctx.lineTo(x + w, y + h); } else ctx.rect(x, y, w, h); ctx.closePath(); ctx.fill();
+    if (frame) { ctx.strokeStyle = frame; ctx.lineWidth = 2 * S; ctx.stroke(); ctx.beginPath(); ctx.moveTo(x + w / 2, y + (arch ? w / 2 : 0)); ctx.lineTo(x + w / 2, y + h); ctx.moveTo(x, y + h * 0.55); ctx.lineTo(x + w, y + h * 0.55); ctx.stroke(); }
+  }
+  function flowers(x, y, w, seed) { ctx.fillStyle = css(land("#3e6b2e", 0.05)); ctx.fillRect(x, y - 6 * S, w, 6 * S); for (var i = 0; i < w / (5 * S); i++) { ctx.fillStyle = css([[220, 40, 50], [240, 120, 160], [250, 200, 60], [255, 255, 255]][(hash(i, seed) * 4) | 0]); ctx.beginPath(); ctx.arc(x + i * 5 * S + 2 * S, y - 7 * S - hash(i, seed + 3) * 4 * S, 2.2 * S, 0, TAU); ctx.fill(); } }
+  function facade(look, x0, x1, wid, py, style, seed, lit) {
+    var top = py - ch * (style === "city" ? 0.5 : 0.34), h = py - top, x, i;
+    if (look === "fr") {
+      ctx.fillStyle = css(land("#e6d8bb", 0.12)); ctx.fillRect(x0, top, wid, h); ctx.fillStyle = css(land("#c9b896", 0.12)); ctx.fillRect(x0, top, wid, 10 * S); ctx.fillRect(x0, top + h * 0.12, wid, 4 * S);
+      for (x = x0 + 50 * S; x < x1 - 80 * S; x += 140 * S) swin(x, top + h * 0.22, 64 * S, h * 0.6, true, lit, css(land("#5a5040", 0.1)));
+    } else if (look === "de") {
+      ctx.fillStyle = css(land("#9a4b37", 0.12)); ctx.fillRect(x0, top, wid, h);
+      ctx.strokeStyle = "rgba(230,210,190,0.18)"; ctx.lineWidth = 1; ctx.beginPath(); for (var yy = top + 10 * S, r = 0; yy < py; yy += 10 * S, r++) { ctx.moveTo(x0, yy); ctx.lineTo(x1, yy); for (x = x0 + (r % 2) * 12 * S; x < x1; x += 24 * S) { ctx.moveTo(x, yy - 10 * S); ctx.lineTo(x, yy); } } ctx.stroke();
+      ctx.fillStyle = css(land("#efe6d4", 0.12)); ctx.fillRect(x0, top, wid, h * 0.3); ctx.strokeStyle = css(land("#3b2a20", 0.1)); ctx.lineWidth = 6 * S; ctx.beginPath();
+      for (x = x0; x < x1; x += 90 * S) { ctx.moveTo(x, top); ctx.lineTo(x, top + h * 0.3); ctx.moveTo(x, top + h * 0.3); ctx.lineTo(x + 45 * S, top); ctx.moveTo(x + 90 * S, top + h * 0.3); ctx.lineTo(x + 45 * S, top); } ctx.moveTo(x0, top + h * 0.3); ctx.lineTo(x1, top + h * 0.3); ctx.stroke();
+      for (x = x0 + 70 * S; x < x1 - 60 * S; x += 180 * S) swin(x, top + h * 0.45, 40 * S, h * 0.32, false, lit, "rgba(245,240,230,0.9)");
+    } else if (look === "es" || look === "ca") {
+      ctx.fillStyle = css(land("#f2ede2", 0.12)); ctx.fillRect(x0, top, wid, h);
+      ctx.fillStyle = css(land("#b5532f", 0.1)); ctx.fillRect(x0 - 10 * S, top - 12 * S, wid + 20 * S, 14 * S); for (x = x0 - 10 * S; x < x1 + 10 * S; x += 14 * S) { ctx.beginPath(); ctx.arc(x + 7 * S, top + 2 * S, 7 * S, 0, Math.PI); ctx.fill(); }
+      for (x = x0 + 40 * S; x < x1 - 90 * S; x += 120 * S) { swin(x, top + h * 0.2, 80 * S, h * 0.8, true, lit * 0.7); }
+      ctx.fillStyle = css(land("#2b6cb0", 0.1)); ctx.fillRect(x0, py - 26 * S, wid, 4 * S);
+      for (x = x0 + 20 * S; x < x1; x += 120 * S) { ctx.fillStyle = css(land("#a5532a", 0.05)); ctx.fillRect(x, py - 18 * S, 18 * S, 18 * S); flowers(x - 2 * S, py - 16 * S, 22 * S, x | 0); }
+    } else if (look === "us") {
+      ctx.fillStyle = css(land("#c7ad7f", 0.12)); ctx.fillRect(x0 + wid * 0.15, top + h * 0.15, wid * 0.5, h * 0.85);
+      ctx.strokeStyle = "rgba(60,40,20,0.25)"; ctx.lineWidth = 1; ctx.beginPath(); for (var y2 = top + h * 0.15; y2 < py; y2 += 9 * S) { ctx.moveTo(x0 + wid * 0.15, y2); ctx.lineTo(x0 + wid * 0.65, y2); } ctx.stroke();
+      ctx.fillStyle = css(land("#3d5a40", 0.1)); ctx.beginPath(); ctx.moveTo(x0 + wid * 0.1, top + h * 0.2); ctx.lineTo(x0 + wid * 0.4, top - h * 0.05); ctx.lineTo(x0 + wid * 0.7, top + h * 0.2); ctx.fill();
+      for (x = x0 + wid * 0.2; x < x0 + wid * 0.6; x += 110 * S) swin(x, top + h * 0.38, 36 * S, h * 0.36, false, lit, "rgba(240,235,220,0.9)");
+    } else if (look === "uk") {
+      ctx.fillStyle = css(land("#b8925e", 0.12)); ctx.fillRect(x0, top, wid, h);
+      for (x = x0 + 50 * S; x < x1 - 60 * S; x += 130 * S) swin(x, top + h * 0.18, 44 * S, h * 0.62, false, lit, "rgba(250,248,240,0.95)");
+    } else if (look === "cn") {
+      var g = ctx.createLinearGradient(0, top - h * 0.6, 0, py); g.addColorStop(0, css(land("#9fb3c6", 0.2), 0.5)); g.addColorStop(1, css(land("#5d7182", 0.2), 0.75)); ctx.fillStyle = g; ctx.fillRect(x0, top - h * 0.4, wid, h * 1.4);
+      ctx.strokeStyle = css(land("#dfe7ee", 0.2), 0.6); ctx.lineWidth = 2 * S; ctx.beginPath(); for (x = x0; x <= x1; x += 60 * S) { ctx.moveTo(x, top - h * 0.4); ctx.lineTo(x, py); } for (var y3 = top - h * 0.4; y3 < py; y3 += 50 * S) { ctx.moveTo(x0, y3); ctx.lineTo(x1, y3); } ctx.stroke();
+      if (lit > 0.3) { ctx.fillStyle = "rgba(255,248,230," + 0.18 * lit + ")"; ctx.fillRect(x0, top - h * 0.4, wid, h * 1.4); }
+    } else if (look === "jp") {
+      ctx.fillStyle = css(land("#d9d7cf", 0.12)); ctx.fillRect(x0, py - h * 0.5, wid, h * 0.5);
+      for (i = 0; i < 3; i++) { var vx = cx + cw * 0.2 + i * 46 * S, vy = py - 92 * S, col = [[200, 40, 50], [40, 90, 170], [235, 235, 235]][i]; ctx.fillStyle = css(land("#" + col.map(function (c) { return (c | 256).toString(16).slice(1); }).join(""), 0.03)); ctx.fillRect(vx, vy, 42 * S, 92 * S);
+        ctx.fillStyle = lit > 0.2 ? "rgba(255,255,240,0.95)" : "rgba(230,230,225,0.8)"; ctx.fillRect(vx + 5 * S, vy + 8 * S, 32 * S, 34 * S); for (var k = 0; k < 8; k++) { ctx.fillStyle = css([[230, 80, 60], [60, 140, 220], [250, 200, 50], [90, 180, 90]][(hash(k, i + seed) * 4) | 0]); ctx.fillRect(vx + 7 * S + (k % 4) * 8 * S, vy + 11 * S + ((k / 4) | 0) * 15 * S, 5 * S, 11 * S); }
+        if (lit > 0.2) glowDot(vx + 21 * S, vy + 30 * S, 60 * S, [220, 240, 255], 0.35 * lit); }
+    } else if (look === "it") {
+      ctx.fillStyle = css(land("#d6a258", 0.12)); ctx.fillRect(x0, top, wid, h);
+      for (x = x0 + 50 * S; x < x1 - 70 * S; x += 130 * S) { swin(x, top + h * 0.25, 40 * S, h * 0.5, false, lit); ctx.fillStyle = css(land("#3e6b4a", 0.08)); ctx.fillRect(x - 16 * S, top + h * 0.25, 14 * S, h * 0.5); ctx.fillRect(x + 42 * S, top + h * 0.25, 14 * S, h * 0.5); }
+    } else if (look === "ch") {
+      ctx.fillStyle = css(land("#6b4a32", 0.12)); ctx.fillRect(x0 + wid * 0.1, top, wid * 0.8, h);
+      for (x = x0 + wid * 0.15; x < x0 + wid * 0.85; x += 120 * S) { swin(x, top + h * 0.3, 44 * S, h * 0.36, false, lit, "rgba(250,248,240,0.95)"); flowers(x - 4 * S, top + h * 0.3 + h * 0.36 + 8 * S, 52 * S, x | 0); }
+    }
+  }
+  function board(st, bx, by, bw, bh, lit) {
+    var L1 = st.name || "", L2 = st.sub || "", lk = st.look, bg = "#fff", fg = "#111", sub = "#55555e", font = "700 ", fam = "'Plus Jakarta Sans','PingFang SC','Hiragino Sans','Microsoft YaHei',system-ui,sans-serif", cxx = bx + bw / 2;
+    if (lk === "fr") { bg = "#22336a"; fg = "#fff"; sub = "#b8c7f0"; }
+    else if (lk === "it" || lk === "ch") { bg = lk === "it" ? "#1f4f9c" : "#203f8c"; fg = "#fff"; sub = "#cdd9f2"; }
+    else if (lk === "us") { bg = "#6b4423"; fg = "#f3e3bf"; sub = "#e0c999"; fam = "Georgia,'Times New Roman',serif"; L1 = L1.toUpperCase(); }
+    else if (lk === "cn") { bg = "#0c1322"; fg = "#ffa043"; sub = "#cfd8e6"; }
+    else if (lk === "es" || lk === "ca") { fg = "#1d3f8f"; sub = "#3a5aa8"; fam = "Georgia,'Times New Roman',serif"; }
+    ctx.fillStyle = bg; ctx.fillRect(bx, by, bw, bh);
+    if (lk === "de") { ctx.strokeStyle = "#16357a"; ctx.lineWidth = 5 * S; ctx.strokeRect(bx + 2.5 * S, by + 2.5 * S, bw - 5 * S, bh - 5 * S); }
+    if (lk === "uk") { ctx.strokeStyle = "#1f3d2b"; ctx.lineWidth = 7 * S; ctx.strokeRect(bx + 3.5 * S, by + 3.5 * S, bw - 7 * S, bh - 7 * S); }
+    if (lk === "us") { ctx.strokeStyle = "rgba(0,0,0,0.25)"; ctx.lineWidth = 1; ctx.beginPath(); for (var yy = by + bh / 3; yy < by + bh; yy += bh / 3) { ctx.moveTo(bx, yy); ctx.lineTo(bx + bw, yy); } ctx.stroke(); }
+    if (lk === "es" || lk === "ca") { var t = 10 * S; for (var x = bx; x < bx + bw; x += t) for (var r = 0; r < 2; r++) { var yy2 = r ? by + bh - t : by; ctx.fillStyle = (Math.round((x - bx) / t) + r) % 2 ? "#2b5bb8" : "#f4d35e"; ctx.fillRect(x + 1, yy2 + 1, t - 2, t - 2); } }
+    if (lk === "jp") { ctx.fillStyle = st.ink || "#1d4ed8"; ctx.fillRect(bx, by + bh * 0.62, bw, bh * 0.12); ctx.beginPath(); ctx.moveTo(bx + 8 * S, by + bh * 0.68); ctx.lineTo(bx + 18 * S, by + bh * 0.6); ctx.lineTo(bx + 18 * S, by + bh * 0.76); ctx.fill(); ctx.beginPath(); ctx.moveTo(bx + bw - 8 * S, by + bh * 0.68); ctx.lineTo(bx + bw - 18 * S, by + bh * 0.6); ctx.lineTo(bx + bw - 18 * S, by + bh * 0.76); ctx.fill(); }
+    if (lit > 0.3 && lk !== "cn") glowDot(cxx, by + bh / 2, bw * 0.7, [255, 250, 230], 0.22 * lit);
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    var y1 = L2 ? by + bh * (lk === "jp" ? 0.34 : 0.4) : by + bh / 2;
+    ctx.font = font + Math.round(26 * S) + "px " + fam; ctx.fillStyle = fg;
+    if (lk === "cn") { ctx.save(); ctx.shadowColor = "rgba(255,140,40,0.9)"; ctx.shadowBlur = 10 * S; fitText(L1, cxx, y1, bw - 24 * S); ctx.restore(); } else fitText(L1, cxx, y1, bw - 24 * S);
+    if (L2) { ctx.font = "600 " + Math.round(12 * S) + "px " + fam; ctx.fillStyle = sub; fitText(L2, cxx, by + bh * (lk === "jp" ? 0.88 : 0.76), bw - 24 * S); }
+    ctx.textAlign = "start"; ctx.textBaseline = "alphabetic";
+  }
+  function props(look, x0, x1, wid, cx, py, roofY, seed, lit, now) {
+    if (look === "fr") {   /* a round clock on a post, telling the real time */
+      var kx = cx + cw * 0.3, ky = py - 150 * S, d = new Date(); ctx.fillStyle = css(land("#2a2a30", 0.05)); ctx.fillRect(kx - 3 * S, ky, 6 * S, py - ky);
+      ctx.fillStyle = "#f7f4ea"; ctx.strokeStyle = "#1c1c22"; ctx.lineWidth = 3 * S; ctx.beginPath(); ctx.arc(kx, ky, 22 * S, 0, TAU); ctx.fill(); ctx.stroke();
+      var hA = ((d.getHours() % 12) + d.getMinutes() / 60) / 12 * TAU - Math.PI / 2, mA = d.getMinutes() / 60 * TAU - Math.PI / 2; ctx.lineWidth = 3 * S; ctx.beginPath(); ctx.moveTo(kx, ky); ctx.lineTo(kx + Math.cos(hA) * 11 * S, ky + Math.sin(hA) * 11 * S); ctx.moveTo(kx, ky); ctx.lineTo(kx + Math.cos(mA) * 17 * S, ky + Math.sin(mA) * 17 * S); ctx.stroke();
+    } else if (look === "uk" && roofY) {   /* a wooden valance under the canopy, and hanging baskets */
+      ctx.fillStyle = css(land("#1f3d2b", 0.1)); for (var x = x0; x < x1; x += 16 * S) { ctx.beginPath(); ctx.moveTo(x, roofY); ctx.lineTo(x + 8 * S, roofY + 16 * S); ctx.lineTo(x + 16 * S, roofY); ctx.fill(); }
+      for (var bx = x0 + 160 * S; bx < x1; bx += 300 * S) { ctx.strokeStyle = "#222"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(bx, roofY + 10 * S); ctx.lineTo(bx, roofY + 50 * S); ctx.stroke(); ctx.fillStyle = css(land("#4a3420", 0.05)); ctx.beginPath(); ctx.arc(bx, roofY + 50 * S, 14 * S, 0, Math.PI); ctx.fill(); flowers(bx - 16 * S, roofY + 54 * S, 32 * S, bx | 0); }
+    } else if (look === "uk") {
+      for (var lb = cx - cw * 0.3; lb < cx + cw * 0.4; lb += cw * 0.35) { ctx.fillStyle = css(land("#1f3d2b", 0.05)); ctx.fillRect(lb - 2 * S, py - 170 * S, 4 * S, 170 * S); ctx.fillRect(lb, py - 160 * S, 26 * S, 3 * S); ctx.strokeStyle = "#222"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(lb + 22 * S, py - 157 * S); ctx.lineTo(lb + 22 * S, py - 140 * S); ctx.stroke(); ctx.fillStyle = css(land("#4a3420", 0.05)); ctx.beginPath(); ctx.arc(lb + 22 * S, py - 140 * S, 12 * S, 0, Math.PI); ctx.fill(); flowers(lb + 8 * S, py - 136 * S, 28 * S, lb | 0); }
+    } else if (look === "us") {   /* the water tower at the end of the platform */
+      var tx = cx - cw * 0.34, ty = py - 230 * S; ctx.strokeStyle = css(land("#4a3a2a", 0.15)); ctx.lineWidth = 5 * S; ctx.beginPath(); ctx.moveTo(tx - 40 * S, py); ctx.lineTo(tx - 30 * S, ty + 80 * S); ctx.moveTo(tx + 40 * S, py); ctx.lineTo(tx + 30 * S, ty + 80 * S); ctx.moveTo(tx - 36 * S, py - 60 * S); ctx.lineTo(tx + 36 * S, py - 60 * S); ctx.stroke();
+      ctx.fillStyle = css(land("#7a5a3a", 0.15)); ctx.fillRect(tx - 45 * S, ty + 10 * S, 90 * S, 70 * S); ctx.beginPath(); ctx.moveTo(tx - 50 * S, ty + 12 * S); ctx.lineTo(tx, ty - 22 * S); ctx.lineTo(tx + 50 * S, ty + 12 * S); ctx.fill();
+      ctx.strokeStyle = "rgba(30,20,10,0.4)"; ctx.lineWidth = 2 * S; ctx.beginPath(); ctx.moveTo(tx - 45 * S, ty + 35 * S); ctx.lineTo(tx + 45 * S, ty + 35 * S); ctx.moveTo(tx - 45 * S, ty + 60 * S); ctx.lineTo(tx + 45 * S, ty + 60 * S); ctx.stroke();
+    } else if (look === "es" || look === "ca" || (look === "fr" && false)) {   /* a palm */
+      var px = cx - cw * 0.4; ctx.strokeStyle = css(land("#7a5a3a", 0.1)); ctx.lineWidth = 8 * S; ctx.beginPath(); ctx.moveTo(px, py); ctx.quadraticCurveTo(px + 20 * S, py - 120 * S, px + 6 * S, py - 200 * S); ctx.stroke();
+      ctx.strokeStyle = css(land("#3d7a3a", 0.1)); ctx.lineWidth = 5 * S; var sw = Math.sin(now * 0.001) * 4 * S; for (var f = 0; f < 7; f++) { var a = -Math.PI * (0.05 + f * 0.13); ctx.beginPath(); ctx.moveTo(px + 6 * S, py - 200 * S); ctx.quadraticCurveTo(px + 6 * S + Math.cos(a) * 50 * S, py - 200 * S + Math.sin(a) * 50 * S - 10 * S, px + 6 * S + Math.cos(a) * 80 * S + sw, py - 200 * S + Math.sin(a) * 40 * S + 30 * S); ctx.stroke(); }
+    } else if (look === "cn") {   /* the platform number on a hanging LED strip */
+      ctx.fillStyle = "#0c1322"; ctx.fillRect(cx + cw * 0.24, ch * 0.2, 90 * S, 28 * S); ctx.fillStyle = "#59f07a"; ctx.font = "700 " + Math.round(16 * S) + "px 'Plus Jakarta Sans',sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText((1 + (seed % 9)) + "站台", cx + cw * 0.24 + 45 * S, ch * 0.2 + 14 * S); ctx.textAlign = "start"; ctx.textBaseline = "alphabetic";
+    }
   }
   function fitText(t, x, y, max) { var s = 1; while (ctx.measureText(t).width > max && s > 0.5) { s -= 0.06; var f = ctx.font.replace(/(\d+)px/, function (m, p) { return Math.round(p * 0.94) + "px"; }); ctx.font = f; } ctx.fillText(t, x, y); }
   function person(x, base, sc, seed, umb, now) {
@@ -707,5 +801,87 @@
       { name: "Yukimi Junction", jp: "雪見分岐", region: "White Steppe", biome: "snow", ink: "#475569", icon: "fa-snowflake", code: "YJ-41" },
       { name: "Aurora Siding", jp: "極光信号場", region: "Northern Plain", biome: "snow", ink: "#0f766e", icon: "fa-star", code: "AS-42" }
     ].forEach(function (s) { if (!STATION_CATALOG.some(function (x) { return x.name === s.name; })) STATION_CATALOG.push(s); });
+    /* real places, each in its own country's style and language */
+    [
+      ["Paris Gare de Lyon", "Paris", "Île-de-France", "metropolis", "fr", "#22336a", "fa-clock"],
+      ["Arles", "Provence", "Bouches-du-Rhône", "countryside", "fr", "#7c3aed", "fa-sun"],
+      ["Annecy", "Haute-Savoie", "Alpes françaises", "alpine", "fr", "#0e7490", "fa-mountain"],
+      ["Saint-Malo", "Bretagne", "Côte d'Émeraude", "coastal", "fr", "#0369a1", "fa-anchor"],
+      ["Hamburg Hbf", "Hauptbahnhof", "Hamburg", "metropolis", "de", "#16357a", "fa-train-subway", "Hamburg Hauptbahnhof"],
+      ["Heidelberg", "Baden-Württemberg", "Neckartal", "countryside", "de", "#9a3412", "fa-wheat-awn"],
+      ["Garmisch-Partenkirchen", "Bayern", "Wetterstein", "alpine", "de", "#15803d", "fa-mountain"],
+      ["Titisee", "Schwarzwald", "Black Forest", "forest", "de", "#14532d", "fa-tree"],
+      ["Madrid Atocha", "Madrid", "Castilla", "metropolis", "es", "#b91c1c", "fa-city"],
+      ["Almería", "Andalucía", "Desierto de Tabernas", "desert", "es", "#c2410c", "fa-sun"],
+      ["Ronda", "Andalucía", "Serranía de Ronda", "countryside", "es", "#a16207", "fa-bridge"],
+      ["Sitges", "Garraf", "Costa Daurada", "coastal", "ca", "#0e7490", "fa-umbrella-beach"],
+      ["Girona", "Gironès", "Catalunya", "countryside", "ca", "#b45309", "fa-seedling"],
+      ["Grand Central", "New York", "Manhattan", "metropolis", "us", "#1e3a8a", "fa-city"],
+      ["Flagstaff", "Arizona", "Route 66", "desert", "us", "#9a3412", "fa-mountain-sun"],
+      ["Glacier Park", "Montana", "Rocky Mountains", "alpine", "us", "#166534", "fa-mountain"],
+      ["Santa Barbara", "California", "Pacific Coast", "coastal", "us", "#0369a1", "fa-water"],
+      ["Edinburgh Waverley", "Scotland", "Old Town", "metropolis", "uk", "#1f3d2b", "fa-landmark"],
+      ["Penzance", "Cornwall", "End of the Line", "coastal", "uk", "#0e7490", "fa-anchor"],
+      ["Windermere", "Lake District", "Cumbria", "lake", "uk", "#1e40af", "fa-water"],
+      ["Aviemore", "Highlands", "Cairngorms", "snow", "uk", "#475569", "fa-snowflake"],
+      ["北京南", "Beijing South · Běijīng Nán", "华北", "metropolis", "cn", "#b91c1c", "fa-train-subway"],
+      ["桂林", "Guilin · Guìlín", "漓江", "lake", "cn", "#0f766e", "fa-water"],
+      ["苏州", "Suzhou · Sūzhōu", "江南水乡", "lake", "cn", "#1d4ed8", "fa-bridge-water"],
+      ["厦门", "Xiamen · Xiàmén", "鹭岛", "coastal", "cn", "#0369a1", "fa-anchor"],
+      ["哈尔滨", "Harbin · Hā'ěrbīn", "冰城", "snow", "cn", "#334155", "fa-snowflake"],
+      ["敦煌", "Dunhuang · Dūnhuáng", "河西走廊", "desert", "cn", "#b45309", "fa-sun"],
+      ["京都", "Kyōto", "Kansai", "metropolis", "jp", "#7e22ce", "fa-torii-gate"],
+      ["箱根湯本", "Hakone-Yumoto", "Kanagawa", "alpine", "jp", "#15803d", "fa-hot-tub-person"],
+      ["鎌倉", "Kamakura", "Shōnan", "coastal", "jp", "#0369a1", "fa-water"],
+      ["美瑛", "Biei", "Hokkaidō", "snow", "jp", "#475569", "fa-snowflake"],
+      ["Firenze S.M.N.", "Santa Maria Novella", "Toscana", "metropolis", "it", "#1f4f9c", "fa-landmark", "Firenze Santa Maria Novella"],
+      ["Vernazza", "Cinque Terre", "Liguria", "coastal", "it", "#0e7490", "fa-sailboat"],
+      ["Zermatt", "Wallis", "Matterhorn", "alpine", "ch", "#203f8c", "fa-mountain"],
+      ["Grindelwald", "Berner Oberland", "Eiger", "snow", "ch", "#203f8c", "fa-snowflake"]
+    ].forEach(function (r, i) {
+      if (STATION_CATALOG.some(function (x) { return x.name === r[0]; })) return;
+      STATION_CATALOG.push({ name: r[0], sub: r[1], region: r[2], biome: r[3], look: r[4], ink: r[5], icon: r[6], say: r[7] || r[0], code: r[4].toUpperCase() + "-" + (60 + i) });
+    });
   } catch (e) {}
+
+  /* ---------- "now arriving": a chime and a voice in the station's own language ---------- */
+  var VOICE = {
+    jp: ["ja-JP", "まもなく、{n}、{n}です。お忘れ物のないよう、ご注意ください。"],
+    cn: ["zh-CN", "旅客朋友们，前方到站是{n}站。请带好您的随身物品，准备下车。"],
+    fr: ["fr-FR", "Mesdames et messieurs, nous arrivons à {n}. Assurez-vous de n'avoir rien oublié à bord."],
+    de: ["de-DE", "Meine Damen und Herren, in wenigen Minuten erreichen wir {n}. Wir bedanken uns für Ihre Reise."],
+    ch: ["de-CH", "Nächster Halt: {n}. Bitte vergessen Sie Ihr Gepäck nicht."],
+    es: ["es-ES", "Próxima estación: {n}. Por favor, no olviden sus pertenencias."],
+    ca: ["ca-ES", "Propera estació: {n}. Si us plau, no oblideu les vostres pertinences."],
+    us: ["en-US", "Now arriving at {n}. Please watch your step as you leave the train."],
+    uk: ["en-GB", "We will shortly be arriving at {n}. Please remember to take all your belongings with you, and mind the gap."],
+    it: ["it-IT", "Signore e signori, stiamo arrivando a {n}. Vi preghiamo di non dimenticare i vostri effetti personali."]
+  };
+  var CHIME = {   /* [frequencies, spacing, wave] */
+    jp: [[659.3, 784, 987.8, 1318.5, 1174.7, 987.8], 0.16, "sine"], cn: [[523.3, 659.3, 784, 1046.5], 0.2, "triangle"],
+    fr: [[659.3, 523.3, 784], 0.32, "sine"], de: [[784, 659.3], 0.55, "sine"], ch: [[880, 659.3, 523.3], 0.4, "sine"],
+    es: [[784, 659.3, 523.3], 0.28, "triangle"], ca: [[784, 659.3, 523.3], 0.28, "triangle"], it: [[698.5, 880, 1046.5], 0.28, "sine"],
+    uk: [[659.3, 523.3], 0.5, "sine"], us: [[880, 880], 0.45, "triangle"]
+  };
+  function lookOf(st) { return st.look || (st.name === "Gulou Hutong" ? "cn" : st.jp ? "jp" : null); }
+  function spoken(st) { return st.say || (st.name === "Gulou Hutong" ? "鼓楼胡同" : st.jp && !st.look ? st.jp.replace(/駅$/, "") : st.name); }
+  var voices = []; function loadVoices() { try { voices = speechSynthesis.getVoices() || []; } catch (e) {} }
+  if (window.speechSynthesis) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+  function voiceFor(tag) { var l = tag.toLowerCase(), base = l.split("-")[0], best = null; voices.forEach(function (v) { var vl = (v.lang || "").toLowerCase().replace("_", "-"); if (vl === l) best = best && best.l === 2 ? best : { v: v, l: 2 }; else if (!best && vl.split("-")[0] === base) best = { v: v, l: 1 }; }); return best && best.v; }
+  function announce(st) {
+    var lk = lookOf(st), ch = CHIME[lk], vo = VOICE[lk];
+    if (typeof audioCtx === "undefined" || !audioCtx || !isAudioPlaying) return false;
+    if (!ch) return false;
+    var t0 = audioCtx.currentTime + 0.05;
+    ch[0].forEach(function (f, i) { var o = audioCtx.createOscillator(), g = audioCtx.createGain(), t = t0 + i * ch[1]; o.type = ch[2]; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.09, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0006, t + 1.1); o.connect(g); g.connect(masterTrainGain); o.start(t); o.stop(t + 1.2); });
+    if (vo && window.speechSynthesis && window.SpeechSynthesisUtterance) {
+      if (!voices.length) loadVoices();
+      var v = voiceFor(vo[0]); if (!v && lk === "ch") v = voiceFor("de-DE");
+      if (v) setTimeout(function () { try { if (!isAudioPlaying) return; speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(vo[1].replace(/\{n\}/g, spoken(st))); u.voice = v; u.lang = v.lang; u.rate = lk === "jp" || lk === "cn" ? 0.92 : 0.95; u.pitch = lk === "jp" ? 1.1 : 1; u.volume = 0.85; speechSynthesis.speak(u); } catch (e) {} }, ch[0].length * ch[1] * 1000 + 500);
+    }
+    return true;
+  }
+  var chime0 = window.playStationArrivalChime;
+  if (chime0) window.playStationArrivalChime = function () { try { if (state.station && announce(state.station)) return; } catch (e) {} return chime0.apply(this, arguments); };
+  document.addEventListener("visibilitychange", function () { if (document.hidden && window.speechSynthesis) try { speechSynthesis.cancel(); } catch (e) {} });
 })();

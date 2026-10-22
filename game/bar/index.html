@@ -1232,6 +1232,14 @@
     /* the second-hand book corner next door */
     .nd-door { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font: 600 13px/1.3 system-ui, -apple-system, "PingFang SC", sans-serif; color: var(--amber-2); text-decoration: none; opacity: .85; }
     .nd-door:hover, .nd-door:focus-visible { opacity: 1; text-decoration: underline; }
+    /* the big cabinet in the corner: MEMEX-68, every FREE//BUILDER game on one tape */
+    .memex-cab[hidden] { display: none; }
+    .memex-cab { max-width: 980px; margin: 0 auto; padding: 14px 14px 10px; border-radius: 16px; background: linear-gradient(#3a2414, #24160c); border: 3px solid #000; box-shadow: 4px 4px 0 #000, 0 0 40px rgba(80, 255, 140, .08); }
+    .memex-bezel { border-radius: 14px; padding: 10px; background: #0c0a08; box-shadow: inset 0 0 0 3px #1a1410, inset 0 0 30px #000; }
+    .memex-bezel iframe { display: block; width: 100%; height: min(68vh, 620px); border: 0; border-radius: 10px; background: #031a0c; }
+    .memex-plate { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; padding: 0 6px; font-family: "VT323", monospace; font-size: 18px; letter-spacing: .3em; color: var(--amber-2); }
+    .memex-plate i { width: 14px; height: 14px; border-radius: 50%; background: #b9772c; box-shadow: inset 0 -3px 0 rgba(0,0,0,.4); }
+    .memex-plate i:nth-child(2) { background: #c2412d; margin-left: auto; } .memex-plate i:nth-child(4) { background: #3f8f5a; }
     .nd-peek { position: absolute; right: 10px; top: 120px; z-index: 15; display: flex; align-items: center; gap: 3px; text-decoration: none; transform-origin: 50% 0; animation: ndSwing 5s ease-in-out infinite; filter: drop-shadow(2px 3px 0 #000) drop-shadow(0 0 12px rgba(255,190,110,.25)); }
     .nd-peek .nd-mini { width: 54px; height: auto; display: block; }
     .nd-peek:hover, .nd-peek:focus-visible { filter: drop-shadow(2px 3px 0 #000) drop-shadow(0 0 18px rgba(255,200,120,.6)); }
