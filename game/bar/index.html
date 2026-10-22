@@ -1237,6 +1237,7 @@
     .nd-door:hover, .nd-door:focus-visible { opacity: 1; text-decoration: underline; }
     /* the big cabinet in the corner: MEMEX-68, every FREE//BUILDER game on one tape */
     .memex-cab[hidden] { display: none; }
+    #room-arcade .arcade-grid { display: none !important; } #room-arcade .memex-cab { display: block !important; }
     .memex-cab { max-width: 980px; margin: 0 auto; padding: 14px 14px 10px; border-radius: 16px; background: linear-gradient(#3a2414, #24160c); border: 3px solid #000; box-shadow: 4px 4px 0 #000, 0 0 40px rgba(80, 255, 140, .08); }
     .memex-bezel { border-radius: 14px; padding: 10px; background: #0c0a08; box-shadow: inset 0 0 0 3px #1a1410, inset 0 0 30px #000; }
     .memex-bezel iframe { display: block; width: 100%; height: min(68vh, 620px); border: 0; border-radius: 10px; background: #031a0c; }
@@ -1752,13 +1753,9 @@
       <!-- ============ ROOM: ARCADE ============ -->
       <section id="room-arcade" class="room hidden">
         <div class="room-inner">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2" hidden style="display:none">
             <div class="tabs" id="arcade-tabs">
               <button class="tab active" data-game="memex" onclick="Arcade.pick('memex')">📼 <span>MEMEX-68</span></button>
-              <button class="tab" data-game="snake" onclick="Arcade.pick('snake')">🫘 <span data-t="arc.snake">Bean Snake</span></button>
-              <button class="tab" data-game="stack" onclick="Arcade.pick('stack')">🧊 <span data-t="arc.stack">Sugar Stack</span></button>
-              <button class="tab" data-game="gomoku" onclick="Arcade.pick('gomoku')">⚫ <span data-t="arc.gomoku">Gomoku vs Wei</span></button>
-              <button class="tab" data-game="runner" onclick="Arcade.pick('runner')">🐈 <span data-t="arc.runner">Rooftop Yuzu</span></button>
             </div>
           </div>
           <div class="memex-cab" id="memex-cab" hidden>
@@ -1808,7 +1805,7 @@
     <nav id="app-dock" class="dock" aria-label="Rooms">
       <button class="dock-btn active" data-room="counter" onclick="go('counter')"><span class="ic">🍸</span><span class="lbl" data-t="dock.counter">Counter</span></button>
       <button class="dock-btn" data-room="lab" onclick="go('lab')"><span class="ic">🧪</span><span class="lbl" data-t="dock.lab">Lab</span></button>
-      <button class="dock-btn" data-room="studio" onclick="go('studio')"><span class="ic">🎛️</span><span class="lbl" data-t="dock.studio">Studio</span></button>
+      <button class="dock-btn" data-room="studio" onclick="go('studio')"><span class="ic">🎶</span><span class="lbl" data-t="dock.studio">Studio</span></button>
       <button class="dock-btn" data-room="wall" onclick="go('wall')"><span class="ic">🧱</span><span class="lbl" data-t="dock.wall">Wall</span></button>
       <button class="dock-btn" data-room="arcade" onclick="go('arcade')"><span class="ic">🕹️</span><span class="lbl" data-t="dock.arcade">Arcade</span></button>
     </nav>
@@ -3777,7 +3774,7 @@
       'db.local':         ["Saved on this device", "保存在本机", "儲存在本機", "儲咗喺呢部機", "Guardado en este dispositivo", "Desat en aquest dispositiu"],
       'dock.counter':     ["Counter", "吧台", "吧台", "吧枱", "Barra", "Barra"],
       'dock.lab':         ["Lab", "调酒台", "調酒台", "調酒枱", "Laboratorio", "Laboratori"],
-      'dock.studio':      ["Studio", "唱片室", "唱片室", "錄音室", "Estudio", "Estudi"],
+      'dock.studio':      ["Jukebox", "点唱机", "點唱機", "點唱機", "Gramola", "Gramola"],
       'dock.wall':        ["Wall", "涂鸦墙", "塗鴉牆", "塗鴉牆", "Pared", "Paret"],
       'dock.arcade':      ["Arcade", "街机", "街機", "機舖", "Recreativos", "Recreatius"],
       'atmo.title':       ["Atmosphere", "氛围", "氛圍", "氣氛", "Ambiente", "Ambient"],
@@ -9071,10 +9068,18 @@
 </script>
 <script src="../jukebox/core.js"></script><script src="../jukebox/widget.js"></script>
 <script>
-  /* the jukebox by the door: it plays the same record as the studio and the book corner next door; the bar's own records step aside */
+  /* the jukebox has the back room now (where the old studio was): same records, same second as the studio and the book corner */
   (function () {
-    var st = document.getElementById("stage-counter-box"); if (!st || !window.JBW) return;
-    var c = JBW.corner({ dock: st, pos: { left: "10px", top: "41%" } }); c.el.style.width = "46px"; c.el.style.height = "60px";
+    var room = document.getElementById("room-studio"); if (!room || !window.JBW) return;
+    var inner = room.querySelector(".room-inner") || room;
+    var st = document.createElement("style"); st.textContent = "#room-studio .room-inner>*:not(#jbRoom){display:none!important}#jbRoom{padding:6px 0 18px}#jbRoom .jbc-make{display:flex;width:max-content;margin:18px auto 0}";
+    document.head.appendChild(st);
+    var box = document.createElement("div"); box.id = "jbRoom"; inner.insertBefore(box, inner.firstChild);
+    JBW.mount(box, { venue: "bar" });
+    var make = document.createElement("a"); make.className = "jbc-make"; make.href = "../jukebox/"; make.innerHTML = '<span aria-hidden="true">🎛️</span><span></span>'; make.lastChild.textContent = JB.w("make"); box.appendChild(make);
+    JB.watch();
+    /* walking into the room turns it on */
+    new MutationObserver(function () { if (!room.classList.contains("hidden") && !JB.listening()) { JB.unlock(); JB.listen(true); JBW.fire(); JBW.paint(); } }).observe(room, { attributes: true, attributeFilter: ["class"] });
     var hushed = false, start = MusicEngine.start.bind(MusicEngine);
     MusicEngine.start = function () { if (window.JB && JB.listening()) { hushed = false; JB.listen(false); JBW.fire(); JBW.paint(); } return start.apply(null, arguments); };
     addEventListener("jukebox", function (e) {
