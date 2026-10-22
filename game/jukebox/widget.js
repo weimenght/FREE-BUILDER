@@ -11,63 +11,52 @@
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
+  var PX = "'Press Start 2P','Pixelify Sans',ui-monospace,monospace", VT = "'VT323','Pixelify Sans',ui-monospace,'PingFang SC','Microsoft YaHei',monospace";
   var css = "" +
-    ".jbm{--h:30;position:relative;width:100%;max-width:340px;margin:0 auto;padding:22px 18px 16px;border-radius:170px 170px 26px 26px;background:linear-gradient(180deg,#5a2e1a,#3a1d10 40%,#2a140b);box-shadow:inset 0 2px 0 rgba(255,220,180,.25),inset 0 -8px 20px rgba(0,0,0,.5),0 30px 60px -24px rgba(0,0,0,.8);color:#fbeedd;font:500 13px/1.3 'Plus Jakarta Sans',system-ui,sans-serif;user-select:none;-webkit-user-select:none;isolation:isolate}" +
-    ".jbm-ring{position:absolute;inset:6px;border-radius:164px 164px 22px 22px;padding:9px;background:conic-gradient(from 0deg,#ff5f6d,#ffc371,#fff27a,#7affc1,#5fd4ff,#b77bff,#ff5fd2,#ff5f6d);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.85;filter:saturate(1.1) blur(.3px);animation:jbHue 9s linear infinite;pointer-events:none;z-index:-1}" +
-    ".jbm.off .jbm-ring{opacity:.35;animation-duration:30s}" +
-    "@keyframes jbHue{to{filter:hue-rotate(360deg) saturate(1.1) blur(.3px)}}" +
-    ".jbm-tube{position:absolute;top:36%;bottom:72px;width:12px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,.18),rgba(255,180,90,.35),rgba(255,255,255,.1));overflow:hidden;box-shadow:inset 0 0 6px rgba(0,0,0,.5)}" +
-    ".jbm-tube.l{left:14px}.jbm-tube.r{right:14px}.jbm-tube i{position:absolute;left:3px;width:6px;height:6px;border-radius:50%;background:rgba(255,250,230,.85);animation:jbBub 3.2s linear infinite}" +
-    "@keyframes jbBub{from{transform:translateY(240px)}to{transform:translateY(-20px)}}.jbm.off .jbm-tube i{animation-play-state:paused}" +
-    ".jbm-glass{position:relative;margin:4px auto 0;width:78%;aspect-ratio:1.25;border-radius:120px 120px 14px 14px;background:radial-gradient(120% 90% at 50% 0%,#2b1f2e,#120c14 70%);box-shadow:inset 0 0 0 3px #c9a46a,inset 0 0 0 6px #6a4a2a,inset 0 10px 30px rgba(0,0,0,.8);overflow:hidden}" +
-    ".jbm-glass:after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.16),transparent 35%,transparent 70%,rgba(255,255,255,.06));pointer-events:none}" +
-    ".jbm-disc{position:absolute;left:50%;top:58%;width:62%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:repeating-radial-gradient(circle,#111 0 2px,#1d1d1d 2px 3px),#111;box-shadow:0 6px 16px rgba(0,0,0,.6),inset 0 0 0 2px #000}" +
-    ".jbm-disc:before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent 0 40deg,rgba(255,255,255,.14) 55deg,transparent 70deg 210deg,rgba(255,255,255,.1) 225deg,transparent 240deg)}" +
-    ".jbm-disc b{position:absolute;inset:32%;border-radius:50%;background:hsl(var(--h),70%,58%);box-shadow:inset 0 0 0 3px hsl(var(--h),60%,42%)}.jbm-disc b:after{content:'';position:absolute;inset:44%;border-radius:50%;background:#1a1a1a}" +
-    ".jbm-disc.spin{animation:jbSpin 1.8s linear infinite}@keyframes jbSpin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}" +
-    ".jbm-arm{position:absolute;right:9%;top:16%;width:6px;height:52%;border-radius:4px;background:linear-gradient(90deg,#d8d8d8,#8d8d8d);transform-origin:50% 4px;transform:rotate(-8deg);transition:transform .9s cubic-bezier(.5,0,.3,1)}" +
-    ".jbm-arm:before{content:'';position:absolute;top:-6px;left:-6px;width:18px;height:18px;border-radius:50%;background:radial-gradient(#eee,#777)}.jbm-arm:after{content:'';position:absolute;bottom:-4px;left:-3px;width:12px;height:14px;border-radius:2px;background:#bbb}" +
-    ".jbm.on .jbm-arm.down{transform:rotate(22deg)}.jbm-arm.down{transform:rotate(22deg)}" +
-    ".jbm-card{margin:12px auto 0;width:86%;min-height:58px;padding:8px 10px;border-radius:8px;background:linear-gradient(#fdf6e6,#f1e3c4);color:#3a2214;text-align:center;box-shadow:inset 0 0 0 2px hsl(var(--h),55%,55%),0 4px 10px rgba(0,0,0,.4);transition:box-shadow .6s}" +
-    ".jbm-card b{display:block;font:600 17px/1.15 'Fraunces','Cormorant Garamond',Georgia,'Songti SC',serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.jbm-card span{display:block;font-size:12px;color:#7a5236;margin-top:2px}" +
-    ".jbm-card small{display:block;margin-top:3px;font-size:11px;color:#a0522d;min-height:14px}.jbm-card.fresh{animation:jbFresh 1.2s ease}@keyframes jbFresh{0%{transform:scale(.94);filter:brightness(1.4)}100%{transform:none}}" +
-    ".jbm-low{display:flex;align-items:center;gap:12px;margin:14px 6px 0}" +
-    ".jbm-spk{position:relative;flex:none;width:68px;height:68px;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle,#2a1a10 0 30%,transparent 31%),repeating-radial-gradient(circle,#1b0f08 0 3px,#4a2c1a 3px 5px);box-shadow:inset 0 0 0 3px #c9a46a,0 4px 10px rgba(0,0,0,.5);color:#ffe6b0;font-size:22px;display:grid;place-items:center}" +
-    ".jbm-spk:focus-visible,.jbm-sl:focus-visible,.jbm-coin:focus-visible{outline:2px solid #ffd27a;outline-offset:3px}" +
-    ".jbm.off .jbm-spk:after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(255,210,122,.7);animation:jbPing 1.8s ease-out infinite}@keyframes jbPing{from{transform:scale(.9);opacity:1}to{transform:scale(1.25);opacity:0}}" +
-    ".jbm-vu{flex:1;height:48px;border-radius:8px;background:#140b06;box-shadow:inset 0 0 0 2px #6a4a2a;display:block;width:100%}" +
-    ".jbm-slot{flex:none;width:30px;height:48px;border-radius:6px;background:linear-gradient(#c9a46a,#8a6a3a);box-shadow:inset 0 0 0 2px #5a3a1a;position:relative}.jbm-slot:after{content:'';position:absolute;left:12px;top:10px;width:5px;height:28px;border-radius:3px;background:#1a0e06}" +
-    ".jbm-next{display:flex;gap:6px;justify-content:center;margin-top:10px;min-height:24px;flex-wrap:wrap}.jbm-next span{display:inline-flex;align-items:center;gap:5px;max-width:46%;padding:3px 8px 3px 4px;border-radius:999px;background:rgba(255,230,190,.1);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" +
-    ".jbm-next i{flex:none;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,hsl(var(--c),70%,60%) 0 30%,#111 32%)}" +
-    ".jbs{margin:16px auto 0;max-width:720px;display:flex;gap:12px;overflow-x:auto;padding:14px 6px 10px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin}" +
-    ".jbm-sl{position:relative;flex:none;width:96px;scroll-snap-align:start;border:0;padding:0;background:none;color:inherit;text-align:left;cursor:pointer;font:inherit;transition:transform .25s}" +
-    ".jbm-sl svg{display:block;width:96px;height:96px;border-radius:4px;box-shadow:0 8px 16px -8px rgba(0,0,0,.7)}.jbm-sl .vin{position:absolute;top:6px;left:24px;width:84px;height:84px;border-radius:50%;background:repeating-radial-gradient(circle,#111 0 2px,#222 2px 3px);z-index:-1;transition:left .3s}" +
-    ".jbm-sl:hover .vin,.jbm-sl.sel .vin{left:34px}.jbm-sl.sel{transform:translateY(-8px)}.jbm-sl b{display:block;margin-top:6px;font-size:12px;line-height:1.2;max-height:2.4em;overflow:hidden}.jbm-sl em{display:block;font-style:normal;font-size:11px;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" +
-    ".jbm-sl.playing svg{box-shadow:0 0 0 2px #ffd27a,0 8px 16px -8px rgba(0,0,0,.7)}.jbm-sl.mine:before{content:'';position:absolute;top:-4px;left:-4px;width:10px;height:10px;border-radius:50%;background:#ffd27a;box-shadow:0 0 8px #ffd27a;z-index:1}" +
-    ".jbm-coin{position:absolute;left:50%;top:48px;transform:translate(-50%,-50%) scale(0);width:52px;height:52px;border-radius:50%;border:2px solid #fff3c4;background:radial-gradient(circle at 35% 30%,#fff6c8,#e6b43a 45%,#a8751a);color:#5a3a0a;font:800 20px/1 system-ui;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,.5);transition:transform .25s cubic-bezier(.3,1.6,.5,1);z-index:2}" +
-    ".jbm-sl.sel .jbm-coin{transform:translate(-50%,-50%) scale(1)}.jbm-x{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:#2a1a10;color:#fbeedd;font-size:13px;line-height:1;cursor:pointer;z-index:2;display:none}.jbm-sl.sel .jbm-x{display:block}" +
-    ".jbm-fly{position:fixed;z-index:9999;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6c8,#e6b43a 45%,#a8751a);box-shadow:0 4px 10px rgba(0,0,0,.5);pointer-events:none;transition:transform .7s cubic-bezier(.5,-0.3,.6,1),opacity .2s .65s}" +
-    ".jbm-toast{position:absolute;left:50%;bottom:-14px;transform:translate(-50%,100%);padding:6px 12px;border-radius:999px;background:#fbeedd;color:#3a2214;font-size:12px;white-space:nowrap;box-shadow:0 6px 14px rgba(0,0,0,.4);opacity:0;transition:opacity .3s;pointer-events:none;z-index:3}.jbm-toast.show{opacity:1}" +
-    /* the corner jukebox in a venue */
-    ".jbc{position:fixed;z-index:60;width:56px;height:72px;border:0;padding:0;background:none;cursor:pointer;filter:drop-shadow(0 8px 10px rgba(0,0,0,.45));transition:transform .2s}.jbc:hover{transform:translateY(-3px)}.jbc svg{width:100%;height:100%;display:block}" +
-    ".jbc .glow{animation:jbHueS 6s linear infinite}@keyframes jbHueS{to{filter:hue-rotate(360deg)}}.jbc.quiet .glow{animation-duration:24s;opacity:.55}" +
-    ".jbc .note{position:absolute;top:-8px;right:-6px;font-size:16px;opacity:0;transition:opacity .4s}.jbc.live .note{opacity:1;animation:jbNote 1.6s ease-in-out infinite}@keyframes jbNote{50%{transform:translateY(-6px) rotate(10deg)}}" +
-    ".jbc-scrim{position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;padding:max(18px,env(safe-area-inset-top)) 12px 28px;background:rgba(12,6,3,.86);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);animation:jbIn .3s ease}" +
-    "@keyframes jbIn{from{opacity:0}}.jbc-close{position:sticky;top:0;align-self:flex-end;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,220,170,.4);background:#2a1a10;color:#fbeedd;font-size:20px;cursor:pointer;z-index:2}" +
-    ".jbc-make{display:inline-flex;align-items:center;gap:8px;margin:16px auto 0;padding:10px 16px;border-radius:999px;background:linear-gradient(135deg,#ffd27a,#f08a5d);color:#2a1205;font:700 14px 'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;box-shadow:0 8px 20px -8px rgba(240,138,93,.8)}" +
+    ".jbm{--h:30;position:relative;width:100%;max-width:340px;margin:0 auto;color:#fbeedd;font:400 20px/1.05 " + VT + ";user-select:none;-webkit-user-select:none;image-rendering:pixelated}" +
+    ".jbm-px{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges}" +
+    ".jbm-body{position:relative;margin-top:-4px;padding:10px 12px 12px;background:#4a2412;border:4px solid #1a0c06;border-top:0;box-shadow:6px 6px 0 #000;background-image:repeating-conic-gradient(rgba(0,0,0,.18) 0 25%,transparent 0 50%);background-size:4px 4px}" +
+    ".jbm-card{margin:0 auto;min-height:62px;padding:8px 10px 6px;background:#f6ead0;color:#2a1a0e;text-align:center;border:3px solid #000;box-shadow:inset -3px -3px 0 #d9c49a,inset 3px 3px 0 #fffaf0}" +
+    ".jbm-card b{display:block;font:400 11px/1.5 " + PX + ";white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#2a1a0e}" +
+    ".jbm-card span{display:block;font:400 18px/1 " + VT + ";color:#7a4a26;margin-top:2px}.jbm-card small{display:block;margin-top:2px;font:400 16px/1 " + VT + ";color:#b3261e;min-height:16px}" +
+    ".jbm-card.fresh{animation:jbFresh .6s steps(4)}@keyframes jbFresh{0%{background:#fff}50%{background:#ffe680}}" +
+    ".jbm-low{display:flex;align-items:stretch;gap:8px;margin-top:10px}" +
+    ".jbm-spk{flex:none;width:56px;height:56px;border:3px solid #000;cursor:pointer;background:#2a1a10;background-image:repeating-conic-gradient(#1a0c06 0 25%,#5a3a22 0 50%);background-size:6px 6px;color:#ffe6b0;font-size:22px;display:grid;place-items:center;box-shadow:inset -3px -3px 0 rgba(0,0,0,.5),inset 3px 3px 0 rgba(255,220,170,.25);padding:0}" +
+    ".jbm-spk:active{box-shadow:inset 3px 3px 0 rgba(0,0,0,.6)}" +
+    ".jbm.off .jbm-spk{animation:jbBlink 1s steps(2) infinite}@keyframes jbBlink{50%{border-color:#ffd27a}}" +
+    ".jbm-spk:focus-visible,.jbm-sl:focus-visible,.jbm-coin:focus-visible{outline:3px solid #ffd27a;outline-offset:2px}" +
+    ".jbm-vu{flex:1;min-width:0;height:56px;background:#0d0705;border:3px solid #000;image-rendering:pixelated;display:block;width:100%}" +
+    ".jbm-slot{flex:none;width:28px;border:3px solid #000;background:#c9a46a;position:relative;box-shadow:inset -3px -3px 0 #8a6a3a}.jbm-slot:after{content:'';position:absolute;left:8px;top:10px;width:6px;bottom:10px;background:#000}" +
+    ".jbm-next{display:flex;gap:6px;justify-content:center;margin-top:10px;min-height:22px;flex-wrap:wrap}.jbm-next span{display:inline-flex;align-items:center;gap:6px;max-width:48%;padding:2px 8px 2px 4px;background:#1a0c06;border:2px solid #000;font:400 16px/1 " + VT + ";white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" +
+    ".jbm-next i{flex:none;width:10px;height:10px;background:hsl(var(--c),80%,60%);box-shadow:0 0 0 2px #000}" +
+    ".jbs{margin:18px auto 0;max-width:720px;display:flex;gap:14px;overflow-x:auto;padding:16px 8px 12px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin}" +
+    ".jbm-sl{position:relative;flex:none;width:96px;scroll-snap-align:start;border:0;padding:0;background:none;color:inherit;text-align:left;cursor:pointer;font:inherit;transition:transform .15s steps(3)}" +
+    ".jbm-sl svg{display:block;width:96px;height:96px;border:3px solid #000;box-shadow:4px 4px 0 #000;image-rendering:pixelated;box-sizing:border-box}" +
+    ".jbm-sl .vin{position:absolute;top:8px;left:26px;width:80px;height:80px;background:#111;clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);z-index:-1;transition:left .2s steps(3)}" +
+    ".jbm-sl:hover .vin,.jbm-sl.sel .vin{left:38px}.jbm-sl.sel{transform:translateY(-8px)}.jbm-sl b{display:block;margin-top:8px;font:400 18px/1 " + VT + ";max-height:2em;overflow:hidden}.jbm-sl em{display:block;font:400 15px/1 " + VT + ";font-style:normal;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" +
+    ".jbm-sl.playing svg{border-color:#ffd27a}.jbm-sl.mine:before{content:'';position:absolute;top:-5px;left:-5px;width:10px;height:10px;background:#ffd27a;border:2px solid #000;z-index:1}" +
+    ".jbm-coin{position:absolute;left:50%;top:48px;transform:translate(-50%,-50%) scale(0);width:48px;height:48px;border:3px solid #000;background:#ffd23f;color:#5a3a0a;font:400 14px/1 " + PX + ";cursor:pointer;clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%);box-shadow:inset -4px -4px 0 #c08a10,inset 4px 4px 0 #fff3a8;transition:transform .2s steps(3);z-index:2;padding:0}" +
+    ".jbm-sl.sel .jbm-coin{transform:translate(-50%,-50%) scale(1)}.jbm-x{position:absolute;top:-8px;right:-8px;width:24px;height:24px;border:2px solid #000;background:#b3261e;color:#fff;font:400 12px/1 " + PX + ";cursor:pointer;z-index:2;display:none;padding:0}.jbm-sl.sel .jbm-x{display:block}" +
+    ".jbm-fly{position:fixed;z-index:9999;width:28px;height:28px;background:#ffd23f;border:3px solid #000;clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%);pointer-events:none;transition:transform .6s steps(8),opacity .1s .55s}" +
+    ".jbm-toast{position:absolute;left:50%;bottom:-12px;transform:translate(-50%,100%);padding:6px 10px;background:#f6ead0;color:#2a1a0e;border:3px solid #000;box-shadow:4px 4px 0 #000;font:400 18px/1 " + VT + ";white-space:nowrap;opacity:0;pointer-events:none;z-index:3}.jbm-toast.show{opacity:1}" +
+    ".jbc{position:fixed;z-index:60;width:40px;height:52px;border:0;padding:0;background:none;cursor:pointer;filter:drop-shadow(3px 3px 0 #000);image-rendering:pixelated}.jbc:hover{transform:translateY(-2px)}.jbc canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}" +
+    ".jbc .note{position:absolute;top:-12px;right:-8px;font:400 10px/1 " + PX + ";color:#ffd27a;text-shadow:2px 2px 0 #000;opacity:0}.jbc.live .note{opacity:1;animation:jbNote 1s steps(2) infinite}@keyframes jbNote{50%{transform:translateY(-4px)}}" +
+    ".jbc-scrim{position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;padding:max(18px,env(safe-area-inset-top)) 12px 28px;background:rgba(12,6,3,.9);background-image:repeating-conic-gradient(rgba(0,0,0,.35) 0 25%,transparent 0 50%);background-size:4px 4px}" +
+    ".jbc-close{position:sticky;top:0;align-self:flex-end;width:44px;height:44px;border:3px solid #000;background:#b3261e;color:#fff;font:400 14px/1 " + PX + ";cursor:pointer;z-index:2;box-shadow:3px 3px 0 #000;padding:0}" +
+    ".jbc-make{display:inline-flex;align-items:center;gap:8px;margin:18px auto 0;padding:12px 14px;background:#ffd27a;color:#2a1205;border:3px solid #000;box-shadow:4px 4px 0 #000;font:400 10px/1.4 " + PX + ";text-decoration:none}.jbc-make:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #000}" +
     ".jbc-scrim .jbs{width:100%;color:#fbeedd}" +
-    "@media (prefers-reduced-motion:reduce){.jbm-ring,.jbm-tube i,.jbm-disc.spin,.jbc .glow{animation:none}}";
+    "@media (prefers-reduced-motion:reduce){.jbm.off .jbm-spk,.jbc.live .note{animation:none}}";
   var st = el("style"); st.textContent = css; document.head.appendChild(st);
 
   /* a record sleeve shows its own tune: the melody as lights, the beat as a strip */
   function sleeve(code, title) {
     var s = JB.decode(code), h = JB.hue(code + title), dots = "";
     if (s) {
-      for (var r = 0; r < JB.ROWS; r++) for (var c = 0; c < JB.STEPS; c++) if (s.mel[r][c]) dots += '<circle cx="' + (8 + c * 5.33).toFixed(1) + '" cy="' + (14 + r * 7.5) + '" r="2.6" fill="hsl(' + ((h + r * 18) % 360) + ',90%,78%)"/>';
-      for (var d = 0; d < 3; d++) for (c = 0; c < JB.STEPS; c++) if (s.drum[d][c]) dots += '<rect x="' + (6.5 + c * 5.33).toFixed(1) + '" y="' + (78 + d * 4.5) + '" width="3.4" height="2.6" rx="1" fill="rgba(255,255,255,' + (0.75 - d * 0.18) + ')"/>';
+      for (var r = 0; r < JB.ROWS; r++) for (var c = 0; c < JB.STEPS; c++) if (s.mel[r][c]) dots += '<rect x="' + (6 + c * 5) + '" y="' + (12 + r * 7) + '" width="4" height="4" fill="hsl(' + ((h + r * 18) % 360) + ',90%,72%)"/>';
+      for (var d = 0; d < 3; d++) for (c = 0; c < JB.STEPS; c++) if (s.drum[d][c]) dots += '<rect x="' + (6 + c * 5) + '" y="' + (76 + d * 5) + '" width="4" height="3" fill="rgba(255,255,255,' + (0.75 - d * 0.18) + ')"/>';
     }
-    var mood = s ? s.mood : 0, pats = ['<circle cx="80" cy="16" r="9" fill="rgba(255,240,180,.35)"/>', '<path d="M70 8l-3 9M80 6l-3 9M90 10l-3 9" stroke="rgba(200,230,255,.4)" stroke-width="1.5"/>', '<ellipse cx="82" cy="17" rx="7" ry="9" fill="rgba(255,120,90,.4)"/>', '<path d="M86 10a8 8 0 1 0 4 12a6 6 0 1 1-4-12z" fill="rgba(255,240,200,.35)"/>'];
-    return '<svg viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="g' + h + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(' + h + ',55%,38%)"/><stop offset="1" stop-color="hsl(' + ((h + 40) % 360) + ',60%,22%)"/></linearGradient></defs><rect width="96" height="96" fill="url(#g' + h + ')"/>' + (pats[mood] || "") + dots + '<rect x="0" y="0" width="96" height="96" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="2"/></svg>';
+    var mood = s ? s.mood : 0, pats = ['<rect x="76" y="8" width="12" height="12" fill="rgba(255,240,180,.45)"/><rect x="72" y="12" width="20" height="4" fill="rgba(255,240,180,.3)"/>', '<rect x="70" y="6" width="2" height="6" fill="rgba(200,230,255,.5)"/><rect x="80" y="4" width="2" height="6" fill="rgba(200,230,255,.5)"/><rect x="88" y="8" width="2" height="6" fill="rgba(200,230,255,.5)"/>', '<rect x="78" y="8" width="10" height="14" fill="rgba(255,120,90,.5)"/><rect x="80" y="6" width="6" height="2" fill="rgba(255,220,120,.6)"/>', '<rect x="80" y="6" width="8" height="12" fill="rgba(255,240,200,.45)"/><rect x="84" y="8" width="6" height="8" fill="url(#g' + h + ')"/>'];
+    return '<svg viewBox="0 0 96 96" shape-rendering="crispEdges" aria-hidden="true"><defs><pattern id="g' + h + '" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="hsl(' + h + ',50%,32%)"/><rect width="2" height="2" fill="hsl(' + ((h + 40) % 360) + ',55%,26%)"/><rect x="2" y="2" width="2" height="2" fill="hsl(' + ((h + 40) % 360) + ',55%,26%)"/></pattern></defs><rect width="96" height="96" fill="url(#g' + h + ')"/>' + (pats[mood] || "") + dots + '<rect x="0" y="0" width="96" height="96" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="2"/></svg>';
   }
 
   var machines = [], venueMine = {}, recs = [];
@@ -75,17 +64,16 @@
 
   function mount(host, o) {
     o = o || {}; var venue = venueOf(o);
-    var m = el("div", "jbm off", '<div class="jbm-ring"></div><div class="jbm-tube l">' + "<i></i>".repeat(4) + '</div><div class="jbm-tube r">' + "<i></i>".repeat(4) + '</div>' +
-      '<div class="jbm-glass"><div class="jbm-disc"><b></b></div><div class="jbm-arm"></div></div>' +
+    var m = el("div", "jbm off", '<canvas class="jbm-px" width="80" height="62" aria-hidden="true"></canvas><div class="jbm-body">' +
       '<div class="jbm-card"><b>·</b><span></span><small></small></div>' +
-      '<div class="jbm-low"><button type="button" class="jbm-spk" aria-label="Listen" data-jb-ia="listen">🔇</button><canvas class="jbm-vu" width="200" height="48"></canvas><div class="jbm-slot" aria-hidden="true"></div></div>' +
-      '<div class="jbm-next" aria-live="polite"></div><div class="jbm-toast" role="status"></div>');
+      '<div class="jbm-low"><button type="button" class="jbm-spk" aria-label="Listen" data-jb-ia="listen">🔇</button><canvas class="jbm-vu" width="48" height="18"></canvas><div class="jbm-slot" aria-hidden="true"></div></div>' +
+      '<div class="jbm-next" aria-live="polite"></div><div class="jbm-toast" role="status"></div></div>');
     var shelf = el("div", "jbs"); shelf.setAttribute("role", "list");
     host.appendChild(m); if (o.shelf !== false) host.appendChild(shelf);
     var M = { el: m, shelf: shelf, venue: venue, sel: null };
     machines.push(M);
     m.querySelector(".jbm-spk").addEventListener("click", function () { JB.listen(!JB.listening()); paintAll(); fire(); });
-    drawVu(M);
+    drawVu(M); cabinet(M);
     paint(M, JB.state()); fillShelf(M);
     return M;
   }
@@ -95,10 +83,9 @@
     var m = M.el, p = s.now, on = JB.listening();
     m.classList.toggle("off", !on); m.classList.toggle("on", on);
     var spk = m.querySelector(".jbm-spk"); spk.textContent = on ? "🔊" : "🔇"; spk.setAttribute("aria-pressed", on ? "true" : "false");
-    var disc = m.querySelector(".jbm-disc"), arm = m.querySelector(".jbm-arm"), card = m.querySelector(".jbm-card");
+    var card = m.querySelector(".jbm-card");
     var key = p ? p.record_id + "@" + p.s : "";
-    disc.classList.toggle("spin", !!p); arm.classList.toggle("down", !!p);
-    if (p) m.style.setProperty("--h", JB.hue(p.song + p.title));
+    M.playing = !!p; if (p) M.h = JB.hue(p.song + p.title);
     if (M.key !== key) {
       M.key = key;
       card.querySelector("b").textContent = p ? p.title : "· · ·";
@@ -114,24 +101,64 @@
   JB.onChange(function () { paintAll(); });
 
   function drawVu(M) {
-    var c = M.el.querySelector(".jbm-vu"), g = c.getContext("2d"), data = null, t0 = performance.now();
-    (function loop() {
-      if (!document.body.contains(c)) { if (M.dead) return; }
-      var w = c.width, h = c.height, n = 14, a = JB.listening() ? JB.analyser() : null, p = JB.state().now;
+    var c = M.el.querySelector(".jbm-vu"), g = c.getContext("2d"), data = null, t0 = performance.now(), last = 0;
+    (function loop(now) {
+      if (M.dead) return; requestAnimationFrame(loop); if (now - last < 66) return; last = now;
+      var a = JB.listening() ? JB.analyser() : null, p = JB.state().now, n = 12, segs = 5;
       if (a && (!data || data.length !== a.frequencyBinCount)) data = new Uint8Array(a.frequencyBinCount);
       if (a) a.getByteFrequencyData(data);
-      g.clearRect(0, 0, w, h);
+      g.fillStyle = "#0d0705"; g.fillRect(0, 0, 48, 18);
       for (var i = 0; i < n; i++) {
-        var v = a ? data[Math.min(data.length - 1, Math.floor(Math.pow(i / n, 1.6) * data.length * 0.7) + 1)] / 255 : (p ? 0.25 + 0.2 * Math.sin((performance.now() - t0) / 300 + i) : 0.05);
-        var bw = (w - 16) / n, x = 8 + i * bw, segs = 7;
-        for (var k = 0; k < segs; k++) {
-          var lit = v * segs > k, y = h - 6 - k * ((h - 10) / segs);
-          g.fillStyle = lit ? (k > 5 ? "#ff6b5b" : k > 3 ? "#ffd27a" : "#7dffb0") : "rgba(255,255,255,.06)";
-          g.fillRect(x + 2, y - 3, bw - 4, 3.5);
-        }
+        var v = a ? data[Math.min(data.length - 1, Math.floor(Math.pow(i / n, 1.6) * data.length * 0.7) + 1)] / 255 : (p ? 0.3 + 0.25 * Math.sin((now - t0) / 260 + i * 1.3) : 0.04);
+        for (var k = 0; k < segs; k++) { g.fillStyle = v * segs > k ? (k > 3 ? "#ff5a4a" : k > 2 ? "#ffd27a" : "#5dff8a") : "#241612"; g.fillRect(1 + i * 4, 15 - k * 3, 3, 2); }
       }
-      requestAnimationFrame(loop);
-    })();
+    })(0);
+  }
+
+  /* the cabinet, drawn as pixel art at 80×62 and scaled up */
+  var RING = ["#ff5f6d", "#ffa94d", "#fff27a", "#7affc1", "#5fd4ff", "#8f7bff", "#ff5fd2", "#ff8fa0"];
+  function hsl(h, s, l) { return "hsl(" + h + "," + s + "%," + l + "%)"; }
+  function arch(W, H, top, y) { var r = top; if (y >= r) return W / 2; var d = (r - y) / r; return Math.round(W / 2 * Math.sqrt(Math.max(0, 1 - d * d))); }
+  function paintCab(g, W, H, f, on, playing, h, mini) {
+    g.clearRect(0, 0, W, H);
+    var cx = W / 2, top = Math.round(W * 0.38), ringW = mini ? 1 : 3, base = H - (mini ? 3 : 6);
+    for (var y = 0; y < H; y++) {
+      var half = arch(W, H, top, y); if (half <= 0) continue;
+      for (var x = cx - half; x < cx + half; x++) {
+        var edge = Math.min(x - (cx - half), cx + half - 1 - x), col;
+        var halfUp = y > 0 ? arch(W, H, top, y - 1) : 0, topEdge = y < ringW || halfUp < Math.abs(x + 0.5 - cx) + 0.5;
+        if (edge < ringW || topEdge) { var ci = Math.floor((x + y) / (mini ? 2 : 4) + (on ? f : f / 4)) % RING.length; col = on ? RING[ci] : (ci % 2 ? "#5a3a2a" : "#6a4a32"); }
+        else if (y >= base) col = (x + y) % 2 ? "#2a140b" : "#331a0e";
+        else col = (x * 3 + y * 7) % 11 === 0 ? "#6b3620" : "#7a3e22";
+        g.fillStyle = col; g.fillRect(x, y, 1, 1);
+      }
+    }
+    /* the glass and the record */
+    var gi = mini ? 3 : 8, gtop = mini ? 3 : 7, gb = Math.round(H * (mini ? 0.62 : 0.78));
+    for (y = gtop; y < gb; y++) { var gh = arch(W - gi * 2, H, top - gtop, y - gtop); if (gh <= 0) continue; g.fillStyle = y === gtop || gh < 2 ? "#c9a46a" : (y < gtop + 3 ? "#2b1f2e" : "#170f15"); g.fillRect(cx - gh, y, gh * 2, 1); g.fillStyle = "#c9a46a"; g.fillRect(cx - gh, y, 1, 1); g.fillRect(cx + gh - 1, y, 1, 1); }
+    g.fillStyle = "#c9a46a"; g.fillRect(cx - (W / 2 - gi), gb, W - gi * 2, 1);
+    var dx = cx, dy = Math.round(gb - (mini ? 4 : 13)), R = mini ? 3.5 : 12, th = playing ? f * 0.55 : 0.6;
+    for (y = -R; y <= R; y++) for (x = -R; x <= R; x++) {
+      var d = Math.sqrt(x * x + y * y); if (d > R) continue;
+      var an = Math.atan2(y, x), shine = Math.abs(((an - th) % Math.PI + Math.PI * 1.5) % Math.PI - Math.PI / 2) < 0.07 && d > R * 0.45;
+      g.fillStyle = d < R * 0.12 ? "#000" : d < R * 0.38 ? hsl(h, 75, d < R * 0.25 ? 62 : 50) : shine ? "#3c3c3c" : (Math.floor(d) % 2 ? "#141414" : "#202020");
+      g.fillRect(dx + x, dy + y, 1, 1);
+    }
+    if (!mini) { /* tone arm */
+      var px0 = cx + 26, py0 = gtop + 8, ex = playing ? cx + 10 : cx + 28, ey = playing ? dy - 4 : dy + 6, steps = 24;
+      g.fillStyle = "#d8d8d8"; for (var i = 0; i <= steps; i++) { var t = i / steps; g.fillRect(Math.round(px0 + (ex - px0) * t), Math.round(py0 + (ey - py0) * t), 2, 1); }
+      g.fillStyle = "#f2f2f2"; g.fillRect(px0 - 1, py0 - 1, 3, 3); g.fillStyle = "#aaa"; g.fillRect(ex - 1, ey, 3, 3);
+      /* bubble tubes */
+      [[5, 1], [W - 8, -1]].forEach(function (tb) { for (var yy = top + 2; yy < base - 2; yy++) { g.fillStyle = on ? "#d0904a" : "#7a5030"; g.fillRect(tb[0], yy, 3, 1); }
+        if (on) for (var b = 0; b < 3; b++) { var by = base - 3 - ((f * 1.5 + b * 9 + tb[0]) % (base - top - 5)); g.fillStyle = "#fff6d8"; g.fillRect(tb[0] + 1, Math.round(by), 1, 1); } });
+      /* the speaker grille under the glass */
+      for (y = gb + 2; y < base - 1; y += 2) for (x = cx - 18; x < cx + 18; x += 2) { g.fillStyle = "#3a1c0e"; g.fillRect(x, y, 1, 1); }
+    }
+  }
+  function cabinet(M) {
+    var c = M.el.querySelector(".jbm-px"), g = c.getContext("2d"), f = 0, last = 0;
+    (function loop(now) { if (M.dead) return; requestAnimationFrame(loop); if (now - last < 83) return; last = now; f++;
+      paintCab(g, c.width, c.height, f, JB.listening(), !!M.playing, M.h || 30, false); })(0);
   }
 
   /* ---------------- the record shelf ---------------- */
@@ -180,15 +207,8 @@
 
   /* ---------------- the jukebox in a corner of a venue ---------------- */
   var corners = [];
-  function cornerSvg() {
-    return '<svg viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="jbcw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a3e22"/><stop offset="1" stop-color="#3a1d10"/></linearGradient>' +
-      '<linearGradient id="jbcg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5f6d"/><stop offset=".3" stop-color="#ffc371"/><stop offset=".6" stop-color="#5fd4ff"/><stop offset="1" stop-color="#b77bff"/></linearGradient></defs>' +
-      '<path d="M4 70V28a24 24 0 0 1 48 0v42z" fill="url(#jbcw)"/><path class="glow" d="M8 68V28a20 20 0 0 1 40 0v40" fill="none" stroke="url(#jbcg)" stroke-width="4"/>' +
-      '<path d="M15 30a13 13 0 0 1 26 0v8H15z" fill="#1a1016" stroke="#c9a46a" stroke-width="1.5"/><circle cx="28" cy="33" r="6" fill="#111"/><circle cx="28" cy="33" r="2.2" fill="#ffb347"/>' +
-      '<rect x="15" y="42" width="26" height="8" rx="2" fill="#f6ead0"/><circle cx="28" cy="59" r="6.5" fill="#2a1a10" stroke="#c9a46a" stroke-width="1.2"/><circle cx="28" cy="59" r="3" fill="none" stroke="#6a4a2a"/></svg><span class="note">♪</span>';
-  }
   function corner(o) {
-    o = o || {}; var venue = venueOf(o), b = el("button", "jbc quiet", cornerSvg());
+    o = o || {}; var venue = venueOf(o), b = el("button", "jbc quiet", '<canvas width="20" height="26" aria-hidden="true"></canvas><span class="note">♪</span>');
     b.type = "button"; b.setAttribute("aria-label", "Jukebox"); b.setAttribute("data-jb-ia", "jukebox");
     var pos = o.pos || { right: "14px", bottom: "max(84px, calc(env(safe-area-inset-bottom) + 84px))" };
     for (var k in pos) b.style[k] = pos[k];
@@ -196,6 +216,8 @@
     var C = { el: b, venue: venue, o: o }; corners.push(C);
     b.addEventListener("click", function () { JB.unlock(); open(C); });
     JB.watch(); paintCorner(C);
+    var cv = b.querySelector("canvas"), cg = cv.getContext("2d"), f = 0, last = 0;
+    (function loop(now) { requestAnimationFrame(loop); if (now - last < 120) return; last = now; f++; var st = JB.state(); paintCab(cg, 20, 26, f, JB.listening() || !!(st.now && st.now.queued), !!st.now, st.now ? JB.hue(st.now.song + st.now.title) : 30, true); })(0);
     return C;
   }
   function paintCorner(C) { var s = JB.state(), live = !!(s.now && (JB.listening() || s.now.queued)); C.el.classList.toggle("live", live); C.el.classList.toggle("quiet", !JB.listening()); }
