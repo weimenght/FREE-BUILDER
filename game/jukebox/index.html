@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full">/* FBL · FREE//BUILDER language kit (inlined into every page's <head>).
+   One preference for the whole suite: EN · 简体中文 · 繁體中文 · Español · Català.
+   - remembered on this device (localStorage), and carried between wei-meng.org and freebuilder.net
+     by adding ?fbl=<lang> to links between the two sites (browsers keep each site's storage separate)
+   - opens a language menu from the page's own language button
+   - games keep their own pickers; their choice is read back into the shared preference */
+(function () {
+  "use strict";
+  if (window.FBL) return;
+  var LANGS = ["en", "zh", "zh-Hant", "es", "ca"];
+  var NAMES = { "en": "English", "zh": "简体中文", "zh-Hant": "繁體中文", "es": "Español", "ca": "Català" };
+  var SHORT = { "en": "EN", "zh": "简中", "zh-Hant": "繁中", "es": "ES", "ca": "CA" };
+  var KEYS = ["wm_preferred_lang", "wm_cases_lang"];
+  var SITES = /(^|\.)(wei-meng\.org|freebuilder\.net)$/i;
+  var GAMES = {   /* game storage key -> [shared -> game code, game code -> shared] */
+    "weis-lang": [{ "en": "en", "zh": "zh", "zh-Hant": "tw", "es": "es", "ca": "ca" }, { "en": "en", "zh": "zh", "tw": "zh-Hant", "yue": "zh-Hant", "es": "es", "ca": "ca" }],
+    "handoff_lang": [{ "en": "en", "zh": "zh-CN", "zh-Hant": "zh-TW", "es": "es", "ca": "ca" }, { "en": "en", "zh-CN": "zh", "zh-TW": "zh-Hant", "es": "es", "ca": "ca" }]
+  };
+  var mode = (document.currentScript && document.currentScript.getAttribute("data-mode")) || "full";
+
+  function norm(x) {
+    x = String(x || "").toLowerCase();
+    if (!x) return null;
+    if (x === "zh-hant" || /^zh-(tw|hk|mo)/.test(x) || x === "tw" || x === "yue") return "zh-Hant";
+    if (x.indexOf("zh") === 0) return "zh";
+    if (x.indexOf("ca") === 0) return "ca";
+    if (x.indexOf("es") === 0) return "es";
+    if (x.indexOf("en") === 0) return "en";
+    return null;
+  }
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  function get() { for (var i = 0; i < KEYS.length; i++) { var n = norm(ls(KEYS[i])); if (n) return n; } return null; }
+  function set(l) { l = norm(l); if (!l) return; KEYS.forEach(function (k) { ls(k, l); }); for (var g in GAMES) if (ls(g) != null || mode === "game") ls(g, GAMES[g][0][l]); }
+
+  /* 1 · a preference handed over in the URL (?fbl=ca) wins, then it's removed from the address bar */
+  try {
+    var u = new URL(location.href), p = norm(u.searchParams.get("fbl"));
+    if (p) { set(p); u.searchParams.delete("fbl"); history.replaceState(history.state, "", u.pathname + u.search + u.hash); }
+  } catch (e) {}
+  /* 2 · first visit: the browser's own languages */
+  if (!get()) {
+    var nl = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"]), pick = "en";
+    for (var i = 0; i < nl.length; i++) { var n = norm(nl[i]); if (n) { pick = n; break; } }
+    set(pick);
+  }
+  /* 3 · games: shared -> game key now; game key -> shared when the page is left */
+  if (mode === "game") {
+    var cur0 = get(); for (var g in GAMES) ls(g, GAMES[g][0][cur0]);
+    var readBack = function () { for (var g in GAMES) { var v = ls(g); if (v && GAMES[g][1][v]) { KEYS.forEach(function (k) { ls(k, GAMES[g][1][v]); }); } } };
+    addEventListener("pagehide", readBack); document.addEventListener("visibilitychange", function () { if (document.hidden) readBack(); });
+  }
+  /* 4 · carry the preference across the two sites */
+  function decorate(e) {
+    var a = e.target && e.target.closest && e.target.closest("a[href]"); if (!a) return;
+    try { if (!/^https?:/i.test(a.getAttribute("href") || "")) return; var t = new URL(a.href, location.href); if (t.host === location.host || !SITES.test(t.hostname)) return; var top0 = ""; try { top0 = window.top.location.host; } catch (x) {} if (t.host === top0) return;
+      if (mode === "game") { for (var g in GAMES) { var v = ls(g); if (v && GAMES[g][1][v]) KEYS.forEach(function (k) { ls(k, GAMES[g][1][v]); }); } }
+      t.searchParams.set("fbl", get() || "en"); a.href = t.toString(); } catch (err) {}
+  }
+  document.addEventListener("click", decorate, true); document.addEventListener("auxclick", decorate, true); document.addEventListener("contextmenu", decorate, true);
+
+  window.FBL = { LANGS: LANGS, NAMES: NAMES, SHORT: SHORT, get: get, set: set, norm: norm };
+  if (mode !== "full") return;
+
+  /* 5 · the menu, opened from the page's own language button */
+  var SEL = "#btn-lang,#lang-btn,#lang-toggle-btn,[onclick*='cycleLanguage'],#w-lang,#sheet-lang,[data-fbl-btn],button[aria-label='Language'],button[title='EN / 中文 / ES']";
+  var LBL = "#lang-lbl,#lang-btn-label,#lang-label,#lang-current,[data-fbl-label]";
+  var syn = false, menu = null, opener = null;
+  function current() { return norm(window.FBL_GET ? window.FBL_GET() : (typeof window.currentLang === "string" ? window.currentLang : "")) || get() || norm(document.documentElement.lang) || "en"; }
+  function paintLabels() { var l = current(); document.querySelectorAll(LBL).forEach(function (el) { if (el.textContent !== SHORT[l]) el.textContent = SHORT[l]; }); document.querySelectorAll(SEL).forEach(function (b) { b.setAttribute("aria-haspopup", "menu"); b.setAttribute("aria-label", "Language: " + NAMES[l]); b.classList.add("fbl-has"); }); }
+  function close(refocus) { if (!menu) return; menu.remove(); menu = null; document.removeEventListener("keydown", onKey, true); if (opener) { opener.setAttribute("aria-expanded", "false"); if (refocus) opener.focus(); } }
+  function onKey(e) {
+    if (!menu) return; var items = [].slice.call(menu.querySelectorAll("button")), i = items.indexOf(document.activeElement);
+    if (e.key === "Escape") { e.preventDefault(); close(true); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+    else if (e.key === "Tab") close(false);
+  }
+  function open(btn) {
+    if (menu) { close(true); return; }
+    opener = btn; var l = current();
+    menu = document.createElement("div"); menu.className = "fbl-menu"; menu.setAttribute("role", "menu"); menu.setAttribute("aria-label", "Language");
+    LANGS.forEach(function (c) {
+      var b = document.createElement("button"); b.type = "button"; b.setAttribute("role", "menuitemradio"); b.setAttribute("aria-checked", String(c === l)); b.setAttribute("lang", c);
+      b.innerHTML = "<span>" + NAMES[c] + "</span><small>" + SHORT[c] + (c === l ? " ✓" : "") + "</small>";
+      b.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); choose(c); });
+      menu.appendChild(b);
+    });
+    document.body.appendChild(menu);
+    var r = btn.getBoundingClientRect(), w = menu.offsetWidth, h = menu.offsetHeight;
+    var left = Math.min(Math.max(8, r.right - w), innerWidth - w - 8), top = r.bottom + 6;
+    if (top + h > innerHeight - 8) top = Math.max(8, r.top - h - 6);
+    menu.style.left = left + "px"; menu.style.top = top + "px";
+    btn.setAttribute("aria-expanded", "true");
+    var on = menu.querySelector('[aria-checked="true"]') || menu.querySelector("button"); on.focus({ preventScroll: true });
+    document.addEventListener("keydown", onKey, true);
+  }
+  function choose(l) {
+    var btn = opener; close(true);
+    var setter = window.FBL_SET || (typeof window.setLanguage === "function" ? window.setLanguage : null);
+    if (setter) { setter(l); set(l); paintLabels(); return; }
+    /* pages that only know "next language": step their own button until it lands on l */
+    var n = 0; (function step() {
+      if (current() === l || n++ > LANGS.length) { set(l); paintLabels(); return; }
+      syn = true; try { (document.querySelector(SEL) || btn).click(); } finally { syn = false; }
+      setTimeout(step, 40);
+    })();
+  }
+  document.addEventListener("click", function (e) {
+    if (syn) return;
+    if (menu && !menu.contains(e.target)) { var b0 = e.target.closest && e.target.closest(SEL); close(false); if (b0 === opener) { e.preventDefault(); e.stopImmediatePropagation(); return; } }
+    var b = e.target.closest && e.target.closest(SEL); if (!b) return;
+    e.preventDefault(); e.stopImmediatePropagation(); open(b);
+  }, true);
+  addEventListener("resize", function () { close(false); });
+  var css = ".fbl-menu{position:fixed;z-index:2147483000;min-width:11rem;padding:6px;border-radius:16px;background:#fff;color:#17171A;border:1px solid #E5E2DA;box-shadow:0 18px 40px -18px rgba(23,23,26,.45);font:500 14px/1.2 'Plus Jakarta Sans',system-ui,-apple-system,'PingFang SC','PingFang TC','Microsoft YaHei',sans-serif}" +
+    ".fbl-menu button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:14px;padding:10px 12px;border:0;border-radius:10px;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}" +
+    ".fbl-menu button:hover,.fbl-menu button:focus-visible{background:#F3F1EB;outline:none}.fbl-menu button[aria-checked='true']{font-weight:700}" +
+    ".fbl-menu small{font:400 11px/1 'Space Mono',ui-monospace,monospace;color:#6B6A70}.fbl-menu button[aria-checked='true'] small{color:#C2412D}" +
+    ".fbl-has{cursor:pointer}.fbl-has::after{content:'';display:inline-block;width:6px;height:6px;margin-left:5px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);opacity:.6}" +
+    "@media (prefers-color-scheme:dark){.fbl-menu{background:#1D1D21;color:#ECEBE6;border-color:#303036}.fbl-menu button:hover,.fbl-menu button:focus-visible{background:#2B2B31}.fbl-menu small{color:#A8A7AD}.fbl-menu button[aria-checked='true'] small{color:#F28C76}}";
+  var st = document.createElement("style"); st.id = "fbl-css"; st.textContent = css; (document.head || document.documentElement).appendChild(st);
+  function boot() { paintLabels(); try { new MutationObserver(function () { paintLabels(); }).observe(document.body, { childList: true, subtree: true, characterData: true }); } catch (e) {} }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+
+/* FBC · FREE//BUILDER data & consent kit (inlined after FBL on every page of both sites).
+   One source for every notice about data. Nothing a visitor types leaves the device until they say yes.
+   - DATA lists every feature that sends something off the device: what, to whom, who sees it.
+   - Requests to those services wait for the visitor's answer; "no" means the page keeps working on this device.
+   - Any other page that tries to send data to another site gets the same question, just in time.
+   - The choice is remembered on this device; the privacy page (/privacy/) lists everything and lets you change it.
+   To add a new feature: add one entry to DATA (and its hosts to HOSTS if new). */
+(function () {
+  "use strict";
+  if (window.FBC) return;
+  var STORE = "fb_consent", V = 1;
+  var HOSTS = /(^|\.)(supabase\.co|workers\.dev|formspree\.io)$|^room\.wei-meng\.org$/i;
+  var PRIVACY = "/privacy/";
+
+  /* ---------- words (EN · 简中 · 繁中 · ES · CA) ---------- */
+  var W = {
+    title: ["Before anything leaves your device", "数据离开你的设备之前", "資料離開你的裝置之前", "Antes de que nada salga de tu dispositivo", "Abans que res surti del teu dispositiu"],
+    what: ["What is sent", "会发送什么", "會傳送什麼", "Qué se envía", "Què s'envia"],
+    to: ["Where it goes", "发送到哪里", "傳送到哪裡", "Adónde va", "On va"],
+    who: ["Who sees it", "谁能看到", "誰能看到", "Quién lo ve", "Qui ho veu"],
+    no: ["If you say no", "如果你选择不", "如果你選擇不", "Si dices que no", "Si dius que no"],
+    promise: ["Never sold, never used for ads, no tracking or analytics. To have your data removed, write to Wei through the contact form.",
+      "绝不出售，不用于广告，没有追踪或统计分析。如需删除你的数据，请通过联系表单告诉 Wei。",
+      "絕不出售，不用於廣告，沒有追蹤或統計分析。如需刪除你的資料，請透過聯絡表單告訴 Wei。",
+      "Nunca se vende ni se usa para publicidad; sin rastreo ni analítica. Para borrar tus datos, escribe a Wei desde el formulario de contacto.",
+      "Mai no es ven ni s'usa per a publicitat; sense seguiment ni analítica. Per esborrar les teves dades, escriu a en Wei des del formulari de contacte."],
+    yes: ["Allow", "允许", "允許", "Permitir", "Permetre"],
+    keep: ["Keep it on this device", "只留在本设备", "只留在本裝置", "Dejarlo en este dispositivo", "Deixar-ho en aquest dispositiu"],
+    more: ["Privacy & data", "隐私与数据", "隱私與資料", "Privacidad y datos", "Privacitat i dades"],
+    generic: ["What you entered on this page.", "你在本页输入的内容。", "你在本頁輸入的內容。", "Lo que has escrito en esta página.", "El que has escrit en aquesta pàgina."],
+    genericWho: ["The service that runs this feature.", "运行该功能的服务。", "執行該功能的服務。", "El servicio que hace funcionar esta función.", "El servei que fa funcionar aquesta funció."],
+    stillWorks: ["Everything still works, saved only on this device.", "一切照常运行，只保存在本设备。", "一切照常運作，只儲存在本裝置。", "Todo sigue funcionando, guardado solo en este dispositivo.", "Tot continua funcionant, desat només en aquest dispositiu."],
+    allowed: ["Allowed", "已允许", "已允許", "Permitido", "Permès"],
+    kept: ["Kept on this device", "只留在本设备", "只留在本裝置", "En este dispositivo", "En aquest dispositiu"],
+    notAsked: ["Not asked yet", "尚未询问", "尚未詢問", "Aún no se ha preguntado", "Encara no s'ha preguntat"],
+    pTitle: ["Privacy & data", "隐私与数据", "隱私與資料", "Privacidad y datos", "Privacitat i dades"],
+    pLead: ["Most of FREE//BUILDER never sends anything anywhere: the demos run on your phone and forget when you close them. A few features need a server. Each one asks you first, and here is the full list.",
+      "FREE//BUILDER 的大部分内容不会把任何东西发送出去：练习在你的手机上运行，关闭即忘记。少数功能需要服务器，每一个都会先征求你的同意。以下是完整清单。",
+      "FREE//BUILDER 的大部分內容不會把任何東西傳送出去：練習在你的手機上執行，關閉即忘記。少數功能需要伺服器，每一個都會先徵求你的同意。以下是完整清單。",
+      "Casi todo FREE//BUILDER no envía nada a ningún sitio: las demos funcionan en tu móvil y lo olvidan al cerrarlas. Algunas funciones necesitan un servidor. Cada una te pregunta antes; aquí tienes la lista completa.",
+      "Gairebé tot FREE//BUILDER no envia res enlloc: les demos funcionen al teu mòbil i ho obliden en tancar-les. Algunes funcions necessiten un servidor. Cadascuna t'ho pregunta abans; aquí tens la llista completa."],
+    pDevice: ["Saved on this device only", "只保存在本设备", "只儲存在本裝置", "Solo en este dispositivo", "Només en aquest dispositiu"],
+    pDeviceText: ["Your language, these choices, and your progress in the demos and games are kept in this browser. When you follow a link between wei-meng.org and freebuilder.net, only your language travels with it, in the address.",
+      "你的语言、本页的选择，以及练习和游戏的进度保存在本浏览器中。在 wei-meng.org 与 freebuilder.net 之间跳转时，只有语言设置会通过网址带过去。",
+      "你的語言、本頁的選擇，以及練習和遊戲的進度儲存在本瀏覽器中。在 wei-meng.org 與 freebuilder.net 之間跳轉時，只有語言設定會透過網址帶過去。",
+      "Tu idioma, estas elecciones y tu progreso en las demos y los juegos se guardan en este navegador. Al pasar entre wei-meng.org y freebuilder.net, solo tu idioma viaja con el enlace, en la dirección.",
+      "El teu idioma, aquestes eleccions i el teu progrés a les demos i els jocs es desen en aquest navegador. En passar entre wei-meng.org i freebuilder.net, només el teu idioma viatja amb l'enllaç, a l'adreça."],
+    pLoads: ["Loaded from other services", "从其他服务加载", "從其他服務載入", "Cargado desde otros servicios", "Carregat des d'altres serveis"],
+    pLoadsText: ["Some games load fonts from Google Fonts and code from public CDNs, and the bar shows Beijing's weather from Open-Meteo. These services see your IP address, like any website you visit, but receive nothing you type.",
+      "部分游戏会从 Google Fonts 加载字体、从公共 CDN 加载代码，酒吧会从 Open-Meteo 获取北京天气。这些服务和任何网站一样能看到你的 IP 地址，但收不到你输入的任何内容。",
+      "部分遊戲會從 Google Fonts 載入字型、從公共 CDN 載入程式碼，酒吧會從 Open-Meteo 取得北京天氣。這些服務和任何網站一樣能看到你的 IP 位址，但收不到你輸入的任何內容。",
+      "Algunos juegos cargan fuentes de Google Fonts y código de CDN públicos, y el bar muestra el tiempo de Pekín con Open-Meteo. Estos servicios ven tu dirección IP, como cualquier web que visitas, pero no reciben nada de lo que escribes.",
+      "Alguns jocs carreguen fonts de Google Fonts i codi de CDN públics, i el bar mostra el temps de Pequín amb Open-Meteo. Aquests serveis veuen la teva adreça IP, com qualsevol web que visites, però no reben res del que escrius."],
+    pFeatures: ["Features that send data", "会发送数据的功能", "會傳送資料的功能", "Funciones que envían datos", "Funcions que envien dades"],
+    pNote: ["Choices are remembered per site: this page shows the ones for this site.", "选择按网站分别记住：本页显示的是本网站的选择。", "選擇按網站分別記住：本頁顯示的是本網站的選擇。", "Las elecciones se recuerdan por sitio: aquí ves las de este sitio.", "Les eleccions es recorden per lloc: aquí veus les d'aquest lloc."],
+    back: ["Back", "返回", "返回", "Volver", "Tornar"],
+    fPrivacy: ["Privacy", "隐私", "隱私", "Privacidad", "Privacitat"],
+    fMade: ["Made with AI & ♥", "用 AI 与 ♥ 制作", "用 AI 與 ♥ 製作", "Hecho con IA y ♥", "Fet amb IA i ♥"],
+    fBy: ["A practice by Wei", "Wei的独立工作室", "Wei的獨立工作室", "Una práctica de Wei", "Una pràctica de Wei"],
+    fHome: ["FREE//BUILDER home", "FREE//BUILDER 首页", "FREE//BUILDER 首頁", "Inicio de FREE//BUILDER", "Inici de FREE//BUILDER"]
+  };
+  var TO = {
+    supabase: ["Supabase, a database hosted in Ireland (EU)", "Supabase 数据库，服务器位于爱尔兰（欧盟）", "Supabase 資料庫，伺服器位於愛爾蘭（歐盟）", "Supabase, una base de datos alojada en Irlanda (UE)", "Supabase, una base de dades allotjada a Irlanda (UE)"],
+    cloudflare: ["Wei's own small server on Cloudflare", "Wei 在 Cloudflare 上的小型服务器", "Wei 在 Cloudflare 上的小型伺服器", "El pequeño servidor de Wei en Cloudflare", "El petit servidor d'en Wei a Cloudflare"],
+    relay: ["Wei's relay on Cloudflare, then the room's screen", "Wei 在 Cloudflare 上的中转服务器，再到房间的大屏", "Wei 在 Cloudflare 上的中轉伺服器，再到房間的大螢幕", "El relé de Wei en Cloudflare y de ahí a la pantalla de la sala", "El relé d'en Wei a Cloudflare i d'allà a la pantalla de la sala"],
+    formspree: ["Formspree, which emails it to Wei", "Formspree，再以电子邮件转给 Wei", "Formspree，再以電子郵件轉給 Wei", "Formspree, que se lo envía a Wei por correo", "Formspree, que l'envia a en Wei per correu"]
+  };
+  /* every feature that sends something off the device */
+  var DATA = [
+    { k: "bar", site: "freebuilder.net", offline: true, name: "Wei's Bar", m: /freebuilder\.net\/game\/bar\//, ask: "load", to: "supabase",
+      what: ["The name you give at the door and what you leave in the bar: notes, drawings, cocktails, tracks, arcade scores, the records you play on the jukebox, plus a simple log of what you do there.", "你在门口留下的名字，以及你在酒吧留下的东西：便条、涂鸦、鸡尾酒、曲子、街机分数、你在点唱机上点的唱片，还有你在酒吧里做了什么的简单记录。", "你在門口留下的名字，以及你在酒吧留下的東西：便條、塗鴉、雞尾酒、曲子、街機分數、你在點唱機上點的唱片，還有你在酒吧裡做了什麼的簡單紀錄。", "El nombre que das en la puerta y lo que dejas en el bar: notas, dibujos, cócteles, temas, puntuaciones arcade, los discos que pones en la gramola, más un registro sencillo de lo que haces allí.", "El nom que dones a la porta i el que deixes al bar: notes, dibuixos, còctels, temes, puntuacions arcade, els discos que poses a la gramola, més un registre senzill del que hi fas."],
+      who: ["Other visitors see your name next to what you leave. The log is only for Wei.", "其他访客会在你留下的东西旁看到你的名字。活动记录只有 Wei 能看。", "其他訪客會在你留下的東西旁看到你的名字。活動紀錄只有 Wei 能看。", "Otros visitantes ven tu nombre junto a lo que dejas. El registro solo lo ve Wei.", "Altres visitants veuen el teu nom al costat del que deixes. El registre només el veu en Wei."] },
+    { k: "handoff", name: "Handoff", m: /(game\/love\/|\/bcnpek\/)/, ask: "load", to: "supabase",
+      what: ["Your email and password to sign in, your name and city, and the messages and voice notes you send your partner. Your city is also sent to Open-Meteo to show the weather.", "用于登录的邮箱和密码、你的名字和城市，以及你发给伴侣的消息和语音。你的城市也会发送给 Open-Meteo 以显示天气。", "用於登入的電郵和密碼、你的名字和城市，以及你傳給伴侶的訊息和語音。你的城市也會傳送給 Open-Meteo 以顯示天氣。", "Tu correo y contraseña para entrar, tu nombre y ciudad, y los mensajes y notas de voz que envías a tu pareja. Tu ciudad también se envía a Open-Meteo para mostrar el tiempo.", "El teu correu i contrasenya per entrar, el teu nom i ciutat, i els missatges i notes de veu que envies a la teva parella. La teva ciutat també s'envia a Open-Meteo per mostrar el temps."],
+      who: ["Only you and your partner.", "只有你和你的伴侣。", "只有你和你的伴侶。", "Solo tú y tu pareja.", "Només tu i la teva parella."],
+      ifNo: ["Signing in needs a server, so the app can't connect.", "登录需要服务器，所以应用无法连接。", "登入需要伺服器，所以應用程式無法連線。", "Entrar necesita un servidor, así que la app no podrá conectarse.", "Entrar necessita un servidor, així que l'app no es podrà connectar."] },
+    { k: "climb", site: "freebuilder.net", name: "Climb Master", m: /freebuilder\.net\/game\/climb\//, ask: "use", to: "cloudflare",
+      what: ["Your player name and score when a climb ends.", "攀登结束时你的玩家名和分数。", "攀登結束時你的玩家名稱和分數。", "Tu nombre de jugador y tu puntuación al acabar una escalada.", "El teu nom de jugador i la teva puntuació en acabar una escalada."],
+      who: ["Everyone, on the leaderboard.", "所有人，在排行榜上。", "所有人，在排行榜上。", "Todo el mundo, en la clasificación.", "Tothom, a la classificació."] },
+    { k: "words", site: "freebuilder.net", name: "Vocab practice", m: /freebuilder\.net\/language_learning\//, ask: "load", to: "cloudflare",
+      what: ["The words you add and the verb mistakes you make, so your practice carries on across devices.", "你添加的单词和动词错误，让练习可以在不同设备上继续。", "你新增的單字和動詞錯誤，讓練習可以在不同裝置上繼續。", "Las palabras que añades y los errores de verbos, para que tu práctica siga en otros dispositivos.", "Les paraules que afegeixes i els errors de verbs, perquè la pràctica continuï en altres dispositius."],
+      who: ["Used only by this tool.", "只供这个工具使用。", "只供這個工具使用。", "Solo lo usa esta herramienta.", "Només ho fa servir aquesta eina."] },
+    { k: "books", site: "freebuilder.net", name: "The Dog-Eared Corner", m: /freebuilder\.net\/game\/books\//, ask: "use", readFree: true, to: "supabase",
+      what: ["When you tuck in a book: its title, your note and a pen name you choose. When you ask for a book: a pen name, how the owner can reach you, and an optional message. Your phone keeps a private key; we store only a one-way fingerprint of it. When you play a record on the jukebox: which one and your nickname. No account, no email needed.", "放入一本书时：书名、你的便条和你自选的笔名。想要一本书时：笔名、主人联系你的方式和可选的留言。你的手机保存一把私人钥匙，我们只保存它的单向指纹。在点唱机上点歌时：哪张唱片和你的昵称。不需要账号，也不需要邮箱。", "放入一本書時：書名、你的便條和你自選的筆名。想要一本書時：筆名、主人聯絡你的方式和可選的留言。你的手機保存一把私人鑰匙，我們只儲存它的單向指紋。在點唱機上點歌時：哪張唱片和你的暱稱。不需要帳號，也不需要電郵。", "Al dejar un libro: el título, tu nota y un seudónimo que eliges. Al pedir uno: un seudónimo, cómo puede contactarte el dueño y un mensaje opcional. Tu móvil guarda una clave privada; solo guardamos una huella irreversible. Al poner un disco en la gramola: cuál y tu apodo. Sin cuenta ni correo.", "En deixar un llibre: el títol, la teva nota i un pseudònim que tries. En demanar-ne un: un pseudònim, com et pot contactar el propietari i un missatge opcional. El teu mòbil guarda una clau privada; només en desem una empremta irreversible. En posar un disc a la gramola: quin i el teu sobrenom. Sense compte ni correu."],
+      who: ["Everyone sees the shelves: titles, notes and pen names. Only the book's current owner sees how to reach you, and that line is erased 30 days after the handover. You can delete everything with “Forget me”.", "所有人都能看到书架：书名、便条和笔名。只有这本书现在的主人能看到你的联系方式，交接后 30 天删除。你可以用“忘记我”删除全部内容。", "所有人都能看到書架：書名、便條和筆名。只有這本書現在的主人能看到你的聯絡方式，交接後 30 天刪除。你可以用「忘記我」刪除全部內容。", "Todos ven las estanterías: títulos, notas y seudónimos. Solo el dueño actual del libro ve cómo contactarte, y se borra 30 días después de la entrega. Puedes borrarlo todo con «Olvídame».", "Tothom veu les prestatgeries: títols, notes i pseudònims. Només el propietari actual del llibre veu com contactar-te, i s'esborra 30 dies després del lliurament. Ho pots esborrar tot amb «Oblida'm»."],
+      ifNo: ["You can still wander the house and read every note.", "你仍然可以在屋里随意逛，读每一张便条。", "你仍然可以在屋裡隨意逛，讀每一張便條。", "Puedes seguir paseando por la casa y leer cada nota.", "Pots continuar passejant per la casa i llegir cada nota."] },
+    { k: "kintsugi", site: "freebuilder.net", name: "Kintsugi Studio · the Book", m: /freebuilder\.net\/game\/kintsugi\//, ask: "use", readFree: true, to: "supabase",
+      what: ["When you add a piece to the book: a picture of your mended piece, its title, and the name you sign it with. Your device keeps a private key; we store only a one-way fingerprint of it, so you can take your page out again.", "当你把作品放进书里：一张修好器物的图片、它的名字，以及你的署名。你的设备保存一把私人钥匙，我们只存它的单向指纹，所以你之后还能把自己那页撤下。", "當你把作品放進書裡：一張修好器物的圖片、它的名字，以及你的署名。你的裝置保存一把私人鑰匙，我們只存它的單向指紋，所以你之後還能把自己那頁撤下。", "Cuando añades una pieza al libro: una imagen de tu pieza reparada, su título y el nombre con que la firmas. Tu dispositivo guarda una llave privada; solo guardamos una huella de un solo sentido, así puedes retirar tu página.", "Quan afegeixes una peça al llibre: una imatge de la peça adobada, el títol i el nom amb què la signes. El teu dispositiu guarda una clau privada; només en guardem una empremta d'un sol sentit, així pots retirar la teva pàgina."],
+      who: ["Everyone who opens the book can see the pages. Only you can take yours out (the × on your page).", "所有打开这本书的人都能看到这些页面。只有你能撤下自己的那页（页面上的 ×）。", "所有打開這本書的人都能看到這些頁面。只有你能撤下自己的那頁（頁面上的 ×）。", "Cualquiera que abra el libro ve las páginas. Solo tú puedes retirar la tuya (la × de tu página).", "Qualsevol que obri el llibre veu les pàgines. Només tu pots retirar la teva (la × de la teva pàgina)."],
+      ifNo: ["You can still mend, keep pieces on your own shelf and leaf through the book.", "你仍然可以修复器物、把作品留在自己的架子上，也可以翻看这本书。", "你仍然可以修復器物、把作品留在自己的架子上，也可以翻看這本書。", "Puedes seguir reparando, guardar piezas en tu estante y hojear el libro.", "Pots continuar adobant, guardar peces al teu prestatge i fullejar el llibre."] },
+    { k: "jukebox", site: "freebuilder.net", name: "Jukebox", m: /freebuilder\.net\/game\/jukebox\//, ask: "use", readFree: true, to: "supabase",
+      what: ["When you press a record: its tune (as a short code), its title and the name you sign it with. When you drop a coin: which record, where you are (studio, bar or book corner) and your nickname. Your device keeps a private key; we store only a one-way fingerprint of it, so you can take your records out again.", "压唱片时：曲子（一段短代码）、歌名和你的署名。投币时：哪张唱片、你在哪里（录音室、酒吧或书角）以及你的昵称。你的设备保存一把私人钥匙，我们只存它的单向指纹，所以你之后还能把自己的唱片取出来。", "壓唱片時：曲子（一段短代碼）、歌名和你的署名。投幣時：哪張唱片、你在哪裡（錄音室、酒吧或書角）以及你的暱稱。你的裝置保存一把私人鑰匙，我們只存它的單向指紋，所以你之後還能把自己的唱片取出來。", "Al grabar un disco: su melodía (un código corto), el título y el nombre con que lo firmas. Al echar una moneda: qué disco, dónde estás (estudio, bar o rincón de libros) y tu apodo. Tu dispositivo guarda una llave privada; solo guardamos una huella de un solo sentido, así puedes retirar tus discos.", "En gravar un disc: la melodia (un codi curt), el títol i el nom amb què el signes. En tirar una moneda: quin disc, on ets (estudi, bar o racó de llibres) i el teu sobrenom. El teu dispositiu guarda una clau privada; només en guardem una empremta d'un sol sentit, així pots retirar els teus discos."],
+      who: ["Everyone who visits the jukebox sees and hears the records, with the names on them, and sees who put on the song playing now. Only you can take your records out (the × on your sleeve).", "所有来到点唱机的人都能看到、听到这些唱片和上面的名字，也能看到现在这首是谁点的。只有你能取出自己的唱片（封套上的 ×）。", "所有來到點唱機的人都能看到、聽到這些唱片和上面的名字，也能看到現在這首是誰點的。只有你能取出自己的唱片（封套上的 ×）。", "Quien visite la gramola ve y escucha los discos, con sus nombres, y ve quién puso la canción que suena. Solo tú puedes retirar los tuyos (la × de tu funda).", "Qui visiti la gramola veu i escolta els discos, amb els noms, i veu qui ha posat la cançó que sona. Només tu pots retirar els teus (la × de la teva funda)."],
+      ifNo: ["You can still make tunes and listen to the jukebox; pressing and playing records needs a yes.", "你仍然可以作曲、听点唱机；压唱片和投币需要你同意。", "你仍然可以作曲、聽點唱機；壓唱片和投幣需要你同意。", "Puedes seguir componiendo y escuchando la gramola; grabar y poner discos necesita un sí.", "Pots continuar component i escoltant la gramola; gravar i posar discos necessita un sí."] },
+    { k: "train", site: "freebuilder.net", name: "Sleeper Car · shared cabin", m: /freebuilder\.net\/game\/train\//, ask: "use", to: "relay",
+      what: ["Only what happens in a cabin you share: the view out of the window, words you write on the glass, knocks, and a random seat number. No names, no account.", "只有你分享的车厢里发生的事：窗外的景色、你写在玻璃上的字、敲窗，以及一个随机座位号。没有名字，也不需要账号。", "只有你分享的車廂裡發生的事：窗外的景色、你寫在玻璃上的字、敲窗，以及一個隨機座位號。沒有名字，也不需要帳號。", "Solo lo que pasa en un compartimento que compartes: la vista por la ventana, lo que escribes en el cristal, los golpecitos y un número de asiento al azar. Sin nombres ni cuenta.", "Només el que passa en un compartiment que comparteixes: la vista per la finestra, el que escrius al vidre, els copets i un número de seient a l'atzar. Sense noms ni compte."],
+      who: ["Friends who open your cabin link, while the trip lasts. Nothing is stored: the cabin disappears when everyone leaves.", "打开你车厢链接的朋友，仅在旅途中。不保存任何内容：所有人离开后车厢就消失了。", "打開你車廂連結的朋友，僅在旅途中。不儲存任何內容：所有人離開後車廂就消失了。", "Los amigos que abren el enlace de tu compartimento, mientras dura el viaje. No se guarda nada: el compartimento desaparece cuando todos se van.", "Els amics que obren l'enllaç del teu compartiment, mentre dura el viatge. No es desa res: el compartiment desapareix quan tothom marxa."],
+      ifNo: ["You keep riding on your own.", "你可以继续一个人坐车。", "你可以繼續一個人坐車。", "Sigues viajando por tu cuenta.", "Continues viatjant pel teu compte."] },
+    { k: "room", site: "freebuilder.net", name: "Room Mode", m: /freebuilder\.net\/room\//, ask: "use", to: "relay",
+      what: ["Your anonymous answers and the room code, while the session runs.", "会话进行期间，你的匿名回答和房间代码。", "工作坊進行期間，你的匿名回答和房間代碼。", "Tus respuestas anónimas y el código de la sala, mientras dura la sesión.", "Les teves respostes anònimes i el codi de la sala, mentre dura la sessió."],
+      who: ["The people in the room, without names. Nothing is kept afterwards.", "房间里的人，不显示名字。结束后不保留任何内容。", "房間裡的人，不顯示名字。結束後不保留任何內容。", "La gente de la sala, sin nombres. No se guarda nada después.", "La gent de la sala, sense noms. No es guarda res després."],
+      ifNo: ["You can still use the room on this device alone.", "你仍可以只在本设备上使用房间模式。", "你仍可以只在本裝置上使用房間模式。", "Puedes seguir usando la sala solo en este dispositivo.", "Pots continuar fent servir la sala només en aquest dispositiu."] },
+    { k: "launchpad", site: "freebuilder.net", name: "Launchpad · KILL//SWITCH", m: /freebuilder\.net\/launchpad\//, ask: "use", to: "supabase",
+      what: ["Your team name and progress in live activities such as KILL//SWITCH.", "在 KILL//SWITCH 等现场活动中的队名和进度。", "在 KILL//SWITCH 等現場活動中的隊名和進度。", "El nombre de tu equipo y su progreso en actividades en directo como KILL//SWITCH.", "El nom del teu equip i el seu progrés en activitats en directe com KILL//SWITCH."],
+      who: ["People in the same session, on the event wall.", "同一场活动的人，在活动墙上。", "同一場活動的人，在活動牆上。", "Las personas de la misma sesión, en el mural del evento.", "Les persones de la mateixa sessió, al mur de l'esdeveniment."] },
+    { k: "contact", site: "freebuilder.net", name: "Contact form", m: /freebuilder\.net\/(index\.html)?(\?|#|$)/, ask: "use", to: "formspree",
+      what: ["Your name, email and message.", "你的名字、邮箱和留言。", "你的名字、電郵和留言。", "Tu nombre, tu correo y tu mensaje.", "El teu nom, el teu correu i el teu missatge."],
+      who: ["Only Wei, to reply to you.", "只有 Wei，用来回复你。", "只有 Wei，用來回覆你。", "Solo Wei, para responderte.", "Només en Wei, per respondre't."],
+      ifNo: ["Your message is not sent.", "你的留言不会发送。", "你的留言不會傳送。", "Tu mensaje no se envía.", "El teu missatge no s'envia."] }
+  ];
+
+  /* ---------- state ---------- */
+  var LI = { "en": 0, "zh": 1, "zh-Hant": 2, "es": 3, "ca": 4 };
+  /* the language-learning apps speak only the language they teach */
+  var FORCE = /\/language_learning\/cat\//.test(location.pathname) ? "ca" : /\/language_learning\/es\//.test(location.pathname) ? "es" : null;
+  function lang() { if (FORCE) return FORCE; var F = window.FBL || {}; var n = F.norm || function (x) { return x; }; return n(window.FBL_GET ? window.FBL_GET() : "") || (F.get && F.get()) || n(document.documentElement.lang) || "en"; }
+  function t(a) { return a ? (a[LI[lang()] || 0] || a[0]) : ""; }
+  function load() { try { return JSON.parse(localStorage.getItem(STORE) || "{}") || {}; } catch (e) { return {}; } }
+  function save(k, yes) { var s = load(); s[k] = { a: yes ? 1 : 0, v: V, t: new Date().toISOString().slice(0, 10) }; try { localStorage.setItem(STORE, JSON.stringify(s)); } catch (e) {} }
+  function choice(k) { var r = load()[k]; return r && r.v === V ? !!r.a : null; }
+  var loc = location; try { if (location.protocol === "about:" && parent !== window) loc = parent.location; } catch (e) {}
+  var here = loc.host.replace(/^www\./, "") + loc.pathname;
+  var page = null; DATA.forEach(function (d) { if (!page && d.m.test(here)) page = d; });
+  var memo = {};   /* answers given in this visit when storage is unavailable */
+
+  /* ---------- the question ---------- */
+  var queue = [], sheet = null;
+  function ask(d) {
+    var c = choice(d.k); if (c === null && d.k in memo) c = memo[d.k];
+    if (c !== null) return Promise.resolve(c);
+    for (var i = 0; i < queue.length; i++) if (queue[i].d.k === d.k) return queue[i].p;
+    var item = { d: d }; item.p = new Promise(function (res) { item.res = res; }); queue.push(item);
+    if (queue.length === 1) show(item); return item.p;
+  }
+  /* a page that already said no never even creates its database client, so its own status shows "on this device" */
+  if (page && page.offline && choice(page.k) === false) try { Object.defineProperty(window, "supabase", { configurable: true, get: function () { return undefined; }, set: function () {} }); } catch (e) {}
+  function answer(yes) {
+    var item = queue.shift(); if (!item) return; memo[item.d.k] = yes; save(item.d.k, yes);
+    if (!yes && item.d === page && page.offline && window.supabase) { location.reload(); return; }   /* restart offline so the page tells the truth */
+    if (sheet) { sheet.remove(); sheet = null; } item.res(yes); if (queue.length) show(queue[0]);
+  }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function show(item) {
+    var d = item.d;
+    if (!document.body) { document.addEventListener("DOMContentLoaded", function () { show(item); }); return; }
+    sheet = el("section", "fbc"); sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-labelledby", "fbc-t"); sheet.setAttribute("lang", lang());
+    var h = el("h2", "fbc-t", t(W.title)); h.id = "fbc-t";
+    var nm = el("p", "fbc-k", d.name || location.host);
+    var dl = el("dl", "fbc-l");
+    [[W.what, d.what ? t(d.what) : t(W.generic)], [W.to, d.to ? t(TO[d.to]) : (d.host || "")], [W.who, d.who ? t(d.who) : t(W.genericWho)], [W.no, d.ifNo ? t(d.ifNo) : t(W.stillWorks)]]
+      .forEach(function (r) { dl.appendChild(el("dt", "", t(r[0]))); dl.appendChild(el("dd", "", r[1])); });
+    var pr = el("p", "fbc-p", t(W.promise));
+    var row = el("div", "fbc-b");
+    var no = el("button", "", t(W.keep)), ok = el("button", "", t(W.yes));
+    no.type = ok.type = "button"; no.onclick = function () { answer(false); }; ok.onclick = function () { answer(true); };
+    row.appendChild(no); row.appendChild(ok);
+    var more = el("a", "fbc-m", t(W.more) + " →"); more.href = PRIVACY;
+    sheet.appendChild(nm); sheet.appendChild(h); sheet.appendChild(dl); sheet.appendChild(pr); sheet.appendChild(row); sheet.appendChild(more);
+    document.body.appendChild(sheet);
+    if (d.ask === "use") try { sheet.tabIndex = -1; sheet.focus({ preventScroll: true }); } catch (e) {}   /* focus the question, not either answer */
+  }
+
+  /* ---------- the gate: nothing leaves until the visitor answers ---------- */
+  function feature(url, write) {
+    var u; try { u = new URL(url, location.href); } catch (e) { return null; }
+    if (u.origin === location.origin || u.origin === loc.origin || !/^(https?|wss?):$/.test(u.protocol)) return null;
+    var known = HOSTS.test(u.hostname);
+    if (page && known) return (page.readFree && !write) ? null : page;   /* browsing a public page needs no answer; sending does */
+    if (known || write) return { k: "site:" + u.hostname, host: u.hostname, ask: "use" };
+    return null;
+  }
+  var BLOCK = "FREE//BUILDER: kept on this device (your privacy choice)";
+  var _fetch = window.fetch;
+  if (_fetch) window.fetch = function (input, init) {
+    var url = typeof input === "string" ? input : (input && input.url) || String(input);
+    var m = ((init && init.method) || (input && input.method) || "GET").toUpperCase();
+    var d = feature(url, m !== "GET" && m !== "HEAD"), self = this;
+    if (!d) return _fetch.apply(self, arguments);
+    var args = arguments;
+    return ask(d).then(function (yes) { if (!yes) throw new TypeError(BLOCK); return _fetch.apply(self, args); });
+  };
+  var XO = XMLHttpRequest.prototype.open, XS = XMLHttpRequest.prototype.send;
+  XMLHttpRequest.prototype.open = function (m, url) { this._fbc = feature(url, String(m).toUpperCase() !== "GET"); return XO.apply(this, arguments); };
+  XMLHttpRequest.prototype.send = function () {
+    var x = this, a = arguments; if (!x._fbc) return XS.apply(x, a);
+    ask(x._fbc).then(function (yes) { if (yes) XS.apply(x, a); else { try { x.abort(); } catch (e) {} x.dispatchEvent(new Event("error")); } });
+  };
+  if (navigator.sendBeacon) { var SB = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function (url) { var d = feature(url, true); return d && choice(d.k) !== true ? false : SB.apply(null, arguments); }; }
+  var RealWS = window.WebSocket;
+  if (RealWS) {
+    var GatedWS = function (url, protocols) {
+      var d = feature(url, true);
+      if (!d) return protocols === undefined ? new RealWS(url) : new RealWS(url, protocols);
+      var self = this, ls = {}, q = []; self.url = String(url); self.readyState = 0; self.protocol = ""; self.extensions = ""; self.bufferedAmount = 0; self._bt = "blob"; self.CONNECTING = 0; self.OPEN = 1; self.CLOSING = 2; self.CLOSED = 3;
+      self.onopen = self.onmessage = self.onclose = self.onerror = null;
+      function emit(type, ev) { if (typeof self["on" + type] === "function") self["on" + type](ev); (ls[type] || []).slice().forEach(function (f) { f.call(self, ev); }); }
+      self.addEventListener = function (type, f) { (ls[type] = ls[type] || []).push(f); };
+      self.removeEventListener = function (type, f) { ls[type] = (ls[type] || []).filter(function (g) { return g !== f; }); };
+      self.send = function (data) { if (self._ws) self._ws.send(data); else q.push(data); };
+      self.close = function (c, r) { if (self._ws) self._ws.close(c, r); else { self._closed = true; self.readyState = 3; emit("close", { code: c || 1000, reason: r || "", wasClean: true }); } };
+      Object.defineProperty(self, "binaryType", { get: function () { return self._ws ? self._ws.binaryType : self._bt; }, set: function (v) { self._bt = v; if (self._ws) self._ws.binaryType = v; } });
+      ask(d).then(function (yes) {
+        if (self._closed) return;
+        if (!yes) { self.readyState = 3; emit("error", new Event("error")); emit("close", { code: 1008, reason: BLOCK, wasClean: false }); return; }
+        var ws = protocols === undefined ? new RealWS(url) : new RealWS(url, protocols); self._ws = ws; ws.binaryType = self._bt;
+        ["open", "message", "close", "error"].forEach(function (type) { ws.addEventListener(type, function (ev) { self.readyState = ws.readyState; self.protocol = ws.protocol; if (type === "open") { while (q.length) ws.send(q.shift()); } emit(type, ev); }); });
+      });
+    };
+    GatedWS.CONNECTING = 0; GatedWS.OPEN = 1; GatedWS.CLOSING = 2; GatedWS.CLOSED = 3; 
+    window.WebSocket = GatedWS;
+  }
+
+  /* ---------- the privacy page renders itself from DATA ---------- */
+  function privacy(root) {
+    root.innerHTML = ""; root.setAttribute("lang", lang());
+    var back = el("a", "fbc-back", "← " + t(W.back)); back.href = "/"; root.appendChild(back);
+    root.appendChild(el("h1", "", t(W.pTitle))); root.appendChild(el("p", "fbc-lead", t(W.pLead)));
+    root.appendChild(el("h2", "", t(W.pFeatures))); root.appendChild(el("p", "fbc-note", t(W.pNote)));
+    DATA.filter(function (d) { return !d.site || loc.host.indexOf(d.site) >= 0; }).forEach(function (d) {
+      var card = el("article", "fbc-card"); card.appendChild(el("h3", "", d.name));
+      var dl = el("dl", "fbc-l");
+      [[W.what, t(d.what)], [W.to, t(TO[d.to])], [W.who, t(d.who)], [W.no, d.ifNo ? t(d.ifNo) : t(W.stillWorks)]].forEach(function (r) { dl.appendChild(el("dt", "", t(r[0]))); dl.appendChild(el("dd", "", r[1])); });
+      card.appendChild(dl);
+      var c = choice(d.k), st = el("p", "fbc-st", c === null ? t(W.notAsked) : c ? t(W.allowed) : t(W.kept)); card.appendChild(st);
+      var row = el("div", "fbc-b"), no = el("button", "", t(W.keep)), ok = el("button", "", t(W.yes));
+      no.type = ok.type = "button"; no.setAttribute("aria-pressed", String(c === false)); ok.setAttribute("aria-pressed", String(c === true));
+      no.onclick = function () { save(d.k, false); privacy(root); }; ok.onclick = function () { save(d.k, true); privacy(root); };
+      row.appendChild(no); row.appendChild(ok); card.appendChild(row); root.appendChild(card);
+    });
+    root.appendChild(el("h2", "", t(W.pDevice))); root.appendChild(el("p", "", t(W.pDeviceText)));
+    root.appendChild(el("h2", "", t(W.pLoads))); root.appendChild(el("p", "", t(W.pLoadsText)));
+    root.appendChild(el("p", "fbc-p", t(W.promise)));
+    document.title = t(W.pTitle) + " — FREE//BUILDER";
+  }
+  window.FBC = { DATA: DATA, ask: ask, choice: choice, PRIVACY: PRIVACY, t: t };
+
+  var css = ".fbc{position:fixed;z-index:2147482990;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(30rem,calc(100% - 24px));max-height:calc(100% - 24px);overflow:auto;padding:18px 18px 14px;border-radius:20px;background:#FAF9F6;color:#17171A;border:1px solid #E5E2DA;box-shadow:0 24px 60px -24px rgba(23,23,26,.55);font:400 14px/1.45 'Plus Jakarta Sans',system-ui,-apple-system,'PingFang SC','PingFang TC','Microsoft YaHei',sans-serif;text-align:left}" +
+    ".fbc *{box-sizing:border-box}.fbc:focus{outline:none}.fbc-k{margin:0;font:400 11px/1.2 'Space Mono',ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:#C2412D}" +
+    ".fbc h2,.fbc-t{margin:4px 0 10px;font:700 18px/1.25 'Syne','Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.01em}" +
+    ".fbc-l{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:0 0 10px}.fbc-l dt{font:400 11px/1.5 'Space Mono',ui-monospace,monospace;color:#6B6A70;white-space:nowrap}.fbc-l dd{margin:0}" +
+    ".fbc-p{margin:0 0 12px;font-size:12.5px;color:#55545A}" +
+    ".fbc-b{display:grid;grid-template-columns:1fr 1fr;gap:8px}.fbc-b button{min-height:44px;padding:10px 12px;border-radius:999px;border:1.5px solid #17171A;background:transparent;color:inherit;font:600 14px/1.2 inherit;font-family:inherit;cursor:pointer}" +
+    ".fbc-b button:hover,.fbc-b button:focus-visible{background:#17171A;color:#FAF9F6;outline:none}.fbc-b button[aria-pressed='true']{background:#17171A;color:#FAF9F6}" +
+    ".fbc-m{display:inline-block;margin-top:10px;font-size:12.5px;color:inherit;text-decoration:underline;text-underline-offset:3px}" +
+    "@media (max-width:360px){.fbc-l{grid-template-columns:1fr}.fbc-b{grid-template-columns:1fr}}" +
+    "[data-fbl-privacy]{max-width:44rem;margin:0 auto;padding:28px 16px 64px;font:400 15px/1.6 'Plus Jakarta Sans',system-ui,-apple-system,'PingFang SC','PingFang TC',sans-serif}" +
+    "[data-fbl-privacy] h1{font:800 clamp(30px,7vw,46px)/1.05 'Syne','Plus Jakarta Sans',sans-serif;letter-spacing:-.02em;margin:18px 0 12px}[data-fbl-privacy] h2{font:700 20px/1.3 'Syne','Plus Jakarta Sans',sans-serif;margin:34px 0 8px}[data-fbl-privacy] h3{font:700 16px/1.3 inherit;font-family:inherit;margin:0 0 10px}" +
+    ".fbc-card{border:1px solid #E5E2DA;border-radius:18px;padding:16px;margin:12px 0;background:#fff}.fbc-st{font:400 11px/1.4 'Space Mono',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#C2412D;margin:0 0 10px}" +
+    ".fbc-note{font-size:13px;color:#6B6A70}.fbc-back{font:400 12px/1 'Space Mono',ui-monospace,monospace;color:inherit}" +
+    "@media (prefers-color-scheme:dark){.fbc{background:#1D1D21;color:#ECEBE6;border-color:#303036}.fbc-l dt,.fbc-note{color:#A8A7AD}.fbc-p{color:#BDBCC2}.fbc-k,.fbc-st{color:#F28C76}" +
+    ".fbc-b button{border-color:#ECEBE6}.fbc-b button:hover,.fbc-b button:focus-visible,.fbc-b button[aria-pressed='true']{background:#ECEBE6;color:#17171A}.fbc-card{background:#1D1D21;border-color:#303036}[data-fbl-privacy]{color:#ECEBE6}}"+
+    ".fbf{margin-top:40px;border-top:1px solid rgba(128,128,128,.28);padding:22px 16px calc(22px + env(safe-area-inset-bottom));font:400 11px/1.6 'Space Mono',ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.02em;color:inherit}" +
+    ".fbf-in{max-width:64rem;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 20px;opacity:.68}" +
+    ".fbf-note{flex-basis:100%;margin:0 0 2px}.fbf nav{display:flex;flex-wrap:wrap;gap:6px 16px}.fbf a{color:inherit;text-decoration:none;border-bottom:1px solid transparent}.fbf a:hover,.fbf a:focus-visible{border-bottom-color:currentColor;outline:none}" +
+    ".fbf .fbf-heart{color:#E2553F}";
+  var st = document.createElement("style"); st.id = "fbc-css"; st.textContent = css; (document.head || document.documentElement).appendChild(st);
+
+  /* ---------- the shared footer: words follow the visitor's language ---------- */
+  var FKEY = { privacy: "fPrivacy", made: "fMade", by: "fBy", home: "fHome" };
+  function paintFooter() { document.querySelectorAll("[data-fbf]").forEach(function (e) { var k = FKEY[e.getAttribute("data-fbf")]; if (k && e.textContent !== t(W[k])) e.textContent = t(W[k]); }); }
+  function boot() {
+    paintFooter();
+    var root = document.querySelector("[data-fbl-privacy]"); if (root) { privacy(root); var L0 = lang(); setInterval(function () { if (lang() !== L0) { L0 = lang(); privacy(root); } }, 500); }
+    if (page && page.ask === "load" && window.self === window.top) ask(page);
+    var L1 = lang(); setInterval(function () { if (lang() !== L1) paintFooter(); if (sheet && lang() !== L1 && queue[0]) { L1 = lang(); sheet.remove(); sheet = null; show(queue[0]); } else L1 = lang(); }, 600);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+
+/* FBG · FREE//BUILDER game kit (inlined after FBL + FBC in every game page).
+   1) A quiet "Made with AI & ♥ by FREE//BUILDER" credit that leads back to the Game Repertory (wei-meng.org/game).
+   2) A five-language layer for games written in English only: window.FBT_DICT maps each visible English string
+      (numbers written as {#}) to [简中, 繁中, ES, CA]. Text on the page, a few attributes and canvas text are
+      translated on the fly, so the game's own code never changes. Games with their own language system leave
+      FBT_DICT unset and only get the credit. */
+(function () {
+  "use strict";
+  if (window.FBG) return;
+  var LI = { "zh": 0, "zh-Hant": 1, "es": 2, "ca": 3 };
+  var REPERTORY = "https://www.wei-meng.org/game/";
+  function lang() { var F = window.FBL || {}; return (F.get && F.get()) || "en"; }
+
+  /* ---------- translation ---------- */
+  var NUM = /\d+(?:[.,]\d+)?/g, cache = {}, cacheLang = "";
+  var PATS = null;
+  function tr(s) {
+    if (typeof s !== "string" || !s || !window.FBT_DICT) return s;
+    var l = lang(); if (l === "en" || !(l in LI)) return s;
+    if (cacheLang !== l) { cache = {}; cacheLang = l; }
+    if (s in cache) return cache[s];
+    var m = /^(\s*)([\s\S]*?)(\s*)$/.exec(s), core = m[2].replace(/\s+/g, " "), nums = core.match(NUM) || [];
+    var D = window.FBT_DICT, v = D[core.replace(NUM, "{#}")], out = s;
+    if (!v && /\s[·•]\s/.test(core)) { var sep = core.indexOf(" · ") > 0 ? " · " : " • ", parts = core.split(sep).map(tr); if (parts.join(sep) !== core) return (cache[s] = m[1] + parts.join(sep) + m[3]); }
+    if (!v) {   /* try again without leading emoji/quotes and trailing quotes or brackets with numbers */
+      var mm = /^([^A-Za-z]*?)([A-Za-z][\s\S]*?)((?:\s*\(\d+(?:[.,]\d+)?%?\))?["”']?)$/.exec(core);
+      if (mm && D[mm[2].replace(NUM, "{#}")]) { var inner = tr(mm[2]); return (cache[s] = m[1] + mm[1] + inner + mm[3] + m[3]); }
+    }
+    if (!v) {   /* "LABEL : value", "ID / genre": split at the first separator, translate each side */
+      var sm = /(\s+:\s+|:\s+|\s\/\s)/.exec(core);
+      if (sm) { var left = core.slice(0, sm.index), right = core.slice(sm.index + sm[0].length), joined = tr(left) + sm[0] + tr(right);
+        if (joined !== core) return (cache[s] = m[1] + joined + m[3]); }
+    }
+    if (!v) {   /* sentences built around a name: keys with {s} ("Poured a warm cup of {s}") */
+      if (!PATS) { PATS = []; for (var k in D) if (k.indexOf("{s}") >= 0) PATS.push([new RegExp("^" + k.replace(/[.*+?^$()|[\]\\]/g, "\\$&").replace(/\{#\}/g, "(\\d+(?:[.,]\\d+)?)").replace(/\{s\}/g, "([\\s\\S]+?)") + "$"), k]); }
+      for (var pi = 0; pi < PATS.length; pi++) { var pm = PATS[pi][0].exec(core); if (!pm) continue;
+        var pv = D[PATS[pi][1]][LI[l]]; if (!pv) break; var gi = 1, kk = PATS[pi][1], order = kk.match(/\{[#s]\}/g) || [], vals = { s: [], n: [] };
+        order.forEach(function (t) { (t === "{s}" ? vals.s : vals.n).push(pm[gi++]); });
+        var si = 0, ni = 0; out = m[1] + pv.replace(/\{(#|s)\}/g, function (_, k) { return k === "#" ? (vals.n[ni++] || "") : tr(vals.s[si++] || ""); }) + m[3];
+        return (cache[s] = out); }
+    }
+    if (v && v[LI[l]]) { var i = 0; out = m[1] + v[LI[l]].replace(/\{(#|\d)\}/g, function (_, k) { return k === "#" ? (nums[i++] || "") : (nums[+k] || ""); }) + m[3]; }
+    return (cache[s] = out);
+  }
+  /* canvas text goes through the same table (measureText too, so layouts still fit) */
+  try {
+    var C = CanvasRenderingContext2D.prototype;
+    ["fillText", "strokeText", "measureText"].forEach(function (fn) { var o = C[fn]; C[fn] = function (t) { var a = Array.prototype.slice.call(arguments); a[0] = tr(String(t)); return o.apply(this, a); }; });
+  } catch (e) {}
+  /* page text: remember each node's English, show the current language */
+  var orig = new WeakMap(), shown = new WeakMap(), ATTR = ["placeholder", "title", "aria-label"], busy = false;
+  function doText(n) {
+    var cur = n.data, o = orig.get(n);
+    if (o === undefined || cur !== shown.get(n)) { o = cur; orig.set(n, o); }      /* the game wrote new text */
+    var v = tr(o); shown.set(n, v); if (v !== cur) n.data = v;
+  }
+  function doAttrs(el) {
+    for (var i = 0; i < ATTR.length; i++) { var a = ATTR[i]; if (!el.hasAttribute(a)) continue;
+      var key = "fbt-" + a, cur = el.getAttribute(a), o = el[key + "o"];
+      if (o === undefined || cur !== el[key + "s"]) { o = cur; el[key + "o"] = o; }
+      var v = tr(o); el[key + "s"] = v; if (v !== cur) el.setAttribute(a, v); }
+  }
+  var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, NOSCRIPT: 1 };
+  function walk(root) {
+    if (!root) return;
+    if (root.nodeType === 3) { if (root.parentNode && !SKIP[root.parentNode.nodeName]) doText(root); return; }
+    if (root.nodeType !== 1 || SKIP[root.nodeName] || root.closest && root.closest("[data-fbt-skip],.fbc,.fbl-menu")) return;
+    doAttrs(root);
+    var tw = document.createTreeWalker(root, 5, null), n;
+    while ((n = tw.nextNode())) { if (n.nodeType === 3) { if (!SKIP[n.parentNode.nodeName]) doText(n); } else if (!SKIP[n.nodeName]) doAttrs(n); }
+  }
+  var docTitle = null;
+  function all() { busy = true; try { walk(document.body); if (docTitle === null) docTitle = document.title; document.title = tr(docTitle); document.documentElement.lang = lang() === "zh-Hant" ? "zh-Hant" : lang(); } finally { busy = false; } }
+  function startText() {
+    if (!window.FBT_DICT) return;
+    all();
+    new MutationObserver(function (list) {
+      if (busy) return; busy = true;
+      try { list.forEach(function (r) {
+        if (r.type === "characterData") doText(r.target);
+        else if (r.type === "attributes") doAttrs(r.target);
+        else r.addedNodes.forEach(walk);
+      }); } finally { busy = false; }
+    }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ATTR });
+    var L0 = lang(); setInterval(function () { if (lang() !== L0) { L0 = lang(); all(); } }, 400);
+  }
+
+  /* ---------- the quiet credit (+ a language chip when the game has no picker of its own) ---------- */
+  var W = {
+    made: ["Made with AI & ♥ by FREE//BUILDER", "由 FREE//BUILDER 用 AI 与 ♥ 制作", "由 FREE//BUILDER 用 AI 與 ♥ 製作", "Hecho con IA y ♥ por FREE//BUILDER", "Fet amb IA i ♥ per FREE//BUILDER"],
+    back: ["All games", "全部游戏", "全部遊戲", "Todos los juegos", "Tots els jocs"]
+  };
+  function w(k) { var i = { "en": 0, "zh": 1, "zh-Hant": 2, "es": 3, "ca": 4 }[lang()] || 0; return W[k][i]; }
+  function credit() {
+    var host = (window.FBG_CREDIT_IN && document.querySelector(window.FBG_CREDIT_IN)) || null;
+    var box = document.createElement("div"); box.className = "fbg" + (host ? " fbg-in" : ""); box.setAttribute("data-fbt-skip", "");
+    var a = document.createElement("a"); a.href = REPERTORY; a.className = "fbg-a";
+    var paint = function () { a.textContent = "← " + w("back") + " · " + w("made"); a.setAttribute("aria-label", w("back") + " — " + w("made")); if (chip) chip.lastChild.textContent = (window.FBL && FBL.SHORT[lang()]) || "EN"; };
+    var chip = null;
+    if (window.FBT_DICT) { chip = document.createElement("button"); chip.type = "button"; chip.className = "fbg-lang"; chip.setAttribute("data-fbl-btn", ""); chip.innerHTML = '<span aria-hidden="true">🌐 </span><span data-fbl-label></span>'; box.appendChild(chip); }
+    if (!host) {   /* corner placement: a faint ♥ (and language globe) until someone asks */
+      box.className = "fbg fbg-mini";
+      var heart = document.createElement("button"); heart.type = "button"; heart.className = "fbg-heart"; heart.textContent = "♥";
+      heart.setAttribute("aria-expanded", "false");
+      heart.addEventListener("click", function () { var open = box.classList.toggle("open"); heart.setAttribute("aria-expanded", String(open)); });
+      document.addEventListener("click", function (e) { if (!box.contains(e.target)) { box.classList.remove("open"); heart.setAttribute("aria-expanded", "false"); } });
+      box.appendChild(heart);
+      var p0 = paint; paint = function () { p0(); heart.setAttribute("aria-label", w("made")); heart.title = w("made"); };
+    }
+    box.appendChild(a); (host || document.body).appendChild(box); paint();
+    var L0 = lang(); setInterval(function () { if (lang() !== L0) { L0 = lang(); paint(); } }, 400);
+  }
+  /* one nickname for every game on this site, filled in only where a game asks for a name */
+  var NICK = "fb_nick", NSEL = 'input[autocomplete="nickname"],#callsignInput,[data-fb-nick]';
+  function nk(v) { try { if (v === undefined) return (localStorage.getItem(NICK) || "").trim(); localStorage.setItem(NICK, v); } catch (e) { return ""; } }
+  try {   /* games that keep their own copy of the name read it at start-up: hand them the shared one */
+    var n0 = nk(), own = ["weis-name", "dogeared_name"];
+    if (n0) own.forEach(function (k) { if (!localStorage.getItem(k)) localStorage.setItem(k, n0); });
+    else for (var oi = 0; oi < own.length; oi++) { var c0 = (localStorage.getItem(own[oi]) || "").trim(); if (c0) { nk(c0.slice(0, 32)); break; } }
+  } catch (e) {}
+  function fillNick(el) { if (!el || el.value || el.getAttribute("data-fb-nick-done")) return; el.setAttribute("data-fb-nick-done", "1"); var n = nk(); if (!n) return; var max = +el.getAttribute("maxlength") || 32; el.value = n.slice(0, max); try { el.dispatchEvent(new Event("input", { bubbles: true })); } catch (e) {} }
+  function scanNick() { try { document.querySelectorAll(NSEL).forEach(fillNick); } catch (e) {} }
+  document.addEventListener("focusin", function (e) { if (e.target.matches && e.target.matches(NSEL)) fillNick(e.target); }, true);
+  document.addEventListener("change", function (e) { if (e.target.matches && e.target.matches(NSEL)) { var v = e.target.value.trim(); if (v) nk(v.slice(0, 32)); } }, true);
+  function watchNick() { scanNick(); try { new MutationObserver(function () { clearTimeout(watchNick.t); watchNick.t = setTimeout(scanNick, 120); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {} }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", watchNick); else watchNick();
+
+  var css = ".fbg{position:fixed;right:8px;bottom:calc(6px + env(safe-area-inset-bottom));z-index:40;display:flex;align-items:center;gap:6px;font:400 10px/1.2 'Space Mono',ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.02em;opacity:.42;transition:opacity .2s}" +
+    ".fbg:hover,.fbg:focus-within{opacity:1}.fbg.fbg-in{position:static;justify-content:center;flex-wrap:wrap;margin:14px auto 6px;width:100%}" +
+    ".fbg a,.fbg button{color:#fff;text-decoration:none;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:4px 9px;font:inherit;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}" +
+    ".fbg a:focus-visible,.fbg button:focus-visible{outline:2px solid #F28C76;outline-offset:2px}.fbg-lang.fbl-has::after{display:none}" +
+    ".fbg-mini{right:6px;bottom:calc(4px + env(safe-area-inset-bottom));opacity:.22;flex-direction:row-reverse;gap:4px}.fbg-mini:hover,.fbg-mini:focus-within,.fbg-mini.open{opacity:.9}" +
+    ".fbg-mini .fbg-heart{background:none;border:0;padding:4px 6px;font-size:11px;line-height:1;color:inherit;-webkit-backdrop-filter:none;backdrop-filter:none}" +
+    ".fbg-mini .fbg-lang{padding:3px 7px;font-size:10px;background:rgba(0,0,0,.3)}.fbg-mini .fbg-a{display:none}.fbg-mini.open .fbg-a{display:inline-block}.fbg-mini{color:#fff}";
+  var st = document.createElement("style"); st.textContent = css; (document.head || document.documentElement).appendChild(st);
+
+  window.FBG = { tr: tr, refresh: function () { all(); } };
+  function boot() {
+    if (window.FBT_DICT && !window.FBL_SET) { window.FBL_SET = function (l) { window.FBL.set(l); all(); }; window.FBL_GET = function () { return lang(); }; }
+    startText(); if (window.self === window.top && !/^\/game\/?(index\.html)?$/.test(location.pathname)) credit(); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Jukebox — FREE//BUILDER</title>
+<meta name="description" content="Light up a little tune, press it into a record, and drop it in the jukebox that plays in Wei's Bar and the Dog-Eared Corner at the same time.">
+<meta name="theme-color" content="#1a0f0a">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+:root{--bg:#1a0f0a;--ink:#fbeedd;--dim:rgba(251,238,221,.62);--wood:#3a1d10;--brass:#c9a46a;--glow:#f6b73c;--glow2:#ffd98a;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:500 15px/1.4 'Plus Jakarta Sans',system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:radial-gradient(1200px 700px at 70% -10%,rgba(246,183,60,.18),transparent 60%),radial-gradient(900px 600px at -10% 110%,rgba(155,111,216,.16),transparent 60%),repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0 2px,transparent 2px 44px),var(--bg);min-height:100vh;overflow-x:hidden}
+button{font:inherit;color:inherit}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:max(14px,env(safe-area-inset-top)) 16px 4px;max-width:1180px;margin:0 auto}
+.sign{font:700 26px/1 'Fraunces',Georgia,serif;letter-spacing:.06em;color:#fff3d6;text-shadow:0 0 6px var(--glow),0 0 18px var(--glow),0 0 40px rgba(246,183,60,.6);animation:flick 7s infinite}
+.sign span{color:#ff8fa0;text-shadow:0 0 6px #ff5f6d,0 0 18px #ff5f6d}
+@keyframes flick{0%,92%,100%{opacity:1}93%{opacity:.55}94%{opacity:1}96%{opacity:.7}}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 12px;border-radius:999px;border:1px solid rgba(251,238,221,.25);background:rgba(255,255,255,.05);cursor:pointer}
+.pill:hover{background:rgba(255,255,255,.1)}
+main{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;max-width:1180px;margin:0 auto;padding:10px 16px 90px}
+@media (min-width:900px){main{grid-template-columns:minmax(0,1.25fr) minmax(320px,.9fr);align-items:start}.room{position:sticky;top:12px}}
+
+/* ---------- the desk ---------- */
+.desk{--a:#f6b73c;border-radius:22px;padding:14px;background:linear-gradient(180deg,#2a1810,#1f120b);box-shadow:inset 0 1px 0 rgba(255,220,180,.12),0 30px 60px -30px #000;border:1px solid rgba(201,164,106,.25)}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chips{display:flex;gap:6px}
+.chip{width:46px;height:46px;border-radius:14px;border:1px solid rgba(251,238,221,.16);background:rgba(255,255,255,.04);font-size:22px;cursor:pointer;display:grid;place-items:center;transition:transform .15s,background .2s,box-shadow .2s}
+.chip:active{transform:scale(.92)}
+.chip[aria-pressed="true"]{background:color-mix(in srgb,var(--a) 28%,transparent);border-color:var(--a);box-shadow:0 0 0 1px var(--a),0 0 16px -2px var(--a)}
+.sep{flex:1}
+.tempo{display:flex;align-items:center;gap:6px;font-size:18px}
+.tempo input{width:110px;accent-color:var(--a)}
+
+.roll{position:relative;margin:14px 0 12px;padding:10px;border-radius:16px;background:#120a06;box-shadow:inset 0 0 0 1px rgba(201,164,106,.2),inset 0 8px 24px rgba(0,0,0,.6);touch-action:none;user-select:none;-webkit-user-select:none}
+.grid{display:grid;gap:4px;grid-template-columns:repeat(16,minmax(0,1fr))}
+.cell{position:relative;aspect-ratio:1;border:0;padding:0;border-radius:50%;background:radial-gradient(circle at 40% 35%,rgba(255,255,255,.08),rgba(255,255,255,.03));box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);cursor:pointer;transition:background .12s,box-shadow .12s,transform .1s}
+.cell.q{box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),-3px 0 0 -1px rgba(201,164,106,.18)}
+.cell.on{background:radial-gradient(circle at 40% 35%,#fff,hsl(var(--c),95%,66%) 45%,hsl(var(--c),85%,45%));box-shadow:0 0 10px 1px hsl(var(--c),95%,60%),inset 0 0 0 1px rgba(255,255,255,.4)}
+.cell.d{border-radius:7px}
+.cell.d.on{background:linear-gradient(#fff6e0,#e8c48a);box-shadow:0 0 10px rgba(255,220,150,.7)}
+.cell.ph{transform:scale(1.12)}
+.cell.on.ph{filter:brightness(1.35)}
+.col-hit{background-color:rgba(255,255,255,.06)}
+.lane{display:grid;place-items:center;font-size:15px;opacity:.85}
+.gap{height:8px}
+/* phones: the paper strip feeds downward, like a music box */
+.v .grid{grid-template-columns:repeat(8,minmax(0,1fr)) 6px repeat(3,minmax(0,1fr))}
+
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.play{width:62px;height:62px;border-radius:50%;border:0;cursor:pointer;font-size:24px;background:radial-gradient(circle at 35% 30%,#fff2cc,var(--a) 55%,color-mix(in srgb,var(--a) 60%,#000));color:#2a1205;box-shadow:0 8px 20px -8px var(--a);transition:transform .15s}
+.play:active{transform:scale(.94)}
+.press{margin-left:auto;display:inline-flex;align-items:center;gap:10px;height:56px;padding:0 20px 0 10px;border-radius:999px;border:0;cursor:pointer;background:linear-gradient(135deg,#ffd27a,#f08a5d);color:#2a1205;font:800 16px 'Plus Jakarta Sans',system-ui,sans-serif;box-shadow:0 10px 24px -10px rgba(240,138,93,.9)}
+.press .v1{width:40px;height:40px;border-radius:50%;background:repeating-radial-gradient(circle,#111 0 2px,#2a2a2a 2px 3px);position:relative;animation:spin 3s linear infinite}
+.press .v1:after{content:'';position:absolute;inset:34%;border-radius:50%;background:var(--a)}
+.press:disabled{opacity:.5;cursor:default}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- pressing ---------- */
+.scrim{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;background:rgba(10,5,3,.86);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);animation:fade .25s}
+@keyframes fade{from{opacity:0}}
+.vinyl{position:relative;width:min(84vw,380px);aspect-ratio:1;border-radius:50%;background:repeating-radial-gradient(circle,#0e0e0e 0 2px,#1d1d1d 2px 3px);box-shadow:0 30px 60px -20px #000,inset 0 0 0 3px #000;display:grid;place-items:center}
+.vinyl:before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 30deg,transparent 0 40deg,rgba(255,255,255,.12) 55deg,transparent 70deg 210deg,rgba(255,255,255,.08) 225deg,transparent 240deg);pointer-events:none}
+.label{position:relative;width:58%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#1a1a1a 0 5%,transparent 5.5%),radial-gradient(circle at 50% 50%,hsl(var(--lh),70%,62%),hsl(var(--lh),60%,46%));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12%;color:#22120a;box-shadow:inset 0 0 0 4px rgba(0,0,0,.15)}
+.label input{width:100%;border:0;border-bottom:1.5px dashed rgba(34,18,10,.45);background:transparent;text-align:center;color:#22120a;padding:4px 2px;border-radius:0}
+.label input:focus{outline:none;border-bottom-color:#22120a}
+.label #ttl{font:700 clamp(16px,4.6vw,21px)/1.1 'Fraunces',Georgia,'Songti SC',serif}
+.label #who{font:600 13px 'Plus Jakarta Sans',system-ui,sans-serif}
+.label input::placeholder{color:rgba(34,18,10,.5)}
+.label .hole{width:12px;height:12px;border-radius:50%;background:#0e0e0e;margin:2px 0}
+.go{position:absolute;right:-6px;bottom:4%;width:74px;height:74px;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 35% 30%,#fff6c8,#e6b43a 45%,#a8751a);box-shadow:0 10px 24px -6px rgba(0,0,0,.7);font-size:30px;display:grid;place-items:center}
+.go:disabled{filter:grayscale(.7);opacity:.7}
+.x{position:absolute;top:-4px;left:-4px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(251,238,221,.3);background:#2a1a10;font-size:20px;cursor:pointer}
+.vinyl.away{transition:transform .9s cubic-bezier(.6,0,.4,1),opacity .9s;transform:translateY(60vh) scale(.2) rotate(540deg);opacity:0}
+.say{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translateX(-50%);padding:10px 16px;border-radius:999px;background:#fbeedd;color:#2a1205;font-weight:700;box-shadow:0 10px 24px rgba(0,0,0,.5);z-index:90;opacity:0;transition:opacity .3s;pointer-events:none;max-width:92vw;text-align:center}
+.say.show{opacity:1}
+.err{animation:shake .4s}@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.room h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:420px){.chip{width:42px;height:42px;font-size:20px}.tempo input{width:84px}.press{height:52px;padding-right:16px}}
+@media (prefers-reduced-motion:reduce){.sign,.press .v1{animation:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="sign" aria-label="Jukebox">JUKE<span>BOX</span></div>
+  <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
+</header>
+
+<main>
+  <section class="desk" aria-label="Make a tune">
+    <div class="row">
+      <div class="chips" role="group" id="moods"></div>
+      <span class="sep"></span>
+      <div class="chips" role="group" id="insts"></div>
+    </div>
+    <div class="roll" id="roll"><div class="grid" id="grid"></div></div>
+    <div class="bar">
+      <button class="play" id="play" type="button" aria-label="Play">▶</button>
+      <div class="tempo"><span aria-hidden="true">🐢</span><input id="bpm" type="range" min="72" max="132" step="4" value="100" aria-label="Tempo"><span aria-hidden="true">🐇</span></div>
+      <button class="pill" id="dice" type="button" aria-label="Surprise me">🎲</button>
+      <button class="pill" id="wipe" type="button" aria-label="Clear">🧽</button>
+      <button class="press" id="press" type="button"><span class="v1" aria-hidden="true"></span><span data-t="press">Press it</span></button>
+    </div>
+  </section>
+
+  <section class="room" aria-label="The jukebox">
+    <h2>Jukebox</h2>
+    <div id="machine"></div>
+  </section>
+</main>
+<div class="say" id="say" role="status"></div>
+
+<script src="./core.js"></script>
+<script src="./widget.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+
+  /* ---------- words ---------- */
+  var T = {
+    press: ["Press it", "压成唱片", "壓成唱片", "Grábalo", "Grava'l"],
+    untitled: ["Untitled", "无题", "無題", "Sin título", "Sense títol"],
+    yourName: ["Your name", "你的名字", "你的名字", "Tu nombre", "El teu nom"],
+    titleA: ["Song title", "歌名", "歌名", "Título", "Títol"],
+    inBox: ["In the jukebox ✓ — drop a coin to play it everywhere", "已放进点唱机 ✓ 投一枚硬币，所有地方都会播放", "已放進點唱機 ✓ 投一枚硬幣，所有地方都會播放", "En la gramola ✓ — echa una moneda y sonará en todas partes", "A la gramola ✓ — tira una moneda i sonarà a tot arreu"],
+    empty: ["Light up a few notes first", "先点亮几个音符", "先點亮幾個音符", "Enciende unas notas primero", "Encén unes notes primer"],
+    away: ["The jukebox is out of reach right now — your tune is kept here", "点唱机暂时连不上，你的曲子保存在这台设备上", "點唱機暫時連不上，你的曲子保存在這台裝置上", "La gramola no responde ahora: tu melodía queda guardada aquí", "La gramola no respon ara: la teva melodia queda desada aquí"],
+    rest: ["The press needs a short rest — try again in a moment", "压片机要歇一会儿，稍后再试", "壓片機要歇一會兒，稍後再試", "La prensa necesita un respiro: prueba en un momento", "La premsa necessita un respir: prova-ho d'aquí a un moment"],
+    play: ["Play", "播放", "播放", "Reproducir", "Reprodueix"], stop: ["Stop", "停止", "停止", "Parar", "Atura"],
+    dice: ["Surprise me", "随机来一首", "隨機來一首", "Sorpréndeme", "Sorprèn-me"], wipe: ["Clear", "清空", "清空", "Borrar", "Esborra"],
+    tempo: ["Tempo", "速度", "速度", "Tempo", "Tempo"], lang: ["Language", "语言", "語言", "Idioma", "Idioma"],
+    moods: [["Sunny", "晴天", "晴天", "Soleado", "Assolellat"], ["Rainy", "雨天", "雨天", "Lluvioso", "Plujós"], ["Lantern", "灯笼", "燈籠", "Farol", "Fanal"], ["Midnight", "午夜", "午夜", "Medianoche", "Mitjanit"]],
+    insts: [["Music box", "八音盒", "音樂盒", "Caja de música", "Capsa de música"], ["Piano", "钢琴", "鋼琴", "Piano", "Piano"], ["Arcade", "街机", "街機", "Arcade", "Arcade"], ["Strings", "拨弦", "撥弦", "Cuerdas", "Cordes"]],
+    drums: [["Kick", "底鼓", "大鼓", "Bombo", "Bombo"], ["Clap", "拍手", "拍手", "Palmas", "Picament"], ["Hi-hat", "踩镲", "腳踏鈸", "Charles", "Charles"]]
+  };
+  var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 };
+  function lang() { return LI[(window.FBL && FBL.get()) || "en"] || 0; }
+  function t(k) { var v = T[k]; return (v && (v[lang()] || v[0])) || k; }
+  function words() {
+    var L = lang(); document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L];
+    document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
+    $("#dice").setAttribute("aria-label", t("dice")); $("#dice").title = t("dice");
+    $("#wipe").setAttribute("aria-label", t("wipe")); $("#wipe").title = t("wipe");
+    $("#bpm").setAttribute("aria-label", t("tempo")); $("[data-fbl-btn]").setAttribute("aria-label", t("lang"));
+    $("#play").setAttribute("aria-label", t(prev.playing() ? "stop" : "play"));
+    moodBtns.forEach(function (b, i) { b.setAttribute("aria-label", T.moods[i][L]); b.title = T.moods[i][L]; });
+    instBtns.forEach(function (b, i) { b.setAttribute("aria-label", T.insts[i][L]); b.title = T.insts[i][L]; });
+    var lab = $("[data-fbl-label]"); if (lab && window.FBL) lab.textContent = FBL.SHORT[FBL.get() || "en"];
+    if (window.JBW) JBW.paint();
+  }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
+  window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+
+  /* ---------- the tune on the desk ---------- */
+  var song = null;
+  try { song = JB.decode(ls("jb_draft")); } catch (e) {}
+  if (!song) song = JB.random();
+  function save() { ls("jb_draft", JB.encode(song)); }
+  var prev = new JB.Player(), resumeJukebox = false;
+
+  var MOOD_ICON = ["☀️", "🌧️", "🏮", "🌙"], INST_ICON = ["🎐", "🎹", "👾", "🪕"], DRUM_ICON = ["🥁", "👏", "✨"];
+  var moodBtns = MOOD_ICON.map(function (ic, i) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = ic; b.onclick = function () { song.mood = i; paintChips(); save(); audition(); }; $("#moods").appendChild(b); return b; });
+  var instBtns = INST_ICON.map(function (ic, i) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = ic; b.onclick = function () { song.inst = i; paintChips(); save(); audition(); }; $("#insts").appendChild(b); return b; });
+  function paintChips() {
+    moodBtns.forEach(function (b, i) { b.setAttribute("aria-pressed", i === song.mood ? "true" : "false"); });
+    instBtns.forEach(function (b, i) { b.setAttribute("aria-pressed", i === song.inst ? "true" : "false"); });
+    var a = JB.MOODS[song.mood].col; $(".desk").style.setProperty("--a", a); document.body.style.setProperty("--a", a);
+    $("#bpm").value = song.bpm; prev.set(song);
+    cells.forEach(function (c) { if (c.r < 8) c.el.style.setProperty("--c", rowHue(c.r)); });
+  }
+  function rowHue(r) { var base = { 0: 38, 1: 215, 2: 8, 3: 270 }[song.mood]; return (base + (7 - r) * 14) % 360; }
+  function audition() { if (!prev.playing()) { JB.unlock(); var top = -1; for (var r = 0; r < 8 && top < 0; r++) for (var c = 0; c < 16; c++) if (song.mel[r][c]) { top = r; break; } JB.note(song.inst, JB.rowNote(song.mood, top < 0 ? 4 : top), 0.7); } }
+
+  /* the grid: 8 notes + 3 drums, time left→right (or top→bottom on a phone) */
+  var cells = [], vert = false;
+  function build() {
+    vert = window.matchMedia("(max-width:640px)").matches;
+    var g = $("#grid"); g.innerHTML = ""; cells = [];
+    $("#roll").classList.toggle("v", vert);
+    for (var r = 0; r < 11; r++) for (var c = 0; c < 16; c++) {
+      var drum = r >= 8, b = document.createElement("button"); b.type = "button";
+      b.className = "cell" + (drum ? " d" : "") + (c % 4 === 0 && c ? " q" : "");
+      var rr = drum ? r - 8 : r;
+      b.setAttribute("aria-label", (drum ? T.drums[rr][lang()] : "♪" + (8 - r)) + " · " + (c + 1));
+      if (vert) { b.style.gridRow = String(c + 1); b.style.gridColumn = String(drum ? 10 + rr : 8 - r); }
+      else { b.style.gridColumn = String(c + 1); b.style.gridRow = String(drum ? 10 + rr : r + 1); }
+      b.dataset.r = r; b.dataset.c = c;
+      g.appendChild(b); cells.push({ el: b, r: r, c: c });
+    }
+    if (!vert) { var sp = document.createElement("div"); sp.className = "gap"; sp.style.gridRow = "9"; sp.style.gridColumn = "1 / -1"; g.appendChild(sp); }
+    paintCells(); paintChips();
+  }
+  function on(r, c) { return r < 8 ? song.mel[r][c] : song.drum[r - 8][c]; }
+  function setCell(r, c, v) { if (r < 8) song.mel[r][c] = v; else song.drum[r - 8][c] = v; }
+  function paintCells() { cells.forEach(function (x) { x.el.classList.toggle("on", !!on(x.r, x.c)); x.el.setAttribute("aria-pressed", on(x.r, x.c) ? "true" : "false"); }); }
+  function cellAt(x, y) { var e = document.elementFromPoint(x, y); return e && e.classList && e.classList.contains("cell") ? e : null; }
+
+  /* paint with a finger: the first cell decides whether you are lighting or putting out */
+  var painting = null, lastCell = null;
+  $("#roll").addEventListener("pointerdown", function (e) {
+    var el = e.target.closest(".cell"); if (!el) return;
+    e.preventDefault(); JB.unlock();
+    var r = +el.dataset.r, c = +el.dataset.c; painting = !on(r, c); lastCell = el; apply(el);
+    try { $("#roll").setPointerCapture(e.pointerId); } catch (x) {}
+  });
+  $("#roll").addEventListener("pointermove", function (e) { if (painting === null) return; var el = cellAt(e.clientX, e.clientY); if (el && el !== lastCell) { lastCell = el; apply(el); } });
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach(function (k) { $("#roll").addEventListener(k, function () { if (painting !== null) { painting = null; save(); if (!prev.playing()) startPreview(); } }); });
+  $("#grid").addEventListener("keydown", function (e) { var el = e.target.closest(".cell"); if (el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); painting = !on(+el.dataset.r, +el.dataset.c); apply(el); painting = null; save(); } });
+  function apply(el) {
+    var r = +el.dataset.r, c = +el.dataset.c; if (on(r, c) === painting) return;
+    setCell(r, c, painting); el.classList.toggle("on", painting); el.setAttribute("aria-pressed", painting ? "true" : "false");
+    if (painting && !prev.playing()) { if (r < 8) JB.note(song.inst, JB.rowNote(song.mood, r), 0.8); else JB.drum(r - 8); }
+    prev.set(song);
+  }
+
+  /* ---------- hearing it ---------- */
+  var ph = -1;
+  function stepLight(st) {
+    if (ph >= 0) cells.forEach(function (x) { if (x.c === ph) x.el.classList.remove("ph"); });
+    ph = st; cells.forEach(function (x) { if (x.c === st) x.el.classList.add("ph"); });
+  }
+  function startPreview() {
+    JB.unlock(); if (JB.listening()) { resumeJukebox = true; JB.listen(false); JBW.fire(); JBW.paint(); }
+    prev.play(song, { loop: true, onStep: stepLight }); $("#play").textContent = "■"; $("#play").setAttribute("aria-label", t("stop"));
+  }
+  function stopPreview() {
+    prev.stop(); $("#play").textContent = "▶"; $("#play").setAttribute("aria-label", t("play"));
+    cells.forEach(function (x) { x.el.classList.remove("ph"); }); ph = -1;
+  }
+  $("#play").onclick = function () { if (prev.playing()) { stopPreview(); if (resumeJukebox) { resumeJukebox = false; JB.listen(true); JBW.fire(); JBW.paint(); } } else startPreview(); };
+  $("#bpm").addEventListener("input", function () { song.bpm = +this.value; prev.set(song); if (prev.playing()) { prev.stop(); prev.play(song, { loop: true, onStep: stepLight }); } save(); });
+  $("#dice").onclick = function () { var keepI = song.inst; song = JB.random(); if (Math.random() < .5) song.inst = keepI; paintCells(); paintChips(); save(); if (prev.playing()) { prev.stop(); prev.play(song, { loop: true, onStep: stepLight }); } else startPreview(); };
+  $("#wipe").onclick = function () { var b = JB.blank(); b.mood = song.mood; b.inst = song.inst; b.bpm = song.bpm; song = b; paintCells(); prev.set(song); save(); };
+  window.addEventListener("jukebox", function (e) { if (e.detail && e.detail.on && prev.playing()) { resumeJukebox = false; stopPreview(); } });
+
+  /* ---------- pressing a record ---------- */
+  function say(msg) { var s = $("#say"); s.textContent = msg; s.classList.add("show"); clearTimeout(say.t); say.t = setTimeout(function () { s.classList.remove("show"); }, 3800); }
+  function hasNotes() { return song.mel.some(function (r) { return r.indexOf(true) >= 0; }); }
+  $("#press").onclick = function () {
+    if (!hasNotes()) { say(t("empty")); $("#roll").classList.remove("err"); void $("#roll").offsetWidth; $("#roll").classList.add("err"); return; }
+    var code = JB.encode(song), sc = document.createElement("div"); sc.className = "scrim"; sc.setAttribute("role", "dialog");
+    sc.innerHTML = '<div class="vinyl" style="--lh:' + JB.hue(code) + '"><button class="x" type="button" aria-label="Close">×</button>' +
+      '<div class="label"><input id="ttl" maxlength="40" autocomplete="off"><span class="hole"></span><input id="who" maxlength="32" autocomplete="nickname"></div>' +
+      '<button class="go" type="button" aria-label="Into the jukebox">💿</button></div>';
+    document.body.appendChild(sc);
+    var ttl = $("#ttl", sc), who = $("#who", sc), go = $(".go", sc);
+    ttl.placeholder = t("untitled"); ttl.setAttribute("aria-label", t("titleA")); who.placeholder = t("yourName"); who.setAttribute("aria-label", t("yourName"));
+    who.value = JB.nick(); ttl.value = ls("jb_title") || "";
+    setTimeout(function () { ttl.focus(); }, 50);
+    function close() { sc.remove(); }
+    $(".x", sc).onclick = close; sc.addEventListener("click", function (e) { if (e.target === sc) close(); });
+    sc.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); if (e.key === "Enter") go.click(); });
+    go.onclick = function () {
+      var name = who.value.trim(), title = ttl.value.trim() || t("untitled");
+      if (!name) { who.focus(); who.parentNode.classList.remove("err"); void who.offsetWidth; who.parentNode.classList.add("err"); return; }
+      go.disabled = true; ls("jb_title", "");
+      JB.press(name, title, code).then(function (id) {
+        $(".vinyl", sc).classList.add("away");
+        setTimeout(function () { close(); JBW.refresh(id); var m = $("#machine"); if (window.innerWidth < 900) m.scrollIntoView({ behavior: "smooth", block: "start" }); say(t("inBox")); }, 850);
+      }).catch(function (e) {
+        go.disabled = false; ls("jb_title", title);
+        say(/rest|fast/.test(String(e && e.message)) ? t("rest") : t("away"));
+      });
+    };
+  };
+
+  /* ---------- the jukebox: music on from the first touch ---------- */
+  JBW.mount($("#machine"), { venue: "studio" });
+  JB.watch();
+  function first(e) {
+    document.removeEventListener("pointerdown", first, true); document.removeEventListener("keydown", first, true); JB.unlock();
+    var mine = e && e.target && e.target.closest && e.target.closest("#roll,#play,.chip,#dice,#wipe,#press,.jbm-spk,.jbm-sl,[data-fbl-btn],.scrim");
+    if (!mine && !prev.playing() && !JB.listening()) { JB.listen(true); JBW.fire(); JBW.paint(); }
+  }
+  document.addEventListener("pointerdown", first, true); document.addEventListener("keydown", first, true);
+
+  build(); words();
+  var mq = window.matchMedia("(max-width:640px)"); (mq.addEventListener ? mq.addEventListener("change", build) : mq.addListener(build));
+  document.addEventListener("visibilitychange", function () { if (document.hidden && prev.playing()) stopPreview(); });
+})();
+</script>
+</body>
+</html>

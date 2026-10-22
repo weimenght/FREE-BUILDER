@@ -20,6 +20,14 @@ AUTHOR: FREE//BUILDER
 DESC: Board a night sleeper and just look out. Hours pass, the weather drifts, tunnels open onto new landscapes. Write on the fogged glass, and share your cabin so friends ride the same window, live.
 URL: train/
 
+CODE: JUKEBOX
+ID: JB-09
+TITLE: Jukebox
+GENRE: Light-up tunes, one shared record player
+AUTHOR: FREE//BUILDER
+DESC: Light up a few bulbs and you have a tune. Press it into a record, sign it, then drop a coin: it plays in Wei's Bar and the book corner at the same second, with your name on it.
+URL: jukebox/
+
 CODE: BAR
 ID: WB-03
 TITLE: Wei's Bar & Coffee
