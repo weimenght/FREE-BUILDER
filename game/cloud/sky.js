@@ -33,7 +33,8 @@
 
   /* ---------- each visit, something else in the sky ---------- */
   var pick = function (a) { return a[(Math.random() * a.length) | 0]; };
-  var X = night() ? { stars: true, flies: Math.random() < 0.7 } : { rainbow: Math.random() < 0.35, kite: Math.random() < 0.45, plane: Math.random() < 0.6, flies: sky === "dusk" && Math.random() < 0.6 };
+  var X = night() ? { stars: true, flies: Math.random() < 0.7 } : { rainbow: Math.random() < 0.3, shower: Math.random() < 0.3, kite: Math.random() < 0.45, plane: Math.random() < 0.6, flies: sky === "dusk" && Math.random() < 0.6 };
+  if (X.shower) X.rainbow = false;   /* a passing shower brings its own rainbow afterwards */
   try { if (typeof setBreezeSpeed === "function") setBreezeSpeed(pick([50, 90, 130, 180])); } catch (e) {}
 
   /* ---------- sound starts with your first touch ---------- */
@@ -101,10 +102,68 @@
   setTimeout(function auto() { if (!document.hidden) try { triggerRandomPareidolia(); } catch (e) {} setTimeout(auto, 80e3 + Math.random() * 70e3); }, 25e3 + Math.random() * 20e3);
 
   /* ---------- the overlay: your trail, and the visit's extras ---------- */
+  /* ---------- the grass right by your face, and what grows in it ---------- */
+  var blades = [], motes = [];
+  function grow() {
+    blades = []; var n = Math.min(260, Math.round(W / 6));
+    for (var i = 0; i < n; i++) {
+      var near = Math.random() < 0.35, r = Math.random();
+      blades.push({ x: Math.random() * (W + 80) - 40, h: H * (near ? 0.12 + Math.random() * 0.14 : 0.05 + Math.random() * 0.08), w: near ? 5 + Math.random() * 6 : 2 + Math.random() * 3, near: near, lean: (Math.random() - 0.5) * 0.5, p: Math.random() * TAU, bend: 0,
+        flower: !near && r < 0.07 ? ["#ffffff", "#ffe066", "#c9a6ff", "#ff9fb2"][(Math.random() * 4) | 0] : null, seed: near && r < 0.08 });
+    }
+    blades.sort(function (a, b) { return a.near - b.near; });
+    motes = []; for (var m = 0; m < 22; m++) motes.push({ x: Math.random(), y: Math.random() * 0.8, r: 6 + Math.random() * 22, v: 0.2 + Math.random() * 0.5, p: Math.random() * TAU });
+  }
+  grow(); addEventListener("resize", grow);
+  function rgb(a, al) { return "rgba(" + (a[0] | 0) + "," + (a[1] | 0) + "," + (a[2] | 0) + "," + al + ")"; }
+  function mixc(a, b, k) { return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k]; }
+  var px = -999, py = -999;
+  addEventListener("pointermove", function (e) { px = e.clientX; py = e.clientY; }, { passive: true });
+  function grass(t) {
+    var ac = (typeof activeColors !== "undefined") ? activeColors : null, far = ac ? ac.meadowFar : [90, 140, 80], nearC = ac ? ac.meadowNear : [50, 90, 50], sunC = ac ? ac.sunColor : [255, 240, 200];
+    var dark = night() ? 0.75 : sky === "dusk" ? 0.35 : 0, breeze = (state.breezeSpeed || 1);
+    for (var i = 0; i < blades.length; i++) {
+      var b = blades[i], sway = Math.sin(t * (0.6 + breeze * 0.4) + b.x * 0.012 + b.p) * 0.06 * breeze;
+      var dx = b.x - px, dy = (H - b.h * 0.6) - py; if (dx * dx + dy * dy < 14000) b.bend += (dx > 0 ? 0.03 : -0.03); b.bend *= 0.94;
+      var ang = b.lean + sway + b.bend, tipX = b.x + Math.sin(ang) * b.h, tipY = H - Math.cos(ang) * b.h, midX = b.x + Math.sin(ang * 0.5) * b.h * 0.55, midY = H - b.h * 0.55;
+      var base = b.near ? nearC : far, col = mixc(mixc(base, b.near ? [70, 120, 60] : [120, 170, 90], night() ? 0 : sky === "dusk" ? 0.15 : 0.5), [8, 12, 18], dark), lit = mixc(col, sunC, night() ? 0.05 : 0.35);
+      var gr = g.createLinearGradient(b.x, H, tipX, tipY); gr.addColorStop(0, rgb(mixc(col, [0, 0, 0], 0.35), 1)); gr.addColorStop(1, rgb(lit, b.near ? 0.98 : 0.9));
+      g.fillStyle = gr; g.beginPath(); g.moveTo(b.x - b.w / 2, H + 2); g.quadraticCurveTo(midX - b.w * 0.3, midY, tipX, tipY); g.quadraticCurveTo(midX + b.w * 0.3, midY, b.x + b.w / 2, H + 2); g.closePath(); g.fill();
+      if (b.flower) { var fc = night() ? "rgba(200,200,220,.35)" : b.flower; g.fillStyle = fc; for (var q = 0; q < 5; q++) { g.beginPath(); g.arc(tipX + Math.cos(q * 1.257 + t * 0.2) * 3, tipY + Math.sin(q * 1.257 + t * 0.2) * 3, 2.4, 0, TAU); g.fill(); } g.fillStyle = night() ? "rgba(120,110,80,.5)" : "#f2b632"; g.beginPath(); g.arc(tipX, tipY, 1.8, 0, TAU); g.fill(); }
+      if (b.seed) { g.fillStyle = rgb(mixc(lit, [230, 220, 170], 0.5), 0.9); g.beginPath(); g.ellipse(tipX, tipY + 8, 3, 11, ang, 0, TAU); g.fill(); }
+    }
+  }
+  /* sunlight in the lens: a soft glare and a few ghosts by day, rays through the clouds at dusk */
+  function light(t) {
+    if (night() || typeof activeColors === "undefined") return;
+    var sx = W * activeColors.sunPos.x, sy = H * activeColors.sunPos.y, sc = activeColors.sunColor;
+    g.save(); g.globalCompositeOperation = "lighter";
+    var gl = g.createRadialGradient(sx, sy, 0, sx, sy, Math.max(W, H) * 0.45); gl.addColorStop(0, rgb(sc, 0.22)); gl.addColorStop(0.3, rgb(sc, 0.06)); gl.addColorStop(1, rgb(sc, 0)); g.fillStyle = gl; g.fillRect(0, 0, W, H);
+    if (sky === "dusk") { for (var k = 0; k < 9; k++) { var a = Math.PI * 0.55 + k * 0.11 + Math.sin(t * 0.05 + k) * 0.02, L = Math.max(W, H) * 1.2; g.fillStyle = rgb(sc, 0.035); g.beginPath(); g.moveTo(sx, sy); g.lineTo(sx + Math.cos(a - 0.02) * L, sy + Math.sin(a - 0.02) * L); g.lineTo(sx + Math.cos(a + 0.02) * L, sy + Math.sin(a + 0.02) * L); g.closePath(); g.fill(); } }
+    else { var cx = W / 2, cy = H / 2; [[0.35, 26, 0.05], [0.6, 12, 0.07], [0.9, 40, 0.035], [1.25, 18, 0.05]].forEach(function (f) { var fx2 = sx + (cx - sx) * f[0] * 2, fy2 = sy + (cy - sy) * f[0] * 2; var hg = g.createRadialGradient(fx2, fy2, 0, fx2, fy2, f[1]); hg.addColorStop(0, rgb([200, 230, 255], f[2])); hg.addColorStop(0.7, rgb([255, 220, 180], f[2] * 0.6)); hg.addColorStop(1, rgb([255, 255, 255], 0)); g.fillStyle = hg; g.beginPath(); g.arc(fx2, fy2, f[1], 0, TAU); g.fill(); }); }
+    /* dust and pollen catching the light */
+    motes.forEach(function (m) { m.p += 0.004 * m.v; var x = ((m.x + t * 0.004 * m.v) % 1) * W, y = m.y * H + Math.sin(m.p * 3) * 20, mg = g.createRadialGradient(x, y, 0, x, y, m.r); mg.addColorStop(0, rgb(sc, 0.06)); mg.addColorStop(1, rgb(sc, 0)); g.fillStyle = mg; g.fillRect(x - m.r, y - m.r, m.r * 2, m.r * 2); });
+    g.restore();
+  }
+  /* a passing shower: the light dims, rain slants across, and a rainbow comes out after */
+  var drops = [];
+  function shower(t) {
+    if (!X.shower) return 0;
+    var k = Math.max(0, Math.sin(Math.min(Math.PI, (t - 30) / 35 * Math.PI))); if (t > 66 && !X.rainbow) { X.rainbow = true; bow.start = t; }
+    if (k <= 0.01) return 0;
+    g.fillStyle = "rgba(60,70,90," + 0.22 * k + ")"; g.fillRect(0, 0, W, H);
+    while (drops.length < 180 * k) drops.push({ x: Math.random() * (W + 200), y: Math.random() * H, l: 10 + Math.random() * 14, v: 9 + Math.random() * 6 });
+    g.strokeStyle = "rgba(220,230,245," + 0.35 * k + ")"; g.lineWidth = 1; g.beginPath();
+    drops.forEach(function (d) { d.y += d.v; d.x -= d.v * 0.25 * (state.breezeSpeed || 1); if (d.y > H) { d.y = -20; d.x = Math.random() * (W + 200); } g.moveTo(d.x, d.y); g.lineTo(d.x + d.l * 0.25, d.y - d.l); });
+    g.stroke(); return k;
+  }
+  function vignette() { var vg = g.createRadialGradient(W / 2, H * 0.45, Math.min(W, H) * 0.35, W / 2, H * 0.45, Math.max(W, H) * 0.8); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, night() ? "rgba(0,0,10,.35)" : "rgba(20,30,50,.18)"); g.fillStyle = vg; g.fillRect(0, 0, W, H); }
+
   var stars = [], flies = [], kite = { x: -60, y: 0, p: 0 }, plane = null, shoot = null, bow = { a: 0, t: 0 }, t0 = performance.now();
   for (var i = 0; i < 40; i++) flies.push({ x: Math.random(), y: 0.8 + Math.random() * 0.17, p: Math.random() * TAU, v: 0.3 + Math.random() * 0.7 });
   function frame(now) {
     var t = (now - t0) / 1000; g.clearRect(0, 0, W, H);
+    light(t); shower(t);
     /* your finger's trail: soft vapour that fades if you stop */
     if (trail.length > 1) {
       g.save(); g.lineCap = g.lineJoin = "round";
@@ -112,7 +171,7 @@
       g.restore();
     }
     /* a rainbow after rain that never came, fading in and out */
-    if (X.rainbow) { bow.a = Math.min(1, Math.max(0, Math.sin(Math.min(Math.PI, (t - 6) / 70 * Math.PI)))); if (bow.a > 0.01) { var cx = W * 0.78, cy = H * 0.95, R = Math.max(W, H) * 0.55, cols = ["255,80,80", "255,160,60", "255,230,90", "110,220,120", "90,170,255", "150,110,255"]; g.save(); g.globalAlpha = 0.16 * bow.a; g.lineWidth = R * 0.018; cols.forEach(function (c, i) { g.strokeStyle = "rgb(" + c + ")"; g.beginPath(); g.arc(cx, cy, R - i * g.lineWidth, Math.PI * 1.05, Math.PI * 1.75); g.stroke(); }); g.restore(); } }
+    if (X.rainbow) { bow.a = Math.min(1, Math.max(0, Math.sin(Math.min(Math.PI, (t - (bow.start || 6)) / 70 * Math.PI)))); if (bow.a > 0.01) { var cx = W * 0.78, cy = H * 0.95, R = Math.max(W, H) * 0.55, cols = ["255,80,80", "255,160,60", "255,230,90", "110,220,120", "90,170,255", "150,110,255"]; g.save(); g.globalAlpha = 0.16 * bow.a; g.lineWidth = R * 0.018; cols.forEach(function (c, i) { g.strokeStyle = "rgb(" + c + ")"; g.beginPath(); g.arc(cx, cy, R - i * g.lineWidth, Math.PI * 1.05, Math.PI * 1.75); g.stroke(); }); g.restore(); } }
     /* a kite on a long string */
     if (X.kite) { kite.p += 0.02; kite.x = W * 0.15 + Math.sin(t * 0.07) * W * 0.08; kite.y = H * 0.26 + Math.sin(kite.p) * 10; var kx = kite.x, ky = kite.y, r = Math.sin(kite.p * 0.7) * 0.25;
       g.save(); g.strokeStyle = "rgba(255,255,255,.55)"; g.lineWidth = 1; g.beginPath(); g.moveTo(kx, ky + 22); g.quadraticCurveTo(kx + 40, H * 0.7, kx - 30, H + 10); g.stroke();
@@ -129,6 +188,7 @@
       if (shoot) { shoot.x -= 9; shoot.y += 3; shoot.l -= 0.025; var sg = g.createLinearGradient(shoot.x, shoot.y, shoot.x + 70, shoot.y - 23); sg.addColorStop(0, "rgba(255,250,225," + shoot.l + ")"); sg.addColorStop(1, "rgba(255,250,225,0)"); g.strokeStyle = sg; g.lineWidth = 2; g.beginPath(); g.moveTo(shoot.x, shoot.y); g.lineTo(shoot.x + 70, shoot.y - 23); g.stroke(); if (shoot.l <= 0) shoot = null; } }
     /* fireflies over the grass */
     if (X.flies && (night() || sky === "dusk")) flies.forEach(function (f) { f.p += 0.02 * f.v; var x = ((f.x * W + Math.sin(f.p) * 30 + t * 6 * f.v) % W + W) % W, y = f.y * H + Math.cos(f.p * 1.3) * 12, a = 0.5 + 0.5 * Math.sin(f.p * 3); var fg = g.createRadialGradient(x, y, 0, x, y, 10); fg.addColorStop(0, "rgba(230,255,140," + 0.8 * a + ")"); fg.addColorStop(1, "rgba(230,255,140,0)"); g.fillStyle = fg; g.fillRect(x - 10, y - 10, 20, 20); });
+    grass(t); vignette();
     /* the trail fades when you hold still */
     for (var m = 0; m < trail.length; m++) trail[m].a = Math.max(0.15, trail[m].a - 0.002);
     requestAnimationFrame(frame);
