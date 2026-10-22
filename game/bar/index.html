@@ -9088,5 +9088,26 @@
     });
   })();
 </script>
+<script>
+  /* the lab is behind the counter: you only get in while Wei is asleep and you sneak round */
+  (function () {
+    var btn = document.querySelector('.dock-btn[data-room="lab"]'); if (!btn) return;
+    var st = document.createElement("style"); st.textContent = '.dock-btn[data-room="lab"]{display:none!important}body.lab-open .dock-btn[data-room="lab"]{display:flex!important;animation:labIn .5s steps(3)}@keyframes labIn{0%{transform:translateY(12px);opacity:0}}';
+    document.head.appendChild(st);
+    var L = { en: "Wei woke up — back to your side of the counter!", zh: "Wei 醒了，快回到吧台外面！", tw: "Wei 醒了，快回到吧台外面！", yue: "Wei 醒咗！快啲返出吧枱！", es: "¡Wei se ha despertado! Vuelve a tu lado de la barra.", ca: "En Wei s'ha despertat! Torna al teu costat de la barra." };
+    function lang() { try { return localStorage.getItem("weis-lang") || "en"; } catch (e) { return "en"; } }
+    function open(on) { document.body.classList.toggle("lab-open", !!on); }
+    var sneak0 = window.openSneakMixer;
+    window.openSneakMixer = function () { var r = sneak0 && sneak0.apply(this, arguments); if (AppState.weiState === "asleep") { open(true); setTimeout(function () { go("lab"); }, 700); } return r; };
+    var go0 = window.go;
+    window.go = function (room) { if (room === "lab" && !(AppState.weiState === "asleep" && document.body.classList.contains("lab-open"))) room = "counter"; return go0.call(this, room); };
+    setInterval(function () {
+      if (document.body.classList.contains("lab-open") && AppState.weiState !== "asleep") {
+        open(false);
+        if (currentRoom === "lab") { go0("counter"); try { showToast(L[lang()] || L.en); } catch (e) {} }
+      }
+    }, 1000);
+  })();
+</script>
 </body>
 </html>
