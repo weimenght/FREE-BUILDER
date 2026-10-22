@@ -646,7 +646,7 @@
   rollExtras();
 
   /* ---------- the frame ---------- */
-  var lastT = 0;
+  var lastT = 0, first = true;
   window.renderScene = function (now) {
     var dt = Math.min((now - (lastFrameTime || now)) / 16.667, 3); lastFrameTime = now;
     try {
@@ -659,11 +659,13 @@
       else if (state.stationScrollOffset > -cw * 4 && state.trainState !== "STOPPED") state.stationScrollOffset -= state.speed * 9 * dt;
 
       S = Math.max(0.55, Math.min(1.6, ch / 450)); H = ch * 0.6; HITS.length = 0;
+      if (first) { first = false; if (state.trainState === "CRUISING") state.stationScrollOffset = -cw * 6; }   /* no half-drawn platform at the start, however wide the screen */
       ease(dt); light();
       if (now - spriteT > 500) { spriteT = now; makeSprites(); }
       if (!starField.length) initStars();
-      if (state.biome !== shown) { prev = shown; shown = state.biome; fade = state.tunnelBlend > 0.6 ? 1 : 0; rollExtras(); }
-      if (fade < 1) fade = Math.min(1, fade + 0.008 * dt);
+      if (state.biome !== shown) { prev = shown; shown = state.biome; fade = state.tunnelBlend > 0.6 || !document.body.classList.contains("cb-on") ? 1 : 0; rollExtras(); }
+      if (fade < 1) fade = Math.min(1, fade + (now - (lastT || now)) / 2200);   /* by the clock, not by frames: slow devices fade just as fast */
+      lastT = now;
 
       if (state.tunnelBlend < 0.995) {
         sky(now, dt);
@@ -677,7 +679,7 @@
       var wetGlass = state.weather === "rain" || state.weather === "storm" || state.weather === "snow" || state.weather === "fog";
       if (wetGlass && typeof mistCanvas !== "undefined") { if (Math.random() < 0.06 && state.tunnelBlend < 0.5) replenishMistLayer(0.002);
         /* fogged glass takes the colour of the light outside: pale by day, a soft blue-grey at night */
-        ctx.save(); ctx.globalAlpha = 0.32 + 0.38 * Math.min(1, lum(L.low) / 200); ctx.drawImage(mistCanvas, 0, 0, cw, ch); ctx.restore(); }
+        ctx.save(); ctx.globalAlpha = 0.22 + 0.3 * Math.min(1, lum(L.low) / 200); ctx.drawImage(mistCanvas, 0, 0, cw, ch); ctx.restore(); }
       glass(dt);
       vignette();
     } catch (err) { if (!window.__viewErr) { window.__viewErr = err; console.error(err); } }

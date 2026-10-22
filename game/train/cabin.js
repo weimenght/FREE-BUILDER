@@ -60,10 +60,30 @@
     ".cb-cat{position:absolute;left:0;bottom:2%;z-index:24;width:clamp(56px,9%,96px);aspect-ratio:64/40;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}.cb-cat svg{width:100%;height:100%;overflow:visible}.cb-cat.rev svg{transform:scaleX(-1)}" +
     ".cb-cat .legs{animation:cbStep .38s steps(2) infinite}.cb-cat.sit .legs{animation:none}.cb-cat .tail{transform-origin:8px 22px;animation:cbTail 1.6s ease-in-out infinite}@keyframes cbStep{50%{transform:translateY(-1px)}}@keyframes cbTail{50%{transform:rotate(-14deg)}}" +
     ".cb-heart{position:absolute;left:60%;top:-30%;color:#ff8fa0;font:700 18px system-ui;animation:cbUp 1.2s ease-out forwards;pointer-events:none}@keyframes cbUp{to{transform:translateY(-34px);opacity:0}}" +
-    ".cb-rotate{display:none}@media (orientation:portrait) and (max-width:820px){.cb-rotate{position:fixed;inset:0;z-index:95;display:grid;place-items:center;text-align:center;padding:32px;background:rgba(10,7,5,.94);color:#f5e6c8;font:16px/1.6 Georgia,serif}.cb-rotate b{display:block;font-size:44px;margin-bottom:12px;animation:cbTurn 2.4s ease-in-out infinite}}" +
+    ".cb-rotate{display:none}@media (orientation:portrait) and (max-width:700px){.cb-rotate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:32px;background:#0a0705;color:#f5e6c8;font:28px/1 Georgia,serif}.cb-rotate b{display:block;font-size:56px;margin-bottom:18px;animation:cbTurn 2.4s ease-in-out infinite}.cb-rotate span{opacity:.5}}" +
     "@keyframes cbTurn{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(90deg)}}" +
     "@media (prefers-color-scheme:dark){.cb-card{background:#1f1915;color:#f2e8d8}.cb-card button{border-color:#f2e8d8}.cb-card button.pri{background:#f2e8d8;color:#1f1915}}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+
+  /* ---------- every time you board: somewhere else, some other hour, other weather, another tape ---------- */
+  function shuffle() {
+    try {
+      var pick = function (a) { return a[(Math.random() * a.length) | 0]; };
+      var st = pick(STATION_CATALOG.filter(function (x) { return x.name !== "Gulou Hutong" || Math.random() < 0.5; }));
+      state.station = st; setBiome(st.biome, false);
+      setTimeOfDay(pick(["dawn", "afternoon", "sunset", "night", "night", "sunset"]));
+      setWeather(pickWeather());
+      state.stationScrollOffset = -cw * 6; state.trainState = "CRUISING";
+      if (typeof RADIO_TRACKS !== "undefined") { state.trackIndex = (Math.random() * RADIO_TRACKS.length) | 0; var tt = $("radioTrackTitle"); if (tt) tt.textContent = RADIO_TRACKS[state.trackIndex].title; }
+      if (typeof DRINKS_MENU !== "undefined") state.drinkIndex = (Math.random() * DRINKS_MENU.length) | 0;
+      syncHUDAndButtons();
+    } catch (e) {}
+  }
+  /* iPhone: Web Audio stays silent under the mute switch unless a media element starts the session */
+  function unlockAudio() {
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) {}
+    try { var a = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="); a.loop = true; a.volume = 0; a.setAttribute("playsinline", ""); var p = a.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {}
+  }
 
   /* ---------- boarding ---------- */
   var qs = new URLSearchParams(location.search), invite = (qs.get("cabin") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
@@ -74,8 +94,8 @@
     document.body.appendChild(d);
     var go = function (sound) {
       d.style.opacity = "0"; setTimeout(function () { d.remove(); }, 800);
-      full();
-      try { if (sound && !isAudioPlaying) toggleAudioEngine(); } catch (e) {}
+      full(); unlockAudio();
+      try { if (sound && !isAudioPlaying) toggleAudioEngine(); if (sound && typeof audioCtx !== "undefined" && audioCtx && audioCtx.resume) audioCtx.resume(); } catch (e) {}
       boarded();
     };
     d.querySelector(".cb-go").onclick = function () { go(true); };
@@ -103,7 +123,7 @@
     var el = $("windowViewport"); if (!el) return;
     var bezel = el.closest(".window-bezel") || el.parentElement;
     var chrome = bezel.getBoundingClientRect().height - el.getBoundingClientRect().height;   /* frame + sill around the glass */
-    var h = Math.min(innerHeight - chrome - 20, el.getBoundingClientRect().width * 0.56);   /* fill the height, but stay a wide window */
+    var h = Math.min(innerHeight - chrome - 20, el.getBoundingClientRect().width * (innerHeight > innerWidth ? 1.1 : 0.68));   /* fill the height, but stay a wide window */
     el.style.setProperty("height", Math.max(170, Math.round(h)) + "px", "important");
     setTimeout(function () { try { resizeCanvas(); } catch (e) {} }, 60);
   }
@@ -140,13 +160,13 @@
     if (reduce) return;
     var vp = $("windowViewport"); if (!vp) return;
     setTimeout(function () {
-      if (state.weather === "clear") { try { setWeather("rain"); } catch (e) {} }
+      if (state.weather === "clear") { knock({ x: 0.7, y: 0.45 }, false); return; }
       var r = vp.getBoundingClientRect(), dot = document.createElement("div"); dot.className = "cb-finger"; vp.appendChild(dot);
       var t0 = performance.now(), dur = 2600;
       (function step(now) {
         var k = Math.min(1, (now - t0) / dur), x = r.width * (0.22 + 0.56 * k), y = r.height * (0.55 - Math.sin(k * Math.PI) * 0.22);
         dot.style.transform = "translate(" + x + "px," + y + "px)"; dot.style.opacity = k < 0.08 ? k * 12 : k > 0.92 ? (1 - k) * 12 : 1;
-        try { wipeGlassAt(x * (cw / r.width), y * (ch / r.height)); } catch (e) {}
+        try { for (var q = 0; q < 4; q++) { var kq = Math.max(0, k - q * 0.004), xq = r.width * (0.22 + 0.56 * kq), yq = r.height * (0.55 - Math.sin(kq * Math.PI) * 0.22); wipeGlassAt(xq * (cw / r.width), yq * (ch / r.height)); } } catch (e) {}
         if (k < 1) requestAnimationFrame(step); else { dot.classList.add("tap"); setTimeout(function () { knock({ x: 0.78, y: 0.5 }, false); }, 300); setTimeout(function () { dot.remove(); }, 900); }
       })(t0);
     }, 1600);
@@ -405,7 +425,8 @@
 
   window.FBCabin = { T: T, state: S, director: director, join: join, leave: leave };
   addEventListener("load", function () {
+    if (!invite) shuffle();
     glass(); boardCard();
-    var r = document.createElement("div"); r.className = "cb-rotate"; r.innerHTML = "<div><b>📱</b>Turn your phone sideways — the window is wide.</div>"; document.body.appendChild(r);
+    var r = document.createElement("div"); r.className = "cb-rotate"; r.setAttribute("role", "img"); r.setAttribute("aria-label", "Turn your phone sideways"); r.innerHTML = "<div><b>📱</b><span>↻</span></div>"; document.body.appendChild(r);
   });
 })();

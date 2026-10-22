@@ -945,7 +945,7 @@ details{margin-top:16px}summary{cursor:pointer;font:600 13px var(--sans);color:#
       if (box.hasAttribute("data-pile")) {
         var pile = null; list.forEach(function (b) { if (!pile || pile.children.length >= 2 + Math.floor(hash(b.title) * 4)) { pile = document.createElement("div"); pile.className = "pile"; box.insertBefore(pile, obj); } var e = spine(b); if (b.id === highlight) e.classList.add("new"); pile.appendChild(e); });
       } else {
-        var items = list.map(function (b) { return { b: b }; }), seed = box.dataset.spot, nd = 5 + Math.floor(hash(seed) * 7);
+        var items = list.map(function (b) { return { b: b }; }), seed = box.dataset.spot, nd = hash(seed) < 0.5 ? 1 : 2;   /* only a couple of unreadable old spines; the rest are real books */
         for (var i = 0; i < nd; i++) items.splice(Math.floor(hash(seed + i) * (items.length + 1)), 0, { d: seed + i });
         if (GHOST[seed]) items.splice(Math.floor(hash(seed + "g") * (items.length + 1)), 0, { g: 1 });
         items.forEach(function (it) {
