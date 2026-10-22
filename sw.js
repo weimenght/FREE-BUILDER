@@ -1,7 +1,7 @@
 /* FREE//BUILDER — offline cache for the demos (upload to /sw.js)
  * Pages: network first, so updates show up straight away; the cached copy is used when offline.
  * Fonts and vendor scripts: cache first. Nothing about the people using the demos is stored here. */
-const VERSION = "fb-2026-10-21e";
+const VERSION = "fb-2026-10-23a";
 // Launchpad (1.3 MB) is cached when first opened, not up front.
 const PAGES = ["listen", "questions", "thanks", "swap", "repair", "teachback", "discovery", "room", "design", "guide", "coach", "cq", "diagnose", "cost", "impact", "adapted", "ai", "frontline", "circles", "rituals", "facilitator", "kit", "twotruths", "prompt", "museum", "manual", "dial", "decide", "managers"].map(n => `/${n}/`).concat(["/"]);
 const FONTS = [
@@ -26,7 +26,7 @@ const withSlash = u => (u.pathname.endsWith("/") || /\.[a-z0-9]+$/i.test(u.pathn
 self.addEventListener("fetch", e => {
   const req = e.request, url = new URL(req.url);
   if (req.method !== "GET" || url.origin !== location.origin) return;
-  if (url.pathname.startsWith("/fonts/") || url.pathname.startsWith("/vendor/")) {
+  if (url.pathname.startsWith("/fonts/") || url.pathname.startsWith("/vendor/") || url.pathname.startsWith("/fbkit/")) {
     e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(res => { const copy = res.clone(); caches.open(VERSION).then(c => c.put(req, copy)); return res; })));
     return;
   }
