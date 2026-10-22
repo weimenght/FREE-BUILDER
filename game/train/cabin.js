@@ -1,7 +1,7 @@
 /* Sleeper Car No. 04 — the cabin layer.
    - Board with one tap; the journey then drives itself: hours pass, weather drifts, tunnels open onto
      new landscapes, stations come and go. You just look out of the window.
-   - The glass is the interface: drag to wipe the fog, hold to write on it, double-tap to knock.
+   - The glass is the interface: write in the mist with a fingertip (it fogs back over), double-tap to knock.
    - Share the cabin: friends who open the link sit in the same car and see the same window, live.
      Seat lights show who's aboard, notes on the glass and knocks reach everyone.
      Nothing is stored anywhere: the cabin exists only while someone is in it.
@@ -28,6 +28,7 @@
 
   /* ---------- look & feel ---------- */
   var css = "#sanctuaryWelcomeOverlay,#zenFloatingControls,#portraitBanner{display:none!important}" +
+    "#glassWhisperContainer,#notebookModal,[onclick='cycleWarmDrink()'],[onclick='openNotebookModal(false)'],#drawerWhisperBtn,[onclick='toggleWindowWhispers()'],[onclick='cycleWindowWhisperPrompt()']{display:none!important}" +
     "body.cb-on #glassWhisperContainer,body.cb-on #windowToast:empty{display:none!important}body.cb-on #cabinContainer>div>div:first-child{display:none!important}" +
     "body.cb-on #cabinContainer{max-width:none;padding:6px 8px}body.cb-on #cabinContainer>div>div:last-child{grid-column:1/-1}" +
     ".cb-ticket{padding:30px 34px 26px;border-radius:18px;background:linear-gradient(#f6ead2,#ead9b8);color:#2a1a10;box-shadow:0 30px 80px -30px #000;position:relative;min-width:min(22rem,86vw)}" +
@@ -110,6 +111,7 @@
     else if (!rq && !standalone()) homeHint();
     function lock() { try { screen.orientation && screen.orientation.lock && screen.orientation.lock("landscape").catch(function () {}); } catch (e) {} setTimeout(fit, 400); }
   }
+  function heart(k) { var t = Math.PI - k * 2 * Math.PI, x = 16 * Math.pow(Math.sin(t), 3), y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t); return { x: 0.7 + x / 260, y: 0.42 - y / 150 }; }
   function standalone() { return (window.matchMedia && matchMedia("(display-mode: fullscreen), (display-mode: standalone)").matches) || navigator.standalone === true; }
   function homeHint() {   /* iPhone Safari has no full screen for pages: show the two taps that give one */
     try { if (localStorage.getItem("train_home_hint")) return; localStorage.setItem("train_home_hint", "1"); } catch (e) {}
@@ -160,13 +162,13 @@
     if (reduce) return;
     var vp = $("windowViewport"); if (!vp) return;
     setTimeout(function () {
-      if (state.weather === "clear") { knock({ x: 0.7, y: 0.45 }, false); return; }
+      try { replenishMistLayer(0.2); } catch (e) {}
       var r = vp.getBoundingClientRect(), dot = document.createElement("div"); dot.className = "cb-finger"; vp.appendChild(dot);
-      var t0 = performance.now(), dur = 2600;
+      var t0 = performance.now(), dur = 2600, prevK = 0;
       (function step(now) {
-        var k = Math.min(1, (now - t0) / dur), x = r.width * (0.22 + 0.56 * k), y = r.height * (0.55 - Math.sin(k * Math.PI) * 0.22);
+        var k = Math.min(1, (now - t0) / dur), hp0 = heart(k), x = r.width * hp0.x, y = r.height * hp0.y;
         dot.style.transform = "translate(" + x + "px," + y + "px)"; dot.style.opacity = k < 0.08 ? k * 12 : k > 0.92 ? (1 - k) * 12 : 1;
-        try { for (var q = 0; q < 4; q++) { var kq = Math.max(0, k - q * 0.004), xq = r.width * (0.22 + 0.56 * kq), yq = r.height * (0.55 - Math.sin(kq * Math.PI) * 0.22); wipeGlassAt(xq * (cw / r.width), yq * (ch / r.height)); } } catch (e) {}
+        for (var kk = prevK; kk < k; kk += 0.004) finger(heart(kk), heart(Math.min(k, kk + 0.004))); prevK = k;
         if (k < 1) requestAnimationFrame(step); else { dot.classList.add("tap"); setTimeout(function () { knock({ x: 0.78, y: 0.5 }, false); }, 300); setTimeout(function () { dot.remove(); }, 900); }
       })(t0);
     }, 1600);
@@ -186,12 +188,17 @@
     var c = $("windowCanvas"), holdT = null, start = null, lastTap = 0;
     c.addEventListener("pointerdown", function (e) {
       start = { x: e.clientX, y: e.clientY, p: rel(e) };
-      clearTimeout(holdT); holdT = setTimeout(function () { if (start) ink(start.p); start = null; }, 650);
-      var now = Date.now(); if (now - lastTap < 320) { clearTimeout(holdT); start = null; knock(rel(e), true); } lastTap = now;
+      var now = Date.now(); if (now - lastTap < 320) { start = null; knock(rel(e), true); } lastTap = now;
+      pen = [rel(e)]; finger(pen[0], pen[0]); try { c.setPointerCapture(e.pointerId); } catch (x) {}
     });
-    c.addEventListener("pointermove", function (e) { if (start && Math.hypot(e.clientX - start.x, e.clientY - start.y) > 12) { clearTimeout(holdT); start = null; } });
+    c.addEventListener("pointermove", function (e) {
+      if (start && Math.hypot(e.clientX - start.x, e.clientY - start.y) > 12) start = null;
+      if (!pen) return; var p = rel(e), q = pen[pen.length - 1]; finger(q, p); pen.push(p);
+      if (pen.length > 6) flush();
+    });
     addEventListener("pointerup", function (e) {
-      var s0 = start; clearTimeout(holdT); start = null;
+      if (pen) { flush(); pen = null; }
+      var s0 = start; start = null;
       if (s0 && e.target === c && window.TrainView) { var r = vp().getBoundingClientRect(), k = TrainView.hit(e.clientX - r.left, e.clientY - r.top); if (k) setTimeout(function () { if (Date.now() - lastTap > 300) stopFor(k); }, 330); }
     });
   }
@@ -248,6 +255,18 @@
     document.body.appendChild(w);
     w.addEventListener("click", function (e) { if (e.target === w || e.target.closest('[data-a="stay"]')) { w.remove(); director.next.depart = Date.now() + 3000; } });
   }
+  /* writing on the glass is wiping the mist with a fingertip; friends in the cabin see the same strokes */
+  var pen = null;
+  function finger(a, b, w) {
+    try {
+      mistCtx.save(); mistCtx.globalCompositeOperation = "destination-out"; mistCtx.lineCap = mistCtx.lineJoin = "round";
+      mistCtx.strokeStyle = "rgba(0,0,0,0.92)"; mistCtx.lineWidth = w || Math.max(12, Math.min(26, cw * 0.016));
+      mistCtx.beginPath(); mistCtx.moveTo(a.x * cw, a.y * ch); mistCtx.lineTo(b.x * cw + 0.01, b.y * ch); mistCtx.stroke(); mistCtx.restore();
+    } catch (e) {}
+  }
+  function flush() { if (!pen || pen.length < 2) return; var pts = pen.map(function (p) { return [+p.x.toFixed(4), +p.y.toFixed(4)]; }); send("ink", { pts: pts }); pen = [pen[pen.length - 1]]; }
+  function inkFrom(p) { if (!p || !p.pts) return; for (var i = 1; i < p.pts.length; i++) finger({ x: p.pts[i - 1][0], y: p.pts[i - 1][1] }, { x: p.pts[i][0], y: p.pts[i][1] }); }
+  window.wipeGlassAt = function () {};   /* the engine's hover-wipe would erase writing; the finger does it now */
   function ink(p) {
     var box = document.createElement("div"); box.className = "cb-ink"; place(box, p);
     box.innerHTML = '<input maxlength="80" enterkeyhint="done" aria-label="' + T.write + '" placeholder="' + T.write + '">';
@@ -347,6 +366,7 @@
     if (S.peers[p.by]) S.peers[p.by].seen = Date.now();
     if (ev === "view" && !isDirector()) apply(p);
     if (ev === "note") note(p);
+    if (ev === "ink") inkFrom(p);
     if (ev === "knock") knock(p, false);
     if (ev === "fx") { try { if (p.k === "star") spawnShootingStarWish(); if (p.k === "express") triggerPassingExpressTrain(); if (p.k === "cat") catWalk(p.c, p.dir, p.sit); } catch (e) {} }
   }

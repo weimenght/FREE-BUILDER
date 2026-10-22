@@ -676,10 +676,13 @@
       tunnel(now);
       weather(now, dt);
       try { renderReleasedThoughtSparks(dt); } catch (e) {}
-      var wetGlass = state.weather === "rain" || state.weather === "storm" || state.weather === "snow" || state.weather === "fog";
-      if (wetGlass && typeof mistCanvas !== "undefined") { if (Math.random() < 0.06 && state.tunnelBlend < 0.5) replenishMistLayer(0.002);
-        /* fogged glass takes the colour of the light outside: pale by day, a soft blue-grey at night */
-        ctx.save(); ctx.globalAlpha = 0.22 + 0.3 * Math.min(1, lum(L.low) / 200); ctx.drawImage(mistCanvas, 0, 0, cw, ch); ctx.restore(); }
+      /* the glass always holds a little breath of mist (more when it's wet out): that's what you write in.
+         it slowly fogs back over, so whatever you write fades in a minute or so */
+      if (typeof mistCanvas !== "undefined") {
+        var wet = state.weather === "rain" || state.weather === "storm" || state.weather === "snow" || state.weather === "fog";
+        if (Math.random() < 0.06 && state.tunnelBlend < 0.5) replenishMistLayer(0.0022);
+        ctx.save(); ctx.globalAlpha = (wet ? 1 : 0.55) * (0.22 + 0.3 * Math.min(1, lum(L.low) / 200)); ctx.drawImage(mistCanvas, 0, 0, cw, ch); ctx.restore();
+      }
       glass(dt);
       vignette();
     } catch (err) { if (!window.__viewErr) { window.__viewErr = err; console.error(err); } }
@@ -688,6 +691,10 @@
 
   /* ---------- getting off: tap Wei's Bar or the book corner ---------- */
   window.TrainView = { hit: function (x, y) { for (var i = HITS.length - 1; i >= 0; i--) { var h = HITS[i]; if (x >= h.x && x <= h.x + h.w && y >= h.y && y <= h.y + h.h) return h.k; } return null; } };
+
+  /* the mist never clears completely, whatever the weather */
+  window.replenishMistLayer = function (a) { try { mistCtx.save(); mistCtx.globalCompositeOperation = "source-over"; mistCtx.fillStyle = "rgba(215,230,242," + (a == null ? 0.002 : a) + ")"; mistCtx.fillRect(0, 0, mistCanvas.width, mistCanvas.height); mistCtx.restore(); } catch (e) {} };
+  var setW = window.setWeather; if (setW) window.setWeather = function (w) { var r = setW.apply(this, arguments); if (w === "clear") replenishMistLayer(0.3); return r; };
 
   /* ---------- more places to go ---------- */
   try {
