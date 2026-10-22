@@ -402,6 +402,7 @@
 
   /* ---------- translation ---------- */
   var NUM = /\d+(?:[.,]\d+)?/g, cache = {}, cacheLang = "";
+  var PATS = null;
   function tr(s) {
     if (typeof s !== "string" || !s || !window.FBT_DICT) return s;
     var l = lang(); if (l === "en" || !(l in LI)) return s;
@@ -418,6 +419,14 @@
       var sm = /(\s+:\s+|:\s+|\s\/\s)/.exec(core);
       if (sm) { var left = core.slice(0, sm.index), right = core.slice(sm.index + sm[0].length), joined = tr(left) + sm[0] + tr(right);
         if (joined !== core) return (cache[s] = m[1] + joined + m[3]); }
+    }
+    if (!v) {   /* sentences built around a name: keys with {s} ("Poured a warm cup of {s}") */
+      if (!PATS) { PATS = []; for (var k in D) if (k.indexOf("{s}") >= 0) PATS.push([new RegExp("^" + k.replace(/[.*+?^$()|[\]\\]/g, "\\$&").replace(/\{#\}/g, "(\\d+(?:[.,]\\d+)?)").replace(/\{s\}/g, "([\\s\\S]+?)") + "$"), k]); }
+      for (var pi = 0; pi < PATS.length; pi++) { var pm = PATS[pi][0].exec(core); if (!pm) continue;
+        var pv = D[PATS[pi][1]][LI[l]]; if (!pv) break; var gi = 1, kk = PATS[pi][1], order = kk.match(/\{[#s]\}/g) || [], vals = { s: [], n: [] };
+        order.forEach(function (t) { (t === "{s}" ? vals.s : vals.n).push(pm[gi++]); });
+        var si = 0, ni = 0; out = m[1] + pv.replace(/\{(#|s)\}/g, function (_, k) { return k === "#" ? (vals.n[ni++] || "") : tr(vals.s[si++] || ""); }) + m[3];
+        return (cache[s] = out); }
     }
     if (v && v[LI[l]]) { var i = 0; out = m[1] + v[LI[l]].replace(/\{(#|\d)\}/g, function (_, k) { return k === "#" ? (nums[i++] || "") : (nums[+k] || ""); }) + m[3]; }
     return (cache[s] = out);
@@ -478,7 +487,7 @@
     var paint = function () { a.textContent = "← " + w("back") + " · " + w("made"); a.setAttribute("aria-label", w("back") + " — " + w("made")); if (chip) chip.lastChild.textContent = (window.FBL && FBL.SHORT[lang()]) || "EN"; };
     var chip = null;
     if (window.FBT_DICT) { chip = document.createElement("button"); chip.type = "button"; chip.className = "fbg-lang"; chip.setAttribute("data-fbl-btn", ""); chip.innerHTML = '<span aria-hidden="true">🌐 </span><span data-fbl-label></span>'; box.appendChild(chip); }
-    if (!host && !chip) {   /* corner placement: just a faint ♥ until someone asks */
+    if (!host) {   /* corner placement: a faint ♥ (and language globe) until someone asks */
       box.className = "fbg fbg-mini";
       var heart = document.createElement("button"); heart.type = "button"; heart.className = "fbg-heart"; heart.textContent = "♥";
       heart.setAttribute("aria-expanded", "false");
@@ -496,7 +505,7 @@
     ".fbg a:focus-visible,.fbg button:focus-visible{outline:2px solid #F28C76;outline-offset:2px}.fbg-lang.fbl-has::after{display:none}" +
     ".fbg-mini{right:6px;bottom:calc(4px + env(safe-area-inset-bottom));opacity:.22;flex-direction:row-reverse;gap:4px}.fbg-mini:hover,.fbg-mini:focus-within,.fbg-mini.open{opacity:.9}" +
     ".fbg-mini .fbg-heart{background:none;border:0;padding:4px 6px;font-size:11px;line-height:1;color:inherit;-webkit-backdrop-filter:none;backdrop-filter:none}" +
-    ".fbg-mini .fbg-a{display:none}.fbg-mini.open .fbg-a{display:inline-block}.fbg-mini{color:#fff}";
+    ".fbg-mini .fbg-lang{padding:3px 7px;font-size:10px;background:rgba(0,0,0,.3)}.fbg-mini .fbg-a{display:none}.fbg-mini.open .fbg-a{display:inline-block}.fbg-mini{color:#fff}";
   var st = document.createElement("style"); st.textContent = css; (document.head || document.documentElement).appendChild(st);
 
   window.FBG = { tr: tr, refresh: function () { all(); } };

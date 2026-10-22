@@ -52,9 +52,17 @@ DESC: Board a night sleeper and just look out. Hours pass, the weather drifts, t
 URL: train/
 
 CODE: KINTSUGI
-ID: __
-TITLE: 
-GENRE: 
+ID: KS-07
+TITLE: Kintsugi Studio
+GENRE: Golden joinery, slow craft
 AUTHOR: FREE//BUILDER
-DESC: 
+DESC: Pick a broken bowl and mend it the old way. Fit the shards, seal the cracks with lacquer, then dust the seams with gold until the break becomes the best part. Finished pieces rest on your tokonoma shelf.
 URL: kintsugi/
+
+CODE: SORA
+ID: SK-08
+TITLE: Sora
+GENRE: Cloud watching for a blank mind
+AUTHOR: FREE//BUILDER
+DESC: Lie back under an open sky. Brush the clouds to stir the breeze, daydream them into shapes, let a worry drift off as vapour, or just breathe with the ring. Four skies from morning dew to starlight.
+URL: cloud/

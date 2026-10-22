@@ -402,6 +402,7 @@
 
   /* ---------- translation ---------- */
   var NUM = /\d+(?:[.,]\d+)?/g, cache = {}, cacheLang = "";
+  var PATS = null;
   function tr(s) {
     if (typeof s !== "string" || !s || !window.FBT_DICT) return s;
     var l = lang(); if (l === "en" || !(l in LI)) return s;
@@ -418,6 +419,14 @@
       var sm = /(\s+:\s+|:\s+|\s\/\s)/.exec(core);
       if (sm) { var left = core.slice(0, sm.index), right = core.slice(sm.index + sm[0].length), joined = tr(left) + sm[0] + tr(right);
         if (joined !== core) return (cache[s] = m[1] + joined + m[3]); }
+    }
+    if (!v) {   /* sentences built around a name: keys with {s} ("Poured a warm cup of {s}") */
+      if (!PATS) { PATS = []; for (var k in D) if (k.indexOf("{s}") >= 0) PATS.push([new RegExp("^" + k.replace(/[.*+?^$()|[\]\\]/g, "\\$&").replace(/\{#\}/g, "(\\d+(?:[.,]\\d+)?)").replace(/\{s\}/g, "([\\s\\S]+?)") + "$"), k]); }
+      for (var pi = 0; pi < PATS.length; pi++) { var pm = PATS[pi][0].exec(core); if (!pm) continue;
+        var pv = D[PATS[pi][1]][LI[l]]; if (!pv) break; var gi = 1, kk = PATS[pi][1], order = kk.match(/\{[#s]\}/g) || [], vals = { s: [], n: [] };
+        order.forEach(function (t) { (t === "{s}" ? vals.s : vals.n).push(pm[gi++]); });
+        var si = 0, ni = 0; out = m[1] + pv.replace(/\{(#|s)\}/g, function (_, k) { return k === "#" ? (vals.n[ni++] || "") : tr(vals.s[si++] || ""); }) + m[3];
+        return (cache[s] = out); }
     }
     if (v && v[LI[l]]) { var i = 0; out = m[1] + v[LI[l]].replace(/\{(#|\d)\}/g, function (_, k) { return k === "#" ? (nums[i++] || "") : (nums[+k] || ""); }) + m[3]; }
     return (cache[s] = out);
@@ -478,7 +487,7 @@
     var paint = function () { a.textContent = "← " + w("back") + " · " + w("made"); a.setAttribute("aria-label", w("back") + " — " + w("made")); if (chip) chip.lastChild.textContent = (window.FBL && FBL.SHORT[lang()]) || "EN"; };
     var chip = null;
     if (window.FBT_DICT) { chip = document.createElement("button"); chip.type = "button"; chip.className = "fbg-lang"; chip.setAttribute("data-fbl-btn", ""); chip.innerHTML = '<span aria-hidden="true">🌐 </span><span data-fbl-label></span>'; box.appendChild(chip); }
-    if (!host && !chip) {   /* corner placement: just a faint ♥ until someone asks */
+    if (!host) {   /* corner placement: a faint ♥ (and language globe) until someone asks */
       box.className = "fbg fbg-mini";
       var heart = document.createElement("button"); heart.type = "button"; heart.className = "fbg-heart"; heart.textContent = "♥";
       heart.setAttribute("aria-expanded", "false");
@@ -496,7 +505,7 @@
     ".fbg a:focus-visible,.fbg button:focus-visible{outline:2px solid #F28C76;outline-offset:2px}.fbg-lang.fbl-has::after{display:none}" +
     ".fbg-mini{right:6px;bottom:calc(4px + env(safe-area-inset-bottom));opacity:.22;flex-direction:row-reverse;gap:4px}.fbg-mini:hover,.fbg-mini:focus-within,.fbg-mini.open{opacity:.9}" +
     ".fbg-mini .fbg-heart{background:none;border:0;padding:4px 6px;font-size:11px;line-height:1;color:inherit;-webkit-backdrop-filter:none;backdrop-filter:none}" +
-    ".fbg-mini .fbg-a{display:none}.fbg-mini.open .fbg-a{display:inline-block}.fbg-mini{color:#fff}";
+    ".fbg-mini .fbg-lang{padding:3px 7px;font-size:10px;background:rgba(0,0,0,.3)}.fbg-mini .fbg-a{display:none}.fbg-mini.open .fbg-a{display:inline-block}.fbg-mini{color:#fff}";
   var st = document.createElement("style"); st.textContent = css; (document.head || document.documentElement).appendChild(st);
 
   window.FBG = { tr: tr, refresh: function () { all(); } };
@@ -2764,6 +2773,29 @@
             deltaEnergy: 0, drink: "catalan_vermut", nextMood: "baristaJoy"
           }
         ]
+      },
+      {
+        id: "book_corner_lamp",
+        mood: "nightOwl",
+        text: {
+          en: "\"See the lamp still on over the fence? That's the book corner next door. Some nights people walk in here with a paperback they just found over there and read it at the counter until closing. Best kind of regular.\"",
+          zh: "\"看见篱笆那边还亮着的灯吗？那是隔壁的旧书角。有些晚上，客人刚从那边淘到一本书，就过来坐在吧台边一直读到打烊。最好的那种熟客。\"",
+          es: "\"¿Ves la lámpara aún encendida al otro lado de la valla? Es el rincón de libros de al lado. Algunas noches la gente entra con un libro que acaba de encontrar allí y lo lee en la barra hasta el cierre. El mejor tipo de cliente.\""
+        },
+        options: [
+          {
+            label: { en: "Then pour me something slow enough for a chapter.", zh: "那给我来一杯够慢慢读完一章的酒。", es: "Entonces ponme algo que dure un capítulo." },
+            deltaEnergy: -1, drink: "oldfashioned", nextMood: "poetic"
+          },
+          {
+            label: { en: "I'll go find a book and come straight back.", zh: "我去那边挑本书，马上回来。", es: "Voy a buscar un libro y vuelvo enseguida." },
+            deltaEnergy: 0, drink: "jasmine_gulou", nextMood: "empath"
+          },
+          {
+            label: { en: "Do Miso and Yuzu have library cards?", zh: "味噌和柚子办借书证了吗？", es: "¿Miso y Yuzu tienen carné de biblioteca?" },
+            deltaEnergy: 0, drink: "negroni", nextMood: "sarcastic", bond: 1
+          }
+        ]
       }
     ];
   </script>
@@ -2952,6 +2984,29 @@
           {
             label: { en: "Pack a tin of whole beans for me to take home.", zh: "给我称一罐新鲜烘焙的整颗咖啡豆带走。", es: "Empácame una lata de granos enteros para llevar a casa." },
             deltaEnergy: 1, drink: "croissant_combo", nextMood: "empath"
+          }
+        ]
+      },
+      {
+        id: "book_corner_next_door",
+        mood: "poetic",
+        text: {
+          en: "\"Have you been next door yet? The Dog-Eared Corner, the second-hand book place. Four little rooms from the attic down to the basement, and every book has a note tucked inside. Yuzu hops the garden wall most afternoons and naps on the poetry.\"",
+          zh: "\"去过隔壁了吗？折角书屋，卖旧书的。从阁楼到地下室一共四个小房间，每本书里都夹着一张字条。柚子几乎每天下午都翻过花园墙溜过去，睡在诗集上。\"",
+          es: "\"¿Ya has ido a la casa de al lado? El Rincón de la Página Doblada, los libros de segunda mano. Cuatro cuartitos del desván al sótano, y cada libro lleva una nota dentro. Yuzu salta la tapia del jardín casi cada tarde y se duerme sobre la poesía.\""
+        },
+        options: [
+          {
+            label: { en: "I'll swap a book over there after this coffee.", zh: "喝完这杯就过去换本书。", es: "Después de este café me paso a cambiar un libro." },
+            deltaEnergy: 1, drink: "barceloneta_cortado", nextMood: "poetic"
+          },
+          {
+            label: { en: "I'll bring Yuzu back, with a pour-over as the ransom.", zh: "我去把柚子领回来，带杯手冲当赎金。", es: "Traeré a Yuzu de vuelta, con un café de filtro como rescate." },
+            deltaEnergy: 0, drink: "gesha_pourover", nextMood: "empath", bond: 1
+          },
+          {
+            label: { en: "Which book would you leave on their shelves, Wei?", zh: "Wei，你会在那边的书架上留哪本书？", es: "Wei, ¿qué libro dejarías tú en sus estantes?" },
+            deltaEnergy: 0, drink: "yunnan_honey_pour", nextMood: "poetic"
           }
         ]
       }
@@ -3952,6 +4007,14 @@
       gaudi_courtyard: {
         ca: ["\"Les ombres del matí a les rajoles del pati semblen el trencadís del Park Güell. Avui hi ha una calidesa ben catalana.\"", "Un tallat Barceloneta amb mel i pell de taronja.", "Un Gesha floral per acompanyar el mosaic.", "Deixa que la Yuzu dormi a la pedra més assolellada."],
         yue: ["\"朝早啲樹影照落院子地磚，好似巴塞隆拿桂爾公園啲馬賽克。今日個院子有陣地中海陽光味。\"", "嚟杯橙皮蜂蜜 Cortado。", "沖杯花香瑰夏，襯吓呢片陽光。", "等柚子霸住最暖嗰級石階瞓覺啦。"]
+      },
+      book_corner_lamp: {
+        ca: ["\"Veus el llum encara encès a l'altra banda de la tanca? És el racó de llibres del costat. Algunes nits la gent entra amb un llibre que acaba de trobar allà i el llegeix a la barra fins que tanquem. El millor tipus de client.\"", "Llavors posa'm alguna cosa que duri un capítol.", "Vaig a buscar un llibre i torno de seguida.", "En Miso i la Yuzu tenen carnet de biblioteca?"],
+        yue: ["\"見唔見籬笆嗰邊盞燈仲著住？嗰度係隔籬嘅二手書角。有啲夜晚，啲人啱啱喺嗰邊執到本書，就過嚟坐喺吧枱一路睇到收舖。呢種熟客最正。\"", "噉就俾杯夠我慢慢睇完一章嘅酒。", "我過去揀本書，即刻返嚟。", "味噌同柚子有冇借書證㗎？"]
+      },
+      book_corner_next_door: {
+        ca: ["\"Ja has anat a la casa del costat? El Racó de la Pàgina Doblegada, els llibres de segona mà. Quatre estancetes de les golfes al soterrani, i cada llibre porta una nota a dins. La Yuzu salta la tanca del jardí gairebé cada tarda i s'adorm sobre la poesia.\"", "Després d'aquest cafè hi passo a canviar un llibre.", "Tornaré la Yuzu, amb un cafè de filtre com a rescat.", "Wei, quin llibre deixaries tu als seus prestatges?"],
+        yue: ["\"去過隔籬未？折角書屋，賣二手書嘅。由閣樓到地庫一共四間細房，每本書入面都夾住張字條。柚子差唔多每日下晝都跳過花園牆走過去，瞓喺啲詩集上面。\"", "飲完呢杯就過去換本書。", "我去帶柚子返嚟，順手拎杯手沖做贖金。", "Wei，你會留邊本書喺佢哋個書架？"]
       },
       cat_burlap_inspection: {
         ca: ["\"A les set ha arribat un sac de cafè rentat de Huila, Colòmbia. En Miso s'hi ha adormit a sobre i la Yuzu ha olorat cada racó. Control de qualitat felí certificat!\"", "Fes el gra que els gats hagin aprovat.", "Dona un premi a en Miso i la Yuzu per la feina.", "Un Einspänner mentre els gats dormen."],

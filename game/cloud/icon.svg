@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Sora">
+  <defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f8fd6"/><stop offset=".7" stop-color="#8cc4ee"/><stop offset="1" stop-color="#e8f2fa"/></linearGradient></defs>
+  <clipPath id="r"><rect width="512" height="512" rx="112"/></clipPath><g clip-path="url(#r)"><rect width="512" height="512" fill="url(#s)"/>
+  <g fill="#fff">
+    <circle cx="196" cy="246" r="62"/><circle cx="276" cy="214" r="78"/><circle cx="352" cy="256" r="54"/><circle cx="140" cy="282" r="40"/>
+    <rect x="110" y="250" width="290" height="72" rx="36"/>
+  </g>
+  <g stroke="#fff" stroke-linecap="round" fill="none">
+    <path d="M150 424q10-26 30-40" stroke-width="4"/>
+    <g stroke-width="3" transform="translate(184 380)"><path d="M0 0l0-18M0 0l13-13M0 0l18 0M0 0l-13-13M0 0l-18 0M0 0l9-16M0 0l-9-16"/></g>
+    <path d="M372 150q8-16 20-26" stroke-width="3.5"/>
+    <g stroke-width="2.5" transform="translate(394 122)"><path d="M0 0l0-13M0 0l9-9M0 0l13 0M0 0l-9-9M0 0l-13 0"/></g>
+  </g>
+  <path d="M70 512l6-56M92 512l-4-44M110 512l12-50M404 512l-8-48M424 512l6-58M446 512l-10-40" stroke="#5f9a5a" stroke-width="7" stroke-linecap="round"/>
+</g></svg>
