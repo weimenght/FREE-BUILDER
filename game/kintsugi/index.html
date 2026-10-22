@@ -1,0 +1,3388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Kintsugi Studio (金継ぎ工房) — The Art of Golden Joinery</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', '"Noto Serif JP"', 'serif'],
+            jp: ['"Noto Serif JP"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            walnut: {
+              950: '#0d0805',
+              900: '#170f0a',
+              800: '#261810',
+              700: '#3b2519',
+              600: '#543625',
+            },
+            hinoki: {
+              100: '#fcf8f0',
+              200: '#f3e7cf',
+              300: '#e3c89b',
+              400: '#cca262',
+            },
+            indigoMat: {
+              950: '#0b111e',
+              900: '#111b2e',
+              800: '#1b2942',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0e0906;
+      color: #f3e7cf;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Aged Keyaki & Walnut Joinery Studio Background */
+    .studio-wood-bg {
+      background-color: #120b07;
+      background-image:
+        radial-gradient(circle at 50% 25%, rgba(255, 208, 138, 0.11) 0%, transparent 65%),
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.01) 0px,
+          rgba(255, 255, 255, 0.01) 2px,
+          transparent 2px,
+          transparent 26px
+        ),
+        linear-gradient(180deg, #0e0805 0%, #1c110b 50%, #0f0906 100%);
+    }
+
+    /* Indigo Kasuri Workbench Frame */
+    .indigo-workbench-frame {
+      background: linear-gradient(145deg, #1b120c 0%, #120c08 55%, #0c0704 100%);
+      border: 4px solid #472e1f;
+      box-shadow:
+        inset 0 6px 22px rgba(0, 0, 0, 0.9),
+        0 22px 55px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(212, 175, 55, 0.25);
+      border-radius: 20px;
+    }
+
+    /* Washi Paper Certificate Card */
+    .washi-card {
+      background-color: #f6efe0;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.65), transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(210, 180, 130, 0.25), transparent 60%);
+      color: #261810;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), inset 0 0 24px rgba(180, 145, 95, 0.2);
+    }
+
+    /* Gold Leaf CTA Button */
+    .gold-btn {
+      background: linear-gradient(135deg, #f5d682 0%, #c6922c 50%, #fbe49e 100%);
+      color: #1c1108;
+      border: 1px solid #fef08a;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.65);
+    }
+    .gold-btn:hover {
+      filter: brightness(1.07);
+      box-shadow: 0 6px 20px rgba(245, 195, 68, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.85);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #120b07;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #472e1f;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+
+<body class="studio-wood-bg flex flex-col justify-between min-h-screen">
+
+  <!-- =====================================================================
+       TOP STUDIO HEADER BAR: BRAND, 4-STAGE STEPPER, AUDIO & TOKONOMA SHELF
+       ===================================================================== -->
+  <header class="relative z-30 max-w-[1440px] w-full mx-auto px-3 sm:px-6 pt-3 pb-1.5">
+    <div class="bg-walnut-950/90 border border-walnut-600/80 rounded-2xl px-4 py-2.5 shadow-2xl flex flex-wrap items-center justify-between gap-3 backdrop-blur-md">
+      
+      <!-- Left: Studio Brand & Subtitle -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400/25 to-amber-900/50 border border-amber-400/60 flex items-center justify-center text-amber-300 shadow-inner shrink-0">
+          <span class="font-jp font-bold text-lg">金</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-serif font-bold text-xl sm:text-2xl text-hinoki-100 tracking-wide leading-none">
+              Kintsugi Studio
+            </h1>
+            <span class="text-xs font-jp text-amber-400/90 border-l border-walnut-600 pl-2">
+              金継ぎ工房 • Authentic Ceramic & Golden Joinery
+            </span>
+          </div>
+          <p class="text-[11px] text-hinoki-300/75 mt-0.5 hidden sm:block">
+            3D Porcelain & Stoneware Restoration — Align bisque shards, seal with Mugi-Urushi & burnish 24K Gold Maki-e
+          </p>
+        </div>
+      </div>
+
+      <!-- Center: 4-Stage Authentic Restoration Stepper -->
+      <div class="flex items-center gap-1 sm:gap-1.5 bg-walnut-900/95 border border-walnut-700 px-2.5 py-1.5 rounded-xl text-xs">
+        <button onclick="jumpToStageIfAllowed(1)" id="stepPill-1" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer">
+          <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center bg-amber-500/20 border border-amber-400/60">1</span>
+          <span>Awase <span class="hidden xl:inline text-[10px] opacity-75">(Assemble)</span></span>
+        </button>
+        <i class="fa-solid fa-chevron-right text-[9px] text-walnut-600"></i>
+        <button onclick="jumpToStageIfAllowed(2)" id="stepPill-2" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer">
+          <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center bg-amber-500/20 border border-amber-400/60">2</span>
+          <span>Mugi-Urushi <span class="hidden xl:inline text-[10px] opacity-75">(Lacquer)</span></span>
+        </button>
+        <i class="fa-solid fa-chevron-right text-[9px] text-walnut-600"></i>
+        <button onclick="jumpToStageIfAllowed(3)" id="stepPill-3" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer">
+          <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center bg-amber-500/20 border border-amber-400/60">3</span>
+          <span>Maki-e <span class="hidden xl:inline text-[10px] opacity-75">(Gold Dust)</span></span>
+        </button>
+        <i class="fa-solid fa-chevron-right text-[9px] text-walnut-600"></i>
+        <button onclick="jumpToStageIfAllowed(4)" id="stepPill-4" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer">
+          <span class="w-4 h-4 rounded-full text-[10px] flex items-center justify-center bg-amber-500/20 border border-amber-400/60">4</span>
+          <span>Tokonoma <span class="hidden xl:inline text-[10px] opacity-75">(Appraise)</span></span>
+        </button>
+      </div>
+
+      <!-- Right: Audio Controls & Tea Room Shelf -->
+      <div class="flex items-center gap-2">
+        <!-- Generative Koto & Garden Rain Soundscape -->
+        <button id="ambientMusicBtn" onclick="toggleAmbientMusic()"
+          class="px-3 py-2 rounded-xl bg-walnut-900 hover:bg-walnut-800 text-hinoki-200 border border-walnut-600 text-xs flex items-center gap-2 transition-all cursor-pointer"
+          title="Toggle Generative Koto, Shakuhachi & Garden Rain Ambience">
+          <i class="fa-solid fa-music text-amber-400"></i>
+          <span id="ambientMusicLabel" class="hidden md:inline">Koto & Rain: Off</span>
+        </button>
+
+        <!-- SFX Mute Toggle -->
+        <button id="sfxToggleBtn" onclick="toggleSfxMute()"
+          class="w-9 h-9 rounded-xl bg-walnut-900 hover:bg-walnut-800 text-hinoki-200 border border-walnut-600 flex items-center justify-center text-xs transition-all cursor-pointer"
+          title="Mute / Unmute Ceramic & Brush Sounds">
+          <i id="sfxToggleIcon" class="fa-solid fa-volume-high text-amber-300"></i>
+        </button>
+
+        <!-- Tea Room Display Shelf Button -->
+        <button onclick="openTeaRoomModal()"
+          class="px-3.5 py-2 rounded-xl bg-gradient-to-b from-amber-700/85 to-amber-900/95 hover:from-amber-600 hover:to-amber-800 text-hinoki-100 border border-amber-400/50 text-xs font-medium flex items-center gap-2 shadow-lg transition-all cursor-pointer active:scale-95">
+          <i class="fa-solid fa-swatchbook text-amber-300"></i>
+          <span>Tokonoma Shelf</span>
+          <span id="shelfCountBadge" class="px-1.5 py-0.2 rounded-full bg-walnut-950 text-amber-300 font-mono text-[11px]">0</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       MAIN STUDIO WORKSPACE: LEFT CERAMICS + CENTER 3D WORKBENCH + RIGHT TOOLS
+       ===================================================================== -->
+  <main class="relative z-20 flex-1 max-w-[1440px] w-full mx-auto px-3 sm:px-6 py-2 grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+
+    <!-- LEFT COLUMN (3 Cols): 5 AUTHENTIC JAPANESE CERAMIC VESSELS & GLAZE SPECS -->
+    <aside class="lg:col-span-3 flex flex-col gap-3">
+      
+      <div class="bg-walnut-950/90 border border-walnut-700/80 rounded-2xl p-3.5 shadow-xl flex-1 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between border-b border-walnut-800 pb-2 mb-2.5">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-amber-400">
+              <i class="fa-solid fa-bowl-rice mr-1"></i>Authentic Kiln Vessels
+            </span>
+            <button onclick="openCustomMalletModal()"
+              class="text-[11px] font-mono text-amber-300 hover:text-amber-200 underline decoration-dotted cursor-pointer">
+              + Kizuchi Mallet
+            </button>
+          </div>
+
+          <!-- 5 Storied Vessels List -->
+          <div id="vesselListContainer" class="space-y-1.5 max-h-[265px] lg:max-h-none overflow-y-auto pr-0.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Current Vessel Ceramic Material & Clay Body Inspector Card -->
+        <div class="mt-3 pt-3 border-t border-walnut-800/90 bg-walnut-900/65 rounded-xl p-3 border border-walnut-700/60 space-y-2">
+          <div class="flex items-center justify-between">
+            <span id="storyVesselJp" class="text-[11px] font-jp text-amber-400 font-semibold">青磁茶碗 • Seiji</span>
+            <span id="storyShardBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-walnut-950 text-hinoki-200 border border-walnut-700">7 Shards</span>
+          </div>
+          <h2 id="storyVesselTitle" class="font-serif font-bold text-base text-hinoki-100 leading-snug">
+            Seiji Celadon Bowl (Kannyu Crackle)
+          </h2>
+          <p id="storyVesselLore" class="font-serif italic text-xs text-hinoki-200/85 leading-relaxed">
+            "Translucent jade-emerald glaze over buff stoneware clay, spiderwebbed with Kannyu ice-crackle veins that pool deep green in the tea well."
+          </p>
+
+          <!-- Physical Glaze & Bisque Specs -->
+          <div class="grid grid-cols-2 gap-1.5 pt-1 text-[10px] font-mono">
+            <div class="bg-walnut-950/80 px-2 py-1 rounded border border-walnut-800 flex items-center gap-1.5">
+              <span id="bisqueSwatch" class="w-2.5 h-2.5 rounded-full border border-white/30 shrink-0" style="background:#cfc2ad"></span>
+              <span id="bisqueLabel" class="text-hinoki-300 truncate">Buff Stoneware</span>
+            </div>
+            <div class="bg-walnut-950/80 px-2 py-1 rounded border border-walnut-800 flex items-center gap-1.5">
+              <i class="fa-solid fa-sun text-amber-300 text-[9px]"></i>
+              <span id="glossLabel" class="text-hinoki-300 truncate">Vitrified Gloss</span>
+            </div>
+          </div>
+
+          <button onclick="openCustomMalletModal()"
+            class="mt-1.5 w-full py-2 px-3 rounded-xl bg-walnut-800 hover:bg-walnut-700 text-amber-200 border border-amber-500/40 text-xs font-medium flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <i class="fa-solid fa-hammer text-amber-400"></i>
+            <span>Custom Kiln & Wooden Mallet</span>
+          </button>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- CENTER COLUMN (6 Cols): 3D VOLUMETRIC INDIGO KASURI WORKBENCH CANVAS -->
+    <section class="lg:col-span-6 flex flex-col">
+      <div class="indigo-workbench-frame relative flex-1 flex flex-col overflow-hidden min-h-[460px] sm:min-h-[540px]">
+        
+        <!-- Top Floating Stage Guidance, Light Follow Toggle & Progress Bar -->
+        <div class="relative z-20 px-4 pt-3 pb-2 bg-gradient-to-b from-slate-950/90 via-slate-950/55 to-transparent flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5">
+            <span id="stageBadgeLabel" class="px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300 font-mono text-[11px] uppercase tracking-wider">
+              Stage 1 • Awase
+            </span>
+            <span id="stageInstructionText" class="text-xs text-hinoki-100/90 font-medium">
+              Drag 3D ceramic shards & align their bisque walls and glaze motifs
+            </span>
+          </div>
+
+          <!-- Right: Studio Lantern Light Follow Toggle + Progress Pill -->
+          <div class="flex items-center gap-2">
+            <button id="cursorLightToggleBtn" onclick="toggleCursorLightFollow()"
+              class="px-2.5 py-1 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-400/40 text-[11px] font-mono text-amber-200 flex items-center gap-1.5 cursor-pointer transition-all"
+              title="Drag the golden Studio Lantern orb on canvas, or toggle Cursor Light Follow">
+              <i class="fa-solid fa-lightbulb text-amber-300"></i>
+              <span id="cursorLightText">Lantern: Draggable</span>
+            </button>
+
+            <div class="flex items-center gap-2 bg-slate-950/90 border border-slate-700 px-3 py-1 rounded-full">
+              <div class="w-16 sm:w-20 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div id="stageProgressBar" class="h-full bg-gradient-to-r from-amber-500 to-yellow-300 transition-all duration-200" style="width: 0%"></div>
+              </div>
+              <span id="stageProgressText" class="font-mono text-[11px] text-amber-300">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Primary Interactive Workbench Canvas -->
+        <div id="canvasContainer" class="relative flex-1 w-full h-full flex items-center justify-center overflow-hidden">
+          <canvas id="workbenchCanvas" class="w-full h-full block touch-none"></canvas>
+
+          <!-- Floating Contextual Rotation Controls (Shown in Stage 1 when an unplaced shard is selected) -->
+          <div id="shardQuickBar" class="hidden absolute bottom-3 left-1/2 -translate-x-1/2 z-20 bg-slate-950/95 border border-amber-500/60 rounded-xl px-3 py-1.5 shadow-2xl flex items-center gap-2 backdrop-blur-md">
+            <span class="text-[11px] font-mono text-hinoki-200 mr-1 hidden sm:inline">Rotate Shard:</span>
+            <button onclick="rotateSelectedShardBy(-15)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-200 text-xs border border-slate-600 cursor-pointer" title="Rotate Counter-Clockwise 15° (Q)">
+              <i class="fa-solid fa-rotate-left mr-1"></i>15°
+            </button>
+            <button onclick="rotateSelectedShardBy(15)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-200 text-xs border border-slate-600 cursor-pointer" title="Rotate Clockwise 15° (E)">
+              <i class="fa-solid fa-rotate-right mr-1"></i>15°
+            </button>
+            <button onclick="alignSelectedShardAngle()" class="px-2.5 py-1 rounded-lg bg-amber-900/75 hover:bg-amber-800 text-amber-200 text-xs border border-amber-500/50 cursor-pointer" title="Snap shard to true orientation angle">
+              <i class="fa-solid fa-compass mr-1"></i>True Angle
+            </button>
+          </div>
+
+          <!-- Floating Inspection, Hanko Seal & PNG Export Overlay (Stage 4) -->
+          <div id="inspectionOverlay" class="hidden absolute inset-x-4 bottom-3 z-25 bg-walnut-950/95 border-2 border-amber-500/60 rounded-2xl p-3.5 shadow-2xl backdrop-blur-md">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-600/40">
+                    ✓ Kintsugi Complete
+                  </span>
+                  <span class="text-xs text-hinoki-300/85">Drag the Studio Lantern orb to inspect the 3D glaze & gold reflections!</span>
+                </div>
+                <div class="mt-2 flex items-center gap-2">
+                  <input id="customPieceTitleInput" type="text"
+                    class="flex-1 bg-walnut-900 border border-walnut-600 focus:border-amber-400 rounded-lg px-2.5 py-1 text-sm font-serif text-hinoki-100 focus:outline-none"
+                    placeholder="Inscribe a poetic Mei (銘) title..." />
+                  <button onclick="randomizePoeticTitle()" class="px-2.5 py-1 rounded-lg bg-walnut-800 hover:bg-walnut-700 text-amber-300 text-xs border border-walnut-600 cursor-pointer" title="Generate poetic Japanese-inspired title">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2 shrink-0">
+                <button onclick="stampHankoSeal()" id="hankoStampBtn"
+                  class="px-3.5 py-2 rounded-xl bg-gradient-to-b from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-amber-50 font-jp text-xs font-semibold border border-red-400/60 shadow-lg flex items-center gap-1.5 cursor-pointer active:scale-95">
+                  <span class="w-4 h-4 rounded-sm border border-amber-200 flex items-center justify-center text-[10px]">印</span>
+                  <span>Press Hanko Seal</span>
+                </button>
+
+                <button onclick="saveAndExportCurrentPiece()"
+                  class="gold-btn px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer active:scale-95">
+                  <i class="fa-solid fa-camera-retro"></i>
+                  <span>Save & Export PNG</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Studio Toast Notification -->
+          <div id="studioToast" class="pointer-events-none absolute top-14 left-1/2 -translate-x-1/2 z-30 bg-walnut-950/95 border border-amber-400/60 text-hinoki-100 px-3.5 py-1.5 rounded-full text-xs font-serif tracking-wide shadow-xl opacity-0 transition-opacity duration-300 flex items-center gap-2">
+            <i class="fa-solid fa-sparkles text-amber-400"></i>
+            <span id="studioToastText">Shard locked into place</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN (3 Cols): ARTISAN TOOLS, MAKI-E METALLIC PALETTE & ASSIST -->
+    <aside class="lg:col-span-3 flex flex-col gap-3">
+      
+      <div class="bg-walnut-950/90 border border-walnut-700/80 rounded-2xl p-3.5 shadow-xl flex-1 flex flex-col justify-between space-y-3.5">
+        
+        <!-- 3-Stage Artisan Tool Cards -->
+        <div>
+          <div class="flex items-center justify-between border-b border-walnut-800 pb-2 mb-2.5">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-amber-400">
+              <i class="fa-solid fa-compass-drafting mr-1"></i>Kintsugi Craft Stages
+            </span>
+            <span id="activeToolTag" class="text-[10px] font-mono text-hinoki-300/70">1. Awase</span>
+          </div>
+
+          <div class="space-y-2">
+            <!-- Stage 1 -->
+            <div id="toolCard-1" class="p-2.5 rounded-xl border transition-all flex items-center gap-2.5 bg-walnut-900/90 border-amber-500/60">
+              <div class="w-8 h-8 rounded-lg bg-amber-950/80 border border-amber-500/40 flex items-center justify-center text-amber-300 shrink-0 text-xs">
+                <i class="fa-solid fa-puzzle-piece"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="text-xs font-semibold text-hinoki-100">1. Awase (合わせ • Joinery)</div>
+                <div class="text-[10px] text-hinoki-300/75 leading-tight">
+                  Align 3D bisque walls, wheel rings & painted cobalt motifs.
+                </div>
+              </div>
+            </div>
+
+            <!-- Stage 2 -->
+            <div id="toolCard-2" class="p-2.5 rounded-xl border transition-all flex items-center gap-2.5 bg-walnut-900/40 border-walnut-800 opacity-60">
+              <div class="w-8 h-8 rounded-lg bg-red-950/80 border border-red-500/40 flex items-center justify-center text-red-300 shrink-0 text-xs">
+                <i class="fa-solid fa-pen-nib"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="text-xs font-semibold text-hinoki-100">2. Mugi-Urushi (麦漆 • Sap)</div>
+                <div class="text-[10px] text-hinoki-300/75 leading-tight">
+                  Deposit a raised 3D bead of glossy lacquer & fill *Hotsure* chips.
+                </div>
+              </div>
+            </div>
+
+            <!-- Stage 3 -->
+            <div id="toolCard-3" class="p-2.5 rounded-xl border transition-all flex items-center gap-2.5 bg-walnut-900/40 border-walnut-800 opacity-60">
+              <div class="w-8 h-8 rounded-lg bg-yellow-950/80 border border-yellow-500/40 flex items-center justify-center text-yellow-300 shrink-0 text-xs">
+                <i class="fa-solid fa-feather-pointed"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="text-xs font-semibold text-hinoki-100">3. Maki-e & Migaki (蒔絵・磨き)</div>
+                <div class="text-[10px] text-hinoki-300/75 leading-tight">
+                  Dust with *Marufude* brush & burnish with agate tooth to a 3D sheen.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Precious Metal & Urushi Finish Palette -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-amber-400">
+              <i class="fa-solid fa-gem mr-1"></i>Maki-e Seam Finish
+            </span>
+            <span id="selectedMetalLabel" class="text-[11px] font-serif italic text-amber-200">24K Gold (Kinpun)</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2" id="metalPaletteGrid">
+            <!-- 24K Gold -->
+            <button onclick="selectMetalFinish('gold')" data-metal="gold"
+              class="metal-btn p-2 rounded-xl border text-left flex items-center gap-2 transition-all cursor-pointer bg-walnut-900 border-amber-400 shadow-md">
+              <span class="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-100 via-amber-400 to-yellow-800 border border-white/50 shrink-0 shadow"></span>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-hinoki-100 truncate">24K Gold</div>
+                <div class="text-[10px] font-jp text-amber-300/80">本金粉 • Kinpun</div>
+              </div>
+            </button>
+
+            <!-- Pure Silver -->
+            <button onclick="selectMetalFinish('silver')" data-metal="silver"
+              class="metal-btn p-2 rounded-xl border text-left flex items-center gap-2 transition-all cursor-pointer bg-walnut-900/60 border-walnut-700 hover:border-slate-400">
+              <span class="w-6 h-6 rounded-full bg-gradient-to-br from-white via-slate-300 to-slate-600 border border-white/50 shrink-0 shadow"></span>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-hinoki-100 truncate">Pure Silver</div>
+                <div class="text-[10px] font-jp text-slate-300/80">銀粉 • Ginpun</div>
+              </div>
+            </button>
+
+            <!-- Rose Copper-Gold -->
+            <button onclick="selectMetalFinish('copper')" data-metal="copper"
+              class="metal-btn p-2 rounded-xl border text-left flex items-center gap-2 transition-all cursor-pointer bg-walnut-900/60 border-walnut-700 hover:border-orange-400">
+              <span class="w-6 h-6 rounded-full bg-gradient-to-br from-rose-200 via-orange-400 to-amber-900 border border-white/50 shrink-0 shadow"></span>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-hinoki-100 truncate">Copper-Gold</div>
+                <div class="text-[10px] font-jp text-orange-300/80">赤銅 • Akakane</div>
+              </div>
+            </button>
+
+            <!-- Vermilion Cinnabar Lacquer (Shu-Urushi) -->
+            <button onclick="selectMetalFinish('shuurushi')" data-metal="shuurushi"
+              class="metal-btn p-2 rounded-xl border text-left flex items-center gap-2 transition-all cursor-pointer bg-walnut-900/60 border-walnut-700 hover:border-red-500">
+              <span class="w-6 h-6 rounded-full bg-gradient-to-br from-orange-300 via-red-600 to-red-950 border border-white/40 shrink-0 shadow"></span>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-hinoki-100 truncate">Shu-Urushi</div>
+                <div class="text-[10px] font-jp text-red-300/80">朱漆 • Vermilion</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Studio Helpers & Chalk Outline Controls -->
+        <div class="pt-2 border-t border-walnut-800 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <label class="flex items-center gap-2 cursor-pointer text-hinoki-200/90">
+              <input id="blueprintToggle" type="checkbox" checked onchange="toggleBlueprintGuide(this.checked)" class="accent-amber-500 rounded cursor-pointer" />
+              <span>Show Chalk Alignment Guide</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer text-hinoki-200/90" title="Show 3D extruded clay wall thickness on unplaced shards">
+              <input id="bisqueToggle" type="checkbox" checked onchange="toggleBisqueDepth(this.checked)" class="accent-amber-500 rounded cursor-pointer" />
+              <span>3D Bisque Wall</span>
+            </label>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button id="helperActionBtn" onclick="triggerContextualHelper()"
+              class="py-2 px-3 rounded-xl bg-walnut-800 hover:bg-walnut-700 text-amber-200 border border-amber-500/30 text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+              title="Snap one shard or complete current stage (Shortcut: H)">
+              <i class="fa-solid fa-wand-sparkles text-amber-400"></i>
+              <span id="helperActionLabel">Fit 1 Shard</span>
+            </button>
+
+            <button onclick="resetCurrentVessel()"
+              class="py-2 px-3 rounded-xl bg-walnut-900 hover:bg-walnut-800 text-hinoki-300 border border-walnut-700 text-xs font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+              title="Re-scatter shards on the indigo mat">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span>Re-Shatter</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- =====================================================================
+       FOOTER BAR: SHORTCUTS & WABI-SABI PROVERB
+       ===================================================================== -->
+  <footer class="relative z-20 max-w-[1440px] w-full mx-auto px-4 pb-3 pt-1 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-hinoki-300/60">
+    <div class="flex flex-wrap items-center gap-3">
+      <span><strong class="text-amber-300/85">[Drag Shard / Brush]</strong> Assemble & Gild</span>
+      <span>•</span>
+      <span><strong class="text-amber-300/85">[Wheel / Q / E]</strong> Rotate Shard</span>
+      <span>•</span>
+      <span><strong class="text-amber-300/85">[Drag Lantern Orb]</strong> Move Specular Light</span>
+      <span>•</span>
+      <span><strong class="text-amber-300/85">[H]</strong> Artisan Assist</span>
+    </div>
+    <div class="font-serif italic text-xs text-amber-200/80">
+      "Scars of gold honor the history of the vessel." — Wabi-Sabi Philosophy
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       MODAL 1: CUSTOM KILN & WOODEN MALLET (KIZUCHI) FRACTURE GENERATOR
+       ===================================================================== -->
+  <div id="customMalletModal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-sm">
+    <div class="bg-walnut-950 border-2 border-amber-500/60 rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      
+      <div class="flex items-center justify-between border-b border-walnut-800 pb-3">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400">CUSTOM KILN & KIZUCHI WOODEN MALLET</span>
+          <h2 class="font-serif font-bold text-2xl text-hinoki-100">
+            Select Glaze & Strike with the Wooden Mallet
+          </h2>
+        </div>
+        <button onclick="closeCustomMalletModal()" class="w-8 h-8 rounded-lg bg-walnut-800 hover:bg-walnut-700 text-hinoki-200 flex items-center justify-center cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-5 my-4 overflow-y-auto pr-1 items-center">
+        
+        <!-- Left (6 cols): Options for Silhouette, Authentic Glaze & Shard Count -->
+        <div class="md:col-span-6 space-y-3.5 text-xs">
+          <div>
+            <label class="block font-mono uppercase text-[10px] text-amber-300 mb-1">1. Vessel Silhouette</label>
+            <select id="customShapeSelect" onchange="renderMalletPreview()"
+              class="w-full bg-walnut-900 border border-walnut-600 rounded-xl px-3 py-2 text-hinoki-100 focus:outline-none focus:border-amber-400">
+              <option value="bowl">Matcha Chawan Tea Bowl (茶碗)</option>
+              <option value="plate">Arita Banquet Dish (皿 • Sara)</option>
+              <option value="lotus">Eight-Petal Foliate Bowl (輪花鉢)</option>
+              <option value="teacup">Sculpted Hexagonal Yunomi (湯呑)</option>
+              <option value="flagon">Bizen Tokkuri Flagon Dish (徳利鉢)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-mono uppercase text-[10px] text-amber-300 mb-1">2. Authentic Ceramic Glaze & Clay Body</label>
+            <select id="customGlazeSelect" onchange="renderMalletPreview()"
+              class="w-full bg-walnut-900 border border-walnut-600 rounded-xl px-3 py-2 text-hinoki-100 focus:outline-none focus:border-amber-400">
+              <option value="celadon">Seiji Celadon with Kannyu Ice-Crackle (青磁貫入)</option>
+              <option value="arita">Arita Porcelain with Cobalt Blue Underglaze (有田染付)</option>
+              <option value="raku">Kuro-Raku Volcanic Black & Iron Rust (黒楽)</option>
+              <option value="shino">Shino Milky Feldspar & Hi-iro Fire Blush (志野)</option>
+              <option value="bizen">Bizen Wood-Fired Stoneware & Hidasuki (備前緋襷)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-mono uppercase text-[10px] text-amber-300 mb-1">3. Fracture Shard Count</label>
+            <div class="grid grid-cols-3 gap-2">
+              <button type="button" onclick="setCustomComplexity(6)" id="compBtn-6"
+                class="comp-btn py-1.5 rounded-lg border text-center cursor-pointer bg-walnut-900 border-walnut-700 text-hinoki-200">
+                Calm (6)
+              </button>
+              <button type="button" onclick="setCustomComplexity(8)" id="compBtn-8"
+                class="comp-btn py-1.5 rounded-lg border text-center cursor-pointer bg-amber-600/30 border-amber-400 text-amber-200 font-semibold">
+                Classic (8)
+              </button>
+              <button type="button" onclick="setCustomComplexity(11)" id="compBtn-11"
+                class="comp-btn py-1.5 rounded-lg border text-center cursor-pointer bg-walnut-900 border-walnut-700 text-hinoki-200">
+                Master (11)
+              </button>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-walnut-900/90 border border-amber-500/30 text-hinoki-200/85 leading-relaxed">
+            <i class="fa-solid fa-hammer text-amber-400 mr-1"></i>
+            <strong>Strike Point:</strong> Click anywhere on the 3D ceramic vessel preview on the right to strike it with the wooden mallet (*Kizuchi*) and generate radial + concentric fractures around your impact point!
+          </div>
+        </div>
+
+        <!-- Right (6 cols): Interactive 3D Vessel Mallet Strike Preview -->
+        <div class="md:col-span-6 flex flex-col items-center">
+          <div class="relative w-64 h-64 rounded-2xl bg-indigoMat-950 border-2 border-walnut-700 shadow-inner flex items-center justify-center overflow-hidden cursor-crosshair">
+            <canvas id="malletPreviewCanvas" width="260" height="260" class="w-full h-full block"></canvas>
+            <div class="pointer-events-none absolute bottom-2 inset-x-0 text-center">
+              <span class="px-2.5 py-0.5 rounded-full bg-black/75 text-amber-300 font-mono text-[10px] border border-amber-500/30">
+                Click vessel to strike with wooden mallet
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-walnut-800">
+        <button onclick="closeCustomMalletModal()" class="px-4 py-2 rounded-xl bg-walnut-900 text-hinoki-300 text-xs cursor-pointer">
+          Cancel
+        </button>
+        <button onclick="startCustomMalletVessel()" class="gold-btn px-5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-hammer"></i>
+          <span>Shatter & Place on Workbench</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL 2: TOKONOMA TEA ROOM DISPLAY SHELF & KEEPSAKE GALLERY
+       ===================================================================== -->
+  <div id="teaRoomModal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-sm">
+    <div class="washi-card max-w-4xl w-full rounded-2xl border-4 border-[#593a28] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      
+      <div class="bg-[#23150d] text-hinoki-100 px-5 py-4 border-b-2 border-amber-500/60 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-900/50 border border-amber-400 flex items-center justify-center text-amber-300 font-jp font-bold text-lg">
+            床
+          </div>
+          <div>
+            <h2 class="font-serif font-bold text-xl sm:text-2xl text-hinoki-100">
+              Tokonoma Tea Room Display Alcove (床の間)
+            </h2>
+            <p class="text-xs text-amber-300/80 font-mono">
+              Your permanent collection of mended ceramic vessels • Export high-resolution keepsake cards
+            </p>
+          </div>
+        </div>
+        <button onclick="closeTeaRoomModal()" class="w-8 h-8 rounded-lg bg-walnut-800 hover:bg-walnut-700 text-amber-200 flex items-center justify-center cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-5 overflow-y-auto flex-1">
+        <div id="teaRoomGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div class="bg-[#e8dcc4] border-t border-[#c9b38c] px-5 py-3 flex items-center justify-between text-xs font-mono text-[#4a3020]">
+        <span>Restored vessels are saved in your browser's local studio ledger</span>
+        <button onclick="clearTeaRoomShelf()" class="text-red-800 hover:underline cursor-pointer">
+          Clear Alcove Shelf
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       APPLICATION ENGINE: 3D CERAMIC SHADING, GLAZES, BISQUE WALLS & AUDIO
+       ===================================================================== -->
+  <script>
+    /*************************************************************************
+     * 1. AUTHENTIC JAPANESE CERAMIC GLAZES & MATERIAL SPECIFICATIONS
+     *************************************************************************/
+    const GLAZE_MATERIALS = {
+      celadon: {
+        id: "celadon",
+        name: "Seiji Jade Celadon",
+        bisqueColor: "#d3c6b2",       // Warm buff stoneware clay body
+        bisqueShadow: "#8f7e68",
+        bisqueGrain: "#6e5d49",
+        rimColor: "#c5dcd3",          // Pale mist-green rim lip where glaze thins
+        footRingColor: "#b8a68e",
+        specularPower: 38,            // High-gloss vitrified glass reflection
+        specularAlpha: 0.58,
+        wallThickness: 7.5,
+        bisqueLabel: "Buff Stoneware Clay",
+        glossLabel: "Glass Vitrified + Kannyu"
+      },
+      arita: {
+        id: "arita",
+        name: "Arita Sometsuke Porcelain",
+        bisqueColor: "#ebe8e1",       // Pure chalk-white kaolin porcelain bisque
+        bisqueShadow: "#b5b0a6",
+        bisqueGrain: "#8f8a80",
+        rimColor: "#ffffff",
+        footRingColor: "#e2ded5",
+        specularPower: 52,            // Mirror-like porcelain reflection
+        specularAlpha: 0.68,
+        wallThickness: 6.0,
+        bisqueLabel: "Kaolin White Bisque",
+        glossLabel: "High-Gloss Cobalt Gosu"
+      },
+      raku: {
+        id: "raku",
+        name: "Kuro-Raku Volcanic Black",
+        bisqueColor: "#4f3e36",       // Coarse dark iron-rich Raku earthenware
+        bisqueShadow: "#2b201b",
+        bisqueGrain: "#1f1612",
+        rimColor: "#382820",
+        footRingColor: "#3d2e27",
+        specularPower: 18,            // Soft satin volcanic luster
+        specularAlpha: 0.34,
+        wallThickness: 9.0,           // Thick hand-formed Chawan walls
+        bisqueLabel: "Coarse Iron Earthenware",
+        glossLabel: "Pitted Satin Luster"
+      },
+      shino: {
+        id: "shino",
+        name: "Shino Feldspar & Hi-iro",
+        bisqueColor: "#d9bc9c",       // Warm Mino clay with iron-oxide blush
+        bisqueShadow: "#9c7554",
+        bisqueGrain: "#754f33",
+        rimColor: "#df8857",          // Scorched orange-red hi-iro rim blush
+        footRingColor: "#c49b76",
+        specularPower: 26,            // Milky waxy feldspathic sheen
+        specularAlpha: 0.44,
+        wallThickness: 8.5,
+        bisqueLabel: "Mino Feldspar Clay",
+        glossLabel: "Milky Glaze + Pinhole"
+      },
+      bizen: {
+        id: "bizen",
+        name: "Bizen Wood-Fired Stoneware",
+        bisqueColor: "#784432",       // Unglazed high-iron refractory stoneware
+        bisqueShadow: "#4a271b",
+        bisqueGrain: "#2e160e",
+        rimColor: "#9c563d",
+        footRingColor: "#5e3324",
+        specularPower: 12,            // Matte natural ash mineral glint
+        specularAlpha: 0.22,
+        wallThickness: 8.0,
+        bisqueLabel: "Iron Stoneware Body",
+        glossLabel: "Matte Ash & Hidasuki"
+      }
+    };
+
+    const STORIED_VESSELS = [
+      {
+        id: "seiji-celadon-bowl",
+        name: "Seiji Celadon Bowl (Kannyu Crackle)",
+        jp: "青磁貫入茶碗 • Seiji Chawan",
+        shape: "bowl",
+        glaze: "celadon",
+        shardCount: 7,
+        seed: 1084,
+        lore: "Translucent jade-emerald glaze over buff stoneware clay, spiderwebbed with Kannyu ice-crackle veins that pool deep sea-green in the center tea well."
+      },
+      {
+        id: "arita-cobalt-plate",
+        name: "Arita Sometsuke Porcelain Plate",
+        jp: "有田焼染付皿 • Gosu Sara",
+        shape: "plate",
+        glaze: "arita",
+        shardCount: 8,
+        seed: 2419,
+        lore: "Vitrified milk-white kaolin porcelain hand-painted in cobalt-blue Gosu underglaze with Seigaiha ocean waves and blossoming plum branches."
+      },
+      {
+        id: "kuro-raku-chawan",
+        name: "Grandfather's Kuro-Raku Chawan",
+        jp: "黒楽茶碗 • Raku Chawan",
+        shape: "bowl",
+        glaze: "raku",
+        shardCount: 7,
+        seed: 3812,
+        lore: "Hand-carved tea bowl pulled red-hot from a Kyoto reduction kiln. Micro-pitted volcanic black glaze with iron-rust flecks and thick earthenware walls."
+      },
+      {
+        id: "shino-matcha-bowl",
+        name: "Mino Shino Ware Matcha Bowl",
+        jp: "志野茶碗 • Hi-iro Shino",
+        shape: "lotus",
+        glaze: "shino",
+        shardCount: 8,
+        seed: 4920,
+        lore: "Thick, milky-white feldspathic glaze with warm orange-terracotta fire blushes (Hi-iro) where the glaze thins along the foliate rim and pinhole dimples."
+      },
+      {
+        id: "bizen-hidasuki-dish",
+        name: "Bizen Wood-Fired Hidasuki Dish",
+        jp: "備前緋襷鉢 • Bizen-yaki",
+        shape: "flagon",
+        glaze: "bizen",
+        shardCount: 8,
+        seed: 6105,
+        lore: "Unglazed stoneware fired for ten days in a climbing pine-wood kiln, marked with scarlet Hidasuki straw fire-streaks and toasted sesame ash."
+      }
+    ];
+
+    const METAL_PALETTES = {
+      gold: {
+        name: "24K Gold (Kinpun)",
+        jp: "本金粉",
+        base: "#c88d1e",
+        mid: "#f6c94d",
+        spec: "#fffef0",
+        shadow: "#593804",
+        ao: "rgba(30, 16, 4, 0.7)",
+        sparkle: "#fef08a"
+      },
+      silver: {
+        name: "Pure Silver (Ginpun)",
+        jp: "本銀粉",
+        base: "#8e9eab",
+        mid: "#e2e8f0",
+        spec: "#ffffff",
+        shadow: "#334155",
+        ao: "rgba(15, 23, 42, 0.65)",
+        sparkle: "#f8fafc"
+      },
+      copper: {
+        name: "Copper-Gold (Akakane)",
+        jp: "赤銅粉",
+        base: "#b85035",
+        mid: "#f58a6b",
+        spec: "#fff1f2",
+        shadow: "#5c1d0e",
+        ao: "rgba(40, 12, 6, 0.7)",
+        sparkle: "#fecdd3"
+      },
+      shuurushi: {
+        name: "Vermilion (Shu-Urushi)",
+        jp: "本朱漆",
+        base: "#b91c1c",
+        mid: "#ef4444",
+        spec: "#fecaca",
+        shadow: "#450a0a",
+        ao: "rgba(35, 5, 5, 0.72)",
+        sparkle: "#fca5a5"
+      }
+    };
+
+    const POETIC_TITLES = [
+      "Golden River Through Jade Mist",
+      "Cobalt Waves Bound in Starlight",
+      "Autumn Frost on Kuro-Raku",
+      "Seam of Morning Dew (朝露)",
+      "Fire-Cord & Gilded Earth",
+      "Luminous Scars of Arashiyama",
+      "Moonlight Mended in Gold",
+      "After the Solitary Tea Gathering"
+    ];
+
+    /*************************************************************************
+     * 2. GLOBAL APPLICATION STATE
+     *************************************************************************/
+    const state = {
+      currentVessel: STORIED_VESSELS[0],
+      stage: 1,              // 1: Awase, 2: Mugi-Urushi, 3: Maki-e & Migaki, 4: Tokonoma
+      metalType: "gold",
+      showBlueprint: true,
+      showBisqueDepth: true,
+
+      // Vessel Geometry (Centered at 0,0 in 540x460 world coordinates; vessel radius ~148px)
+      vesselOutline: [],
+      shards: [],
+      seams: [],
+      chipPools: [],         // Triangular Hotsure chip pockets at fracture intersections
+      selectedShardId: null,
+      draggingShardId: null,
+      rotatingViaHandle: false,
+      dragOffsetX: 0,
+      dragOffsetY: 0,
+
+      // Interactive Studio Lantern Light Source (World coordinates)
+      lightX: -95,
+      lightY: -105,
+      draggingLightOrb: false,
+      cursorLightFollow: false,
+
+      // Brush & Pointer
+      pointerX: 0,
+      pointerY: 0,
+      isPointerDown: false,
+
+      // Visual Particles
+      particles: [],
+      dustMotes: [],
+
+      // Stage 4 Appraisal & Hanko Seal
+      restoredTitle: POETIC_TITLES[0],
+      hankoStamped: false,
+      hankoPos: { x: 145, y: 125 },
+
+      // Custom Mallet Modal State
+      customComplexity: 8,
+      customImpactPoint: { x: 18, y: -14 },
+      customSeed: 7777,
+
+      // Saved Tokonoma Shelf
+      shelfItems: []
+    };
+
+    /*************************************************************************
+     * 3. PROCEDURAL WEB AUDIO ENGINE (CERAMIC CLINKS, FRICTION, BRUSH, KOTO)
+     *************************************************************************/
+    let audioCtx = null;
+    let sfxMuted = false;
+    let ambientPlaying = false;
+    let kotoTimer = null;
+    let rainSource = null;
+    let lastBrushAudioMs = 0;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioCtx();
+      }
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+    }
+
+    function playCeramicSound(type = "snap") {
+      if (sfxMuted) return;
+      initAudio();
+      const now = audioCtx.currentTime;
+      const pitch = 0.93 + Math.random() * 0.14;
+
+      // Porcelain has a higher, clearer bell-like ring than earthen Raku/Bizen
+      const isPorcelain = state.currentVessel.glaze === "arita" || state.currentVessel.glaze === "celadon";
+      const matMult = isPorcelain ? 1.22 : 0.88;
+
+      if (type === "pickup") {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(640 * pitch * matMult, now);
+        osc.frequency.exponentialRampToValueAtTime(890 * pitch * matMult, now + 0.045);
+        gain.gain.setValueAtTime(0.075, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.055);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.06);
+      } else if (type === "rotate") {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(480 * pitch * matMult, now);
+        gain.gain.setValueAtTime(0.04, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.04);
+      } else if (type === "snap") {
+        // Multi-harmonic resonant ceramic lock-in clink + stone bisque thud
+        const harmonics = [1120, 1680, 2740].map(f => f * pitch * matMult);
+        harmonics.forEach((f, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = idx === 0 ? "triangle" : "sine";
+          osc.frequency.setValueAtTime(f, now);
+          gain.gain.setValueAtTime(idx === 0 ? 0.16 : 0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.0007, now + 0.19 + idx * 0.05);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.26);
+        });
+      } else if (type === "shatter") {
+        for (let i = 0; i < 6; i++) {
+          const delay = i * 0.03;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime((880 + i * 260) * matMult * (0.9 + Math.random() * 0.2), now + delay);
+          gain.gain.setValueAtTime(0.11, now + delay);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.15);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + delay);
+          osc.stop(now + delay + 0.16);
+        }
+      }
+    }
+
+    function playBrushAudio(mode = "urushi") {
+      if (sfxMuted) return;
+      const ms = performance.now();
+      if (ms - lastBrushAudioMs < 75) return;
+      lastBrushAudioMs = ms;
+
+      initAudio();
+      const now = audioCtx.currentTime;
+
+      if (mode === "urushi") {
+        // Viscous spatula/lacquer whisper
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(220 + Math.random() * 80, now);
+        osc.frequency.exponentialRampToValueAtTime(125, now + 0.065);
+        gain.gain.setValueAtTime(0.045, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.075);
+      } else {
+        // Crystalline Maki-e metallic shimmer grain + agate burnish
+        const notes = [1046.5, 1174.66, 1318.51, 1567.98, 1760.0, 2093.0];
+        const f = notes[Math.floor(Math.random() * notes.length)] * (0.98 + Math.random() * 0.04);
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(f, now);
+        gain.gain.setValueAtTime(0.042, now);
+        gain.gain.exponentialRampToValueAtTime(0.0005, now + 0.3);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.32);
+      }
+    }
+
+    function playStageChime() {
+      if (sfxMuted) return;
+      initAudio();
+      const now = audioCtx.currentTime;
+      const scale = [523.25, 587.33, 659.25, 783.99, 1046.5];
+      scale.forEach((f, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(f, now + i * 0.11);
+        gain.gain.setValueAtTime(0.001, now + i * 0.11);
+        gain.gain.linearRampToValueAtTime(0.1, now + i * 0.11 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0006, now + i * 0.11 + 0.95);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + i * 0.11);
+        osc.stop(now + i * 0.11 + 1.0);
+      });
+    }
+
+    function playHankoStampAudio() {
+      if (sfxMuted) return;
+      initAudio();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(140, now);
+      osc.frequency.exponentialRampToValueAtTime(40, now + 0.12);
+      gain.gain.setValueAtTime(0.28, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.15);
+    }
+
+    function toggleAmbientMusic() {
+      initAudio();
+      ambientPlaying = !ambientPlaying;
+      const label = document.getElementById("ambientMusicLabel");
+      const btn = document.getElementById("ambientMusicBtn");
+      if (ambientPlaying) {
+        label.textContent = "Koto & Rain: On";
+        btn.classList.add("border-amber-400/70", "bg-walnut-800");
+        startAmbientLoop();
+      } else {
+        label.textContent = "Koto & Rain: Off";
+        btn.classList.remove("border-amber-400/70", "bg-walnut-800");
+        stopAmbientLoop();
+      }
+    }
+
+    function startAmbientLoop() {
+      stopAmbientLoop();
+      const bufSize = audioCtx.sampleRate * 3;
+      const noiseBuf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+      const out = noiseBuf.getChannelData(0);
+      let last = 0;
+      for (let i = 0; i < bufSize; i++) {
+        const w = Math.random() * 2 - 1;
+        out[i] = (last + 0.03 * w) / 1.03;
+        last = out[i];
+      }
+      rainSource = audioCtx.createBufferSource();
+      rainSource.buffer = noiseBuf;
+      rainSource.loop = true;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.value = 880;
+      const rGain = audioCtx.createGain();
+      rGain.gain.value = 0.04;
+
+      rainSource.connect(filter);
+      filter.connect(rGain);
+      rGain.connect(audioCtx.destination);
+      rainSource.start();
+
+      const kotoScale = [261.63, 293.66, 311.13, 392.00, 415.30, 523.25, 587.33, 622.25, 783.99];
+      const pluck = () => {
+        if (!ambientPlaying || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        const freq = kotoScale[Math.floor(Math.random() * kotoScale.length)];
+        const osc = audioCtx.createOscillator();
+        const flt = audioCtx.createBiquadFilter();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, now);
+        flt.type = "lowpass";
+        flt.frequency.setValueAtTime(1750, now);
+        flt.frequency.exponentialRampToValueAtTime(300, now + 2.3);
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.linearRampToValueAtTime(0.07, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0005, now + 2.7);
+        osc.connect(flt);
+        flt.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 2.8);
+        kotoTimer = setTimeout(pluck, 1200 + Math.random() * 1800);
+      };
+      pluck();
+    }
+
+    function stopAmbientLoop() {
+      if (kotoTimer) { clearTimeout(kotoTimer); kotoTimer = null; }
+      if (rainSource) { try { rainSource.stop(); } catch (e) {} rainSource = null; }
+    }
+
+    function toggleSfxMute() {
+      sfxMuted = !sfxMuted;
+      document.getElementById("sfxToggleIcon").className = sfxMuted
+        ? "fa-solid fa-volume-xmark text-stone-500"
+        : "fa-solid fa-volume-high text-amber-300";
+      showToast(sfxMuted ? "Tactile sound effects muted" : "Tactile sound effects active");
+    }
+
+    /*************************************************************************
+     * 4. ULTRA-REALISTIC 3D CERAMIC & PORCELAIN GLAZE TEXTURE SYNTHESIZER
+     *    Generates 520x520 volumetric concave vessel textures with:
+     *    - Rokuro-me wheel-throwing rings & Chadamari inner tea well pooling
+     *    - Kannyu (貫入) ice-crackle crazing for Seiji Celadon
+     *    - Gosu cobalt-blue hand-painted Seigaiha & Plum Blossoms for Arita
+     *    - Volcanic pitting & iron-rust flecks for Kuro-Raku
+     *    - Milky feldspar & Hi-iro fire blushes + Suana pinholes for Shino
+     *    - Hidasuki straw fire-cords & Goma sesame ash for Bizen
+     *************************************************************************/
+    const TEX_SIZE = 520;
+    const TEX_HALF = TEX_SIZE / 2; // 260
+    const glazeCanvas = document.createElement("canvas");
+    glazeCanvas.width = TEX_SIZE;
+    glazeCanvas.height = TEX_SIZE;
+    const glazeCtx = glazeCanvas.getContext("2d");
+
+    function createSeededRandom(seed) {
+      let s = seed % 2147483647;
+      if (s <= 0) s += 2147483646;
+      return function () {
+        s = (s * 16807) % 2147483647;
+        return (s - 1) / 2147483646;
+      };
+    }
+
+    function createVesselSilhouette(shapeType) {
+      const pts = [];
+      const steps = 72;
+      for (let i = 0; i < steps; i++) {
+        const theta = (i / steps) * Math.PI * 2;
+        let r = 148;
+        if (shapeType === "bowl") {
+          // Hand-thrown Chawan with subtle organic wabi-sabi undulation
+          r = 145 + Math.sin(theta * 3) * 4.2 + Math.cos(theta * 5) * 2.8;
+        } else if (shapeType === "plate") {
+          // Wide Arita porcelain banquet dish with gentle 12-lobed rim
+          r = 152 + Math.cos(theta * 12) * 2.2;
+        } else if (shapeType === "lotus") {
+          // 8-petal Rinka foliate bowl
+          r = 140 + Math.abs(Math.cos(theta * 4)) * 15;
+        } else if (shapeType === "teacup") {
+          // Hexagonal sculpted Yunomi teacup
+          r = 135 + Math.cos(theta * 6) * 7.5;
+        } else if (shapeType === "flagon") {
+          // Rounded square Bizen Tokkuri dish silhouette
+          r = 140 + Math.cos(theta * 4) * 10.5;
+        }
+        pts.push({ x: Math.cos(theta) * r, y: Math.sin(theta) * r });
+      }
+      return pts;
+    }
+
+    function bakeRealisticCeramicTexture(targetCtx, size, glazeType, shapeType, seed = 1084) {
+      const cx = size / 2;
+      const cy = size / 2;
+      const rand = createSeededRandom(seed);
+      targetCtx.clearRect(0, 0, size, size);
+
+      // =====================================================================
+      // GLAZE 1: SEIJI CELADON WITH KANNYU ICE-CRACKLE (青磁貫入)
+      // =====================================================================
+      if (glazeType === "celadon") {
+        // Base translucent jade-emerald radial pooling
+        const baseGrad = targetCtx.createRadialGradient(cx, cy, 8, cx, cy, 175);
+        baseGrad.addColorStop(0, "#235c52");    // Deep pooled emerald in center tea well (chadamari)
+        baseGrad.addColorStop(0.28, "#3e8275");
+        baseGrad.addColorStop(0.68, "#72b0a1");
+        baseGrad.addColorStop(0.88, "#9ecbc0"); // Lighter jade along rising walls
+        baseGrad.addColorStop(1, "#cbe3dc");    // Pale mist near rim where glaze thins over buff clay
+        targetCtx.fillStyle = baseGrad;
+        targetCtx.fillRect(0, 0, size, size);
+
+        // Subtle wheel-throwing spiral rings (rokuro-me) where celadon glaze pools thicker
+        for (let r = 18; r < 165; r += 11) {
+          targetCtx.strokeStyle = r % 22 === 0 ? "rgba(25, 72, 63, 0.16)" : "rgba(235, 252, 246, 0.12)";
+          targetCtx.lineWidth = 2.2;
+          targetCtx.beginPath();
+          targetCtx.arc(cx, cy, r + (rand() - 0.5) * 1.5, 0, Math.PI * 2);
+          targetCtx.stroke();
+        }
+
+        // Carved fluting petals under the celadon glaze
+        targetCtx.strokeStyle = "rgba(22, 68, 59, 0.18)";
+        targetCtx.lineWidth = 2.5;
+        for (let i = 0; i < 16; i++) {
+          const a = (i / 16) * Math.PI * 2;
+          targetCtx.beginPath();
+          targetCtx.moveTo(cx + Math.cos(a) * 34, cy + Math.sin(a) * 34);
+          targetCtx.quadraticCurveTo(
+            cx + Math.cos(a + 0.15) * 95,
+            cy + Math.sin(a + 0.15) * 95,
+            cx + Math.cos(a) * 155,
+            cy + Math.sin(a) * 155
+          );
+          targetCtx.stroke();
+        }
+
+        // Intricate KANNYU (貫入) Ice-Crackle Crazing Network inside the translucent glaze!
+        // Primary dark-jade & warm tea-stained craze rings + radial bridges
+        const rings = [28, 48, 70, 94, 118, 140];
+        const sectors = 14;
+        const crackNodes = [];
+        rings.forEach((rad, rIdx) => {
+          const row = [];
+          for (let s = 0; s < sectors; s++) {
+            const ang = (s / sectors) * Math.PI * 2 + (rIdx % 2) * 0.2 + (rand() - 0.5) * 0.18;
+            const rr = rad + (rand() - 0.5) * 10;
+            row.push({ x: cx + Math.cos(ang) * rr, y: cy + Math.sin(ang) * rr });
+          }
+          crackNodes.push(row);
+        });
+
+        // Draw crystalline Kannyu crackle lines (shadow line + refractive white ice edge)
+        const drawCrazingSegment = (p1, p2, primary = true) => {
+          const midX = (p1.x + p2.x) * 0.5 + (rand() - 0.5) * 5;
+          const midY = (p1.y + p2.y) * 0.5 + (rand() - 0.5) * 5;
+          // Refractive ice highlight
+          targetCtx.beginPath();
+          targetCtx.moveTo(p1.x + 0.8, p1.y + 0.8);
+          targetCtx.quadraticCurveTo(midX + 0.8, midY + 0.8, p2.x + 0.8, p2.y + 0.8);
+          targetCtx.strokeStyle = primary ? "rgba(230, 255, 248, 0.38)" : "rgba(230, 255, 248, 0.22)";
+          targetCtx.lineWidth = primary ? 1.2 : 0.8;
+          targetCtx.stroke();
+
+          // Tea-tinted / deep jade craze line
+          targetCtx.beginPath();
+          targetCtx.moveTo(p1.x, p1.y);
+          targetCtx.quadraticCurveTo(midX, midY, p2.x, p2.y);
+          targetCtx.strokeStyle = primary ? "rgba(24, 62, 54, 0.48)" : "rgba(45, 85, 74, 0.30)";
+          targetCtx.lineWidth = primary ? 1.1 : 0.7;
+          targetCtx.stroke();
+        };
+
+        for (let r = 0; r < crackNodes.length; r++) {
+          const row = crackNodes[r];
+          for (let s = 0; s < sectors; s++) {
+            const cur = row[s];
+            const next = row[(s + 1) % sectors];
+            drawCrazingSegment(cur, next, r % 2 === 0);
+            if (r < crackNodes.length - 1 && rand() > 0.15) {
+              drawCrazingSegment(cur, crackNodes[r + 1][s], true);
+            }
+          }
+        }
+      }
+
+      // =====================================================================
+      // GLAZE 2: ARITA SOMETSUKE PORCELAIN WITH COBALT BLUE UNDERGLAZE (有田焼染付)
+      // =====================================================================
+      else if (glazeType === "arita") {
+        // Vitrified milk-white Hakuji porcelain with subtle cool celadon-blue pooling
+        const porcGrad = targetCtx.createRadialGradient(cx, cy, 10, cx, cy, 175);
+        porcGrad.addColorStop(0, "#e6eff6");
+        porcGrad.addColorStop(0.32, "#f8fafc");
+        porcGrad.addColorStop(0.78, "#ffffff");
+        porcGrad.addColorStop(0.92, "#eef4f8");
+        porcGrad.addColorStop(1, "#f5f2eb");
+        targetCtx.fillStyle = porcGrad;
+        targetCtx.fillRect(0, 0, size, size);
+
+        // GOSU (呉須) Hand-Painted Cobalt-Blue Underglaze Motifs!
+        // 1. Double Concentric Cobalt Outer Rim Rings & Center Medallion Ring
+        const drawBrushCircle = (radius, width, alpha) => {
+          targetCtx.save();
+          targetCtx.strokeStyle = `rgba(26, 62, 138, ${alpha})`;
+          targetCtx.lineWidth = width;
+          targetCtx.beginPath();
+          targetCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+          targetCtx.stroke();
+          targetCtx.restore();
+        };
+        drawBrushCircle(140, 3.0, 0.82);
+        drawBrushCircle(133, 1.5, 0.65);
+        drawBrushCircle(48, 2.2, 0.75);
+        drawBrushCircle(43, 1.2, 0.55);
+
+        // 2. Cobalt Seigaiha (Blue Ocean Waves) Border Cartouches along Top-Right & Bottom-Left
+        targetCtx.save();
+        targetCtx.beginPath();
+        targetCtx.arc(cx, cy, 132, 0, Math.PI * 2);
+        targetCtx.arc(cx, cy, 98, 0, Math.PI * 2, true);
+        targetCtx.clip();
+
+        for (let row = -8; row <= 8; row++) {
+          for (let col = -8; col <= 8; col++) {
+            const wx = cx + col * 26 + (row % 2 === 0 ? 0 : 13);
+            const wy = cy + row * 14;
+            const ang = Math.atan2(wy - cy, wx - cx);
+            // Place wave cartouches in two opposing diagonal sectors
+            if ((ang > -0.8 && ang < 0.8) || (ang > 2.3 || ang < -2.3)) {
+              [11, 7.5, 4].forEach((rad, idx) => {
+                targetCtx.beginPath();
+                targetCtx.arc(wx, wy, rad, Math.PI, Math.PI * 2);
+                targetCtx.strokeStyle = idx === 0 ? "rgba(23, 55, 128, 0.72)" : "rgba(37, 82, 168, 0.52)";
+                targetCtx.lineWidth = 1.3;
+                targetCtx.stroke();
+              });
+            }
+          }
+        }
+        targetCtx.restore();
+
+        // 3. Hand-Painted Cobalt Plum Blossom (Ume) Branches sweeping across the dish
+        targetCtx.save();
+        targetCtx.lineCap = "round";
+        targetCtx.strokeStyle = "rgba(20, 48, 115, 0.84)";
+        targetCtx.lineWidth = 4.2;
+        targetCtx.beginPath();
+        targetCtx.moveTo(cx - 115, cy + 58);
+        targetCtx.quadraticCurveTo(cx - 25, cy + 12, cx + 82, cy - 68);
+        targetCtx.stroke();
+
+        // Secondary twigs
+        targetCtx.lineWidth = 2.4;
+        targetCtx.beginPath();
+        targetCtx.moveTo(cx - 42, cy + 20);
+        targetCtx.quadraticCurveTo(cx - 58, cy - 35, cx - 22, cy - 82);
+        targetCtx.moveTo(cx + 15, cy - 18);
+        targetCtx.quadraticCurveTo(cx + 55, cy + 15, cx + 92, cy + 32);
+        targetCtx.stroke();
+
+        // Five-Petaled Cobalt Plum Blossoms (Ume)
+        const blossoms = [
+          { x: cx - 72, y: cy + 32, r: 14 },
+          { x: cx - 12, y: cy - 4, r: 17 },
+          { x: cx + 48, y: cy - 44, r: 15 },
+          { x: cx - 38, y: cy - 56, r: 13 },
+          { x: cx + 62, y: cy + 18, r: 14 },
+          { x: cx + 82, y: cy - 68, r: 11 }
+        ];
+        blossoms.forEach(b => {
+          for (let p = 0; p < 5; p++) {
+            const pa = (p / 5) * Math.PI * 2 - Math.PI / 2;
+            const px = b.x + Math.cos(pa) * (b.r * 0.55);
+            const py = b.y + Math.sin(pa) * (b.r * 0.55);
+            // Graded cobalt wash petal
+            const pGrad = targetCtx.createRadialGradient(px, py, 1, px, py, b.r * 0.48);
+            pGrad.addColorStop(0, "rgba(29, 78, 216, 0.85)");
+            pGrad.addColorStop(0.7, "rgba(59, 130, 246, 0.45)");
+            pGrad.addColorStop(1, "rgba(30, 58, 138, 0.9)");
+            targetCtx.fillStyle = pGrad;
+            targetCtx.beginPath();
+            targetCtx.arc(px, py, b.r * 0.44, 0, Math.PI * 2);
+            targetCtx.fill();
+          }
+          // White porcelain eye & cobalt stamens
+          targetCtx.fillStyle = "#f8fafc";
+          targetCtx.beginPath();
+          targetCtx.arc(b.x, b.y, b.r * 0.22, 0, Math.PI * 2);
+          targetCtx.fill();
+          targetCtx.fillStyle = "#172554";
+          targetCtx.beginPath();
+          targetCtx.arc(b.x, b.y, b.r * 0.1, 0, Math.PI * 2);
+          targetCtx.fill();
+        });
+        targetCtx.restore();
+      }
+
+      // =====================================================================
+      // GLAZE 3: KURO-RAKU VOLCANIC BLACK CHAWAN (黒楽茶碗)
+      // =====================================================================
+      else if (glazeType === "raku") {
+        const rakuGrad = targetCtx.createRadialGradient(cx - 18, cy - 18, 10, cx, cy, 175);
+        rakuGrad.addColorStop(0, "#2b1d18");
+        rakuGrad.addColorStop(0.42, "#181311");
+        rakuGrad.addColorStop(0.82, "#0f0c0b");
+        rakuGrad.addColorStop(1, "#291c16");
+        targetCtx.fillStyle = rakuGrad;
+        targetCtx.fillRect(0, 0, size, size);
+
+        // Hundreds of volcanic micro-pits (yuzu-hada / citron skin texture) & iron-rust Tetsu-yu flecks
+        for (let i = 0; i < 420; i++) {
+          const ang = rand() * Math.PI * 2;
+          const dist = Math.sqrt(rand()) * 160;
+          const px = cx + Math.cos(ang) * dist;
+          const py = cy + Math.sin(ang) * dist;
+          const pr = 1.0 + rand() * 3.2;
+
+          if (i % 7 === 0) {
+            // Metallic iron-rust Tetsu-yu mineral bloom
+            targetCtx.fillStyle = "rgba(168, 74, 36, 0.26)";
+            targetCtx.beginPath();
+            targetCtx.arc(px, py, pr * 1.8, 0, Math.PI * 2);
+            targetCtx.fill();
+          } else {
+            // Micro-pit crater with tiny dark recess and bottom rim glint
+            targetCtx.fillStyle = "rgba(5, 3, 2, 0.65)";
+            targetCtx.beginPath();
+            targetCtx.arc(px, py, pr, 0, Math.PI * 2);
+            targetCtx.fill();
+
+            targetCtx.fillStyle = "rgba(255, 220, 185, 0.08)";
+            targetCtx.beginPath();
+            targetCtx.arc(px + 0.6, py + 0.6, pr * 0.7, 0, Math.PI * 2);
+            targetCtx.fill();
+          }
+        }
+
+        // Hand-carved Hera (bamboo knife) facets & pooling matcha well
+        targetCtx.strokeStyle = "rgba(255, 200, 150, 0.06)";
+        targetCtx.lineWidth = 3;
+        for (let r = 32; r <= 135; r += 26) {
+          targetCtx.beginPath();
+          targetCtx.arc(cx, cy, r, 0, Math.PI * 2);
+          targetCtx.stroke();
+        }
+      }
+
+      // =====================================================================
+      // GLAZE 4: SHINO FELDSPAR GLAZE WITH HI-IRO FIRE BLUSH & PINHOLES (志野茶碗)
+      // =====================================================================
+      else if (glazeType === "shino") {
+        // Thick, creamy feldspathic milk-white glaze with warm terracotta Hi-iro showing through
+        const shinoGrad = targetCtx.createRadialGradient(cx, cy, 12, cx, cy, 165);
+        shinoGrad.addColorStop(0, "#efe6d8");
+        shinoGrad.addColorStop(0.52, "#f7f2e8");
+        shinoGrad.addColorStop(0.80, "#edd6be");
+        shinoGrad.addColorStop(0.93, "#df9262"); // Warm iron-oxide Hi-iro fire blush near rim
+        shinoGrad.addColorStop(1, "#c46234");
+        targetCtx.fillStyle = shinoGrad;
+        targetCtx.fillRect(0, 0, size, size);
+
+        // Organic Hi-iro (fire-orange) patches where thick feldspathic glaze thins over Mino clay
+        for (let i = 0; i < 9; i++) {
+          const ang = (i / 9) * Math.PI * 2 + rand() * 0.4;
+          const dist = 65 + rand() * 68;
+          const bx = cx + Math.cos(ang) * dist;
+          const by = cy + Math.sin(ang) * dist;
+          const blush = targetCtx.createRadialGradient(bx, by, 4, bx, by, 38 + rand() * 25);
+          blush.addColorStop(0, "rgba(217, 98, 43, 0.36)");
+          blush.addColorStop(0.6, "rgba(230, 140, 85, 0.16)");
+          blush.addColorStop(1, "rgba(247, 242, 232, 0)");
+          targetCtx.fillStyle = blush;
+          targetCtx.beginPath();
+          targetCtx.arc(bx, by, 60, 0, Math.PI * 2);
+          targetCtx.fill();
+        }
+
+        // Authentic SUANA (巣穴) Feldspar Pinhole Dimples & Nezumi-Shino Iron Brushstrokes
+        for (let i = 0; i < 190; i++) {
+          const ang = rand() * Math.PI * 2;
+          const dist = Math.sqrt(rand()) * 148;
+          const px = cx + Math.cos(ang) * dist;
+          const py = cy + Math.sin(ang) * dist;
+          const r = 0.9 + rand() * 1.9;
+          targetCtx.fillStyle = "rgba(156, 78, 38, 0.55)";
+          targetCtx.beginPath();
+          targetCtx.arc(px, py, r, 0, Math.PI * 2);
+          targetCtx.fill();
+        }
+      }
+
+      // =====================================================================
+      // GLAZE 5: BIZEN WOOD-FIRED STONEWARE WITH HIDASUKI & GOMA ASH (備前緋襷)
+      // =====================================================================
+      else if (glazeType === "bizen") {
+        const bizenGrad = targetCtx.createRadialGradient(cx, cy, 15, cx, cy, 170);
+        bizenGrad.addColorStop(0, "#5e3626");
+        bizenGrad.addColorStop(0.55, "#754330");
+        bizenGrad.addColorStop(0.88, "#4f2c1e");
+        bizenGrad.addColorStop(1, "#3d2015");
+        targetCtx.fillStyle = bizenGrad;
+        targetCtx.fillRect(0, 0, size, size);
+
+        // HIDASUKI (緋襷) Scarlet Straw Fire-Cord Markings wrapping across the raw stoneware
+        targetCtx.save();
+        targetCtx.lineCap = "round";
+        const cords = [
+          [-130, -45, 10, -15, 135, 35],
+          [-95, 95, -10, 20, 115, -85],
+          [-120, 20, 25, 65, 110, 85]
+        ];
+        cords.forEach(([x1, y1, cx1, cy1, x2, y2]) => {
+          targetCtx.strokeStyle = "rgba(196, 62, 28, 0.55)";
+          targetCtx.lineWidth = 14;
+          targetCtx.beginPath();
+          targetCtx.moveTo(cx + x1, cy + y1);
+          targetCtx.quadraticCurveTo(cx + cx1, cy + cy1, cx + x2, cy + y2);
+          targetCtx.stroke();
+
+          targetCtx.strokeStyle = "rgba(232, 93, 42, 0.65)";
+          targetCtx.lineWidth = 5;
+          targetCtx.stroke();
+        });
+        targetCtx.restore();
+
+        // GOMA (胡麻) Toasted Sesame Pine-Ash Speckles & Kiln Mineral Grain
+        for (let i = 0; i < 360; i++) {
+          const ang = rand() * Math.PI * 2;
+          const dist = Math.sqrt(rand()) * 155;
+          const px = cx + Math.cos(ang) * dist;
+          const py = cy + Math.sin(ang) * dist;
+          targetCtx.fillStyle = i % 3 === 0 ? "rgba(219, 188, 128, 0.38)" : "rgba(30, 14, 8, 0.45)";
+          targetCtx.beginPath();
+          targetCtx.arc(px, py, 1.0 + rand() * 2.2, 0, Math.PI * 2);
+          targetCtx.fill();
+        }
+      }
+
+      // =====================================================================
+      // VOLUMETRIC 3D BOWL CONCAVITY, THROWING RINGS & INNER FOOT-RING WELL
+      // =====================================================================
+      // 1. Deep 3D Bowl Wall Concavity Vignette (gives unmistakable 3D hollow vessel depth)
+      const depthGrad = targetCtx.createRadialGradient(cx, cy, 24, cx, cy, 156);
+      depthGrad.addColorStop(0, "rgba(0, 0, 0, 0.24)");     // Deep center tea well (Mikom)
+      depthGrad.addColorStop(0.32, "rgba(0, 0, 0, 0.08)");
+      depthGrad.addColorStop(0.76, "rgba(255, 255, 255, 0.05)"); // Rising curved inner wall
+      depthGrad.addColorStop(0.92, "rgba(0, 0, 0, 0.18)");  // Sub-rim curvature shadow
+      depthGrad.addColorStop(0.97, "rgba(255, 255, 255, 0.28)"); // Raised rim lip highlight
+      depthGrad.addColorStop(1, "rgba(0, 0, 0, 0.35)");
+      targetCtx.fillStyle = depthGrad;
+      targetCtx.beginPath();
+      targetCtx.arc(cx, cy, 158, 0, Math.PI * 2);
+      targetCtx.fill();
+
+      // 2. Defined Inner Tea-Well Ring (Chadamari / Kodai impression)
+      targetCtx.strokeStyle = "rgba(0, 0, 0, 0.16)";
+      targetCtx.lineWidth = 2.5;
+      targetCtx.beginPath();
+      targetCtx.arc(cx, cy, 44, 0, Math.PI * 2);
+      targetCtx.stroke();
+
+      targetCtx.strokeStyle = "rgba(255, 255, 255, 0.14)";
+      targetCtx.lineWidth = 1.2;
+      targetCtx.beginPath();
+      targetCtx.arc(cx, cy, 45.5, 0, Math.PI * 2);
+      targetCtx.stroke();
+    }
+
+    /*************************************************************************
+     * 5. VORONOI FRACTURE SHARDS, SEAM NODES & HOTSURE CORNER CHIP POCKETS
+     *************************************************************************/
+    function clipPolygonByBisector(poly, midPoint, normal) {
+      if (poly.length === 0) return [];
+      const out = [];
+      for (let i = 0; i < poly.length; i++) {
+        const cur = poly[i];
+        const prev = poly[(i - 1 + poly.length) % poly.length];
+        const curDot = (cur.x - midPoint.x) * normal.x + (cur.y - midPoint.y) * normal.y;
+        const prevDot = (prev.x - midPoint.x) * normal.x + (prev.y - midPoint.y) * normal.y;
+
+        if (curDot >= -1e-5) {
+          if (prevDot < -1e-5) {
+            const t = prevDot / (prevDot - curDot);
+            out.push({ x: prev.x + t * (cur.x - prev.x), y: prev.y + t * (cur.y - prev.y) });
+          }
+          out.push(cur);
+        } else if (prevDot >= -1e-5) {
+          const t = prevDot / (prevDot - curDot);
+          out.push({ x: prev.x + t * (cur.x - prev.x), y: prev.y + t * (cur.y - prev.y) });
+        }
+      }
+      return out;
+    }
+
+    function computePolygonCentroid(pts) {
+      let sx = 0, sy = 0;
+      pts.forEach(p => { sx += p.x; sy += p.y; });
+      return { x: sx / Math.max(1, pts.length), y: sy / Math.max(1, pts.length) };
+    }
+
+    function buildVesselFracturePuzzle(vesselConfig, impactOrigin = { x: 0, y: 0 }) {
+      const rand = createSeededRandom(vesselConfig.seed || 1084);
+      const count = vesselConfig.shardCount || 8;
+
+      // 1. Bake high-resolution ceramic glaze texture
+      bakeRealisticCeramicTexture(glazeCtx, TEX_SIZE, vesselConfig.glaze, vesselConfig.shape, vesselConfig.seed);
+
+      // 2. Build outer vessel silhouette polygon
+      state.vesselOutline = createVesselSilhouette(vesselConfig.shape);
+
+      // 3. Generate Voronoi seed sites around impactOrigin
+      const sites = [];
+      for (let i = 0; i < count; i++) {
+        const ratio = (i + 0.45) / count;
+        const angle = i * 2.39996 + (rand() - 0.5) * 0.42;
+        const dist = 28 + Math.sqrt(ratio) * 88;
+        sites.push({
+          id: i,
+          x: impactOrigin.x * 0.45 + Math.cos(angle) * dist,
+          y: impactOrigin.y * 0.45 + Math.sin(angle) * dist
+        });
+      }
+
+      // 4. Clip Voronoi cells against silhouette
+      const rawCells = [];
+      for (let i = 0; i < sites.length; i++) {
+        let cell = [...state.vesselOutline];
+        const sA = sites[i];
+        for (let j = 0; j < sites.length; j++) {
+          if (i === j) continue;
+          const sB = sites[j];
+          const mid = { x: (sA.x + sB.x) * 0.5, y: (sA.y + sB.y) * 0.5 };
+          const normal = { x: sA.x - sB.x, y: sA.y - sB.y };
+          cell = clipPolygonByBisector(cell, mid, normal);
+        }
+        if (cell.length >= 3) {
+          rawCells.push({ id: i, site: sA, poly: cell });
+        }
+      }
+
+      // 5. Extract interior fracture seams & Hotsure corner chip pools at triple-junctions
+      state.seams = [];
+      state.chipPools = [];
+      const seamMap = new Map();
+      const vertexFreq = new Map();
+
+      rawCells.forEach(cell => {
+        const p = cell.poly;
+        for (let k = 0; k < p.length; k++) {
+          const a = p[k];
+          const b = p[(k + 1) % p.length];
+          const midX = (a.x + b.x) * 0.5;
+          const midY = (a.y + b.y) * 0.5;
+
+          // Count interior vertices for Hotsure chip pockets
+          if (Math.hypot(a.x, a.y) < 122) {
+            const vKey = `${Math.round(a.x / 4) * 4},${Math.round(a.y / 4) * 4}`;
+            vertexFreq.set(vKey, { x: a.x, y: a.y, count: (vertexFreq.get(vKey)?.count || 0) + 1 });
+          }
+
+          if (Math.hypot(midX, midY) < 130) {
+            const key1 = `${Math.round(a.x)},${Math.round(a.y)}-${Math.round(b.x)},${Math.round(b.y)}`;
+            const key2 = `${Math.round(b.x)},${Math.round(b.y)}-${Math.round(a.x)},${Math.round(a.y)}`;
+            if (!seamMap.has(key1) && !seamMap.has(key2)) {
+              const len = Math.hypot(b.x - a.x, b.y - a.y);
+              if (len > 8) {
+                const steps = Math.max(4, Math.ceil(len / 8));
+                const nodes = [];
+                const nx = -(b.y - a.y) / len;
+                const ny = (b.x - a.x) / len;
+                const phase = rand() * Math.PI * 2;
+                for (let s = 0; s <= steps; s++) {
+                  const t = s / steps;
+                  const jag = Math.sin(t * Math.PI) * Math.sin(t * Math.PI * 3 + phase) * 2.3;
+                  // Vary seam width organically along the crack
+                  const widthMod = 1.0 + Math.sin(t * Math.PI * 2 + phase) * 0.28;
+                  nodes.push({
+                    x: a.x + (b.x - a.x) * t + nx * jag,
+                    y: a.y + (b.y - a.y) * t + ny * jag,
+                    w: widthMod,
+                    lacquered: false,
+                    dusted: false,
+                    metal: state.metalType
+                  });
+                }
+                seamMap.set(key1, { a, b, nodes });
+              }
+            }
+          }
+        }
+      });
+
+      state.seams = Array.from(seamMap.values());
+
+      // Create authentic Hotsure (small triangular/polygonal gold chip fillings at fracture intersections)
+      vertexFreq.forEach(v => {
+        if (v.count >= 3) {
+          const r = 5.5 + rand() * 3.5;
+          const rot = rand() * Math.PI * 2;
+          state.chipPools.push({
+            x: v.x,
+            y: v.y,
+            r,
+            rot,
+            pts: [
+              { x: v.x + Math.cos(rot) * r, y: v.y + Math.sin(rot) * r },
+              { x: v.x + Math.cos(rot + 2.1) * (r * 0.85), y: v.y + Math.sin(rot + 2.1) * (r * 0.85) },
+              { x: v.x + Math.cos(rot + 4.2) * (r * 0.9), y: v.y + Math.sin(rot + 4.2) * (r * 0.9) }
+            ]
+          });
+        }
+      });
+
+      // 6. Scatter Shards around the Indigo Workbench Mat
+      state.shards = rawCells.map((cell, idx) => {
+        const centroid = computePolygonCentroid(cell.poly);
+        const localPoly = cell.poly.map(pt => ({
+          x: pt.x - centroid.x,
+          y: pt.y - centroid.y
+        }));
+
+        // Classify which edges of localPoly are interior fracture edges vs outer rim edges
+        const isInteriorEdge = localPoly.map((pt, i) => {
+          const next = localPoly[(i + 1) % localPoly.length];
+          const mx = (pt.x + next.x) * 0.5 + centroid.x;
+          const my = (pt.y + next.y) * 0.5 + centroid.y;
+          return Math.hypot(mx, my) < 134;
+        });
+
+        const scatterAngle = (idx / rawCells.length) * Math.PI * 2 + 0.38;
+        const scatterRadiusX = 212 + (idx % 2) * 28;
+        const scatterRadiusY = 172 + ((idx + 1) % 2) * 22;
+
+        const angleSteps = [-4, -3, -2, -1, 1, 2, 3, 4];
+        const startAngleDeg = angleSteps[Math.floor(rand() * angleSteps.length)] * 15;
+
+        return {
+          id: cell.id,
+          trueX: centroid.x,
+          trueY: centroid.y,
+          x: Math.cos(scatterAngle) * scatterRadiusX,
+          y: Math.sin(scatterAngle) * scatterRadiusY,
+          angle: (startAngleDeg * Math.PI) / 180,
+          localPoly,
+          isInteriorEdge,
+          placed: false,
+          snapAnim: 0
+        };
+      });
+
+      state.selectedShardId = null;
+      state.draggingShardId = null;
+      state.hankoStamped = false;
+      state.restoredTitle = POETIC_TITLES[Math.floor(Math.random() * POETIC_TITLES.length)];
+      document.getElementById("customPieceTitleInput").value = state.restoredTitle;
+
+      setStage(1);
+    }
+
+    /*************************************************************************
+     * 6. 3D VOLUMETRIC CERAMIC & SPECULAR LIGHT RENDERING ENGINE
+     *************************************************************************/
+    const canvas = document.getElementById("workbenchCanvas");
+    const ctx = canvas.getContext("2d");
+    let cw = 680, ch = 540, dpr = 1, viewScale = 1;
+
+    function resizeWorkbenchCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      cw = rect.width;
+      ch = rect.height;
+      canvas.width = cw * dpr;
+      canvas.height = ch * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      viewScale = Math.min(cw / 600, ch / 465);
+    }
+
+    function screenToWorld(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      const sx = clientX - rect.left;
+      const sy = clientY - rect.top;
+      return {
+        x: (sx - cw / 2) / viewScale,
+        y: (sy - ch / 2) / viewScale
+      };
+    }
+
+    function initDustMotes() {
+      state.dustMotes = [];
+      for (let i = 0; i < 32; i++) {
+        state.dustMotes.push({
+          x: (Math.random() - 0.5) * 580,
+          y: (Math.random() - 0.5) * 450,
+          r: 0.8 + Math.random() * 1.4,
+          vx: (Math.random() - 0.5) * 0.16,
+          vy: -0.06 - Math.random() * 0.14,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function spawnParticles(wx, wy, color = "#fef08a", count = 14) {
+      for (let i = 0; i < count; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const spd = 0.5 + Math.random() * 2.5;
+        state.particles.push({
+          x: wx,
+          y: wy,
+          vx: Math.cos(a) * spd,
+          vy: Math.sin(a) * spd - 0.25,
+          r: 1.4 + Math.random() * 2.2,
+          alpha: 1.0,
+          color
+        });
+      }
+    }
+
+    // Main 60FPS Studio Render Loop
+    function renderWorkbench(now) {
+      ctx.clearRect(0, 0, cw, ch);
+
+      // 1. Woven Indigo Kasuri Linen Mat Background with Dynamic Lantern Falloff
+      drawIndigoKasuriMat();
+
+      ctx.save();
+      ctx.translate(cw / 2, ch / 2);
+      ctx.scale(viewScale, viewScale);
+
+      // 2. Faint White Chalk Alignment Circle & Foot-Ring Blueprint
+      if (state.showBlueprint && state.stage === 1) {
+        drawChalkAlignmentGuide();
+      }
+
+      // 3. Draw Placed Ceramic Shards + Assembled Foot-Ring Shadow
+      const placedShards = state.shards.filter(s => s.placed);
+      if (placedShards.length === state.shards.length && state.shards.length > 0) {
+        drawVesselTableDropShadow();
+      }
+      placedShards.forEach(shard => {
+        drawRealistic3DCeramicShard(shard, false);
+      });
+
+      // 4. Draw Raw Bisque Cracks, 3D Raised Mugi-Urushi Bead, Hotsure Chip Pools & Anisotropic Maki-e Veins
+      if (state.stage >= 2 || placedShards.length > 0) {
+        drawRealistic3DSeamsAndChips(now);
+      }
+
+      // 5. Draw Unplaced Shards (with 3D Exposed Bisque Clay Wall Extrusion & Dynamic Specular Glaze!)
+      const unplaced = state.shards.filter(s => !s.placed);
+      unplaced.sort((a, b) => (a.id === state.selectedShardId ? 1 : b.id === state.selectedShardId ? -1 : 0));
+      unplaced.forEach(shard => {
+        drawRealistic3DCeramicShard(shard, shard.id === state.selectedShardId);
+      });
+
+      // 6. Draw Brass Rotation Halo around Selected Shard in Stage 1
+      if (state.stage === 1 && state.selectedShardId !== null) {
+        const sel = state.shards.find(s => s.id === state.selectedShardId && !s.placed);
+        if (sel) drawShardRotationGimbal(sel);
+      }
+
+      // 7. In Stage 4, Draw Red Cinnabar Hanko Seal if stamped
+      if (state.stage === 4 && state.hankoStamped) {
+        drawCanvasHankoStamp(state.hankoPos.x, state.hankoPos.y);
+      }
+
+      // 8. Draw Draggable Overhead Studio Lantern Light Orb
+      drawStudioLanternLightOrb(now);
+
+      // 9. Draw Gold Dust & Bisque Spark Particles
+      updateAndDrawParticles();
+
+      // 10. Draw Active Artisan Spatula / Marufude Brush Cursor (Stages 2 & 3)
+      if (state.stage === 2 || state.stage === 3) {
+        drawArtisanBrushCursor();
+      }
+
+      // 11. Ambient Dust Motes
+      drawFloatingDustMotes();
+
+      ctx.restore();
+      requestAnimationFrame(renderWorkbench);
+    }
+
+    function drawIndigoKasuriMat() {
+      ctx.save();
+      ctx.fillStyle = "#0b111e";
+      ctx.fillRect(0, 0, cw, ch);
+
+      // Dynamic warm lantern light pool on the indigo linen cloth
+      const lxScreen = cw / 2 + state.lightX * viewScale;
+      const lyScreen = ch / 2 + state.lightY * viewScale;
+      const clothLight = ctx.createRadialGradient(lxScreen, lyScreen, 15, cw * 0.5, ch * 0.5, Math.max(cw, ch) * 0.72);
+      clothLight.addColorStop(0, "rgba(255, 224, 160, 0.14)");
+      clothLight.addColorStop(0.45, "rgba(30, 52, 88, 0.22)");
+      clothLight.addColorStop(1, "rgba(4, 7, 15, 0.85)");
+      ctx.fillStyle = clothLight;
+      ctx.fillRect(0, 0, cw, ch);
+
+      // Woven Indigo Linen Warp & Weft Texture
+      ctx.strokeStyle = "rgba(148, 180, 225, 0.032)";
+      ctx.lineWidth = 1;
+      for (let y = 0; y < ch; y += 6) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(cw, y);
+        ctx.stroke();
+      }
+      for (let x = 0; x < cw; x += 6) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, ch);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawChalkAlignmentGuide() {
+      if (state.vesselOutline.length === 0) return;
+      ctx.save();
+
+      // Outer vessel chalk contour
+      ctx.beginPath();
+      state.vesselOutline.forEach((pt, idx) => {
+        if (idx === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      });
+      ctx.closePath();
+      ctx.fillStyle = "rgba(255, 250, 240, 0.025)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(226, 232, 240, 0.24)";
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 5]);
+      ctx.stroke();
+
+      // Inner Kodai foot-ring chalk circle
+      ctx.beginPath();
+      ctx.arc(0, 0, 45, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(226, 232, 240, 0.12)";
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Faint interior fracture blueprint lines
+      ctx.strokeStyle = "rgba(226, 232, 240, 0.11)";
+      ctx.lineWidth = 1;
+      state.seams.forEach(seam => {
+        ctx.beginPath();
+        seam.nodes.forEach((n, idx) => {
+          if (idx === 0) ctx.moveTo(n.x, n.y);
+          else ctx.lineTo(n.x, n.y);
+        });
+        ctx.stroke();
+      });
+
+      ctx.restore();
+    }
+
+    function drawVesselTableDropShadow() {
+      if (state.vesselOutline.length === 0) return;
+      ctx.save();
+      // Cast shadow opposite the overhead Studio Lantern Light
+      const shadowOffX = -state.lightX * 0.085;
+      const shadowOffY = -state.lightY * 0.085 + 7;
+
+      ctx.translate(shadowOffX, shadowOffY);
+      ctx.beginPath();
+      state.vesselOutline.forEach((pt, idx) => {
+        if (idx === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      });
+      ctx.closePath();
+      ctx.shadowColor = "rgba(0, 0, 0, 0.82)";
+      ctx.shadowBlur = 26;
+      ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+      ctx.fill();
+      ctx.restore();
+    }
+
+    /**
+     * Renders a single 3D ceramic shard with:
+     * 1. Dynamic cast shadow opposite the Studio Lantern Light
+     * 2. 3D Extruded Bisque / Clay Wall Cross-Section along broken edges
+     * 3. High-resolution clipped ceramic glaze & cobalt/crackle artwork
+     * 4. Real-time 3D Concave/Convex Specular Highlight based on shard angle & light position
+     */
+    function drawRealistic3DCeramicShard(shard, isSelected) {
+      const mat = GLAZE_MATERIALS[state.currentVessel.glaze] || GLAZE_MATERIALS.celadon;
+      const thickness = state.showBisqueDepth ? mat.wallThickness : 2.5;
+
+      // Direction away from light for 3D shadow & wall extrusion
+      const dxLight = shard.x - state.lightX;
+      const dyLight = shard.y - state.lightY;
+      const distLight = Math.max(40, Math.hypot(dxLight, dyLight));
+      const extWorldX = (dxLight / distLight) * (shard.placed ? 2.5 : thickness * 0.55) + 1.5;
+      const extWorldY = (dyLight / distLight) * (shard.placed ? 2.5 : thickness * 0.55) + (shard.placed ? 2.5 : 5.5);
+
+      ctx.save();
+      ctx.translate(shard.x, shard.y);
+
+      // Snap pop animation
+      if (shard.snapAnim > 0) {
+        const sc = 1 + Math.sin(shard.snapAnim * Math.PI) * 0.055;
+        ctx.scale(sc, sc);
+        shard.snapAnim = Math.max(0, shard.snapAnim - 0.08);
+      }
+
+      // -------------------------------------------------------------------
+      // A. MULTI-LAYERED CONTACT & CAST SHADOW ON WORKBENCH MAT (Unplaced)
+      // -------------------------------------------------------------------
+      if (!shard.placed) {
+        ctx.save();
+        const lift = isSelected ? 1.55 : 1.0;
+        ctx.translate(extWorldX * 1.4 * lift, extWorldY * 1.5 * lift);
+        ctx.rotate(shard.angle);
+        ctx.beginPath();
+        shard.localPoly.forEach((pt, idx) => {
+          if (idx === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        });
+        ctx.closePath();
+        ctx.shadowColor = isSelected ? "rgba(0, 0, 0, 0.9)" : "rgba(0, 0, 0, 0.75)";
+        ctx.shadowBlur = isSelected ? 24 : 12;
+        ctx.fillStyle = "rgba(2, 6, 14, 0.78)";
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // -------------------------------------------------------------------
+      // B. 3D EXTRUDED BISQUE / CLAY WALL CROSS-SECTION (Broken Ceramic Thickness)
+      // -------------------------------------------------------------------
+      if (!shard.placed && state.showBisqueDepth) {
+        const cosA = Math.cos(shard.angle);
+        const sinA = Math.sin(shard.angle);
+        const worldPts = shard.localPoly.map(p => ({
+          x: p.x * cosA - p.y * sinA,
+          y: p.x * sinA + p.y * cosA
+        }));
+
+        // Draw extruded 3D side quads for each polygon edge
+        for (let i = 0; i < worldPts.length; i++) {
+          const p1 = worldPts[i];
+          const p2 = worldPts[(i + 1) % worldPts.length];
+          const isFractureEdge = shard.isInteriorEdge[i];
+
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.lineTo(p2.x + extWorldX, p2.y + extWorldY);
+          ctx.lineTo(p1.x + extWorldX, p1.y + extWorldY);
+          ctx.closePath();
+
+          // Fracture edges expose raw unglazed bisque clay; outer rim edges show glazed rim contour
+          ctx.fillStyle = isFractureEdge ? mat.bisqueColor : mat.bisqueShadow;
+          ctx.fill();
+          ctx.strokeStyle = isFractureEdge ? mat.bisqueShadow : "rgba(0,0,0,0.45)";
+          ctx.lineWidth = 0.9;
+          ctx.stroke();
+        }
+      }
+
+      // Now rotate into shard's local coordinate frame for top surface rendering
+      ctx.rotate(shard.angle);
+
+      // -------------------------------------------------------------------
+      // C. CLIP TO SHARD POLYGON & RENDER GLAZE ALBEDO + 3D LIGHTING
+      // -------------------------------------------------------------------
+      ctx.save();
+      ctx.beginPath();
+      shard.localPoly.forEach((pt, idx) => {
+        if (idx === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      });
+      ctx.closePath();
+      ctx.clip();
+
+      // 1. Draw high-res baked ceramic glaze texture mapped to true vessel position
+      ctx.drawImage(glazeCanvas, -TEX_HALF - shard.trueX, -TEX_HALF - shard.trueY);
+
+      // 2. Dynamic 3D Specular Glaze Reflection Lobe (Reacts to Studio Lantern Light AND Shard Rotation!)
+      // Transform the Studio Lantern Light position into the shard's rotated local coordinate space
+      const relLightX = state.lightX - shard.x;
+      const relLightY = state.lightY - shard.y;
+      const cosNeg = Math.cos(-shard.angle);
+      const sinNeg = Math.sin(-shard.angle);
+      const localLightX = relLightX * cosNeg - relLightY * sinNeg;
+      const localLightY = relLightX * sinNeg + relLightY * cosNeg;
+
+      // For a concave bowl interior, the specular reflection hot-spot shifts across the curved inner wall
+      const specCenterX = localLightX * 0.42 - shard.trueX * 0.25;
+      const specCenterY = localLightY * 0.42 - shard.trueY * 0.25;
+      const specRadius = 145 * (32 / mat.specularPower);
+
+      const specGrad = ctx.createRadialGradient(
+        specCenterX, specCenterY, 4,
+        specCenterX, specCenterY, Math.max(45, specRadius)
+      );
+      specGrad.addColorStop(0, `rgba(255, 253, 244, ${mat.specularAlpha})`);
+      specGrad.addColorStop(0.35, `rgba(255, 248, 225, ${mat.specularAlpha * 0.38})`);
+      specGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+
+      ctx.fillStyle = specGrad;
+      ctx.fillRect(-200, -200, 400, 400);
+
+      // 3. Sculpted 3D Ceramic Rim Lip Highlight along the outer vessel perimeter
+      ctx.save();
+      ctx.translate(-shard.trueX, -shard.trueY);
+      ctx.beginPath();
+      state.vesselOutline.forEach((pt, idx) => {
+        if (idx === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      });
+      ctx.closePath();
+      ctx.strokeStyle = mat.rimColor;
+      ctx.lineWidth = 4.5;
+      ctx.globalAlpha = 0.55;
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.restore(); // End shard clip
+
+      // -------------------------------------------------------------------
+      // D. EXPOSED RAW BISQUE FRACTURE BEVEL & SELECTION OUTLINE
+      // -------------------------------------------------------------------
+      for (let i = 0; i < shard.localPoly.length; i++) {
+        const a = shard.localPoly[i];
+        const b = shard.localPoly[(i + 1) % shard.localPoly.length];
+        const isInterior = shard.isInteriorEdge[i];
+
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+
+        if (!shard.placed) {
+          if (isSelected) {
+            ctx.strokeStyle = isInterior ? "#fbbf24" : "#fde68a";
+            ctx.lineWidth = isInterior ? 2.5 : 2.0;
+          } else {
+            // Crisp chalky/sandy bisque bevel on interior broken edges
+            ctx.strokeStyle = isInterior ? mat.bisqueColor : "rgba(20, 14, 10, 0.7)";
+            ctx.lineWidth = isInterior ? 2.2 : 1.5;
+          }
+        } else {
+          // Once placed in Stage 1, show raw bisque hairline crack until Urushi covers it
+          ctx.strokeStyle = isInterior ? mat.bisqueShadow : "rgba(15, 10, 8, 0.65)";
+          ctx.lineWidth = isInterior ? 1.3 : 1.8;
+        }
+        ctx.lineCap = "round";
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    /**
+     * Renders:
+     * 1. Raw bisque crack crevices (Stage 1 & 2)
+     * 2. Raised 3D Mugi-Urushi glossy dark amber/crimson bead (Stage 2)
+     * 3. Anisotropic 3D Maki-e Gold / Silver / Copper / Shu-Urushi relief veins + Hotsure chip pools (Stage 3 & 4)
+     */
+    function drawRealistic3DSeamsAndChips(now) {
+      const allPlaced = state.shards.every(s => s.placed);
+      const mat = GLAZE_MATERIALS[state.currentVessel.glaze] || GLAZE_MATERIALS.celadon;
+
+      // Light vector for 3D relief seam highlight offset
+      const lNorm = Math.max(1, Math.hypot(state.lightX, state.lightY));
+      const lxOff = (state.lightX / lNorm) * 1.15;
+      const lyOff = (state.lightY / lNorm) * 1.15;
+
+      // 1. Draw HOTSURE (ほつれ) Corner Chip Fillings at Fracture Triple-Junctions
+      if (allPlaced) {
+        state.chipPools.forEach(chip => {
+          // Check status of nearest seam node
+          let isLacquered = false;
+          let isDusted = false;
+          let metalKey = state.metalType;
+          state.seams.forEach(s => {
+            s.nodes.forEach(n => {
+              if (Math.hypot(n.x - chip.x, n.y - chip.y) < 16) {
+                if (n.lacquered) isLacquered = true;
+                if (n.dusted) { isDusted = true; metalKey = n.metal || state.metalType; }
+              }
+            });
+          });
+
+          ctx.save();
+          ctx.beginPath();
+          chip.pts.forEach((p, idx) => {
+            if (idx === 0) ctx.moveTo(p.x, p.y);
+            else ctx.lineTo(p.x, p.y);
+          });
+          ctx.closePath();
+
+          if (isDusted) {
+            const pal = METAL_PALETTES[metalKey] || METAL_PALETTES.gold;
+            ctx.fillStyle = pal.mid;
+            ctx.shadowColor = pal.ao;
+            ctx.shadowBlur = 4;
+            ctx.fill();
+            ctx.strokeStyle = pal.spec;
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+          } else if (isLacquered) {
+            ctx.fillStyle = "#6e170b";
+            ctx.fill();
+            ctx.strokeStyle = "#fca5a5";
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          } else {
+            // Raw chipped bisque pocket waiting to be filled
+            ctx.fillStyle = mat.bisqueShadow;
+            ctx.fill();
+            ctx.strokeStyle = mat.bisqueColor;
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+          }
+          ctx.restore();
+        });
+      }
+
+      // 2. Draw Fracture Seams (Raw Bisque -> 3D Raised Urushi Bead -> 3D Burnished Maki-e Gold Relief)
+      state.seams.forEach(seam => {
+        const nodes = seam.nodes;
+        if (nodes.length < 2) return;
+
+        // A. Base Raw Ceramic Bisque Crack Crevice
+        if (allPlaced) {
+          ctx.beginPath();
+          nodes.forEach((n, idx) => {
+            if (idx === 0) ctx.moveTo(n.x, n.y);
+            else ctx.lineTo(n.x, n.y);
+          });
+          ctx.strokeStyle = "rgba(18, 11, 7, 0.82)";
+          ctx.lineWidth = 4.6;
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.stroke();
+
+          // Exposed raw bisque lip along crack edge
+          ctx.strokeStyle = mat.bisqueColor;
+          ctx.lineWidth = 1.7;
+          ctx.stroke();
+        }
+
+        // B. Segment-by-Segment 3D Urushi & Maki-e Relief Rendering
+        for (let i = 0; i < nodes.length - 1; i++) {
+          const a = nodes[i];
+          const b = nodes[i + 1];
+          const wMod = (a.w + b.w) * 0.5;
+
+          if (a.dusted || b.dusted) {
+            const pal = METAL_PALETTES[a.metal || state.metalType] || METAL_PALETTES.gold;
+            const midX = (a.x + b.x) * 0.5;
+            const midY = (a.y + b.y) * 0.5;
+
+            // Compute anisotropic specular glint from Studio Lantern Light
+            const distToLight = Math.hypot(midX - state.lightX, midY - state.lightY);
+            const glint = Math.max(0, 1 - distToLight / 240);
+
+            // 1. Deep contact shadow under the raised 3D gold bead
+            ctx.beginPath();
+            ctx.moveTo(a.x - lxOff * 0.9, a.y - lyOff * 0.9);
+            ctx.lineTo(b.x - lxOff * 0.9, b.y - lyOff * 0.9);
+            ctx.strokeStyle = pal.ao;
+            ctx.lineWidth = 6.8 * wMod;
+            ctx.lineCap = "round";
+            ctx.stroke();
+
+            // 2. Lower metallic bevel (warm antique bronze/gold shadow)
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = pal.shadow;
+            ctx.lineWidth = 5.6 * wMod;
+            ctx.lineCap = "round";
+            ctx.stroke();
+
+            // 3. Raised 3D Metallic Crown
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = glint > 0.45 ? pal.mid : pal.base;
+            ctx.lineWidth = 4.1 * wMod;
+            ctx.lineCap = "round";
+            ctx.stroke();
+
+            // 4. Specular Burnished Agate Ridge (shifted toward Studio Lantern Light)
+            ctx.beginPath();
+            ctx.moveTo(a.x + lxOff * 0.65, a.y + lyOff * 0.65);
+            ctx.lineTo(b.x + lxOff * 0.65, b.y + lyOff * 0.65);
+            ctx.strokeStyle = pal.spec;
+            ctx.lineWidth = (1.1 + glint * 1.6) * wMod;
+            ctx.lineCap = "round";
+            ctx.stroke();
+          } else if (a.lacquered || b.lacquered) {
+            // RAISED 3D MUGI-URUSHI LACQUER BEAD (Stage 2)
+            // 1. Dark base shadow
+            ctx.beginPath();
+            ctx.moveTo(a.x - lxOff * 0.7, a.y - lyOff * 0.7);
+            ctx.lineTo(b.x - lxOff * 0.7, b.y - lyOff * 0.7);
+            ctx.strokeStyle = "rgba(15, 4, 2, 0.75)";
+            ctx.lineWidth = 6.2 * wMod;
+            ctx.lineCap = "round";
+            ctx.stroke();
+
+            // 2. Viscous crimson-black Urushi sap body
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = "#6e170c";
+            ctx.lineWidth = 4.4 * wMod;
+            ctx.lineCap = "round";
+            ctx.stroke();
+
+            // 3. Wet glossy sap highlight ridge
+            ctx.beginPath();
+            ctx.moveTo(a.x + lxOff * 0.6, a.y + lyOff * 0.6);
+            ctx.lineTo(b.x + lxOff * 0.6, b.y + lyOff * 0.6);
+            ctx.strokeStyle = "rgba(253, 186, 116, 0.7)";
+            ctx.lineWidth = 1.3 * wMod;
+            ctx.lineCap = "round";
+            ctx.stroke();
+          }
+        }
+      });
+    }
+
+    function drawStudioLanternLightOrb(now) {
+      const lx = state.lightX;
+      const ly = state.lightY;
+      ctx.save();
+      ctx.translate(lx, ly);
+
+      // Soft warm lantern aura
+      const halo = ctx.createRadialGradient(0, 0, 2, 0, 0, 32);
+      halo.addColorStop(0, "rgba(255, 247, 200, 0.85)");
+      halo.addColorStop(0.45, "rgba(251, 191, 36, 0.32)");
+      halo.addColorStop(1, "rgba(251, 191, 36, 0)");
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(0, 0, 32, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Brass & Washi Paper Studio Lantern Icon
+      ctx.fillStyle = "#fef3c7";
+      ctx.strokeStyle = "#d97706";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(0, 0, 9.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Tiny label below orb when hovering or in Stage 4
+      if (state.draggingLightOrb || state.stage === 4) {
+        ctx.fillStyle = "rgba(15, 23, 42, 0.85)";
+        ctx.beginPath();
+        ctx.roundRect(-34, 13, 68, 15, 4);
+        ctx.fill();
+        ctx.fillStyle = "#fde68a";
+        ctx.font = "500 9px 'JetBrains Mono', monospace";
+        ctx.textAlign = "center";
+        ctx.fillText("STUDIO LIGHT", 0, 23);
+      }
+
+      ctx.restore();
+    }
+
+    function drawShardRotationGimbal(shard) {
+      ctx.save();
+      ctx.translate(shard.x, shard.y);
+      const ringR = 56;
+
+      ctx.beginPath();
+      ctx.arc(0, 0, ringR, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(251, 191, 36, 0.72)";
+      ctx.lineWidth = 1.6;
+      ctx.setLineDash([4, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      const knobX = Math.cos(shard.angle) * ringR;
+      const knobY = Math.sin(shard.angle) * ringR;
+
+      ctx.beginPath();
+      ctx.arc(knobX, knobY, 9.5, 0, Math.PI * 2);
+      ctx.fillStyle = "#f59e0b";
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#fffbeb";
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawArtisanBrushCursor() {
+      const x = state.pointerX;
+      const y = state.pointerY;
+      ctx.save();
+      ctx.translate(x, y);
+
+      ctx.beginPath();
+      ctx.arc(0, 0, 25, 0, Math.PI * 2);
+      ctx.strokeStyle = state.stage === 2
+        ? "rgba(239, 68, 68, 0.48)"
+        : "rgba(250, 204, 21, 0.58)";
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+
+      ctx.rotate(-0.62);
+      if (state.stage === 2) {
+        // Hinoki Bamboo Spatula / Fine Urushi Brush
+        ctx.fillStyle = "#6e170c";
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(5.5, -15);
+        ctx.lineTo(-5.5, -15);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = "#d4a359";
+        ctx.fillRect(-3.5, -70, 7, 55);
+      } else {
+        // Soft Marufude Maki-e Duster with Gold Powder Tip
+        const pal = METAL_PALETTES[state.metalType] || METAL_PALETTES.gold;
+        ctx.fillStyle = pal.mid;
+        ctx.beginPath();
+        ctx.arc(0, -4, 7.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#f8fafc";
+        ctx.beginPath();
+        ctx.ellipse(0, -19, 9.5, 16, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#78350f";
+        ctx.fillRect(-3.2, -66, 6.4, 38);
+      }
+      ctx.restore();
+    }
+
+    function drawCanvasHankoStamp(hx, hy) {
+      ctx.save();
+      ctx.translate(hx, hy);
+      ctx.rotate(-0.05);
+
+      ctx.fillStyle = "rgba(185, 28, 28, 0.92)";
+      ctx.strokeStyle = "#7f1d1d";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(-22, -26, 44, 52, 5);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.strokeStyle = "#fef2f2";
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(-18, -22, 36, 44);
+
+      ctx.fillStyle = "#fef2f2";
+      ctx.font = "bold 16px 'Noto Serif JP', serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("金", 0, -9);
+      ctx.fillText("継", 0, 11);
+      ctx.restore();
+    }
+
+    function updateAndDrawParticles() {
+      for (let i = state.particles.length - 1; i >= 0; i--) {
+        const p = state.particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.025;
+        if (p.alpha <= 0) {
+          state.particles.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function drawFloatingDustMotes() {
+      state.dustMotes.forEach(m => {
+        m.x += m.vx;
+        m.y += m.vy;
+        m.phase += 0.02;
+        if (m.y < -225) m.y = 225;
+        if (m.x < -290) m.x = 290;
+        if (m.x > 290) m.x = -290;
+        const alpha = 0.14 + 0.22 * Math.sin(m.phase);
+        ctx.fillStyle = `rgba(253, 230, 170, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    /*************************************************************************
+     * 7. STAGE MANAGEMENT & PROGRESS TRACKING
+     *************************************************************************/
+    function setStage(stageNum) {
+      state.stage = stageNum;
+
+      for (let i = 1; i <= 4; i++) {
+        const pill = document.getElementById(`stepPill-${i}`);
+        if (i === stageNum) {
+          pill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-semibold bg-amber-500/25 text-amber-200 border border-amber-400/60 shadow cursor-pointer";
+        } else if (i < stageNum) {
+          pill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium text-emerald-300/90 bg-emerald-950/40 border border-emerald-700/40 cursor-pointer";
+        } else {
+          pill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium text-hinoki-300/50 cursor-pointer";
+        }
+      }
+
+      for (let i = 1; i <= 3; i++) {
+        const card = document.getElementById(`toolCard-${i}`);
+        if (card) {
+          card.className = i === stageNum
+            ? "p-2.5 rounded-xl border transition-all flex items-center gap-2.5 bg-walnut-900/95 border-amber-400 shadow-lg opacity-100"
+            : "p-2.5 rounded-xl border transition-all flex items-center gap-2.5 bg-walnut-900/40 border-walnut-800 opacity-55";
+        }
+      }
+
+      const badge = document.getElementById("stageBadgeLabel");
+      const instr = document.getElementById("stageInstructionText");
+      const helperLabel = document.getElementById("helperActionLabel");
+      const activeToolTag = document.getElementById("activeToolTag");
+      const inspectionOverlay = document.getElementById("inspectionOverlay");
+      const shardQuickBar = document.getElementById("shardQuickBar");
+
+      if (stageNum === 1) {
+        badge.textContent = "Stage 1 • Awase";
+        instr.textContent = "Drag 3D ceramic shards & align their bisque walls and glaze motifs";
+        helperLabel.textContent = "Fit 1 Shard";
+        activeToolTag.textContent = "1. Awase";
+        inspectionOverlay.classList.add("hidden");
+      } else if (stageNum === 2) {
+        badge.textContent = "Stage 2 • Mugi-Urushi";
+        instr.textContent = "Trace along the raw bisque seams to deposit a raised 3D lacquer bead";
+        helperLabel.textContent = "Auto-Apply Urushi";
+        activeToolTag.textContent = "2. Mugi-Urushi";
+        shardQuickBar.classList.add("hidden");
+        inspectionOverlay.classList.add("hidden");
+      } else if (stageNum === 3) {
+        badge.textContent = "Stage 3 • Maki-e & Migaki";
+        instr.textContent = "Sweep metallic powder over the seams & burnish to a 3D specular sheen";
+        helperLabel.textContent = "Auto-Gild Seams";
+        activeToolTag.textContent = "3. Maki-e";
+        shardQuickBar.classList.add("hidden");
+        inspectionOverlay.classList.add("hidden");
+      } else if (stageNum === 4) {
+        badge.textContent = "Stage 4 • Tokonoma";
+        instr.textContent = "Drag the Studio Lantern orb to inspect the 3D glaze & gold reflections!";
+        helperLabel.textContent = "Stamp Hanko";
+        activeToolTag.textContent = "4. Appraise";
+        shardQuickBar.classList.add("hidden");
+        inspectionOverlay.classList.remove("hidden");
+      }
+
+      updateProgressHUD();
+    }
+
+    function jumpToStageIfAllowed(targetStage) {
+      if (targetStage === 1) {
+        resetCurrentVessel();
+        return;
+      }
+      // Auto-complete prior requirements if user clicks ahead on stepper
+      if (targetStage >= 2) {
+        state.shards.forEach(s => {
+          s.x = s.trueX;
+          s.y = s.trueY;
+          s.angle = 0;
+          s.placed = true;
+        });
+      }
+      if (targetStage >= 3) {
+        state.seams.forEach(s => s.nodes.forEach(n => { n.lacquered = true; }));
+      }
+      if (targetStage === 4) {
+        state.seams.forEach(s => s.nodes.forEach(n => {
+          n.lacquered = true;
+          n.dusted = true;
+          n.metal = state.metalType;
+        }));
+      }
+      setStage(targetStage);
+    }
+
+    function updateProgressHUD() {
+      let pct = 0;
+      if (state.stage === 1) {
+        const placed = state.shards.filter(s => s.placed).length;
+        pct = Math.round((placed / Math.max(1, state.shards.length)) * 100);
+        if (placed === state.shards.length && state.shards.length > 0) {
+          playStageChime();
+          showToast("All ceramic shards aligned! Now bind the joints with Mugi-Urushi lacquer.");
+          setTimeout(() => setStage(2), 450);
+        }
+      } else if (state.stage === 2) {
+        let total = 0, done = 0;
+        state.seams.forEach(s => s.nodes.forEach(n => { total++; if (n.lacquered) done++; }));
+        pct = total === 0 ? 100 : Math.round((done / total) * 100);
+        if (pct >= 95) {
+          state.seams.forEach(s => s.nodes.forEach(n => { n.lacquered = true; }));
+          pct = 100;
+          playStageChime();
+          showToast("Mugi-Urushi bead complete! Dust the raised lacquer with 24K Gold Maki-e.");
+          setTimeout(() => setStage(3), 450);
+        }
+      } else if (state.stage === 3) {
+        let total = 0, done = 0;
+        state.seams.forEach(s => s.nodes.forEach(n => { total++; if (n.dusted) done++; }));
+        pct = total === 0 ? 100 : Math.round((done / total) * 100);
+        if (pct >= 95) {
+          state.seams.forEach(s => s.nodes.forEach(n => {
+            n.dusted = true;
+            if (!n.metal) n.metal = state.metalType;
+          }));
+          pct = 100;
+          playStageChime();
+          showToast("Burnished to a 24K sheen! Drag the Studio Lantern orb to inspect the reflection.");
+          setTimeout(() => setStage(4), 450);
+        }
+      } else {
+        pct = 100;
+      }
+
+      document.getElementById("stageProgressBar").style.width = `${pct}%`;
+      document.getElementById("stageProgressText").textContent = `${pct}%`;
+    }
+
+    /*************************************************************************
+     * 8. INTERACTION HANDLERS (SHARDS, LANTERN LIGHT ORB, BRUSHING)
+     *************************************************************************/
+    function isPointInsideShard(wx, wy, shard) {
+      const dx = wx - shard.x;
+      const dy = wy - shard.y;
+      const cos = Math.cos(-shard.angle);
+      const sin = Math.sin(-shard.angle);
+      const lx = dx * cos - dy * sin;
+      const ly = dx * sin + dy * cos;
+
+      const poly = shard.localPoly;
+      let inside = false;
+      for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const xi = poly[i].x, yi = poly[i].y;
+        const xj = poly[j].x, yj = poly[j].y;
+        const intersect = ((yi > ly) !== (yj > ly)) &&
+          (lx < ((xj - xi) * (ly - yi)) / (yj - yi + 1e-7) + xi);
+        if (intersect) inside = !inside;
+      }
+      return inside;
+    }
+
+    function checkShardSnap(shard) {
+      if (shard.placed) return false;
+      const dist = Math.hypot(shard.x - shard.trueX, shard.y - shard.trueY);
+      let angleDiff = (shard.angle % (Math.PI * 2));
+      if (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+      if (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+
+      if (dist < 35 && Math.abs(angleDiff) < 0.38) {
+        shard.x = shard.trueX;
+        shard.y = shard.trueY;
+        shard.angle = 0;
+        shard.placed = true;
+        shard.snapAnim = 1.0;
+
+        if (state.selectedShardId === shard.id) {
+          state.selectedShardId = null;
+          document.getElementById("shardQuickBar").classList.add("hidden");
+        }
+        playCeramicSound("snap");
+        spawnParticles(shard.trueX, shard.trueY, "#fde68a", 16);
+        updateProgressHUD();
+        return true;
+      }
+      return false;
+    }
+
+    function applyBrushAt(wx, wy) {
+      const brushRadius = 27;
+      let painted = false;
+
+      if (state.stage === 2) {
+        state.seams.forEach(seam => {
+          seam.nodes.forEach(n => {
+            if (!n.lacquered && Math.hypot(n.x - wx, n.y - wy) < brushRadius) {
+              n.lacquered = true;
+              painted = true;
+              if (Math.random() < 0.35) spawnParticles(n.x, n.y, "#991b1b", 2);
+            }
+          });
+        });
+        if (painted) {
+          playBrushAudio("urushi");
+          updateProgressHUD();
+        }
+      } else if (state.stage === 3) {
+        const pal = METAL_PALETTES[state.metalType] || METAL_PALETTES.gold;
+        state.seams.forEach(seam => {
+          seam.nodes.forEach(n => {
+            if (Math.hypot(n.x - wx, n.y - wy) < brushRadius) {
+              if (!n.dusted || n.metal !== state.metalType) {
+                n.dusted = true;
+                n.metal = state.metalType;
+                painted = true;
+                if (Math.random() < 0.5) spawnParticles(n.x, n.y, pal.sparkle, 3);
+              }
+            }
+          });
+        });
+        if (painted) {
+          playBrushAudio("gold");
+          updateProgressHUD();
+        }
+      }
+    }
+
+    function setupWorkbenchEvents() {
+      canvas.addEventListener("pointerdown", e => {
+        canvas.setPointerCapture(e.pointerId);
+        const pt = screenToWorld(e.clientX, e.clientY);
+        state.pointerX = pt.x;
+        state.pointerY = pt.y;
+        state.isPointerDown = true;
+
+        // 0. Check if clicking the Draggable Studio Lantern Light Orb
+        if (Math.hypot(pt.x - state.lightX, pt.y - state.lightY) < 22) {
+          state.draggingLightOrb = true;
+          return;
+        }
+
+        if (state.stage === 1) {
+          // 1. Check brass rotation handle of selected shard
+          if (state.selectedShardId !== null) {
+            const sel = state.shards.find(s => s.id === state.selectedShardId && !s.placed);
+            if (sel) {
+              const knobX = sel.x + Math.cos(sel.angle) * 56;
+              const knobY = sel.y + Math.sin(sel.angle) * 56;
+              if (Math.hypot(pt.x - knobX, pt.y - knobY) < 18) {
+                state.rotatingViaHandle = true;
+                playCeramicSound("rotate");
+                return;
+              }
+            }
+          }
+
+          // 2. Check unplaced shards
+          const unplaced = state.shards.filter(s => !s.placed).reverse();
+          const hit = unplaced.find(s => isPointInsideShard(pt.x, pt.y, s));
+          if (hit) {
+            state.selectedShardId = hit.id;
+            state.draggingShardId = hit.id;
+            state.dragOffsetX = pt.x - hit.x;
+            state.dragOffsetY = pt.y - hit.y;
+            playCeramicSound("pickup");
+            document.getElementById("shardQuickBar").classList.remove("hidden");
+          } else {
+            state.selectedShardId = null;
+            document.getElementById("shardQuickBar").classList.add("hidden");
+          }
+        } else if (state.stage === 2 || state.stage === 3) {
+          applyBrushAt(pt.x, pt.y);
+        } else if (state.stage === 4) {
+          // Clicking in Stage 4 moves the Studio Lantern Light there, or stamps Hanko if near corner
+          state.lightX = Math.max(-240, Math.min(240, pt.x));
+          state.lightY = Math.max(-195, Math.min(195, pt.y));
+          state.draggingLightOrb = true;
+        }
+      });
+
+      canvas.addEventListener("pointermove", e => {
+        const pt = screenToWorld(e.clientX, e.clientY);
+        state.pointerX = pt.x;
+        state.pointerY = pt.y;
+
+        if (state.draggingLightOrb || state.cursorLightFollow) {
+          state.lightX = Math.max(-250, Math.min(250, pt.x));
+          state.lightY = Math.max(-200, Math.min(200, pt.y));
+          if (state.draggingLightOrb) return;
+        }
+
+        if (state.stage === 1) {
+          if (state.rotatingViaHandle && state.selectedShardId !== null) {
+            const sel = state.shards.find(s => s.id === state.selectedShardId && !s.placed);
+            if (sel) {
+              sel.angle = Math.atan2(pt.y - sel.y, pt.x - sel.x);
+              checkShardSnap(sel);
+            }
+            return;
+          }
+          if (state.draggingShardId !== null) {
+            const shard = state.shards.find(s => s.id === state.draggingShardId);
+            if (shard && !shard.placed) {
+              shard.x = pt.x - state.dragOffsetX;
+              shard.y = pt.y - state.dragOffsetY;
+              checkShardSnap(shard);
+            }
+          }
+        } else if ((state.stage === 2 || state.stage === 3) && state.isPointerDown) {
+          applyBrushAt(pt.x, pt.y);
+        }
+      });
+
+      window.addEventListener("pointerup", () => {
+        if (state.draggingShardId !== null) {
+          const shard = state.shards.find(s => s.id === state.draggingShardId);
+          if (shard) checkShardSnap(shard);
+        }
+        state.isPointerDown = false;
+        state.draggingShardId = null;
+        state.rotatingViaHandle = false;
+        state.draggingLightOrb = false;
+      });
+
+      canvas.addEventListener("wheel", e => {
+        if (state.stage !== 1 || state.selectedShardId === null) return;
+        e.preventDefault();
+        rotateSelectedShardBy((e.deltaY > 0 ? 1 : -1) * 15);
+      }, { passive: false });
+
+      window.addEventListener("keydown", e => {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+        const k = e.key.toLowerCase();
+        if (k === "q" || e.key === "ArrowLeft") rotateSelectedShardBy(-15);
+        else if (k === "e" || k === "r" || e.key === "ArrowRight") rotateSelectedShardBy(15);
+        else if (k === "h") triggerContextualHelper();
+      });
+    }
+
+    function rotateSelectedShardBy(degDelta) {
+      if (state.stage !== 1 || state.selectedShardId === null) return;
+      const sel = state.shards.find(s => s.id === state.selectedShardId && !s.placed);
+      if (!sel) return;
+      sel.angle += (degDelta * Math.PI) / 180;
+      playCeramicSound("rotate");
+      checkShardSnap(sel);
+    }
+
+    function alignSelectedShardAngle() {
+      if (state.stage !== 1 || state.selectedShardId === null) return;
+      const sel = state.shards.find(s => s.id === state.selectedShardId && !s.placed);
+      if (!sel) return;
+      sel.angle = 0;
+      playCeramicSound("rotate");
+      checkShardSnap(sel);
+    }
+
+    function toggleCursorLightFollow() {
+      state.cursorLightFollow = !state.cursorLightFollow;
+      const text = document.getElementById("cursorLightText");
+      const btn = document.getElementById("cursorLightToggleBtn");
+      if (state.cursorLightFollow) {
+        text.textContent = "Lantern: Cursor Follow";
+        btn.classList.add("bg-amber-900/60", "border-amber-300");
+        showToast("Studio Lantern Light now follows your cursor");
+      } else {
+        text.textContent = "Lantern: Draggable";
+        btn.classList.remove("bg-amber-900/60", "border-amber-300");
+        showToast("Drag the golden Studio Lantern orb on the workbench to adjust lighting");
+      }
+    }
+
+    /*************************************************************************
+     * 9. UI CONTROLS, VESSEL LIST & PALETTE SWITCHING
+     *************************************************************************/
+    function renderVesselListUI() {
+      const container = document.getElementById("vesselListContainer");
+      container.innerHTML = STORIED_VESSELS.map(v => {
+        const active = state.currentVessel.id === v.id;
+        return `
+          <button onclick="selectStoriedVessel('${v.id}')"
+            class="w-full p-2.5 rounded-xl border text-left transition-all flex items-center justify-between gap-2 cursor-pointer ${
+              active
+                ? "bg-amber-900/40 border-amber-400 text-hinoki-100 shadow-md"
+                : "bg-walnut-900/60 border-walnut-800 text-hinoki-200/80 hover:bg-walnut-800/80 hover:border-walnut-600"
+            }">
+            <div class="min-w-0">
+              <div class="font-serif font-bold text-sm truncate">${v.name}</div>
+              <div class="text-[10px] font-jp text-amber-300/80">${v.jp}</div>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-walnut-950/90 text-amber-300 border border-walnut-700 shrink-0">
+              ${v.shardCount} pcs
+            </span>
+          </button>
+        `;
+      }).join("");
+
+      const mat = GLAZE_MATERIALS[state.currentVessel.glaze] || GLAZE_MATERIALS.celadon;
+      document.getElementById("storyVesselJp").textContent = state.currentVessel.jp;
+      document.getElementById("storyShardBadge").textContent = `${state.currentVessel.shardCount} Shards`;
+      document.getElementById("storyVesselTitle").textContent = state.currentVessel.name;
+      document.getElementById("storyVesselLore").textContent = `"${state.currentVessel.lore}"`;
+      document.getElementById("bisqueSwatch").style.backgroundColor = mat.bisqueColor;
+      document.getElementById("bisqueLabel").textContent = mat.bisqueLabel;
+      document.getElementById("glossLabel").textContent = mat.glossLabel;
+    }
+
+    function selectStoriedVessel(vesselId) {
+      const found = STORIED_VESSELS.find(v => v.id === vesselId);
+      if (!found) return;
+      state.currentVessel = found;
+      renderVesselListUI();
+      buildVesselFracturePuzzle(found);
+      playCeramicSound("pickup");
+      showToast(`Placed ${found.name} on the indigo workbench`);
+    }
+
+    function selectMetalFinish(metalKey) {
+      state.metalType = metalKey;
+      const pal = METAL_PALETTES[metalKey];
+      document.getElementById("selectedMetalLabel").textContent = pal.name;
+
+      if (state.stage >= 3) {
+        state.seams.forEach(s => s.nodes.forEach(n => {
+          if (n.dusted) n.metal = metalKey;
+        }));
+      }
+
+      document.querySelectorAll(".metal-btn").forEach(btn => {
+        const active = btn.dataset.metal === metalKey;
+        btn.className = `metal-btn p-2 rounded-xl border text-left flex items-center gap-2 transition-all cursor-pointer ${
+          active
+            ? "bg-walnut-900 border-amber-400 shadow-md"
+            : "bg-walnut-900/60 border-walnut-700 hover:border-amber-500/50"
+        }`;
+      });
+      playBrushAudio("gold");
+    }
+
+    function toggleBlueprintGuide(checked) {
+      state.showBlueprint = checked;
+    }
+
+    function toggleBisqueDepth(checked) {
+      state.showBisqueDepth = checked;
+    }
+
+    function triggerContextualHelper() {
+      if (state.stage === 1) {
+        const unplaced = state.shards.find(s => !s.placed);
+        if (unplaced) {
+          unplaced.x = unplaced.trueX;
+          unplaced.y = unplaced.trueY;
+          unplaced.angle = 0;
+          unplaced.placed = true;
+          unplaced.snapAnim = 1.0;
+          playCeramicSound("snap");
+          spawnParticles(unplaced.trueX, unplaced.trueY, "#fde68a", 18);
+          updateProgressHUD();
+        }
+      } else if (state.stage === 2) {
+        state.seams.forEach(s => s.nodes.forEach(n => { n.lacquered = true; }));
+        playStageChime();
+        updateProgressHUD();
+      } else if (state.stage === 3) {
+        state.seams.forEach(s => s.nodes.forEach(n => {
+          n.dusted = true;
+          n.metal = state.metalType;
+        }));
+        playStageChime();
+        updateProgressHUD();
+      } else if (state.stage === 4) {
+        stampHankoSeal();
+      }
+    }
+
+    function resetCurrentVessel() {
+      playCeramicSound("shatter");
+      buildVesselFracturePuzzle(state.currentVessel, state.customImpactPoint);
+      showToast("Shards re-scattered on the indigo workbench");
+    }
+
+    function randomizePoeticTitle() {
+      const next = POETIC_TITLES[Math.floor(Math.random() * POETIC_TITLES.length)];
+      state.restoredTitle = next;
+      document.getElementById("customPieceTitleInput").value = next;
+    }
+
+    function stampHankoSeal() {
+      state.hankoStamped = true;
+      const titleInput = document.getElementById("customPieceTitleInput").value.trim();
+      if (titleInput) state.restoredTitle = titleInput;
+      playHankoStampAudio();
+      spawnParticles(state.hankoPos.x, state.hankoPos.y, "#ef4444", 16);
+      showToast("Red cinnabar Hanko seal pressed!");
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("studioToast");
+      const text = document.getElementById("studioToastText");
+      text.textContent = msg;
+      toast.style.opacity = "1";
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.style.opacity = "0";
+      }, 2800);
+    }
+
+    /*************************************************************************
+     * 10. CUSTOM KILN & WOODEN MALLET (KIZUCHI) FRACTURE STUDIO
+     *************************************************************************/
+    const malletCanvas = document.getElementById("malletPreviewCanvas");
+    const malletCtx = malletCanvas.getContext("2d");
+
+    function openCustomMalletModal() {
+      const modal = document.getElementById("customMalletModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      renderMalletPreview();
+    }
+
+    function closeCustomMalletModal() {
+      const modal = document.getElementById("customMalletModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function setCustomComplexity(count) {
+      state.customComplexity = count;
+      [6, 8, 11].forEach(c => {
+        const btn = document.getElementById(`compBtn-${c}`);
+        btn.className = c === count
+          ? "comp-btn py-1.5 rounded-lg border text-center cursor-pointer bg-amber-600/30 border-amber-400 text-amber-200 font-semibold"
+          : "comp-btn py-1.5 rounded-lg border text-center cursor-pointer bg-walnut-900 border-walnut-700 text-hinoki-200";
+      });
+      renderMalletPreview();
+    }
+
+    function renderMalletPreview() {
+      const shape = document.getElementById("customShapeSelect").value;
+      const glaze = document.getElementById("customGlazeSelect").value;
+
+      const tempCanvas = document.createElement("canvas");
+      tempCanvas.width = TEX_SIZE;
+      tempCanvas.height = TEX_SIZE;
+      bakeRealisticCeramicTexture(tempCanvas.getContext("2d"), TEX_SIZE, glaze, shape, state.customSeed);
+
+      const outline = createVesselSilhouette(shape);
+
+      malletCtx.clearRect(0, 0, 260, 260);
+      malletCtx.save();
+      malletCtx.translate(130, 130);
+      malletCtx.scale(0.68, 0.68);
+
+      malletCtx.beginPath();
+      outline.forEach((pt, idx) => {
+        if (idx === 0) malletCtx.moveTo(pt.x, pt.y);
+        else malletCtx.lineTo(pt.x, pt.y);
+      });
+      malletCtx.closePath();
+      malletCtx.save();
+      malletCtx.clip();
+      malletCtx.drawImage(tempCanvas, -TEX_HALF, -TEX_HALF);
+      malletCtx.restore();
+
+      malletCtx.strokeStyle = "rgba(255, 235, 195, 0.5)";
+      malletCtx.lineWidth = 3;
+      malletCtx.stroke();
+
+      // Radial + concentric fracture preview lines from mallet strike point
+      const ix = state.customImpactPoint.x;
+      const iy = state.customImpactPoint.y;
+      malletCtx.strokeStyle = "rgba(255, 250, 235, 0.85)";
+      malletCtx.lineWidth = 2;
+      for (let i = 0; i < state.customComplexity; i++) {
+        const a = (i / state.customComplexity) * Math.PI * 2 + (state.customSeed % 11) * 0.12;
+        malletCtx.beginPath();
+        malletCtx.moveTo(ix, iy);
+        malletCtx.lineTo(ix + Math.cos(a) * 145, iy + Math.sin(a) * 145);
+        malletCtx.stroke();
+      }
+
+      malletCtx.fillStyle = "#f59e0b";
+      malletCtx.beginPath();
+      malletCtx.arc(ix, iy, 6.5, 0, Math.PI * 2);
+      malletCtx.fill();
+      malletCtx.restore();
+    }
+
+    malletCanvas.addEventListener("pointerdown", e => {
+      const rect = malletCanvas.getBoundingClientRect();
+      const sx = ((e.clientX - rect.left) / rect.width) * 260;
+      const sy = ((e.clientY - rect.top) / rect.height) * 260;
+      state.customImpactPoint = {
+        x: Math.max(-75, Math.min(75, (sx - 130) / 0.68)),
+        y: Math.max(-75, Math.min(75, (sy - 130) / 0.68))
+      };
+      state.customSeed = Math.floor(Math.random() * 90000) + 1000;
+      playCeramicSound("shatter");
+      renderMalletPreview();
+    });
+
+    function startCustomMalletVessel() {
+      const shape = document.getElementById("customShapeSelect").value;
+      const glaze = document.getElementById("customGlazeSelect").value;
+      const mat = GLAZE_MATERIALS[glaze] || GLAZE_MATERIALS.celadon;
+      const shapeLabels = {
+        bowl: "Chawan Bowl",
+        plate: "Banquet Dish",
+        lotus: "Foliate Lotus Bowl",
+        teacup: "Hexagonal Yunomi",
+        flagon: "Tokkuri Dish"
+      };
+
+      const customVessel = {
+        id: "custom-" + Date.now(),
+        name: `${mat.name} ${shapeLabels[shape] || "Vessel"}`,
+        jp: "特注窯変 • Custom Kiln Firing",
+        shape,
+        glaze,
+        shardCount: state.customComplexity,
+        seed: state.customSeed,
+        lore: `Struck cleanly on the studio anvil with a wooden Kizuchi mallet, exposing ${mat.bisqueLabel.toLowerCase()} edges.`
+      };
+
+      state.currentVessel = customVessel;
+      renderVesselListUI();
+      buildVesselFracturePuzzle(customVessel, state.customImpactPoint);
+      closeCustomMalletModal();
+      showToast("Custom fractured ceramic vessel placed on your workbench!");
+    }
+
+    /*************************************************************************
+     * 11. TOKONOMA TEA ROOM SHELF & HIGH-RES PNG KEEPSAKE EXPORT
+     *************************************************************************/
+    const SHELF_STORAGE_KEY = "kintsugi_studio_shelf_v2";
+
+    function loadTeaRoomShelf() {
+      try {
+        const raw = localStorage.getItem(SHELF_STORAGE_KEY);
+        if (raw) state.shelfItems = JSON.parse(raw);
+      } catch (e) {
+        state.shelfItems = [];
+      }
+      document.getElementById("shelfCountBadge").textContent = state.shelfItems.length;
+    }
+
+    function saveTeaRoomShelf() {
+      try {
+        localStorage.setItem(SHELF_STORAGE_KEY, JSON.stringify(state.shelfItems));
+      } catch (e) {}
+      document.getElementById("shelfCountBadge").textContent = state.shelfItems.length;
+    }
+
+    function generateKeepsakeCardDataURL() {
+      const cardCanvas = document.createElement("canvas");
+      cardCanvas.width = 740;
+      cardCanvas.height = 900;
+      const cCtx = cardCanvas.getContext("2d");
+
+      // 1. Keyaki Wood & Washi Certificate Frame
+      cCtx.fillStyle = "#160e09";
+      cCtx.fillRect(0, 0, 740, 900);
+
+      cCtx.fillStyle = "#f5ecda";
+      cCtx.beginPath();
+      cCtx.roundRect(28, 28, 684, 844, 18);
+      cCtx.fill();
+
+      cCtx.strokeStyle = "#b48a48";
+      cCtx.lineWidth = 3;
+      cCtx.strokeRect(42, 42, 656, 816);
+
+      cCtx.fillStyle = "#593a28";
+      cCtx.font = "600 15px 'JetBrains Mono', monospace";
+      cCtx.textAlign = "center";
+      cCtx.fillText("KINTSUGI STUDIO  •  金継ぎ工房  •  TOKONOMA CERTIFICATE", 370, 86);
+
+      // 2. Indigo Kasuri Medallion Holding the Restored 3D Ceramic Vessel
+      cCtx.save();
+      cCtx.translate(370, 368);
+
+      cCtx.fillStyle = "#0b111e";
+      cCtx.beginPath();
+      cCtx.arc(0, 0, 218, 0, Math.PI * 2);
+      cCtx.fill();
+      cCtx.strokeStyle = "#cfa96e";
+      cCtx.lineWidth = 4;
+      cCtx.stroke();
+
+      cCtx.save();
+      cCtx.scale(1.16, 1.16);
+      cCtx.beginPath();
+      state.vesselOutline.forEach((pt, idx) => {
+        if (idx === 0) cCtx.moveTo(pt.x, pt.y);
+        else cCtx.lineTo(pt.x, pt.y);
+      });
+      cCtx.closePath();
+      cCtx.clip();
+      cCtx.drawImage(glazeCanvas, -TEX_HALF, -TEX_HALF);
+      cCtx.restore();
+
+      // Draw 3D Burnished Maki-e Gold Seams & Hotsure Chip Pools on Certificate
+      cCtx.save();
+      cCtx.scale(1.16, 1.16);
+      const pal = METAL_PALETTES[state.metalType] || METAL_PALETTES.gold;
+
+      state.chipPools.forEach(chip => {
+        cCtx.beginPath();
+        chip.pts.forEach((p, idx) => {
+          if (idx === 0) cCtx.moveTo(p.x, p.y);
+          else cCtx.lineTo(p.x, p.y);
+        });
+        cCtx.closePath();
+        cCtx.fillStyle = pal.mid;
+        cCtx.fill();
+      });
+
+      state.seams.forEach(seam => {
+        const nodes = seam.nodes;
+        if (nodes.length < 2) return;
+        cCtx.beginPath();
+        nodes.forEach((n, idx) => {
+          if (idx === 0) cCtx.moveTo(n.x, n.y);
+          else cCtx.lineTo(n.x, n.y);
+        });
+        cCtx.strokeStyle = pal.shadow;
+        cCtx.lineWidth = 6.2;
+        cCtx.lineCap = "round";
+        cCtx.stroke();
+
+        cCtx.strokeStyle = pal.mid;
+        cCtx.lineWidth = 4.2;
+        cCtx.stroke();
+
+        cCtx.strokeStyle = pal.spec;
+        cCtx.lineWidth = 1.6;
+        cCtx.stroke();
+      });
+      cCtx.restore();
+      cCtx.restore();
+
+      // 3. Poetic Mei Title & Ceramic Glaze Metadata
+      const customTitle = document.getElementById("customPieceTitleInput").value.trim() || state.restoredTitle;
+      cCtx.fillStyle = "#23150d";
+      cCtx.font = "bold 34px 'Cormorant Garamond', serif";
+      cCtx.textAlign = "center";
+      cCtx.fillText(`“${customTitle}”`, 370, 652);
+
+      cCtx.fillStyle = "#593a28";
+      cCtx.font = "600 20px 'Cormorant Garamond', serif";
+      cCtx.fillText(`${state.currentVessel.name} (${state.currentVessel.jp})`, 370, 688);
+
+      const metalInfo = METAL_PALETTES[state.metalType];
+      const dateStr = new Date().toLocaleDateString([], { year: "numeric", month: "short", day: "numeric" });
+      cCtx.fillStyle = "#78553a";
+      cCtx.font = "500 14px 'JetBrains Mono', monospace";
+      cCtx.fillText(`Restored with Mugi-Urushi & ${metalInfo.name} (${metalInfo.jp})  •  ${dateStr}`, 370, 722);
+
+      // 4. Red Cinnabar Hanko Seal
+      cCtx.save();
+      cCtx.translate(610, 768);
+      cCtx.rotate(-0.05);
+      cCtx.fillStyle = "#b91c1c";
+      cCtx.beginPath();
+      cCtx.roundRect(-28, -32, 56, 64, 6);
+      cCtx.fill();
+      cCtx.strokeStyle = "#fef2f2";
+      cCtx.lineWidth = 2;
+      cCtx.strokeRect(-22, -26, 44, 52);
+      cCtx.fillStyle = "#fef2f2";
+      cCtx.font = "bold 20px 'Noto Serif JP', serif";
+      cCtx.fillText("金", 0, -10);
+      cCtx.fillText("継", 0, 14);
+      cCtx.restore();
+
+      return cardCanvas.toDataURL("image/png");
+    }
+
+    function saveAndExportCurrentPiece() {
+      if (!state.hankoStamped) stampHankoSeal();
+      const titleInput = document.getElementById("customPieceTitleInput").value.trim() || state.restoredTitle;
+      const dataUrl = generateKeepsakeCardDataURL();
+      const pal = METAL_PALETTES[state.metalType];
+
+      const entry = {
+        id: "piece-" + Date.now(),
+        title: titleInput,
+        vesselName: state.currentVessel.name,
+        jp: state.currentVessel.jp,
+        metalName: pal.name,
+        date: new Date().toLocaleDateString([], { month: "short", day: "numeric" }),
+        imageDataUrl: dataUrl
+      };
+      state.shelfItems.unshift(entry);
+      if (state.shelfItems.length > 12) state.shelfItems.pop();
+      saveTeaRoomShelf();
+
+      const link = document.createElement("a");
+      link.download = `kintsugi-${titleInput.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showToast("Saved to Tokonoma Shelf & downloaded high-res PNG keepsake!");
+    }
+
+    function openTeaRoomModal() {
+      renderTeaRoomGrid();
+      const modal = document.getElementById("teaRoomModal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeTeaRoomModal() {
+      const modal = document.getElementById("teaRoomModal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function renderTeaRoomGrid() {
+      const grid = document.getElementById("teaRoomGrid");
+      if (state.shelfItems.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 text-center">
+            <div class="w-12 h-12 rounded-full bg-amber-900/15 border border-amber-800/30 mx-auto flex items-center justify-center text-amber-800 mb-2">
+              <i class="fa-solid fa-bowl-food text-xl"></i>
+            </div>
+            <p class="font-serif italic text-lg text-[#593a28]">
+              Your Tokonoma display alcove is awaiting its first restored vessel.
+            </p>
+            <p class="text-xs font-mono text-[#78553a] mt-1">
+              Complete any vessel on the workbench and click "Save & Export PNG" to display it here!
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = state.shelfItems.map(item => `
+        <div class="bg-[#efe4ce] border-2 border-[#cbb48c] rounded-xl p-3 flex flex-col justify-between shadow-md">
+          <div>
+            <img src="${item.imageDataUrl}" alt="${item.title}" class="w-full h-56 object-contain rounded-lg bg-[#0b111e] p-1 border border-[#b49a70]" />
+            <h3 class="font-serif font-bold text-lg text-[#23150d] mt-2 leading-tight">“${item.title}”</h3>
+            <p class="text-xs font-serif text-[#593a28]">${item.vesselName}</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-[#d8c5a3] flex items-center justify-between text-[11px] font-mono text-[#6e4b30]">
+            <span>${item.metalName} • ${item.date}</span>
+            <a href="${item.imageDataUrl}" download="kintsugi-${item.id}.png"
+              class="px-2.5 py-1 rounded bg-[#3f281b] hover:bg-[#593a28] text-amber-100 text-[10px] flex items-center gap-1">
+              <i class="fa-solid fa-download"></i> PNG
+            </a>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function clearTeaRoomShelf() {
+      state.shelfItems = [];
+      saveTeaRoomShelf();
+      renderTeaRoomGrid();
+    }
+
+    /*************************************************************************
+     * 12. BOOTSTRAP ON WINDOW LOAD
+     *************************************************************************/
+    window.onload = function () {
+      resizeWorkbenchCanvas();
+      window.addEventListener("resize", resizeWorkbenchCanvas);
+
+      initDustMotes();
+      loadTeaRoomShelf();
+      renderVesselListUI();
+      setupWorkbenchEvents();
+
+      // Load initial Seiji Celadon Bowl with Kannyu Ice-Crackle
+      buildVesselFracturePuzzle(STORIED_VESSELS[0]);
+
+      requestAnimationFrame(renderWorkbench);
+    };
+  </script>
+</body>
+</html>
