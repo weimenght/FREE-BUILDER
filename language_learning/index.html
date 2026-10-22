@@ -397,7 +397,7 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Learn a language — FREE//BUILDER</title>
-<meta name="description" content="Pick a language to practise: Catalan, Spanish or Cantonese. Flashcards, sound and little drills, all kept on your own device.">
+<meta name="description" content="Pick a language to practise: Catalan, Spanish, Cantonese or Chinese idioms. Flashcards, sound and little drills, all kept on your own device.">
 <meta name="theme-color" content="#FAF7F2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231C1917'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='sans-serif'%3EAa%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="/fonts/g/fonts.css">
@@ -439,6 +439,10 @@
     --pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23D62839' stroke-opacity='.09' stroke-width='1.4'%3E%3Cpath d='M4 4h16v16H4zM28 28h16v16H28zM28 4h16v16M4 28h16v16'/%3E%3Cpath d='M8 8h8v8H8zM32 32h8v8h-8zM12 20v8h24M36 20v-8H12'/%3E%3C/g%3E%3C/svg%3E"); }
   .yue .bar { background:linear-gradient(90deg,#D62839,#FF5C7A 50%,#0F8A7A); }
   .yue .word { font-family:"PingFang HK", "Noto Sans HK", "Microsoft JhengHei", sans-serif; font-weight:800; letter-spacing:.04em; }
+  .cy { --ink:#B3261E; --flag:#B3261E;
+    --pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='48' viewBox='0 0 72 48'%3E%3Cg fill='none' stroke='%23B3261E' stroke-opacity='.1' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M6 30c0-6 8-8 11-3 1-7 11-8 13-1 4-3 10 0 8 5H8'/%3E%3Cpath d='M20 27c2-2 5-1 5 2s-4 3-5 1'/%3E%3Cpath d='M42 12c0-5 7-7 9-2 2-5 10-4 10 2 3-1 6 2 4 4H44'/%3E%3Cpath d='M53 12c2-1 4 0 4 2s-3 2-4 1'/%3E%3C/g%3E%3C/svg%3E"); }
+  .cy .bar { background:linear-gradient(90deg,#B3261E,#E9C46A 50%,#1C1917); }
+  .cy .word { font-family:"Songti SC","STSong","Noto Serif SC","Noto Serif TC",serif; font-weight:900; letter-spacing:.1em; }
   .note { margin-top:26px; color:var(--muted); font-size:13px; text-align:center; }
   @media (prefers-color-scheme: dark) { .lang .go { color:#111; } .ca, .es { --ink:#FFC94A; } .yue { --ink:#FF5C7A; } }
   @media (prefers-reduced-motion: reduce) { .lang, .lang .go { transition:none; } }
@@ -467,6 +471,12 @@
       <div class="word">飲茶</div><div class="gloss"><b>jam2 caa4</b> · <span data-t="yueG">to have yum cha</span></div></div>
       <span class="go" aria-hidden="true">→</span>
     </a>
+    <a class="lang cy" href="./chengyu/" lang="zh">
+      <span class="bar"></span>
+      <div><div class="top"><span class="logo" aria-hidden="true">成</span><div><div class="name" style="font-family:'Songti SC','STSong','Noto Serif SC',serif;font-weight:900">成语<i>一点通</i></div><div class="what" data-t="cy">Chinese idioms · 简体 &amp; 繁體</div></div></div>
+      <div class="word cyw">画龙点睛</div><div class="gloss"><b>huà lóng diǎn jīng</b> · <span data-t="cyG">to add the finishing touch</span></div></div>
+      <span class="go" aria-hidden="true">→</span>
+    </a>
   </div>
   <p class="note" data-t="note">No account. Nothing to install. Add it to your home screen if you like.</p>
 </main>
@@ -480,11 +490,14 @@
     esG: ["lingering at the table after a meal", "饭后坐在桌边慢慢聊天", "飯後坐在桌邊慢慢聊天", "quedarse charlando después de comer", "quedar-se xerrant després de dinar"],
     yue: ["Cantonese · words & tones", "粤语 · 词汇和声调", "粵語 · 詞彙和聲調", "Cantonés · palabras y tonos", "Cantonès · paraules i tons"],
     yueG: ["to have yum cha", "喝早茶", "飲茶、吃點心", "tomar dim sum con té", "prendre dim sum amb te"],
+    cy: ["Chinese idioms · 简体 & 繁體", "成语 · 简体和繁体", "成語 · 簡體和繁體", "Modismos chinos · 简体 y 繁體", "Frases fetes xineses · 简体 i 繁體"],
+    cyG: ["to add the finishing touch", "比喻在关键处点上一笔，使内容更生动", "比喻在關鍵處點上一筆，使內容更生動", "dar el toque final", "donar el toc final"],
     note: ["No account. Nothing to install. Add it to your home screen if you like.", "不用账号，不用安装。喜欢的话可以添加到主屏幕。", "不用帳號，不用安裝。喜歡的話可以加到主畫面。", "Sin cuenta. Nada que instalar. Si quieres, añádelo a tu pantalla de inicio.", "Sense compte. Res a instal·lar. Si vols, afegeix-ho a la pantalla d'inici."]
   };
   var L = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }[(window.FBL && FBL.get()) || "en"] || 0;
   document.querySelectorAll("[data-t]").forEach(function (e) { var w = W[e.getAttribute("data-t")]; if (w && w[L]) e.textContent = w[L]; });
   document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L];
+  if (L === 2) { var w = document.querySelector(".cyw"); if (w) w.textContent = "畫龍點睛"; var n = document.querySelector(".cy .name"); if (n) n.innerHTML = "成語<i>一點通</i>"; }
 })();
 </script>
 </body>
