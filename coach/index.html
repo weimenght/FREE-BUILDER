@@ -385,7 +385,10 @@
 
   /* ---------- the shared footer: words follow the visitor's language ---------- */
   var FKEY = { privacy: "fPrivacy", made: "fMade", by: "fBy", home: "fHome" };
-  function paintFooter() { document.querySelectorAll("[data-fbf]").forEach(function (e) { var k = FKEY[e.getAttribute("data-fbf")]; if (k && e.textContent !== t(W[k])) e.textContent = t(W[k]); }); }
+  function paintFooter() { document.querySelectorAll("[data-fbf]").forEach(function (e) { var k = FKEY[e.getAttribute("data-fbf")]; if (!k || e.textContent === t(W[k])) return;
+    var door = e.getAttribute("data-fbf-door");   /* the heart is a quiet door to what Wei does after hours */
+    if (door) { e.textContent = ""; t(W[k]).split("♥").forEach(function (part, i) { if (i) { var a = document.createElement("a"); a.href = door; a.className = "fbf-heart"; a.textContent = "♥"; a.setAttribute("aria-label", "♥"); e.appendChild(a); } e.appendChild(document.createTextNode(part)); }); }
+    else e.textContent = t(W[k]); }); }
   function boot() {
     paintFooter();
     var root = document.querySelector("[data-fbl-privacy]"); if (root) { privacy(root); var L0 = lang(); setInterval(function () { if (lang() !== L0) { L0 = lang(); privacy(root); } }, 500); }
@@ -532,7 +535,7 @@ img{filter:none}
     <div id="app"></div>
   </main>
 
-  <footer class="fbf" data-fbf-root><div class="fbf-in"><span>© <span id="year">2026</span> <a href="/" data-fbf-title="home">FREE//BUILDER</a> L&amp;D Solutions</span><nav aria-label="Footer"><a href="/privacy/" data-fbf="privacy">Privacy</a><a href="https://www.wei-meng.org/" data-fbf="by">A practice by Wei</a><span data-fbf="made">Made with AI &amp; ♥</span></nav></div></footer>
+  <footer class="fbf" data-fbf-root><div class="fbf-in"><span>© <span id="year">2026</span> <a href="/" data-fbf-title="home">FREE//BUILDER</a> L&amp;D Solutions</span><nav aria-label="Footer"><a href="/privacy/" data-fbf="privacy">Privacy</a><a href="https://www.wei-meng.org/" data-fbf="by">A practice by Wei</a><span data-fbf="made" data-fbf-door="/afterhours/">Made with AI &amp; <a href="/afterhours/" class="fbf-heart" aria-label="♥">♥</a></span></nav></div></footer>
 
   <!-- TOAST -->
   <div id="toast" class="fixed left-1/2 -translate-x-1/2 z-[70] pointer-events-none opacity-0 translate-y-2 w-[calc(100%-32px)] sm:w-auto" style="top: max(14px, env(safe-area-inset-top));" role="status" aria-live="polite">
