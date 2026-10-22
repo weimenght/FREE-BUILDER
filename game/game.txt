@@ -64,5 +64,5 @@ ID: SK-08
 TITLE: Sora
 GENRE: Cloud watching for a blank mind
 AUTHOR: FREE//BUILDER
-DESC: Lie back under an open sky. Brush the clouds to stir the breeze, daydream them into shapes, let a worry drift off as vapour, or just breathe with the ring. Four skies from morning dew to starlight.
+DESC: Lie back under an open sky that keeps your own time. Draw on it and watch your scribble puff into a cloud and drift off, hold still to breathe, double-tap and the clouds take a shape.
 URL: cloud/

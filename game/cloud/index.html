@@ -1910,14 +1910,10 @@
       if (targetPaletteKey === "night") {
         // Delicate Crescent Moon
         ctx.save();
+        ctx.beginPath(); ctx.arc(sunX, sunY, 20, 0, Math.PI * 2); ctx.clip();   /* a true crescent: the shadow is cut out, not painted over */
         ctx.fillStyle = "rgba(240, 248, 255, 0.92)";
-        ctx.beginPath();
-        ctx.arc(sunX, sunY, 20, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = rgbStr(activeColors.skyTop);
-        ctx.beginPath();
-        ctx.arc(sunX - 7, sunY - 5, 18, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.rect(sunX - 22, sunY - 22, 44, 44); ctx.arc(sunX - 7, sunY - 5, 18, 0, Math.PI * 2, true);
+        ctx.fill("evenodd");
         ctx.restore();
       }
 
@@ -2415,5 +2411,6 @@
       requestAnimationFrame(animateSky);
     };
   </script>
+<script src="./sky.js" defer></script>
 </body>
 </html>
