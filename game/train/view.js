@@ -391,6 +391,19 @@
       slots(2.2, 300, function (x, i) { ctx.fillStyle = c; ctx.fillRect(x, 0, 10 * S, ch); ctx.strokeStyle = c; ctx.lineWidth = 7 * S; ctx.beginPath(); ctx.moveTo(x, bot); ctx.lineTo(x + 300 * S, 0); ctx.moveTo(x, 0); ctx.lineTo(x + 300 * S, bot); ctx.stroke(); }, 340);
       ctx.fillStyle = c; ctx.fillRect(0, 0, cw, 8 * S);
     },
+    hutong: function (now) {
+      buildings(0.025, H - 4 * S, 30, 90, 30, 70, 101, 0.88, "#8a90a8", { windows: 1.4 });
+      /* the Drum Tower over the rooftops */
+      slots(0.035, 2200, function (x, i) { var tx = x + 700 * S, b = H + 4 * S, c = css(land("#6a3a30", 0.7)), r = css(land("#3a3a40", 0.7)); ctx.fillStyle = css(land("#7a6a60", 0.7)); ctx.fillRect(tx - 70 * S, b - 40 * S, 140 * S, 40 * S); ctx.fillStyle = c; ctx.fillRect(tx - 50 * S, b - 80 * S, 100 * S, 40 * S); ctx.fillStyle = r; ctx.beginPath(); ctx.moveTo(tx - 74 * S, b - 78 * S); ctx.quadraticCurveTo(tx - 40 * S, b - 92 * S, tx - 30 * S, b - 104 * S); ctx.lineTo(tx + 30 * S, b - 104 * S); ctx.quadraticCurveTo(tx + 40 * S, b - 92 * S, tx + 74 * S, b - 78 * S); ctx.fill(); ctx.fillStyle = c; ctx.fillRect(tx - 34 * S, b - 124 * S, 68 * S, 22 * S); ctx.fillStyle = r; ctx.beginPath(); ctx.moveTo(tx - 54 * S, b - 122 * S); ctx.quadraticCurveTo(tx - 26 * S, b - 132 * S, tx - 20 * S, b - 142 * S); ctx.lineTo(tx + 20 * S, b - 142 * S); ctx.quadraticCurveTo(tx + 26 * S, b - 132 * S, tx + 54 * S, b - 122 * S); ctx.fill(); if (L.lights > 0.3) glowDot(tx, b - 60 * S, 120 * S, [255, 160, 90], 0.2 * L.lights); });
+      forestRow(0.07, H + 6 * S, 40, 70, 160, 102, 0.5, "#4a6a40", [1]);
+      slots(0.1, 110, function (x, i) { hutongHouse(x, H + 30 * S, (80 + hash(i, 103) * 20) * S, 44 * S, i); });
+      fogBands(now, H - 40 * S, H + 40 * S);
+      ground(H + 30 * S, land("#6a6a68", 0.25), land("#3a3a3a", 0));
+      /* the lane with the bar and the book corner, passing by every so often */
+      if (!(state.station && state.station.name === "Gulou Hutong" && Math.abs(state.stationScrollOffset) < cw * 3)) slots(0.3, 2400, function (x, i) { if (i % 2) return; shopfronts(x + 600 * S, ch * 0.88, 0.95); }, 600);
+      slots(0.6, 220, function (x, i) { ctx.fillStyle = css(land("#2a2a2c", 0.05)); ctx.fillRect(x, ch * 0.62, 3 * S, ch * 0.3); if (L.lights > 0.2) glowDot(x + 1, ch * 0.62, 30 * S, [255, 200, 120], 0.5 * L.lights);
+        if (hash(i, 104) < 0.35) { ctx.strokeStyle = css(land("#1e1e22", 0.03)); ctx.lineWidth = 2 * S; var by = ch * 0.92, bx = x + 40 * S; ctx.beginPath(); ctx.arc(bx, by, 9 * S, 0, TAU); ctx.arc(bx + 30 * S, by, 9 * S, 0, TAU); ctx.moveTo(bx, by); ctx.lineTo(bx + 12 * S, by - 14 * S); ctx.lineTo(bx + 30 * S, by); ctx.moveTo(bx + 12 * S, by - 14 * S); ctx.lineTo(bx + 24 * S, by - 14 * S); ctx.stroke(); } }, 100);
+    },
     snow: function (now) {
       var glowSnow = function (d) { return css(mix(land("#eef3fa", d), mix(L.low, [190, 205, 240], 0.5), P.stars * 0.5)); };
       ridge(0.015, H - 4 * S, 50 * S, 0.003, 81, glowSnow(0.75));
@@ -404,6 +417,42 @@
       slots(1.2, 70, function (x, i) { ctx.fillStyle = css(land("#3a2e28", 0)); ctx.fillRect(x, ch * 0.9, 4 * S, ch * 0.1); ctx.fillStyle = css(land("#f4f7fc", 0)); ctx.fillRect(x - 1, ch * 0.9 - 3 * S, 6 * S, 3 * S); }, 60);
     }
   };
+  /* Wei's Bar and the book corner, side by side on the lane; rects remembered so a tap can find them */
+  var HITS = [];
+  function shopfronts(x, base, k) {
+    k = k || 1; var lit = L.lights, w = 150 * S * k, h = 120 * S * k, gap = 44 * S * k, bx = x - w - gap / 2, kx = x + gap / 2;
+    /* Wei's Bar: dark wood, two arched amber windows, a neon name */
+    ctx.fillStyle = css(land("#3a2414", 0.1)); ctx.fillRect(bx, base - h, w, h);
+    ctx.fillStyle = css(land("#2a2a30", 0.1)); ctx.beginPath(); ctx.moveTo(bx - 10 * S * k, base - h); ctx.lineTo(bx + w / 2, base - h - 26 * S * k); ctx.lineTo(bx + w + 10 * S * k, base - h); ctx.fill();
+    for (var q = 0; q < 2; q++) { var wx = bx + 18 * S * k + q * 72 * S * k, wy = base - h * 0.72, ww = 44 * S * k, wh = 50 * S * k, g = ctx.createRadialGradient(wx + ww / 2, wy + wh * 0.8, 2, wx + ww / 2, wy + wh * 0.6, ww);
+      g.addColorStop(0, css([255, 214, 140], 0.5 + lit * 0.5)); g.addColorStop(1, css([200, 110, 40], 0.4 + lit * 0.5)); ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(wx, wy + wh); ctx.lineTo(wx, wy + ww / 2); ctx.arc(wx + ww / 2, wy + ww / 2, ww / 2, Math.PI, 0); ctx.lineTo(wx + ww, wy + wh); ctx.fill(); }
+    if (lit > 0.2) glowDot(bx + w / 2, base - h * 0.45, w * 0.9, [255, 180, 100], 0.22 * lit);
+    ctx.save(); ctx.font = "italic 600 " + Math.round(15 * S * k) + "px Georgia,'Songti SC',serif"; ctx.textAlign = "center"; ctx.fillStyle = lit > 0.3 ? "#ffd9a8" : "#e8c39a"; if (lit > 0.3) { ctx.shadowColor = "#ff8a3a"; ctx.shadowBlur = 12; }
+    fitText("Wei's Bar & Coffee", bx + w / 2, base - h - 30 * S * k, w + gap * 0.8); ctx.restore();
+    /* two cats on the step, sometimes */
+    if (Math.floor(state.scrollDist / 4000) % 2 === 0) { ctx.fillStyle = "#e8913a"; ctx.beginPath(); ctx.ellipse(bx + 20 * S * k, base - 5 * S * k, 8 * S * k, 5 * S * k, 0, 0, TAU); ctx.arc(bx + 27 * S * k, base - 10 * S * k, 4 * S * k, 0, TAU); ctx.fill(); ctx.fillStyle = "#231b17"; ctx.beginPath(); ctx.ellipse(bx + w - 22 * S * k, base - 5 * S * k, 8 * S * k, 5 * S * k, 0, 0, TAU); ctx.arc(bx + w - 29 * S * k, base - 10 * S * k, 4 * S * k, 0, TAU); ctx.fill(); }
+    /* the book corner: green door, a wide window of shelves */
+    ctx.fillStyle = css(land("#5a4a3a", 0.1)); ctx.fillRect(kx, base - h, w, h);
+    ctx.fillStyle = css(land("#2a2a30", 0.1)); ctx.beginPath(); ctx.moveTo(kx - 10 * S * k, base - h); ctx.lineTo(kx + w / 2, base - h - 26 * S * k); ctx.lineTo(kx + w + 10 * S * k, base - h); ctx.fill();
+    var sx = kx + 12 * S * k, sy = base - h * 0.8, sw = w * 0.55, sh = h * 0.6;
+    ctx.fillStyle = css(mix([255, 226, 170], [120, 90, 60], 1 - (0.35 + lit * 0.65))); ctx.fillRect(sx, sy, sw, sh);
+    for (var r = 0; r < 3; r++) { var shelfY = sy + sh * (r + 1) / 3; ctx.fillStyle = "#6b4426"; ctx.fillRect(sx, shelfY - 2 * S * k, sw, 2 * S * k);
+      for (var b = 0, bxx = sx + 2 * S * k; bxx < sx + sw - 6 * S * k; b++) { var bw = (3 + hash(b, r + 7) * 4) * S * k, bh = sh / 3 * (0.55 + hash(b, r + 9) * 0.35); ctx.fillStyle = ["#7c2513", "#1e3a5f", "#2f4a2a", "#c8a050", "#5a3a6e"][(hash(b, r) * 5) | 0]; ctx.fillRect(bxx, shelfY - 2 * S * k - bh, bw, bh); bxx += bw + 1; } }
+    ctx.strokeStyle = "#3a2414"; ctx.lineWidth = 3 * S * k; ctx.strokeRect(sx, sy, sw, sh);
+    ctx.fillStyle = css(land("#2f5a3a", 0.1)); ctx.fillRect(kx + w * 0.7, base - h * 0.78, w * 0.22, h * 0.78);
+    ctx.fillStyle = "#c8a050"; ctx.beginPath(); ctx.arc(kx + w * 0.74, base - h * 0.4, 2 * S * k, 0, TAU); ctx.fill();
+    if (lit > 0.2) glowDot(sx + sw / 2, sy + sh / 2, w * 0.8, [255, 210, 140], 0.2 * lit);
+    ctx.save(); ctx.font = "600 " + Math.round(13 * S * k) + "px Georgia,'Songti SC',serif"; ctx.textAlign = "center"; ctx.fillStyle = "#f3dfb8"; fitText("📖 The Dog-Eared Corner", kx + w / 2, base - h - 30 * S * k, w + gap * 0.8); ctx.restore();
+    HITS.push({ k: "bar", x: bx, y: base - h - 30 * S * k, w: w, h: h + 30 * S * k }, { k: "books", x: kx, y: base - h - 30 * S * k, w: w, h: h + 30 * S * k });
+  }
+  function hutongHouse(x, base, w, h, i) {
+    ctx.fillStyle = css(land("#8a8a86", 0.35)); ctx.fillRect(x, base - h, w, h);
+    ctx.fillStyle = css(land("#3a3c40", 0.35)); ctx.beginPath(); ctx.moveTo(x - 10 * S, base - h + 2 * S); ctx.quadraticCurveTo(x - 4 * S, base - h - 4 * S, x + 4 * S, base - h - 14 * S); ctx.lineTo(x + w - 4 * S, base - h - 14 * S); ctx.quadraticCurveTo(x + w + 4 * S, base - h - 4 * S, x + w + 10 * S, base - h + 2 * S); ctx.fill();
+    ctx.fillStyle = css(land("#8a2a20", 0.3)); ctx.fillRect(x + w * 0.4, base - h * 0.62, w * 0.2, h * 0.62);
+    if (L.lights > 0.15) { glowDot(x + w * 0.32, base - h * 0.7, 18 * S, [255, 90, 60], 0.7 * L.lights); ctx.fillStyle = "rgba(230,60,40,0.95)"; ctx.beginPath(); ctx.ellipse(x + w * 0.32, base - h * 0.7, 5 * S, 6 * S, 0, 0, TAU); ctx.fill(); }
+    else { ctx.fillStyle = "rgba(200,50,40,0.9)"; ctx.beginPath(); ctx.ellipse(x + w * 0.32, base - h * 0.7, 5 * S, 6 * S, 0, 0, TAU); ctx.fill(); }
+    if (hash(i, 5) < 0.5) win(x + w * 0.72, base - h * 0.6, w * 0.14, h * 0.22, 0, L.lights);
+  }
   function peakSnow(par, base, amp, freq, seed, depth, line) {
     line = line || 0.55; var o = off(par); ctx.fillStyle = css(land("#f2f5fc", depth * 0.85)); ctx.beginPath(); var on = false;
     for (var x = 0; x <= cw + 4; x += 4) {
@@ -472,7 +521,7 @@
   }
 
   /* ---------- stations ---------- */
-  var STYLE = { metropolis: "city", coastal: "open", desert: "open", lake: "open", countryside: "halt", forest: "halt", alpine: "chalet", snow: "chalet" };
+  var STYLE = { hutong: "open", metropolis: "city", coastal: "open", desert: "open", lake: "open", countryside: "halt", forest: "halt", alpine: "chalet", snow: "chalet" };
   function station(now) {
     var sx = state.stationScrollOffset; if (!(sx > -cw * 3 && sx < cw * 3)) return;
     var st = state.station || {}, style = STYLE[state.biome] || "halt", cx = cw * 0.5 + sx, wid = cw * (style === "city" ? 2.6 : 1.6), x0 = cx - wid / 2, x1 = cx + wid / 2;
@@ -481,6 +530,7 @@
     if (style === "city") { ctx.fillStyle = css(land("#3a3c44", 0.15)); ctx.fillRect(x0, ch * 0.14, wid, py - ch * 0.14);
       for (var a = x0 + 80 * S; a < x1 - 120 * S; a += 260 * S) { ctx.fillStyle = css(lit > 0.3 ? [250, 245, 230] : land("#d8d2c4", 0.1), 0.85); ctx.fillRect(a, ch * 0.34, 150 * S, 80 * S); ctx.fillStyle = css([[200, 80, 70], [60, 120, 180], [230, 170, 60], [90, 150, 100]][(hash(a | 0, seed) * 4) | 0], 0.75); ctx.fillRect(a + 10 * S, ch * 0.34 + 10 * S, 130 * S, 50 * S); }
       for (var v = x0 + 40 * S; v < x1; v += 700 * S) { ctx.fillStyle = css(land("#c8443a", 0.1)); ctx.fillRect(v, py - 90 * S, 40 * S, 90 * S); if (lit > 0.2) { ctx.fillStyle = "rgba(220,240,255," + 0.8 * lit + ")"; ctx.fillRect(v + 5 * S, py - 82 * S, 30 * S, 44 * S); } } }
+    if (st.name === "Gulou Hutong") shopfronts(cx, py, 1.25);
     /* platform */
     ctx.fillStyle = css(land(style === "halt" ? "#8a8070" : "#9a9890", 0.08)); ctx.fillRect(x0, py, wid, ch - py);
     ctx.fillStyle = css(land("#e8c84a", 0.05)); ctx.fillRect(x0, py + 8 * S, wid, 5 * S);
@@ -501,7 +551,7 @@
       if (lit > 0.2) { glowDot(lx, ly + 4 * S, 90 * S, [255, 200, 120], 0.5 * lit); var pool = ctx.createRadialGradient(lx, py + 10 * S, 0, lx, py + 10 * S, 90 * S); pool.addColorStop(0, "rgba(255,210,140," + 0.22 * lit + ")"); pool.addColorStop(1, "rgba(255,210,140,0)"); ctx.fillStyle = pool; ctx.fillRect(lx - 90 * S, py, 180 * S, 40 * S); }
     }
     /* the name board */
-    var bw = Math.min(360 * S, cw * 0.5), bh = 70 * S, by = roofY ? roofY + 40 * S : ch * 0.26, bx = cx - bw / 2;
+    var bw = Math.min(360 * S, cw * 0.5), bh = 70 * S, by = roofY ? roofY + 40 * S : st.name === "Gulou Hutong" ? ch * 0.06 : ch * 0.26, bx = cx - bw / 2;
     if (!roofY) { ctx.fillStyle = css(land("#2a2a30", 0.05)); ctx.fillRect(bx + 20 * S, by + bh, 5 * S, py - by - bh); ctx.fillRect(bx + bw - 25 * S, by + bh, 5 * S, py - by - bh); }
     else { ctx.strokeStyle = roofCol; ctx.beginPath(); ctx.moveTo(bx + 30 * S, roofY); ctx.lineTo(bx + 30 * S, by); ctx.moveTo(bx + bw - 30 * S, roofY); ctx.lineTo(bx + bw - 30 * S, by); ctx.stroke(); }
     ctx.fillStyle = css(mix([246, 244, 236], L.low, 0.1)); ctx.fillRect(bx, by, bw, bh); if (lit > 0.3) glowDot(cx, by + bh / 2, bw * 0.7, [255, 250, 230], 0.25 * lit);
@@ -513,7 +563,7 @@
     /* benches, a clock, people waiting */
     for (var bi = 0; bi < 3; bi++) { var bxx = x0 + wid * (0.18 + bi * 0.3); ctx.fillStyle = css(land("#5a3e2a", 0.05)); ctx.fillRect(bxx, py - 22 * S, 60 * S, 6 * S); ctx.fillRect(bxx, py - 36 * S, 60 * S, 4 * S); ctx.fillRect(bxx + 4 * S, py - 16 * S, 4 * S, 16 * S); ctx.fillRect(bxx + 52 * S, py - 16 * S, 4 * S, 16 * S); }
     var n = 2 + (hash(seed, 2) * 5 | 0), umb = WX.rain > 0.4 && !roofY;
-    for (var k = 0; k < n; k++) person(x0 + wid * (0.1 + hash(k, seed) * 0.8), py, 0.85 + hash(k, seed + 1) * 0.3, k + seed, umb, now);
+    for (var k = 0; k < n; k++) person(st.name === "Gulou Hutong" ? x0 + wid * (hash(k, seed) < 0.5 ? 0.06 + hash(k, seed) * 0.4 : 0.54 + hash(k, seed) * 0.4) : x0 + wid * (0.1 + hash(k, seed) * 0.8), py, 0.85 + hash(k, seed + 1) * 0.3, k + seed, umb, now);
     if (hash(seed, 9) < 0.5) { var catX = x0 + wid * (0.3 + hash(seed, 10) * 0.4); ctx.fillStyle = hash(seed, 11) < 0.5 ? "#e8913a" : "#231b17"; ctx.beginPath(); ctx.ellipse(catX, py - 7 * S, 11 * S, 7 * S, 0, 0, TAU); ctx.arc(catX + 10 * S, py - 13 * S, 6 * S, 0, TAU); ctx.fill(); ctx.beginPath(); ctx.moveTo(catX + 6 * S, py - 17 * S); ctx.lineTo(catX + 8 * S, py - 24 * S); ctx.lineTo(catX + 11 * S, py - 18 * S); ctx.moveTo(catX + 11 * S, py - 18 * S); ctx.lineTo(catX + 15 * S, py - 24 * S); ctx.lineTo(catX + 16 * S, py - 15 * S); ctx.fill(); ctx.lineWidth = 3 * S; ctx.strokeStyle = ctx.fillStyle; ctx.beginPath(); ctx.moveTo(catX - 10 * S, py - 6 * S); ctx.quadraticCurveTo(catX - 22 * S, py - 10 * S, catX - 18 * S, py - 22 * S + Math.sin(now * 0.003) * 3 * S); ctx.stroke(); }
   }
   function fitText(t, x, y, max) { var s = 1; while (ctx.measureText(t).width > max && s > 0.5) { s -= 0.06; var f = ctx.font.replace(/(\d+)px/, function (m, p) { return Math.round(p * 0.94) + "px"; }); ctx.font = f; } ctx.fillText(t, x, y); }
@@ -608,7 +658,7 @@
       if (state.trainState === "BRAKING") state.stationScrollOffset += (0 - state.stationScrollOffset) * 0.03 * dt;
       else if (state.stationScrollOffset > -cw * 4 && state.trainState !== "STOPPED") state.stationScrollOffset -= state.speed * 9 * dt;
 
-      S = Math.max(0.55, Math.min(1.6, ch / 450)); H = ch * 0.6;
+      S = Math.max(0.55, Math.min(1.6, ch / 450)); H = ch * 0.6; HITS.length = 0;
       ease(dt); light();
       if (now - spriteT > 500) { spriteT = now; makeSprites(); }
       if (!starField.length) initStars();
@@ -634,9 +684,13 @@
     requestAnimationFrame(window.renderScene);
   };
 
+  /* ---------- getting off: tap Wei's Bar or the book corner ---------- */
+  window.TrainView = { hit: function (x, y) { for (var i = HITS.length - 1; i >= 0; i--) { var h = HITS[i]; if (x >= h.x && x <= h.x + h.w && y >= h.y && y <= h.y + h.h) return h.k; } return null; } };
+
   /* ---------- more places to go ---------- */
   try {
     [
+      { name: "Gulou Hutong", jp: "鼓楼胡同", region: "Old Beijing Lanes", biome: "hutong", ink: "#9e2a2b", icon: "fa-mug-hot", code: "GL-00" },
       { name: "Kodama Hollow", jp: "木霊谷駅", region: "Old Cedar Forest", biome: "forest", ink: "#2f6b3a", icon: "fa-tree", code: "KH-21" },
       { name: "Lantern Moss Halt", jp: "灯苔停車場", region: "Fern Valley", biome: "forest", ink: "#4d7c0f", icon: "fa-leaf", code: "LM-22" },
       { name: "Kagami Causeway", jp: "鏡橋駅", region: "Twelve-Mile Lake", biome: "lake", ink: "#0e7490", icon: "fa-water", code: "KC-31" },

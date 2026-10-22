@@ -1205,6 +1205,36 @@
       }
     }
 
+
+    /* the second-hand book corner next door */
+    .nd-door { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font: 600 13px/1.3 system-ui, -apple-system, "PingFang SC", sans-serif; color: var(--amber-2); text-decoration: none; opacity: .85; }
+    .nd-door:hover, .nd-door:focus-visible { opacity: 1; text-decoration: underline; }
+    .nd-peek { position: absolute; right: 10px; top: 124px; z-index: 15; display: flex; align-items: flex-end; gap: 4px; padding: 6px 7px 5px; border-radius: 6px; background: linear-gradient(#3a2414, #24160c); border: 2px solid #000; box-shadow: 2px 2px 0 #000, 0 0 16px rgba(255, 190, 110, .25); text-decoration: none; }
+    .nd-peek:hover, .nd-peek:focus-visible { box-shadow: 2px 2px 0 #000, 0 0 22px rgba(255, 200, 120, .55); }
+    .nd-shelf { display: flex; align-items: flex-end; gap: 2px; padding-bottom: 2px; border-bottom: 3px solid #8a5a33; }
+    .nd-shelf i { display: block; width: 5px; border-radius: 1px; }
+    .nd-shelf i:nth-child(1) { height: 18px; background: #7c2513; } .nd-shelf i:nth-child(2) { height: 14px; background: #1e3a5f; } .nd-shelf i:nth-child(3) { height: 20px; background: #2f4a2a; transform: rotate(-8deg); }
+    .nd-shelf i:nth-child(4) { height: 15px; background: #c8a050; } .nd-shelf i:nth-child(5) { height: 17px; background: #5a3a6e; }
+    .nd-arrow { font: 700 12px/1 system-ui, sans-serif; color: var(--amber-2); }
+    .nd-shop { display: none; }
+    @media (min-width: 1024px) {
+      .nd-peek { display: none; }
+      .nd-shop { display: flex; position: absolute; left: 6%; bottom: 0; width: 30%; height: 38%; align-items: flex-end; gap: 3px; padding: 0 8% 6px; background: radial-gradient(ellipse at 50% 80%, rgba(255, 205, 130, .95), rgba(200, 120, 50, .85) 70%); border: 4px solid #2a1a10; border-bottom: 0; box-shadow: 0 0 30px rgba(255, 190, 110, .55); }
+      .nd-shop i { flex: 1; border-radius: 1px; background: #3a2214; opacity: .85; }
+      .nd-shop i:nth-child(odd) { height: 62%; } .nd-shop i:nth-child(even) { height: 48%; } .nd-shop i:nth-child(3) { transform: rotate(-10deg); transform-origin: bottom; }
+      .nd-shop b { position: absolute; left: 50%; top: -22px; transform: translateX(-50%); font-size: 14px; filter: drop-shadow(0 0 6px rgba(255, 200, 120, .8)); }
+      .stage.cafe-mode .nd-shop { background: linear-gradient(#d9b98a, #b98a5a); box-shadow: none; }
+      .stage-window { pointer-events: auto; }
+      .stage-window .nd-shop { cursor: pointer; }
+    }
+    /* the big cabinet in the corner: MEMEX-68, every FREE//BUILDER game on one tape */
+    .memex-cab[hidden] { display: none; }
+    .memex-cab { max-width: 980px; margin: 0 auto; padding: 14px 14px 10px; border-radius: 16px; background: linear-gradient(#3a2414, #24160c); border: 3px solid #000; box-shadow: 4px 4px 0 #000, 0 0 40px rgba(80, 255, 140, .08); }
+    .memex-bezel { border-radius: 14px; padding: 10px; background: #0c0a08; box-shadow: inset 0 0 0 3px #1a1410, inset 0 0 30px #000; }
+    .memex-bezel iframe { display: block; width: 100%; height: min(68vh, 620px); border: 0; border-radius: 10px; background: #031a0c; }
+    .memex-plate { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; padding: 0 6px; font-family: "VT323", monospace; font-size: 18px; letter-spacing: .3em; color: var(--amber-2); }
+    .memex-plate i { width: 14px; height: 14px; border-radius: 50%; background: #b9772c; box-shadow: inset 0 -3px 0 rgba(0,0,0,.4); }
+    .memex-plate i:nth-child(2) { background: #c2412d; margin-left: auto; } .memex-plate i:nth-child(4) { background: #3f8f5a; }
     .hidden { display: none !important; }
     .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
@@ -1259,6 +1289,7 @@
         </button>
       </form>
       <p id="door-bond-line" class="label mt-2 min-h-[18px]"></p>
+      <a class="nd-door" href="../books/"><span aria-hidden="true">📚</span><span data-t="nd.books">Next door: The Dog-Eared Corner →</span></a>
     </div>
   </section>
 
@@ -1335,7 +1366,8 @@
             <!-- STAGE -->
             <div id="stage-counter-box" class="stage no-select">
               <div class="lamp"></div>
-              <div class="stage-window" aria-hidden="true"><div class="moon"></div></div>
+              <div class="stage-window" aria-hidden="true"><div class="moon"></div><div class="nd-shop"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><b>📖</b></div></div>
+              <a class="nd-peek" href="../books/" data-ta="nd.short"><span class="nd-shelf" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="nd-arrow" aria-hidden="true">→</span></a>
               <div class="stage-sign" aria-hidden="true">營業中</div>
               <div class="shelf" style="top:46px"><span id="shelf-icon-left">🍾🍷🍸🍶</span><span id="cellar-banner-text" class="font-retro text-[13px] text-[var(--muted)] tracking-widest"></span><span id="shelf-icon-right">🥃🍹🍵☕</span></div>
               <div class="shelf" style="top:88px"><span id="shelf-row-2">🫙📻🪴</span><span>🎞️🕯️📚</span></div>
@@ -1697,11 +1729,16 @@
         <div class="room-inner">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
             <div class="tabs" id="arcade-tabs">
-              <button class="tab active" data-game="snake" onclick="Arcade.pick('snake')">🫘 <span data-t="arc.snake">Bean Snake</span></button>
+              <button class="tab active" data-game="memex" onclick="Arcade.pick('memex')">📼 <span>MEMEX-68</span></button>
+              <button class="tab" data-game="snake" onclick="Arcade.pick('snake')">🫘 <span data-t="arc.snake">Bean Snake</span></button>
               <button class="tab" data-game="stack" onclick="Arcade.pick('stack')">🧊 <span data-t="arc.stack">Sugar Stack</span></button>
               <button class="tab" data-game="gomoku" onclick="Arcade.pick('gomoku')">⚫ <span data-t="arc.gomoku">Gomoku vs Wei</span></button>
               <button class="tab" data-game="runner" onclick="Arcade.pick('runner')">🐈 <span data-t="arc.runner">Rooftop Yuzu</span></button>
             </div>
+          </div>
+          <div class="memex-cab" id="memex-cab" hidden>
+            <div class="memex-bezel"><iframe id="memex-frame" title="MEMEX-68" loading="lazy"></iframe></div>
+            <div class="memex-plate" aria-hidden="true"><span>MEMEX-68</span><i></i><i></i><i></i></div>
           </div>
           <div class="arcade-grid">
             <div class="cabinet">
@@ -3703,6 +3740,8 @@
       'brand.bar':        ["WEI'S BAR", "WEI'S 酒馆", "WEI'S 酒館", "WEI'S 酒吧", "WEI'S BAR", "WEI'S BAR"],
       'brand.cafe':       ["WEI'S COFFEE", "WEI'S 咖啡", "WEI'S 咖啡", "WEI'S 咖啡", "WEI'S CAFÉ", "WEI'S CAFÈ"],
       'brand.sub':        ["BAR · COFFEE", "酒馆 · 咖啡", "酒館 · 咖啡", "酒吧 · 咖啡", "BAR · CAFÉ", "BAR · CAFÈ"],
+      'nd.books':         ["Next door: The Dog-Eared Corner →", "隔壁：折角书屋 →", "隔壁：折角書屋 →", "隔籬：折角書屋 →", "Al lado: El Rincón de la Página Doblada →", "Al costat: El Racó de la Pàgina Doblegada →"],
+      'nd.short':         ["Books next door", "隔壁的旧书", "隔壁的舊書", "隔籬啲舊書", "Libros al lado", "Llibres al costat"],
       'door.tag':         ["A tiny hutong counter. Drinks, cats, records, notes.", "胡同里的小吧台。有酒、有猫、有唱片、有留言。", "胡同裡的小吧台。有酒、有貓、有唱片、有留言。", "胡同入面一張細吧枱。有酒、有貓、有唱片、有留言。", "Una barra diminuta en un hutong. Copas, gatos, discos y notas.", "Una barra petita en un hutong. Copes, gats, discos i notes."],
       'door.clockHint':   ["Drag the clock · 6–18 café · 18–6 bar", "拖动表针 · 6–18 咖啡 · 18–6 酒馆", "拖動指針 · 6–18 咖啡 · 18–6 酒館", "拉吓啲針 · 6–18 咖啡 · 18–6 酒吧", "Arrastra el reloj · 6–18 café · 18–6 bar", "Arrossega el rellotge · 6–18 cafè · 18–6 bar"],
       'door.nameLabel':   ["What should Wei call you?", "Wei 该怎么称呼你？", "Wei 該怎麼稱呼你？", "Wei 應該點叫你？", "¿Cómo te llama Wei?", "Com t'ha de dir en Wei?"],
@@ -8537,6 +8576,7 @@
       document.querySelectorAll('.lang-short').forEach(el => { el.textContent = LANG_META[lg].short; });
       document.querySelectorAll('[data-t]').forEach(el => { el.textContent = T(el.dataset.t); });
       document.querySelectorAll('[data-tp]').forEach(el => { el.placeholder = T(el.dataset.tp); });
+      document.querySelectorAll('[data-ta]').forEach(el => { el.setAttribute('aria-label', T(el.dataset.ta)); el.title = T(el.dataset.ta); });
       setText('door-sub-brand', T('brand.sub'));
       setText('poke-hint', L(WeiText.ui.tapHint));
       const t = i18n[lg];
@@ -8975,5 +9015,34 @@
       });
     });
   </script>
+<script>/* the lit shop window across the lane opens the book corner */
+  document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest(".nd-shop")) location.href = "../books/"; });
+</script>
+<script>/* the arcade opens on MEMEX-68: the terminal that lists every game, with the bar's own little games one tab over */
+  (function () {
+    function ready() {
+      if (typeof Arcade !== "object" || !Arcade.pick) return setTimeout(ready, 300);
+      var pick = Arcade.pick.bind(Arcade), start = Arcade.start.bind(Arcade);
+      var cab = document.getElementById("memex-cab"), grid = document.querySelector("#room-arcade .arcade-grid"), fr = document.getElementById("memex-frame");
+      Arcade.pick = function (g, quiet) {
+        var memex = g === "memex";
+        cab.hidden = !memex; if (grid) grid.style.display = memex ? "none" : "";
+        Arcade.memex = memex; if (!memex) return pick(g, quiet);
+        cancelAnimationFrame(this.raf); this.state = "memex";
+        document.querySelectorAll("#arcade-tabs [data-game]").forEach(function (b) { b.classList.toggle("active", b.dataset.game === "memex"); });
+        load();
+        if (!quiet) try { SoundEngine.playClick(); } catch (e) {}
+      };
+      Arcade.start = function () { if (this.memex) return; return start(); };
+      var room = document.getElementById("room-arcade");
+      function load() { if (!fr.getAttribute("src") && room && !room.classList.contains("hidden") && Arcade.memex) fr.src = "../?cabinet=1"; }
+      if (room) new MutationObserver(load).observe(room, { attributes: true, attributeFilter: ["class"] });
+      var init = Arcade.init.bind(Arcade);
+      Arcade.init = function () { var r = init(); Arcade.pick("memex", true); return r; };
+      if (Arcade.cv) Arcade.pick("memex", true); else { cab.hidden = false; if (grid) grid.style.display = "none"; }
+    }
+    ready();
+  })();
+</script>
 </body>
 </html>

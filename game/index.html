@@ -1753,7 +1753,7 @@
         const link = document.createElement('a');
         link.className = 'launch-link';
         link.href = match.url;
-        link.target = '_blank';
+        link.target = CABINET ? '_top' : '_blank';
         link.rel = 'noopener';
         link.textContent = `[ ENGAGE PROGRAM: ${match.title} ]`;
         link.addEventListener('click', () => sound.playKeyClick());
@@ -1777,6 +1777,7 @@
         print(`ERROR: PROGRAM ${target.code} HAS NO TARGET ADDRESS ON TAPE.`, 'error');
         return;
       }
+      if (CABINET && window.top !== window) { try { window.top.location.href = new URL(target.url, location.href).href; return; } catch (e) {} }
       const win = window.open(target.url, '_blank', 'noopener');
       print(win === null && !isCoarse
         ? '[BLOCKED] HOST REFUSED POP-OUT. USE THE ENGAGE LINK ABOVE.'
@@ -2022,6 +2023,7 @@
     /* =========================================================================
        BOOT
        ========================================================================= */
+    const CABINET = new URLSearchParams(location.search).has('cabinet');   /* running inside the arcade cabinet at Wei's Bar */
     async function bootSequence() {
       clearScreen();
       measureCols();
@@ -2066,6 +2068,7 @@
       if (isCoarse) print("[TAP A KEY BELOW, OR TAP THE EXEC> LINE TO TYPE]", "dim");
       print(" ");
       sound.playBell();
+      if (CABINET) setTimeout(displayCatalog, 900);   /* in the bar's cabinet, the list of tapes comes up straight away */
 
       // Continuous background tape inspection
       setInterval(inspectGameFileForUpdates, POLL_MS);

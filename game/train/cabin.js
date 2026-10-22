@@ -14,7 +14,7 @@
     board: "Board", quiet: "board quietly", lead: "A sleeper car through cities, mountains and sea. Nothing to do but look out of the window.",
     saved: "A friend saved you a seat in cabin", tip: "Drag to wipe the glass · hold to write · double-tap to knock",
     share: "Share this cabin", shareLead: "Friends who open this link sit in your car and see the same window, live. No names, nothing saved: the cabin disappears when everyone leaves.",
-    copy: "Copy link", copied: "Link copied", joinLbl: "Got a friend's code?", join: "Join", badCode: "Four letters, like KTRB", yourCode: "Your cabin", close: "Close", leave: "Leave the shared cabin", alone: "Just you in this car",
+    homeScreen: "Add to Home Screen", getOff: "Get off here", stay: "Stay aboard", bar: "Wei's Bar & Coffee", books: "The Dog-Eared Corner", copy: "Copy link", copied: "Link copied", joinLbl: "Got a friend's code?", join: "Join", badCode: "Four letters, like KTRB", yourCode: "Your cabin", close: "Close", leave: "Leave the shared cabin", alone: "Just you in this car",
     aboard: "{n} aboard", joined: "Someone boarded", left: "Someone stepped off", knock: "knock knock", write: "Write on the glass…",
     sound: "Sound", controls: "All controls", connecting: "Joining the cabin…", lost: "Lost the cabin's signal — retrying", host: "You're steering the journey",
     tunnelOut: "Out of the tunnel —", pass: "An express train thunders past", star: "A shooting star — make a wish", rainIn: "Rain on the glass", fogIn: "Fog rolls in", snowIn: "Snow begins to fall", clearIn: "The sky clears"
@@ -53,6 +53,13 @@
     ".cb-sheet{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(8,6,5,.6);padding:16px}.cb-card{width:min(26rem,100%);background:#f8efe0;color:#2a1a10;border-radius:22px;padding:22px;font:15px/1.55 system-ui,-apple-system,sans-serif;box-shadow:0 30px 80px -30px #000}" +
     ".cb-card h2{font:400 24px Georgia,serif;margin:0 0 8px}.cb-card .code{font:600 30px/1 ui-monospace,Menlo,monospace;letter-spacing:.3em;margin:14px 0;text-align:center}.cb-card .row{display:flex;gap:8px;margin-top:14px}.cb-card button{flex:1;min-height:44px;border-radius:999px;border:1.5px solid #2a1a10;background:transparent;font:600 14px system-ui,sans-serif;cursor:pointer;color:inherit}.cb-card button.pri{background:#2a1a10;color:#f8efe0}.cb-card .mut{font-size:13px;opacity:.7}" +
     ".cb-join{margin-top:18px;padding-top:14px;border-top:1px dashed rgba(42,26,16,.3)}.cb-join label{font:600 13px system-ui,sans-serif;opacity:.8}.cb-join .row{margin-top:8px}.cb-join input{flex:1.4;min-width:0;min-height:44px;border-radius:999px;border:1.5px solid currentColor;background:transparent;color:inherit;font:600 20px ui-monospace,Menlo,monospace;letter-spacing:.35em;text-align:center;text-transform:uppercase}.cb-jerr{min-height:1em;margin:6px 0 0}" +
+    ".cb-dock .fbg{position:static;opacity:.75;margin-left:2px}.cb-dock .fbg:hover,.cb-dock .fbg:focus-within{opacity:1}.cb-dock .fbg-mini{flex-direction:row}.cb-dock .fbg button,.cb-dock .fbg a{background:none;border:0;padding:4px 6px}" +
+    ".cb-home{position:fixed;top:max(10px,env(safe-area-inset-top));left:50%;transform:translate(-50%,-140%);z-index:70;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 14px;border-radius:999px;background:rgba(248,239,224,.96);color:#2a1a10;font:600 13px system-ui,-apple-system,sans-serif;box-shadow:0 10px 30px -10px #000;transition:transform .5s}.cb-home.on{transform:translate(-50%,0)}.cb-home svg{width:18px;height:18px;color:#1a73e8}.cb-home b{display:grid;place-items:center;width:20px;height:20px;border:1.5px solid currentColor;border-radius:5px;font-size:13px}.cb-home button{width:28px;height:28px;border:0;border-radius:50%;background:rgba(42,26,16,.08);font-size:16px;cursor:pointer;color:inherit}" +
+    ".cb-stn{display:block;font:11px/1.4 ui-monospace,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;opacity:.6;margin-bottom:12px;text-align:center}.cb-doors{display:grid;grid-template-columns:1fr 1fr;gap:10px}" +
+    ".cb-door{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;border-radius:16px;border:1.5px solid rgba(42,26,16,.25);text-decoration:none;color:inherit;text-align:center;transition:.2s}.cb-door b{font-size:34px;line-height:1}.cb-door span{font:400 17px/1.2 Georgia,'Songti SC',serif}.cb-door small{font:600 12px system-ui,sans-serif;opacity:.7}.cb-door.on,.cb-door:hover,.cb-door:focus-visible{border-color:currentColor;background:rgba(255,190,110,.18)}" +
+    ".cb-cat{position:absolute;left:0;bottom:2%;z-index:24;width:clamp(56px,9%,96px);aspect-ratio:64/40;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}.cb-cat svg{width:100%;height:100%;overflow:visible}.cb-cat.rev svg{transform:scaleX(-1)}" +
+    ".cb-cat .legs{animation:cbStep .38s steps(2) infinite}.cb-cat.sit .legs{animation:none}.cb-cat .tail{transform-origin:8px 22px;animation:cbTail 1.6s ease-in-out infinite}@keyframes cbStep{50%{transform:translateY(-1px)}}@keyframes cbTail{50%{transform:rotate(-14deg)}}" +
+    ".cb-heart{position:absolute;left:60%;top:-30%;color:#ff8fa0;font:700 18px system-ui;animation:cbUp 1.2s ease-out forwards;pointer-events:none}@keyframes cbUp{to{transform:translateY(-34px);opacity:0}}" +
     ".cb-rotate{display:none}@media (orientation:portrait) and (max-width:820px){.cb-rotate{position:fixed;inset:0;z-index:95;display:grid;place-items:center;text-align:center;padding:32px;background:rgba(10,7,5,.94);color:#f5e6c8;font:16px/1.6 Georgia,serif}.cb-rotate b{display:block;font-size:44px;margin-bottom:12px;animation:cbTurn 2.4s ease-in-out infinite}}" +
     "@keyframes cbTurn{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(90deg)}}" +
     "@media (prefers-color-scheme:dark){.cb-card{background:#1f1915;color:#f2e8d8}.cb-card button{border-color:#f2e8d8}.cb-card button.pri{background:#f2e8d8;color:#1f1915}}";
@@ -80,7 +87,15 @@
     if (rq && !document.fullscreenElement && !document.webkitFullscreenElement) {
       try { var p = rq.call(de, { navigationUI: "hide" }); if (p && p.then) p.then(lock, function () {}); else lock(); } catch (e) {}
     }
+    else if (!rq && !standalone()) homeHint();
     function lock() { try { screen.orientation && screen.orientation.lock && screen.orientation.lock("landscape").catch(function () {}); } catch (e) {} setTimeout(fit, 400); }
+  }
+  function standalone() { return (window.matchMedia && matchMedia("(display-mode: fullscreen), (display-mode: standalone)").matches) || navigator.standalone === true; }
+  function homeHint() {   /* iPhone Safari has no full screen for pages: show the two taps that give one */
+    try { if (localStorage.getItem("train_home_hint")) return; localStorage.setItem("train_home_hint", "1"); } catch (e) {}
+    var h = document.createElement("div"); h.className = "cb-home"; h.setAttribute("role", "status");
+    h.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 12v8h14v-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span aria-hidden="true">→</span><b aria-hidden="true">＋</b><span>' + T.homeScreen + '</span><button type="button" aria-label="' + T.close + '">×</button>';
+    document.body.appendChild(h); h.querySelector("button").onclick = function () { h.remove(); }; setTimeout(function () { h.classList.add("on"); }, 2500); setTimeout(function () { h.remove(); }, 14000);
   }
   /* fill the screen: the window takes whatever height is left, on any landscape screen */
   function fit() {
@@ -99,6 +114,7 @@
     document.body.classList.add("cb-on");
     try { if (!state.zenMode) { toggleZenMode(); var wt = $("windowToast"); if (wt) wt.style.opacity = "0"; } } catch (e) {}
     setTimeout(fit, 560); dock(); tip();
+    setTimeout(function () { if (Math.random() < 0.6) catWalk(Math.random() < 0.5 ? "Yuzu" : "Miso", 1, true); }, 20000 + Math.random() * 20000);
     if (invite) join(invite, false); else director.start();
   }
 
@@ -108,6 +124,7 @@
     D = document.createElement("div"); D.className = "cb-dock"; D.setAttribute("role", "toolbar"); D.setAttribute("aria-label", "Cabin");
     D.innerHTML = '<span class="cb-seats" aria-live="polite"></span><button type="button" data-a="sound" aria-label="' + T.sound + '">🔊</button><button type="button" data-a="share" aria-label="' + T.share + '">🎟️</button><button type="button" data-a="more" aria-label="' + T.controls + '">☰</button>';
     document.body.appendChild(D); seatsEl = D.querySelector(".cb-seats");
+    var credit = document.querySelector(".fbg"); if (credit) D.appendChild(credit); else setTimeout(function () { var c = document.querySelector(".fbg"); if (c && D) D.appendChild(c); }, 1500);
     D.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
       if (b.dataset.a === "sound") { try { toggleAudioEngine(); } catch (x) {} paintDock(); }
@@ -153,7 +170,63 @@
       var now = Date.now(); if (now - lastTap < 320) { clearTimeout(holdT); start = null; knock(rel(e), true); } lastTap = now;
     });
     c.addEventListener("pointermove", function (e) { if (start && Math.hypot(e.clientX - start.x, e.clientY - start.y) > 12) { clearTimeout(holdT); start = null; } });
-    addEventListener("pointerup", function () { clearTimeout(holdT); start = null; });
+    addEventListener("pointerup", function (e) {
+      var s0 = start; clearTimeout(holdT); start = null;
+      if (s0 && e.target === c && window.TrainView) { var r = vp().getBoundingClientRect(), k = TrainView.hit(e.clientX - r.left, e.clientY - r.top); if (k) setTimeout(function () { if (Date.now() - lastTap > 300) stopFor(k); }, 330); }
+    });
+  }
+  /* ---------- Yuzu and Miso ride along: along the sill, past the glass ---------- */
+  var CAT = { Yuzu: { body: "#e8913a", belly: "#f8dcae", eye: "#4f9a62", stripe: "#b5611d" }, Miso: { body: "#231b17", belly: "#3a2f29", eye: "#f2c94c", stripe: "#231b17" } };
+  function catSvg(c) {
+    var k = CAT[c];
+    return '<svg viewBox="0 0 64 40" aria-hidden="true"><path d="M8 26c0-9 10-14 24-14s20 4 22 10l-2 6H10z" fill="' + k.body + '"/><path d="M14 28h34" stroke="' + k.belly + '" stroke-width="4" stroke-linecap="round"/>' +
+      '<path class="tail" d="M8 22c-6-2-8-8-4-12" fill="none" stroke="' + k.body + '" stroke-width="4" stroke-linecap="round"/><circle cx="52" cy="17" r="9" fill="' + k.body + '"/><path d="M45 11l2-8 5 6zM59 11l-2-8-5 6z" fill="' + k.body + '"/>' +
+      '<circle cx="49" cy="16" r="1.6" fill="' + k.eye + '"/><circle cx="55" cy="16" r="1.6" fill="' + k.eye + '"/><path d="M20 16l2 6M28 14l1 6" stroke="' + k.stripe + '" stroke-width="2" opacity=".6"/>' +
+      '<g class="legs" fill="' + k.body + '"><rect x="14" y="28" width="4" height="10" rx="2"/><rect x="22" y="28" width="4" height="10" rx="2"/><rect x="40" y="28" width="4" height="10" rx="2"/><rect x="47" y="28" width="4" height="10" rx="2"/></g></svg>';
+  }
+  function catWalk(name, dir, sit) {
+    if (!S.boarded || document.querySelector(".cb-cat")) return;
+    name = CAT[name] ? name : "Yuzu"; dir = dir === -1 ? -1 : 1;
+    var v = vp(); if (!v) return;
+    var c = document.createElement("button"); c.type = "button"; c.className = "cb-cat" + (dir < 0 ? " rev" : ""); c.innerHTML = catSvg(name); c.setAttribute("aria-label", name);
+    v.appendChild(c);
+    var W = v.getBoundingClientRect().width, cw2 = c.getBoundingClientRect().width, from = dir > 0 ? -cw2 : W, to = dir > 0 ? W : -cw2, mid = W * (0.35 + Math.random() * 0.3), speed = W / 14000;
+    var t0 = performance.now(), paused = 0, sat = false;
+    c.onclick = function (e) { e.stopPropagation(); purr(c); };
+    (function step(now) {
+      if (!c.isConnected) return;
+      var x = from + (now - t0 - paused) * speed * dir;
+      if (sit && !sat && (dir > 0 ? x >= mid : x <= mid)) { sat = true; c.classList.add("sit"); var ps = now; setTimeout(function () { c.classList.remove("sit"); paused += performance.now() - ps; requestAnimationFrame(step); }, 6000 + Math.random() * 5000); c.style.transform = "translateX(" + x + "px)"; return; }
+      c.style.transform = "translateX(" + x + "px)";
+      if (dir > 0 ? x < to : x > to) requestAnimationFrame(step); else c.remove();
+    })(t0);
+  }
+  function purr(c) {
+    var h = document.createElement("span"); h.className = "cb-heart"; h.textContent = "♥"; c.appendChild(h); setTimeout(function () { h.remove(); }, 1200);
+    try { kctx = kctx || new (window.AudioContext || window.webkitAudioContext)(); var t0 = kctx.currentTime, o = kctx.createOscillator(), g = kctx.createGain(); o.type = "triangle"; o.frequency.setValueAtTime(520, t0); o.frequency.exponentialRampToValueAtTime(880, t0 + 0.12); o.frequency.exponentialRampToValueAtTime(600, t0 + 0.3); g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.12, t0 + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.35); o.connect(g); g.connect(kctx.destination); o.start(t0); o.stop(t0 + 0.4); } catch (e) {}
+  }
+  var catBoarded = "";
+  setInterval(function () {   /* at the hutong the cats from the bar hop on */
+    if (atHutong() && state.trainState === "STOPPED" && catBoarded !== state.station.name + state.scrollDist.toFixed(0).slice(0, -3)) { catBoarded = state.station.name + state.scrollDist.toFixed(0).slice(0, -3); if (Math.random() < 0.7) { var c = Math.random() < 0.5 ? "Yuzu" : "Miso"; setTimeout(function () { catWalk(c, -1, true); }, 3000); } }
+  }, 2000);
+
+  /* ---------- getting off at the hutong: Wei's Bar and the book corner ---------- */
+  var HUTONG = "Gulou Hutong", wantOff = null;
+  function atHutong() { return state.station && state.station.name === HUTONG; }
+  function stopFor(k) {
+    wantOff = k;
+    if (atHutong() && state.trainState === "STOPPED") return offCard(k);
+    var st = STATION_CATALOG.filter(function (x) { return x.name === HUTONG; })[0]; if (!st) return;
+    if (state.trainState === "CRUISING") { state.station = st; if (state.biome !== "hutong") setBiome("hutong", false); triggerStationStopOrDepart(); sync && S.code && sync(); }
+  }
+  setInterval(function () { if (wantOff && atHutong() && state.trainState === "STOPPED" && !document.querySelector(".cb-off")) offCard(wantOff); }, 500);
+  function offCard(k) {
+    wantOff = null; director.next.depart = Date.now() + 60e3;
+    var w = document.createElement("div"); w.className = "cb-sheet cb-off";
+    var door = function (id, icon, name, href) { return '<a class="cb-door' + (id === k ? " on" : "") + '" href="' + href + '"><b aria-hidden="true">' + icon + "</b><span>" + name + "</span><small>" + T.getOff + ' <span aria-hidden="true">→</span></small></a>'; };
+    w.innerHTML = '<div class="cb-card" role="dialog" aria-modal="true" aria-label="' + HUTONG + '"><small class="cb-stn">' + HUTONG + '</small><div class="cb-doors">' + door("bar", "🍸", T.bar, "../bar/") + door("books", "📚", T.books, "../books/") + '</div><div class="row"><button type="button" data-a="stay">' + T.stay + "</button></div></div>";
+    document.body.appendChild(w);
+    w.addEventListener("click", function (e) { if (e.target === w || e.target.closest('[data-a="stay"]')) { w.remove(); director.next.depart = Date.now() + 3000; } });
   }
   function ink(p) {
     var box = document.createElement("div"); box.className = "cb-ink"; place(box, p);
@@ -209,7 +282,7 @@
         changed = true;
       }
       if (state.inTunnel && now > (n.tunnelOut || 0)) {   /* the surprise: you come out somewhere else */
-        if (Math.random() < 0.65) { var biomes = ["metropolis", "alpine", "coastal", "countryside", "desert", "forest", "lake", "snow"].filter(function (b) { return b !== state.biome; }); setBiome(biomes[(Math.random() * biomes.length) | 0], true); }
+        if (Math.random() < 0.65) { var biomes = ["metropolis", "hutong", "alpine", "coastal", "countryside", "desert", "forest", "lake", "snow"].filter(function (b) { return b !== state.biome; }); setBiome(biomes[(Math.random() * biomes.length) | 0], true); }
         toggleMountainTunnel(); n.tunnel = now + 120e3 + Math.random() * 160e3; changed = true;
       }
       if (now > n.time) { setTimeOfDay(TIMES[(TIMES.indexOf(state.timeOfDay) + 1) % 4]); n.time = now + 150e3 + Math.random() * 90e3; changed = true; }
@@ -217,6 +290,7 @@
       if (now > n.surprise) {
         if (state.timeOfDay === "night" && Math.random() < 0.6) { spawnShootingStarWish(); send("fx", { k: "star" }); }
         else if (!state.inTunnel && state.trainState === "CRUISING") { triggerPassingExpressTrain(); send("fx", { k: "express" }); }
+        if (Math.random() < 0.3 && !state.inTunnel) { var cc = Math.random() < 0.5 ? "Yuzu" : "Miso", dd = Math.random() < 0.5 ? 1 : -1, ss = Math.random() < 0.6; catWalk(cc, dd, ss); send("fx", { k: "cat", c: cc, dir: dd, sit: ss }); }
         n.surprise = now + 45e3 + Math.random() * 75e3;
       }
       if (changed || now - S.lastSync > 9000) sync(); else syncIfChanged();
@@ -254,7 +328,7 @@
     if (ev === "view" && !isDirector()) apply(p);
     if (ev === "note") note(p);
     if (ev === "knock") knock(p, false);
-    if (ev === "fx") { try { if (p.k === "star") spawnShootingStarWish(); if (p.k === "express") triggerPassingExpressTrain(); } catch (e) {} }
+    if (ev === "fx") { try { if (p.k === "star") spawnShootingStarWish(); if (p.k === "express") triggerPassingExpressTrain(); if (p.k === "cat") catWalk(p.c, p.dir, p.sit); } catch (e) {} }
   }
   function hello() { send("hello", { by: S.me, since: S.joined }); }
   function send(ev, p) { if (!S.tx) return; p = Object.assign({ by: S.me }, p); S.tx.send(ev, p); }
