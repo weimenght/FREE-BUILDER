@@ -17,7 +17,7 @@ ID: TW-06
 TITLE: Train Window
 GENRE: Sleeper car daydream
 AUTHOR: FREE//BUILDER
-DESC: Board a night sleeper and just look out. Hours pass, the weather drifts, tunnels open onto new landscapes. Write on the fogged glass, and share your cabin so friends ride the same window, live.
+DESC: Board a night sleeper and just look out. Stations from Kyoto to Sitges roll by, each in its own style and announced in its own language. Write on the fogged glass, and share your cabin so friends ride the same window, live.
 URL: train/
 
 CODE: JUKEBOX
@@ -33,7 +33,7 @@ ID: WB-03
 TITLE: Wei's Bar & Coffee
 GENRE: Cosy hutong hangout
 AUTHOR: FREE//BUILDER
-DESC: A tiny hutong counter: coffee by day, cocktails by night. Chat with Wei, mix a drink, pet the cats, play a record and leave a note for the next guest.
+DESC: A tiny hutong counter: coffee by day, cocktails by night. Chat with Wei, mix a drink, pet the cats, drop a coin in the jukebox and leave a note for the next guest.
 URL: bar/
 
 CODE: BOOKS
@@ -49,7 +49,7 @@ ID: KS-07
 TITLE: Kintsugi Studio
 GENRE: Golden joinery, slow craft
 AUTHOR: FREE//BUILDER
-DESC: Pick a broken bowl and mend it the old way. Fit the shards, seal the cracks with lacquer, then dust the seams with gold until the break becomes the best part. Finished pieces rest on your tokonoma shelf.
+DESC: Pick a broken bowl and mend it the old way. Fit the shards, seal the cracks with lacquer, then dust the seams with gold. Sign the finished piece into a book every visitor can leaf through.
 URL: kintsugi/
 
 CODE: HANDOFF
