@@ -9080,12 +9080,29 @@
     JB.watch();
     /* walking into the room turns it on */
     new MutationObserver(function () { if (!room.classList.contains("hidden") && !JB.listening()) { JB.unlock(); JB.listen(true); JBW.fire(); JBW.paint(); } }).observe(room, { attributes: true, attributeFilter: ["class"] });
-    var hushed = false, start = MusicEngine.start.bind(MusicEngine);
-    MusicEngine.start = function () { if (window.JB && JB.listening()) { hushed = false; JB.listen(false); JBW.fire(); JBW.paint(); } return start.apply(null, arguments); };
-    addEventListener("jukebox", function (e) {
-      if (e.detail && e.detail.on) { if (MusicEngine.playing) { hushed = true; MusicEngine.stop(); try { Radio.updateUI(); } catch (x) {} } }
-      else if (hushed) { hushed = false; try { Radio.play(Radio.idx); } catch (x) {} }
-    });
+    /* the jukebox IS the bar's music now: it starts when you come in, 📻 switches it on and off, ⏭ takes you to pick a record */
+    var stop0 = MusicEngine.stop.bind(MusicEngine);
+    function quietRadio() { try { if (MusicEngine.playing) stop0(); } catch (x) {} }
+    function on() { quietRadio(); JB.unlock(); if (!JB.listening()) { JB.listen(true); JBW.fire(); } JBW.paint(); Radio.updateUI(); }
+    function off() { if (JB.listening()) { JB.listen(false); JBW.fire(); } JBW.paint(); Radio.updateUI(); }
+    Radio.play = function () { on(); };
+    Radio.toggle = function () { if (JB.listening()) off(); else on(); return Promise.resolve(); };
+    Radio.next = function () { on(); go("studio"); return Promise.resolve(); };
+    window.skipTrack = function (e) { if (e) e.stopPropagation(); try { SoundEngine.playClick(); } catch (x) {} Radio.next(); };
+    Radio.updateUI = function () {
+      var playing = JB.listening(), p = JB.state().now, eq = document.getElementById("eq-graphic"), mute = document.getElementById("eq-mute-icon");
+      if (eq) { eq.classList.toggle("hidden", !playing); eq.classList.toggle("flex", playing); }
+      if (mute) mute.classList.toggle("hidden", playing);
+      setText("np-title", playing && p ? "♪ " + p.title + " — " + p.name : playing ? "♪ · · ·" : T("radio.none"));
+      try { Studio.syncPlayButton(); } catch (x) {}
+    };
+    /* a track played from the wall still plays, and the jukebox steps aside for it */
+    var start0 = MusicEngine.start.bind(MusicEngine);
+    MusicEngine.start = function () { if (JB.listening()) { JB.listen(false); JBW.fire(); JBW.paint(); } var r = start0.apply(null, arguments); setTimeout(function () { var eq = document.getElementById("eq-graphic"); if (eq) { eq.classList.remove("hidden"); eq.classList.add("flex"); } }, 0); return r; };
+    JB.onChange(function () { Radio.updateUI(); });
+    addEventListener("jukebox", function () { Radio.updateUI(); });
+    /* phones keep sound locked until a touch: the first tap anywhere lets the record play */
+    document.addEventListener("pointerdown", function () { if (JB.listening()) JB.unlock(); }, true);
   })();
 </script>
 <script>

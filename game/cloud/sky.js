@@ -35,6 +35,11 @@
   var pick = function (a) { return a[(Math.random() * a.length) | 0]; };
   var SCENE = (function () { var all = ["meadow", "mountain", "sea", "lake", "forest", "dunes", "snow"], last = null; try { last = localStorage.getItem("sora_scene"); } catch (e) {} var k, want = null; try { want = new URLSearchParams(location.search).get("place"); } catch (e) {} if (all.indexOf(want) >= 0) k = want; else do { k = pick(all); } while (k === last); try { localStorage.setItem("sora_scene", k); } catch (e) {} return k; })();
   window.SORA_SCENE = SCENE;
+  /* dandelions belong to meadows (and a few drift up a mountain); the sea, the lake, the forest, the dunes and the snow do without */
+  var SEEDS = { meadow: 99, mountain: 5 }[SCENE] || 0;
+  function trimSeeds() { try { if (state.dandelions && state.dandelions.length > SEEDS) state.dandelions.length = SEEDS; } catch (e) {} }
+  trimSeeds(); setInterval(trimSeeds, 500);
+  if (!SEEDS) try { window.spawnDandelionGust = function () {}; } catch (e) {}
   /* what grows by your face in each place */
   var FLORA = {
     meadow: { n: 1, tall: 1, far: null, near: null, flowers: ["#ffffff", "#ffe066", "#c9a6ff", "#ff9fb2"], fl: 0.07, seed: 0.08 },
