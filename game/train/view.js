@@ -868,19 +868,32 @@
   var voices = []; function loadVoices() { try { voices = speechSynthesis.getVoices() || []; } catch (e) {} }
   if (window.speechSynthesis) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
   function voiceFor(tag) { var l = tag.toLowerCase(), base = l.split("-")[0], best = null; voices.forEach(function (v) { var vl = (v.lang || "").toLowerCase().replace("_", "-"); if (vl === l) best = best && best.l === 2 ? best : { v: v, l: 2 }; else if (!best && vl.split("-")[0] === base) best = { v: v, l: 1 }; }); return best && best.v; }
+  var NEXT = { jp: "次は、{n}です。", cn: "下一站，{n}。", fr: "Prochain arrêt : {n}.", de: "Nächster Halt: {n}.", ch: "Nächster Halt: {n}.", es: "Próxima parada: {n}.", ca: "Propera parada: {n}.", us: "Next stop, {n}.", uk: "The next station is {n}.", it: "Prossima fermata: {n}." };
+  /* say it in the station's own language; if this phone has no such voice, say it in English rather than not at all */
+  function speak(st, line) {
+    if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
+    if (!voices.length) loadVoices();
+    var lk = lookOf(st), vo = VOICE[lk], v = vo ? voiceFor(vo[0]) : null, text;
+    if (!v && lk === "ch") v = voiceFor("de-DE");
+    if (v) text = (line === "next" ? NEXT[lk] : vo[1]).replace(/\{n\}/g, spoken(st));
+    else { v = voiceFor("en-GB") || voiceFor("en-US") || voices[0] || null; text = (line === "next" ? "The next stop is {n}." : "We are now arriving at {n}.").replace(/\{n\}/g, st.name); }
+    try { if (typeof isAudioPlaying !== "undefined" && !isAudioPlaying) return; speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(text); if (v) { u.voice = v; u.lang = v.lang; } else u.lang = vo ? vo[0] : "en-GB"; u.rate = lk === "jp" || lk === "cn" ? 0.92 : 0.95; u.pitch = lk === "jp" ? 1.1 : 1; u.volume = 0.9; speechSynthesis.speak(u); } catch (e) {}
+  }
   function announce(st) {
-    var lk = lookOf(st), ch = CHIME[lk], vo = VOICE[lk];
+    var lk = lookOf(st), ch = CHIME[lk] || CHIME.uk;
     if (typeof audioCtx === "undefined" || !audioCtx || !isAudioPlaying) return false;
-    if (!ch) return false;
     var t0 = audioCtx.currentTime + 0.05;
     ch[0].forEach(function (f, i) { var o = audioCtx.createOscillator(), g = audioCtx.createGain(), t = t0 + i * ch[1]; o.type = ch[2]; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.09, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0006, t + 1.1); o.connect(g); g.connect(masterTrainGain); o.start(t); o.stop(t + 1.2); });
-    if (vo && window.speechSynthesis && window.SpeechSynthesisUtterance) {
-      if (!voices.length) loadVoices();
-      var v = voiceFor(vo[0]); if (!v && lk === "ch") v = voiceFor("de-DE");
-      if (v) setTimeout(function () { try { if (!isAudioPlaying) return; speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(vo[1].replace(/\{n\}/g, spoken(st))); u.voice = v; u.lang = v.lang; u.rate = lk === "jp" || lk === "cn" ? 0.92 : 0.95; u.pitch = lk === "jp" ? 1.1 : 1; u.volume = 0.85; speechSynthesis.speak(u); } catch (e) {} }, ch[0].length * ch[1] * 1000 + 500);
-    }
+    setTimeout(function () { speak(st, "arrive"); }, ch[0].length * ch[1] * 1000 + 500);
     return true;
   }
+  /* phones only let a page talk after a touch: say nothing, once, on the first one */
+  function unlock() { removeEventListener("pointerdown", unlock, true); try { var u = new SpeechSynthesisUtterance(" "); u.volume = 0; speechSynthesis.speak(u); loadVoices(); } catch (e) {} setTimeout(nextUp, 6000); }
+  if (window.speechSynthesis) addEventListener("pointerdown", unlock, true);
+  /* and between stations: "next stop…" a few seconds after pulling away */
+  var lastNext = null;
+  function nextUp() { try { if (state.trainState === "CRUISING" && state.station && state.station.name !== lastNext) { lastNext = state.station.name; speak(state.station, "next"); } } catch (e) {} }
+  setInterval(function () { try { if (state.trainState === "CRUISING" && state.station && state.station.name !== lastNext && lastNext !== null) setTimeout(nextUp, 5000); } catch (e) {} }, 2000);
   var chime0 = window.playStationArrivalChime;
   if (chime0) window.playStationArrivalChime = function () { try { if (state.station && announce(state.station)) return; } catch (e) {} return chime0.apply(this, arguments); };
   document.addEventListener("visibilitychange", function () { if (document.hidden && window.speechSynthesis) try { speechSynthesis.cancel(); } catch (e) {} });

@@ -31,10 +31,23 @@
   setInterval(function () { var k = byClock(); if (k !== sky) { sky = k; setSkyPalette(k); } }, 60e3);
   function night() { return sky === "night"; }
 
-  /* ---------- each visit, something else in the sky ---------- */
+  /* ---------- each visit, somewhere else to lie down: a meadow, a mountain, the sea… (drawn by land.js) ---------- */
   var pick = function (a) { return a[(Math.random() * a.length) | 0]; };
+  var SCENE = (function () { var all = ["meadow", "mountain", "sea", "lake", "forest", "dunes", "snow"], last = null; try { last = localStorage.getItem("sora_scene"); } catch (e) {} var k, want = null; try { want = new URLSearchParams(location.search).get("place"); } catch (e) {} if (all.indexOf(want) >= 0) k = want; else do { k = pick(all); } while (k === last); try { localStorage.setItem("sora_scene", k); } catch (e) {} return k; })();
+  window.SORA_SCENE = SCENE;
+  /* what grows by your face in each place */
+  var FLORA = {
+    meadow: { n: 1, tall: 1, far: null, near: null, flowers: ["#ffffff", "#ffe066", "#c9a6ff", "#ff9fb2"], fl: 0.07, seed: 0.08 },
+    mountain: { n: 0.6, tall: 0.7, far: [110, 140, 90], near: [70, 100, 60], flowers: ["#ffffff", "#4a6cff", "#ffe066"], fl: 0.1, seed: 0.02 },
+    sea: { n: 0.32, tall: 1.25, far: [196, 176, 120], near: [150, 140, 90], flowers: [], fl: 0, seed: 0.15 },
+    lake: { n: 0.45, tall: 1.7, far: [96, 130, 80], near: [60, 90, 50], flowers: [], fl: 0, seed: 0.22, reed: true },
+    forest: { n: 0.5, tall: 0.9, far: [60, 100, 55], near: [34, 70, 40], flowers: ["#ffffff", "#f6f3d8"], fl: 0.05, seed: 0 },
+    dunes: { n: 0.14, tall: 1.3, far: [200, 170, 110], near: [170, 140, 90], flowers: [], fl: 0, seed: 0.1 },
+    snow: { n: 0.1, tall: 0.6, far: [150, 160, 140], near: [120, 130, 110], flowers: [], fl: 0, seed: 0 }
+  }[SCENE];
   var X = night() ? { stars: true, flies: Math.random() < 0.7 } : { rainbow: Math.random() < 0.3, shower: Math.random() < 0.3, kite: Math.random() < 0.45, plane: Math.random() < 0.6, flies: sky === "dusk" && Math.random() < 0.6 };
   if (X.shower) X.rainbow = false;   /* a passing shower brings its own rainbow afterwards */
+  if (SCENE === "snow") { X.flies = false; X.shower = false; X.rainbow = false; } if (SCENE === "dunes") { X.shower = false; X.rainbow = false; }
   try { if (typeof setBreezeSpeed === "function") setBreezeSpeed(pick([50, 90, 130, 180])); } catch (e) {}
 
   /* ---------- sound starts with your first touch ---------- */
@@ -105,11 +118,11 @@
   /* ---------- the grass right by your face, and what grows in it ---------- */
   var blades = [], motes = [];
   function grow() {
-    blades = []; var n = Math.min(260, Math.round(W / 6));
+    blades = []; var n = Math.round(Math.min(260, Math.round(W / 6)) * FLORA.n);
     for (var i = 0; i < n; i++) {
       var near = Math.random() < 0.35, r = Math.random();
-      blades.push({ x: Math.random() * (W + 80) - 40, h: H * (near ? 0.12 + Math.random() * 0.14 : 0.05 + Math.random() * 0.08), w: near ? 5 + Math.random() * 6 : 2 + Math.random() * 3, near: near, lean: (Math.random() - 0.5) * 0.5, p: Math.random() * TAU, bend: 0,
-        flower: !near && r < 0.07 ? ["#ffffff", "#ffe066", "#c9a6ff", "#ff9fb2"][(Math.random() * 4) | 0] : null, seed: near && r < 0.08 });
+      blades.push({ x: Math.random() * (W + 80) - 40, h: H * FLORA.tall * (near ? 0.12 + Math.random() * 0.14 : 0.05 + Math.random() * 0.08), w: (near ? 5 + Math.random() * 6 : 2 + Math.random() * 3) * (FLORA.reed ? 0.7 : 1), near: near, lean: (Math.random() - 0.5) * 0.5, p: Math.random() * TAU, bend: 0,
+        flower: !near && r < FLORA.fl && FLORA.flowers.length ? pick(FLORA.flowers) : null, seed: near && r < FLORA.seed });
     }
     blades.sort(function (a, b) { return a.near - b.near; });
     motes = []; for (var m = 0; m < 22; m++) motes.push({ x: Math.random(), y: Math.random() * 0.8, r: 6 + Math.random() * 22, v: 0.2 + Math.random() * 0.5, p: Math.random() * TAU });
@@ -120,7 +133,7 @@
   var px = -999, py = -999;
   addEventListener("pointermove", function (e) { px = e.clientX; py = e.clientY; }, { passive: true });
   function grass(t) {
-    var ac = (typeof activeColors !== "undefined") ? activeColors : null, far = ac ? ac.meadowFar : [90, 140, 80], nearC = ac ? ac.meadowNear : [50, 90, 50], sunC = ac ? ac.sunColor : [255, 240, 200];
+    var ac = (typeof activeColors !== "undefined") ? activeColors : null, far = FLORA.far || (ac ? ac.meadowFar : [90, 140, 80]), nearC = FLORA.near || (ac ? ac.meadowNear : [50, 90, 50]), sunC = ac ? ac.sunColor : [255, 240, 200];
     var dark = night() ? 0.75 : sky === "dusk" ? 0.35 : 0, breeze = (state.breezeSpeed || 1);
     for (var i = 0; i < blades.length; i++) {
       var b = blades[i], sway = Math.sin(t * (0.6 + breeze * 0.4) + b.x * 0.012 + b.p) * 0.06 * breeze;
@@ -130,7 +143,7 @@
       var gr = g.createLinearGradient(b.x, H, tipX, tipY); gr.addColorStop(0, rgb(mixc(col, [0, 0, 0], 0.35), 1)); gr.addColorStop(1, rgb(lit, b.near ? 0.98 : 0.9));
       g.fillStyle = gr; g.beginPath(); g.moveTo(b.x - b.w / 2, H + 2); g.quadraticCurveTo(midX - b.w * 0.3, midY, tipX, tipY); g.quadraticCurveTo(midX + b.w * 0.3, midY, b.x + b.w / 2, H + 2); g.closePath(); g.fill();
       if (b.flower) { var fc = night() ? "rgba(200,200,220,.35)" : b.flower; g.fillStyle = fc; for (var q = 0; q < 5; q++) { g.beginPath(); g.arc(tipX + Math.cos(q * 1.257 + t * 0.2) * 3, tipY + Math.sin(q * 1.257 + t * 0.2) * 3, 2.4, 0, TAU); g.fill(); } g.fillStyle = night() ? "rgba(120,110,80,.5)" : "#f2b632"; g.beginPath(); g.arc(tipX, tipY, 1.8, 0, TAU); g.fill(); }
-      if (b.seed) { g.fillStyle = rgb(mixc(lit, [230, 220, 170], 0.5), 0.9); g.beginPath(); g.ellipse(tipX, tipY + 8, 3, 11, ang, 0, TAU); g.fill(); }
+      if (b.seed) { g.fillStyle = FLORA.reed ? rgb(mixc([92, 58, 32], [10, 10, 15], dark), 0.95) : rgb(mixc(lit, [230, 220, 170], 0.5), 0.9); g.beginPath(); g.ellipse(tipX, tipY + (FLORA.reed ? 12 : 8), FLORA.reed ? 4 : 3, FLORA.reed ? 16 : 11, ang, 0, TAU); g.fill(); }
     }
   }
   /* sunlight in the lens: a soft glare and a few ghosts by day, rays through the clouds at dusk */
