@@ -392,14 +392,11 @@
   <meta name="description" content="A FREE//BUILDER lab: an active-recall trainer that turns sales psychology into reflexes, with spaced repetition, retrieval practice and live objection drills.">
   <meta name="theme-color" content="#F7F6F2">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/fonts/g/fonts.css">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    if (window.tailwind) tailwind.config = {
+  <link rel="stylesheet" href="./tw.css" data-tw>
+  <script type="text/x-tailwind-config">
+    tailwind.config = {
       future: { hoverOnlyWhenSupported: true },
       theme: { extend: {
         colors: { paper: '#F7F6F2', ink: '#17171A', muted: '#6B6A70', line: '#E5E2DA', accent: '#E2553F', moss: '#2F7A55', ochre: '#B7791F' },
@@ -410,7 +407,7 @@
           serif: ['"Instrument Serif"', 'Georgia', 'Songti SC', 'serif']
         }
       } }
-    };
+    }
   </script>
 
   <style>

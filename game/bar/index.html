@@ -517,16 +517,13 @@
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./tw.css" data-tw>
   <script src="/vendor/supabase.js"></script>
   <script>window.supabase || document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"><\/script>')</script>
+  <link rel="stylesheet" href="/fonts/g/fonts.css">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
-
-  <script>
-    if (window.tailwind) tailwind.config = {
+  <script type="text/x-tailwind-config">
+    tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
@@ -3586,7 +3583,7 @@
         if (this.conv.tw || this.loading || typeof document === 'undefined') return;
         this.loading = true;
         const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/npm/opencc-js@1.4.2/dist/umd/cn2t.js';
+        s.src = '/vendor/opencc/cn2t.js';
         s.onload = () => {
           try {
             this.conv.tw = OpenCC.Converter({ from: 'cn', to: 'twp' });
