@@ -1404,7 +1404,7 @@
         b.addEventListener('click', () => loadTape(b, `RUN ${game.code}`));
         container.appendChild(b);
       };
-      GAME_CATALOG.forEach(addTape);
+      // (one key per game used to live here; the catalog and RUN ??? cover it now)
       // A wildcard tape: spins through the catalog, then loads whatever it lands on
       if (GAME_CATALOG.length > 1) {
         const w = document.createElement('button');

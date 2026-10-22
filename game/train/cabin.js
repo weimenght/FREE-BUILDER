@@ -14,7 +14,7 @@
     board: "Board", quiet: "board quietly", lead: "A sleeper car through cities, mountains and sea. Nothing to do but look out of the window.",
     saved: "A friend saved you a seat in cabin", tip: "Drag to wipe the glass · hold to write · double-tap to knock",
     share: "Share this cabin", shareLead: "Friends who open this link sit in your car and see the same window, live. No names, nothing saved: the cabin disappears when everyone leaves.",
-    copy: "Copy link", copied: "Link copied", close: "Close", leave: "Leave the shared cabin", alone: "Just you in this car",
+    copy: "Copy link", copied: "Link copied", joinLbl: "Got a friend's code?", join: "Join", badCode: "Four letters, like KTRB", yourCode: "Your cabin", close: "Close", leave: "Leave the shared cabin", alone: "Just you in this car",
     aboard: "{n} aboard", joined: "Someone boarded", left: "Someone stepped off", knock: "knock knock", write: "Write on the glass…",
     sound: "Sound", controls: "All controls", connecting: "Joining the cabin…", lost: "Lost the cabin's signal — retrying", host: "You're steering the journey",
     tunnelOut: "Out of the tunnel —", pass: "An express train thunders past", star: "A shooting star — make a wish", rainIn: "Rain on the glass", fogIn: "Fog rolls in", snowIn: "Snow begins to fall", clearIn: "The sky clears"
@@ -22,10 +22,18 @@
   var cfg = { url: "", key: "", rt: "" };
   var S = { boarded: false, code: "", tx: null, me: rid(), joined: Date.now(), peers: {}, notes: {}, lastSync: 0, net: "" };
   function rid() { return Math.random().toString(36).slice(2, 10); }
-  function toast(m) { try { showWindowToast(m); } catch (e) {} }
+  var say = window.showWindowToast;
+  window.showWindowToast = function (m) { if (!document.body.classList.contains("cb-on") || toast.ok) try { say(m); } catch (e) {} };
+  function toast(m) { toast.ok = true; try { window.showWindowToast(m); } catch (e) {} toast.ok = false; }
 
   /* ---------- look & feel ---------- */
   var css = "#sanctuaryWelcomeOverlay,#zenFloatingControls,#portraitBanner{display:none!important}" +
+    "body.cb-on #glassWhisperContainer,body.cb-on #windowToast:empty{display:none!important}body.cb-on #cabinContainer>div>div:first-child{display:none!important}" +
+    "body.cb-on #cabinContainer{max-width:none;padding:6px 8px}body.cb-on #cabinContainer>div>div:last-child{grid-column:1/-1}" +
+    ".cb-ticket{padding:30px 34px 26px;border-radius:18px;background:linear-gradient(#f6ead2,#ead9b8);color:#2a1a10;box-shadow:0 30px 80px -30px #000;position:relative;min-width:min(22rem,86vw)}" +
+    ".cb-ticket::before,.cb-ticket::after{content:'';position:absolute;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:#140c08}.cb-ticket::before{left:-11px}.cb-ticket::after{right:-11px}" +
+    ".cb-ticket h1{color:#2a1a10}.cb-ticket .cb-go{background:#2a1a10;color:#f6ead2;margin-top:8px}.cb-ticket .cb-q{position:absolute;top:10px;right:12px;margin:0;text-decoration:none;font-size:16px;opacity:.55}" +
+    ".cb-finger{position:absolute;left:-14px;top:-14px;z-index:30;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.75),rgba(255,255,255,.15) 60%,transparent 70%);pointer-events:none;transition:opacity .2s}.cb-finger.tap{animation:cbTap .5s 2}@keyframes cbTap{50%{transform:var(--t) scale(.7)}}" +
     "body.cb-on.zen-mode #footerBar,body.cb-on.zen-mode #glassWipePill,body.cb-on.zen-mode #windowLatchBtn,body.cb-on.zen-mode #shadeDragHandle span{display:none!important}" +
     "body.cb-on.zen-mode>header,body.cb-on.zen-mode header.zen-hidable{display:none!important}" +
     "body.cb-on.zen-mode .windowsill-ledge>*{display:none!important}body.cb-on.zen-mode .windowsill-ledge{min-height:16px;padding:0!important}" +
@@ -44,6 +52,7 @@
     ".cb-ring{position:absolute;z-index:7;width:14px;height:14px;margin:-7px 0 0 -7px;border:2px solid rgba(255,255,255,.8);border-radius:50%;pointer-events:none;animation:cbRing 1s ease-out forwards}@keyframes cbRing{to{transform:scale(7);opacity:0}}" +
     ".cb-sheet{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(8,6,5,.6);padding:16px}.cb-card{width:min(26rem,100%);background:#f8efe0;color:#2a1a10;border-radius:22px;padding:22px;font:15px/1.55 system-ui,-apple-system,sans-serif;box-shadow:0 30px 80px -30px #000}" +
     ".cb-card h2{font:400 24px Georgia,serif;margin:0 0 8px}.cb-card .code{font:600 30px/1 ui-monospace,Menlo,monospace;letter-spacing:.3em;margin:14px 0;text-align:center}.cb-card .row{display:flex;gap:8px;margin-top:14px}.cb-card button{flex:1;min-height:44px;border-radius:999px;border:1.5px solid #2a1a10;background:transparent;font:600 14px system-ui,sans-serif;cursor:pointer;color:inherit}.cb-card button.pri{background:#2a1a10;color:#f8efe0}.cb-card .mut{font-size:13px;opacity:.7}" +
+    ".cb-join{margin-top:18px;padding-top:14px;border-top:1px dashed rgba(42,26,16,.3)}.cb-join label{font:600 13px system-ui,sans-serif;opacity:.8}.cb-join .row{margin-top:8px}.cb-join input{flex:1.4;min-width:0;min-height:44px;border-radius:999px;border:1.5px solid currentColor;background:transparent;color:inherit;font:600 20px ui-monospace,Menlo,monospace;letter-spacing:.35em;text-align:center;text-transform:uppercase}.cb-jerr{min-height:1em;margin:6px 0 0}" +
     ".cb-rotate{display:none}@media (orientation:portrait) and (max-width:820px){.cb-rotate{position:fixed;inset:0;z-index:95;display:grid;place-items:center;text-align:center;padding:32px;background:rgba(10,7,5,.94);color:#f5e6c8;font:16px/1.6 Georgia,serif}.cb-rotate b{display:block;font-size:44px;margin-bottom:12px;animation:cbTurn 2.4s ease-in-out infinite}}" +
     "@keyframes cbTurn{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(90deg)}}" +
     "@media (prefers-color-scheme:dark){.cb-card{background:#1f1915;color:#f2e8d8}.cb-card button{border-color:#f2e8d8}.cb-card button.pri{background:#f2e8d8;color:#1f1915}}";
@@ -53,16 +62,25 @@
   var qs = new URLSearchParams(location.search), invite = (qs.get("cabin") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
   function boardCard() {
     var d = document.createElement("div"); d.className = "cb-board";
-    d.innerHTML = '<div><small>Sleeper Car No. 04</small><h1>' + (invite ? T.saved + " " + invite : "Train Window") + '</h1><p>' + T.lead + '</p>' +
-      '<button class="cb-go" type="button">🎧 ' + T.board + '</button><button class="cb-q" type="button">' + T.quiet + '</button></div>';
+    d.innerHTML = '<div class="cb-ticket"><small>Sleeper Car No. 04</small><h1>' + (invite ? "🎟️ " + invite : "Train Window") + '</h1>' +
+      '<button class="cb-go" type="button">' + T.board + ' <span aria-hidden="true">→</span></button><button class="cb-q" type="button" aria-label="' + T.quiet + '" title="' + T.quiet + '">🔇</button></div>';
     document.body.appendChild(d);
     var go = function (sound) {
       d.style.opacity = "0"; setTimeout(function () { d.remove(); }, 800);
+      full();
       try { if (sound && !isAudioPlaying) toggleAudioEngine(); } catch (e) {}
       boarded();
     };
     d.querySelector(".cb-go").onclick = function () { go(true); };
     d.querySelector(".cb-q").onclick = function () { go(false); };
+  }
+  /* boarding takes the whole screen (browsers allow it only from a tap), sideways on phones */
+  function full() {
+    var de = document.documentElement, rq = de.requestFullscreen || de.webkitRequestFullscreen;
+    if (rq && !document.fullscreenElement && !document.webkitFullscreenElement) {
+      try { var p = rq.call(de, { navigationUI: "hide" }); if (p && p.then) p.then(lock, function () {}); else lock(); } catch (e) {}
+    }
+    function lock() { try { screen.orientation && screen.orientation.lock && screen.orientation.lock("landscape").catch(function () {}); } catch (e) {} setTimeout(fit, 400); }
   }
   /* fill the screen: the window takes whatever height is left, on any landscape screen */
   function fit() {
@@ -101,7 +119,21 @@
     wake(); paintDock(); seats();
   }
   function paintDock() { if (!D) return; var b = D.querySelector('[data-a="sound"]'); try { b.textContent = isAudioPlaying ? "🔊" : "🔈"; } catch (e) {} }
-  function tip() { var t = document.createElement("div"); t.className = "cb-tip"; t.textContent = T.tip; document.body.appendChild(t); setTimeout(function () { t.classList.add("on"); }, 1200); setTimeout(function () { t.classList.remove("on"); }, 9000); setTimeout(function () { t.remove(); }, 11000); }
+  function tip() {   /* a ghost fingertip wipes a clear swoop through the fog, then knocks twice */
+    if (reduce) return;
+    var vp = $("windowViewport"); if (!vp) return;
+    setTimeout(function () {
+      if (state.weather === "clear") { try { setWeather("rain"); } catch (e) {} }
+      var r = vp.getBoundingClientRect(), dot = document.createElement("div"); dot.className = "cb-finger"; vp.appendChild(dot);
+      var t0 = performance.now(), dur = 2600;
+      (function step(now) {
+        var k = Math.min(1, (now - t0) / dur), x = r.width * (0.22 + 0.56 * k), y = r.height * (0.55 - Math.sin(k * Math.PI) * 0.22);
+        dot.style.transform = "translate(" + x + "px," + y + "px)"; dot.style.opacity = k < 0.08 ? k * 12 : k > 0.92 ? (1 - k) * 12 : 1;
+        try { wipeGlassAt(x * (cw / r.width), y * (ch / r.height)); } catch (e) {}
+        if (k < 1) requestAnimationFrame(step); else { dot.classList.add("tap"); setTimeout(function () { knock({ x: 0.78, y: 0.5 }, false); }, 300); setTimeout(function () { dot.remove(); }, 900); }
+      })(t0);
+    }, 1600);
+  }
   function seats() {
     if (!seatsEl) return;
     var ids = [S.me].concat(Object.keys(S.peers));
@@ -177,11 +209,11 @@
         changed = true;
       }
       if (state.inTunnel && now > (n.tunnelOut || 0)) {   /* the surprise: you come out somewhere else */
-        if (Math.random() < 0.65) { var biomes = ["metropolis", "alpine", "coastal", "countryside", "desert"].filter(function (b) { return b !== state.biome; }); setBiome(biomes[(Math.random() * biomes.length) | 0], true); }
-        toggleMountainTunnel(); toast(T.tunnelOut + " " + state.station.name); n.tunnel = now + 120e3 + Math.random() * 160e3; changed = true;
+        if (Math.random() < 0.65) { var biomes = ["metropolis", "alpine", "coastal", "countryside", "desert", "forest", "lake", "snow"].filter(function (b) { return b !== state.biome; }); setBiome(biomes[(Math.random() * biomes.length) | 0], true); }
+        toggleMountainTunnel(); n.tunnel = now + 120e3 + Math.random() * 160e3; changed = true;
       }
       if (now > n.time) { setTimeOfDay(TIMES[(TIMES.indexOf(state.timeOfDay) + 1) % 4]); n.time = now + 150e3 + Math.random() * 90e3; changed = true; }
-      if (now > n.weather) { var w = pickWeather(); if (w !== state.weather) { setWeather(w); toast({ rain: T.rainIn, fog: T.fogIn, snow: T.snowIn, clear: T.clearIn, storm: T.rainIn }[w]); } n.weather = now + 100e3 + Math.random() * 140e3; changed = true; }
+      if (now > n.weather) { var w = pickWeather(); if (w !== state.weather) setWeather(w); n.weather = now + 100e3 + Math.random() * 140e3; changed = true; }
       if (now > n.surprise) {
         if (state.timeOfDay === "night" && Math.random() < 0.6) { spawnShootingStarWish(); send("fx", { k: "star" }); }
         else if (!state.inTunnel && state.trainState === "CRUISING") { triggerPassingExpressTrain(); send("fx", { k: "express" }); }
@@ -246,10 +278,18 @@
   function shareSheet() {
     if (!S.code) join(newCode(), true);
     var w = document.createElement("div"); w.className = "cb-sheet";
-    w.innerHTML = '<div class="cb-card" role="dialog" aria-modal="true" aria-labelledby="cb-sh"><h2 id="cb-sh">' + T.share + '</h2><p class="mut">' + T.shareLead + '</p><div class="code">' + S.code + '</div>' +
+    w.innerHTML = '<div class="cb-card" role="dialog" aria-modal="true" aria-labelledby="cb-sh"><h2 id="cb-sh">' + T.share + '</h2><p class="mut">' + T.shareLead + '</p><div class="code" aria-label="' + T.yourCode + '">' + S.code + '</div>' +
       '<div class="row"><button type="button" class="pri" data-a="copy">' + T.copy + '</button><button type="button" data-a="close">' + T.close + '</button></div>' +
+      '<form class="cb-join"><label for="cb-jc">' + T.joinLbl + '</label><div class="row"><input id="cb-jc" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="····" inputmode="text"><button type="submit">' + T.join + '</button></div><p class="mut cb-jerr" aria-live="polite"></p></form>' +
       '<div class="row"><button type="button" data-a="leave">' + T.leave + '</button></div></div>';
     document.body.appendChild(w);
+    var jc = w.querySelector("#cb-jc");
+    jc.addEventListener("input", function () { jc.value = jc.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4); });
+    w.querySelector(".cb-join").addEventListener("submit", function (e) {
+      e.preventDefault(); var c = jc.value;
+      if (c.length !== 4) { w.querySelector(".cb-jerr").textContent = T.badCode; jc.focus(); return; }
+      w.remove(); if (c !== S.code) { if (S.tx) send("bye", {}); S.peers = {}; join(c, false); }
+    });
     w.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (e.target === w) return w.remove(); if (!b) return;
       if (b.dataset.a === "copy") { var u = link(); if (navigator.share) navigator.share({ title: "Sleeper Car No. 04", url: u }).catch(function () {}); else if (navigator.clipboard) navigator.clipboard.writeText(u).then(function () { b.textContent = T.copied; }); }
