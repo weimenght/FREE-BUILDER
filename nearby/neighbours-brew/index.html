@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9e091f9ca2"></script><script data-fbg src="/fbkit/fbg.js?v=164e47329b" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=e51de9bc59"></script><script data-fbg src="/fbkit/fbg.js?v=1754599a8e" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Neighbours' Brew · Nearby</title>
 <meta name="description" content="Brew your own beer: pick the malt, hops, yeast and a twist, design the can, and ship it to Next Door and Late Light for everyone to try.">
@@ -89,7 +89,7 @@ h2 .chips{margin-left:auto}
     </section>
   </div>
 
-  <h2><span data-t="onTap">ON TAP</span><span class="chips" id="sort"></span></h2>
+  <h2><span data-t="onTap">ON TAP</span><span class="chips" id="sort" hidden></span></h2>
   <div class="taps" id="taps"></div>
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -192,7 +192,7 @@ window.BeerArt = (function () {
     LBG.forEach(function (c) { chip($("bg"), "", R.label.bg === c, function () { R.label.bg = c; paint(); }, c).setAttribute("aria-label", c); });
     LPAT.forEach(function (p) { chip($("bg"), { plain: "▢", stripes: "≡", dots: "⁘" }[p], R.label.pattern === p, function () { R.label.pattern = p; paint(); }); });
     BeerArt.ICONS.forEach(function (ic) { chip($("icon"), { cat: "🐈", dog: "🐕", dragon: "🐉", lantern: "🏮", wave: "🌊", mountain: "⛰️", star: "⭐", flower: "🌸" }[ic], R.label.icon === ic, function () { R.label.icon = ic; paint(); }); });
-    [["new", t("new")], ["loved", t("loved")]].forEach(function (s) { chip($("sort"), s[1], sort === s[0], function () { sort = s[0]; paint(); load(); }); });
+    /* no ranking: the tap list is simply newest first */
     $("abvOut").textContent = R.abv.toFixed(1) + "%";
     $("style").textContent = styleName(styleKey(), R.extras, R.aroma, R.hops) + " · " + R.abv.toFixed(1) + "%";
     $("note").textContent = note();
@@ -258,8 +258,8 @@ window.BeerArt = (function () {
       d.insertAdjacentHTML("beforeend", "<b></b><small></small><small></small><span class='ven'></span><div class='row'><button type='button' class='ch'></button><button type='button' class='flag'></button></div>");
       var sm = d.querySelectorAll("small"); d.querySelector("b").textContent = b.name; sm[0].textContent = localStyle(b) + " · " + ((b.recipe && b.recipe.abv) || 5).toFixed(1) + "%"; sm[1].textContent = t("by").replace("{b}", b.brewer);
       d.querySelector(".ven").textContent = (b.bar ? "🍸 " : "") + (b.club ? "🎧" : "");
-      var ch = d.querySelector(".ch"); ch.textContent = "🍻 " + t("cheers") + " · " + b.cheers;
-      ch.onclick = function () { api("beer_cheers", { p_secret: key(), p_id: b.id }).then(function (n) { if (n < 0) toast(t("again")); else { b.cheers = n; ch.textContent = "🍻 " + t("cheers") + " · " + n; clink(); toast(t("cheered")); } }).catch(function () { toast(t("offline")); }); };
+      var ch = d.querySelector(".ch"); ch.textContent = "🍻 " + t("cheers");
+      ch.onclick = function () { api("beer_cheers", { p_secret: key(), p_id: b.id }).then(function (n) { if (n < 0) toast(t("again")); else { ch.textContent = "🍻 ✓"; ch.disabled = true; clink(); toast(t("cheered")); } }).catch(function () { toast(t("offline")); }); };
       var fl = d.querySelector(".flag"); fl.textContent = "⚑ " + t("report"); fl.onclick = function () { api("beer_report", { p_id: b.id }).then(function () { fl.remove(); toast(t("reported")); }); };
       box.appendChild(d);
     });

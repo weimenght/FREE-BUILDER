@@ -279,7 +279,7 @@
     var team = R.active && R.peer, wasLead = R.role === "lead";
     if (team && wasLead) send("end", { reason: reason, a: climber.altitude, s: climber.score, st: climber.style, fl: climber.fallLen, n: myName() });
     var r = conclude0.apply(this, arguments);
-    if (team) teamLine(); R.active = false; document.body.classList.remove("rp-on", "rp-belaying"); R.role = null;
+    if (team) { teamLine(); ropeLog(R.peer.n); } R.active = false; document.body.classList.remove("rp-on", "rp-belaying"); R.role = null;
     try { charIndex = R.myChar; currentChar = CHARACTERS[R.myChar] || currentChar; } catch (e) {}
     return r;
   };
@@ -297,6 +297,55 @@
   function toast(t) { try { showHoldFeedbackToast(t); } catch (e) {} }
   var shoutT = null;
   function shout(t) { var s = $("rpShout"); if (!s) return; s.textContent = t; s.classList.add("show"); clearTimeout(shoutT); shoutT = setTimeout(function () { s.classList.remove("show"); }, 1600); }
+
+  /* ---------- the rope log: who you've climbed with (no ranking, no scores) ---------- */
+  function devKey() { var k = lsGetSafe("fb_device_key"); if (!k) { var a = new Uint8Array(32); crypto.getRandomValues(a); k = btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); try { localStorage.setItem("fb_device_key", k); } catch (e) {} } return k; }
+  function rpc(fn, body) {
+    if (!cfg.url) return Promise.reject(new Error("offline"));
+    return fetch(cfg.url + "/rest/v1/rpc/" + fn, { method: "POST", headers: { apikey: cfg.key, Authorization: "Bearer " + cfg.key, "Content-Type": "application/json" }, body: JSON.stringify(Object.assign({ p_secret: devKey() }, body || {})) })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); }).then(function (t) { return t ? JSON.parse(t) : null; });
+  }
+  var logged = {};
+  function ropeLog(partner) {
+    var crag = ""; try { crag = String(currentCrag.name || "").split(" (")[0]; } catch (e) {}
+    var key = partner + "|" + crag + "|" + Math.floor(Date.now() / 60000); if (logged[key]) return; logged[key] = 1;
+    rpc("rope_add", { p_partner: String(partner).slice(0, 24), p_crag: crag.slice(0, 40) }).then(function () { setTimeout(function () { toast("🪢 Added to your rope log."); }, 1600); }).catch(function () {});
+  }
+  var logSheet = null;
+  function openLog() {
+    if (logSheet) logSheet.remove();
+    logSheet = document.createElement("div"); logSheet.className = "rp-sheet"; logSheet.setAttribute("role", "dialog");
+    logSheet.innerHTML = '<div class="rp-card"><h3>🪢 ROPE LOG</h3><div style="font-size:14px;color:#94a3b8;margin-bottom:10px">Everyone you have finished a climb with, tied in on the same rope. No ranking, just the people.</div><div id="rlList" style="max-height:46vh;overflow:auto;display:grid;gap:8px"><div style="color:#94a3b8">…</div></div><div style="font-size:12px;color:#64748b;margin:10px 0">Only you can see your rope log.</div><div class="rp-row" style="display:flex;gap:8px"><button type="button" data-a="clear" class="rp-btn" style="flex:1;color:#fca5a5;border-color:#f87171">CLEAR MY LOG</button><button type="button" data-a="close" class="rp-btn" style="flex:1">CLOSE</button></div></div>';
+    document.body.appendChild(logSheet);
+    logSheet.addEventListener("click", function (e) {
+      if (e.target === logSheet) { logSheet.remove(); logSheet = null; return; }
+      var a = e.target.closest && e.target.closest("[data-a]"); a = a && a.getAttribute("data-a");
+      if (a === "close") { logSheet.remove(); logSheet = null; }
+      if (a === "clear") { var b = e.target.closest("button"); if (b.getAttribute("data-sure")) rpc("rope_clear").then(fill).catch(fail); else { b.setAttribute("data-sure", "1"); b.textContent = "TAP AGAIN TO CLEAR"; } }
+    });
+    function fail() { var L = $("rlList"); if (L) L.innerHTML = '<div style="color:#fca5a5">The rope log can\'t be reached right now.</div>'; }
+    function fill() {
+      rpc("rope_list").then(function (rows) {
+        var L = $("rlList"); if (!L) return; rows = rows || [];
+        if (!rows.length) { L.innerHTML = '<div style="color:#94a3b8">No rope partners yet. Tap CLIMB WITH A FRIEND to tie in with someone.</div>'; return; }
+        var by = {}, order = [];   /* grouped by partner, most recent first: never sorted by how many */
+        rows.forEach(function (r) { var k = r.partner.toLowerCase(); if (!by[k]) { by[k] = { n: r.partner, list: [] }; order.push(k); } by[k].list.push(r); });
+        L.innerHTML = "";
+        order.forEach(function (k) {
+          var g = by[k], d = document.createElement("div"); d.style.cssText = "padding:8px 10px;background:#111a2e;border-left:3px solid #22d3ee";
+          var nm = document.createElement("b"); nm.style.color = "#fde68a"; nm.textContent = "🧗 " + g.n; d.appendChild(nm);
+          var ul = document.createElement("div"); ul.style.cssText = "font-size:13px;color:#cbd5e1;margin-top:3px";
+          ul.textContent = g.list.slice(0, 4).map(function (r) { return (r.crag ? r.crag + " · " : "") + new Date(r.at).toLocaleDateString([], { day: "numeric", month: "short", year: "numeric" }); }).join("  ·  ") + (g.list.length > 4 ? "  …" : "");
+          d.appendChild(ul); L.appendChild(d);
+        });
+      }).catch(fail);
+    }
+    fill();
+  }
+  function logButton(id) {
+    var old = $(id); if (!old) return; var b = old.cloneNode(false); b.hidden = false; b.removeAttribute("hidden");
+    b.innerHTML = "🪢 ROPE LOG"; old.parentNode.replaceChild(b, old); b.onclick = function () { try { sound.playGrabStone(); } catch (e) {} openLog(); };
+  }
   function mount() {
     var wrap = $("canvasWrapper"); if (!wrap) return;
     var tag = document.createElement("div"); tag.id = "rpTag"; wrap.appendChild(tag);
@@ -310,6 +359,7 @@
     /* the button on the title screen */
     var lb = $("showLeaderboardBtn");
     if (lb && lb.parentNode) { var b = document.createElement("button"); b.id = "rpBtn"; b.type = "button"; b.className = "rp-btn"; b.innerHTML = '<span aria-hidden="true">🪢</span><span>CLIMB WITH A FRIEND</span>'; lb.parentNode.insertBefore(b, lb); b.onclick = function () { try { sound.init(); } catch (e) {} openSheet(); }; }
+    logButton("showLeaderboardBtn"); logButton("gameOverLbBtn");
     var inv = new URLSearchParams(location.search).get("rope");
     if (inv && /^[A-Z0-9]{4}$/i.test(inv)) { join(inv.toUpperCase(), false); openSheet(); }
   }

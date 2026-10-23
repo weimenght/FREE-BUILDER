@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=9e091f9ca2"></script><script data-fbg src="/fbkit/fbg.js?v=164e47329b" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=e51de9bc59"></script><script data-fbg src="/fbkit/fbg.js?v=1754599a8e" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -857,7 +857,7 @@
               <div class="shelf" style="top:46px"><span id="shelf-icon-left">🍾🍷🍸🍶</span><span id="cellar-banner-text" class="font-retro text-[13px] text-[var(--muted)] tracking-widest"></span><span id="shelf-icon-right">🥃🍹🍵☕</span></div>
               <div class="shelf" style="top:88px"><span id="shelf-row-2">🫙📻🪴</span><span>🎞️🕯️📚</span></div>
 
-              <button id="bond-badge" onclick="tapBondBadge()" class="absolute left-2 top-2 z-20 px-2 py-1 rounded-md font-retro text-[14px] leading-none" style="background:rgba(12,8,6,.8);border:1px solid var(--line)">
+              <button id="bond-badge" hidden onclick="tapBondBadge()" class="absolute left-2 top-2 z-20 px-2 py-1 rounded-md font-retro text-[14px] leading-none" style="background:rgba(12,8,6,.8);border:1px solid var(--line)">
                 <span class="flex items-center gap-1"><span id="bond-hearts" class="text-[#f08a7a]">♥♡♡♡♡</span><span id="bond-level-name" class="text-[var(--amber-2)]"></span></span>
                 <span class="block mt-1 h-1 w-full rounded" style="background:#2a1a10"><span id="bond-bar" class="block h-1 rounded transition-all" style="width:0%;background:#f08a7a"></span></span>
               </button>
@@ -4558,7 +4558,7 @@
           bar.style.width = Math.round(((Bond.pts - lo) / (hi - lo)) * 100) + '%';
         }
       }
-      setText('door-bond-line', Bond.visits > 0 ? `♥ ${L(levels[lv].name)} • ${Bond.visits} ${L(WeiText.ui.visits)}` : '');
+      setText('door-bond-line', '');   /* Nearby: no visit counts or levels on show */
     }
 
     function tapBondBadge() {
@@ -4573,10 +4573,8 @@
       }
     }
 
+    /* Wei gets to know you quietly: no meter, no level-up announcements. He just smiles, and remembers your usual. */
     function onBondLevelUp(lv) {
-      SoundEngine.playSparkle(true);
-      const lvl = WeiText.levels[lv];
-      showToast(`${L(WeiText.ui.bondUp)} ♥ ${L(lvl.name)}` + (lvl.unlock ? ` — ${L(WeiText.ui.unlock)}: ${L(lvl.unlock)}` : ''));
       animateWei('wei-hop');
       setExpression('grin', 2500);
       if (AppState.uiMode && !document.getElementById('rpg-dialogue-screen').classList.contains('hidden')) {
@@ -4596,7 +4594,7 @@
       toastTimer = setTimeout(() => el.classList.add('hidden'), 2800);
     }
 
-    function floatHeart(n) {
+    function floatHeart(n) { return;   /* no floating points */
       const el = document.getElementById('heart-float');
       if (!el) return;
       el.textContent = `+${n}♥`;
@@ -7172,13 +7170,13 @@
       let rows = [];
       try {
         const u = SUPABASE_CONFIG.url;
-        if (u) { const r = await fetch(u + '/rest/v1/rpc/beer_list?p_venue=bar&p_sort=loved', { headers: { apikey: SUPABASE_CONFIG.anonKey, Authorization: 'Bearer ' + SUPABASE_CONFIG.anonKey } }); if (r.ok) rows = await r.json(); }
+        if (u) { const r = await fetch(u + '/rest/v1/rpc/beer_list?p_venue=bar&p_sort=new', { headers: { apikey: SUPABASE_CONFIG.anonKey, Authorization: 'Bearer ' + SUPABASE_CONFIG.anonKey } }); if (r.ok) rows = await r.json(); }
       } catch (e) {}
       pane.innerHTML = '';
       if (!rows || !rows.length) { pane.innerHTML = `<p class="hint">${esc(T('menu.tapEmpty'))}</p>`; }
       (rows || []).forEach(b => {
         const abv = ((b.recipe && b.recipe.abv) || 5).toFixed(1);
-        const el = menuItem('🍺', `${b.name} · ${T('lab.by')} ${b.brewer}`, `${b.style} · ${abv}% · 🍻 ${b.cheers}`, () => { toggleCodexModal(false); go('counter'); pourBeer(b); });
+        const el = menuItem('🍺', `${b.name} · ${T('lab.by')} ${b.brewer}`, `${b.style} · ${abv}%`, () => { toggleCodexModal(false); go('counter'); pourBeer(b); });
         const sw = document.createElement('i'); sw.style.cssText = `float:right;width:14px;height:14px;border:2px solid #000;background:${/^#[0-9a-f]{6}$/i.test(b.color) ? b.color : '#e8a030'}`; el.prepend(sw);
         pane.appendChild(el);
       });
@@ -7834,7 +7832,7 @@
   function get(fn, q) { const u = SUPABASE_CONFIG.url; if (!u) return Promise.resolve(null); return fetch(u + '/rest/v1/rpc/' + fn + (q ? '?' + q : ''), { headers: { apikey: SUPABASE_CONFIG.anonKey, Authorization: 'Bearer ' + SUPABASE_CONFIG.anonKey } }).then(r => r.ok ? r.json() : null).catch(() => null); }
   function gather() {
     if (news) return news;
-    return news = Promise.all([get('beer_list', 'p_sort=new'), get('beer_list', 'p_sort=loved'), get('garden_stats'), get('sanctuary_list'), get('postcard_wall', 'p_limit=40')]).then(([bn, bl, gs, sl, pw]) => {
+    return news = Promise.all([get('beer_list', 'p_sort=new'), Promise.resolve(null), get('garden_stats'), get('sanctuary_list'), get('postcard_wall', 'p_limit=40')]).then(([bn, bl, gs, sl, pw]) => {
       const out = [], W = window.FBWorld;
       try { const c = W && W.cats && W.cats(); if (c && P[c.miso] && P[c.yuzu]) out.push(c.miso === c.yuzu ? [() => fill(LINE.catsTogether, { a: pn(c.miso) }), c.miso] : [() => fill(LINE.cats, { a: pn(c.miso), b: pn(c.yuzu) }), c.miso === 'bar' ? c.yuzu : c.miso]); } catch (e) {}
       try { const d = W && W.dog && W.dog(); if (d && P[d]) out.push([() => fill(LINE.dog, { a: pn(d) }), d]); } catch (e) {}

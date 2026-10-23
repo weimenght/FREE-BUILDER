@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9e091f9ca2"></script><script data-fbg src="/fbkit/fbg.js?v=164e47329b" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=e51de9bc59"></script><script data-fbg src="/fbkit/fbg.js?v=1754599a8e" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Miso & Yuzu's · Nearby</title>
 <meta name="description" content="The little room where Miso and Yuzu live. Pet them, feed them a treat, wave a feather, and leaf through their album.">
@@ -34,7 +34,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
 .cat header{display:flex;align-items:center;gap:8px}
 .cat canvas{width:54px;height:42px;image-rendering:pixelated}
 .cat b{display:block;font:400 13px/1.3 var(--px)}
-.cat .hearts{color:#ff8fa0;font:400 18px/1 var(--vt);letter-spacing:0;white-space:nowrap}
+.cat .hearts{display:none!important;color:#ff8fa0;font:400 18px/1 var(--vt);letter-spacing:0;white-space:nowrap}
 @media (max-width:400px){.cats{grid-template-columns:1fr}}
 .cat ul{margin:8px 0 0;padding:0 0 0 16px;font-size:18px;line-height:1.15;color:#e8d6b4}
 .cat li{margin:3px 0}
@@ -276,7 +276,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     { k: "fight", need: 70, cap: ["The slap fight", "喵喵拳", "喵喵拳", "Pelea de patitas", "Baralla de potetes"], txt: ["It started over a feather and ended in a nap. Most of their fights do.", "为一根羽毛打起来，最后一起睡着了。它们的架大多这样收场。", "為一根羽毛打起來，最後一起睡著了。牠們的架大多這樣收場。", "Empezó por una pluma y acabó en siesta. Como casi todas sus peleas.", "Va començar per una ploma i va acabar en migdiada. Com gairebé totes."] },
     { k: "bell", need: -1, cap: ["The lost bell", "丢失的铃铛", "遺失的鈴鐺", "La campana perdida", "La campana perduda"], txt: ["Found between two books, wrapped in red ribbon. Ting!", "在两本书中间找到的，系着红丝带。叮！", "在兩本書中間找到的，繫著紅絲帶。叮！", "Encontrada entre dos libros, con cinta roja. ¡Tin!", "Trobada entre dos llibres, amb cinta vermella. Tin!"] }
   ];
-  function unlocked(m) { return m.need < 0 ? bellDone() : total() >= m.need; }
+  function unlocked(m) { return m.need < 0 ? bellDone() : true; }   /* no points to earn: the album is open; only the bell photo waits for the end of its story */
   function unlockedCount() { return MEM.filter(unlocked).length; }
   /* each memory is a small picture, drawn once */
   function memory(m, c) {
