@@ -47,7 +47,7 @@
     .tw { overflow-x:auto; border:1px solid var(--line); border-radius:20px; background:var(--white); }
     table { width:100%; border-collapse:collapse; font-size:14px; min-width:640px; }
     th, td { text-align:left; vertical-align:top; padding:12px 14px; border-bottom:1px solid var(--grid); }
-    th { font-family:var(--mono); font-size:11px; font-weight:400; color:var(--muted); letter-spacing:.06em; background:#FBFAF7; }
+    th { font-family:var(--mono); font-size:11px; font-weight:400; color:var(--muted); letter-spacing:.06em; background:var(--white,#FBFAF7); }
     td.note { color:var(--muted); font-size:13px; }
     td:first-child { font-family:var(--mono); font-size:11.5px; color:var(--accent-ink); white-space:nowrap; }
     .list { margin:0; padding-left:20px; display:grid; gap:8px; font-size:15px; }

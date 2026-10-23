@@ -56,7 +56,7 @@
     .tw { overflow-x:auto; border:1px solid var(--line); border-radius:20px; background:var(--white); }
     table { width:100%; border-collapse:collapse; font-size:14px; min-width:640px; }
     th, td { text-align:left; vertical-align:top; padding:12px 14px; border-bottom:1px solid var(--grid); }
-    th { font-family:var(--mono); font-size:11px; font-weight:400; color:var(--muted); letter-spacing:.06em; background:#FBFAF7; }
+    th { font-family:var(--mono); font-size:11px; font-weight:400; color:var(--muted); letter-spacing:.06em; background:var(--white,#FBFAF7); }
     td.note { color:var(--muted); font-size:13px; }
     td:first-child { font-family:var(--mono); font-size:11.5px; color:var(--accent-ink); white-space:nowrap; }
     .list { margin:0; padding-left:20px; display:grid; gap:8px; font-size:15px; }
@@ -86,7 +86,7 @@
     .msg.me { margin-left:auto; background:#95EC69; }
     .msg small { display:block; font-family:var(--mono); font-size:10px; color:var(--muted); margin-bottom:3px; }
     .msg .btns { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
-    .msg .btns span { border:1px solid var(--line); border-radius:99px; padding:3px 10px; font-size:12px; background:#FBFAF7; }
+    .msg .btns span { border:1px solid var(--line); border-radius:99px; padding:3px 10px; font-size:12px; background:var(--white,#FBFAF7); }
     @media (max-width:720px) { .phone-wrap { grid-template-columns:1fr; } .phone { margin:0 auto; } }
 
   </style>
@@ -102,6 +102,10 @@ html,body{background-color:var(--paper)}
 .seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
 .steps span.done{background:#ECEBE6}
 .curtain{border:1px solid #3B3B42}
+/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
+.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
+/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
+.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
 /* illustrations keep their light look on a plate */
 .screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
 .plate{background:#fff!important}
