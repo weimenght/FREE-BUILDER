@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=e37df0d6ba"></script><script data-fbg src="/fbkit/fbg.js?v=7c16030c62" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=76862546fc"></script><script data-fbg src="/fbkit/fbg.js?v=7b87b2077a" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Miso & Yuzu's · Nearby</title>
 <meta name="description" content="The little room where Miso and Yuzu live. Pet them, feed them a treat, wave a feather, and leaf through their album.">
@@ -89,10 +89,11 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     mood: { purr: ["{n} is purring.", "{n} 在打呼噜。", "{n} 在打呼嚕。", "{n} ronronea.", "{n} ronca de gust."], eat: ["Crunch, crunch.", "咔嚓咔嚓。", "咔嚓咔嚓。", "Cronch, cronch.", "Cruix, cruix."], pounce: ["{n} pounces!", "{n} 扑过去了！", "{n} 撲過去了！", "¡{n} salta!", "{n} salta!"], sleep: ["Shh. They're asleep.", "嘘，它们睡着了。", "噓，牠們睡著了。", "Shh. Están dormidos.", "Xst. Dormen."], fluff: ["So fluffy.", "毛蓬蓬的。", "毛蓬蓬的。", "Qué esponjoso.", "Que esponjós."], full: ["They've had enough treats for now.", "今天的零食够啦。", "今天的零食夠啦。", "Ya han comido bastantes premios.", "Ja han menjat prou premis."], photo: ["Saved to the album.", "已放进相册。", "已放進相簿。", "Guardada en el álbum.", "Desada a l'àlbum."], unlock: ["A new memory in the album!", "相册里多了一段回忆！", "相簿裡多了一段回憶！", "¡Un recuerdo nuevo en el álbum!", "Un record nou a l'àlbum!"] },
     yours: ["Your photo", "你拍的", "你拍的", "Tu foto", "La teva foto"], more: ["Keep playing with them to open this one.", "多陪它们玩玩，这张就会解锁。", "多陪牠們玩玩，這張就會解鎖。", "Juega más con ellos para desbloquearla.", "Juga més amb ells per desbloquejar-la."], bellLock: ["Finish The Lost Bell to open this one.", "完成「丢失的铃铛」后解锁。", "完成「遺失的鈴鐺」後解鎖。", "Termina La campana perdida para abrirla.", "Acaba La campana perduda per obrir-la."]
   };
+  var PET = (window.FBWorld && FBWorld.PETS) || { miso: { b: "#231b17", d: "#3a2f29", e: "#f2c94c", nose: "#c98272" }, yuzu: { b: "#e8913a", d: "#b5611d", e: "#4f9a62", nose: "#e07a8a", stripe: "#b5611d", belly: "#f8dcae" } };
   var CATS = {
-    miso: { n: ["Miso", "味噌", "味噌", "Miso", "Miso"], b: "#1c1a1f", d: "#2e2b33", e: "#f6d84a", nose: "#8a6a6a",
+    miso: { n: ["Miso", "味噌", "味噌", "Miso", "Miso"], b: PET.miso.b, d: PET.miso.d, e: PET.miso.e, nose: PET.miso.nose,
       facts: [["Black, and very serious about it", "一身黑，而且很严肃", "一身黑，而且很嚴肅", "Negra, y muy seria al respecto", "Negra, i molt seriosa"], ["Walked into the bar in a thunderstorm and never left", "雷雨夜自己走进酒吧，再也没走", "雷雨夜自己走進酒吧，再也沒走", "Entró al bar en una tormenta y nunca se fue", "Va entrar al bar en una tempesta i mai més se'n va anar"], ["Supervises the hand-carved ice", "负责监督手凿冰", "負責監督手鑿冰", "Supervisa el hielo tallado a mano", "Supervisa el gel tallat a mà"], ["Likes: burlap sacks, feathers, being right", "喜欢：麻袋、羽毛、永远是对的", "喜歡：麻袋、羽毛、永遠是對的", "Le gusta: sacos de arpillera, plumas, tener razón", "Li agrada: sacs d'arpillera, plomes, tenir raó"]] },
-    yuzu: { n: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"], b: "#e8902a", d: "#b8641a", e: "#3a2a1c", nose: "#d86a6a", stripe: "#b8641a",
+    yuzu: { n: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"], b: PET.yuzu.b, d: PET.yuzu.d, e: PET.yuzu.e, nose: PET.yuzu.nose, stripe: PET.yuzu.stripe, belly: PET.yuzu.belly,
       facts: [["Orange tabby, head of security", "橘色虎斑，安保主管", "橘色虎斑，安保主管", "Atigrada naranja, jefa de seguridad", "Atigrada taronja, cap de seguretat"], ["Arrived two weeks after Miso, as if invited", "比味噌晚两周到，像是收到了邀请", "比味噌晚兩週到，像是收到了邀請", "Llegó dos semanas después de Miso, como invitada", "Va arribar dues setmanes després de Miso, com convidada"], ["Sits on the menu and judges you", "坐在菜单上审视你", "坐在菜單上審視你", "Se sienta en la carta y te juzga", "S'asseu a la carta i et jutja"], ["Likes: treats, brushing, Miso's tail", "喜欢：零食、梳毛、味噌的尾巴", "喜歡：零食、梳毛、味噌的尾巴", "Le gusta: premios, el cepillo, la cola de Miso", "Li agrada: premis, el raspall, la cua de Miso"]] }
   };
 
@@ -137,7 +138,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
       P(6, 6, 8, 8, C.b); P(5, 8, 1, 5, C.b); P(14, 8, 1, 5, C.b); P(9, 1, 6, 5, C.b); P(9, -1, 2, 2, C.b); P(13, -1, 2, 2, C.b); P(10, 0, 1, 1, "#f4a0b8"); P(14, 0, 1, 1, "#f4a0b8");
       eyes(10, 2, pose === "purr" || closed); P(12, 4, 1, 1, C.nose);
       P(8, 13, 2, 1, C.d); P(11, 13, 2, 1, C.d); P(1, 12, 5, 2, C.b); P(0, 10, 2, 2, C.b);
-      if (C.stripe) { P(7, 7, 1, 5, C.stripe); P(10, 7, 1, 5, C.stripe); P(12, 1, 1, 1, C.stripe); }
+      if (C.stripe) { P(7, 7, 1, 5, C.stripe); P(10, 7, 1, 5, C.stripe); P(12, 1, 1, 1, C.stripe); } if (C.belly) P(8, 9, 4, 4, C.belly);
       if (pose === "purr") { P(8, 3, 1, 1, "#f08a7a"); P(15, 3, 1, 1, "#f08a7a"); }
       if (bell) P(11, 6, 2, 2, "#f6c84a");
       return;
@@ -147,7 +148,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     if (pose === "pounce") { Pl(2, 5, 13, 4, C.b); Pl(13, 2, 5, 5, C.b); Pl(13, 0, 2, 2, C.b); Pl(16, 0, 2, 2, C.b); eyes(14, 3); Pl(16, 9, 3, 2, C.d); Pl(1, 8, 3, 2, C.d); Pl(-2, 3, 4, 1, C.b); if (C.stripe) { Pl(5, 5, 1, 3, C.stripe); Pl(8, 5, 1, 3, C.stripe); } if (bell) Pl(13, 7, 2, 2, "#f6c84a"); return; }
     P(4, 6, 11, 5, C.b); P(13, headY, 5, 5, C.b); P(13, headY - 2, 2, 2, C.b); P(16, headY - 2, 2, 2, C.b); eyes(14, headY + 1, closed); P(17, headY + 3, 1, 1, C.nose);
     var tw = Math.sin(f / 6) > 0 ? 0 : 1; P(0, 2 + tw, 2, 1, C.b); P(1, 3 + tw, 2, 1, C.b); P(2, 4, 2, 2, C.b);
-    if (C.stripe) { P(6, 6, 1, 4, C.stripe); P(9, 6, 1, 4, C.stripe); P(12, 6, 1, 4, C.stripe); }
+    if (C.stripe) { P(6, 6, 1, 4, C.stripe); P(9, 6, 1, 4, C.stripe); P(12, 6, 1, 4, C.stripe); } if (C.belly) P(5, 10, 8, 1, C.belly);
     var st = pose === "walk" ? (f >> 2) % 2 : 0;
     P(st ? 5 : 6, 11, 2, 3, C.d); P(st ? 12 : 11, 11, 2, 3, C.d); P(st ? 7 : 8, 11, 1, 2, C.d); P(st ? 10 : 9, 11, 1, 2, C.d);
     if (bell) P(13, headY + 5, 2, 2, "#f6c84a");

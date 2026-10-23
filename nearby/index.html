@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=e37df0d6ba"></script><script data-fbg src="/fbkit/fbg.js?v=7c16030c62" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=76862546fc"></script><script data-fbg src="/fbkit/fbg.js?v=7b87b2077a" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Nearby — FREE//BUILDER</title>
 <meta name="description" content="Nearby: a small pixel town where nothing is asking for your attention. Have a drink at Next Door, lie back and watch the clouds, send a postcard, plant next to a stranger. Wei, the bartender, will show you around.">
@@ -263,7 +263,8 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     });
   }
   /* Miso and Yuzu: out and about, near wherever they wandered to this visit */
-  var CATS = { miso: { b: "#1c1a1f", e: "#f6d84a", n: ["Miso", "味噌", "味噌", "Miso", "Miso"] }, yuzu: { b: "#e8902a", e: "#3a2a1c", s: "#b8641a", n: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"] } };
+  var PET = (window.FBWorld && FBWorld.PETS) || { miso: { b: "#231b17", e: "#f2c94c" }, yuzu: { b: "#e8913a", e: "#4f9a62", stripe: "#b5611d", belly: "#f8dcae" }, dog: { b: "#e8c48a", w: "#fbf3e2", d: "#b88a4a", collar: "#c8402a", e: "#2a1a14" } };
+  var CATS = { miso: { b: PET.miso.b, e: PET.miso.e, n: ["Miso", "味噌", "味噌", "Miso", "Miso"] }, yuzu: { b: PET.yuzu.b, e: PET.yuzu.e, s: PET.yuzu.stripe, belly: PET.yuzu.belly, n: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"] } };
   var PATH = { nest: [6, 48, 247], bar: [50, 94, 158], cloud: [108, 170, 64], kintsugi: [6, 44, 158], books: [100, 138, 158], postcard: [8, 60, 207], jukebox: [142, 176, 158], tower: [76, 104, 87], train: [30, 150, 289], dj: [112, 172, 246], brewery: [108, 176, 199], restaurant: [196, 264, 203], climb: [6, 56, 80] };
   var where = (World.cats && World.cats()) || { miso: "bar", yuzu: "books" }, catPos = {};
   /* where each animal is, how it moves, and what they do when they meet */
@@ -287,16 +288,16 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     if (m.heart) hearts.push({ x: x + 3, y: y - 4, a: 1 });
     var dir = m.dir, st = m.pose === "run" ? (f % 2) : (f >> 1) % 2, sleep = m.pose === "sleep", sit = m.pose === "sit" || sleep;
     if (dog) {
-      var B = "#e8c48a", Wt = "#fbf3e2", D2 = function (dx, dy, w, h, col) { R(dir > 0 ? x + dx : x + 9 - dx - w, y + dy, w, h, col); };
+      var B = PET.dog.b, Wt = PET.dog.w, D2 = function (dx, dy, w, h, col) { R(dir > 0 ? x + dx : x + 9 - dx - w, y + dy, w, h, col); };
       if (sleep) { D2(1, 2, 7, 3, B); D2(6, 1, 3, 2, B); D2(3, 3, 3, 1, Wt); D2(0, 3, 2, 1, B); return; }
-      D2(1, 1, 6, 3, B); D2(3, 3, 3, 1, Wt); D2(6, -1, 3, 3, B); D2(6, -2, 1, 1, B); D2(8, -2, 1, 1, B); D2(8, 1, 1, 1, Wt); D2(7, 0, 1, 1, "#2a1a14"); D2(6, 2, 1, 1, "#c8402a");
-      D2(0, st ? -1 : 0, 1, 2, B); if (sit) D2(1, 4, 6, 1, "#b88a4a"); else { D2(st ? 1 : 2, 4, 1, 2, "#b88a4a"); D2(st ? 5 : 6, 4, 1, 2, "#b88a4a"); }
+      D2(1, 1, 6, 3, B); D2(3, 3, 3, 1, Wt); D2(6, -1, 3, 3, B); D2(6, -2, 1, 1, B); D2(8, -2, 1, 1, B); D2(8, 1, 1, 1, Wt); D2(7, 0, 1, 1, PET.dog.e); D2(6, 2, 1, 1, PET.dog.collar);
+      D2(0, st ? -1 : 0, 1, 2, B); if (sit) D2(1, 4, 6, 1, PET.dog.d); else { D2(st ? 1 : 2, 4, 1, 2, PET.dog.d); D2(st ? 5 : 6, 4, 1, 2, PET.dog.d); }
       return;
     }
     var c = CATS[k], R2 = function (dx, dy, w, h, col) { R(dir > 0 ? x + dx : x + 7 - dx - w, y + dy, w, h, col); };
     if (sleep) { R2(0, 2, 6, 2, c.b); R2(4, 1, 2, 2, c.b); R2(-1, 3, 2, 1, c.b); if (c.s) R2(2, 2, 1, 2, c.s); return; }
     R2(0, 1, 5, 2, c.b); R2(4, 0, 3, 2, c.b); R2(4, -1, 1, 1, c.b); R2(6, -1, 1, 1, c.b); R2(5, 0, 1, 1, c.e); R2(-1, m.pose === "run" ? 1 : 0, 1, 2, c.b);
-    if (c.s) { R2(1, 1, 1, 2, c.s); R2(3, 1, 1, 2, c.s); }
+    if (c.s) { R2(1, 1, 1, 2, c.s); R2(3, 1, 1, 2, c.s); } if (c.belly) R2(1, 2, 3, 1, c.belly);
     if (sit) R2(0, 3, 5, 1, c.b); else { R2(st ? 0 : 1, 3, 1, 1, c.b); R2(st ? 3 : 4, 3, 1, 1, c.b); }
   }
   var hearts = [];
