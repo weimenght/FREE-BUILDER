@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2d86eab9f7"></script><script data-fbg src="/fbkit/fbg.js?v=af9c1607c1" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Two Candles — FREE//BUILDER</title>
+<meta name="description" content="A candlelit table for two people who live apart. Sit down together from anywhere, cook the same dinner step by step, raise a glass, and talk until the candles go out.">
+<meta name="theme-color" content="#1a0f18">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='3' y='7' width='3' height='8' fill='%23fbf1de'/%3E%3Crect x='10' y='7' width='3' height='8' fill='%23fbf1de'/%3E%3Crect x='4' y='3' width='1' height='3' fill='%23f6b73c'/%3E%3Crect x='11' y='3' width='1' height='3' fill='%23f6b73c'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+:root{--bg:#1a0f18;--ink:#fbf1de;--dim:rgba(251,241,222,.66);--a:#f6b73c;--rose:#e8708a;--sky:#7ab8ff;--card:#2a1824;--px:'Press Start 2P',ui-monospace,monospace;--vt:'VT323',ui-monospace,'PingFang SC','Microsoft YaHei',monospace;--ui:system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 20px/1.2 var(--vt);-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:radial-gradient(90% 50% at 50% 0,#3a1a2a,#1a0f18 70%)}
+button,input,textarea{font:inherit;color:inherit}
+[hidden]{display:none!important}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:max(12px,env(safe-area-inset-top)) 16px 8px;max-width:760px;margin:0 auto}
+.sign{font:400 12px/1.3 var(--px);letter-spacing:.06em;color:#ffe8b0;text-shadow:0 0 8px rgba(246,183,60,.7),2px 2px 0 #5a1a2a;padding:7px 10px;border:3px solid #f6b73c;box-shadow:inset 0 0 0 2px #5a1a2a,3px 3px 0 #000;background:#2a0f1a}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:#3a2030;box-shadow:3px 3px 0 #000;cursor:pointer;font:400 18px/1 var(--vt);color:var(--ink)}
+main{max-width:760px;margin:0 auto;padding:4px 16px 120px}
+.stage{position:relative;border:4px solid #000;box-shadow:6px 6px 0 #000;background:#000}
+.stage canvas{display:block;width:100%;height:auto;aspect-ratio:160/96;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated}
+.seats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.seat{padding:8px 10px;border:3px solid #000;background:var(--card);box-shadow:3px 3px 0 #000;min-width:0}
+.seat b{display:block;font:700 15px var(--ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seat small{display:block;font:14px var(--ui);color:var(--dim)}
+.seat.me{border-left:6px solid var(--rose)}.seat.them{border-left:6px solid var(--sky)}
+.seat .clock{font:400 26px var(--vt);color:var(--a)}
+.panel{padding:14px;background:var(--card);border:3px solid #000;box-shadow:4px 4px 0 #000;margin-top:14px}
+.panel h2{margin:0 0 10px;font:400 11px/1.5 var(--px);color:var(--a);letter-spacing:.05em}
+.panel p{font:15px/1.5 var(--ui);color:#eadccc;margin:0 0 10px}
+.big{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;border:4px solid #000;background:var(--a);color:#1d130d;font:400 23px var(--vt);cursor:pointer;box-shadow:inset -4px -4px 0 rgba(0,0,0,.25),inset 4px 4px 0 rgba(255,255,255,.35),4px 4px 0 #000;text-decoration:none}
+.big.alt{background:#3a2030;color:var(--ink)}
+.big:disabled{opacity:.5;cursor:default}
+.field{width:100%;padding:10px;border:3px solid #000;background:#fbf6ea;color:#1d130d;font:16px var(--ui);margin:0 0 10px}
+.dock{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:12px}
+.dock button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:58px;padding:6px 2px;border:3px solid #000;background:#3a2030;cursor:pointer;box-shadow:2px 2px 0 #000;font:15px var(--vt);color:var(--ink)}
+.dock button span{font-size:22px;line-height:1}
+.dock button[aria-pressed="true"]{background:var(--a);color:#1d130d}
+@media (max-width:480px){.dock{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:42px;padding:4px 12px;border:3px solid #000;background:#3a2030;font-size:19px;cursor:pointer;box-shadow:2px 2px 0 #000}
+.chip[aria-pressed="true"]{background:var(--a);color:#1d130d}
+.step{display:flex;gap:12px;align-items:flex-start;padding:12px;background:#fbf1de;color:#2a1d14;border:3px solid #000;margin:10px 0}
+.step .n{font:400 12px var(--px);color:#b3261e;flex:none;padding-top:3px}
+.step div{font:16px/1.45 var(--ui)}
+.timer{font:400 34px var(--vt);color:var(--a);text-align:center;margin:4px 0}
+.ticks{display:flex;justify-content:center;gap:18px;margin:6px 0 10px;font:16px var(--ui)}
+.ticks span{opacity:.4}.ticks span.on{opacity:1}
+.qcard{min-height:110px;display:grid;place-items:center;text-align:center;padding:18px;background:#fbf1de;color:#2a1d14;border:3px solid #000;box-shadow:4px 4px 0 #b3261e;font:18px/1.45 var(--ui);margin-bottom:10px}
+.napkin{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-3deg);z-index:9500;width:min(320px,86vw);padding:22px 18px 16px;background:#fbfbf6;color:#2a1d14;border:2px solid #d8d0c0;box-shadow:0 10px 40px rgba(0,0,0,.6);font:18px/1.5 var(--ui);background-image:repeating-linear-gradient(45deg,transparent 0 10px,rgba(0,0,0,.025) 10px 11px)}
+.napkin small{display:block;margin-top:10px;color:#8a7a62;font-size:13px}
+.napkin button{margin-top:12px;width:100%;min-height:44px;border:2px solid #2a1d14;background:#fff;font:700 15px var(--ui);color:#2a1d14;cursor:pointer}
+.receipt{font:16px/1.6 ui-monospace,Menlo,monospace;background:#fbfbf6;color:#2a1d14;padding:16px;border:2px dashed #8a7a62;margin:10px 0;white-space:pre-line}
+.times{list-style:none;margin:0;padding:0;font:15px/1.4 var(--ui)}
+.times li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px dashed rgba(255,255,255,.15)}
+.times li b{color:var(--a);font-weight:600}
+.share{display:flex;gap:8px;align-items:center;margin:10px 0}
+.share code{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:10px;background:#000;border:2px solid #3a2030;font:14px ui-monospace,monospace}
+.share button{flex:none;min-height:44px;padding:0 14px;border:3px solid #000;background:var(--a);color:#1d130d;font:19px var(--vt);cursor:pointer}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#7a6a5a;margin-right:6px;vertical-align:middle}.dot.ok{background:#7affc1}.dot.bad{background:#e8705a}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(16px);opacity:0;transition:.25s;z-index:9600;background:#000;color:#ffe8b0;border:3px solid var(--a);padding:8px 14px;font-size:19px;pointer-events:none;max-width:calc(100vw - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<link rel="manifest" href="/game/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Neighbourhood" data-fbapp></head>
+<body>
+<header class="top">
+  <div class="sign" data-t="title">TWO CANDLES</div>
+  <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
+</header>
+<main>
+  <h1 class="sr" data-t="title">Two Candles</h1>
+  <div class="stage"><canvas id="cv" width="160" height="96" role="img" aria-label="A candlelit table for two by a window"></canvas></div>
+
+  <!-- the door: find your table -->
+  <section id="lobby">
+    <div class="panel" id="handoffBox">
+      <h2>🕰️ <span data-t="hoTitle">HANDOFF COUPLES</span></h2>
+      <p id="hoText"></p>
+      <button class="big" type="button" id="hoSit" hidden></button>
+      <a class="big alt" id="hoOpen" href="/game/love/" hidden></a>
+    </div>
+    <div class="panel">
+      <h2>🕯️ <span data-t="resTitle">RESERVE A TABLE</span></h2>
+      <p data-t="resText">For anyone you love who lives far away. Book a table and send them the link. Keep your call on; this sets the table.</p>
+      <input class="field" id="myName" maxlength="20" autocomplete="nickname">
+      <button class="big" type="button" id="reserve">🕯️ <span data-t="reserve">Book a table for two</span></button>
+    </div>
+    <div class="panel" id="pastBox" hidden><h2>📜 <span data-t="past">OUR EVENINGS</span></h2><div id="past"></div></div>
+  </section>
+
+  <!-- the table -->
+  <section id="table" hidden>
+    <div class="seats">
+      <div class="seat me"><b id="meName"></b><span class="clock" id="meClock"></span><small id="meWhere"></small></div>
+      <div class="seat them"><b id="themName"></b><span class="clock" id="themClock"></span><small id="themWhere"></small></div>
+    </div>
+    <div id="invite" class="panel" hidden>
+      <h2><span class="dot" id="netDot"></span><span data-t="waitTitle">WAITING FOR YOUR DATE</span></h2>
+      <p data-t="waitText">Send them this link. Their candle lights up when they sit down.</p>
+      <div class="share"><code id="link"></code><button type="button" id="shareBtn" data-t="send">Send</button></div>
+    </div>
+    <nav class="dock" aria-label="Table">
+      <button type="button" data-p="view"><span>🪟</span><i data-t="dView">View</i></button>
+      <button type="button" data-p="music"><span>🎻</span><i data-t="dMusic">Music</i></button>
+      <button type="button" data-p="cook"><span>🍳</span><i data-t="dCook">Cook</i></button>
+      <button type="button" data-p="clink"><span>🥂</span><i data-t="dClink">Clink</i></button>
+      <button type="button" data-p="talk"><span>💬</span><i data-t="dTalk">Talk</i></button>
+      <button type="button" data-p="note"><span>✉️</span><i data-t="dNote">Napkin</i></button>
+      <button type="button" data-p="end"><span>🌙</span><i data-t="dEnd">Goodnight</i></button>
+    </nav>
+    <div class="panel" id="p-view" hidden><h2 data-t="hView">THROUGH THE WINDOW</h2><div class="chips" id="views"></div></div>
+    <div class="panel" id="p-cook" hidden>
+      <h2 data-t="hCook">COOK THE SAME DINNER</h2>
+      <div class="chips" id="dishes"></div>
+      <div id="cookStep" hidden>
+        <div class="step"><span class="n" id="stepN"></span><div id="stepT"></div></div>
+        <div class="timer" id="timer" hidden></div>
+        <div class="ticks"><span id="tickMe"></span><span id="tickThem"></span></div>
+        <button class="big" type="button" id="done">✓ <span data-t="done">Done</span></button>
+      </div>
+    </div>
+    <div class="panel" id="p-talk" hidden>
+      <h2 data-t="hTalk">TABLE TALK</h2>
+      <div class="qcard" id="q"></div>
+      <button class="big" type="button" id="nextQ">🃏 <span data-t="nextQ">Another card</span></button>
+    </div>
+    <div class="panel" id="p-note" hidden>
+      <h2 data-t="hNote">WRITE ON A NAPKIN</h2>
+      <textarea class="field" id="noteT" rows="3" maxlength="160"></textarea>
+      <button class="big" type="button" id="noteSend">✉️ <span data-t="slide">Slide it across</span></button>
+    </div>
+    <div class="panel" id="p-end" hidden>
+      <h2 data-t="hEnd">GOODNIGHT</h2>
+      <p data-t="endText">Blow out both candles together. The evening goes into your little book.</p>
+      <button class="big" type="button" id="blow">🌬️ <span data-t="blow">Blow out the candles</span></button>
+    </div>
+    <div class="panel" id="p-times" hidden>
+      <h2>🗓️ <span data-t="hTimes">NEXT MEALS YOU CAN SHARE</span></h2>
+      <ul class="times" id="times"></ul>
+    </div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 };
+  function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
+  function tr(a) { return (a && (a[L()] || a[0])) || ""; }
+  function t(k) { return W[k] ? tr(W[k]) : k; }
+  function toast(m) { var e = $("toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 3200); }
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  var W = {
+    title: ["TWO CANDLES", "双烛小馆", "雙燭小館", "DOS VELAS", "DUES ESPELMES"],
+    hoTitle: ["HANDOFF COUPLES", "HANDOFF 情侣", "HANDOFF 情侶", "PAREJAS DE HANDOFF", "PARELLES DE HANDOFF"],
+    hoPaired: ["Your table with {p} is always kept. Sit down and their candle lights up when they do too.", "你和{p}的桌子一直为你们留着。坐下吧，对方坐下时，他的蜡烛也会亮起来。", "你和{p}的桌子一直為你們留著。坐下吧，對方坐下時，他的蠟燭也會亮起來。", "Vuestra mesa con {p} está siempre reservada. Siéntate: su vela se enciende cuando se siente.", "La vostra taula amb {p} sempre està reservada. Seu: la seva espelma s'encén quan s'assegui."],
+    hoSit: ["🕯️ Sit at our table", "🕯️ 坐到我们的桌边", "🕯️ 坐到我們的桌邊", "🕯️ Sentarme a nuestra mesa", "🕯️ Seure a la nostra taula"],
+    hoNone: ["If you two use Handoff, your table is kept for you here. Open Handoff and sign in, then come back.", "如果你们在用 Handoff，这里会一直为你们留一张桌子。先打开 Handoff 登录，再回来。", "如果你們在用 Handoff，這裡會一直為你們留一張桌子。先打開 Handoff 登入，再回來。", "Si usáis Handoff, aquí os guardamos mesa. Abre Handoff, entra y vuelve.", "Si feu servir Handoff, aquí us guardem taula. Obre Handoff, entra-hi i torna."],
+    hoUnpaired: ["You're signed in to Handoff but not paired yet. Pair with your partner there, then your table appears here.", "你已登录 Handoff，但还没配对。先在那里和伴侣配对，你们的桌子就会出现在这里。", "你已登入 Handoff，但還沒配對。先在那裡和伴侶配對，你們的桌子就會出現在這裡。", "Has entrado en Handoff pero aún no estás emparejado. Empareja allí y vuestra mesa aparecerá aquí.", "Has entrat a Handoff però encara no tens parella. Aparella't allà i la vostra taula apareixerà aquí."],
+    hoOpen: ["🕰️ Open Handoff", "🕰️ 打开 Handoff", "🕰️ 打開 Handoff", "🕰️ Abrir Handoff", "🕰️ Obrir Handoff"],
+    resTitle: ["RESERVE A TABLE", "订一张桌子", "訂一張桌子", "RESERVA UNA MESA", "RESERVA UNA TAULA"],
+    resText: ["For anyone you love who lives far away. Book a table and send them the link. Keep your call on; this sets the table.", "给你爱的、住得很远的那个人。订一张桌子，把链接发给对方。通话照常开着，这里负责布置餐桌。", "給你愛的、住得很遠的那個人。訂一張桌子，把連結傳給對方。通話照常開著，這裡負責布置餐桌。", "Para alguien a quien quieres y vive lejos. Reserva una mesa y mándale el enlace. Seguid en la llamada; esto pone la mesa.", "Per a algú que estimes i viu lluny. Reserva una taula i envia-li l'enllaç. Seguiu a la trucada; això para la taula."],
+    yourName: ["Your name", "你的名字", "你的名字", "Tu nombre", "El teu nom"],
+    sitDown: ["Sit down", "入座", "入座", "Sentarme", "Seure"],
+    reserve: ["Book a table for two", "订一张双人桌", "訂一張雙人桌", "Reservar mesa para dos", "Reservar taula per a dos"],
+    past: ["OUR EVENINGS", "我们的夜晚", "我們的夜晚", "NUESTRAS NOCHES", "LES NOSTRES NITS"],
+    waitTitle: ["WAITING FOR YOUR DATE", "等你的约会对象", "等你的約會對象", "ESPERANDO A TU CITA", "ESPERANT LA TEVA CITA"],
+    waitText: ["Send them this link. Their candle lights up when they sit down.", "把这个链接发给对方。对方坐下时，他的蜡烛就会亮。", "把這個連結傳給對方。對方坐下時，他的蠟燭就會亮。", "Mándale este enlace. Su vela se enciende cuando se siente.", "Envia-li aquest enllaç. La seva espelma s'encén quan s'assegui."],
+    send: ["Send", "发送", "傳送", "Enviar", "Enviar"], copied: ["Link copied", "链接已复制", "連結已複製", "Enlace copiado", "Enllaç copiat"],
+    shareText: ["I booked us a table at Two Candles 🕯️🕯️", "我在双烛小馆订了我们的桌子 🕯️🕯️", "我在雙燭小館訂了我們的桌子 🕯️🕯️", "Nos he reservado mesa en Dos Velas 🕯️🕯️", "Ens he reservat taula a Dues Espelmes 🕯️🕯️"],
+    empty: ["empty chair", "空椅子", "空椅子", "silla vacía", "cadira buida"], you: ["You", "你", "你", "Tú", "Tu"], date: ["Your date", "你的约会对象", "你的約會對象", "Tu cita", "La teva cita"],
+    sat: ["{p} sat down 🕯️", "{p} 坐下了 🕯️", "{p} 坐下了 🕯️", "{p} se ha sentado 🕯️", "{p} s'ha assegut 🕯️"], left: ["{p} stepped away", "{p} 暂时离开了", "{p} 暫時離開了", "{p} se ha levantado", "{p} s'ha aixecat"],
+    dView: ["View", "窗景", "窗景", "Vista", "Vista"], dMusic: ["Music", "音乐", "音樂", "Música", "Música"], dCook: ["Cook", "做饭", "做飯", "Cocinar", "Cuinar"], dClink: ["Clink", "碰杯", "碰杯", "Brindar", "Brindar"], dTalk: ["Talk", "聊天", "聊天", "Hablar", "Parlar"], dNote: ["Napkin", "餐巾", "餐巾", "Servilleta", "Tovalló"], dEnd: ["Goodnight", "晚安", "晚安", "Buenas noches", "Bona nit"],
+    hView: ["THROUGH THE WINDOW", "窗外", "窗外", "POR LA VENTANA", "PER LA FINESTRA"], hCook: ["COOK THE SAME DINNER", "一起做同一顿饭", "一起做同一頓飯", "COCINAD LA MISMA CENA", "CUINEU EL MATEIX SOPAR"],
+    hTalk: ["TABLE TALK", "餐桌话题", "餐桌話題", "CHARLA DE SOBREMESA", "XERRADA DE SOBRETAULA"], hNote: ["WRITE ON A NAPKIN", "在餐巾上写字", "在餐巾上寫字", "ESCRIBE EN UNA SERVILLETA", "ESCRIU EN UN TOVALLÓ"], hEnd: ["GOODNIGHT", "晚安", "晚安", "BUENAS NOCHES", "BONA NIT"],
+    hTimes: ["NEXT MEALS YOU CAN SHARE", "接下来可以一起吃的饭", "接下來可以一起吃的飯", "PRÓXIMAS COMIDAS QUE PODÉIS COMPARTIR", "PROPERS ÀPATS QUE PODEU COMPARTIR"],
+    done: ["Done", "做好了", "做好了", "Hecho", "Fet"], waitP: ["waiting for {p}", "等{p}", "等{p}", "esperando a {p}", "esperant {p}"], step: ["STEP", "步骤", "步驟", "PASO", "PAS"],
+    serve: ["Dinner is served. Eat together 🍽️", "开饭了，一起吃吧 🍽️", "開飯了，一起吃吧 🍽️", "La cena está servida. A comer juntos 🍽️", "El sopar és a taula. A menjar junts 🍽️"],
+    nextQ: ["Another card", "再抽一张", "再抽一張", "Otra carta", "Una altra carta"], slide: ["Slide it across", "推到对面", "推到對面", "Pásala al otro lado", "Passa-la a l'altre costat"],
+    noteFrom: ["a napkin from {p}", "{p} 推过来的餐巾", "{p} 推過來的餐巾", "una servilleta de {p}", "un tovalló de {p}"], keep: ["Keep it", "收好", "收好", "Guardarla", "Guardar-lo"], noteSent: ["Slid across the table ✉️", "已经推到对面 ✉️", "已經推到對面 ✉️", "Ya está al otro lado ✉️", "Ja és a l'altre costat ✉️"],
+    endText: ["Blow out both candles together. The evening goes into your little book.", "一起吹灭两支蜡烛。这个夜晚会记进你们的小本子。", "一起吹熄兩支蠟燭。這個夜晚會記進你們的小本子。", "Apagad las dos velas juntos. La noche queda en vuestro librito.", "Bufeu les dues espelmes junts. La nit queda al vostre llibret."],
+    blow: ["Blow out the candles", "吹灭蜡烛", "吹熄蠟燭", "Apagar las velas", "Bufar les espelmes"], blowWait: ["Waiting for {p} to blow too…", "等{p}也一起吹…", "等{p}也一起吹…", "Esperando a que {p} sople también…", "Esperant que {p} bufi també…"], blowAsk: ["{p} is ready to say goodnight 🌬️", "{p} 准备说晚安了 🌬️", "{p} 準備說晚安了 🌬️", "{p} quiere dar las buenas noches 🌬️", "{p} vol dir bona nit 🌬️"],
+    rTable: ["TABLE FOR TWO", "双人桌", "雙人桌", "MESA PARA DOS", "TAULA PER A DOS"], rTime: ["together", "相处", "相處", "juntos", "junts"], rClinks: ["clinks", "碰杯", "碰杯", "brindis", "brindis"], rCards: ["cards", "话题", "話題", "cartas", "cartes"], rNotes: ["napkins", "餐巾", "餐巾", "servilletas", "tovallons"], rThanks: ["Thank you, come again.", "谢谢光临，欢迎再来。", "謝謝光臨，歡迎再來。", "Gracias, volved pronto.", "Gràcies, torneu aviat."],
+    again: ["🕯️ Another evening", "🕯️ 再约一晚", "🕯️ 再約一晚", "🕯️ Otra noche", "🕯️ Una altra nit"],
+    on: ["on", "开", "開", "sí", "sí"], off: ["off", "关", "關", "no", "no"], music: ["Music {s}", "音乐{s}", "音樂{s}", "Música: {s}", "Música: {s}"],
+    breakfast: ["breakfast", "早餐", "早餐", "desayuno", "esmorzar"], lunch: ["lunch", "午饭", "午飯", "comida", "dinar"], dinner: ["dinner", "晚饭", "晚飯", "cena", "sopar"], late: ["late supper", "夜宵", "宵夜", "cena tardía", "sopar tard"],
+    you2: ["you", "你", "你", "tú", "tu"], noTimes: ["Your mealtimes don't overlap in the next two days. Try breakfast with their dinner?", "接下来两天你们的饭点没有重叠。试试你的早餐配对方的晚饭？", "接下來兩天你們的飯點沒有重疊。試試你的早餐配對方的晚飯？", "Vuestras comidas no coinciden en dos días. ¿Tu desayuno con su cena?", "Els vostres àpats no coincideixen en dos dies. El teu esmorzar amb el seu sopar?"],
+    full: ["This table already has two people.", "这张桌子已经坐满两个人了。", "這張桌子已經坐滿兩個人了。", "Esta mesa ya tiene dos personas.", "Aquesta taula ja té dues persones."],
+    privacy: ["Kept on this device (your privacy choice).", "按你的隐私选择，只留在这台设备上。", "按你的隱私選擇，只留在這台裝置上。", "Se queda en este dispositivo (tu elección de privacidad).", "Es queda en aquest dispositiu (la teva elecció de privadesa)."]
+  };
+  var VIEWS = { harbour: ["Harbour lights", "港湾灯火", "港灣燈火", "Luces del puerto", "Llums del port"], rooftops: ["Paris rooftops", "巴黎屋顶", "巴黎屋頂", "Tejados de París", "Teulades de París"], hutong: ["Snow on the hutong", "胡同落雪", "胡同落雪", "Nieve en el hutong", "Neu al hutong"], seaside: ["Sunset by the sea", "海边日落", "海邊日落", "Atardecer en el mar", "Posta de sol al mar"], stars: ["A field of stars", "满天星", "滿天星", "Un campo de estrellas", "Un camp d'estels"] };
+  var DISH = {
+    tomato: { n: ["Tomato & egg", "番茄炒蛋", "番茄炒蛋", "Tomate con huevo", "Tomàquet amb ou"], c: "#e8502a", s: [
+      [["Beat 3 eggs with a pinch of salt.", "3 个鸡蛋加一小撮盐打散。", "3 顆雞蛋加一小撮鹽打散。", "Bate 3 huevos con una pizca de sal.", "Bat 3 ous amb un pessic de sal."]],
+      [["Cut 2 ripe tomatoes into wedges.", "2 个熟番茄切块。", "2 顆熟番茄切塊。", "Corta 2 tomates maduros en gajos.", "Talla 2 tomàquets madurs a grills."]],
+      [["Scramble the eggs softly in hot oil, then lift them out.", "热油下蛋液，炒到刚凝固就盛出。", "熱油下蛋液，炒到剛凝固就盛出。", "Cuaja los huevos suaves en aceite caliente y sácalos.", "Quallа els ous suaus en oli calent i treu-los."], 60],
+      [["Cook the tomatoes until saucy, with a little sugar.", "番茄炒出汁，加一点糖。", "番茄炒出汁，加一點糖。", "Cocina el tomate hasta que suelte salsa, con un poco de azúcar.", "Cou el tomàquet fins que faci salsa, amb una mica de sucre."], 180],
+      [["Eggs back in, stir once, serve over rice.", "鸡蛋回锅翻一下，盖在米饭上。", "雞蛋回鍋翻一下，蓋在米飯上。", "Devuelve el huevo, remueve una vez y sirve con arroz.", "Torna-hi l'ou, remena un cop i serveix amb arròs."]]] },
+    pasta: { n: ["Spaghetti aglio e olio", "蒜香橄榄油意面", "蒜香橄欖油義大利麵", "Espaguetis aglio e olio", "Espaguetis aglio e olio"], c: "#f0d080", s: [
+      [["Boil well-salted water and cook the spaghetti.", "水里多放点盐，煮意面。", "水裡多放點鹽，煮義大利麵。", "Hierve agua con bastante sal y cuece los espaguetis.", "Bull aigua amb força sal i cou els espaguetis."], 540],
+      [["Meanwhile, slice 3 garlic cloves thin.", "同时把 3 瓣蒜切薄片。", "同時把 3 瓣蒜切薄片。", "Mientras, lamina 3 dientes de ajo.", "Mentrestant, talla 3 grans d'all a làmines."]],
+      [["Warm olive oil with the garlic and a little chilli until golden.", "橄榄油小火煸蒜片和一点辣椒，到金黄。", "橄欖油小火煸蒜片和一點辣椒，到金黃。", "Calienta aceite con el ajo y un poco de guindilla hasta dorar.", "Escalfa oli amb l'all i una mica de bitxo fins que es dauri."], 120],
+      [["Toss the pasta in with a splash of its water and parsley.", "意面下锅，加一勺煮面水和欧芹拌匀。", "義大利麵下鍋，加一勺煮麵水和歐芹拌勻。", "Saltea la pasta con un chorrito de su agua y perejil.", "Salta la pasta amb un raig de la seva aigua i julivert."]]] },
+    pan: { n: ["Pan con tomate", "番茄面包", "番茄麵包", "Pan con tomate", "Pa amb tomàquet"], c: "#c8662a", s: [
+      [["Toast thick slices of bread.", "把厚片面包烤一下。", "把厚片麵包烤一下。", "Tuesta rebanadas gruesas de pan.", "Torra llesques gruixudes de pa."], 120],
+      [["Rub them with a cut garlic clove.", "用切开的蒜瓣在面包上抹一抹。", "用切開的蒜瓣在麵包上抹一抹。", "Frótalas con un diente de ajo cortado.", "Frega-les amb un gra d'all tallat."]],
+      [["Grate a ripe tomato and spread it on.", "把熟番茄擦成泥，抹上去。", "把熟番茄擦成泥，抹上去。", "Ralla un tomate maduro y úntalo.", "Ratlla un tomàquet madur i unta-ho."]],
+      [["Olive oil, a pinch of salt. Add ham or cheese if you like.", "淋橄榄油，撒一小撮盐。喜欢的话加火腿或奶酪。", "淋橄欖油，撒一小撮鹽。喜歡的話加火腿或起司。", "Aceite, una pizca de sal. Jamón o queso si quieres.", "Oli, un pessic de sal. Pernil o formatge si vols."]]] },
+    ramen: { n: ["Late-night noodles", "深夜拉面", "深夜拉麵", "Fideos de medianoche", "Fideus de mitjanit"], c: "#e8c070", s: [
+      [["Soft-boil an egg.", "煮一个溏心蛋。", "煮一顆溏心蛋。", "Cuece un huevo mollet.", "Cou un ou mollet."], 390],
+      [["Cook the noodles.", "煮面。", "煮麵。", "Cuece los fideos.", "Cou els fideus."], 180],
+      [["Add spring onion, a drop of sesame oil and something green.", "加葱花、几滴麻油和一点青菜。", "加蔥花、幾滴麻油和一點青菜。", "Añade cebolleta, unas gotas de aceite de sésamo y algo verde.", "Afegeix ceba tendra, unes gotes d'oli de sèsam i alguna cosa verda."]],
+      [["Halve the egg. Slurp at the same time.", "鸡蛋对半切开。一起嗦面。", "雞蛋對半切開。一起吸麵。", "Parte el huevo. Sorbed a la vez.", "Parteix l'ou. Xarrupeu alhora."]]] },
+    cake: { n: ["Mug cake for dessert", "马克杯蛋糕（甜点）", "馬克杯蛋糕（甜點）", "Bizcocho en taza de postre", "Pastís de tassa per postres"], c: "#5a2a14", s: [
+      [["In a mug: 4 spoons flour, 2 sugar, 2 cocoa, 3 milk, 2 oil. Stir.", "马克杯里：4 勺面粉、2 勺糖、2 勺可可粉、3 勺牛奶、2 勺油，搅匀。", "馬克杯裡：4 匙麵粉、2 匙糖、2 匙可可粉、3 匙牛奶、2 匙油，攪勻。", "En una taza: 4 cucharadas de harina, 2 de azúcar, 2 de cacao, 3 de leche, 2 de aceite. Remueve.", "En una tassa: 4 cullerades de farina, 2 de sucre, 2 de cacau, 3 de llet, 2 d'oli. Remena."]],
+      [["Microwave it.", "放进微波炉。", "放進微波爐。", "Al microondas.", "Al microones."], 75],
+      [["Top with ice cream or fruit. Two spoons.", "放上冰淇淋或水果。两把勺子。", "放上冰淇淋或水果。兩支湯匙。", "Ponle helado o fruta. Dos cucharas.", "Posa-hi gelat o fruita. Dues culleres."]]] }
+  };
+  var Q = [
+    ["What did you almost tell me today?", "你今天差点跟我说的是什么？", "你今天差點跟我說的是什麼？", "¿Qué casi me cuentas hoy?", "Què gairebé m'expliques avui?"],
+    ["Describe the room you're in so I can picture it.", "描述一下你现在的房间，让我能想象出来。", "描述一下你現在的房間，讓我能想像出來。", "Describe la habitación donde estás para que la imagine.", "Descriu l'habitació on ets perquè me la imagini."],
+    ["What's the first thing we'll do when we're in the same city?", "等我们在同一座城市，第一件事做什么？", "等我們在同一座城市，第一件事做什麼？", "¿Qué haremos primero cuando estemos en la misma ciudad?", "Què farem primer quan siguem a la mateixa ciutat?"],
+    ["Which small habit of mine do you secretly like?", "我有哪个小习惯是你偷偷喜欢的？", "我有哪個小習慣是你偷偷喜歡的？", "¿Qué pequeña costumbre mía te gusta en secreto?", "Quin petit costum meu t'agrada en secret?"],
+    ["What did you eat today that I should try?", "你今天吃了什么我也该尝尝？", "你今天吃了什麼我也該嚐嚐？", "¿Qué comiste hoy que yo debería probar?", "Què has menjat avui que jo hauria de tastar?"],
+    ["What sound is outside your window right now?", "你窗外现在是什么声音？", "你窗外現在是什麼聲音？", "¿Qué se oye ahora por tu ventana?", "Què se sent ara per la teva finestra?"],
+    ["Tell me about a moment this week you wished I was there.", "说一个这周你希望我在身边的时刻。", "說一個這週你希望我在身邊的時刻。", "Cuéntame un momento de esta semana en que querías que estuviera.", "Explica'm un moment d'aquesta setmana en què volies que hi fos."],
+    ["If we had one free day together, plan it hour by hour.", "如果我们有一整天空闲，按小时排一排。", "如果我們有一整天空閒，按小時排一排。", "Si tuviéramos un día libre juntos, planéalo hora a hora.", "Si tinguéssim un dia lliure junts, planifica'l hora a hora."],
+    ["What's a song that sounds like us?", "哪首歌听起来像我们？", "哪首歌聽起來像我們？", "¿Qué canción suena a nosotros?", "Quina cançó sona a nosaltres?"],
+    ["What are you looking forward to this month?", "这个月你最期待什么？", "這個月你最期待什麼？", "¿Qué esperas con ganas este mes?", "Què esperes amb ganes aquest mes?"],
+    ["What's one thing I could do from far away that helps?", "我离得远，能做点什么让你好受些？", "我離得遠，能做點什麼讓你好受些？", "¿Qué podría hacer desde lejos que te ayude?", "Què podria fer des de lluny que t'ajudi?"],
+    ["Where should our next trip be, and what do we eat first?", "下一次旅行去哪里？先吃什么？", "下一次旅行去哪裡？先吃什麼？", "¿Adónde el próximo viaje y qué comemos primero?", "On el proper viatge i què mengem primer?"],
+    ["What did you think of me the first time we met?", "我们第一次见面时，你觉得我怎么样？", "我們第一次見面時，你覺得我怎麼樣？", "¿Qué pensaste de mí la primera vez?", "Què vas pensar de mi la primera vegada?"],
+    ["What's something you've never told me about your childhood?", "说一件你小时候的事，我还没听过的。", "說一件你小時候的事，我還沒聽過的。", "Algo de tu infancia que nunca me hayas contado.", "Alguna cosa de la teva infància que mai m'hagis explicat."],
+    ["Teach me a word from your day.", "教我一个你今天用到的词。", "教我一個你今天用到的詞。", "Enséñame una palabra de tu día.", "Ensenya'm una paraula del teu dia."],
+    ["What would our home smell like?", "我们的家会是什么味道？", "我們的家會是什麼味道？", "¿A qué olería nuestra casa?", "A què faria olor casa nostra?"],
+    ["Which of our photos do you look at most?", "我们的照片里，你最常看哪一张？", "我們的照片裡，你最常看哪一張？", "¿Qué foto nuestra miras más?", "Quina foto nostra mires més?"],
+    ["Make a promise for next time we're together.", "为下次见面许一个约定。", "為下次見面許一個約定。", "Haz una promesa para la próxima vez que estemos juntos.", "Fes una promesa per a la propera vegada que siguem junts."]
+  ];
+
+  /* ---------- the shared evening ---------- */
+  var ME = { id: ls("fb_table_me") || (Math.random().toString(36).slice(2, 10)), name: "", tz: "", city: "" };
+  ls("fb_table_me", ME.id);
+  try { ME.tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+  var S = { v: "harbour", m: 0, d: "", s: 0, sa: 0, k: -1, r: 0 };   // view, music, dish, step, step started at, card, revision
+  var them = null, net = null, code = "", hand = null, doneMe = -1, doneThem = -1, blowMe = 0, blowThem = 0, started = 0, stats = { clinks: 0, cards: 0, notes: 0 }, clinkAt = 0, slideAt = 0, flameOut = 0;
+
+  /* ---------- Handoff: the same sign-in, on the same site ---------- */
+  var cfg = { url: "", key: "", rt: "" };
+  function ready() { return new Promise(function (res) { if (cfg.url) return res(); var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; cfg.rt = c.realtimeUrl || ""; res(); }; document.head.appendChild(sc); }); }
+  function session() { if (!cfg.url) return null; try { var ref = new URL(cfg.url).hostname.split(".")[0], s = JSON.parse(localStorage.getItem("sb-" + ref + "-auth-token") || "null"); if (s && s.currentSession) s = s.currentSession; if (s && s.access_token && s.user && (!s.expires_at || s.expires_at * 1000 > Date.now() + 60000)) return s; } catch (e) {} return null; }
+  function acct(tok, id) { return fetch(cfg.url + "/rest/v1/accounts?select=id,name,city,tz,partner_id&id=eq." + encodeURIComponent(id), { headers: { apikey: cfg.key, Authorization: "Bearer " + tok } }).then(function (r) { return r.ok ? r.json() : []; }).then(function (a) { return a[0] || null; }); }
+  function sha(s) { return crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)).then(function (b) { return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, "0"); }).join(""); }); }
+  function handoff() {
+    return ready().then(function () {
+      var s = session(); if (!s) return { state: "none" };
+      return acct(s.access_token, s.user.id).then(function (me) {
+        if (!me) return { state: "none" }; if (!me.partner_id) return { state: "unpaired", me: me };
+        return acct(s.access_token, me.partner_id).then(function (p) { if (!p) return { state: "unpaired", me: me }; return sha("fb-two-candles:" + [me.id, p.id].sort().join(":")).then(function (h) { return { state: "paired", me: me, partner: p, code: "h" + h.slice(0, 20) }; }); });
+      });
+    }).catch(function () { return { state: "none" }; });
+  }
+
+  /* ---------- the line between two tables: Supabase Realtime broadcast (same relay as the Sleeper Car) ---------- */
+  function transport(code, onMsg, onStatus) {
+    var topic = "realtime:fbtable-" + code;
+    if (!cfg.url) { var bc = null; try { bc = new BroadcastChannel("fb_table_" + code); bc.onmessage = function (e) { onMsg(e.data.event, e.data.payload); }; } catch (e) {} setTimeout(function () { onStatus("ok"); onMsg("_ready", {}); }, 0); return { send: function (ev, p) { try { bc && bc.postMessage({ event: ev, payload: p }); } catch (e) {} }, close: function () { try { bc && bc.close(); } catch (e) {} } }; }
+    var ws = null, ref = 0, hb = null, closed = false, tries = 0, joined = false;
+    var base = (cfg.rt || cfg.url.replace(/^http/, "ws") + "/realtime/v1/websocket").replace(/\/$/, "");
+    var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "apikey=" + encodeURIComponent(cfg.key) + "&vsn=1.0.0";
+    var raw = function (m) { try { ws && ws.readyState === 1 && ws.send(JSON.stringify(m)); } catch (e) {} };
+    function connect() {
+      onStatus("connecting");
+      try { ws = new WebSocket(url); } catch (e) { return retry(); }
+      ws.onopen = function () { tries = 0; raw({ topic: topic, event: "phx_join", ref: String(++ref), payload: { config: { broadcast: { self: false, ack: false }, presence: { key: "" }, private: false }, access_token: cfg.key } }); clearInterval(hb); hb = setInterval(function () { raw({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(++ref) }); }, 25000); };
+      ws.onmessage = function (e) {
+        var m; try { m = JSON.parse(e.data); } catch (_) { return; }
+        if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "ok" && !joined) { joined = true; onStatus("ok"); onMsg("_ready", {}); }
+        else if (m.event === "broadcast" && m.payload) onMsg(m.payload.event, m.payload.payload);
+        else if (m.event === "phx_error" || m.event === "phx_close") { joined = false; onStatus("bad"); }
+      };
+      ws.onclose = function () { joined = false; clearInterval(hb); if (!closed) retry(); };
+      ws.onerror = function () { try { ws.close(); } catch (_) {} };
+    }
+    function retry() { onStatus("bad"); setTimeout(function () { if (!closed) connect(); }, Math.min(15000, 800 * Math.pow(2, tries++))); }
+    connect();
+    return { send: function (ev, p) { if (joined) raw({ topic: topic, event: "broadcast", ref: String(++ref), payload: { type: "broadcast", event: ev, payload: p } }); }, close: function () { closed = true; clearInterval(hb); try { ws && ws.close(); } catch (e) {} } };
+  }
+  function tx(ev, p) { if (net) net.send(ev, Object.assign({ from: ME.id }, p || {})); }
+  function hello(q) { tx("hi", { name: ME.name, tz: ME.tz, city: ME.city, q: q ? 1 : 0 }); }
+  function push() { S.r = Date.now(); tx("st", { s: S }); }
+  function onMsg(ev, p) {
+    if (ev === "_ready") { hello(true); return; }
+    if (!p || p.from === ME.id) return;
+    if (them && them.id !== p.from && Date.now() - them.seen < 45000) { if (ev === "hi" && p.q) tx("full", { to: p.from }); return; }   // a table for two
+    if (ev === "full") { if (p.to === ME.id && !them) toast(t("full")); return; }
+    if (ev === "hi") {
+      var fresh = !them || them.id !== p.from || Date.now() - them.seen > 45000;
+      them = { id: p.from, name: (hand && hand.partner && hand.partner.name) || String(p.name || "").slice(0, 20) || t("date"), tz: String(p.tz || ""), city: (hand && hand.partner && hand.partner.city) || String(p.city || ""), seen: Date.now() };
+      if (fresh) { toast(t("sat").replace("{p}", them.name)); chime(); if (!started) started = Date.now(); }
+      if (p.q) { hello(false); push(); }
+      seats(); times(); return;
+    }
+    if (!them || them.id !== p.from) return;
+    them.seen = Date.now();
+    if (ev === "st" && p.s && p.s.r > S.r) { var was = S.d + ":" + S.s; S = p.s; if (S.d + ":" + S.s !== was) { doneMe = doneThem = -1; } apply(); }
+    else if (ev === "done") { doneThem = p.s; maybeNext(); cook(); }
+    else if (ev === "clink") { clink(false); }
+    else if (ev === "note") { napkin(String(p.text || "").slice(0, 160)); }
+    else if (ev === "blow") { blowThem = 1; if (blowMe) goodnight(); else toast(t("blowAsk").replace("{p}", them.name)); }
+    else if (ev === "bye") { them.seen = 0; toast(t("left").replace("{p}", them.name)); seats(); }
+  }
+
+  /* ---------- sitting down ---------- */
+  function sit(c) {
+    code = c; started = 0; stats = { clinks: 0, cards: 0, notes: 0 };
+    $("lobby").hidden = true; $("table").hidden = false;
+    var link = location.origin + "/game/restaurant/?t=" + c; $("link").textContent = link;
+    $("invite").hidden = c.charAt(0) === "h";
+    if (c.charAt(0) !== "h") { try { history.replaceState(null, "", "?t=" + c); } catch (e) {} }
+    ready().then(function () { net = transport(c, onMsg, function (st) { $("netDot").className = "dot " + (st === "ok" ? "ok" : st === "bad" ? "bad" : ""); }); });
+    seats(); apply(); times();
+  }
+  setInterval(function () { if (net) hello(false); if (them && them.seen && Date.now() - them.seen > 45000) { them.seen = 0; seats(); } seats(); }, 15000);
+  addEventListener("pagehide", function () { tx("bye", {}); });
+  function here() { return them && them.seen && Date.now() - them.seen < 45000; }
+  function clock(tz) { try { return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: tz || undefined }); } catch (e) { return new Date().toTimeString().slice(0, 5); } }
+  function place(city, tz) { return city || (tz ? tz.split("/").pop().replace(/_/g, " ") : ""); }
+  function seats() {
+    $("meName").textContent = "🕯️ " + (ME.name || t("you")); $("meClock").textContent = clock(ME.tz); $("meWhere").textContent = place(ME.city, ME.tz);
+    if (here()) { $("themName").textContent = "🕯️ " + them.name; $("themClock").textContent = clock(them.tz); $("themWhere").textContent = place(them.city, them.tz); $("invite").hidden = true; }
+    else { var hn = hand && hand.partner; $("themName").textContent = hn ? hn.name : t("date"); $("themClock").textContent = hn && hn.tz ? clock(hn.tz) : "—"; $("themWhere").textContent = t("empty"); $("invite").hidden = code.charAt(0) === "h"; }
+  }
+  $("shareBtn").onclick = function () { var u = $("link").textContent; if (navigator.share) navigator.share({ title: t("title"), text: t("shareText"), url: u }).catch(function () {}); else { try { navigator.clipboard.writeText(t("shareText") + " " + u); toast(t("copied")); } catch (e) {} } };
+
+  /* ---------- the dock ---------- */
+  var open = "";
+  document.querySelectorAll(".dock button").forEach(function (b) {
+    b.onclick = function () {
+      var p = b.getAttribute("data-p");
+      if (p === "clink") { clink(true); return; }
+      if (p === "music") { S.m = S.m ? 0 : 1; push(); apply(); toast(t("music").replace("{s}", t(S.m ? "on" : "off"))); return; }
+      open = open === p ? "" : p; panels();
+    };
+  });
+  function panels() {
+    ["view", "cook", "talk", "note", "end"].forEach(function (k) { $("p-" + k).hidden = open !== k; });
+    document.querySelectorAll(".dock button").forEach(function (b) { var p = b.getAttribute("data-p"); b.setAttribute("aria-pressed", p === open || (p === "music" && !!S.m)); });
+    if (open === "talk" && S.k < 0) { S.k = (Math.random() * Q.length) | 0; stats.cards++; push(); }
+    apply();
+  }
+  function apply() {
+    $("views").innerHTML = ""; Object.keys(VIEWS).forEach(function (k) { chip($("views"), tr(VIEWS[k]), S.v === k, function () { S.v = k; push(); apply(); }); });
+    $("q").textContent = S.k >= 0 ? tr(Q[S.k % Q.length]) : "…";
+    music(!!S.m); cook();
+    document.querySelectorAll(".dock button").forEach(function (b) { var p = b.getAttribute("data-p"); b.setAttribute("aria-pressed", p === open || (p === "music" && !!S.m)); });
+  }
+  function chip(box, label, on, fn) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = label; b.setAttribute("aria-pressed", !!on); b.onclick = fn; box.appendChild(b); return b; }
+
+  /* cook the same dinner: the next step comes when you're both done */
+  function cook() {
+    $("dishes").innerHTML = ""; Object.keys(DISH).forEach(function (k) { chip($("dishes"), tr(DISH[k].n), S.d === k, function () { S.d = k; S.s = 0; S.sa = Date.now(); doneMe = doneThem = -1; push(); apply(); }); });
+    var d = DISH[S.d]; $("cookStep").hidden = !d; if (!d) return;
+    if (S.s >= d.s.length) { $("stepN").textContent = "🍽️"; $("stepT").textContent = t("serve"); $("timer").hidden = true; $("done").hidden = true; $("tickMe").textContent = ""; $("tickThem").textContent = ""; return; }
+    $("done").hidden = false; var st = d.s[S.s]; $("stepN").textContent = t("step") + " " + (S.s + 1) + "/" + d.s.length; $("stepT").textContent = tr(st[0]);
+    $("timer").hidden = !st[1]; $("done").disabled = doneMe === S.s;
+    var tn = here() ? them.name : t("date");
+    $("tickMe").textContent = (doneMe === S.s ? "✅ " : "⬜ ") + (ME.name || t("you")); $("tickMe").className = doneMe === S.s ? "on" : "";
+    $("tickThem").textContent = (doneThem === S.s ? "✅ " : "⬜ ") + tn; $("tickThem").className = doneThem === S.s ? "on" : "";
+  }
+  setInterval(function () { var d = DISH[S.d]; if (!d || S.s >= d.s.length || !d.s[S.s][1]) return; var left = Math.max(0, d.s[S.s][1] - Math.floor((Date.now() - S.sa) / 1000)); $("timer").textContent = (left ? "⏱ " : "🔔 ") + Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0"); if (left === 0 && !$("timer")._rang) { $("timer")._rang = 1; chime(); } if (left) $("timer")._rang = 0; }, 500);
+  $("done").onclick = function () { doneMe = S.s; tx("done", { s: S.s }); if (!here()) doneThem = S.s; maybeNext(); cook(); };
+  function maybeNext() { if (doneMe === S.s && doneThem === S.s) { var leader = !here() || ME.id < them.id; if (leader) { S.s++; S.sa = Date.now(); doneMe = doneThem = -1; push(); chime(); if (S.s >= DISH[S.d].s.length) toast(t("serve")); apply(); } } }
+
+  $("nextQ").onclick = function () { var k; do { k = (Math.random() * Q.length) | 0; } while (k === S.k && Q.length > 1); S.k = k; stats.cards++; push(); apply(); };
+  $("noteSend").onclick = function () { var v = $("noteT").value.trim(); if (!v) return; tx("note", { text: v }); stats.notes++; slideAt = Date.now(); $("noteT").value = ""; toast(t("noteSent")); };
+  function napkin(text) {
+    stats.notes++; slideAt = -Date.now();
+    var d = document.createElement("div"); d.className = "napkin"; d.setAttribute("role", "dialog");
+    var p = document.createElement("div"); p.textContent = text; var s = document.createElement("small"); s.textContent = "— " + t("noteFrom").replace("{p}", them ? them.name : t("date"));
+    var b = document.createElement("button"); b.type = "button"; b.textContent = t("keep"); b.onclick = function () { d.remove(); };
+    d.appendChild(p); d.appendChild(s); d.appendChild(b); document.body.appendChild(d); chime();
+  }
+  function clink(mine) { clinkAt = Date.now(); stats.clinks++; if (mine) tx("clink", {}); try { var A = ac(), n = A.currentTime; [2093, 2637, 3136].forEach(function (q, i) { var o = A.createOscillator(), g = A.createGain(); o.type = "sine"; o.frequency.value = q * (mine ? 1 : 1.01); g.gain.setValueAtTime(.05, n + .45 + i * .015); g.gain.exponentialRampToValueAtTime(.0001, n + 1.6); o.connect(g); g.connect(A.destination); o.start(n + .45); o.stop(n + 1.7); }); } catch (e) {} }
+  $("blow").onclick = function () { blowMe = 1; tx("blow", {}); if (!here() || blowThem) goodnight(); else { $("blow").disabled = true; toast(t("blowWait").replace("{p}", them.name)); } };
+  function goodnight() {
+    flameOut = Date.now(); music(false);
+    var mins = started ? Math.max(1, Math.round((Date.now() - started) / 60000)) : 0, dish = DISH[S.d] ? tr(DISH[S.d].n) : "";
+    var rec = { at: Date.now(), with: here() ? them.name : "", mins: mins, dish: dish, clinks: stats.clinks, cards: stats.cards, notes: stats.notes };
+    var past = []; try { past = JSON.parse(ls("fb_table_evenings") || "[]"); } catch (e) {} past.unshift(rec); ls("fb_table_evenings", JSON.stringify(past.slice(0, 30)));
+    var box = $("p-end"); box.innerHTML = ""; var r = document.createElement("div"); r.className = "receipt"; r.textContent = receipt(rec); box.appendChild(r);
+    var a = document.createElement("button"); a.type = "button"; a.className = "big"; a.textContent = t("again"); a.onclick = function () { location.reload(); }; box.appendChild(a);
+    open = "end"; panels(); box.hidden = false;
+  }
+  function receipt(r) {
+    var d = new Date(r.at), when = d.toLocaleDateString([], { year: "numeric", month: "short", day: "numeric" }) + " " + d.toTimeString().slice(0, 5);
+    return "TWO CANDLES · " + t("rTable") + "\n" + when + "\n" + (ME.name || t("you")) + (r.with ? " & " + r.with : "") + "\n- - - - - - - - - - -\n" + (r.dish ? "🍽️ " + r.dish + "\n" : "") + "🕯️ " + r.mins + " min " + t("rTime") + "\n🥂 " + t("rClinks") + " ×" + r.clinks + "\n💬 " + t("rCards") + " ×" + r.cards + "\n✉️ " + t("rNotes") + " ×" + r.notes + "\n- - - - - - - - - - -\n" + t("rThanks");
+  }
+
+  /* when can we eat together? both of your mealtimes, the next two days */
+  function times() {
+    var tz2 = (here() && them.tz) || (hand && hand.partner && hand.partner.tz) || ""; $("p-times").hidden = !tz2 || tz2 === ME.tz; if ($("p-times").hidden) return;
+    function hm(d, tz) { var p = new Intl.DateTimeFormat("en-GB", { timeZone: tz, hour: "2-digit", minute: "2-digit", hour12: false }).format(d).split(":"); return +p[0] + p[1] / 60; }
+    function meal(h) { return h >= 7 && h < 9.5 ? "breakfast" : h >= 12 && h < 14 ? "lunch" : h >= 18 && h < 21.5 ? "dinner" : h >= 21.5 && h < 23.5 ? "late" : ""; }
+    var out = [], last = "", now = Date.now(); now -= now % 1800000;
+    for (var i = 1; i < 96 && out.length < 4; i++) { var d = new Date(now + i * 1800000), a = meal(hm(d, ME.tz)), b = meal(hm(d, tz2)), key = a + b; if (a && b) { if (key !== last) out.push([d, a, b]); last = key; } else last = ""; }
+    var ul = $("times"); ul.innerHTML = "";
+    if (!out.length) { var li = document.createElement("li"); li.textContent = t("noTimes"); ul.appendChild(li); return; }
+    var nm = (here() && them.name) || (hand && hand.partner && hand.partner.name) || t("date");
+    out.forEach(function (o) { var li = document.createElement("li"), f = function (tz) { return o[0].toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false, timeZone: tz }); };
+      li.innerHTML = "<span></span><b></b>"; li.firstChild.textContent = t("you2") + ": " + f(ME.tz) + " · " + t(o[1]); li.lastChild.textContent = nm + ": " + f(tz2) + " · " + t(o[2]); ul.appendChild(li); });
+  }
+
+  /* ---------- sound: a soft waltz on a music box, and a little chime ---------- */
+  var AC = null; function ac() { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume(); return AC; }
+  function note(f, at, len, vol, type) { var A = ac(), o = A.createOscillator(), g = A.createGain(); o.type = type || "triangle"; o.frequency.value = f; g.gain.setValueAtTime(.0001, at); g.gain.linearRampToValueAtTime(vol, at + .02); g.gain.exponentialRampToValueAtTime(.0001, at + len); o.connect(g); g.connect(A.destination); o.start(at); o.stop(at + len + .05); }
+  function chime() { try { var n = ac().currentTime; note(1318.5, n, .8, .04, "sine"); note(1975.5, n + .12, 1, .03, "sine"); } catch (e) {} }
+  var mTimer = null, bar = 0;
+  var PROG = [[174.6, 220, 261.6, 329.6], [164.8, 196, 246.9, 293.7], [146.8, 174.6, 220, 261.6], [130.8, 164.8, 196, 246.9]];
+  function music(on) {
+    if (!on) { clearInterval(mTimer); mTimer = null; return; } if (mTimer) return;
+    function play() { try { var A = ac(), n = A.currentTime + .05, c = PROG[bar++ % 4], beat = .62; note(c[0] / 2, n, beat * 3, .05); [1, 2, 3, 2, 3, 1].forEach(function (k, i) { note(c[k] * 2, n + i * beat / 2, beat * 1.4, .025, "sine"); }); if (bar % 2) note(c[3] * 4, n + beat * 2, beat, .012, "sine"); } catch (e) {} }
+    play(); mTimer = setInterval(play, 1860);
+  }
+
+  /* ---------- the picture: a window, a table for two, two candles ---------- */
+  var cv = $("cv"), g = cv.getContext("2d"), f = 0;
+  function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  function hash(n) { var x = Math.sin(n * 127.1) * 43758.5453; return x - Math.floor(x); }
+  function view(x0, y0, w, h) {
+    var v = S.v;
+    if (v === "seaside") { for (var i = 0; i < h; i++) R(x0, y0 + i, w, 1, i < h * .55 ? ["#3a2a5a", "#8a3a6a", "#e8705a", "#f6b73c"][Math.min(3, (i / (h * .55) * 4) | 0)] : "#2a4a7a"); R(x0 + w / 2 - 5, y0 + h * .55 - 4, 10, 4, "#ffd27a"); for (var s = 0; s < 6; s++) R(x0 + w / 2 - 4 + Math.sin((f + s * 20) / 30) * 3, y0 + h * .6 + s * 2, 8 - s, 1, "rgba(255,210,122,.6)"); return; }
+    R(x0, y0, w, h, v === "hutong" ? "#2a2a3a" : "#0e1430");
+    for (var st = 0; st < (v === "stars" ? 40 : 14); st++) { var sx = x0 + hash(st) * w, sy = y0 + hash(st + 50) * h * (v === "stars" ? .8 : .5); if ((f / 20 + st) % 9 > 1) R(sx, sy, 1, 1, "#fbf6ea"); }
+    if (v === "stars") { R(x0, y0 + h - 6, w, 6, "#1a2a1a"); var sh = f % 300; if (sh < 20) R(x0 + w - sh * 2, y0 + 4 + sh, 3, 1, "#fff"); R(x0 + 8, y0 + 5, 4, 4, "#fbf1de"); R(x0 + 9, y0 + 5, 4, 3, "#0e1430"); }
+    if (v === "harbour") { for (var b = 0; b < 9; b++) { var bh = 8 + hash(b + 9) * 14, bx = x0 + b * (w / 9); R(bx, y0 + h * .62 - bh, w / 9 - 1, bh, "#1a1a2e"); for (var wi = 0; wi < 5; wi++) if (hash(b * 7 + wi) > .4) R(bx + 1 + (wi % 2) * 2, y0 + h * .62 - bh + 2 + wi * 2, 1, 1, "#f6c84a"); }
+      R(x0, y0 + h * .62, w, h * .38, "#0a1a3a"); for (var r = 0; r < 10; r++) R(x0 + hash(r + 3) * w, y0 + h * .66 + (r % 4) * 3, 3 + Math.sin((f + r * 9) / 12) * 2, 1, ["#f6c84a", "#ff3ad0", "#7ab8ff"][r % 3]); var fy = x0 + ((f * .1) % (w + 12)) - 6; R(fy, y0 + h * .6, 7, 2, "#c8402a"); R(fy + 2, y0 + h * .6 - 2, 3, 2, "#fbf6ea"); }
+    if (v === "rooftops") { for (var k = 0; k < 6; k++) { var rx = x0 + k * (w / 6), rh = 10 + hash(k + 20) * 6; R(rx, y0 + h - rh, w / 6, rh, "#3a4a5a"); R(rx, y0 + h - rh - 2, w / 6, 2, "#5a6a7a"); R(rx + 2, y0 + h - rh - 5, 2, 3, "#8a4a3a"); if (hash(k + 30) > .3) R(rx + 4, y0 + h - rh + 4, 2, 3, "#f6c84a"); }
+      var ex = x0 + w * .7, ey = y0 + h * .2; R(ex, ey + 14, 7, 2, "#c8a050"); R(ex + 1, ey + 8, 5, 6, "#c8a050"); R(ex + 2, ey + 2, 3, 6, "#c8a050"); R(ex + 3, ey - 3, 1, 5, "#c8a050"); if ((f / 15 | 0) % 2) for (var sp = 0; sp < 5; sp++) R(ex + hash(sp + f % 7) * 7, ey + hash(sp + 40) * 16, 1, 1, "#fff"); R(x0 + 6, y0 + 5, 5, 5, "#fbf1de"); }
+    if (v === "hutong") { for (var hu = 0; hu < 4; hu++) { var hx = x0 + hu * (w / 4); R(hx, y0 + h - 14, w / 4 - 2, 14, "#5a5a6a"); R(hx - 1, y0 + h - 17, w / 4, 3, "#3a3a4a"); R(hx - 1, y0 + h - 18, w / 4, 1, "#fbfbf6"); R(hx + 4, y0 + h - 8, 3, 8, "#8a2a1e"); R(hx + 10, y0 + h - 12, 3, 4, "#c8402a"); R(hx + 10, y0 + h - 12, 3, 1, "#f6c84a"); }
+      for (var sn = 0; sn < 30; sn++) R(x0 + (hash(sn) * w + Math.sin((f + sn * 9) / 20) * 2) % w, y0 + ((hash(sn + 70) * h + f * .25) % h), 1, 1, "#fbfbf6"); }
+  }
+  function person(x, flip, c, hair) {
+    R(x - 6, 50, 12, 16, c); R(x - 7, 52, 14, 10, c);   // shoulders
+    R(x - 4, 38, 8, 9, "#e8b890"); R(x - 5, 36, 10, 4, hair); R(x + (flip ? -5 : 4), 38, 1, 6, hair);   // head
+    R(x + (flip ? -2 : 1), 42, 1, 1, "#2a1d14");
+    R(x - 1, 47, 2, 3, "#e8b890");
+  }
+  function draw() {
+    f++; var both = here(), out = flameOut && Date.now() - flameOut > 600;
+    R(0, 0, 160, 96, "#3a1a24"); for (var x = 0; x < 160; x += 10) R(x, 0, 1, 70, "#341620");   // the wall
+    R(46, 6, 68, 42, "#2a1410"); view(49, 9, 62, 36); R(79, 9, 2, 36, "#2a1410"); R(49, 26, 62, 2, "#2a1410"); R(44, 47, 72, 3, "#4a2a1a");   // the window
+    for (var lb = 0; lb < 9; lb++) { var on = (f / 20 + lb) % 6 > .8; R(4 + lb * 19, 3 + Math.sin(lb) * 1.5, 2, 2, on ? "#ffd27a" : "#8a6a3a"); } R(0, 2, 160, 1, "rgba(255,255,255,.08)");   // string lights
+    R(0, 70, 160, 26, "#2a1410"); for (var fl = 0; fl < 160; fl += 16) R(fl, 70, 1, 26, "#22100c");   // floor
+    R(12, 44, 4, 30, "#5a2a1a"); R(144, 44, 4, 30, "#5a2a1a");   // chair backs
+    person(26, false, "#c8506a", "#2a1a14");
+    if (both) person(134, true, "#3a6aa8", "#5a3a2a"); else { R(128, 56, 14, 3, "#5a2a1a"); }
+    R(22, 62, 116, 4, "#fbf1de"); R(26, 66, 108, 14, "#e8dcc4"); R(26, 66, 108, 1, "#c8bca4"); R(30, 80, 3, 12, "#4a2a1a"); R(127, 80, 3, 12, "#4a2a1a");   // table and cloth
+    // plates
+    var d = DISH[S.d]; [44, 116].forEach(function (px, i) { R(px - 7, 60, 14, 3, "#fbfbf6"); R(px - 5, 59, 10, 1, "#fbfbf6"); if (d && (S.s > 0 || i === 0)) R(px - 4, 58, 8, 2, d.c); });
+    // glasses: they meet in the middle when someone clinks
+    var cp = clinkAt ? Math.min(1, (Date.now() - clinkAt) / 450) : 0, back = clinkAt ? Math.max(0, (Date.now() - clinkAt - 700) / 500) : 0, k = Math.max(0, Math.min(1, cp - back));
+    [[60, 1], [100, -1]].forEach(function (gl) { var gx = gl[0] + gl[1] * k * 15; R(gx - 2, 52, 4, 5, "rgba(255,255,255,.35)"); R(gx - 2, 54, 4, 3, "#9a2a3a"); R(gx, 57, 1, 4, "rgba(255,255,255,.5)"); R(gx - 2, 61, 5, 1, "rgba(255,255,255,.5)"); });
+    if (k > .95) for (var s = 0; s < 6; s++) R(80 + Math.cos(s) * (4 + (Date.now() - clinkAt - 450) / 40), 50 + Math.sin(s) * 4, 1, 1, "#ffd27a");
+    // a napkin sliding across
+    if (slideAt) { var dt = (Date.now() - Math.abs(slideAt)) / 1200; if (dt < 1.4) { var p = Math.min(1, dt), nx = slideAt > 0 ? 40 + p * 78 : 118 - p * 78; R(nx, 63, 7, 2, "#fbfbf6"); } }
+    // two candles: yours, and theirs once they've sat down
+    [[74, 1], [86, both]].forEach(function (cd) { R(cd[0] - 1, 50, 3, 12, "#fbf1de"); R(cd[0] - 2, 61, 5, 1, "#c8a050"); if (cd[1] && !out) { var fh = 3 + Math.sin(f / 3 + cd[0]) * 1 + hash(f + cd[0]) * .8; R(cd[0], 50 - fh, 1, fh, "#f6b73c"); R(cd[0], 50 - fh * .6, 1, fh * .5, "#fff3c0"); g.fillStyle = "rgba(246,183,60,.07)"; g.beginPath(); g.arc(cd[0] + .5, 47, 22 + Math.sin(f / 5) * 1.5, 0, 6.3); g.fill(); } else if (out && Date.now() - flameOut < 4000) { var sm = (Date.now() - flameOut) / 400; R(cd[0] + Math.sin(sm) * 2, 48 - sm * 2, 1, 2, "rgba(220,220,220," + Math.max(0, .6 - sm / 12) + ")"); } });
+    if (out) { g.fillStyle = "rgba(0,0,20,.35)"; g.fillRect(0, 0, 160, 96); }
+    if (both && !out && f % 240 < 60) { var hy = 44 - (f % 240) / 4; R(79, hy, 1, 1, "#ff8fa0"); R(81, hy, 1, 1, "#ff8fa0"); R(78, hy + 1, 5, 1, "#ff8fa0"); R(79, hy + 2, 3, 1, "#ff8fa0"); R(80, hy + 3, 1, 1, "#ff8fa0"); }
+    requestAnimationFrame(draw);
+  }
+
+  /* ---------- the door ---------- */
+  function lobby() {
+    $("myName").placeholder = t("yourName");
+    handoff().then(function (h) {
+      if (inv) return;
+      hand = h.state === "paired" ? h : null;
+      if (h.me) { ME.name = h.me.name || ME.name; ME.city = h.me.city || ""; if (h.me.tz) ME.tz = h.me.tz; }
+      $("hoSit").hidden = h.state !== "paired"; $("hoOpen").hidden = h.state === "paired";
+      $("hoText").textContent = h.state === "paired" ? t("hoPaired").replace("{p}", h.partner.name || "♥") : h.state === "unpaired" ? t("hoUnpaired") : t("hoNone");
+      $("hoSit").textContent = t("hoSit"); $("hoOpen").textContent = t("hoOpen");
+      $("hoSit").onclick = function () { sit(h.code); };
+    });
+    var past = []; try { past = JSON.parse(ls("fb_table_evenings") || "[]"); } catch (e) {}
+    $("pastBox").hidden = !past.length || !!inv; $("past").innerHTML = ""; past.slice(0, 5).forEach(function (r) { var d = document.createElement("div"); d.className = "receipt"; d.textContent = receipt(r); $("past").appendChild(d); });
+  }
+  $("reserve").onclick = function () {
+    ME.name = $("myName").value.trim().slice(0, 20) || ME.name; if (ME.name) ls("fb_nick", ME.name);
+    var a = new Uint8Array(6); crypto.getRandomValues(a); sit(Array.from(a).map(function (x) { return "abcdefghjkmnpqrstuvwxyz23456789"[x % 31]; }).join(""));
+  };
+  function words() {
+    document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
+    document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
+    document.title = (L() ? t("title") : "Two Candles") + " — FREE//BUILDER";
+    var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
+    if (!$("lobby").hidden) lobby(); else { seats(); apply(); times(); }
+  }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
+  window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+  ME.name = (ls("fb_nick") || "").slice(0, 20); $("myName").value = ME.name;
+  var inv = (/[?&]t=([a-z0-9]{6,24})/.exec(location.search) || [])[1];
+  words(); requestAnimationFrame(draw);
+  if (inv) { handoff().then(function (h) { hand = h.state === "paired" && h.code === inv ? h : null; if (h.me) { ME.name = h.me.name || ME.name; ME.city = h.me.city || ""; } if (ME.name) return sit(inv);
+    /* invited, no name yet: just ask for one, then sit down */
+    $("handoffBox").hidden = true; $("pastBox").hidden = true; $("reserve").lastElementChild.setAttribute("data-t", "sitDown"); $("reserve").lastElementChild.textContent = t("sitDown");
+    $("reserve").onclick = function () { ME.name = $("myName").value.trim().slice(0, 20); if (!ME.name) { $("myName").focus(); return; } ls("fb_nick", ME.name); sit(inv); }; }); }
+})();
+</script>
+</body>
+</html>

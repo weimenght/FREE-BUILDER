@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=778904681c"></script><script data-fbg src="/fbkit/fbg.js?v=c32f6cda45" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2d86eab9f7"></script><script data-fbg src="/fbkit/fbg.js?v=af9c1607c1" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Neighbourhood — FREE//BUILDER</title>
 <meta name="description" content="A little pixel neighbourhood: Wei's Bar, the bookshop, the jukebox, the post office, Sora park, the crag, the kintsugi studio, the club and the station. Tap a place to walk in.">
@@ -109,9 +109,10 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     { k: "sanctuary", abs: 1, url: "/game/sanctuary/", x: 40, y: 206, w: 48, h: 40, n: ["Animal Sanctuary", "动物庇护所", "動物庇護所", "Refugio de animales", "Refugi d'animals"] },
     { k: "meadow", abs: 1, url: "/game/cloud/?place=meadow", x: 4, y: 168, w: 82, h: 36, n: ["Wildflower Meadow", "野花草甸", "野花草甸", "Prado de flores", "Prat de flors"] },
     { k: "garden", abs: 1, url: "/game/garden/", x: 2, y: 248, w: 86, h: 36, n: ["The Garden", "大家的花园", "大家的花園", "El Jardín", "El Jardí"] },
+    { k: "restaurant", abs: 1, url: "/game/restaurant/", x: 288, y: 168, w: 70, h: 34, n: ["Two Candles", "双烛小馆", "雙燭小館", "Dos Velas", "Dues Espelmes"] },
     { k: "pasture", abs: 1, url: "/game/cloud/?place=mountain", x: 276, y: 30, w: 80, h: 50, n: ["High Pasture", "高山牧场", "高山牧場", "Pasto alto", "Pastura alta"] },
     { k: "lake", abs: 1, url: "/game/cloud/?place=lake", x: 274, y: 104, w: 84, h: 66, n: ["Mirror Lake", "镜湖", "鏡湖", "Lago Espejo", "Llac Mirall"] },
-    { k: "sea", abs: 1, url: "/game/cloud/?place=sea", x: 274, y: 204, w: 84, h: 88, n: ["Sandy Cove", "沙湾", "沙灣", "Cala de arena", "Cala de sorra"] }
+    { k: "sea", abs: 1, url: "/game/cloud/?place=sea", x: 274, y: 214, w: 84, h: 78, n: ["Sandy Cove", "沙湾", "沙灣", "Cala de arena", "Cala de sorra"] }
   ];
   var BELOW = { climb: 1, cloud: 0, peaks: 1 };
   var T = { title: ["THE NEIGHBOURHOOD", "街坊地图", "街坊地圖", "EL BARRIO", "EL BARRI"], all: ["All games", "全部游戏", "全部遊戲", "Todos los juegos", "Tots els jocs"], lang: ["Languages", "学语言", "學語言", "Idiomas", "Idiomes"], beijing: ["Beijing", "北京", "北京", "Pekín", "Pequín"], map: ["Map of the neighbourhood", "街坊地图", "街坊地圖", "Mapa del barrio", "Mapa del barri"], here: ["You were here", "你刚从这里来", "你剛從這裡來", "Venías de aquí", "Venies d'aquí"] };
@@ -258,7 +259,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   }
   /* Miso and Yuzu: out and about, near wherever they wandered to this visit */
   var CATS = { miso: { b: "#1c1a1f", e: "#f6d84a", n: ["Miso", "味噌", "味噌", "Miso", "Miso"] }, yuzu: { b: "#e8902a", e: "#3a2a1c", s: "#b8641a", n: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"] } };
-  var PATH = { nest: [6, 48, 247], bar: [50, 94, 158], cloud: [108, 170, 64], kintsugi: [6, 44, 158], books: [100, 138, 158], postcard: [8, 60, 207], jukebox: [142, 176, 158], tower: [76, 104, 87], train: [30, 150, 289], dj: [112, 172, 207], brewery: [108, 176, 245], climb: [6, 56, 80] };
+  var PATH = { nest: [6, 48, 247], bar: [50, 94, 158], cloud: [108, 170, 64], kintsugi: [6, 44, 158], books: [100, 138, 158], postcard: [8, 60, 207], jukebox: [142, 176, 158], tower: [76, 104, 87], train: [30, 150, 289], dj: [112, 172, 207], brewery: [108, 176, 245], restaurant: [196, 264, 203], climb: [6, 56, 80] };
   var where = (World.cats && World.cats()) || { miso: "bar", yuzu: "books" }, catPos = {};
   /* where each animal is, how it moves, and what they do when they meet */
   function placeOf(k) { return k === "dog" ? dogAt : where[k]; }
@@ -352,6 +353,15 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(282, 230, 1, 12, "#6a4a2a"); R(276, 226, 13, 4, "#c8402a"); R(278, 224, 9, 2, "#f6ecd2");   // a beach umbrella
     R(290, 266, 6, 3, "#c8a050"); R(296, 262, 2, 2, "#e8a0b0");   // sandcastle, shell
     var sb = 330 + Math.sin(f / 50) * 10; R(sb, 236, 1, 10, "#3a2a1c"); R(sb + 1, 236, 6, 8, "#fbeedd"); R(sb - 3, 246, 12, 3, "#8a5a33");   // a sailboat
+    // Two Candles: a little white restaurant on the lakeshore, a terrace table for two under string lights
+    R(292, 178, 40, 24, night ? "#8a8478" : "#f2ece0"); R(290, 174, 44, 4, "#2a4a3a"); for (var aw = 290; aw < 334; aw += 4) R(aw, 178, 2, 3, aw % 8 ? "#fbf6ea" : "#2a4a3a");
+    R(306, 188, 8, 14, "#4a2a1a"); R(307, 189, 6, 13, lit ? "#f6c84a" : "#6a4a2a"); win(296, 186, lit, f); win(318, 186, lit, f); win(324, 186, lit, f);
+    R(300, 170, 24, 4, "#1d130d"); R(301, 171, 22, 2, night ? "#f6b73c" : "#c8a050");
+    for (var sl = 0; sl < 8; sl++) R(334 + sl * 2.5, 177 + Math.sin(sl / 2.4) * 2, 1, 1, night || ph === "dusk" ? ((f / 10 + sl) % 4 > 1 ? "#ffd27a" : "#8a6a3a") : "#8a6a3a");
+    R(334, 176, 1, 18, "#4a2a1a"); R(354, 176, 1, 18, "#4a2a1a");
+    R(338, 194, 12, 2, "#fbf1de"); R(340, 196, 1, 5, "#4a2a1a"); R(347, 196, 1, 5, "#4a2a1a"); R(343, 191, 1, 3, "#fbf1de"); R(345, 191, 1, 3, "#fbf1de");
+    if (night || ph === "dusk") { R(343, 189 - (f % 20 > 10 ? 1 : 0), 1, 2, "#f6b73c"); R(345, 189 - (f % 22 > 11 ? 1 : 0), 1, 2, "#f6b73c"); }
+    R(336, 192, 2, 9, "#5a2a1a"); R(350, 192, 2, 9, "#5a2a1a");
     R(270, 150, 90, 16, night ? "#2e2c30" : "#c8b088"); for (var bw = 270; bw < 360; bw += 6) R(bw, 150, 1, 16, night ? "#3a383c" : "#a89068");   // the lane becomes a boardwalk
   }
   /* Mantou the dog: a quicker trot, a curly tail, a red collar */
