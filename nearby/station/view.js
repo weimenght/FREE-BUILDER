@@ -902,11 +902,11 @@
   setInterval(function () { try { if (state.trainState === "CRUISING" && state.station && state.station.name !== lastNext && lastNext !== null) setTimeout(nextUp, 5000); } catch (e) {} }, 2000);
   /* stations whose language you can learn next door: a small door appears while you are there */
   var LEARN = {
-    ca: ["/language_learning/cat/", "Learn some Catalan", "学点加泰罗尼亚语", "學點加泰羅尼亞語", "Aprende un poco de catalán", "Aprèn una mica de català"],
-    es: ["/language_learning/es/", "Learn some Spanish", "学点西班牙语", "學點西班牙語", "Aprende un poco de español", "Aprèn una mica d'espanyol"],
-    hk: ["/language_learning/yue/", "Learn some Cantonese", "学点粤语", "學點粵語", "Aprende un poco de cantonés", "Aprèn una mica de cantonès"],
-    cy: ["/language_learning/cymraeg/", "Learn some Welsh", "学点威尔士语", "學點威爾斯語", "Aprende un poco de galés", "Aprèn una mica de gal·lès"],
-    cn: ["/language_learning/chengyu/", "Learn a chengyu", "学一个成语", "學一個成語", "Aprende un chengyu", "Aprèn un chengyu"]
+    ca: ["/learn/cat/", "Learn some Catalan", "学点加泰罗尼亚语", "學點加泰羅尼亞語", "Aprende un poco de catalán", "Aprèn una mica de català"],
+    es: ["/learn/es/", "Learn some Spanish", "学点西班牙语", "學點西班牙語", "Aprende un poco de español", "Aprèn una mica d'espanyol"],
+    hk: ["/learn/yue/", "Learn some Cantonese", "学点粤语", "學點粵語", "Aprende un poco de cantonés", "Aprèn una mica de cantonès"],
+    cy: ["/learn/cymraeg/", "Learn some Welsh", "学点威尔士语", "學點威爾斯語", "Aprende un poco de galés", "Aprèn una mica de gal·lès"],
+    cn: ["/learn/chengyu/", "Learn a chengyu", "学一个成语", "學一個成語", "Aprende un chengyu", "Aprèn un chengyu"]
   };
   var door = null, doorSt = null, doorT = 0;
   function doorUp() {

@@ -60,7 +60,7 @@
   }
 
   var machines = [], venueMine = {}, recs = [];
-  function venueOf(o) { return (o && o.venue) || (/\/game\/bar\//.test(location.pathname) ? "bar" : /\/game\/books\//.test(location.pathname) ? "books" : "studio"); }
+  function venueOf(o) { return (o && o.venue) || (/\/nearby\/next-door\//.test(location.pathname) ? "bar" : /\/nearby\/borrowed-pages\//.test(location.pathname) ? "books" : "studio"); }
 
   function mount(host, o) {
     o = o || {}; var venue = venueOf(o);
@@ -226,7 +226,7 @@
     var x = el("button", "jbc-close", "×"); x.type = "button"; x.setAttribute("aria-label", "Close");
     sc.appendChild(x); document.body.appendChild(sc);
     var M = mount(sc, { venue: C.venue });
-    var make = el("a", "jbc-make", '<span aria-hidden="true">🎛️</span><span data-jb-t="make"></span>'); make.href = C.o.studio || "/game/jukebox/"; make.target = "_top";
+    var make = el("a", "jbc-make", '<span aria-hidden="true">🎛️</span><span data-jb-t="make"></span>'); make.href = C.o.studio || "/nearby/same-song/"; make.target = "_top";
     make.querySelector("[data-jb-t]").textContent = JB.w("make"); sc.appendChild(make);
     if (!JB.listening()) { JB.listen(true); fire(); paintAll(); }
     function close() { M.dead = true; machines.splice(machines.indexOf(M), 1); sc.remove(); document.removeEventListener("keydown", esc1); paintAll(); }

@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=76726a190b"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FBF8F3">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="粵講粵啱">
+  <title>粵講粵啱 — 廣東話生字・聲調</title>
+  <meta name="description" content="Learn Cantonese: flashcards with Jyutping and sound, the six tones, measure words, particles, and Mandarin-to-Cantonese swaps.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23D62839'/%3E%3Ctext x='16' y='23' font-size='19' text-anchor='middle' fill='white' font-family='serif'%3E粵%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/fonts/g/fonts.css">
+  <style>
+    /* ============ TOKENS ============ */
+    :root {
+      --bg:#FBF8F3; --card:#FFFFFF; --surface:#F4EFE8; --border:#E8E0D5; --text:#1C1917; --muted:#6B6560;
+      --accent:#D62839; --accent-ink:#FFFFFF; --accent-soft:rgba(214,40,57,.08); --accent-line:rgba(214,40,57,.35);
+      --jade:#0F8A7A; --gold:#F2B705;
+      --ok:#047857; --ok-soft:#ECFDF5; --ok-line:#A7F3D0;
+      --warn:#B45309; --warn-soft:#FFFBEB; --warn-line:#FCD34D;
+      --bad:#BE123C; --bad-soft:#FFF1F2; --bad-line:#FECDD3;
+      --h0:#EEE7DD; --h1:#F7C9CE; --h2:#EC8A95; --h3:#D9445A; --h4:#9E1426;
+      --shadow:0 1px 2px rgba(28,25,23,.06), 0 4px 16px rgba(28,25,23,.05);
+      --radius:16px; --tab-h:64px;
+      --safe-b:env(safe-area-inset-bottom, 0px); --safe-t:env(safe-area-inset-top, 0px);
+      --font:"Plus Jakarta Sans", system-ui, -apple-system, "PingFang HK", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      --serif:"Playfair Display", Georgia, "Songti TC", "PMingLiU", serif;
+      --han:"PingFang HK", "PingFang TC", "Noto Sans HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      --mono:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      /* 窗花: the lattice of an old Hong Kong window grille */
+      --lattice:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23D62839' stroke-opacity='.075' stroke-width='1.4'%3E%3Cpath d='M4 4h16v16H4zM28 28h16v16H28zM28 4h16v16M4 28h16v16'/%3E%3Cpath d='M8 8h8v8H8zM32 32h8v8h-8zM12 20v8h24M36 20v-8H12'/%3E%3C/g%3E%3C/svg%3E");
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg:#0E0D10; --card:#18161B; --surface:#221F25; --border:#2E2A33; --text:#F5F4F6; --muted:#A8A2AD;
+        --accent:#FF5C7A; --accent-ink:#1A0A10; --accent-soft:rgba(255,92,122,.12); --accent-line:rgba(255,92,122,.4);
+        --jade:#3DDBC3;
+        --ok:#34D399; --ok-soft:rgba(16,185,129,.12); --ok-line:rgba(52,211,153,.35);
+        --warn:#FBBF24; --warn-soft:rgba(245,158,11,.12); --warn-line:rgba(251,191,36,.35);
+        --bad:#FB7185; --bad-soft:rgba(244,63,94,.12); --bad-line:rgba(251,113,133,.35);
+        --h0:#24202A; --h1:#4A1F2C; --h2:#80304A; --h3:#C9466A; --h4:#FF5C7A;
+        --lattice:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%233DDBC3' stroke-opacity='.06' stroke-width='1.4'%3E%3Cpath d='M4 4h16v16H4zM28 28h16v16H28zM28 4h16v16M4 28h16v16'/%3E%3Cpath d='M8 8h8v8H8zM32 32h8v8h-8zM12 20v8h24M36 20v-8H12'/%3E%3C/g%3E%3C/svg%3E");
+        --shadow:0 1px 2px rgba(0,0,0,.4); color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg:#0E0D10; --card:#18161B; --surface:#221F25; --border:#2E2A33; --text:#F5F4F6; --muted:#A8A2AD;
+      --accent:#FF5C7A; --accent-ink:#1A0A10; --accent-soft:rgba(255,92,122,.12); --accent-line:rgba(255,92,122,.4);
+      --jade:#3DDBC3;
+      --ok:#34D399; --ok-soft:rgba(16,185,129,.12); --ok-line:rgba(52,211,153,.35);
+      --warn:#FBBF24; --warn-soft:rgba(245,158,11,.12); --warn-line:rgba(251,191,36,.35);
+      --bad:#FB7185; --bad-soft:rgba(244,63,94,.12); --bad-line:rgba(251,113,133,.35);
+      --h0:#24202A; --h1:#4A1F2C; --h2:#80304A; --h3:#C9466A; --h4:#FF5C7A;
+      --lattice:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%233DDBC3' stroke-opacity='.06' stroke-width='1.4'%3E%3Cpath d='M4 4h16v16H4zM28 28h16v16H28zM28 4h16v16M4 28h16v16'/%3E%3Cpath d='M8 8h8v8H8zM32 32h8v8h-8zM12 20v8h24M36 20v-8H12'/%3E%3C/g%3E%3C/svg%3E");
+      --shadow:0 1px 2px rgba(0,0,0,.4); color-scheme: dark;
+    }
+
+    /* ============ BASE ============ */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      margin:0; background:var(--bg); color:var(--text); font-family:var(--font); font-size:15px; line-height:1.45;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      min-height:100vh; min-height:100dvh; background-image:var(--azulejo); background-attachment:fixed;
+      padding-bottom:calc(var(--tab-h) + var(--safe-b) + 8px);
+      -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none;
+    }
+    body.kb { padding-bottom: 12px; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor:pointer; border:0; background:none; padding:0; touch-action: manipulation; }
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    [hidden] { display:none !important; }
+    ::selection { background:var(--gold); color:#1C1917; }
+    .ic { width:18px; height:18px; flex:none; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .ic.sm { width:14px; height:14px; } .ic.lg { width:22px; height:22px; }
+    .ic.fill { fill: currentColor; }
+    .serif { font-family:var(--serif); }
+    .mono { font-family:var(--mono); }
+    .muted { color:var(--muted); }
+    .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+    /* ============ HEADER ============ */
+    .flagbar { position:fixed; top:0; left:0; right:0; height:calc(4px + var(--safe-t)); z-index:60;
+      background:linear-gradient(to right,#C60B1E 0 25%,#FFC400 25% 75%,#C60B1E 75% 100%); }
+    .top { position:sticky; top:0; z-index:40; padding-top:calc(4px + var(--safe-t));
+      background:var(--bg); background:color-mix(in srgb, var(--bg) 92%, transparent);
+      -webkit-backdrop-filter:saturate(1.4) blur(10px); backdrop-filter:saturate(1.4) blur(10px);
+      border-bottom:1px solid var(--border); }
+    .top-row { max-width:920px; margin:0 auto; padding:0 12px; height:52px; display:flex; align-items:center; gap:8px; }
+    .brand { display:flex; align-items:center; gap:8px; min-width:0; flex:1; }
+    .logo { width:30px; height:30px; border-radius:8px; flex:none; display:grid; place-items:center; font-weight:800; font-size:11px; color:#C60B1E;
+      background:linear-gradient(#C60B1E 0 25%, #FFC400 25% 75%, #C60B1E 75%); box-shadow:inset 0 0 0 1px rgba(0,0,0,.08); }
+    .brand-title { font-family:var(--serif); font-weight:700; font-size:18px; white-space:nowrap; }
+    .lvl-pill { display:inline-flex; align-items:center; gap:4px; height:32px; padding:0 10px; border-radius:999px; font-weight:800; font-size:13px;
+      background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent-line); }
+    .icon-btn { width:40px; height:40px; border-radius:12px; display:grid; place-items:center; color:var(--muted); position:relative; }
+    .icon-btn:hover { color:var(--text); background:var(--surface); }
+    .icon-btn .dot { position:absolute; top:8px; right:8px; width:8px; height:8px; border-radius:50%; background:var(--muted); border:2px solid var(--bg); }
+    .dot.ok { background:#10B981 !important; } .dot.off { background:#F59E0B !important; } .dot.err { background:#EF4444 !important; }
+
+    .subnav { max-width:920px; margin:0 auto; min-width:0; display:flex; gap:6px; padding:0 12px 10px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+    .subnav::-webkit-scrollbar { display:none; }
+    .chip { flex:none; display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 14px; border-radius:999px; font-size:13px; font-weight:600;
+      color:var(--muted); background:transparent; border:1px solid var(--border); white-space:nowrap; }
+    .chip:hover { color:var(--text); }
+    .chip.on { background:var(--text); color:var(--bg); border-color:var(--text); }
+    .chip .n { font-size:11px; font-weight:700; padding:1px 6px; border-radius:999px; background:var(--surface); color:var(--muted); }
+    .chip.on .n { background:rgba(255,255,255,.18); color:inherit; }
+
+    /* ============ TAB BAR ============ */
+    .tabbar { position:fixed; left:0; right:0; bottom:0; z-index:45; background:var(--card); border-top:1px solid var(--border);
+      padding-bottom:var(--safe-b); }
+    body.kb .tabbar { display:none; }
+    .tabbar-in { max-width:560px; margin:0 auto; height:var(--tab-h); display:grid; grid-template-columns:repeat(4,1fr); }
+    .tab { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; font-size:11px; font-weight:600; color:var(--muted); position:relative; }
+    .tab .ic { width:22px; height:22px; }
+    .tab.on { color:var(--accent); }
+    .tab.on::before { content:""; position:absolute; top:0; width:28px; height:3px; border-radius:0 0 3px 3px; background:var(--accent); }
+
+    /* ============ LAYOUT ============ */
+    main { max-width:920px; margin:0 auto; padding:14px 12px 24px; }
+    .view { display:flex; flex-direction:column; gap:12px; animation:fade .18s ease; }
+    @keyframes fade { from { opacity:0; transform:translateY(4px);} to { opacity:1; transform:none; } }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); }
+    .pad { padding:16px; }
+    .row { display:flex; align-items:center; gap:8px; }
+    .between { justify-content:space-between; }
+    .wrap { flex-wrap:wrap; }
+    .grow { flex:1; min-width:0; }
+    .stack { display:flex; flex-direction:column; gap:8px; }
+    .narrow { max-width:600px; width:100%; margin:0 auto; }
+    .meta { font-size:12px; color:var(--muted); }
+    .label { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+    .h2 { font-family:var(--serif); font-weight:700; font-size:20px; margin:0; }
+    .empty { padding:28px 16px; text-align:center; color:var(--muted); font-size:14px; }
+
+    /* Buttons */
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:46px; padding:0 16px; border-radius:14px;
+      font-weight:700; font-size:14px; border:1px solid var(--border); background:var(--card); color:var(--text); transition:transform .08s, background .15s; }
+    .btn:active { transform:scale(.97); }
+    .btn.primary { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+    .btn.ghost { background:transparent; }
+    .btn.sm { min-height:36px; padding:0 12px; font-size:13px; border-radius:11px; }
+    .btn.block { width:100%; }
+    .btn.square { width:46px; padding:0; flex:none; }
+    .btn.ok { background:var(--ok-soft); color:var(--ok); border-color:var(--ok-line); }
+    .btn.warn { background:var(--warn-soft); color:var(--warn); border-color:var(--warn-line); }
+    .btn.bad { background:var(--bad-soft); color:var(--bad); border-color:var(--bad-line); }
+    .seg { display:flex; padding:3px; gap:3px; background:var(--surface); border:1px solid var(--border); border-radius:12px; }
+    .seg button { flex:1; height:32px; padding:0 10px; border-radius:9px; font-size:12px; font-weight:700; color:var(--muted); white-space:nowrap; }
+    .seg button.on { background:var(--card); color:var(--text); box-shadow:var(--shadow); }
+    .tag { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--surface); color:var(--muted); white-space:nowrap; }
+    .tag.accent { background:var(--accent-soft); color:var(--accent); }
+    .tag.ok { background:var(--ok-soft); color:var(--ok); } .tag.warn { background:var(--warn-soft); color:var(--warn); } .tag.bad { background:var(--bad-soft); color:var(--bad); }
+
+    /* Inputs (16px minimum: prevents iOS zoom) */
+    .field { display:flex; flex-direction:column; gap:6px; }
+    .input, .select, .textarea { width:100%; font-size:16px; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background:var(--surface);
+      color:var(--text); outline:none; -webkit-appearance:none; appearance:none; transition:border-color .15s, box-shadow .15s; }
+    .input:focus, .select:focus, .textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+    .select { background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+      background-position:calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size:5px 5px; background-repeat:no-repeat; padding-right:36px; }
+    .textarea { resize:vertical; min-height:72px; line-height:1.4; }
+    .answer { text-align:center; font-size:22px; font-weight:700; padding:14px 48px; background:var(--card); }
+    .answer.ok { border-color:var(--ok); background:var(--ok-soft); }
+    .answer.warn { border-color:var(--warn); background:var(--warn-soft); }
+    .answer.bad { border-color:var(--bad); background:var(--bad-soft); }
+    .search { position:relative; flex:1; }
+    .search .ic { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none; }
+    .search .input { padding-left:38px; }
+    .keys { display:grid; grid-template-columns:repeat(9, minmax(0, 44px)); justify-content:center; gap:5px; }
+    .key { width:100%; height:42px; border-radius:10px; background:var(--surface); border:1px solid var(--border); font-weight:700; font-size:16px; }
+    .key:active { background:var(--border); }
+    .switch { position:relative; width:46px; height:28px; flex:none; }
+    .switch input { opacity:0; width:100%; height:100%; margin:0; position:absolute; z-index:1; cursor:pointer; }
+    .switch span { position:absolute; inset:0; border-radius:999px; background:var(--border); transition:background .2s; }
+    .switch span::after { content:""; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.25); transition:transform .2s; }
+    .switch input:checked + span { background:var(--accent); }
+    .switch input:checked + span::after { transform:translateX(18px); }
+    .setting { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+    .setting:last-child { border-bottom:0; }
+    .setting .t { font-weight:600; font-size:14px; } .setting .d { font-size:12px; color:var(--muted); }
+
+    /* Feedback */
+    .fb { padding:12px 14px; border-radius:14px; border:1px solid; font-size:14px; font-weight:600; text-align:center; }
+    .fb.ok { background:var(--ok-soft); color:var(--ok); border-color:var(--ok-line); }
+    .fb.warn { background:var(--warn-soft); color:var(--warn); border-color:var(--warn-line); }
+    .fb.bad { background:var(--bad-soft); color:var(--bad); border-color:var(--bad-line); }
+    .fb .big { font-size:18px; font-weight:800; display:block; margin-top:2px; }
+    .shake { animation:shake .25s ease-in-out; }
+    @keyframes shake { 25% { transform:translateX(-5px);} 75% { transform:translateX(5px);} }
+    .pop { animation:pop .3s ease; }
+    @keyframes pop { 50% { transform:scale(1.04);} }
+
+    /* ============ FLASHCARD ============ */
+    .progress { height:4px; border-radius:999px; background:var(--surface); overflow:hidden; }
+    .progress > i { display:block; height:100%; width:0; background:var(--accent); border-radius:inherit; transition:width .25s; }
+    .scene { -webkit-perspective:1200px; perspective:1200px; height:clamp(250px, calc(100vh - 400px), 440px); height:clamp(250px, calc(100dvh - 400px), 440px); touch-action:pan-y; user-select:none; -webkit-user-select:none; cursor:pointer; }
+    .flip { position:relative; width:100%; height:100%; -webkit-transform-style:preserve-3d; transform-style:preserve-3d; transition:transform .45s cubic-bezier(.2,.7,.2,1); }
+    .flip.on { -webkit-transform:rotateY(180deg); transform:rotateY(180deg); }
+    .flip.swipe { transition:transform .45s cubic-bezier(.2,.7,.2,1), opacity .2s; }
+    .face { position:absolute; inset:0; -webkit-backface-visibility:hidden; backface-visibility:hidden; display:flex; flex-direction:column; padding:16px; border-radius:20px;
+      background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow); overflow:hidden; }
+    .face.back { -webkit-transform:rotateY(180deg); transform:rotateY(180deg); border-top:3px solid var(--accent); }
+    .face-mid { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:8px; min-height:0; padding:4px 6px; }
+    .term { font-family:var(--serif); font-weight:700; font-size:clamp(28px, 8.5vw, 44px); line-height:1.12; margin:0; word-break:break-word; hyphens:auto; }
+    .meaning { font-family:var(--serif); font-weight:700; font-size:clamp(22px, 6vw, 30px); margin:0; line-height:1.2; }
+    .example { font-size:15px; color:var(--muted); font-style:italic; margin:0; max-width:34em; }
+    .back-scroll { overflow-y:auto; -webkit-overflow-scrolling:touch; width:100%; }
+    .note-box { width:100%; margin-top:8px; text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:8px 10px; }
+    .note-box textarea { width:100%; border:0; outline:0; background:transparent; resize:none; font-size:16px; line-height:1.35; color:var(--text); padding:0; }
+    .hint-line { font-size:12px; color:var(--muted); text-align:center; display:flex; align-items:center; justify-content:center; gap:6px; }
+    .rate { display:grid; grid-template-columns:46px 1fr 1fr 1fr 46px; gap:6px; }
+    .rate .btn { padding:0 6px; font-size:13px; flex-direction:column; gap:0; line-height:1.1; }
+    .rate .btn small { font-size:10px; font-weight:600; opacity:.7; }
+    .kbd { display:none; }
+    @media (hover:hover) and (pointer:fine) { .kbd { display:inline; font-family:var(--mono); font-size:10px; opacity:.6; } }
+
+    /* ============ LISTS ============ */
+    .list { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .li { display:flex; align-items:center; gap:8px; padding:12px 12px 12px 14px; border-bottom:1px solid var(--border); }
+    .li:last-child { border-bottom:0; }
+    .li .w { font-weight:700; }
+    .li .s { font-size:13px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; }
+    .li .x { font-size:12px; color:var(--muted); font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .li .n { font-size:12px; color:var(--warn); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .li-acts { display:flex; flex:none; }
+    .li-acts .icon-btn { width:38px; height:38px; }
+
+    /* ============ VERBS ============ */
+    .prompt { text-align:center; padding:18px 16px; }
+    .prompt .inf { font-family:var(--serif); font-size:clamp(30px, 9vw, 42px); font-weight:700; margin:4px 0 0; line-height:1.1; }
+    .badges { display:flex; justify-content:center; gap:6px; flex-wrap:wrap; }
+    .pron { font-size:20px; font-weight:800; color:var(--accent); margin-top:6px; }
+    .mini-table { display:grid; grid-template-columns:auto 1fr; gap:2px 12px; font-size:14px; text-align:left; max-width:320px; margin:8px auto 0; }
+    .mini-table .p { color:var(--muted); font-size:12px; align-self:center; }
+    .mini-table .hl { color:var(--accent); font-weight:800; }
+    .choices { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .choice { min-height:60px; padding:10px; border-radius:14px; border:1px solid var(--border); background:var(--card); font-weight:700; font-size:16px; line-height:1.2; }
+    .choice:disabled { opacity:1; cursor:default; }
+    .choice.ok { border-color:var(--ok); background:var(--ok-soft); color:var(--ok); }
+    .choice.bad { border-color:var(--bad); background:var(--bad-soft); color:var(--bad); }
+    .choice .k { display:none; }
+    @media (hover:hover) and (pointer:fine) { .choice .k { display:inline; font-family:var(--mono); font-size:10px; color:var(--muted); margin-right:6px; } }
+    .tgrid { display:grid; grid-template-columns:1fr; gap:10px; }
+    @media (min-width:640px) { .tgrid { grid-template-columns:1fr 1fr; } }
+    @media (min-width:900px) { .tgrid { grid-template-columns:1fr 1fr 1fr; } }
+    .tcard { padding:12px 14px; }
+    .tcard h3 { margin:0 0 6px; font-size:13px; font-weight:800; display:flex; justify-content:space-between; align-items:center; gap:6px; }
+    .trow { display:flex; justify-content:space-between; gap:10px; padding:6px 0; border-top:1px dashed var(--border); font-size:14px; cursor:pointer; }
+    .trow .p { color:var(--muted); font-size:12px; white-space:nowrap; }
+    .trow .f { font-weight:700; text-align:right; }
+    .trow .alt { color:var(--muted); font-weight:500; font-size:12px; }
+    .streak-pill { display:inline-flex; align-items:center; gap:4px; font-weight:800; font-size:13px; color:var(--warn); }
+
+    /* ============ DICTATION ============ */
+    .diff { font-size:18px; line-height:1.8; text-align:center; }
+    .diff span { padding:1px 4px; border-radius:6px; margin:0 1px; }
+    .diff .ok { color:var(--ok); background:var(--ok-soft); }
+    .diff .warn { color:var(--warn); background:var(--warn-soft); }
+    .diff .miss { color:var(--bad); background:var(--bad-soft); text-decoration:underline wavy; }
+    .gq { font-size:clamp(20px, 5.5vw, 26px); font-family:var(--serif); font-weight:700; text-align:center; line-height:1.35; margin:6px 0; }
+    .gq .blank { display:inline-block; min-width:64px; border-bottom:3px solid var(--accent); color:var(--accent); }
+
+    /* ============ STATS ============ */
+    .kpis { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    @media (min-width:640px) { .kpis { grid-template-columns:repeat(4,1fr); } }
+    .kpi { padding:14px; }
+    .kpi .v { font-size:24px; font-weight:800; line-height:1.1; font-variant-numeric:tabular-nums; }
+    .kpi .l { font-size:12px; color:var(--muted); margin-top:2px; }
+    .hero { display:flex; align-items:center; gap:16px; padding:16px; }
+    .ring { width:92px; height:92px; flex:none; position:relative; }
+    .ring svg { width:100%; height:100%; transform:rotate(-90deg); }
+    .ring .c { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1; }
+    .ring .c b { font-size:20px; } .ring .c small { font-size:11px; color:var(--muted); }
+    .heat-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px; }
+    .heat { display:grid; grid-auto-flow:column; grid-template-rows:repeat(7, 13px); grid-auto-columns:13px; gap:3px; }
+    .heat i { border-radius:3px; background:var(--h0); }
+    .heat i.l1 { background:var(--h1);} .heat i.l2 { background:var(--h2);} .heat i.l3 { background:var(--h3);} .heat i.l4 { background:var(--h4);}
+    .heat i.fut { background:transparent; }
+    .heat i.today { box-shadow:inset 0 0 0 1.5px var(--text); }
+    .legend { display:flex; align-items:center; gap:3px; font-size:11px; color:var(--muted); }
+    .legend i { width:11px; height:11px; border-radius:3px; display:inline-block; }
+    .bars7 { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; align-items:end; height:130px; padding-top:18px; }
+    .b7 { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:4px; font-size:11px; color:var(--muted); }
+    .b7 .bar { width:100%; max-width:34px; background:var(--accent); border-radius:4px 4px 0 0; min-height:2px; position:relative; }
+    .b7 .bar.zero { background:var(--border); }
+    .b7 .val { font-size:11px; font-weight:700; color:var(--text); font-variant-numeric:tabular-nums; }
+    .b7.today .d { color:var(--text); font-weight:800; }
+    .hbar { display:grid; grid-template-columns:minmax(90px, 38%) 1fr 64px; gap:8px; align-items:center; font-size:13px; padding:5px 0; }
+    .hbar .track { height:10px; background:var(--surface); border-radius:999px; overflow:hidden; }
+    .hbar .track i { display:block; height:100%; background:var(--accent); border-radius:999px; }
+    .hbar .pct { text-align:right; font-variant-numeric:tabular-nums; font-weight:700; }
+    .hbar .pct small { display:block; font-weight:500; color:var(--muted); font-size:10px; }
+    .stackbar { display:flex; height:12px; border-radius:999px; overflow:hidden; background:var(--surface); gap:2px; }
+    .stackbar i { display:block; height:100%; }
+    .st-m { background:var(--ok); } .st-r { background:var(--warn); } .st-n { background:var(--border); }
+    .sess { display:grid; grid-template-columns:1fr auto auto; gap:8px; align-items:center; padding:10px 14px; border-bottom:1px solid var(--border); font-size:13px; }
+    .sess:last-child { border-bottom:0; }
+
+    /* ============ SHEET / TOAST ============ */
+    .backdrop { position:fixed; inset:0; z-index:80; background:rgba(0,0,0,.45); display:flex; align-items:flex-end; justify-content:center; animation:fadeIn .15s; }
+    @keyframes fadeIn { from { opacity:0; } }
+    .sheet { width:100%; max-width:560px; max-height:88vh; max-height:88dvh; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+      background:var(--card); border-radius:22px 22px 0 0; padding:8px 16px calc(16px + var(--safe-b)); animation:up .22s cubic-bezier(.2,.7,.2,1); }
+    @keyframes up { from { transform:translateY(40px); opacity:.6; } }
+    .sheet .grab { width:40px; height:5px; border-radius:99px; background:var(--border); margin:4px auto 10px; }
+    .sheet-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    @media (min-width:640px) { .backdrop { align-items:center; } .sheet { border-radius:22px; padding-bottom:16px; } .sheet .grab { display:none; } }
+    .lv-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+    .lv-btn { padding:10px 4px; border-radius:12px; border:1px solid var(--border); background:var(--surface); text-align:center; }
+    .lv-btn b { display:block; font-size:16px; } .lv-btn small { font-size:10px; color:var(--muted); }
+    .lv-btn.on { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
+    .tense-pick { display:flex; flex-wrap:wrap; gap:6px; }
+    .tense-pick label { display:inline-flex; align-items:center; gap:6px; padding:8px 10px; border-radius:10px; border:1px solid var(--border); font-size:13px; cursor:pointer; background:var(--surface); }
+    .tense-pick input { width:16px; height:16px; accent-color:var(--accent); margin:0; }
+    .tense-pick label.on { border-color:var(--accent); }
+    .toast { position:fixed; left:50%; bottom:calc(var(--tab-h) + var(--safe-b) + 14px); z-index:90; transform:translate(-50%, 10px); opacity:0; pointer-events:none;
+      background:var(--text); color:var(--bg); padding:10px 16px; border-radius:999px; font-size:13px; font-weight:600; box-shadow:0 6px 24px rgba(0,0,0,.25);
+      transition:opacity .2s, transform .2s; max-width:calc(100vw - 32px); text-align:center; }
+    .toast.show { opacity:1; transform:translate(-50%,0); }
+    body.kb .toast { bottom:16px; }
+
+    @media (min-width:640px) { main { padding:20px 20px 32px; } .pad { padding:20px; } }
+    @media (orientation:landscape) and (max-height:520px) { .scene { height:240px; } .term { font-size:30px; } :root { --tab-h:54px; } .tab span { display:none; } }
+    @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
+
+    /* ============ CANTONESE ============ */
+    body { background-image:var(--lattice); background-attachment:fixed; }
+    .flagbar { background:linear-gradient(90deg,#D62839,#FF5C7A 50%,#0F8A7A) !important; }
+    .logo { background:#D62839 !important; color:#fff !important; font:700 17px/1 var(--han) !important; border-radius:9px 9px 9px 2px !important; }
+    .brand-title { font-family:var(--han) !important; font-weight:800 !important; letter-spacing:.02em; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+    .brand-title i { font-style:normal; color:var(--accent); }
+    .top-row > button { flex:none; }
+    @media (max-width:400px) { .top-row { gap:4px; padding:0 8px; } .brand-title { font-size:17px; } .logo { width:26px !important; height:26px !important; font-size:15px !important; } .top-row .icon-btn { width:36px; height:36px; } }
+    .han { font-family:var(--han); }
+    .term.han { font-family:var(--han); font-weight:800; font-size:clamp(40px, 13vw, 64px); letter-spacing:.04em; }
+    .jp { font-family:var(--mono); font-size:15px; color:var(--jade); letter-spacing:.02em; }
+    .jp.big { font-size:18px; }
+    .mando { font-size:13px; color:var(--muted); }
+    .mando b { font-family:var(--han); color:var(--text); font-weight:600; }
+    .ex-han { font-family:var(--han); font-size:18px; font-weight:600; margin:0; }
+    .ex-en { font-size:14px; color:var(--muted); margin:0; font-style:italic; }
+    .sp { display:inline-grid; place-items:center; width:36px; height:36px; border-radius:50%; background:var(--accent-soft); color:var(--accent); flex:none; }
+    .sp.big { width:64px; height:64px; } .sp.big .ic { width:28px; height:28px; }
+    .tone-btns { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .tone-btn { display:flex; flex-direction:column; align-items:center; gap:2px; padding:10px 6px; border-radius:14px; border:1px solid var(--border); background:var(--card); font-weight:800; font-size:18px; }
+    .tone-btn svg { width:44px; height:22px; } .tone-btn small { font-size:11px; color:var(--muted); font-weight:600; }
+    .tone-btn.ok { border-color:var(--ok); background:var(--ok-soft); color:var(--ok); } .tone-btn.bad { border-color:var(--bad); background:var(--bad-soft); color:var(--bad); }
+    .tone-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; }
+    .tone-cell { display:flex; flex-direction:column; align-items:center; gap:2px; padding:10px 2px; border-radius:12px; border:1px solid var(--border); background:var(--card); }
+    .tone-cell b { font-family:var(--han); font-size:26px; } .tone-cell span { font-family:var(--mono); font-size:11px; color:var(--jade); } .tone-cell small { font-size:10px; color:var(--muted); text-align:center; line-height:1.15; }
+    .tone-head { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; text-align:center; font-size:11px; color:var(--muted); }
+    .tone-head svg { width:40px; height:20px; display:block; margin:0 auto 2px; }
+    .contour { fill:none; stroke:var(--accent); stroke-width:3; stroke-linecap:round; }
+    .contour-grid { stroke:var(--border); stroke-width:1; }
+    .choices .choice.han { font-family:var(--han); font-size:22px; }
+    .gq.han { font-family:var(--han); font-size:clamp(24px, 7vw, 32px); }
+    .numpad { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .numpad button { height:52px; border-radius:14px; background:var(--surface); border:1px solid var(--border); font-weight:800; font-size:20px; }
+    .lv-grid.three { grid-template-columns:repeat(3,1fr); }
+    .noVoice { display:none; }
+    body.mute-voice .noVoice { display:block; }
+  </style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<symbol id="i-layers" viewBox="0 0 24 24"><svg class="lucide lucide-layers" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" /> <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" /> <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" /></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><svg class="lucide lucide-flame" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" /></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24"><svg class="lucide lucide-sparkles" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /> <path d="M20 3v4" /> <path d="M22 5h-4" /> <path d="M4 17v2" /> <path d="M5 18H3" /></symbol>
+<symbol id="i-book-open" viewBox="0 0 24 24"><svg class="lucide lucide-book-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><svg class="lucide lucide-star" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></symbol>
+<symbol id="i-circle-plus" viewBox="0 0 24 24"><svg class="lucide lucide-circle-plus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <path d="M8 12h8" /> <path d="M12 8v8" /></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><svg class="lucide lucide-pencil" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /> <path d="m15 5 4 4" /></symbol>
+<symbol id="i-volume-2" viewBox="0 0 24 24"><svg class="lucide lucide-volume-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /> <path d="M16 9a5 5 0 0 1 0 6" /> <path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>
+<symbol id="i-volume-x" viewBox="0 0 24 24"><svg class="lucide lucide-volume-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /> <line x1="22" x2="16" y1="9" y2="15" /> <line x1="16" x2="22" y1="9" y2="15" /></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><svg class="lucide lucide-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="4" /> <path d="M12 2v2" /> <path d="M12 20v2" /> <path d="m4.93 4.93 1.41 1.41" /> <path d="m17.66 17.66 1.41 1.41" /> <path d="M2 12h2" /> <path d="M20 12h2" /> <path d="m6.34 17.66-1.41 1.41" /> <path d="m19.07 4.93-1.41 1.41" /></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><svg class="lucide lucide-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></symbol>
+<symbol id="i-shuffle" viewBox="0 0 24 24"><svg class="lucide lucide-shuffle" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22" /> <path d="m18 2 4 4-4 4" /> <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2" /> <path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8" /> <path d="m18 14 4 4-4 4" /></symbol>
+<symbol id="i-arrow-left" viewBox="0 0 24 24"><svg class="lucide lucide-arrow-left" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m12 19-7-7 7-7" /> <path d="M19 12H5" /></symbol>
+<symbol id="i-arrow-right" viewBox="0 0 24 24"><svg class="lucide lucide-arrow-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></symbol>
+<symbol id="i-rotate-ccw" viewBox="0 0 24 24"><svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><svg class="lucide lucide-search" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="11" cy="11" r="8" /> <path d="m21 21-4.3-4.3" /></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><svg class="lucide lucide-upload" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <polyline points="17 8 12 3 7 8" /> <line x1="12" x2="12" y1="3" y2="15" /></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><svg class="lucide lucide-download" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <polyline points="7 10 12 15 17 10" /> <line x1="12" x2="12" y1="15" y2="3" /></symbol>
+<symbol id="i-trash-2" viewBox="0 0 24 24"><svg class="lucide lucide-trash-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 6h18" /> <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /> <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /> <line x1="10" x2="10" y1="11" y2="17" /> <line x1="14" x2="14" y1="11" y2="17" /></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><svg class="lucide lucide-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M18 6 6 18" /> <path d="m6 6 12 12" /></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><svg class="lucide lucide-play" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <polygon points="6 3 20 12 6 21 6 3" /></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><svg class="lucide lucide-check" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M20 6 9 17l-5-5" /></symbol>
+<symbol id="i-circle-alert" viewBox="0 0 24 24"><svg class="lucide lucide-circle-alert" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <line x1="12" x2="12" y1="8" y2="12" /> <line x1="12" x2="12.01" y1="16" y2="16" /></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><svg class="lucide lucide-table" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 3v18" /> <rect width="18" height="18" x="3" y="3" rx="2" /> <path d="M3 9h18" /> <path d="M3 15h18" /></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><svg class="lucide lucide-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" /></symbol>
+<symbol id="i-headphones" viewBox="0 0 24 24"><svg class="lucide lucide-headphones" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" /></symbol>
+<symbol id="i-chart-column" viewBox="0 0 24 24"><svg class="lucide lucide-chart-column" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="M18 17V9" /> <path d="M13 17V5" /> <path d="M8 17v-3" /></symbol>
+<symbol id="i-sliders-horizontal" viewBox="0 0 24 24"><svg class="lucide lucide-sliders-horizontal" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <line x1="21" x2="14" y1="4" y2="4" /> <line x1="10" x2="3" y1="4" y2="4" /> <line x1="21" x2="12" y1="12" y2="12" /> <line x1="8" x2="3" y1="12" y2="12" /> <line x1="21" x2="16" y1="20" y2="20" /> <line x1="12" x2="3" y1="20" y2="20" /> <line x1="14" x2="14" y1="2" y2="6" /> <line x1="8" x2="8" y1="10" y2="14" /> <line x1="16" x2="16" y1="18" y2="22" /></symbol>
+<symbol id="i-graduation-cap" viewBox="0 0 24 24"><svg class="lucide lucide-graduation-cap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" /> <path d="M22 10v6" /> <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" /></symbol>
+<symbol id="i-hash" viewBox="0 0 24 24"><svg class="lucide lucide-hash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <line x1="4" x2="20" y1="9" y2="9" /> <line x1="4" x2="20" y1="15" y2="15" /> <line x1="10" x2="8" y1="3" y2="21" /> <line x1="16" x2="14" y1="3" y2="21" /></symbol>
+<symbol id="i-lightbulb" viewBox="0 0 24 24"><svg class="lucide lucide-lightbulb" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /> <path d="M9 18h6" /> <path d="M10 22h4" /></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><svg class="lucide lucide-cloud" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" /></symbol>
+<symbol id="i-cloud-off" viewBox="0 0 24 24"><svg class="lucide lucide-cloud-off" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m2 2 20 20" /> <path d="M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.307-.193" /> <path d="M21.532 16.5A4.5 4.5 0 0 0 17.5 10h-1.79A7.008 7.008 0 0 0 10 5.07" /></symbol>
+<symbol id="i-chevron-down" viewBox="0 0 24 24"><svg class="lucide lucide-chevron-down" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m6 9 6 6 6-6" /></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><svg class="lucide lucide-eye" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /> <circle cx="12" cy="12" r="3" /></symbol>
+<symbol id="i-snail" viewBox="0 0 24 24"><svg class="lucide lucide-snail" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M2 13a6 6 0 1 0 12 0 4 4 0 1 0-8 0 2 2 0 0 0 4 0" /> <circle cx="10" cy="13" r="8" /> <path d="M2 21h12c4.4 0 8-3.6 8-8V7a2 2 0 1 0-4 0v6" /> <path d="M18 3 19.1 5.2" /> <path d="M22 3 20.9 5.2" /></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><svg class="lucide lucide-target" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <circle cx="12" cy="12" r="6" /> <circle cx="12" cy="12" r="2" /></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><svg class="lucide lucide-plus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M5 12h14" /> <path d="M12 5v14" /></symbol>
+<symbol id="i-pen-line" viewBox="0 0 24 24"><svg class="lucide lucide-pen-line" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 20h9" /> <path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z" /></symbol>
+<symbol id="i-book-a" viewBox="0 0 24 24"><svg class="lucide lucide-book-a" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" /> <path d="m8 13 4-7 4 7" /> <path d="M9.1 11h5.7" /></symbol>
+<symbol id="i-languages" viewBox="0 0 24 24"><svg class="lucide lucide-languages" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m5 8 6 6" /> <path d="m4 14 6-6 2-3" /> <path d="M2 5h12" /> <path d="M7 2h1" /> <path d="m22 22-5-10-5 10" /> <path d="M14 18h6" /></symbol>
+</svg>
+
+  <div class="flagbar" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="top-row">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">粵</div>
+        <span class="brand-title">粵講<i>粵啱</i></span>
+      </div>
+      <button class="lvl-pill" data-act="openSettings" aria-label="程度"><svg class="ic sm"><use href="#i-graduation-cap"/></svg><span id="lvlPill">A1</span></button>
+      <button class="icon-btn" data-act="toggleJp" aria-label="粵拼" title="粵拼"><svg class="ic"><use href="#i-languages"/></svg></button>
+      <button class="icon-btn" data-act="openSettings" aria-label="設定" title="設定"><svg class="ic"><use href="#i-sliders-horizontal"/></svg></button>
+      <button class="icon-btn" data-act="toggleTheme" aria-label="日 / 夜" title="日 / 夜"><svg class="ic"><use href="#i-moon" id="themeUse"/></svg></button>
+    </div>
+    <nav class="subnav" id="subnav" aria-label="分類"></nav>
+  </header>
+
+  <main id="main">
+    <div class="fb warn noVoice" id="noVoice">呢部機冇廣東話聲音，聽唔到讀音。iPhone：設定 → 輔助使用 → 朗讀內容 → 聲音 → 中文（香港）。</div>
+
+    <!-- 生字 · 溫習 -->
+    <section class="view" id="v-cards-study">
+      <div class="row between wrap">
+        <div class="seg" id="deckSeg" role="tablist" aria-label="字卡">
+          <button data-act="setDeck" data-arg="level">程度 <span class="lvlTxt">A1</span></button>
+          <button data-act="setDeck" data-arg="saved">⭐ 收藏</button>
+          <button data-act="setDeck" data-arg="mine">我嘅字</button>
+        </div>
+        <div class="row">
+          <button class="btn sm" data-act="toggleDir" id="dirBtn"><svg class="ic sm"><use href="#i-languages"/></svg><span id="dirTxt">粵 → 英</span></button>
+          <button class="btn sm square" data-act="shuffle" aria-label="洗牌"><svg class="ic sm"><use href="#i-shuffle"/></svg></button>
+        </div>
+      </div>
+      <div class="row between"><span class="meta" id="deckMeta"></span><span class="meta" id="deckStats"></span></div>
+      <div class="progress"><i id="deckBar"></i></div>
+      <div class="scene" id="scene" data-act="flip">
+        <div class="flip" id="flip">
+          <div class="face front">
+            <div class="row between"><span class="tag" id="fcTag"></span><span class="row"><button class="icon-btn" data-act="star" id="fcStar" aria-label="收藏"><svg class="ic"><use href="#i-star"/></svg></button><button class="icon-btn" data-act="sayCard" aria-label="讀出嚟"><svg class="ic"><use href="#i-volume-2"/></svg></button></span></div>
+            <div class="face-mid" id="fcFront"></div>
+            <div class="hint-line"><svg class="ic sm"><use href="#i-rotate-ccw"/></svg> 撳一下反轉 · 掃走下一張</div>
+          </div>
+          <div class="face back">
+            <div class="row between"><span class="tag accent" id="fcTag2"></span><button class="icon-btn" data-act="sayExample" aria-label="讀例句"><svg class="ic"><use href="#i-volume-2"/></svg></button></div>
+            <div class="face-mid back-scroll" id="fcBack"></div>
+          </div>
+        </div>
+      </div>
+      <div class="empty card" id="fcEmpty" hidden></div>
+      <div class="rate">
+        <button class="btn" data-act="prev" aria-label="上一張"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
+        <button class="btn bad" data-act="rate" data-arg="again">再嚟<small>溫多次</small></button>
+        <button class="btn" data-act="rate" data-arg="good">識<small id="goodDays">+1 日</small></button>
+        <button class="btn ok" data-act="rate" data-arg="mastered">熟晒<small>收起</small></button>
+        <button class="btn" data-act="next" aria-label="下一張"><svg class="ic"><use href="#i-arrow-right"/></svg></button>
+      </div>
+    </section>
+
+    <!-- 生字 · 字庫 -->
+    <section class="view" id="v-cards-list" hidden>
+      <div class="row"><div class="search"><svg class="ic"><use href="#i-search"/></svg><input class="input" id="listQ" placeholder="搵字、粵拼或英文" autocomplete="off"></div></div>
+      <div class="list" id="wordList"></div>
+    </section>
+
+    <!-- 生字 · 加字 -->
+    <section class="view narrow" id="v-cards-add" hidden>
+      <div class="card pad stack">
+        <div class="h2 han">加一個自己嘅字</div>
+        <label class="field"><span class="label">廣東話</span><input class="input han" id="nWord" placeholder="例如：hea" autocomplete="off"></label>
+        <label class="field"><span class="label">粵拼</span><input class="input" id="nJp" placeholder="he3" autocomplete="off" autocapitalize="off"></label>
+        <label class="field"><span class="label">英文 / 意思</span><input class="input" id="nMean" placeholder="to laze about" autocomplete="off"></label>
+        <label class="field"><span class="label">例句（可以唔寫）</span><input class="input han" id="nEx" autocomplete="off"></label>
+        <button class="btn primary block" data-act="addWord"><svg class="ic"><use href="#i-plus"/></svg>加入</button>
+      </div>
+      <div class="list" id="mineList"></div>
+    </section>
+
+    <!-- 聲調 · 認聲調 -->
+    <section class="view narrow" id="v-tones-quiz" hidden>
+      <div class="card pad stack" style="align-items:center;text-align:center">
+        <span class="label">聽吓係第幾聲</span>
+        <button class="sp big" data-act="sayTone" aria-label="再聽一次"><svg class="ic"><use href="#i-volume-2"/></svg></button>
+        <div class="gq han" id="toneQ" style="min-height:1.4em"></div>
+        <div class="jp" id="toneJp"></div>
+      </div>
+      <div class="tone-btns" id="toneBtns"></div>
+      <div class="row between"><span class="meta" id="toneScore"></span><button class="btn sm" data-act="toneNext">下一個 <svg class="ic sm"><use href="#i-arrow-right"/></svg></button></div>
+    </section>
+
+    <!-- 聲調 · 聲調表 -->
+    <section class="view" id="v-tones-table" hidden>
+      <div class="card pad stack">
+        <div class="h2 han">六個聲調</div>
+        <p class="meta" style="margin:0">同一個音，唔同聲調，意思完全唔同。撳個字聽吓。</p>
+        <div class="tone-head" id="toneHead"></div>
+        <div class="stack" id="toneTable"></div>
+      </div>
+    </section>
+
+    <!-- 練習 -->
+    <section class="view narrow" id="v-prac-measure" hidden></section>
+    <section class="view narrow" id="v-prac-particle" hidden></section>
+    <section class="view narrow" id="v-prac-swap" hidden></section>
+    <section class="view narrow" id="v-prac-listen" hidden></section>
+    <section class="view narrow" id="v-prac-number" hidden></section>
+
+    <section class="view" id="v-stats" hidden></section>
+  </main>
+
+  <nav class="tabbar" aria-label="主目錄">
+    <div class="tabbar-in">
+      <button class="tab" data-act="tab" data-arg="cards"><svg class="ic"><use href="#i-layers"/></svg><span>生字</span></button>
+      <button class="tab" data-act="tab" data-arg="tones"><svg class="ic"><use href="#i-headphones"/></svg><span>聲調</span></button>
+      <button class="tab" data-act="tab" data-arg="prac"><svg class="ic"><use href="#i-target"/></svg><span>練習</span></button>
+      <button class="tab" data-act="tab" data-arg="stats"><svg class="ic"><use href="#i-chart-column"/></svg><span>進度</span></button>
+    </div>
+  </nav>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ==============================================================
+   粵講粵啱 · data
+   word|jyutping|English|普通話 (blank = same)|example|example jyutping|example English
+   ============================================================== */
+const WORDS = {
+A1: `
+你好|nei5 hou2|hello||你好，食咗飯未呀？|nei5 hou2, sik6 zo2 faan6 mei6 aa3?|Hello, have you eaten yet?
+早晨|zou2 san4|good morning|早上好|早晨！今日好凍呀。|zou2 san4! gam1 jat6 hou2 dung3 aa3.|Morning! It's cold today.
+唔該|m4 goi1|thanks (for a service); excuse me|謝謝 / 勞駕|唔該，一杯奶茶。|m4 goi1, jat1 bui1 naai5 caa4.|One milk tea, please.
+多謝|do1 ze6|thank you (for a gift)|謝謝|多謝你嘅禮物！|do1 ze6 nei5 ge3 lai5 mat6!|Thanks for your present!
+對唔住|deoi3 m4 zyu6|sorry|對不起|對唔住，我遲到。|deoi3 m4 zyu6, ngo5 ci4 dou3.|Sorry, I'm late.
+唔緊要|m4 gan2 jiu3|never mind, it's fine|沒關係|唔緊要，慢慢嚟。|m4 gan2 jiu3, maan6 maan2 lei4.|It's fine, take your time.
+拜拜|baai1 baai3|bye|再見|聽日見，拜拜！|ting1 jat6 gin3, baai1 baai3!|See you tomorrow, bye!
+我|ngo5|I, me||我係 Wei。|ngo5 hai6 Wei.|I'm Wei.
+你|nei5|you||你住喺邊度？|nei5 zyu6 hai2 bin1 dou6?|Where do you live?
+佢|keoi5|he, she, it|他 / 她|佢係我朋友。|keoi5 hai6 ngo5 pang4 jau5.|He's my friend.
+我哋|ngo5 dei6|we, us|我們|我哋一齊去啦。|ngo5 dei6 jat1 cai4 heoi3 laa1.|Let's go together.
+你哋|nei5 dei6|you (plural)|你們|你哋幾點到？|nei5 dei6 gei2 dim2 dou3?|What time will you all arrive?
+佢哋|keoi5 dei6|they|他們|佢哋喺度等緊。|keoi5 dei6 hai2 dou6 dang2 gan2.|They're waiting here.
+係|hai6|to be; yes|是|係呀，我係香港人。|hai6 aa3, ngo5 hai6 hoeng1 gong2 jan4.|Yes, I'm from Hong Kong.
+唔係|m4 hai6|is not; no|不是|唔係我㗎！|m4 hai6 ngo5 gaa3!|It wasn't me!
+唔|m4|not|不|我唔食辣。|ngo5 m4 sik6 laat6.|I don't eat spicy food.
+有|jau5|to have; there is||你有冇時間？|nei5 jau5 mou5 si4 gaan3?|Do you have time?
+冇|mou5|not have; there isn't|沒有|我冇錢呀。|ngo5 mou5 cin2 aa3.|I've got no money.
+喺|hai2|at, in; to be at|在|我喺屋企。|ngo5 hai2 uk1 kei2.|I'm at home.
+嘅|ge3|possessive particle ('s)|的|呢本係我嘅書。|ni1 bun2 hai6 ngo5 ge3 syu1.|This is my book.
+呢個|ni1 go3|this one|這個|呢個幾多錢？|ni1 go3 gei2 do1 cin2?|How much is this?
+嗰個|go2 go3|that one|那個|我要嗰個。|ngo5 jiu3 go2 go3.|I want that one.
+乜嘢|mat1 je5|what|什麼|你講乜嘢呀？|nei5 gong2 mat1 je5 aa3?|What are you saying?
+邊個|bin1 go3|who; which one|誰 / 哪個|邊個打電話嚟？|bin1 go3 daa2 din6 waa2 lei4?|Who's calling?
+邊度|bin1 dou6|where|哪裡|洗手間喺邊度？|sai2 sau2 gaan1 hai2 bin1 dou6?|Where's the toilet?
+點解|dim2 gaai2|why|為什麼|點解你唔嚟？|dim2 gaai2 nei5 m4 lei4?|Why didn't you come?
+點樣|dim2 joeng2|how|怎樣|呢個字點樣讀？|ni1 go3 zi6 dim2 joeng2 duk6?|How do you read this character?
+幾多|gei2 do1|how many, how much|多少|幾多錢呀？|gei2 do1 cin2 aa3?|How much is it?
+幾時|gei2 si4|when|什麼時候|你幾時返嚟？|nei5 gei2 si4 faan1 lei4?|When are you coming back?
+食|sik6|to eat|吃|我哋去食點心。|ngo5 dei6 heoi3 sik6 dim2 sam1.|Let's go for dim sum.
+飲|jam2|to drink|喝|飲杯茶先。|jam2 bui1 caa4 sin1.|Have a cup of tea first.
+睇|tai2|to look, watch, read|看|我想睇戲。|ngo5 soeng2 tai2 hei3.|I want to watch a film.
+講|gong2|to speak, say|說|你識唔識講廣東話？|nei5 sik1 m4 sik1 gong2 gwong2 dung1 waa2?|Can you speak Cantonese?
+去|heoi3|to go||你去邊呀？|nei5 heoi3 bin1 aa3?|Where are you going?
+嚟|lei4|to come|來|快啲嚟！|faai3 di1 lei4!|Come quickly!
+返|faan1|to return; go (to work, school)|回|我要返屋企。|ngo5 jiu3 faan1 uk1 kei2.|I need to go home.
+行|haang4|to walk|走|我哋行過去啦。|ngo5 dei6 haang4 gwo3 heoi3 laa1.|Let's walk over.
+企|kei5|to stand|站|唔好企喺度。|m4 hou2 kei5 hai2 dou6.|Don't stand there.
+坐|co5|to sit; to take (transport)||請坐。|cing2 co5.|Please sit.
+瞓覺|fan3 gaau3|to sleep|睡覺|好夜喇，去瞓覺啦。|hou2 je6 laa3, heoi3 fan3 gaau3 laa1.|It's late, go to sleep.
+鍾意|zung1 ji3|to like|喜歡|我好鍾意貓。|ngo5 hou2 zung1 ji3 maau1.|I really like cats.
+想|soeng2|to want to; to think||我想飲咖啡。|ngo5 soeng2 jam2 gaa3 fe1.|I'd like a coffee.
+要|jiu3|to want; to need||你要唔要糖？|nei5 jiu3 m4 jiu3 tong4?|Do you want sugar?
+識|sik1|to know how; can; to know (a person)|會 / 認識|我識游水。|ngo5 sik1 jau4 seoi2.|I can swim.
+知|zi1|to know (a fact)|知道|我唔知呀。|ngo5 m4 zi1 aa3.|I don't know.
+買|maai5|to buy||我去買餸。|ngo5 heoi3 maai5 sung3.|I'm going grocery shopping.
+畀|bei2|to give; to let|給|畀杯水我。|bei2 bui1 seoi2 ngo5.|Give me a glass of water.
+做|zou6|to do, to make||你做緊乜嘢？|nei5 zou6 gan2 mat1 je5?|What are you doing?
+等|dang2|to wait||等我一陣。|dang2 ngo5 jat1 zan6.|Wait for me a moment.
+好|hou2|good; very||今日天氣好好。|gam1 jat6 tin1 hei3 hou2 hou2.|The weather's great today.
+靚|leng3|pretty, nice|漂亮|你件衫好靚。|nei5 gin6 saam1 hou2 leng3.|Your top is lovely.
+大|daai6|big||呢間屋好大。|ni1 gaan1 uk1 hou2 daai6.|This flat is big.
+細|sai3|small|小|我細佬十歲。|ngo5 sai3 lou2 sap6 seoi3.|My little brother is ten.
+多|do1|many, much||今日好多人。|gam1 jat6 hou2 do1 jan4.|Lots of people today.
+少|siu2|few, little||今日少啲人。|gam1 jat6 siu2 di1 jan4.|Fewer people today.
+熱|jit6|hot||今日好熱呀。|gam1 jat6 hou2 jit6 aa3.|It's so hot today.
+凍|dung3|cold|冷|杯嘢凍咗。|bui1 je5 dung3 zo2.|The drink's gone cold.
+貴|gwai3|expensive||咁貴嘅！|gam3 gwai3 ge2!|That's so expensive!
+平|peng4|cheap|便宜|呢度啲嘢好平。|ni1 dou6 di1 je5 hou2 peng4.|Things here are cheap.
+屋企|uk1 kei2|home; family|家|我屋企有三個人。|ngo5 uk1 kei2 jau5 saam1 go3 jan4.|There are three people in my family.
+朋友|pang4 jau5|friend||佢係我好朋友。|keoi5 hai6 ngo5 hou2 pang4 jau5.|She's my good friend.
+媽媽|maa4 maa1|mum||媽媽煮飯好好食。|maa4 maa1 zyu2 faan6 hou2 hou2 sik6.|Mum's cooking is delicious.
+爸爸|baa4 baa1|dad||爸爸返咗工。|baa4 baa1 faan1 zo2 gung1.|Dad has gone to work.
+水|seoi2|water||唔該，一杯暖水。|m4 goi1, jat1 bui1 nyun5 seoi2.|A glass of warm water, please.
+茶|caa4|tea||飲咗茶未呀？|jam2 zo2 caa4 mei6 aa3?|Have you had yum cha yet?
+飯|faan6|rice; meal||我哋食飯啦。|ngo5 dei6 sik6 faan6 laa1.|Let's eat.
+麵|min6|noodles|面|一碗雲吞麵。|jat1 wun2 wan4 tan1 min6.|A bowl of wonton noodles.
+咖啡|gaa3 fe1|coffee||我每朝都飲咖啡。|ngo5 mui5 ziu1 dou1 jam2 gaa3 fe1.|I drink coffee every morning.
+貓|maau1|cat||隻貓瞓緊覺。|zek3 maau1 fan3 gan2 gaau3.|The cat is sleeping.
+狗|gau2|dog||佢養咗兩隻狗。|keoi5 joeng5 zo2 loeng5 zek3 gau2.|She has two dogs.
+今日|gam1 jat6|today|今天|今日星期幾？|gam1 jat6 sing1 kei4 gei2?|What day is it today?
+聽日|ting1 jat6|tomorrow|明天|聽日見！|ting1 jat6 gin3!|See you tomorrow!
+琴日|kam4 jat6|yesterday|昨天|琴日落雨。|kam4 jat6 lok6 jyu5.|It rained yesterday.
+而家|ji4 gaa1|now|現在|而家幾點？|ji4 gaa1 gei2 dim2?|What time is it now?
+兩|loeng5|two (before a measure word)||兩杯咖啡，唔該。|loeng5 bui1 gaa3 fe1, m4 goi1.|Two coffees, please.
+蚊|man1|dollar (spoken)|塊（錢）|一百蚊。|jat1 baak3 man1.|A hundred dollars.
+廣東話|gwong2 dung1 waa2|Cantonese|粵語|我學緊廣東話。|ngo5 hok6 gan2 gwong2 dung1 waa2.|I'm learning Cantonese.
+香港|hoeng1 gong2|Hong Kong||我好想去香港。|ngo5 hou2 soeng2 heoi3 hoeng1 gong2.|I'd love to go to Hong Kong.
+人|jan4|person||佢係好人。|keoi5 hai6 hou2 jan4.|He's a good person.
+嘢|je5|thing, stuff|東西|你買咗乜嘢？|nei5 maai5 zo2 mat1 je5?|What did you buy?
+好食|hou2 sik6|delicious|好吃|呢度啲點心好好食。|ni1 dou6 di1 dim2 sam1 hou2 hou2 sik6.|The dim sum here is delicious.
+攰|gui6|tired|累|我今日好攰。|ngo5 gam1 jat6 hou2 gui6.|I'm tired today.
+肚餓|tou5 ngo6|hungry|餓|你肚唔肚餓？|nei5 tou5 m4 tou5 ngo6?|Are you hungry?
+得|dak1|OK; can||得，冇問題。|dak1, mou5 man6 tai4.|OK, no problem.
+冇問題|mou5 man6 tai4|no problem|沒問題|聽日交畀你，冇問題。|ting1 jat6 gaau1 bei2 nei5, mou5 man6 tai4.|I'll hand it to you tomorrow, no problem.
+`,
+A2: `
+返工|faan1 gung1|to go to work|上班|你幾點返工？|nei5 gei2 dim2 faan1 gung1?|What time do you start work?
+放工|fong3 gung1|to finish work|下班|放工一齊食飯？|fong3 gung1 jat1 cai4 sik6 faan6?|Dinner together after work?
+返學|faan1 hok6|to go to school|上學|細路仔八點返學。|sai3 lou6 zai2 baat3 dim2 faan1 hok6.|The kids go to school at eight.
+搭|daap3|to take (transport)|乘 / 坐|我搭地鐵返工。|ngo5 daap3 dei6 tit3 faan1 gung1.|I take the MTR to work.
+巴士|baa1 si2|bus|公交車|巴士嚟緊喇。|baa1 si2 lei4 gan2 laa3.|The bus is coming.
+的士|dik1 si2|taxi|出租車|我哋搭的士啦。|ngo5 dei6 daap3 dik1 si2 laa1.|Let's take a taxi.
+地鐵|dei6 tit3|metro, MTR||地鐵站喺前面。|dei6 tit3 zaam6 hai2 cin4 min6.|The MTR station is up ahead.
+落雨|lok6 jyu5|to rain|下雨|出面落緊雨。|ceot1 min6 lok6 gan2 jyu5.|It's raining outside.
+遮|ze1|umbrella|雨傘|記得帶遮。|gei3 dak1 daai3 ze1.|Remember to take an umbrella.
+衫|saam1|clothes; top|衣服|我去買衫。|ngo5 heoi3 maai5 saam1.|I'm going clothes shopping.
+鞋|haai4|shoes||呢對鞋好舒服。|ni1 deoi3 haai4 hou2 syu1 fuk6.|These shoes are comfy.
+手機|sau2 gei1|mobile phone||我部手機冇電。|ngo5 bou6 sau2 gei1 mou5 din6.|My phone's out of battery.
+電話|din6 waa2|telephone||我打電話畀你。|ngo5 daa2 din6 waa2 bei2 nei5.|I'll call you.
+錢|cin2|money||你帶咗錢未？|nei5 daai3 zo2 cin2 mei6?|Have you brought money?
+餐廳|caan1 teng1|restaurant|飯館|嗰間餐廳好多人排隊。|go2 gaan1 caan1 teng1 hou2 do1 jan4 paai4 deoi2.|Lots of people queue at that restaurant.
+茶餐廳|caa4 caan1 teng1|Hong Kong-style café||我哋去茶餐廳食早餐。|ngo5 dei6 heoi3 caa4 caan1 teng1 sik6 zou2 caan1.|Let's have breakfast at a cha chaan teng.
+奶茶|naai5 caa4|milk tea||凍奶茶，少甜。|dung3 naai5 caa4, siu2 tim4.|Iced milk tea, less sweet.
+點心|dim2 sam1|dim sum||我最鍾意食點心。|ngo5 zeoi3 zung1 ji3 sik6 dim2 sam1.|I love dim sum most.
+埋單|maai4 daan1|the bill, please|結賬|唔該埋單。|m4 goi1 maai4 daan1.|The bill, please.
+街市|gaai1 si5|wet market|菜市場|阿媽去咗街市。|aa3 maa1 heoi3 zo2 gaai1 si5.|Mum's gone to the market.
+屋|uk1|house, flat|房子|佢啱啱搬咗屋。|keoi5 aam1 aam1 bun1 zo2 uk1.|He's just moved house.
+房|fong2|room|房間|我間房好細。|ngo5 gaan1 fong2 hou2 sai3.|My room is tiny.
+廁所|ci3 so2|toilet||廁所喺邊？|ci3 so2 hai2 bin1?|Where's the toilet?
+醫生|ji1 sang1|doctor||你要睇醫生。|nei5 jiu3 tai2 ji1 sang1.|You need to see a doctor.
+病|beng6|ill; illness|生病|佢病咗，唔嚟喇。|keoi5 beng6 zo2, m4 lei4 laa3.|She's ill and isn't coming.
+頭痛|tau4 tung3|headache||我有啲頭痛。|ngo5 jau5 di1 tau4 tung3.|I have a bit of a headache.
+傾偈|king1 gai2|to chat|聊天|我哋傾吓偈啦。|ngo5 dei6 king1 haa5 gai2 laa1.|Let's have a chat.
+玩|waan2|to play, have fun||出去玩啦！|ceot1 heoi3 waan2 laa1!|Let's go out and have fun!
+學|hok6|to learn||我學咗半年廣東話。|ngo5 hok6 zo2 bun3 nin4 gwong2 dung1 waa2.|I've been learning Cantonese for half a year.
+教|gaau3|to teach||你可唔可以教我？|nei5 ho2 m4 ho2 ji5 gaau3 ngo5?|Could you teach me?
+明|ming4|to understand|明白|你明唔明呀？|nei5 ming4 m4 ming4 aa3?|Do you understand?
+記得|gei3 dak1|to remember||你記唔記得我？|nei5 gei3 m4 gei3 dak1 ngo5?|Do you remember me?
+唔記得|m4 gei3 dak1|to forget|忘記|我唔記得帶鎖匙。|ngo5 m4 gei3 dak1 daai3 so2 si4.|I forgot my keys.
+搵|wan2|to look for, to find|找|我搵唔到部手機。|ngo5 wan2 m4 dou2 bou6 sau2 gei1.|I can't find my phone.
+攞|lo2|to take, to get|拿|幫我攞杯水。|bong1 ngo5 lo2 bui1 seoi2.|Get me a glass of water.
+着|zoek3|to wear|穿|今日着多件衫。|gam1 jat6 zoek3 do1 gin6 saam1.|Wear an extra layer today.
+洗|sai2|to wash||食飯前要洗手。|sik6 faan6 cin4 jiu3 sai2 sau2.|Wash your hands before eating.
+沖涼|cung1 loeng4|to shower|洗澡|我去沖涼先。|ngo5 heoi3 cung1 loeng4 sin1.|I'm going to shower first.
+煮飯|zyu2 faan6|to cook|做飯|今晚邊個煮飯？|gam1 maan5 bin1 go3 zyu2 faan6?|Who's cooking tonight?
+今晚|gam1 maan5|tonight||今晚去邊度食？|gam1 maan5 heoi3 bin1 dou6 sik6?|Where shall we eat tonight?
+朝早|ziu1 zou2|morning|早上|我朝早七點起身。|ngo5 ziu1 zou2 cat1 dim2 hei2 san1.|I get up at seven in the morning.
+晏晝|aan3 zau3|noon; afternoon|中午 / 下午|晏晝食咩好？|aan3 zau3 sik6 me1 hou2?|What shall we have for lunch?
+夜晚|je6 maan5|evening, night|晚上|夜晚好靜。|je6 maan5 hou2 zing6.|It's quiet at night.
+星期|sing1 kei4|week||下個星期放假。|haa6 go3 sing1 kei4 fong3 gaa3.|We're off next week.
+禮拜日|lai5 baai3 jat6|Sunday|星期天|禮拜日我哋去行山。|lai5 baai3 jat6 ngo5 dei6 heoi3 haang4 saan1.|We go hiking on Sunday.
+行山|haang4 saan1|to go hiking|爬山|香港好多地方可以行山。|hoeng1 gong2 hou2 do1 dei6 fong1 ho2 ji5 haang4 saan1.|There are lots of places to hike in Hong Kong.
+行街|haang4 gaai1|to go shopping, stroll|逛街|放假我哋去行街。|fong3 gaa3 ngo5 dei6 heoi3 haang4 gaai1.|We go shopping on days off.
+一齊|jat1 cai4|together|一起|一齊影張相！|jat1 cai4 jing2 zoeng1 soeng2!|Let's take a photo together!
+影相|jing2 soeng2|to take a photo|拍照|呢度唔可以影相。|ni1 dou6 m4 ho2 ji5 jing2 soeng2.|No photos here.
+靚仔|leng3 zai2|handsome guy|帥哥|佢個仔好靚仔。|keoi5 go3 zai2 hou2 leng3 zai2.|Her son is handsome.
+靚女|leng3 neoi2|pretty girl; miss|美女|靚女，要啲乜嘢？|leng3 neoi2, jiu3 di1 mat1 je5?|What would you like, miss?
+老公|lou5 gung1|husband||我老公識煮飯。|ngo5 lou5 gung1 sik1 zyu2 faan6.|My husband can cook.
+老婆|lou5 po4|wife||佢老婆係醫生。|keoi5 lou5 po4 hai6 ji1 sang1.|His wife is a doctor.
+細路|sai3 lou6|child|小孩|啲細路好開心。|di1 sai3 lou6 hou2 hoi1 sam1.|The kids are happy.
+開心|hoi1 sam1|happy||識到你好開心。|sik1 dou2 nei5 hou2 hoi1 sam1.|Nice to meet you.
+嬲|nau1|angry|生氣|佢仲嬲緊我。|keoi5 zung6 nau1 gan2 ngo5.|She's still mad at me.
+驚|geng1|afraid|怕|我好驚狗。|ngo5 hou2 geng1 gau2.|I'm scared of dogs.
+快啲|faai3 di1|quicker; hurry up|快點|快啲啦，遲喇！|faai3 di1 laa1, ci4 laa3!|Hurry up, we're late!
+慢慢|maan6 maan2|slowly; take your time||慢慢行，小心啲。|maan6 maan2 haang4, siu2 sam1 di1.|Walk slowly, be careful.
+啱|ngaam1|right, correct|對|你講得啱。|nei5 gong2 dak1 ngaam1.|You're right.
+錯|co3|wrong||我諗錯咗。|ngo5 nam2 co3 zo2.|I got it wrong.
+諗|nam2|to think|想|等我諗吓先。|dang2 ngo5 nam2 haa5 sin1.|Let me think about it.
+話|waa6|to say, to tell|說|佢話佢唔嚟。|keoi5 waa6 keoi5 m4 lei4.|He said he isn't coming.
+聽|teng1|to listen, to hear||你聽唔聽到？|nei5 teng1 m4 teng1 dou2?|Can you hear?
+好彩|hou2 coi2|luckily|幸好|好彩冇落雨。|hou2 coi2 mou5 lok6 jyu5.|Luckily it didn't rain.
+`,
+B1: `
+搞掂|gaau2 dim6|done, sorted|搞定|份報告搞掂咗。|fan6 bou3 gou3 gaau2 dim6 zo2.|The report is done.
+麻煩|maa4 faan4|troublesome; to trouble someone||麻煩你幫我睇吓。|maa4 faan4 nei5 bong1 ngo5 tai2 haa5.|Could you take a look for me?
+求其|kau4 kei4|any old way, careless|隨便|求其食啲嘢算啦。|kau4 kei4 sik6 di1 je5 syun3 laa1.|Let's just grab anything.
+是但|si6 daan6|whatever, any|隨便|是但啦，你揀。|si6 daan6 laa1, nei5 gaan2.|Whatever, you choose.
+揀|gaan2|to choose|選|你揀邊個？|nei5 gaan2 bin1 go3?|Which one do you pick?
+鬼咁|gwai2 gam3|insanely (slang)|非常|今日鬼咁熱！|gam1 jat6 gwai2 gam3 jit6!|It's insanely hot today!
+犀利|sai1 lei6|awesome, impressive|厲害|你好犀利呀！|nei5 hou2 sai1 lei6 aa3!|You're amazing!
+勁|ging6|great, strong|厲害|呢套戲好勁。|ni1 tou3 hei3 hou2 ging6.|This film is great.
+得閒|dak1 haan4|free (not busy)|有空|你今晚得唔得閒？|nei5 gam1 maan5 dak1 m4 dak1 haan4?|Are you free tonight?
+唔得閒|m4 dak1 haan4|busy|沒空|我呢排好唔得閒。|ngo5 ni1 paai2 hou2 m4 dak1 haan4.|I've been really busy lately.
+呢排|ni1 paai2|lately|最近|你呢排點呀？|nei5 ni1 paai2 dim2 aa3?|How have you been lately?
+頭先|tau4 sin1|just now|剛才|頭先有人搵你。|tau4 sin1 jau5 jan4 wan2 nei5.|Someone was looking for you just now.
+啱啱|aam1 aam1|just (now); exactly|剛剛|我啱啱到。|ngo5 aam1 aam1 dou3.|I've just arrived.
+一陣|jat1 zan6|in a moment|一會兒|一陣見！|jat1 zan6 gin3!|See you in a bit!
+即刻|zik1 hak1|immediately|馬上|我即刻嚟。|ngo5 zik1 hak1 lei4.|I'm coming right away.
+差唔多|caa1 m4 do1|almost; about|差不多|差唔多夠鐘喇。|caa1 m4 do1 gau3 zung1 laa3.|It's almost time.
+夠鐘|gau3 zung1|it's time|到點了|夠鐘食飯喇。|gau3 zung1 sik6 faan6 laa3.|It's time to eat.
+冇所謂|mou5 so2 wai6|I don't mind|無所謂|去邊度都冇所謂。|heoi3 bin1 dou6 dou1 mou5 so2 wai6.|I don't mind where we go.
+唔使|m4 sai2|no need|不用|唔使客氣。|m4 sai2 haak3 hei3.|Don't mention it.
+梗係|gang2 hai6|of course|當然|梗係得啦！|gang2 hai6 dak1 laa1!|Of course!
+可能|ho2 nang4|maybe||佢可能遲啲先到。|keoi5 ho2 nang4 ci4 di1 sin1 dou3.|He may arrive a bit later.
+應該|jing1 goi1|should; probably||你應該早啲瞓。|nei5 jing1 goi1 zou2 di1 fan3.|You should sleep earlier.
+掛住|gwaa3 zyu6|to miss (someone)|想念|我好掛住你。|ngo5 hou2 gwaa3 zyu6 nei5.|I miss you so much.
+擔心|daam1 sam1|to worry||唔使擔心，我搞得掂。|m4 sai2 daam1 sam1, ngo5 gaau2 dak1 dim6.|Don't worry, I can handle it.
+失望|sat1 mong6|disappointed||佢好失望。|keoi5 hou2 sat1 mong6.|She's very disappointed.
+尷尬|gaam3 gaai3|awkward||場面好尷尬。|coeng4 min6 hou2 gaam3 gaai3.|It was so awkward.
+悶|mun6|bored; boring|無聊|呢個會好悶。|ni1 go3 wui2 hou2 mun6.|This meeting is boring.
+過癮|gwo3 jan5|great fun, satisfying||打邊爐好過癮！|daa2 bin1 lou4 hou2 gwo3 jan5!|Hot pot is so much fun!
+打邊爐|daa2 bin1 lou4|to have hot pot|吃火鍋|冬天梗係打邊爐。|dung1 tin1 gang2 hai6 daa2 bin1 lou4.|Winter means hot pot, of course.
+飲茶|jam2 caa4|to have yum cha||禮拜日一家人去飲茶。|lai5 baai3 jat6 jat1 gaa1 jan4 heoi3 jam2 caa4.|The family goes for yum cha on Sundays.
+宵夜|siu1 je2|late-night snack|夜宵|食唔食宵夜？|sik6 m4 sik6 siu1 je2?|Fancy a late-night snack?
+外賣|ngoi6 maai6|takeaway||今晚叫外賣啦。|gam1 maan5 giu3 ngoi6 maai6 laa1.|Let's order takeaway tonight.
+排隊|paai4 deoi2|to queue||要排半個鐘。|jiu3 paai4 bun3 go3 zung1.|You have to queue for half an hour.
+老細|lou5 sai3|boss|老闆|我老細人好好。|ngo5 lou5 sai3 jan4 hou2 hou2.|My boss is really nice.
+同事|tung4 si6|colleague||我同同事去食晏。|ngo5 tung4 tung4 si6 heoi3 sik6 aan3.|I'm having lunch with colleagues.
+食晏|sik6 aan3|to have lunch|吃午飯|一齊食晏？|jat1 cai4 sik6 aan3?|Lunch together?
+開會|hoi1 wui2|to have a meeting||我而家開緊會。|ngo5 ji4 gaa1 hoi1 gan2 wui2.|I'm in a meeting now.
+加班|gaa1 baan1|to work overtime||今晚又要加班。|gam1 maan5 jau6 jiu3 gaa1 baan1.|Overtime again tonight.
+請假|ceng2 gaa3|to take leave||我聽日請假。|ngo5 ting1 jat6 ceng2 gaa3.|I'm taking tomorrow off.
+人工|jan4 gung1|salary|工資|今年加人工。|gam1 nin4 gaa1 jan4 gung1.|A pay rise this year.
+一路平安|jat1 lou6 ping4 on1|have a safe trip||一路平安，到咗話我知！|jat1 lou6 ping4 on1, dou3 zo2 waa6 ngo5 zi1!|Safe trip, tell me when you get there!
+恭喜發財|gung1 hei2 faat3 coi4|Happy New Year (wishing wealth)||恭喜發財，利是逗來！|gung1 hei2 faat3 coi4, lai6 si6 dau6 loi4!|Happy New Year, red packets please!
+利是|lai6 si6|red packet|紅包|過年派利是。|gwo3 nin4 paai3 lai6 si6.|We hand out red packets at New Year.
+執|zap1|to tidy; to pick up|收拾 / 撿|執好間房先出去。|zap1 hou2 gaan1 fong2 sin1 ceot1 heoi3.|Tidy your room before going out.
+撞|zong6|to bump into||頭先喺街撞到佢。|tau4 sin1 hai2 gaai1 zong6 dou2 keoi5.|I bumped into him on the street just now.
+氹|tam3|to coax, to cheer up|哄|佢嬲咗，你去氹吓佢。|keoi5 nau1 zo2, nei5 heoi3 tam3 haa5 keoi5.|She's upset, go cheer her up.
+吹水|ceoi1 seoi2|to chat idly, shoot the breeze|閒聊|佢哋喺度吹水。|keoi5 dei6 hai2 dou6 ceoi1 seoi2.|They're shooting the breeze.
+扮|baan6|to pretend|假裝|唔好扮唔知。|m4 hou2 baan6 m4 zi1.|Don't pretend you don't know.
+`
+};
+
+/* the six tones: number, pitch contour (5 = high), a set of characters that differ only by tone */
+const TONES = [[1, '55', '高平'], [2, '35', '高升'], [3, '33', '中平'], [4, '21', '低降'], [5, '23', '低升'], [6, '22', '低平']];
+const TONE_SETS = [
+  ['si', '詩史試時市事', ['poem', 'history', 'try', 'time', 'market', 'matter']],
+  ['fu', '夫苦富符婦父', ['husband', 'bitter', 'rich', 'symbol', 'woman', 'father']],
+  ['ji', '衣椅意兒耳二', ['clothing', 'chair', 'meaning', 'child', 'ear', 'two']],
+  ['se', '些寫瀉蛇社射', ['some', 'write', 'pour', 'snake', 'society', 'shoot']],
+  ['jau', '優柚幼油有又', ['excellent', 'pomelo', 'young', 'oil', 'have', 'again']],
+  ['fan', '分粉訓焚奮份', ['divide', 'powder', 'teach', 'burn', 'strive', 'portion']],
+  ['wai', '威毀畏圍偉胃', ['might', 'destroy', 'fear', 'surround', 'great', 'stomach']]
+];
+
+/* measure words: noun, its jyutping, English, the right measure word */
+const MEASURE = [
+  ['書', 'syu1', 'book', '本'], ['車', 'ce1', 'car', '架'], ['飛機', 'fei1 gei1', 'plane', '架'], ['貓', 'maau1', 'cat', '隻'],
+  ['狗', 'gau2', 'dog', '隻'], ['人', 'jan4', 'person', '個'], ['蘋果', 'ping4 gwo2', 'apple', '個'], ['衫', 'saam1', 'top', '件'],
+  ['紙', 'zi2', 'sheet of paper', '張'], ['枱', 'toi2', 'table', '張'], ['魚', 'jyu2', 'fish', '條'], ['褲', 'fu3', 'pair of trousers', '條'],
+  ['路', 'lou6', 'road', '條'], ['遮', 'ze1', 'umbrella', '把'], ['刀', 'dou1', 'knife', '把'], ['手機', 'sau2 gei1', 'phone', '部'],
+  ['電腦', 'din6 nou5', 'computer', '部'], ['屋', 'uk1', 'flat', '間'], ['餐廳', 'caan1 teng1', 'restaurant', '間'], ['鞋', 'haai4', 'pair of shoes', '對'],
+  ['筷子', 'faai3 zi2', 'pair of chopsticks', '對'], ['戲', 'hei3', 'film', '套'], ['信', 'seon3', 'letter', '封'], ['歌', 'go1', 'song', '首'],
+  ['樹', 'syu6', 'tree', '棵'], ['糖', 'tong2', 'sweet', '粒'], ['筆', 'bat1', 'pen', '枝'], ['帽', 'mou2', 'hat', '頂'], ['報紙', 'bou3 zi2', 'newspaper', '份']
+];
+const MEASURE_JP = { 本: 'bun2', 架: 'gaa3', 隻: 'zek3', 個: 'go3', 件: 'gin6', 張: 'zoeng1', 條: 'tiu4', 把: 'baa2', 部: 'bou6', 間: 'gaan1', 對: 'deoi3', 套: 'tou3', 封: 'fung1', 首: 'sau2', 棵: 'po1', 粒: 'nap1', 枝: 'zi1', 頂: 'deng2', 份: 'fan6' };
+
+/* sentence-final particles: sentence with ＿, the answer, its jyutping, what it does */
+const PARTICLES = [
+  ['快啲行＿！', '啦', 'laa1', 'urging, suggesting: come on', '催促、提議'],
+  ['我食咗飯＿。', '喇', 'laa3', 'something has changed: already, now', '表示情況改變'],
+  ['你唔去＿？', '咩', 'me1', 'surprise, disbelief: really?', '驚訝反問'],
+  ['呢個好貴＿！', '㗎', 'gaa3', 'stating a fact firmly, explaining', '加強語氣、解釋'],
+  ['佢話唔嚟＿。', '喎', 'wo5', 'passing on what someone said; noticing', '轉述、提醒'],
+  ['佢應該到咗＿。', '啩', 'gwaa3', 'guessing: I suppose', '猜測'],
+  ['你係唔係老師＿？', '呀', 'aa3', 'softening a question or statement', '緩和語氣'],
+  ['咁就算＿。', '囉', 'lo1', 'resigned, obvious: that\'s that', '無奈、理所當然'],
+  ['佢係醫生＿，梗係識啦。', '嘛', 'maa3', 'as you know, obviously', '顯而易見'],
+  ['我哋一齊去＿！', '啦', 'laa1', 'suggesting: let\'s', '提議'],
+  ['落雨＿，帶遮啦。', '喇', 'laa3', 'a new situation: it\'s started raining', '新情況'],
+  ['咁都得＿？', '嘅', 'ge2', 'surprised question: that works?', '驚訝']
+];
+
+/* Mandarin → Cantonese everyday swaps */
+const SWAPS = [
+  ['他 / 她', '佢', 'keoi5'], ['我們', '我哋', 'ngo5 dei6'], ['的', '嘅', 'ge3'], ['是', '係', 'hai6'], ['不', '唔', 'm4'], ['沒有', '冇', 'mou5'],
+  ['在', '喺', 'hai2'], ['看', '睇', 'tai2'], ['吃', '食', 'sik6'], ['喝', '飲', 'jam2'], ['說', '講', 'gong2'], ['這個', '呢個', 'ni1 go3'],
+  ['那個', '嗰個', 'go2 go3'], ['什麼', '乜嘢', 'mat1 je5'], ['誰', '邊個', 'bin1 go3'], ['哪裡', '邊度', 'bin1 dou6'], ['為什麼', '點解', 'dim2 gaai2'],
+  ['怎麼樣', '點樣', 'dim2 joeng2'], ['現在', '而家', 'ji4 gaa1'], ['今天', '今日', 'gam1 jat6'], ['明天', '聽日', 'ting1 jat6'], ['昨天', '琴日', 'kam4 jat6'],
+  ['東西', '嘢', 'je5'], ['睡覺', '瞓覺', 'fan3 gaau3'], ['漂亮', '靚', 'leng3'], ['累', '攰', 'gui6'], ['喜歡', '鍾意', 'zung1 ji3'], ['給', '畀', 'bei2'],
+  ['來', '嚟', 'lei4'], ['找', '搵', 'wan2'], ['拿', '攞', 'lo2'], ['站', '企', 'kei5'], ['回家', '返屋企', 'faan1 uk1 kei2'], ['上班', '返工', 'faan1 gung1'],
+  ['下雨', '落雨', 'lok6 jyu5'], ['雨傘', '遮', 'ze1'], ['聊天', '傾偈', 'king1 gai2'], ['結賬', '埋單', 'maai4 daan1'], ['多少錢', '幾多錢', 'gei2 do1 cin2'],
+  ['一起', '一齊', 'jat1 cai4'], ['剛才', '頭先', 'tau4 sin1'], ['馬上', '即刻', 'zik1 hak1'], ['隨便', '是但', 'si6 daan6'], ['厲害', '犀利', 'sai1 lei6'],
+  ['生氣', '嬲', 'nau1'], ['可以嗎', '得唔得', 'dak1 m4 dak1']
+];
+
+/* ==============================================================
+   粵講粵啱 · app — everything stays in this browser
+   ============================================================== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { const r = a.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; };
+const pad2 = n => String(n).padStart(2, '0');
+const dayKey = (d = new Date()) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const ico = n => `<svg class="ic"><use href="#i-${n}"/></svg>`;
+const LEVELS = ['A1', 'A2', 'B1'];
+const LEVEL_INFO = { A1: '入門', A2: '基礎', B1: '進階' };
+const SRS_DAYS = [0, 1, 3, 7, 16, 35, 80];
+const DAY = 86400000;
+
+/* ---------- words ---------- */
+const BUILTIN = {};
+LEVELS.forEach(lv => {
+  BUILTIN[lv] = WORDS[lv].trim().split('\n').map(line => {
+    const p = line.split('|');
+    return { key: 'b:' + p[0], src: 'b', lv, word: p[0], jp: p[1], en: p[2], mando: p[3] || '', ex: p[4] || '', exJp: p[5] || '', exEn: p[6] || '' };
+  });
+});
+const ALL_B = LEVELS.reduce((a, l) => a.concat(BUILTIN[l]), []);
+
+/* ---------- store ---------- */
+const STORE_KEY = 'yue_v1';
+const DEFAULT_STORE = () => ({ lv: 'A1', jp: true, dir: 'yue', deck: 'level', slow: false, meta: {}, mine: [], days: {}, scores: {} });
+let S = DEFAULT_STORE();
+try { const raw = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); if (raw) S = Object.assign(DEFAULT_STORE(), raw); } catch (e) {}
+let saveT = null;
+function save() { clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} }, 200); }
+function mineItems() { return S.mine.map(m => ({ key: 'm:' + m.id, src: 'm', lv: 'mine', word: m.word, jp: m.jp, en: m.en, mando: '', ex: m.ex || '', exJp: '', exEn: '' })); }
+function allItems() { return ALL_B.concat(mineItems()); }
+const meta = k => S.meta[k] || (S.meta[k] = { box: 0, due: 0 });
+const peek = k => S.meta[k] || {};
+function today() { const k = dayKey(); return S.days[k] || (S.days[k] = { n: 0, ok: 0, ms: 0 }); }
+function tally(ok) { const d = today(); d.n++; if (ok) d.ok++; save(); }
+function score(k, ok) { const s = S.scores[k] || (S.scores[k] = [0, 0]); if (ok) s[0]++; s[1]++; tally(ok); }
+let lastAct = Date.now();
+document.addEventListener('pointerdown', () => { const n = Date.now(), gap = n - lastAct; lastAct = n; if (gap < 120000) { today().ms += gap; save(); } }, true);
+
+/* ---------- voice ---------- */
+const Voice = {
+  v: null, ok: false,
+  load() {
+    if (!window.speechSynthesis) return this.done();
+    const vs = speechSynthesis.getVoices() || [];
+    this.v = vs.find(v => /^(zh[-_]HK|yue)/i.test(v.lang)) || vs.find(v => /cantonese|粵|廣東/i.test(v.name)) || null;
+    this.ok = !!this.v; this.done();
+  },
+  done() { document.body.classList.toggle('mute-voice', !this.ok && this.tried); },
+  say(text, rate) {
+    if (!window.speechSynthesis) return;
+    if (!this.v) this.load();
+    this.tried = true; this.done();
+    if (!this.v) return;
+    try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.voice = this.v; u.lang = this.v.lang; u.rate = rate || (S.slow ? 0.7 : 0.92); speechSynthesis.speak(u); } catch (e) {}
+  }
+};
+if (window.speechSynthesis) { Voice.load(); speechSynthesis.onvoiceschanged = () => Voice.load(); }
+const sayText = s => String(s).replace(/[A-Za-z]+/g, m => m);
+
+/* ---------- navigation ---------- */
+const SUBS = {
+  cards: [['study', '溫習', 'sparkles'], ['list', '字庫', 'book-open'], ['add', '加字', 'circle-plus']],
+  tones: [['quiz', '認聲調', 'headphones'], ['table', '聲調表', 'table']],
+  prac: [['measure', '量詞', 'hash'], ['particle', '助詞', 'zap'], ['swap', '普粵對照', 'languages'], ['listen', '聽寫', 'headphones'], ['number', '數字', 'hash']],
+  stats: []
+};
+const App = { tab: 'cards', sub: { cards: 'study', tones: 'quiz', prac: 'measure', stats: '' }, deck: [], idx: 0, flipped: false };
+function renderSubnav() {
+  $('subnav').innerHTML = SUBS[App.tab].map(([k, l, i]) => `<button class="chip ${App.sub[App.tab] === k ? 'on' : ''}" data-act="sub" data-arg="${k}">${ico(i)}${l}</button>`).join('');
+  $('subnav').hidden = !SUBS[App.tab].length;
+}
+function go(tab, sub) {
+  App.tab = tab; if (sub) App.sub[tab] = sub;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.arg === tab));
+  document.querySelectorAll('main > .view').forEach(v => v.hidden = true);
+  const id = tab === 'stats' ? 'v-stats' : `v-${tab}-${App.sub[tab]}`;
+  $(id).hidden = false; renderSubnav(); window.scrollTo(0, 0);
+  ({ 'cards-study': renderCard, 'cards-list': renderList, 'cards-add': renderMine, 'tones-quiz': toneNew, 'tones-table': renderToneTable,
+     'prac-measure': measureNew, 'prac-particle': particleNew, 'prac-swap': swapNew, 'prac-listen': listenNew, 'prac-number': numberNew, 'stats': renderStats })[tab === 'stats' ? 'stats' : `${tab}-${App.sub[tab]}`]();
+}
+
+/* ---------- cards ---------- */
+function deckSource() {
+  if (S.deck === 'saved') return allItems().filter(it => peek(it.key).saved);
+  if (S.deck === 'mine') return mineItems();
+  return LEVELS.slice(0, LEVELS.indexOf(S.lv) + 1).reduce((a, l) => a.concat(BUILTIN[l]), []);
+}
+function buildDeck() {
+  const now = Date.now(), cur = App.deck[App.idx] && App.deck[App.idx].key;
+  let items = deckSource().filter(it => peek(it.key).status !== 'mastered');
+  const due = items.filter(it => (peek(it.key).due || 0) <= now);
+  items = due.length ? due : items;
+  items.sort((a, b) => (peek(a.key).due || 0) - (peek(b.key).due || 0) || LEVELS.indexOf(a.lv) - LEVELS.indexOf(b.lv));
+  App.deck = items; const k = items.findIndex(x => x.key === cur); App.idx = k >= 0 ? k : 0;
+}
+function lvTag(it) { return it.lv === 'mine' ? '我嘅字' : `${it.lv} · ${LEVEL_INFO[it.lv]}`; }
+function backHtml(it) {
+  return `<p class="term han" style="font-size:clamp(30px,9vw,44px)">${esc(it.word)}</p>
+    <div class="jp big">${esc(it.jp)}</div>
+    <p class="meaning">${esc(it.en)}</p>
+    ${it.mando ? `<div class="mando">普通話：<b>${esc(it.mando)}</b></div>` : ''}
+    ${it.ex ? `<div class="note-box stack" style="gap:2px"><p class="ex-han">${esc(it.ex)}</p>${it.exJp && S.jp ? `<div class="jp">${esc(it.exJp)}</div>` : ''}${it.exEn ? `<p class="ex-en">${esc(it.exEn)}</p>` : ''}</div>` : ''}`;
+}
+function renderCard() {
+  $('lvlPill').textContent = S.lv; document.querySelectorAll('.lvlTxt').forEach(e => e.textContent = S.lv);
+  document.querySelectorAll('#deckSeg button').forEach(b => b.classList.toggle('on', b.dataset.arg === S.deck));
+  $('dirTxt').textContent = S.dir === 'yue' ? '粵 → 英' : '英 → 粵';
+  if (!App.deck.length || !App.deck[App.idx]) buildDeck();
+  const src = deckSource(), mastered = src.filter(it => peek(it.key).status === 'mastered').length;
+  $('deckStats').innerHTML = `<b style="color:var(--ok)">${mastered}</b> 熟晒 · ${src.length} 個字`;
+  $('deckBar').style.width = (src.length ? mastered / src.length * 100 : 0) + '%';
+  $('flip').classList.remove('on'); App.flipped = false;
+  const it = App.deck[App.idx], empty = !it;
+  $('scene').hidden = empty; document.querySelector('.rate').hidden = empty; $('fcEmpty').hidden = !empty;
+  if (empty) { $('fcEmpty').innerHTML = S.deck === 'mine' ? '仲未有自己嘅字。去「加字」加啲啦。' : S.deck === 'saved' ? '撳卡上面嘅 ⭐ 收藏生字。' : '呢個程度全部熟晒！喺設定揀下一級。'; $('deckMeta').textContent = ''; return; }
+  $('deckMeta').textContent = `${App.idx + 1} / ${App.deck.length}`;
+  $('fcTag').textContent = lvTag(it); $('fcTag2').textContent = lvTag(it);
+  $('fcStar').style.color = peek(it.key).saved ? '#F59E0B' : '';
+  $('fcFront').innerHTML = S.dir === 'yue'
+    ? `<p class="term han">${esc(it.word)}</p>${S.jp ? `<div class="jp big">${esc(it.jp)}</div>` : ''}`
+    : `<p class="meaning">${esc(it.en)}</p>${it.mando ? `<div class="mando">普通話：<b>${esc(it.mando)}</b></div>` : ''}`;
+  $('fcBack').innerHTML = backHtml(it);
+  const m = peek(it.key); $('goodDays').textContent = '+' + SRS_DAYS[Math.min((m.box || 0) + 1, SRS_DAYS.length - 1)] + ' 日';
+  if (S.dir === 'yue') setTimeout(() => Voice.say(it.word), 120);
+}
+function flip() { App.flipped = !App.flipped; $('flip').classList.toggle('on', App.flipped); if (App.flipped && S.dir !== 'yue') Voice.say(App.deck[App.idx].word); }
+function step(d) { if (!App.deck.length) return; App.idx = (App.idx + d + App.deck.length) % App.deck.length; renderCard(); }
+function rate(g) {
+  const it = App.deck[App.idx]; if (!it) return; const m = meta(it.key);
+  if (g === 'again') { m.box = 0; m.due = Date.now() + 60000; m.status = 'review'; tally(false); }
+  else if (g === 'good') { m.box = Math.min(m.box + 1, SRS_DAYS.length - 1); m.due = Date.now() + SRS_DAYS[m.box] * DAY; m.status = 'review'; tally(true); }
+  else { m.status = 'mastered'; m.due = Date.now() + 365 * DAY; tally(true); }
+  save(); App.deck.splice(App.idx, 1); if (!App.deck.length) buildDeck(); if (App.idx >= App.deck.length) App.idx = 0; renderCard();
+}
+function setupSwipe() {
+  const sc = $('scene'); let x0 = 0, y0 = 0, on = false;
+  sc.addEventListener('pointerdown', e => { x0 = e.clientX; y0 = e.clientY; on = true; });
+  sc.addEventListener('pointerup', e => { if (!on) return; on = false; const dx = e.clientX - x0, dy = e.clientY - y0; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) { sc.dataset.swiped = '1'; step(dx < 0 ? 1 : -1); setTimeout(() => sc.dataset.swiped = '', 50); } });
+}
+
+/* ---------- word list ---------- */
+function statusTag(it) { const m = peek(it.key); return m.status === 'mastered' ? '<span class="tag ok">熟晒</span>' : m.status === 'review' ? '<span class="tag warn">溫緊</span>' : ''; }
+function renderList() {
+  const q = $('listQ').value.trim().toLowerCase();
+  const list = allItems().filter(it => !q || it.word.includes(q) || it.jp.includes(q) || it.en.toLowerCase().includes(q) || (it.mando || '').includes(q));
+  $('wordList').innerHTML = list.slice(0, 400).map(it => `<div class="li"><button class="sp" data-act="say" data-arg="${esc(it.word)}" aria-label="讀">${ico('volume-2')}</button>
+    <div class="grow"><div class="row" style="gap:6px"><span class="w han">${esc(it.word)}</span><span class="jp">${esc(it.jp)}</span>${statusTag(it)}</div><div class="s">${esc(it.en)}${it.mando ? ` · 普：${esc(it.mando)}` : ''}</div></div>
+    <div class="li-acts"><button class="icon-btn" data-act="starKey" data-arg="${esc(it.key)}" style="${peek(it.key).saved ? 'color:#F59E0B' : ''}" aria-label="收藏">${ico('star')}</button></div></div>`).join('') || '<div class="empty">搵唔到。</div>';
+}
+function renderMine() {
+  $('mineList').innerHTML = S.mine.map(m => `<div class="li"><button class="sp" data-act="say" data-arg="${esc(m.word)}">${ico('volume-2')}</button><div class="grow"><div class="row" style="gap:6px"><span class="w han">${esc(m.word)}</span><span class="jp">${esc(m.jp)}</span></div><div class="s">${esc(m.en)}</div></div><div class="li-acts"><button class="icon-btn" data-act="delMine" data-arg="${m.id}" aria-label="刪除">${ico('trash-2')}</button></div></div>`).join('') || '<div class="empty">你加嘅字會喺呢度。</div>';
+}
+
+/* ---------- tones ---------- */
+function contour(c) { const y = d => 18 - (d - 1) * 4; const a = +c[0], b = +c[1]; return `<svg viewBox="0 0 44 22"><path class="contour-grid" d="M2 2H42M2 20H42"/><path class="contour" d="M6 ${y(a)}L38 ${y(b)}"/></svg>`; }
+let TQ = null;
+function toneNew() {
+  const set = pick(TONE_SETS), i = Math.floor(Math.random() * 6); TQ = { set, i, done: false };
+  $('toneQ').textContent = '？'; $('toneJp').textContent = '';
+  $('toneBtns').innerHTML = TONES.map(([n, c, name]) => `<button class="tone-btn" data-act="toneAns" data-arg="${n}">${n}${contour(c)}<small>${name}</small></button>`).join('');
+  const s = S.scores.tones || [0, 0]; $('toneScore').textContent = s[1] ? `啱 ${s[0]} / ${s[1]}` : '';
+  setTimeout(() => Voice.say(set[1][i]), 150);
+}
+function toneAns(n) {
+  if (!TQ || TQ.done) return; TQ.done = true; const ok = +n === TQ.i + 1;
+  document.querySelectorAll('.tone-btn').forEach(b => { if (+b.dataset.arg === TQ.i + 1) b.classList.add('ok'); else if (b.dataset.arg === String(n) && !ok) b.classList.add('bad'); });
+  $('toneQ').textContent = TQ.set[1][TQ.i]; $('toneJp').textContent = `${TQ.set[0]}${TQ.i + 1} · ${TQ.set[2][TQ.i]}`;
+  score('tones', ok); if (ok) setTimeout(toneNew, 1300);
+}
+function renderToneTable() {
+  $('toneHead').innerHTML = TONES.map(([n, c, name]) => `<div>${contour(c)}<b>${n}</b> ${name}</div>`).join('');
+  $('toneTable').innerHTML = TONE_SETS.map(([syl, chars, en]) => `<div class="tone-grid">${[...chars].map((ch, i) => `<button class="tone-cell" data-act="say" data-arg="${ch}"><b>${ch}</b><span>${syl}${i + 1}</span><small>${esc(en[i])}</small></button>`).join('')}</div>`).join('');
+}
+
+/* ---------- practice: one multiple-choice engine ---------- */
+function mc(viewId, key, q) {
+  const v = $(viewId), opts = shuffle(q.opts);
+  v.innerHTML = `<div class="card pad stack" style="text-align:center">${q.head}</div>
+    <div class="choices">${opts.map(o => `<button class="choice han" data-act="mcAns" data-arg="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+    <div id="${viewId}-fb"></div>
+    <div class="row between"><span class="meta">${(() => { const s = S.scores[key]; return s && s[1] ? `啱 ${s[0]} / ${s[1]}` : ''; })()}</span><button class="btn sm" data-act="mcNext">下一題 ${ico('arrow-right')}</button></div>`;
+  MC = { viewId, key, q, done: false };
+}
+let MC = null;
+function mcAns(a) {
+  if (!MC || MC.done) return; MC.done = true; const ok = a === MC.q.ans;
+  document.querySelectorAll(`#${MC.viewId} .choice`).forEach(b => { if (b.dataset.arg === MC.q.ans) b.classList.add('ok'); else if (b.dataset.arg === a && !ok) b.classList.add('bad'); });
+  $(MC.viewId + '-fb').innerHTML = `<div class="fb ${ok ? 'ok' : 'bad'}">${ok ? '啱晒！' : '差少少'}<span class="big han">${MC.q.after}</span></div>`;
+  score(MC.key, ok); if (MC.q.say) Voice.say(MC.q.say);
+  if (ok) setTimeout(() => { if (MC && MC.done && !$(MC.viewId).hidden) mcNext(); }, 1600);
+}
+function mcNext() { ({ 'v-prac-measure': measureNew, 'v-prac-particle': particleNew, 'v-prac-swap': swapNew, 'v-prac-listen': listenNew })[MC.viewId](); }
+
+function measureNew() {
+  const [n, jp, en, m] = pick(MEASURE), all = [...new Set(MEASURE.map(x => x[3]))].filter(x => x !== m);
+  mc('v-prac-measure', 'measure', { head: `<span class="label">揀啱個量詞</span><div class="gq han">一 <span class="blank">＿</span> ${esc(n)}</div><div class="meta">a ${esc(en)} · <span class="jp">${esc(jp)}</span></div>`,
+    opts: [m].concat(shuffle(all).slice(0, 3)), ans: m, after: `一${m}${n} · ${MEASURE_JP[m]}`, say: `一${m}${n}` });
+}
+function particleNew() {
+  const [s, a, jp, en, zh] = pick(PARTICLES), all = [...new Set(PARTICLES.map(x => x[1]))].filter(x => x !== a);
+  mc('v-prac-particle', 'particle', { head: `<span class="label">句尾應該用邊個字？</span><div class="gq han">${esc(s).replace('＿', '<span class="blank">＿</span>')}</div><div class="meta">${esc(en)}</div>`,
+    opts: [a].concat(shuffle(all).slice(0, 3)), ans: a, after: `${s.replace('＿', a)}<br><small class="jp">${a} ${jp} · ${zh}</small>`, say: s.replace('＿', a) });
+}
+function swapNew() {
+  const [md, yue, jp] = pick(SWAPS), others = shuffle(SWAPS.filter(x => x[1] !== yue)).slice(0, 3).map(x => x[1]);
+  mc('v-prac-swap', 'swap', { head: `<span class="label">普通話 → 廣東話</span><div class="gq han">${esc(md)}</div>`, opts: [yue].concat(others), ans: yue, after: `${yue} · <span class="jp">${jp}</span>`, say: yue });
+}
+function listenNew() {
+  const pool = LEVELS.slice(0, LEVELS.indexOf(S.lv) + 1).reduce((a, l) => a.concat(BUILTIN[l]), []), it = pick(pool);
+  const others = shuffle(pool.filter(x => x.word !== it.word && x.word.length === it.word.length)).slice(0, 3).map(x => x.word);
+  while (others.length < 3) { const o = pick(pool).word; if (o !== it.word && !others.includes(o)) others.push(o); }
+  mc('v-prac-listen', 'listen', { head: `<span class="label">聽完揀出嚟</span><div><button class="sp big" data-act="say" data-arg="${esc(it.word)}">${ico('volume-2')}</button></div>`,
+    opts: [it.word].concat(others), ans: it.word, after: `${it.word} · <span class="jp">${esc(it.jp)}</span><br><small>${esc(it.en)}</small>` });
+  setTimeout(() => Voice.say(it.word), 200);
+}
+
+/* ---------- numbers: hear it, key it in ---------- */
+const D = '零一二三四五六七八九', DJ = ['ling4', 'jat1', 'ji6', 'saam1', 'sei3', 'ng5', 'luk6', 'cat1', 'baat3', 'gau2'];
+function yueNum(n) {
+  if (n < 10) return [D[n], DJ[n]];
+  const parts = [], jps = []; const th = Math.floor(n / 1000), h = Math.floor(n % 1000 / 100), t = Math.floor(n % 100 / 10), u = n % 10;
+  if (th) { parts.push((th === 2 ? '兩' : D[th]) + '千'); jps.push((th === 2 ? 'loeng5' : DJ[th]) + ' cin1'); }
+  if (h) { parts.push((h === 2 ? '兩' : D[h]) + '百'); jps.push((h === 2 ? 'loeng5' : DJ[h]) + ' baak3'); } else if (th && (t || u)) { parts.push('零'); jps.push('ling4'); }
+  if (t) { if (t === 1 && !th && !h) { parts.push('十'); jps.push('sap6'); } else { parts.push(D[t] + '十'); jps.push(DJ[t] + ' sap6'); } } else if (h && u) { parts.push('零'); jps.push('ling4'); }
+  if (u) { parts.push(D[u]); jps.push(DJ[u]); }
+  return [parts.join(''), jps.join(' ')];
+}
+let NQ = null;
+function numberNew() {
+  const kind = pick(['n', 'n', 'price', 'time']); let n, text, show;
+  if (kind === 'price') { n = 2 + Math.floor(Math.random() * 298); text = (n === 2 ? '兩' : yueNum(n)[0]) + '蚊'; show = '$' + n; }
+  else if (kind === 'time') { const h = 1 + Math.floor(Math.random() * 12), m = pick([0, 5, 10, 15, 20, 30, 45]); n = h * 100 + m; text = (h === 2 ? '兩' : yueNum(h)[0]) + '點' + (m ? (m === 30 ? '半' : yueNum(m)[0] + '分') : '鐘'); show = `${h}:${pad2(m)}`; }
+  else { n = pick([Math.floor(Math.random() * 20), Math.floor(Math.random() * 100), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 10000)]); [text] = yueNum(n); show = String(n); }
+  NQ = { want: show.replace(/[^0-9]/g, ''), show, text, typed: '', done: false };
+  $('v-prac-number').innerHTML = `<div class="card pad stack" style="align-items:center;text-align:center"><span class="label">聽完打數字</span>
+    <button class="sp big" data-act="sayNum">${ico('volume-2')}</button><div class="answer" id="numA" style="min-width:60%;border-radius:12px;border:1px solid var(--border)">${kind === 'price' ? '$' : ''}<span id="numT">&nbsp;</span></div><div id="numFb" class="jp"></div></div>
+    <div class="numpad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(d => `<button data-act="numKey" data-arg="${d}">${d}</button>`).join('')}<button data-act="numKey" data-arg="del">⌫</button><button data-act="numKey" data-arg="0">0</button><button data-act="numKey" data-arg="ok" style="background:var(--accent);color:var(--accent-ink)">✓</button></div>
+    <div class="row between"><span class="meta">${(() => { const s = S.scores.number; return s && s[1] ? `啱 ${s[0]} / ${s[1]}` : ''; })()}</span><button class="btn sm" data-act="numNext">下一題 ${ico('arrow-right')}</button></div>`;
+  setTimeout(() => Voice.say(NQ.text), 200);
+}
+function numKey(k) {
+  if (!NQ || NQ.done) return;
+  if (k === 'del') NQ.typed = NQ.typed.slice(0, -1);
+  else if (k === 'ok') { NQ.done = true; const ok = NQ.typed === NQ.want; $('numA').classList.add(ok ? 'ok' : 'bad'); $('numFb').innerHTML = `<span class="han" style="color:var(--text);font-size:18px">${NQ.text}</span> · ${NQ.show}`; score('number', ok); if (ok) setTimeout(() => { if (!$('v-prac-number').hidden) numberNew(); }, 1500); }
+  else if (NQ.typed.length < 6) NQ.typed += k;
+  $('numT').innerHTML = NQ.typed || '&nbsp;';
+}
+
+/* ---------- progress ---------- */
+function renderStats() {
+  const items = ALL_B, mastered = items.filter(i => peek(i.key).status === 'mastered').length, review = items.filter(i => peek(i.key).status === 'review').length;
+  let streak = 0; for (let d = new Date(); ; d.setDate(d.getDate() - 1)) { const x = S.days[dayKey(d)]; if (x && x.n) streak++; else if (dayKey(d) !== dayKey()) break; if (streak > 999) break; }
+  const week = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - 6 + i); const x = S.days[dayKey(d)] || { n: 0 }; return { d: '日一二三四五六'[d.getDay()], n: x.n, today: i === 6 }; });
+  const max = Math.max(1, ...week.map(w => w.n)), mins = Object.values(S.days).reduce((a, x) => a + (x.ms || 0), 0);
+  const pctOf = k => { const s = S.scores[k]; return s && s[1] ? Math.round(s[0] / s[1] * 100) : 0; };
+  $('v-stats').innerHTML = `<div class="kpis">
+      <div class="card kpi"><div class="v">${mastered}</div><div class="l">熟晒嘅字</div></div>
+      <div class="card kpi"><div class="v">${review}</div><div class="l">溫緊</div></div>
+      <div class="card kpi"><div class="v">🔥 ${streak}</div><div class="l">連續日數</div></div>
+      <div class="card kpi"><div class="v">${Math.round(mins / 60000)}</div><div class="l">分鐘</div></div></div>
+    <div class="card pad"><div class="label">呢個星期</div><div class="bars7">${week.map(w => `<div class="b7 ${w.today ? 'today' : ''}"><span class="val">${w.n || ''}</span><div class="bar ${w.n ? '' : 'zero'}" style="height:${w.n / max * 100}%"></div><span class="d">${w.d}</span></div>`).join('')}</div></div>
+    <div class="card pad stack"><div class="label">程度</div>${LEVELS.map(l => { const a = BUILTIN[l], m = a.filter(i => peek(i.key).status === 'mastered').length, r = a.filter(i => peek(i.key).status === 'review').length;
+      return `<div><div class="row between"><b>${l} · ${LEVEL_INFO[l]}</b><span class="meta">${m} / ${a.length}</span></div><div class="stackbar"><i class="st-m" style="width:${m / a.length * 100}%"></i><i class="st-r" style="width:${r / a.length * 100}%"></i></div></div>`; }).join('')}</div>
+    <div class="card pad"><div class="label">練習準確度</div>${[['tones', '聲調'], ['measure', '量詞'], ['particle', '助詞'], ['swap', '普粵對照'], ['listen', '聽寫'], ['number', '數字']].map(([k, l]) => `<div class="hbar"><span>${l}</span><div class="track"><i style="width:${pctOf(k)}%"></i></div><span class="pct">${pctOf(k)}%<small>${(S.scores[k] || [0, 0])[1]} 題</small></span></div>`).join('')}</div>`;
+}
+
+/* ---------- settings ---------- */
+function openSettings() {
+  const bd = document.createElement('div'); bd.className = 'backdrop';
+  bd.innerHTML = `<div class="sheet" role="dialog" aria-label="設定"><div class="grab"></div><div class="sheet-head"><div class="h2 han">設定</div><button class="icon-btn" data-act="closeSheet">${ico('x')}</button></div>
+    <div class="label" style="margin:6px 0">程度</div><div class="lv-grid three">${LEVELS.map(l => `<button class="lv-btn ${S.lv === l ? 'on' : ''}" data-act="setLv" data-arg="${l}"><b>${l}</b><small>${LEVEL_INFO[l]} · ${BUILTIN[l].length}</small></button>`).join('')}</div>
+    <div class="setting"><div><div class="t">顯示粵拼</div><div class="d">Jyutping 喺字卡正面</div></div><label class="switch"><input type="checkbox" id="sJp" ${S.jp ? 'checked' : ''}><span></span></label></div>
+    <div class="setting"><div><div class="t">慢慢讀</div><div class="d">讀音慢啲</div></div><label class="switch"><input type="checkbox" id="sSlow" ${S.slow ? 'checked' : ''}><span></span></label></div>
+    <div class="setting"><div><div class="t">全部喺呢部機</div><div class="d">冇帳戶、唔會上傳。清除瀏覽器資料就會冇咗。</div></div></div>
+    <div class="setting"><div><div class="t">由頭嚟過</div><div class="d">清除所有進度</div></div><button class="btn sm bad" data-act="reset">清除</button></div></div>`;
+  document.body.appendChild(bd);
+  bd.addEventListener('click', e => { if (e.target === bd) bd.remove(); });
+  $('sJp').onchange = e => { S.jp = e.target.checked; save(); renderCard(); };
+  $('sSlow').onchange = e => { S.slow = e.target.checked; save(); };
+}
+function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2200); }
+
+/* ---------- theme ---------- */
+function applyTheme() { const t = S.theme; if (t) document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme');
+  const dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; $('themeUse').setAttribute('href', dark ? '#i-sun' : '#i-moon');
+  document.querySelector('meta[name=theme-color]').content = dark ? '#0E0D10' : '#FBF8F3'; }
+
+/* ---------- actions ---------- */
+const ACT = {
+  tab: a => go(a), sub: a => go(App.tab, a),
+  flip: () => { if ($('scene').dataset.swiped) return; flip(); }, next: () => step(1), prev: () => step(-1), rate,
+  setDeck: a => { S.deck = a; save(); App.deck = []; renderCard(); }, toggleDir: () => { S.dir = S.dir === 'yue' ? 'en' : 'yue'; save(); renderCard(); },
+  shuffle: () => { App.deck = shuffle(App.deck); App.idx = 0; renderCard(); },
+  star: () => { const it = App.deck[App.idx]; if (!it) return; const m = meta(it.key); m.saved = !m.saved; save(); $('fcStar').style.color = m.saved ? '#F59E0B' : ''; toast(m.saved ? '已收藏 ⭐' : '取消收藏'); },
+  starKey: k => { const m = meta(k); m.saved = !m.saved; save(); renderList(); },
+  sayCard: () => { const it = App.deck[App.idx]; if (it) Voice.say(it.word); }, sayExample: () => { const it = App.deck[App.idx]; if (it) Voice.say(it.ex || it.word); },
+  say: a => Voice.say(a), sayTone: () => TQ && Voice.say(TQ.set[1][TQ.i]), toneAns, toneNext: toneNew,
+  mcAns, mcNext, sayNum: () => NQ && Voice.say(NQ.text), numKey, numNext: numberNew,
+  toggleJp: () => { S.jp = !S.jp; save(); renderCard(); toast(S.jp ? '顯示粵拼' : '收埋粵拼'); },
+  toggleTheme: () => { const dark = document.documentElement.getAttribute('data-theme') ? S.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; S.theme = dark ? 'light' : 'dark'; save(); applyTheme(); },
+  openSettings, closeSheet: () => { const b = document.querySelector('.backdrop'); if (b) b.remove(); },
+  setLv: a => { S.lv = a; save(); App.deck = []; document.querySelectorAll('.lv-btn').forEach(b => b.classList.toggle('on', b.dataset.arg === a)); renderCard(); },
+  reset: () => { if (!confirm('清除所有進度？')) return; const keep = { theme: S.theme, mine: S.mine }; S = Object.assign(DEFAULT_STORE(), keep); save(); App.deck = []; ACT.closeSheet(); go(App.tab); },
+  addWord: () => { const w = $('nWord').value.trim(), m = $('nMean').value.trim(); if (!w || !m) { toast('寫低個字同意思先'); return; }
+    S.mine.unshift({ id: Date.now().toString(36), word: w, jp: $('nJp').value.trim(), en: m, ex: $('nEx').value.trim() }); save(); ['nWord', 'nJp', 'nMean', 'nEx'].forEach(i => $(i).value = ''); renderMine(); toast('加咗 ✓'); },
+  delMine: id => { S.mine = S.mine.filter(m => m.id !== id); delete S.meta['m:' + id]; save(); renderMine(); }
+};
+document.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (!b) return; const f = ACT[b.dataset.act]; if (f) { e.stopPropagation(); f(b.dataset.arg); } });
+document.addEventListener('keydown', e => {
+  if (/^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+  if (App.tab === 'cards' && App.sub.cards === 'study') { if (e.key === ' ') { e.preventDefault(); flip(); } else if (e.key === 'ArrowRight') step(1); else if (e.key === 'ArrowLeft') step(-1); else if (e.key === '1') rate('again'); else if (e.key === '2') rate('good'); else if (e.key === '3') rate('mastered'); }
+  if (App.tab === 'prac' && App.sub.prac === 'number' && /^[0-9]$/.test(e.key)) numKey(e.key);
+  if (App.tab === 'prac' && App.sub.prac === 'number' && e.key === 'Enter') numKey('ok');
+  if (App.tab === 'prac' && App.sub.prac === 'number' && e.key === 'Backspace') numKey('del');
+});
+$('listQ').addEventListener('input', renderList);
+setupSwipe(); applyTheme();
+matchMedia('(prefers-color-scheme: dark)').addEventListener && matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+go('cards');
+
+</script>
+</body>
+</html>

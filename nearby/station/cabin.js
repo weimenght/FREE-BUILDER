@@ -253,7 +253,7 @@
     wantOff = null; director.next.depart = Date.now() + 60e3;
     var w = document.createElement("div"); w.className = "cb-sheet cb-off";
     var door = function (id, icon, name, href) { return '<a class="cb-door' + (id === k ? " on" : "") + '" href="' + href + '"><b aria-hidden="true">' + icon + "</b><span>" + name + "</span><small>" + T.getOff + ' <span aria-hidden="true">→</span></small></a>'; };
-    w.innerHTML = '<div class="cb-card" role="dialog" aria-modal="true" aria-label="' + HUTONG + '"><small class="cb-stn">' + HUTONG + '</small><div class="cb-doors">' + door("bar", "🍸", T.bar, "../bar/") + door("books", "📚", T.books, "../books/") + '</div><div class="row"><button type="button" data-a="stay">' + T.stay + "</button></div></div>";
+    w.innerHTML = '<div class="cb-card" role="dialog" aria-modal="true" aria-label="' + HUTONG + '"><small class="cb-stn">' + HUTONG + '</small><div class="cb-doors">' + door("bar", "🍸", T.bar, "../next-door/") + door("books", "📚", T.books, "../borrowed-pages/") + '</div><div class="row"><button type="button" data-a="stay">' + T.stay + "</button></div></div>";
     document.body.appendChild(w);
     w.addEventListener("click", function (e) { if (e.target === w || e.target.closest('[data-a="stay"]')) { w.remove(); director.next.depart = Date.now() + 3000; } });
   }

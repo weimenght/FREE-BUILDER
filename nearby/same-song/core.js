@@ -1,5 +1,5 @@
 /* FREE//BUILDER Jukebox · core
-   One shared turntable for the studio (/game/jukebox/), Wei's Bar and the Dog-Eared Corner.
+   One shared turntable for the studio (/nearby/same-song/), Wei's Bar and the Dog-Eared Corner.
    - a song is a short code: 1.<bpm>.<mood>.<instrument>.<melody 8x16 as 32 hex>.<drums 3x16 as 12 hex>
    - the synth turns that code into a ~30 s arrangement (intro, bass, drums, full, lift, outro)
    - the clock asks the database what is playing for everyone, and plays it from the right second
@@ -288,7 +288,7 @@
   };
   function lang() {
     var b = ls("weis-lang"), l = null;
-    if (/\/game\/bar\//.test(location.pathname) && b) l = { en: 0, zh: 1, tw: 2, yue: 2, es: 3, ca: 4 }[b];
+    if (/\/nearby\/next-door\//.test(location.pathname) && b) l = { en: 0, zh: 1, tw: 2, yue: 2, es: 3, ca: 4 }[b];
     if (l == null) l = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }[(window.FBL && FBL.get()) || "en"];
     return l || 0;
   }

@@ -1,5 +1,5 @@
 /* FREE//BUILDER — one Supabase project for every live demo.
- * Used by Room Mode (/room), Inbox Runner and KILL//SWITCH (/launchpad).
+ * Used by Room Mode (/tools/room), Inbox Runner and KILL//SWITCH (/labs/launchpad).
  * Paste from Supabase → Project Settings → API:
  *   url      = Project URL, e.g. https://abcdxyz.supabase.co
  *   anonKey  = the "anon" / public key (never the service_role key)

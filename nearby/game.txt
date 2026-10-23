@@ -1,5 +1,5 @@
 # FREE//BUILDER · GAME REPERTORY
-# Read live by freebuilder.net/game — edit here and the terminal picks it up within seconds.
+# Read live by freebuilder.net/nearby — edit here and the terminal picks it up within seconds.
 # One block per game, blank line between blocks. Keys: CODE, ID, TITLE, GENRE, AUTHOR, DESC, URL.
 # CODE is what players type (RUN CLIMB). Keep TITLE the same as the name shown inside the game.
 # Listed easiest and most fun first; the hardest last.
@@ -10,7 +10,7 @@ TITLE: Sora
 GENRE: Cloud watching for a blank mind
 AUTHOR: FREE//BUILDER
 DESC: Lie back under an open sky that keeps your own time. Draw on it and watch your scribble puff into a cloud and drift off, hold still to breathe, double-tap and the clouds take a shape.
-URL: cloud/
+URL: lie-back/
 
 CODE: GARDEN
 ID: GD-13
@@ -18,7 +18,7 @@ TITLE: The Garden
 GENRE: One endless garden, planted together
 AUTHOR: FREE//BUILDER
 DESC: Pick a seed and plant it next to someone else's: cherry trees, sunflowers, peonies, ponds and stone lanterns. Everything grows over days, faster when people water it, and the garden keeps spreading.
-URL: garden/
+URL: plant-a-friend/
 
 CODE: BREWERY
 ID: BW-14
@@ -26,7 +26,7 @@ TITLE: The Brewery
 GENRE: Brew a beer, ship it to the bar
 AUTHOR: FREE//BUILDER
 DESC: Pick the malt, hops and yeast, add a twist like osmanthus or Sichuan pepper, and design the can. Ship it to Wei's Bar and Club Retro, where everyone can order it and raise a glass.
-URL: brewery/
+URL: neighbours-brew/
 
 CODE: NEST
 ID: CN-11
@@ -34,7 +34,7 @@ TITLE: The Cats' Nest
 GENRE: Two cats, up close
 AUTHOR: FREE//BUILDER
 DESC: The little room where Miso and Yuzu live. Stroke them till they purr, wave a feather, shake the treat tin, dim the lamp, and take photos for their album. The closer you get, the more of their story opens.
-URL: nest/
+URL: miso-and-yuzu/
 
 CODE: SANCTUARY
 ID: AS-12
@@ -42,7 +42,7 @@ TITLE: The Sanctuary
 GENRE: A dog's home, and real adoptions
 AUTHOR: FREE//BUILDER
 DESC: Mantou the dog lives here, by the meadow. Throw his ball, follow his story to the station and back, and help real animals find a home: put up a notice for one you're caring for, or ask to adopt.
-URL: sanctuary/
+URL: come-home/
 
 CODE: TRAIN
 ID: TW-06
@@ -50,7 +50,7 @@ TITLE: Train Window
 GENRE: Sleeper car daydream
 AUTHOR: FREE//BUILDER
 DESC: Board a night sleeper and just look out. Stations from Kyoto to Sitges roll by, each in its own style and announced in its own language. Write on the fogged glass, and share your cabin so friends ride the same window, live.
-URL: train/
+URL: station/
 
 CODE: JUKEBOX
 ID: JB-09
@@ -58,7 +58,7 @@ TITLE: Jukebox
 GENRE: Light-up tunes, one shared record player
 AUTHOR: FREE//BUILDER
 DESC: Light up a few bulbs and you have a tune. Press it into a record, sign it, then drop a coin: it plays in Wei's Bar and the book corner at the same second, with your name on it.
-URL: jukebox/
+URL: same-song/
 
 CODE: POSTCARD
 ID: PC-10
@@ -66,7 +66,7 @@ TITLE: Postcard
 GENRE: Slow mail with a sealed date
 AUTHOR: FREE//BUILDER
 DESC: Pick a picture and a stamp, write on the back, and seal it until the day you choose. Send the link to a friend, who can't open it a minute early, or hang it on the wall in Wei's Bar.
-URL: postcard/
+URL: say-hello/
 
 CODE: BAR
 ID: WB-03
@@ -74,7 +74,7 @@ TITLE: Wei's Bar & Coffee
 GENRE: Cosy hutong hangout
 AUTHOR: FREE//BUILDER
 DESC: A tiny hutong counter: coffee by day, cocktails by night. Chat with Wei, pet the cats, drop a coin in the jukebox and leave a note for the next guest. If Wei's out, sneak behind the bar and mix your own.
-URL: bar/
+URL: next-door/
 
 CODE: BOOKS
 ID: DE-05
@@ -82,7 +82,7 @@ TITLE: The Dog-Eared Corner
 GENRE: Second-hand book swap
 AUTHOR: FREE//BUILDER
 DESC: A four-room book house next door to Wei's Bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one and pass it on by hand. The cats come over from the bar.
-URL: books/
+URL: borrowed-pages/
 
 CODE: KINTSUGI
 ID: KS-07
@@ -90,7 +90,7 @@ TITLE: Kintsugi Studio
 GENRE: Golden joinery, slow craft
 AUTHOR: FREE//BUILDER
 DESC: Pick a broken bowl and mend it the old way. Fit the shards, seal the cracks with lacquer, then dust the seams with gold. Sign the finished piece into a book every visitor can leaf through.
-URL: kintsugi/
+URL: mended/
 
 CODE: CANDLES
 ID: TC-15
@@ -98,7 +98,7 @@ TITLE: Two Candles
 GENRE: A table for two, miles apart
 AUTHOR: FREE//BUILDER
 DESC: A candlelit restaurant by Mirror Lake for two people who live apart. Sit down from anywhere and your candles light up together; cook the same dinner step by step, raise a glass, draw table-talk cards and slide a note across on a napkin.
-URL: restaurant/
+URL: two-candles/
 
 CODE: HANDOFF
 ID: HO-04
@@ -106,7 +106,7 @@ TITLE: Handoff
 GENRE: Two people, two time zones
 AUTHOR: FREE//BUILDER
 DESC: For two people who live apart. Send a thought and your partner sees only its ending; they guess the rest before it opens. Voice notes, shared skies and each other's sleep hours keep you in step.
-URL: love/
+URL: handoff/
 
 CODE: DJ
 ID: RD-02
@@ -114,7 +114,7 @@ TITLE: Retro DJ World Tour
 GENRE: 8-bit rhythm and turntables
 AUTHOR: FREE//BUILDER
 DESC: Hit the records as they cross the line, scratch through the bars and drop the bass when the hype is full. Tour city to city, each with its own twist, or jam on pads and loops.
-URL: dj/
+URL: late-light/
 
 CODE: CLIMB
 ID: CM-01
@@ -122,4 +122,4 @@ TITLE: Crag Master
 GENRE: Route-reading climbing tactics
 AUTHOR: FREE//BUILDER
 DESC: Read the wall, plan your hands, then commit. Ten real crags from Montserrat to El Capitan, 5.6 to 5.15d. Clip every bolt, chalk at the rests, and tie in with a friend to swap leads up a multi-pitch.
-URL: climb/
+URL: hold-on/

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=76726a190b"></script><script data-fbg src="/fbkit/fbg.js?v=1446f335bb" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>The Brewery — FREE//BUILDER</title>
+<meta name="description" content="Brew your own beer: pick the malt, hops, yeast and a twist, design the can, and ship it to Wei's Bar and Club Retro for everyone to try.">
+<meta name="theme-color" content="#3a2214">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='3' y='5' width='8' height='10' fill='%23e8a030'/%3E%3Crect x='3' y='2' width='8' height='4' fill='%23fbf6ea'/%3E%3Crect x='11' y='7' width='3' height='5' fill='none' stroke='%23fbf6ea'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+:root{--bg:#24160e;--ink:#fbf1de;--dim:rgba(251,241,222,.65);--a:#f6b73c;--cu:#c8783a;--card:#f6efe0;--cink:#2a1d14;--px:'Press Start 2P',ui-monospace,monospace;--vt:'VT323',ui-monospace,'PingFang SC','Microsoft YaHei',monospace;--ui:system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 20px/1.15 var(--vt);-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:repeating-conic-gradient(rgba(0,0,0,.2) 0 25%,transparent 0 50%) 0 0/4px 4px,radial-gradient(120% 60% at 50% 0,#4a2c18,#24160e 70%)}
+button,input{font:inherit;color:inherit}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:max(12px,env(safe-area-inset-top)) 16px 8px;max-width:820px;margin:0 auto}
+.sign{font:400 12px/1.3 var(--px);letter-spacing:.05em;color:#fff3c0;text-shadow:2px 2px 0 #8a3a14;padding:7px 9px;border:3px solid #ffd27a;box-shadow:inset 0 0 0 2px #8a3a14,3px 3px 0 #000;background:#3a1c0c}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:#4a2c18;box-shadow:inset -3px -3px 0 rgba(0,0,0,.4),inset 3px 3px 0 rgba(255,220,170,.15),3px 3px 0 #000;cursor:pointer;font:400 18px/1 var(--vt);color:var(--ink)}
+main{max-width:820px;margin:0 auto;padding:4px 16px 110px}
+.house{border:4px solid #000;box-shadow:6px 6px 0 #000;background:#000}
+.house canvas{display:block;width:100%;height:auto;aspect-ratio:160/64;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated}
+.grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;margin-top:16px}
+@media (max-width:680px){.grid{grid-template-columns:1fr}}
+.panel{padding:14px;background:#33200f;border:3px solid #000;box-shadow:4px 4px 0 #000}
+.step{margin:0 0 14px}.step:last-child{margin:0}
+.step h3{display:flex;align-items:center;gap:8px;margin:0 0 8px;font:400 11px/1.4 var(--px);color:var(--a);letter-spacing:.05em}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:4px 10px;border:3px solid #000;background:#4a2c18;font-size:18px;cursor:pointer;box-shadow:2px 2px 0 #000}
+.chip i{display:inline-block;width:14px;height:14px;border:2px solid #000;font-style:normal}
+.chip[aria-pressed="true"]{background:var(--a);color:#1d130d;box-shadow:0 0 0 2px #fff,2px 2px 0 #000}
+input[type=range]{width:100%;accent-color:var(--a)}
+.abv{font:400 22px var(--vt);color:var(--a)}
+.out{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.out canvas{image-rendering:pixelated}
+#glass{width:120px;height:150px}#can{width:96px;height:160px}
+.style{font:400 13px/1.5 var(--px);color:#fff3c0;margin-top:4px}
+.note{font:15px/1.45 var(--ui);color:#e8dcc4;margin:0}
+.field{width:100%;padding:10px;border:3px solid #000;background:#fbf6ea;color:#1d130d;font:16px var(--ui)}
+.label{display:block;text-align:left;width:100%;margin:10px 0 4px;font:700 13px var(--ui);color:#e8dcc4}
+.ship{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:10px 0 0}
+.ship label{display:flex;align-items:center;gap:6px;padding:6px 10px;border:3px solid #000;background:#4a2c18;font-size:18px;cursor:pointer}
+.ship input{width:18px;height:18px;accent-color:var(--a)}
+.brew{width:100%;min-height:60px;margin-top:12px;border:4px solid #000;background:var(--a);color:#1d130d;font:400 24px var(--vt);cursor:pointer;box-shadow:inset -4px -4px 0 rgba(0,0,0,.25),inset 4px 4px 0 rgba(255,255,255,.35),5px 5px 0 #000}
+.brew:disabled{filter:grayscale(.6);cursor:wait}
+h2{font:400 12px/1.4 var(--px);color:var(--a);margin:30px 0 12px;letter-spacing:.06em;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+h2 .chips{margin-left:auto}
+.taps{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.tap{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px 10px;background:var(--card);color:var(--cink);border:3px solid #000;box-shadow:4px 4px 0 #000;text-align:center;font:14px/1.3 var(--ui)}
+.tap canvas{width:60px;height:100px;image-rendering:pixelated}
+.tap b{font:700 15px var(--ui)}.tap small{color:#6a5a48}
+.tap .row{display:flex;gap:6px;align-items:center;margin-top:4px}
+.tap button.ch{padding:4px 10px;border:2px solid #000;background:#f6b73c;font:700 13px var(--ui);cursor:pointer;color:#1d130d}
+.tap .ven{font-size:13px}
+.tap .flag{border:0;background:none;color:#8a7a62;font:12px var(--ui);text-decoration:underline dotted;cursor:pointer}
+.empty{grid-column:1/-1;padding:20px;text-align:center;color:var(--dim);border:3px dashed rgba(255,255,255,.2)}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(16px);opacity:0;transition:.25s;z-index:60;background:#000;color:#fff3c0;border:3px solid var(--a);padding:8px 14px;font-size:19px;pointer-events:none;max-width:calc(100vw - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Neighbourhood" data-fbapp></head>
+<body>
+<header class="top">
+  <div class="sign" data-t="title">THE BREWERY</div>
+  <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
+</header>
+<main>
+  <h1 class="sr" data-t="title">The Brewery</h1>
+  <div class="house"><canvas id="house" width="160" height="64"></canvas></div>
+  <div class="grid">
+    <section class="panel" aria-label="Recipe">
+      <div class="step"><h3>🌾 <span data-t="malt">MALT</span></h3><div class="chips" id="malt"></div></div>
+      <div class="step"><h3>🌿 <span data-t="hops">HOPS</span></h3><div class="chips" id="hops"></div><div class="chips" id="aroma" style="margin-top:6px"></div></div>
+      <div class="step"><h3>🫧 <span data-t="yeast">YEAST</span></h3><div class="chips" id="yeast"></div></div>
+      <div class="step"><h3>✨ <span data-t="extras">A TWIST</span> <small style="font:16px var(--vt);color:var(--dim)">(≤ 2)</small></h3><div class="chips" id="extras"></div></div>
+      <div class="step"><h3>💪 <span data-t="strength">STRENGTH</span> <span class="abv" id="abvOut"></span></h3><input type="range" id="abv" min="35" max="90" step="5" value="50"></div>
+    </section>
+    <section class="panel out" aria-live="polite">
+      <canvas id="glass" width="24" height="30"></canvas>
+      <div class="style" id="style"></div>
+      <p class="note" id="note"></p>
+      <label class="label" for="name" data-t="nameL">Name your beer</label><input class="field" id="name" maxlength="30" autocomplete="off">
+      <label class="label" for="brewer" data-t="brewerL">Brewed by</label><input class="field" id="brewer" maxlength="24" autocomplete="nickname">
+      <label class="label" data-t="canL">The can</label>
+      <div style="display:flex;gap:12px;align-items:center;width:100%"><canvas id="can" width="24" height="40"></canvas><div style="flex:1"><div class="chips" id="bg"></div><div class="chips" id="icon" style="margin-top:6px"></div></div></div>
+      <div class="ship"><label><input type="checkbox" id="toBar" checked> 🍸 <span data-t="bar">Wei's Bar</span></label><label><input type="checkbox" id="toClub" checked> 🎧 <span data-t="club">Club Retro</span></label></div>
+      <button class="brew" type="button" id="brew">🍺 <span data-t="brew">Brew it</span></button>
+    </section>
+  </div>
+
+  <h2><span data-t="onTap">ON TAP</span><span class="chips" id="sort"></span></h2>
+  <div class="taps" id="taps"></div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script id="beer-art">
+/* Beer pictures: a pint and a can, drawn as pixels (Wei's Bar and Club Retro borrow this block). */
+window.BeerArt = (function () {
+  var ICON = {
+    cat: ["0100010", "0111110", "0101010", "0111110", "0011100"], dog: ["1100011", "1111111", "1101011", "0111110", "0011100"], dragon: ["0011000", "0111100", "1110110", "0011111", "0110001"],
+    lantern: ["0011100", "0111110", "1111111", "0111110", "0011100"], wave: ["0000000", "0110011", "1001100", "0000000", "0110011"], mountain: ["0001000", "0011100", "0111110", "1111111", "1111111"],
+    star: ["0001000", "0011100", "1111111", "0011100", "0100010"], flower: ["0010100", "0111110", "0011100", "0111110", "0010100"]
+  };
+  function R(g, x, y, w, h, c) { g.fillStyle = c; g.fillRect(x, y, w, h); }
+  function glass(cv, color, foam, level) {
+    var g = cv.getContext("2d"); cv.width = 24; cv.height = 30; g.imageSmoothingEnabled = false; g.clearRect(0, 0, 24, 30);
+    var lv = level == null ? 1 : level;
+    R(g, 4, 4, 14, 24, "rgba(255,255,255,.18)"); var top = 28 - Math.round(21 * lv);
+    if (lv > 0) { R(g, 5, top, 12, 27 - top, color); R(g, 6, top + 2, 2, 27 - top - 3, "rgba(255,255,255,.25)"); for (var b = 0; b < 4; b++) R(g, 8 + (b * 3) % 7, top + 3 + ((b * 5) % Math.max(1, 20 - top)), 1, 1, "rgba(255,255,255,.5)"); }
+    if (foam && lv > .2) { R(g, 4, top - 3, 14, 4, "#fbf6ea"); R(g, 5, top - 4, 5, 1, "#fbf6ea"); R(g, 11, top - 4, 4, 1, "#fbf6ea"); }
+    R(g, 4, 28, 14, 1, "rgba(255,255,255,.35)"); R(g, 3, 4, 1, 25, "rgba(255,255,255,.4)"); R(g, 18, 4, 1, 25, "rgba(255,255,255,.4)"); R(g, 19, 9, 3, 1, "rgba(255,255,255,.4)"); R(g, 21, 9, 1, 10, "rgba(255,255,255,.4)"); R(g, 19, 18, 3, 1, "rgba(255,255,255,.4)");
+  }
+  function can(cv, b) {
+    var g = cv.getContext("2d"); cv.width = 24; cv.height = 40; g.imageSmoothingEnabled = false; g.clearRect(0, 0, 24, 40);
+    var L = b.label || {}, bg = L.bg || "#c8402a";
+    R(g, 3, 3, 18, 2, "#c8c8c8"); R(g, 2, 5, 20, 1, "#a8a8a8"); R(g, 2, 6, 20, 30, bg); R(g, 2, 36, 20, 1, "#a8a8a8"); R(g, 3, 37, 18, 1, "#c8c8c8");
+    R(g, 9, 2, 6, 1, "#8a8a8a");
+    if (L.pattern === "stripes") for (var s = 8; s < 36; s += 4) R(g, 2, s, 20, 1, "rgba(255,255,255,.18)");
+    if (L.pattern === "dots") for (var d = 0; d < 14; d++) R(g, 3 + (d * 7) % 18, 7 + (d * 5) % 28, 1, 1, "rgba(255,255,255,.3)");
+    R(g, 2, 26, 20, 5, b.color || "#e8a030"); R(g, 2, 26, 20, 1, "#fbf6ea");
+    var ic = ICON[L.icon] || ICON.star; for (var y = 0; y < ic.length; y++) for (var x = 0; x < 7; x++) if (ic[y][x] === "1") R(g, 8 + x, 13 + y * 1.6, 1, 2, "#fbf6ea");
+    R(g, 4, 8, 16, 1, "rgba(0,0,0,.25)"); R(g, 4, 33, 16, 1, "rgba(0,0,0,.25)"); R(g, 3, 6, 1, 30, "rgba(255,255,255,.3)"); R(g, 20, 6, 1, 30, "rgba(0,0,0,.2)");
+  }
+  return { glass: glass, can: can, ICONS: Object.keys(ICON) };
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 };
+  function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
+  function t(k) { var a = W[k]; return (a && (a[L()] || a[0])) || k; }
+  function tr(a) { return a[L()] || a[0]; }
+  function toast(m) { var e = $("toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 3000); }
+  var W = {
+    title: ["THE BREWERY", "啤酒坊", "啤酒坊", "LA CERVECERÍA", "LA CERVESERIA"], malt: ["MALT", "麦芽", "麥芽", "MALTA", "MALT"], hops: ["HOPS", "啤酒花", "啤酒花", "LÚPULO", "LLÚPOL"], yeast: ["YEAST", "酵母", "酵母", "LEVADURA", "LLEVAT"], extras: ["A TWIST", "特别风味", "特別風味", "UN TOQUE", "UN TOC"], strength: ["STRENGTH", "酒精度", "酒精度", "GRADUACIÓN", "GRADUACIÓ"],
+    nameL: ["Name your beer", "给你的啤酒起个名", "給你的啤酒取個名", "Ponle nombre", "Posa-li nom"], brewerL: ["Brewed by", "酿酒师", "釀酒師", "Elaborada por", "Elaborada per"], canL: ["The can", "罐子", "罐子", "La lata", "La llauna"],
+    bar: ["Wei's Bar", "Wei 的酒吧", "Wei 的酒吧", "Bar de Wei", "Bar d'en Wei"], club: ["Club Retro", "复古俱乐部", "復古俱樂部", "Club Retro", "Club Retro"], brew: ["Brew it", "开酿", "開釀", "¡A fermentar!", "A fermentar!"],
+    onTap: ["ON TAP", "正在供应", "正在供應", "DE BARRIL", "DE BARRIL"], new: ["New", "最新", "最新", "Nuevas", "Noves"], loved: ["Loved", "最受欢迎", "最受歡迎", "Favoritas", "Preferides"],
+    cheers: ["Cheers", "干杯", "乾杯", "Salud", "Salut"], cheered: ["Cheers! 🍻", "干杯！🍻", "乾杯！🍻", "¡Salud! 🍻", "Salut! 🍻"], again: ["You've already raised a glass to this one.", "你已经为它干过杯了。", "你已經為它乾過杯了。", "Ya brindaste por esta.", "Ja hi has brindat."],
+    report: ["Report", "举报", "檢舉", "Denunciar", "Denunciar"], reported: ["Thanks. We'll take a look.", "谢谢，我们会去看看。", "謝謝，我們會去看看。", "Gracias. Lo revisaremos.", "Gràcies. Ho revisarem."],
+    empty: ["Nothing on tap yet. Brew the first one.", "还没有啤酒，酿第一桶吧。", "還沒有啤酒，釀第一桶吧。", "Aún no hay nada de barril. Elabora la primera.", "Encara no hi ha res. Elabora la primera."],
+    need: ["Give it a name and sign it.", "起个名字，再署个名吧。", "取個名字，再署個名吧。", "Ponle nombre y fírmala.", "Posa-li nom i signa-la."],
+    shipped: ["Brewed! On tap at {v}.", "酿好了！已送到{v}。", "釀好了！已送到{v}。", "¡Lista! De barril en {v}.", "Llesta! De barril a {v}."], shippedNone: ["Brewed! It's on the tap list.", "酿好了！已上架。", "釀好了！已上架。", "¡Lista! Ya está en la lista.", "Llesta! Ja és a la llista."],
+    and: [" and ", "和", "和", " y ", " i "],
+    rest: ["The kettle needs a rest. Try again a bit later.", "锅炉要歇一会儿，稍后再试。", "鍋爐要歇一會兒，稍後再試。", "La olla necesita un descanso. Prueba más tarde.", "L'olla necessita un descans. Prova-ho més tard."],
+    offline: ["The brewery can't be reached right now.", "暂时连不上啤酒坊。", "暫時連不上啤酒坊。", "Ahora no se puede llegar a la cervecería.", "Ara no es pot arribar a la cerveseria."],
+    privacy: ["Kept on this device (your privacy choice).", "按你的隐私选择，只保存在这台设备上。", "按你的隱私選擇，只保存在這台裝置上。", "Se queda en este dispositivo (tu elección de privacidad).", "Es queda en aquest dispositiu (la teva elecció de privadesa)."],
+    by: ["by {b}", "{b} 酿", "{b} 釀", "de {b}", "de {b}"]
+  };
+  /* the ingredients */
+  var MALT = { pils: [["Pilsner", "皮尔森", "皮爾森", "Pilsner", "Pilsner"], "#f2d55a", 1], pale: [["Pale", "浅色", "淺色", "Pálida", "Pàl·lida"], "#e8a832", 2], wheat: [["Wheat", "小麦", "小麥", "Trigo", "Blat"], "#f0d080", 2], amber: [["Amber", "琥珀", "琥珀", "Ámbar", "Ambre"], "#c8662a", 3], choc: [["Chocolate", "巧克力", "巧克力", "Chocolate", "Xocolata"], "#5a2a14", 4], roast: [["Roasted", "烘焙", "烘焙", "Tostada", "Torrada"], "#1c1008", 5] };
+  var AROMA = { citrus: ["Citrus", "柑橘", "柑橘", "Cítrico", "Cítric"], pine: ["Pine", "松针", "松針", "Pino", "Pi"], floral: ["Floral", "花香", "花香", "Floral", "Floral"], tropical: ["Tropical", "热带水果", "熱帶水果", "Tropical", "Tropical"], herbal: ["Herbal", "草本", "草本", "Herbal", "Herbaci"] };
+  var YEAST = { lager: ["Lager", "拉格", "拉格", "Lager", "Lager"], ale: ["Ale", "艾尔", "艾爾", "Ale", "Ale"], wheat: ["Wheat", "小麦", "小麥", "Trigo", "Blat"], wild: ["Wild", "野生", "野生", "Salvaje", "Salvatge"], belgian: ["Belgian", "比利时", "比利時", "Belga", "Belga"] };
+  var EXTRA = { osmanthus: ["Osmanthus", "桂花", "桂花", "Osmanto", "Osmant"], jasmine: ["Jasmine tea", "茉莉花茶", "茉莉花茶", "Té de jazmín", "Te de gessamí"], yuzu: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"], sichuan: ["Sichuan pepper", "花椒", "花椒", "Pimienta de Sichuan", "Pebre de Sichuan"], honey: ["Honey", "蜂蜜", "蜂蜜", "Miel", "Mel"], ginger: ["Ginger", "姜", "薑", "Jengibre", "Gingebre"], coffee: ["Coffee", "咖啡", "咖啡", "Café", "Cafè"], cherry: ["Cherry", "樱桃", "櫻桃", "Cereza", "Cirera"], lychee: ["Lychee", "荔枝", "荔枝", "Lichi", "Litxi"], smoke: ["Smoke", "烟熏", "煙燻", "Ahumada", "Fumada"] };
+  var STYLE = { pilsner: ["Pilsner", "皮尔森", "皮爾森", "Pilsner", "Pilsner"], lager: ["Lager", "拉格", "拉格", "Lager", "Lager"], amberlager: ["Amber Lager", "琥珀拉格", "琥珀拉格", "Lager ámbar", "Lager ambre"], darklager: ["Dark Lager", "黑拉格", "黑拉格", "Lager oscura", "Lager fosca"],
+    pale: ["Pale Ale", "淡色艾尔", "淡色艾爾", "Pale Ale", "Pale Ale"], ipa: ["IPA", "IPA", "IPA", "IPA", "IPA"], dipa: ["Double IPA", "双倍 IPA", "雙倍 IPA", "Doble IPA", "Doble IPA"], amber: ["Amber Ale", "琥珀艾尔", "琥珀艾爾", "Amber Ale", "Amber Ale"], brown: ["Brown Ale", "棕色艾尔", "棕色艾爾", "Brown Ale", "Brown Ale"], porter: ["Porter", "波特", "波特", "Porter", "Porter"], stout: ["Stout", "世涛", "世濤", "Stout", "Stout"], imperial: ["Imperial Stout", "帝国世涛", "帝國世濤", "Imperial Stout", "Imperial Stout"],
+    wheat: ["Wheat Beer", "小麦啤酒", "小麥啤酒", "Cerveza de trigo", "Cervesa de blat"], sour: ["Sour", "酸啤", "酸啤", "Sour", "Sour"], saison: ["Saison", "赛松", "賽松", "Saison", "Saison"], tripel: ["Tripel", "三料", "三料", "Tripel", "Tripel"], dubbel: ["Dubbel", "双料", "雙料", "Dubbel", "Dubbel"] };
+  var NOTE = { body: [["Light and crisp", "清爽轻盈", "清爽輕盈", "Ligera y fresca", "Lleugera i fresca"], ["Smooth", "顺滑", "順滑", "Suave", "Suau"], ["Rich", "醇厚", "醇厚", "Intensa", "Intensa"], ["Deep and roasty", "深沉焦香", "深沉焦香", "Profunda y tostada", "Profunda i torrada"]],
+    bitter: [["barely bitter", "几乎不苦", "幾乎不苦", "apenas amarga", "gens amarga"], ["gently bitter", "微苦", "微苦", "ligeramente amarga", "lleugerament amarga"], ["nicely bitter", "苦得恰好", "苦得恰好", "con buen amargor", "amb bona amargor"], ["boldly bitter", "苦味浓烈", "苦味濃烈", "muy amarga", "molt amarga"]],
+    yeast: { lager: ["clean finish", "收口干净", "收口乾淨", "final limpio", "final net"], ale: ["a fruity edge", "带果香", "帶果香", "toque afrutado", "toc afruitat"], wheat: ["banana and clove", "香蕉和丁香味", "香蕉和丁香味", "plátano y clavo", "plàtan i clau"], wild: ["bright and tart", "酸得明亮", "酸得明亮", "ácida y viva", "àcida i viva"], belgian: ["spicy and dry", "辛香干爽", "辛香乾爽", "especiada y seca", "especiada i seca"] } };
+  var LBG = ["#c8402a", "#2c4a86", "#2f6a3a", "#e8a030", "#5a3a6e", "#1c1a1f", "#e870a8", "#3a8a8a"], LPAT = ["plain", "stripes", "dots"];
+
+  var R = { malt: "pale", hops: 2, aroma: "citrus", yeast: "ale", extras: [], abv: 5, label: { bg: "#c8402a", icon: "cat", pattern: "stripes" } };
+  function styleKey() {
+    var m = R.malt, y = R.yeast, h = R.hops, a = R.abv;
+    if (y === "wild") return "sour"; if (y === "wheat" || m === "wheat") return "wheat";
+    if (y === "belgian") return a >= 8 ? (m === "amber" || m === "choc" || m === "roast" ? "dubbel" : "tripel") : "saison";
+    if (y === "lager") return m === "pils" ? "pilsner" : m === "amber" ? "amberlager" : (m === "choc" || m === "roast") ? "darklager" : "lager";
+    if (m === "roast") return a >= 8 ? "imperial" : "stout"; if (m === "choc") return a >= 6 ? "porter" : "brown"; if (m === "amber") return "amber";
+    return h >= 3 ? (h >= 4 && a >= 7 ? "dipa" : "ipa") : "pale";
+  }
+  function styleName(k, extras, aroma, hops, lang) {
+    var li = lang == null ? L() : lang, base = STYLE[k][li], pre = extras.map(function (e) { return EXTRA[e][li]; });
+    if (!pre.length && (k === "ipa" || k === "dipa") && aroma) pre = [AROMA[aroma][li]];
+    if (li === 1 || li === 2) return pre.join("") + base; return (pre.length ? pre.join(li === 0 ? " & " : " + ") + " " : "") + base;
+  }
+  function color() { var c = MALT[R.malt][1]; if (R.extras.indexOf("cherry") >= 0 && R.malt !== "roast") c = "#b8302a"; return c; }
+  function note() { var b = MALT[R.malt][2], body = NOTE.body[b <= 1 ? 0 : b <= 2 ? 1 : b <= 3 ? 2 : 3], bit = NOTE.bitter[Math.min(3, Math.floor(R.hops * .9))]; var s = tr(body) + (L() >= 1 && L() <= 2 ? "，" : ", ") + tr(bit) + (L() >= 1 && L() <= 2 ? "，" : ", ") + tr(NOTE.yeast[R.yeast]); if (R.hops && R.aroma) s += " · " + tr(AROMA[R.aroma]); if (R.extras.length) s += " · " + R.extras.map(function (e) { return tr(EXTRA[e]); }).join(" · "); return s + (L() >= 1 && L() <= 2 ? "。" : "."); }
+
+  /* ---------- chips ---------- */
+  function chip(box, label, on, onclick, sw) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; if (sw) { var i = document.createElement("i"); i.style.background = sw; b.appendChild(i); } b.appendChild(document.createTextNode(label)); b.setAttribute("aria-pressed", !!on); b.onclick = onclick; box.appendChild(b); return b; }
+  function paint() {
+    ["malt", "hops", "aroma", "yeast", "extras", "bg", "icon", "sort"].forEach(function (id) { $(id).innerHTML = ""; });
+    Object.keys(MALT).forEach(function (k) { chip($("malt"), tr(MALT[k][0]), R.malt === k, function () { R.malt = k; paint(); }, MALT[k][1]); });
+    [0, 1, 2, 3, 4].forEach(function (n) { chip($("hops"), n ? "🌿".repeat(n) : "∅", R.hops === n, function () { R.hops = n; paint(); }); });
+    if (R.hops) Object.keys(AROMA).forEach(function (k) { chip($("aroma"), tr(AROMA[k]), R.aroma === k, function () { R.aroma = k; paint(); }); });
+    Object.keys(YEAST).forEach(function (k) { chip($("yeast"), tr(YEAST[k]), R.yeast === k, function () { R.yeast = k; paint(); }); });
+    Object.keys(EXTRA).forEach(function (k) { chip($("extras"), tr(EXTRA[k]), R.extras.indexOf(k) >= 0, function () { var i = R.extras.indexOf(k); if (i >= 0) R.extras.splice(i, 1); else { R.extras.push(k); if (R.extras.length > 2) R.extras.shift(); } paint(); }); });
+    LBG.forEach(function (c) { chip($("bg"), "", R.label.bg === c, function () { R.label.bg = c; paint(); }, c).setAttribute("aria-label", c); });
+    LPAT.forEach(function (p) { chip($("bg"), { plain: "▢", stripes: "≡", dots: "⁘" }[p], R.label.pattern === p, function () { R.label.pattern = p; paint(); }); });
+    BeerArt.ICONS.forEach(function (ic) { chip($("icon"), { cat: "🐈", dog: "🐕", dragon: "🐉", lantern: "🏮", wave: "🌊", mountain: "⛰️", star: "⭐", flower: "🌸" }[ic], R.label.icon === ic, function () { R.label.icon = ic; paint(); }); });
+    [["new", t("new")], ["loved", t("loved")]].forEach(function (s) { chip($("sort"), s[1], sort === s[0], function () { sort = s[0]; paint(); load(); }); });
+    $("abvOut").textContent = R.abv.toFixed(1) + "%";
+    $("style").textContent = styleName(styleKey(), R.extras, R.aroma, R.hops) + " · " + R.abv.toFixed(1) + "%";
+    $("note").textContent = note();
+    BeerArt.glass($("glass"), color(), true, 1); BeerArt.can($("can"), { color: color(), label: R.label });
+  }
+  $("abv").oninput = function () { R.abv = +this.value / 10; paint(); };
+
+  /* ---------- the brewhouse: kettle, fermenters, a bottle line ---------- */
+  var hc = $("house"), hg = hc.getContext("2d"), f = 0, brewing = 0;
+  function H(x, y, w, h, c) { hg.fillStyle = c; hg.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  function house() {
+    f++; H(0, 0, 160, 64, "#3a2214"); for (var x = 0; x < 160; x += 8) for (var y = (x / 8 % 2) * 3; y < 50; y += 6) H(x, y, 7, 5, "#4a2c18");
+    H(0, 50, 160, 14, "#2a1a10"); for (var s = 0; s < 160; s += 10) H(s, 50, 1, 14, "#22140c");
+    // the copper kettle
+    H(14, 22, 34, 28, "#c8783a"); H(16, 18, 30, 4, "#e8a060"); H(28, 8, 6, 10, "#a8582a"); H(18, 24, 4, 22, "rgba(255,230,180,.35)"); H(12, 44, 38, 6, "#8a4a20");
+    var bub = brewing ? 6 : 2; for (var b = 0; b < bub; b++) { var by = 18 - ((f * (brewing ? 1.2 : .3) + b * 7) % 18); H(29 + Math.sin((f + b * 9) / 6) * 3, by - 6, 2, 2, "rgba(255,255,255," + (by / 18 * .7) + ")"); }
+    // fermenters filled with the beer you're designing
+    [[60, 1], [84, .7], [108, .45]].forEach(function (tk, i) { H(tk[0], 12, 18, 38, "#a8a8b0"); H(tk[0] + 2, 14, 2, 34, "rgba(255,255,255,.4)"); var lv = brewing && i === 0 ? Math.min(1, (f % 120) / 100) : tk[1]; H(tk[0] + 6, 46 - 30 * lv, 6, 30 * lv, color()); H(tk[0] + 5, 15, 8, 32, "rgba(0,0,0,.15)"); H(tk[0] + 4, 50, 2, 4, "#6a6a70"); H(tk[0] + 12, 50, 2, 4, "#6a6a70"); });
+    // a little conveyor of cans
+    H(132, 44, 28, 2, "#6a6a70"); for (var c = 0; c < 3; c++) { var cx = 132 + ((f * .25 + c * 10) % 30); H(cx, 36, 5, 8, R.label.bg); H(cx, 41, 5, 2, color()); }
+    // a cat (Miso, probably) asleep on a sack of malt
+    H(136, 22, 16, 8, "#c8a878"); H(138, 20, 8, 3, "#1c1a1f"); H(144, 19, 3, 3, "#1c1a1f");
+    requestAnimationFrame(house);
+  }
+
+  /* ---------- the database ---------- */
+  var cfg = { url: "", key: "" };
+  function ready() { return new Promise(function (res) { if (window.FB_SUPABASE && FB_SUPABASE.url) { cfg.url = FB_SUPABASE.url; cfg.key = FB_SUPABASE.anonKey; return res(); } var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; res(); }; document.head.appendChild(sc); }); }
+  function api(fn, args, get) {
+    return ready().then(function () {
+      if (!cfg.url) throw new Error("offline");
+      var u = cfg.url + "/rest/v1/rpc/" + fn, h = { apikey: cfg.key, Authorization: "Bearer " + cfg.key, "Content-Type": "application/json" };
+      if (get) u += "?" + Object.keys(args).map(function (k) { return k + "=" + encodeURIComponent(args[k]); }).join("&");
+      return fetch(u, get ? { headers: h } : { method: "POST", headers: h, body: JSON.stringify(args) }).then(function (r) { return r.text().then(function (x) { var j = null; try { j = x ? JSON.parse(x) : null; } catch (e) {} if (!r.ok) throw new Error((j && j.message) || "HTTP " + r.status); return j; }); });
+    });
+  }
+  function key() { var k = null; try { k = localStorage.getItem("fb_device_key"); } catch (e) {} if (!k) { var a = new Uint8Array(32); crypto.getRandomValues(a); k = btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); try { localStorage.setItem("fb_device_key", k); } catch (e) {} } return k; }
+
+  function clink() { try { var A = new (window.AudioContext || window.webkitAudioContext)(), n = A.currentTime; [1568, 2093].forEach(function (q, i) { var o = A.createOscillator(), g = A.createGain(); o.type = "sine"; o.frequency.value = q; g.gain.setValueAtTime(.06, n + i * .05); g.gain.exponentialRampToValueAtTime(.0001, n + .6); o.connect(g); g.connect(A.destination); o.start(n + i * .05); o.stop(n + .65); }); } catch (e) {} }
+  $("brew").onclick = function () {
+    var name = $("name").value.trim(), brewer = $("brewer").value.trim(); if (!name || !brewer) { toast(t("need")); return; }
+    var btn = this, sk = styleKey(); btn.disabled = true; brewing = 1;
+    var body = { name: name, brewer: brewer, style: styleName(sk, R.extras, R.aroma, R.hops, 0), color: color(), label: R.label, bar: $("toBar").checked, club: $("toClub").checked,
+      recipe: { malt: R.malt, hops: R.hops, aroma: R.hops ? R.aroma : null, yeast: R.yeast, extras: R.extras, abv: R.abv, style: sk } };
+    setTimeout(function () {
+      api("beer_brew", { p_secret: key(), p_beer: body }).then(function () {
+        clink(); var v = [body.bar && t("bar"), body.club && t("club")].filter(Boolean);
+        toast("🍺 " + (v.length ? t("shipped").replace("{v}", v.join(t("and"))) : t("shippedNone"))); $("name").value = ""; sort = "new"; paint(); load();
+      }).catch(function (e) { var m = String(e && e.message || e); toast(/rest|fast/.test(m) ? t("rest") : /privacy/i.test(m) ? t("privacy") : t("offline")); })
+        .then(function () { btn.disabled = false; brewing = 0; });
+    }, 1600);
+  };
+
+  /* ---------- the tap list ---------- */
+  var sort = "new", rows = [];
+  function load() { api("beer_list", { p_venue: "", p_sort: sort }, true).then(function (r) { rows = r || []; taps(); }).catch(function () { $("taps").innerHTML = '<p class="empty">' + t("offline") + "</p>"; }); }
+  function localStyle(b) { var r = b.recipe || {}; return STYLE[r.style] ? styleName(r.style, r.extras || [], r.aroma, r.hops) : b.style; }
+  function taps() {
+    var box = $("taps"); box.innerHTML = "";
+    if (!rows.length) { box.innerHTML = '<p class="empty">' + t("empty") + "</p>"; return; }
+    rows.forEach(function (b) {
+      var d = document.createElement("article"); d.className = "tap"; var c = document.createElement("canvas"); BeerArt.can(c, b); d.appendChild(c);
+      d.insertAdjacentHTML("beforeend", "<b></b><small></small><small></small><span class='ven'></span><div class='row'><button type='button' class='ch'></button><button type='button' class='flag'></button></div>");
+      var sm = d.querySelectorAll("small"); d.querySelector("b").textContent = b.name; sm[0].textContent = localStyle(b) + " · " + ((b.recipe && b.recipe.abv) || 5).toFixed(1) + "%"; sm[1].textContent = t("by").replace("{b}", b.brewer);
+      d.querySelector(".ven").textContent = (b.bar ? "🍸 " : "") + (b.club ? "🎧" : "");
+      var ch = d.querySelector(".ch"); ch.textContent = "🍻 " + t("cheers") + " · " + b.cheers;
+      ch.onclick = function () { api("beer_cheers", { p_secret: key(), p_id: b.id }).then(function (n) { if (n < 0) toast(t("again")); else { b.cheers = n; ch.textContent = "🍻 " + t("cheers") + " · " + n; clink(); toast(t("cheered")); } }).catch(function () { toast(t("offline")); }); };
+      var fl = d.querySelector(".flag"); fl.textContent = "⚑ " + t("report"); fl.onclick = function () { api("beer_report", { p_id: b.id }).then(function () { fl.remove(); toast(t("reported")); }); };
+      box.appendChild(d);
+    });
+  }
+
+  function words() {
+    document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
+    document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
+    document.title = (L() ? t("title") : "The Brewery") + " — FREE//BUILDER";
+    var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
+    paint(); if (rows.length) taps();
+  }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
+  window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+  try { var nk = localStorage.getItem("fb_nick"); if (nk) $("brewer").value = nk.slice(0, 24); } catch (e) {}
+  words(); load(); requestAnimationFrame(house);
+})();
+</script>
+</body>
+</html>

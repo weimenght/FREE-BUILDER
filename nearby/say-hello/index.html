@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=76726a190b"></script><script data-fbg src="/fbkit/fbg.js?v=1446f335bb" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Postcard — FREE//BUILDER</title>
+<meta name="description" content="Write a postcard, seal it until the day you choose, and send it to a friend or hang it on the wall in Wei's Bar.">
+<meta name="theme-color" content="#1d130d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%231d130d'/%3E%3Crect x='1' y='3' width='14' height='10' fill='%23f6ecd2'/%3E%3Crect x='10' y='4' width='4' height='4' fill='%23c8402a'/%3E%3Crect x='2' y='8' width='6' height='1' fill='%233a5a8c'/%3E%3Crect x='2' y='10' width='5' height='1' fill='%233a5a8c'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+:root{--bg:#1d130d;--ink:#fbeedd;--dim:rgba(251,238,221,.62);--a:#f6b73c;--paper:#f6ecd2;--paper2:#ecdfbf;--pen:#2c4a86;
+  --px:'Press Start 2P',ui-monospace,monospace;--vt:'VT323',ui-monospace,'PingFang SC','Microsoft YaHei',monospace;--hand:'Caveat','Kaiti SC','STKaiti','KaiTi',cursive;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 20px/1.1 var(--vt);-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;overflow-x:hidden;background:repeating-conic-gradient(rgba(0,0,0,.2) 0 25%,transparent 0 50%) 0 0/4px 4px,radial-gradient(120% 70% at 50% 0,#3a2416,#1d130d 70%);image-rendering:pixelated}
+button,input,textarea{font:inherit;color:inherit}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:max(14px,env(safe-area-inset-top)) 16px 6px;max-width:620px;margin:0 auto}
+.sign{font:400 18px/1 var(--px);letter-spacing:.06em;color:#fff3c0;text-shadow:3px 3px 0 #b3261e;padding:8px 10px;border:3px solid #ffd27a;box-shadow:inset 0 0 0 3px #b3261e,4px 4px 0 #000;background:#2a140b;white-space:nowrap}
+.tools{display:flex;gap:8px}
+.pill{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:#3a2214;box-shadow:inset -3px -3px 0 rgba(0,0,0,.45),inset 3px 3px 0 rgba(255,220,170,.18),3px 3px 0 #000;cursor:pointer;font:400 18px/1 var(--vt);text-decoration:none;color:var(--ink)}
+.pill:active,.big:active,.chip:active{transform:translate(2px,2px)}
+.pill .n{position:absolute;top:-8px;right:-8px;min-width:20px;height:20px;padding:0 4px;background:var(--a);color:#000;border:2px solid #000;font-size:15px;line-height:16px;text-align:center}
+main{max-width:620px;margin:0 auto;padding:10px 16px 110px}
+/* ---- the card ---- */
+.stage{perspective:1400px;margin:8px auto 14px;max-width:560px}
+.card{position:relative;width:100%;aspect-ratio:4/3;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,1.3,.5,1);cursor:pointer}
+@media (min-width:520px){.card{aspect-ratio:3/2}}
+.card.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:4px solid #000;box-shadow:6px 6px 0 #000;overflow:hidden}
+.front{background:#000}
+.front canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
+.greet{position:absolute;left:10px;bottom:10px;right:10px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;pointer-events:none}
+.greet b{font:400 10px/1.2 var(--px);color:#fff7dc;text-shadow:2px 2px 0 #000;letter-spacing:.06em;text-transform:uppercase}
+.greet input,.greet span{pointer-events:auto;max-width:100%;font:600 34px/1 var(--hand);color:#fff7dc;text-shadow:3px 3px 0 #000,-1px -1px 0 #000;background:transparent;border:0;outline:0;padding:0;width:100%}
+.greet input::placeholder{color:rgba(255,247,220,.55)}
+.back{transform:rotateY(180deg);background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(120,90,40,.05) 3px 4px),var(--paper);color:var(--pen);display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:0}
+.back .l{position:relative;padding:12px 12px 10px 14px;border-right:2px solid rgba(60,40,20,.35)}
+.back .r{position:relative;padding:12px 12px 10px 12px;display:flex;flex-direction:column}
+.msg{width:100%;height:100%;resize:none;border:0;outline:0;background:repeating-linear-gradient(transparent 0 25px,rgba(60,90,140,.25) 25px 26px);font:600 21px/26px var(--hand);color:var(--pen);padding:0}
+.msg::placeholder{color:rgba(44,74,134,.45)}
+.stamp{align-self:flex-end;position:relative;width:62px;height:74px;padding:6px;border:0;cursor:pointer;
+  background:radial-gradient(circle at 50% 50%,transparent 2.6px,#fffaf0 3px) -4px -4px/8px 8px;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.35))}
+.stamp i{display:grid;place-items:center;width:100%;height:100%;font-style:normal;font-size:28px;background:var(--sc,#c8402a);box-shadow:inset 0 0 0 2px rgba(255,255,255,.55)}
+.stamp i::after{content:attr(data-v);position:absolute;bottom:9px;right:10px;font:400 10px/1 var(--vt);color:#fff}
+.stamp.thud{animation:thud .35s steps(3)}
+@keyframes thud{0%{transform:scale(1.25) rotate(8deg)}100%{transform:none}}
+.pm{position:absolute;top:30px;right:52px;width:70px;height:70px;border-radius:50%;border:2px solid currentColor;color:rgba(160,40,30,.55);display:grid;place-items:center;text-align:center;font:400 13px/1 var(--vt);transform:rotate(-14deg);pointer-events:none;padding:6px}
+.pm::after{content:"";position:absolute;left:62px;top:24px;width:58px;height:20px;background:repeating-linear-gradient(0deg,currentColor 0 2px,transparent 2px 6px);opacity:.8}
+.lines{margin-top:auto;display:grid;gap:8px}
+.ln{display:flex;align-items:baseline;gap:6px;border-bottom:2px solid rgba(60,40,20,.4)}
+.ln b{font:400 15px/1 var(--vt);color:rgba(60,40,20,.7);text-transform:uppercase}
+.ln input,.ln span{flex:1;min-width:0;border:0;outline:0;background:transparent;font:600 22px/1.1 var(--hand);color:var(--pen);padding:0}
+.ln input::placeholder{color:rgba(44,74,134,.4)}
+.readmsg{white-space:pre-wrap;word-break:break-word;overflow:auto;height:100%;font:600 21px/26px var(--hand);background:repeating-linear-gradient(transparent 0 25px,rgba(60,90,140,.25) 25px 26px)}
+.count{position:absolute;left:14px;bottom:6px;font:400 14px/1 var(--vt);color:rgba(60,40,20,.5)}
+@media (max-width:420px){.msg,.readmsg{font-size:19px;line-height:23px;background-size:100% 23px}.msg{background:repeating-linear-gradient(transparent 0 22px,rgba(60,90,140,.25) 22px 23px)}.readmsg{background:repeating-linear-gradient(transparent 0 22px,rgba(60,90,140,.25) 22px 23px)}.stamp{width:52px;height:62px}.stamp i{font-size:22px}.pm{width:56px;height:56px;right:44px;top:24px;font-size:11px}.ln input,.ln span{font-size:19px}.back .l{padding:10px}.back .r{padding:10px 8px}}
+/* ---- envelope for sealed cards ---- */
+.env{position:absolute;inset:-4px;z-index:5;background:linear-gradient(160deg,#d8b98a,#c9a575);border:4px solid #000;box-shadow:6px 6px 0 #000;display:grid;place-items:center;transition:transform .8s cubic-bezier(.5,-.3,.6,1),opacity .8s;cursor:default}
+.env::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom right,transparent 49.5%,rgba(0,0,0,.18) 50%,transparent 51%),linear-gradient(to bottom left,transparent 49.5%,rgba(0,0,0,.18) 50%,transparent 51%);background-size:100% 62%;background-repeat:no-repeat}
+.env .addr{position:absolute;left:16px;bottom:14px;color:#3a2a1c;font:600 26px/1.05 var(--hand)}
+.env .addr small{display:block;font:400 15px/1 var(--vt);opacity:.7}
+.env .stamp{position:absolute;top:12px;right:12px;cursor:default}
+.seal{position:relative;z-index:1;width:84px;height:84px;border-radius:50%;border:4px solid #000;background:radial-gradient(circle at 35% 35%,#e05a46,#9c2418 70%);box-shadow:inset -4px -4px 0 rgba(0,0,0,.3),4px 4px 0 #000;font:400 30px/1 var(--px);color:#ffd9c9;display:grid;place-items:center;cursor:pointer}
+.seal:disabled{cursor:default;filter:saturate(.75)}
+.seal.ready{animation:beat 1.1s infinite}
+@keyframes beat{50%{transform:scale(1.08)}}
+.env.gone{transform:translateY(110%) rotate(6deg);opacity:0;pointer-events:none}
+.clock{text-align:center;margin:4px 0 2px;font:400 15px/1.5 var(--px);color:var(--a);letter-spacing:.06em}
+.when{text-align:center;color:var(--dim);font-size:20px}
+/* ---- controls ---- */
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:center;margin:10px 0}
+.chip{min-width:46px;height:46px;padding:0 9px;border:3px solid #000;background:#3a2214;color:var(--ink);text-decoration:none;font-size:22px;cursor:pointer;display:inline-grid;place-items:center;box-shadow:inset -3px -3px 0 rgba(0,0,0,.45),inset 3px 3px 0 rgba(255,220,170,.15)}
+.chip[aria-pressed="true"]{background:var(--a);color:#1d130d;box-shadow:inset -3px -3px 0 rgba(0,0,0,.35),inset 3px 3px 0 rgba(255,255,255,.4),0 0 0 3px #fff}
+.chip.t{font-size:19px;padding:0 12px}
+.ink{width:34px;height:34px;min-width:34px;padding:0;border-radius:0}
+.ink::after{content:"";width:18px;height:18px;background:var(--c);box-shadow:inset -2px -2px 0 rgba(0,0,0,.35)}
+.lbl{display:flex;align-items:center;gap:8px;justify-content:center;color:var(--dim);font-size:19px;margin-top:16px}
+.lbl::before,.lbl::after{content:"";flex:1;max-width:80px;height:3px;background:repeating-linear-gradient(90deg,rgba(251,238,221,.25) 0 6px,transparent 6px 10px)}
+#pickAt{height:46px;border:3px solid #000;background:#2a1810;color:var(--ink);padding:0 8px;font:400 19px/1 var(--vt);color-scheme:dark}
+.opens{text-align:center;font-size:20px;color:var(--a);min-height:24px}
+.send{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.big{display:flex;align-items:center;justify-content:center;gap:10px;min-height:60px;padding:8px 12px;border:4px solid #000;background:var(--a);color:#1d130d;font:400 22px/1 var(--vt);cursor:pointer;box-shadow:inset -4px -4px 0 rgba(0,0,0,.25),inset 4px 4px 0 rgba(255,255,255,.35),5px 5px 0 #000;text-decoration:none;text-align:center}
+.big.alt{background:#7affc1}
+.big .e{font-size:26px}
+.big[disabled]{filter:grayscale(.7) brightness(.7);cursor:wait}
+/* ---- sheets ---- */
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(10,6,4,.72);display:grid;place-items:end center;padding:16px}
+@media (min-width:620px){.scrim{place-items:center}}
+.sheet{width:100%;max-width:460px;max-height:86vh;overflow:auto;background:#2a1810;border:4px solid #000;box-shadow:6px 6px 0 #000,inset 0 0 0 3px #4a2c1a;padding:18px 16px 16px;position:relative;animation:up .35s steps(5)}
+@keyframes up{0%{transform:translateY(40px);opacity:0}}
+.sheet h2{margin:0 0 10px;font:400 14px/1.5 var(--px);color:var(--a)}
+.sheet .x{position:absolute;top:8px;right:8px}
+.link{display:flex;gap:8px;margin:12px 0}
+.link input{flex:1;min-width:0;height:46px;border:3px solid #000;background:#140b07;padding:0 10px;font:400 18px/1 var(--vt);color:#fff3c0}
+.fly{font-size:54px;text-align:center;animation:fly 1.4s steps(8) both}
+@keyframes fly{0%{transform:translate(-40px,20px) rotate(-20deg)}60%{transform:translate(20px,-10px) rotate(8deg)}100%{transform:none}}
+.list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.list li{display:flex;align-items:center;gap:10px;padding:8px 10px;background:#3a2214;border:3px solid #000}
+.list li a{color:inherit;flex:1;min-width:0;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list li small{color:var(--dim);white-space:nowrap}
+.foot{text-align:center;margin-top:22px;color:var(--dim);font-size:18px}
+.foot a{color:var(--a);display:inline-block;margin:4px 0;line-height:1.4}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);opacity:0;transition:.25s;z-index:60;background:#000;color:#fff3c0;border:3px solid var(--a);padding:10px 14px;font-size:19px;max-width:calc(100vw - 32px);text-align:center;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%)}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Neighbourhood" data-fbapp></head>
+<body>
+<header class="top">
+  <div class="sign" data-t="title">POSTCARD</div>
+  <div class="tools">
+    <button class="pill" type="button" id="sentBtn" aria-label="Sent">📮<span class="n" id="sentN" hidden></span></button>
+    <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
+  </div>
+</header>
+
+<main>
+  <h1 class="sr" data-t="title">Postcard</h1>
+  <div class="stage">
+    <div class="card" id="card" role="group">
+      <div class="face front">
+        <canvas id="scene" width="160" height="110"></canvas>
+        <div class="greet"><b data-t="greet">Greetings from</b><input id="place" maxlength="40" autocomplete="off" data-tp="placePh"></div>
+      </div>
+      <div class="face back">
+        <div class="l"><textarea id="msg" class="msg" maxlength="300" data-tp="msgPh"></textarea><span class="count" id="count"></span></div>
+        <div class="r">
+          <button class="stamp" id="stamp" type="button"><i id="stampI">🐈</i></button>
+          <div class="pm" id="pm"></div>
+          <div class="lines">
+            <label class="ln"><b data-t="to">To</b><input id="to" maxlength="32" autocomplete="off" data-tp="toPh"></label>
+            <label class="ln"><b data-t="from">From</b><input id="from" maxlength="32" autocomplete="off" data-tp="fromPh"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- writing -->
+  <section id="write">
+    <div class="row" id="scenes" role="group"></div>
+    <div class="row"><button class="chip t" type="button" id="flipBtn">↻ <span data-t="flip">Turn over</span></button><span id="inks" class="row" style="margin:0"></span></div>
+    <div class="lbl">🔒 <span data-t="when">Opens</span></div>
+    <div class="row" id="whens" role="group"></div>
+    <div class="row" id="pickRow" hidden><input type="datetime-local" id="pickAt"></div>
+    <div class="opens" id="opens"></div>
+    <div class="send">
+      <button class="big" type="button" id="toFriend"><span class="e">✉️</span><span data-t="friend">Send to a friend</span></button>
+      <button class="big alt" type="button" id="toBar"><span class="e">🍸</span><span data-t="bar">Hang in Wei's Bar</span></button>
+    </div>
+  </section>
+
+  <!-- reading -->
+  <section id="read" hidden>
+    <div class="clock" id="clock"></div>
+    <div class="when" id="readWhen"></div>
+    <div class="row" id="readBtns"></div>
+  </section>
+
+  <p class="foot"><a href="/nearby/next-door/#wall-cards" data-t="seeWall">The Wall in Wei's Bar →</a><br><a href="/nearby/handoff/">🕰️ <span data-t="handoff">Next counter: Handoff, for two people apart</span></a></p>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script id="pc-scenes">
+/* Postcard pictures, drawn as pixels so every card is light (Wei's Bar borrows this block to draw the Wall). */
+window.PCScenes = (function () {
+  var W = 160, H = 110;
+  function rng(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return function () { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 10000) / 10000; }; }
+  function mk(g) { return { r: function (x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); } }; }
+  function bands(p, cols, y0, y1) { var n = cols.length, hh = (y1 - y0) / n; cols.forEach(function (c, i) { p.r(0, y0 + i * hh, W, hh + 1, c); }); }
+  function cloud(p, x, y, s, c) { p.r(x, y + 2 * s, 12 * s, 3 * s, c); p.r(x + 2 * s, y, 5 * s, 3 * s, c); p.r(x + 6 * s, y + s, 4 * s, 2 * s, c); }
+  function ridge(p, R, y, amp, c, step) { var h = y; for (var x = 0; x < W; x += step) { h += (R() - .5) * amp; h = Math.max(y - amp * 2, Math.min(y + amp, h)); p.r(x, h, step, H - h, c); } }
+  function ell(p, cx, cy, rx, ry, c, top) { for (var y = -ry; y <= ry; y++) { if (top === 1 && y < 0) continue; var w = Math.round(rx * Math.sqrt(1 - (y * y) / (ry * ry))); p.r(cx - w, cy + y, w * 2, 1, c); } }
+  var S = {
+    hutong: function (p, R) {
+      bands(p, ["#3b2a5a", "#5b3a6e", "#8a4a6a", "#c46a5a", "#e8996a"], 0, 60);
+      p.r(0, 60, W, 50, "#6e6a66");
+      for (var y = 62; y < 108; y += 5) for (var x = (y / 5 % 2) * 6; x < W; x += 12) p.r(x, y, 11, 4, R() < .5 ? "#7d7873" : "#75706b");
+      p.r(0, 42, 52, 68, "#8a8580"); p.r(108, 42, 52, 68, "#8a8580");
+      for (var i = 0; i < 52; i += 6) { p.r(i, 36, 5, 8, "#3a3a40"); p.r(108 + i, 36, 5, 8, "#3a3a40"); }
+      p.r(0, 34, 54, 3, "#2a2a30"); p.r(106, 34, 54, 3, "#2a2a30");
+      for (var yy = 46; yy < 110; yy += 6) for (var xx = (yy / 6 % 2) * 5; xx < 52; xx += 10) { p.r(xx, yy, 9, 5, "#96918b"); p.r(108 + xx, yy, 9, 5, "#96918b"); }
+      p.r(64, 52, 32, 58, "#2a1a14"); p.r(66, 54, 13, 56, "#9c2418"); p.r(81, 54, 13, 56, "#9c2418"); p.r(77, 78, 2, 3, "#f6b73c"); p.r(81, 78, 2, 3, "#f6b73c");
+      p.r(60, 46, 40, 6, "#3a3a40"); p.r(58, 44, 44, 3, "#2a2a30");
+      [[24, 50], [134, 50]].forEach(function (l) { p.r(l[0], l[1] - 6, 1, 6, "#2a1a14"); p.r(l[0] - 5, l[1], 11, 12, "#e0402a"); p.r(l[0] - 4, l[1] + 1, 9, 10, "#ff6a4a"); p.r(l[0] - 2, l[1] + 12, 5, 3, "#f6b73c"); p.r(l[0] - 9, l[1] - 3, 19, 18, "rgba(255,160,90,.12)"); });
+      p.r(118, 28, 8, 6, "#111"); p.r(119, 26, 2, 2, "#111"); p.r(124, 26, 2, 2, "#111"); p.r(126, 31, 6, 2, "#111");
+      for (var s = 0; s < 14; s++) p.r(R() * W, R() * 26, 1, 1, "rgba(255,255,230,.7)");
+    },
+    sky: function (p, R) {
+      bands(p, ["#7fb8e8", "#93c6ee", "#a8d4f2", "#c0e2f6", "#d8eef8"], 0, 82);
+      ell(p, 128, 22, 9, 9, "#fff2b0"); ell(p, 128, 22, 7, 7, "#fff8d8");
+      cloud(p, 14, 18, 2, "#ffffff"); cloud(p, 70, 34, 3, "#f4fbff"); cloud(p, 104, 56, 2, "#ffffff");
+      ridge(p, R, 84, 3, "#7fb46a", 4); ridge(p, R, 92, 2, "#5f9c50", 3);
+      for (var i = 0; i < 26; i++) { var x = R() * W, y = 90 + R() * 18; p.r(x, y, 1, 4, "#3f7a3a"); if (R() < .45) { p.r(x - 1, y - 2, 3, 3, "#ffffff"); } else p.r(x, y - 1, 2, 2, R() < .5 ? "#f6d84a" : "#f4a0b8"); }
+      for (var j = 0; j < 7; j++) p.r(30 + R() * 100, 40 + R() * 40, 1, 1, "#ffffff");
+    },
+    peak: function (p, R) {
+      bands(p, ["#2a3e7a", "#3d5a9a", "#5a7ab8", "#87a4d0", "#c4d6ea"], 0, 70);
+      p.r(26, 12, 2, 2, "#fff"); p.r(110, 8, 1, 1, "#fff"); p.r(70, 16, 1, 1, "#fff");
+      for (var x = 0; x < W; x++) { var h = 30 + Math.abs(x - 92) * .9 + (R() - .5) * 3; p.r(x, h, 1, H - h, "#5a6680"); if (h < 46) p.r(x, h, 1, Math.max(2, 46 - h), "#eef4fa"); }
+      for (var x2 = 0; x2 < W; x2++) { var h2 = 56 + Math.abs(x2 - 30) * .6 + (R() - .5) * 2; p.r(x2, h2, 1, H - h2, "#3e4a62"); if (h2 < 62) p.r(x2, h2, 1, 2, "#d8e4f0"); }
+      ridge(p, R, 92, 3, "#2a3a2e", 3);
+      for (var t = 0; t < 16; t++) { var tx = R() * W, ty = 88 + R() * 16; p.r(tx, ty - 6, 1, 8, "#1a2a1e"); p.r(tx - 2, ty - 3, 5, 4, "#1f3a26"); p.r(tx - 1, ty - 6, 3, 3, "#1f3a26"); }
+      p.r(84, 38, 2, 3, "#e0402a"); p.r(84, 36, 2, 2, "#f5d49a");
+      for (var k = 0; k < 10; k++) p.r(86 + k * 1.2, 41 + k * 1.6, 1, 1, "#f6b73c");
+    },
+    sea: function (p, R) {
+      bands(p, ["#2a2050", "#5a2a6a", "#a83a5a", "#e8604a", "#f6a04a", "#ffd07a"], 0, 66);
+      ell(p, 80, 66, 16, 12, "#ffe7a0"); p.r(0, 66, W, 44, "#1e3a6a");
+      bands(p, ["#2a4a7a", "#244272", "#1e3a6a", "#1a3460", "#162e56"], 66, 110);
+      for (var i = 0; i < 18; i++) { var y = 68 + i * 2.3, w = 30 - i * 1.2; if (w > 2) p.r(80 - w / 2 + (R() - .5) * 4, y, w, 1, "rgba(255,210,140,.7)"); }
+      for (var j = 0; j < 30; j++) p.r(R() * W, 70 + R() * 40, 3 + R() * 6, 1, "rgba(200,220,255,.35)");
+      p.r(118, 60, 1, 10, "#2a1a14"); p.r(119, 60, 7, 8, "#fbeedd"); p.r(112, 70, 16, 3, "#2a1a14");
+      p.r(30, 30, 3, 1, "#2a1a14"); p.r(33, 29, 3, 1, "#2a1a14"); p.r(44, 24, 3, 1, "#2a1a14"); p.r(47, 23, 3, 1, "#2a1a14");
+    },
+    train: function (p, R) {
+      bands(p, ["#9ccbe8", "#b6d9ee", "#d2e8f2"], 0, 60);
+      cloud(p, 30, 14, 2, "#fff"); cloud(p, 100, 22, 2, "#fff");
+      ridge(p, R, 56, 3, "#7a9a7a", 4); ridge(p, R, 66, 2, "#9cbc6a", 3); p.r(0, 74, W, 36, "#c8b45a");
+      for (var r = 76; r < 110; r += 4) p.r(0, r, W, 1, "#b4a04a");
+      for (var x = 6; x < W; x += 34) { p.r(x, 40, 2, 36, "#4a3a2a"); p.r(x - 4, 42, 10, 1, "#4a3a2a"); }
+      p.r(0, 46, W, 1, "rgba(40,30,20,.6)");
+      p.r(0, 0, W, 8, "#5a2a1e"); p.r(0, 0, 10, H, "#5a2a1e"); p.r(150, 0, 10, H, "#5a2a1e"); p.r(0, 92, W, 18, "#6e3424"); p.r(0, 90, W, 3, "#8a4a30");
+      p.r(78, 0, 4, 92, "#5a2a1e"); p.r(10, 8, 68, 2, "rgba(255,255,255,.25)");
+      p.r(110, 82, 9, 9, "#f6ecd2"); p.r(119, 84, 3, 4, "#f6ecd2"); p.r(111, 83, 7, 3, "#8a4a24"); p.r(112, 77, 1, 3, "rgba(255,255,255,.6)"); p.r(115, 75, 1, 4, "rgba(255,255,255,.6)");
+      p.r(26, 84, 22, 6, "#2c4a86"); p.r(27, 85, 20, 1, "#f6ecd2");
+    },
+    bowl: function (p, R) {
+      p.r(0, 0, W, H, "#1e2238");
+      for (var i = 0; i < 40; i++) p.r(R() * W, R() * H, 2, 1, "rgba(255,255,255,.04)");
+      p.r(0, 78, W, 32, "#2a2e48"); p.r(0, 78, W, 2, "#353a58");
+      ell(p, 80, 92, 34, 6, "rgba(0,0,0,.35)");
+      for (var y = 0; y < 34; y++) { var w = Math.round(44 * Math.sqrt(1 - Math.pow(y / 36, 2))); p.r(80 - w, 54 + y, w * 2, 1, y < 3 ? "#e6dccb" : (y % 7 === 0 ? "#cfc2ac" : "#d8ccb6")); }
+      ell(p, 80, 54, 44, 6, "#3a2a20"); ell(p, 80, 54, 41, 4, "#5a3a26");
+      p.r(66, 88, 28, 4, "#c8baa2");
+      var x = 58, yy = 56; for (var k = 0; k < 20; k++) { x += 1.3; yy += (k % 4 < 2 ? 1.6 : -.4); p.r(x, yy, 2, 2, "#f6c84a"); if (k === 9) for (var m = 0; m < 6; m++) p.r(x + m, yy + m * 1.4, 2, 2, "#e8b030"); }
+      for (var s = 0; s < 6; s++) p.r(60 + R() * 40, 60 + R() * 20, 1, 1, "#fff6c0");
+    },
+    bar: function (p, R) {
+      p.r(0, 0, W, H, "#3a2216");
+      for (var x = 0; x < W; x += 10) p.r(x, 0, 1, 70, "#2e1a10");
+      ell(p, 80, 0, 46, 30, "rgba(246,183,60,.14)"); p.r(79, 0, 2, 8, "#111"); p.r(72, 8, 16, 5, "#2a2a2a"); p.r(74, 13, 12, 2, "#ffd27a");
+      p.r(8, 40, 144, 3, "#5a3420"); p.r(8, 22, 144, 3, "#5a3420");
+      var cols = ["#2f6a3a", "#8a2a1e", "#d8b45a", "#2a4a7a", "#6a2a5a", "#c8c8c8", "#3a6a6a"];
+      for (var b = 12; b < 150; b += 9) { var c = cols[Math.floor(R() * cols.length)], h = 10 + R() * 6; p.r(b, 40 - h, 6, h, c); p.r(b + 2, 40 - h - 4, 2, 4, c); p.r(b + 1, 40 - h + 3, 1, h - 5, "rgba(255,255,255,.3)"); if (R() < .6) { var h2 = 8 + R() * 6; p.r(b, 22 - h2, 6, h2, cols[Math.floor(R() * cols.length)]); } }
+      p.r(0, 78, W, 32, "#5a2e1a"); p.r(0, 76, W, 4, "#8a4a2a");
+      p.r(64, 56, 20, 2, "#e8f0f4"); for (var i = 0; i < 9; i++) p.r(65 + i, 58 + i, 18 - i * 2, 1, i < 6 ? "#f6a04a" : "#e8f0f4"); p.r(73, 67, 2, 8, "#e8f0f4"); p.r(68, 75, 12, 1, "#e8f0f4"); p.r(80, 52, 4, 4, "#7aba4a");
+      p.r(112, 66, 12, 9, "#111"); p.r(112, 62, 3, 4, "#111"); p.r(121, 62, 3, 4, "#111"); p.r(124, 72, 8, 2, "#111"); p.r(114, 68, 2, 1, "#f6d84a"); p.r(120, 68, 2, 1, "#f6d84a");
+    },
+    night: function (p, R) {
+      bands(p, ["#0a0a1e", "#121232", "#1a1a44", "#24245a"], 0, 110);
+      for (var s = 0; s < 40; s++) p.r(R() * W, R() * 60, 1, 1, R() < .3 ? "#fff6c0" : "#a8b4ff");
+      ell(p, 122, 20, 8, 8, "#fff2c8"); ell(p, 126, 18, 7, 7, "#121232");
+      var x = 0; while (x < W) { var w = 10 + R() * 18, h = 30 + R() * 50; p.r(x, H - h, w, h, "#0a0a14"); for (var wy = H - h + 4; wy < H - 4; wy += 5) for (var wx = x + 2; wx < x + w - 2; wx += 4) if (R() < .35) p.r(wx, wy, 2, 2, R() < .8 ? "#f6c84a" : "#7affc1"); x += w + 1; }
+    }
+  };
+  function draw(cv, scene, seed) { var g = cv.getContext("2d"); cv.width = W; cv.height = H; g.imageSmoothingEnabled = false; (S[scene] || S.hutong)(mk(g), rng(scene + (seed || ""))); }
+  return { W: W, H: H, LIST: Object.keys(S), draw: draw,
+    ICON: { hutong: "🏮", sky: "☁️", peak: "⛰️", sea: "🌊", train: "🚃", bowl: "🍵", bar: "🍸", night: "🌙" },
+    STAMPS: { cat: ["🐈", "#c8402a"], cocktail: ["🍸", "#2c6a8a"], train: ["🚃", "#3a7a4a"], peak: ["🏔️", "#5a5a9a"], cloud: ["☁️", "#4a8ac8"], bowl: ["🍵", "#a8782a"], record: ["💿", "#6a2a5a"], book: ["📖", "#8a4a24"], lantern: ["🏮", "#b3261e"] },
+    INK: { blue: "#2c4a86", black: "#2a2420", red: "#a8321e", green: "#2a6a4a" } };
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var P = window.PCScenes;
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { return null; } }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+  /* ---------- words ---------- */
+  var T = {
+    title: ["POSTCARD", "明信片", "明信片", "POSTAL", "POSTAL"],
+    greet: ["Greetings from", "寄自", "寄自", "Saludos desde", "Records des de"],
+    placePh: ["somewhere", "某个地方", "某個地方", "algún lugar", "algun lloc"],
+    msgPh: ["Write something…", "写点什么……", "寫點什麼……", "Escribe algo…", "Escriu alguna cosa…"],
+    to: ["To", "致", "致", "Para", "Per a"], from: ["From", "署名", "署名", "De", "De"],
+    toPh: ["a friend", "朋友", "朋友", "un amigo", "un amic"], fromPh: ["your name", "你的名字", "你的名字", "tu nombre", "el teu nom"],
+    flip: ["Turn over", "翻面", "翻面", "Dar la vuelta", "Gira-la"],
+    when: ["Opens", "什么时候能拆开", "什麼時候能拆開", "Se puede abrir", "Es pot obrir"],
+    now: ["Now", "马上", "馬上", "Ya", "Ara"], tomorrow: ["Tomorrow", "明天", "明天", "Mañana", "Demà"], week: ["In a week", "一周后", "一週後", "En una semana", "D'aquí a una setmana"], year: ["In a year", "一年后", "一年後", "En un año", "D'aquí a un any"], pick: ["Pick a day", "选个日子", "選個日子", "Elegir día", "Tria el dia"],
+    rightAway: ["Can be opened right away", "收到就能拆", "收到就能拆", "Se abre en cuanto llegue", "S'obre tan bon punt arribi"],
+    sealedTill: ["Sealed until {d}", "封存到 {d}", "封存到 {d}", "Cerrada hasta el {d}", "Tancada fins al {d}"],
+    friend: ["Send to a friend", "寄给朋友", "寄給朋友", "Enviar a un amigo", "Envia a un amic"],
+    bar: ["Hang in Wei's Bar", "挂到 Wei 的酒吧", "掛到 Wei 的酒吧", "Colgar en el bar de Wei", "Penja-la al bar d'en Wei"],
+    posted: ["Posted. Give them this link:", "寄出了。把这个链接给对方：", "寄出了。把這個連結給對方：", "Enviada. Dale este enlace:", "Enviada. Dona-li aquest enllaç:"],
+    onWall: ["It's on the wall in Wei's Bar.", "已经挂在 Wei 酒吧的墙上了。", "已經掛在 Wei 酒吧的牆上了。", "Ya está en la pared del bar de Wei.", "Ja és a la paret del bar d'en Wei."],
+    seeBar: ["See it in the bar →", "去酒吧看看 →", "去酒吧看看 →", "Verla en el bar →", "Veure-la al bar →"],
+    seeWall: ["The Wall in Wei's Bar →", "Wei 酒吧的明信片墙 →", "Wei 酒吧的明信片牆 →", "La pared del bar de Wei →", "La paret del bar d'en Wei →"],
+    copy: ["Copy", "复制", "複製", "Copiar", "Copia"], copied: ["Copied ✓", "已复制 ✓", "已複製 ✓", "Copiado ✓", "Copiat ✓"], share: ["Share", "分享", "分享", "Compartir", "Comparteix"],
+    remind: ["Remind me", "提醒我", "提醒我", "Recuérdamelo", "Recorda-m'ho"],
+    reply: ["Write back", "回一张", "回一張", "Responder", "Respon"], own: ["Write your own", "自己写一张", "自己寫一張", "Escribe la tuya", "Escriu la teva"],
+    sent: ["Sent", "寄出的", "寄出的", "Enviadas", "Enviades"], none: ["Nothing sent yet", "还没寄过", "還沒寄過", "Aún no has enviado ninguna", "Encara no n'has enviat cap"],
+    needMsg: ["Turn it over and write a few words", "翻过来写几句话吧", "翻過來寫幾句話吧", "Dale la vuelta y escribe unas palabras", "Gira-la i escriu unes paraules"],
+    needFrom: ["Sign it on the back", "在背面署个名", "在背面署個名", "Fírmala por detrás", "Signa-la al darrere"],
+    offline: ["The post office is out of reach. Try again later.", "邮局暂时连不上，稍后再试。", "郵局暫時連不上，稍後再試。", "Correos no responde. Inténtalo más tarde.", "Correus no respon. Torna-ho a provar més tard."],
+    rest: ["The post office needs a short rest. Try again in a moment.", "邮局要歇一会儿，稍后再试。", "郵局要歇一會兒，稍後再試。", "Correos necesita un respiro. Prueba en un momento.", "Correus necessita un respir. Prova-ho d'aquí a un moment."],
+    privacy: ["Kept on this device (your privacy choice).", "按你的隐私选择，只保存在这台设备上。", "按你的隱私選擇，只保存在這台裝置上。", "Se queda en este dispositivo (tu elección de privacidad).", "Es queda en aquest dispositiu (la teva elecció de privadesa)."],
+    lost: ["This postcard can't be found.", "找不到这张明信片。", "找不到這張明信片。", "No se encuentra esta postal.", "No es troba aquesta postal."],
+    forYou: ["For", "致", "致", "Para", "Per a"], fromW: ["from", "来自", "來自", "de", "de"],
+    opensOn: ["Opens {d}", "{d} 可以拆开", "{d} 可以拆開", "Se abre el {d}", "S'obre el {d}"],
+    bell: ["🔔 Any FREE//BUILDER game will tell you when it's ready.", "🔔 到时候，任何一个 FREE//BUILDER 游戏都会提醒你。", "🔔 到時候，任何一個 FREE//BUILDER 遊戲都會提醒你。", "🔔 Cualquier juego de FREE//BUILDER te avisará cuando esté lista.", "🔔 Qualsevol joc de FREE//BUILDER t'avisarà quan estigui llesta."],
+    tapSeal: ["Break the seal", "拆开火漆", "拆開火漆", "Rompe el sello", "Trenca el segell"],
+    calTitle: ["📮 A postcard from {n} can be opened", "📮 {n} 的明信片可以拆开了", "📮 {n} 的明信片可以拆開了", "📮 Ya puedes abrir la postal de {n}", "📮 Ja pots obrir la postal de {n}"],
+    shareText: ["A postcard for you 📮", "给你的明信片 📮", "給你的明信片 📮", "Una postal para ti 📮", "Una postal per a tu 📮"],
+    stamp: ["Change the stamp", "换一张邮票", "換一張郵票", "Cambiar el sello", "Canvia el segell"],
+    handoff: ["Next counter: Handoff, for two people apart", "隔壁窗口：Handoff，给相隔两地的两个人", "隔壁窗口：Handoff，給相隔兩地的兩個人", "Siguiente ventanilla: Handoff, para dos personas lejos", "Següent finestreta: Handoff, per a dues persones lluny"],
+    lang: ["Language", "语言", "語言", "Idioma", "Idioma"], close: ["Close", "关闭", "關閉", "Cerrar", "Tanca"],
+    day: ["d", "天", "天", "d", "d"],
+    scenes: { hutong: ["Hutong", "胡同", "胡同", "Hutong", "Hutong"], sky: ["Sora sky", "Sora 的天空", "Sora 的天空", "Cielo de Sora", "Cel de Sora"], peak: ["Crag", "山崖", "山崖", "Risco", "Cingle"], sea: ["Sea", "海", "海", "Mar", "Mar"], train: ["Train window", "车窗", "車窗", "Ventanilla", "Finestra del tren"], bowl: ["Kintsugi bowl", "金继碗", "金繼碗", "Cuenco kintsugi", "Bol kintsugi"], bar: ["Wei's Bar", "Wei 的酒吧", "Wei 的酒吧", "Bar de Wei", "Bar d'en Wei"], night: ["City night", "城市夜景", "城市夜景", "Noche en la ciudad", "Nit a la ciutat"] }
+  };
+  var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }, LOC = ["en-GB", "zh-CN", "zh-TW", "es-ES", "ca-ES"];
+  function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
+  function t(k, v) { var a = T[k], s = (a && (a[L()] || a[0])) || k; if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]); return s; }
+  function fmt(d) { try { return new Intl.DateTimeFormat(LOC[L()], { weekday: "short", day: "numeric", month: "short", year: d.getFullYear() !== new Date().getFullYear() ? "numeric" : undefined, hour: "2-digit", minute: "2-digit" }).format(d); } catch (e) { return d.toLocaleString(); } }
+  function pmDate(d) { try { return new Intl.DateTimeFormat(LOC[L()], { day: "2-digit", month: "short", year: "numeric" }).format(d); } catch (e) { return d.toDateString(); } }
+  function toast(m) { var e = $("#toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 3200); }
+
+  /* ---------- tiny sounds ---------- */
+  var ac = null;
+  function blip(f, d, type, v) { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); var o = ac.createOscillator(), g = ac.createGain(), n = ac.currentTime; o.type = type || "square"; o.frequency.setValueAtTime(f, n); o.frequency.exponentialRampToValueAtTime(f * .6, n + d); g.gain.setValueAtTime(v || .05, n); g.gain.exponentialRampToValueAtTime(.0001, n + d); o.connect(g); g.connect(ac.destination); o.start(n); o.stop(n + d); } catch (e) {} }
+  function swish() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); var len = ac.sampleRate * .25, b = ac.createBuffer(1, len, ac.sampleRate), d = b.getChannelData(0); for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / len) * .18; var s = ac.createBufferSource(), f = ac.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 1800; s.buffer = b; s.connect(f); f.connect(ac.destination); s.start(); } catch (e) {} }
+
+  /* ---------- data ---------- */
+  var cfg = { url: "", key: "" };
+  function ready() {
+    return new Promise(function (res) {
+      if (window.FB_SUPABASE && FB_SUPABASE.url) { cfg.url = FB_SUPABASE.url; cfg.key = FB_SUPABASE.anonKey; return res(); }
+      var sc = document.createElement("script"); sc.src = "/config.js";
+      sc.onload = sc.onerror = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; res(); };
+      document.head.appendChild(sc);
+    });
+  }
+  function api(fn, args, get) {
+    return ready().then(function () {
+      if (!cfg.url) throw new Error("offline");
+      var u = cfg.url + "/rest/v1/rpc/" + fn, h = { apikey: cfg.key, Authorization: "Bearer " + cfg.key, "Content-Type": "application/json" };
+      if (get) u += "?" + Object.keys(args).map(function (k) { return k + "=" + encodeURIComponent(args[k]); }).join("&");
+      return fetch(u, get ? { headers: h } : { method: "POST", headers: h, body: JSON.stringify(args) }).then(function (r) {
+        return r.text().then(function (x) { var j = null; try { j = x ? JSON.parse(x) : null; } catch (e) {} if (!r.ok) throw new Error((j && j.message) || "HTTP " + r.status); return j; });
+      });
+    });
+  }
+  function key() {
+    var k = ls("fb_device_key");
+    if (!k) { var a = new Uint8Array(32); crypto.getRandomValues(a); k = btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); ls("fb_device_key", k); }
+    return k;
+  }
+  function sentList() { try { return JSON.parse(ls("postcard_sent") || "[]"); } catch (e) { return []; } }
+
+  /* ---------- the card on the desk ---------- */
+  var q = new URLSearchParams(location.search), reading = q.get("c");
+  var d = {}; try { d = JSON.parse(ls("postcard_draft") || "{}"); } catch (e) {}
+  var card = { scene: P.ICON[q.get("scene")] ? q.get("scene") : (d.scene || "hutong"), stamp: P.STAMPS[q.get("stamp")] ? q.get("stamp") : (d.stamp || "cat"), ink: d.ink || "blue",
+    place: q.get("place") != null ? q.get("place").slice(0, 40) : (d.place || ""), msg: d.msg || "", to: q.get("to") != null ? q.get("to").slice(0, 32) : (d.to || ""), from: d.from || ls("postcard_name") || "" };
+  var when = "now", at = new Date();
+  function save() { ls("postcard_draft", JSON.stringify(card)); }
+  function paintCard(c, sealedView) {
+    P.draw($("#scene"), c.scene, c.id || "");
+    var st = P.STAMPS[c.stamp] || P.STAMPS.cat, si = $("#stampI"); si.textContent = st[0]; si.parentNode.style.setProperty("--sc", st[1]); si.setAttribute("data-v", ["1", "2", "3", "5", "8"][(c.stamp.length) % 5]);
+    document.documentElement.style.setProperty("--pen", P.INK[c.ink] || P.INK.blue);
+    $("#pm").innerHTML = esc(pmDate(c.sent ? new Date(c.sent) : new Date())) + (c.place ? "<br>" + esc(c.place.slice(0, 14)) : "");
+  }
+
+  /* ---------- writing ---------- */
+  var flipped = false;
+  function flip(v) { flipped = v == null ? !flipped : v; $("#card").classList.toggle("flip", flipped); swish(); }
+  function buildWrite() {
+    $("#place").value = card.place; $("#msg").value = card.msg; $("#to").value = card.to; $("#from").value = card.from;
+    P.LIST.forEach(function (k) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = P.ICON[k]; b.dataset.k = k;
+      b.onclick = function () { card.scene = k; save(); paintCard(card); paintChips(); flip(false); blip(520, .08); };
+      $("#scenes").appendChild(b);
+    });
+    Object.keys(P.INK).forEach(function (k) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "chip ink"; b.style.setProperty("--c", P.INK[k]); b.dataset.k = k;
+      b.onclick = function () { card.ink = k; save(); paintCard(card); paintChips(); flip(true); blip(700, .05); };
+      $("#inks").appendChild(b);
+    });
+    [["now", "🔓"], ["tomorrow", "🌅"], ["week", "📅"], ["year", "🎁"], ["pick", "✏️"]].forEach(function (w) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "chip t"; b.dataset.k = w[0];
+      b.innerHTML = w[1] + ' <span></span>'; b.onclick = function () { setWhen(w[0]); blip(440, .06); };
+      $("#whens").appendChild(b);
+    });
+    $("#place").oninput = function () { card.place = this.value; save(); paintCard(card); };
+    $("#msg").oninput = function () { card.msg = this.value; save(); count(); };
+    $("#to").oninput = function () { card.to = this.value; save(); };
+    $("#from").oninput = function () { card.from = this.value; ls("postcard_name", this.value.trim()); save(); };
+    $("#pickAt").onchange = function () { var v = new Date(this.value); if (!isNaN(v)) { at = v; paintWhen(); } };
+    $("#stamp").onclick = function (e) {
+      e.stopPropagation(); var ks = Object.keys(P.STAMPS); card.stamp = ks[(ks.indexOf(card.stamp) + 1) % ks.length]; save(); paintCard(card);
+      var s = $("#stamp"); s.classList.remove("thud"); void s.offsetWidth; s.classList.add("thud"); blip(160, .12, "triangle", .12);
+    };
+    $("#card").addEventListener("click", function (e) { if (e.target.closest("input,textarea,.stamp")) return; flip(); });
+    $("#flipBtn").onclick = function () { flip(); };
+    $("#toFriend").onclick = function () { send(false); };
+    $("#toBar").onclick = function () { send(true); };
+    if (q.get("to") === "bar" || q.get("wall")) { card.to = ""; $("#to").value = ""; $("#toBar").style.outline = "3px solid #fff"; }
+    count(); setWhen("now"); paintChips();
+  }
+  function count() { var n = card.msg.length; $("#count").textContent = n > 220 ? (300 - n) : ""; }
+  function paintChips() {
+    document.querySelectorAll("#scenes .chip").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.k === card.scene); b.setAttribute("aria-label", t("scenes")[b.dataset.k] ? T.scenes[b.dataset.k][L()] : b.dataset.k); b.title = b.getAttribute("aria-label"); });
+    document.querySelectorAll("#inks .chip").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.k === card.ink); b.setAttribute("aria-label", b.dataset.k); });
+    document.querySelectorAll("#whens .chip").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.k === when); b.querySelector("span").textContent = t(b.dataset.k); });
+  }
+  function setWhen(w) {
+    when = w; var n = new Date();
+    if (w === "now") at = n;
+    else if (w === "tomorrow") { at = new Date(n); at.setDate(at.getDate() + 1); at.setHours(9, 0, 0, 0); }
+    else if (w === "week") { at = new Date(n.getTime() + 7 * 864e5); at.setSeconds(0, 0); }
+    else if (w === "year") { at = new Date(n); at.setFullYear(at.getFullYear() + 1); at.setSeconds(0, 0); }
+    else if (w === "pick") { if (at <= n) { at = new Date(n.getTime() + 3 * 864e5); at.setHours(20, 0, 0, 0); } var pad = function (x) { return String(x).padStart(2, "0"); }; $("#pickAt").value = at.getFullYear() + "-" + pad(at.getMonth() + 1) + "-" + pad(at.getDate()) + "T" + pad(at.getHours()) + ":" + pad(at.getMinutes()); $("#pickAt").min = new Date(n.getTime() - n.getTimezoneOffset() * 6e4).toISOString().slice(0, 16); }
+    $("#pickRow").hidden = w !== "pick"; paintWhen(); paintChips();
+  }
+  function paintWhen() { $("#opens").textContent = when === "now" || at <= new Date() ? "🔓 " + t("rightAway") : "🔒 " + t("sealedTill", { d: fmt(at) }); }
+
+  function send(wall) {
+    if (!card.msg.trim()) { flip(true); setTimeout(function () { $("#msg").focus(); }, 500); toast(t("needMsg")); return; }
+    if (!card.from.trim()) { flip(true); setTimeout(function () { $("#from").focus(); }, 500); toast(t("needFrom")); return; }
+    var btns = [$("#toFriend"), $("#toBar")]; btns.forEach(function (b) { b.disabled = true; });
+    var body = { scene: card.scene, stamp: card.stamp, ink: card.ink, msg: card.msg.trim(), from: card.from.trim(), to: wall ? "" : card.to.trim(), place: card.place.trim(), lang: (window.FBL && FBL.get()) || "en", open_at: (when === "now" ? new Date() : at).toISOString(), wall: !!wall };
+    api("postcard_send", { p_secret: key(), p_card: body }).then(function (id) {
+      var l = sentList(); l.unshift({ id: id, to: body.to, wall: !!wall, open_at: body.open_at, scene: body.scene }); ls("postcard_sent", JSON.stringify(l.slice(0, 60)));
+      blip(220, .2, "triangle", .15); setTimeout(function () { blip(880, .12); }, 160);
+      card.msg = ""; card.to = ""; $("#msg").value = ""; $("#to").value = ""; save(); count(); paintSent();
+      done(id, wall, body);
+    }).catch(function (e) {
+      var m = String(e && e.message || e);
+      toast(/privacy/i.test(m) ? t("privacy") : /rest|too fast|a day/i.test(m) ? t("rest") : t("offline"));
+    }).then(function () { btns.forEach(function (b) { b.disabled = false; }); });
+  }
+  function link(id) { return location.origin + "/nearby/say-hello/?c=" + id; }
+  function sheet(html) {
+    var s = document.createElement("div"); s.className = "scrim"; s.innerHTML = '<div class="sheet" role="dialog" aria-modal="true">' + html + '<button class="pill x" type="button" aria-label="' + esc(t("close")) + '">✕</button></div>';
+    s.onclick = function (e) { if (e.target === s || e.target.closest(".x")) s.remove(); };
+    document.body.appendChild(s); return s;
+  }
+  function done(id, wall, body) {
+    var sealed = new Date(body.open_at) > new Date(Date.now() + 6e4);
+    if (wall) {
+      sheet('<div class="fly">🍸</div><h2>' + esc(t("onWall")) + '</h2>' + (sealed ? '<p class="when">🔒 ' + esc(t("opensOn", { d: fmt(new Date(body.open_at)) })) + '</p>' : "") +
+        '<a class="big alt" href="/nearby/next-door/#wall-cards" style="margin-top:12px">' + esc(t("seeBar")) + '</a>');
+      return;
+    }
+    var s = sheet('<div class="fly">✉️</div><h2>' + esc(t("posted")) + '</h2>' + (sealed ? '<p class="when">🔒 ' + esc(t("opensOn", { d: fmt(new Date(body.open_at)) })) + '</p>' : "") +
+      '<div class="link"><input readonly value="' + esc(link(id)) + '"><button class="pill" type="button" id="cp">📋 ' + esc(t("copy")) + '</button></div>' +
+      (navigator.share ? '<button class="big" type="button" id="sh" style="width:100%">↗ ' + esc(t("share")) + '</button>' : ""));
+    var inp = s.querySelector("input"); inp.onclick = function () { inp.select(); };
+    s.querySelector("#cp").onclick = function () { copy(link(id), this); };
+    var sh = s.querySelector("#sh"); if (sh) sh.onclick = function () { navigator.share({ title: t("shareText"), text: t("shareText"), url: link(id) }).catch(function () {}); };
+  }
+  function copy(text, btn) {
+    var ok = function () { if (btn) btn.textContent = t("copied"); toast(t("copied")); };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok, function () { fallback(); }); else fallback();
+    function fallback() { var i = document.createElement("textarea"); i.value = text; document.body.appendChild(i); i.select(); try { document.execCommand("copy"); ok(); } catch (e) {} i.remove(); }
+  }
+  function paintSent() { var n = sentList().length, e = $("#sentN"); e.hidden = !n; e.textContent = n; }
+  $("#sentBtn").onclick = function () {
+    var l = sentList(), now = new Date();
+    var html = '<h2>📮 ' + esc(t("sent")) + '</h2>' + (l.length ? '<ul class="list">' + l.map(function (c) {
+      var o = new Date(c.open_at), sealed = o > now;
+      return '<li><span>' + (P.ICON[c.scene] || "✉️") + '</span><a href="' + esc(c.wall ? "/nearby/next-door/#wall-cards" : link(c.id)) + '">' + (c.wall ? "🍸 " + esc(t("bar")) : "→ " + esc(c.to || t("toPh"))) + '</a><small>' + (sealed ? "🔒 " + esc(fmt(o)) : "🔓") + '</small>' + (c.wall ? "" : '<button class="pill" type="button" data-cp="' + esc(c.id) + '" aria-label="' + esc(t("copy")) + '">📋</button>') + '</li>';
+    }).join("") + '</ul>' : '<p class="when">' + esc(t("none")) + '</p>');
+    var s = sheet(html);
+    s.querySelectorAll("[data-cp]").forEach(function (b) { b.onclick = function () { copy(link(b.dataset.cp)); }; });
+  };
+
+  /* ---------- reading a card someone sent ---------- */
+  var got = null, tick = null;
+  function buildRead() {
+    $("#write").hidden = true; $("#read").hidden = false;
+    ["#place", "#msg", "#to", "#from"].forEach(function (s) { var e = $(s); e.readOnly = true; e.tabIndex = -1; });
+    $("#stamp").onclick = null; $("#stamp").tabIndex = -1;
+    api("postcard_get", { p_id: reading }, true).then(function (c) {
+      if (!c) { $("#clock").textContent = "✉️"; $("#readWhen").textContent = t("lost"); readButtons(false); return; }
+      got = c; paintRead();
+    }).catch(function () { $("#readWhen").textContent = t("offline"); });
+  }
+  function paintRead() {
+    var c = got; card = { scene: c.scene, stamp: c.stamp, ink: c.ink, place: c.place || "", msg: c.msg || "", to: c.to || "", from: c.from, id: c.id, sent: c.sent };
+    paintCard(card);
+    $("#place").value = card.place; $("#to").value = card.to; $("#from").value = card.from;
+    var l = $(".back .l"); l.innerHTML = '<div class="readmsg"></div>'; l.firstChild.textContent = card.msg;
+    var o = new Date(c.open_at), env = $(".env");
+    if (!env) {
+      env = document.createElement("div"); env.className = "env";
+      env.innerHTML = '<button class="stamp" type="button" tabindex="-1"><i></i></button><button class="seal" type="button">✉</button><div class="addr"></div>';
+      $("#card").parentNode.style.position = "relative"; $("#card").appendChild(env);
+      env.addEventListener("click", function (e) { e.stopPropagation(); });
+      env.querySelector(".seal").onclick = openIt;
+    }
+    var st = P.STAMPS[c.stamp] || P.STAMPS.cat, ei = env.querySelector(".stamp i"); ei.textContent = st[0]; env.querySelector(".stamp").style.setProperty("--sc", st[1]);
+    env.querySelector(".addr").innerHTML = (c.to ? "<small>" + esc(t("forYou")) + "</small>" + esc(c.to) : "") + "<small>" + esc(t("fromW")) + " " + esc(c.from) + "</small>";
+    if (c.sealed) {
+      env.querySelector(".seal").disabled = true; env.querySelector(".seal").setAttribute("aria-label", t("opensOn", { d: fmt(o) }));
+      $("#readWhen").innerHTML = esc("🔒 " + t("opensOn", { d: fmt(o) })) + '<br><small style="font-size:17px;opacity:.8">' + esc(t("bell")) + "</small>";
+      clearInterval(tick); tick = setInterval(countdown, 1000); countdown(); readButtons(true);
+      try { var wl = JSON.parse(ls("postcard_waiting") || "[]"); if (!wl.some(function (x) { return x.id === c.id; })) { wl.unshift({ id: c.id, from: c.from, open_at: c.open_at }); ls("postcard_waiting", JSON.stringify(wl.slice(0, 40))); } } catch (e) {}
+    } else {
+      clearInterval(tick); $("#clock").textContent = "";
+      var seal = env.querySelector(".seal"); seal.disabled = false; seal.classList.add("ready"); seal.setAttribute("aria-label", t("tapSeal")); seal.title = t("tapSeal");
+      $("#readWhen").textContent = "🔓 " + t("tapSeal"); readButtons(false);
+    }
+  }
+  function countdown() {
+    var ms = new Date(got.open_at) - new Date();
+    if (ms <= 0) { clearInterval(tick); $("#clock").textContent = "00:00:00"; setTimeout(function () { api("postcard_get", { p_id: reading }, true).then(function (c) { if (c) { got = c; paintRead(); blip(660, .2, "triangle", .1); } }); }, 1200); return; }
+    var s = Math.floor(ms / 1000), dd = Math.floor(s / 86400), hh = Math.floor(s % 86400 / 3600), mm = Math.floor(s % 3600 / 60), ss = s % 60, p2 = function (x) { return String(x).padStart(2, "0"); };
+    $("#clock").textContent = (dd ? dd + t("day") + " " : "") + p2(hh) + ":" + p2(mm) + ":" + p2(ss);
+  }
+  function openIt() {
+    if (!got || got.sealed) return;
+    var env = $(".env"); swish(); blip(300, .15, "triangle", .12);
+    env.classList.add("gone"); setTimeout(function () { env.remove(); flip(false); setTimeout(function () { flip(true); }, 1300); }, 700);
+    $("#readWhen").textContent = "";
+    try { ls("postcard_waiting", JSON.stringify(JSON.parse(ls("postcard_waiting") || "[]").filter(function (x) { return x.id !== got.id; }))); } catch (e) {}
+    try { var box = JSON.parse(ls("postcard_box") || "[]"); if (!box.some(function (b) { return b.id === got.id; })) { box.unshift({ id: got.id, from: got.from, scene: got.scene, open_at: got.open_at }); ls("postcard_box", JSON.stringify(box.slice(0, 60))); } } catch (e) {}
+  }
+  function readButtons(sealed) {
+    var r = $("#readBtns"); r.innerHTML = "";
+    function a(label, href, cls) { var e = document.createElement("a"); e.className = cls || "chip t"; e.href = href; e.textContent = label; r.appendChild(e); return e; }
+    if (sealed && got) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "chip t"; b.textContent = "⏰ " + t("remind"); b.onclick = ics; r.appendChild(b);
+    }
+    if (got && !sealed) a("✍️ " + t("reply"), "/nearby/say-hello/?to=" + encodeURIComponent(got.from) + "&scene=" + encodeURIComponent(got.scene));
+    a("✉️ " + t("own"), "/nearby/say-hello/");
+  }
+  function ics() {
+    var o = new Date(got.open_at), z = function (d) { return d.toISOString().replace(/[-:]/g, "").replace(/\.\d+/, ""); };
+    var txt = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FREE//BUILDER//Postcard//EN", "BEGIN:VEVENT", "UID:" + got.id + "@freebuilder.net", "DTSTAMP:" + z(new Date()), "DTSTART:" + z(o), "DTEND:" + z(new Date(o.getTime() + 9e5)),
+      "SUMMARY:" + t("calTitle", { n: got.from }).replace(/[,;]/g, " "), "URL:" + link(got.id), "DESCRIPTION:" + link(got.id), "BEGIN:VALARM", "TRIGGER:PT0M", "ACTION:DISPLAY", "DESCRIPTION:📮", "END:VALARM", "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+    var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([txt], { type: "text/calendar" })); a.download = "postcard.ics"; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+
+  /* ---------- language ---------- */
+  function words() {
+    document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
+    document.title = (L() ? t("title") : "Postcard") + " — FREE//BUILDER";
+    document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
+    document.querySelectorAll("[data-tp]").forEach(function (e) { e.placeholder = t(e.getAttribute("data-tp")); });
+    $("#stamp").setAttribute("aria-label", t("stamp")); $("#stamp").title = reading ? "" : t("stamp");
+    $("#sentBtn").setAttribute("aria-label", t("sent")); $("[data-fbl-btn]").setAttribute("aria-label", t("lang"));
+    var lab = $("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
+    paintCard(card); if (!reading) { paintChips(); paintWhen(); } else if (got) paintRead();
+  }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
+  window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+
+  paintSent();
+  if (reading) buildRead(); else buildWrite();
+  paintCard(card); words();
+})();
+</script>
+</body>
+</html>

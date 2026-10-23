@@ -1,9 +1,9 @@
 /* FREE//BUILDER — offline cache for the demos (upload to /sw.js)
  * Pages: network first, so updates show up straight away; the cached copy is used when offline.
  * Fonts and vendor scripts: cache first. Nothing about the people using the demos is stored here. */
-const VERSION = "fb-2026-10-23a";
+const VERSION = "fb-2026-10-23b";
 // Launchpad (1.3 MB) is cached when first opened, not up front.
-const PAGES = ["listen", "questions", "thanks", "swap", "repair", "teachback", "discovery", "room", "design", "guide", "coach", "cq", "diagnose", "cost", "impact", "adapted", "ai", "frontline", "circles", "rituals", "facilitator", "kit", "twotruths", "prompt", "museum", "manual", "dial", "decide", "managers"].map(n => `/${n}/`).concat(["/"]);
+const PAGES = ["tools/listen", "tools/questions", "tools/thanks", "tools/swap", "tools/repair", "tools/teachback", "tools/discovery", "tools/room", "tools/design", "guide", "labs/coach", "labs/cq", "tools/diagnose", "tools/cost", "programmes/impact", "notes/adapted", "notes/ai", "programmes/frontline", "programmes/circles", "programmes/rituals", "programmes/facilitator", "kit", "tools/twotruths", "tools/prompt", "tools/museum", "tools/manual", "tools/dial", "tools/decide", "programmes/managers"].map(n => `/${n}/`).concat(["/"]);
 const FONTS = [
   "/fonts/fonts.css",
   "/fonts/syne-latin-600-normal.woff2", "/fonts/syne-latin-700-normal.woff2", "/fonts/syne-latin-800-normal.woff2",
