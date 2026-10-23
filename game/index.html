@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dcf3901930"></script><script data-fbg src="/fbkit/fbg.js?v=bf61b28b31" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=f529c0be02"></script><script data-fbg src="/fbkit/fbg.js?v=b5187f58ee" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Neighbourhood — FREE//BUILDER</title>
 <meta name="description" content="A little pixel neighbourhood: Wei's Bar, the bookshop, the jukebox, the post office, Sora park, the crag, the kintsugi studio, the club and the station. Tap a place to walk in.">
@@ -84,6 +84,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
       ] },
     { k: "lang", url: "/language_learning/", x: 68, y: 176, w: 38, h: 32, n: ["Language School", "语言学校", "語言學校", "Escuela de idiomas", "Escola d'idiomes"] },
     { k: "dj", url: "/game/dj/", x: 112, y: 166, w: 62, h: 42, n: ["Club Retro", "复古俱乐部", "復古俱樂部", "Club Retro", "Club Retro"] },
+    { k: "nest", url: "/game/nest/", x: 4, y: 212, w: 40, h: 34, n: ["Cats' Nest", "猫窝", "貓窩", "Nido de gatos", "Niu dels gats"] },
     { k: "train", url: "/game/train/", x: 30, y: 246, w: 120, h: 48, n: ["Station", "火车站", "火車站", "Estación", "Estació"] }
   ];
   var BELOW = { climb: 1, cloud: 0 };
@@ -174,7 +175,12 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
     for (var sp = 0; sp < 5; sp++) R(152 + sp * 4, 196 + Math.abs(Math.sin((f + sp * 9) / 5)) * -4, 2, 2, ["#ff3ad0", "#7affc1", "#f6b73c", "#7ab8ff", "#fff"][sp]);
     // paths down to the station
     R(0, 208, W, 38, night ? "#1e2a1e" : "#6a9a4a"); R(84, 208, 12, 38, night ? "#2e2c30" : "#a8a49c");
-    for (var tr = 0; tr < 7; tr++) { var tx = 10 + tr * 26 + (tr > 2 ? 14 : 0), ty = 214 + hash("tr" + tr) * 20; if (tx > 80 && tx < 100) continue; R(tx + 3, ty + 6, 2, 5, "#4a2e1a"); R(tx, ty, 8, 7, night ? "#1a3a22" : "#3f7a3a"); }
+    for (var tr = 0; tr < 7; tr++) { var tx = 10 + tr * 26 + (tr > 2 ? 14 : 0), ty = 214 + hash("tr" + tr) * 20; if ((tx > 80 && tx < 100) || tx < 44) continue; R(tx + 3, ty + 6, 2, 5, "#4a2e1a"); R(tx, ty, 8, 7, night ? "#1a3a22" : "#3f7a3a"); }
+    // the cats' nest: a little A-frame with a round door
+    R(10, 222, 28, 20, night ? "#4a3020" : "#a8743a"); for (var nb = 224; nb < 242; nb += 4) R(10, nb, 28, 1, night ? "#3a2418" : "#8a5a2a");
+    for (var ny = 0; ny < 12; ny++) R(24 - ny * 1.3 - 2, 210 + ny, ny * 2.6 + 4, 1, "#7c2513");
+    R(19, 230, 10, 12, "#1d130d"); R(20, 229, 8, 1, "#1d130d"); R(22, 233, 4, 3, lit ? "#f6c84a" : "#2a1a14");
+    R(13, 225, 3, 3, "#ff8fa0"); R(14, 228, 1, 1, "#ff8fa0"); R(32, 226, 4, 2, "#5a8aaa"); R(30, 226, 2, 2, "#5a8aaa");
     // station
     R(30, 254, 120, 30, night ? "#4a3a30" : "#b89878"); R(26, 248, 128, 6, "#5a2a1e"); R(78, 238, 24, 16, night ? "#4a3a30" : "#b89878"); R(76, 234, 28, 4, "#5a2a1e");
     R(85, 241, 10, 10, "#fbeedd"); var hh2 = World.hour(); R(89, 242, 2, 4, "#222"); R(90, 245, Math.round(Math.cos((hh2 % 12) / 12 * 6.28 - 1.57) * 3), 1, "#b3261e");
@@ -205,7 +211,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
   }
   /* Miso and Yuzu: out and about, near wherever they wandered to this visit */
   var CATS = { miso: { b: "#1c1a1f", e: "#f6d84a", n: ["Miso", "味噌", "味噌", "Miso", "Miso"] }, yuzu: { b: "#e8902a", e: "#3a2a1c", s: "#b8641a", n: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"] } };
-  var PATH = { bar: [50, 94, 158], cloud: [108, 170, 64], kintsugi: [6, 44, 158], books: [100, 138, 158], postcard: [8, 60, 207], jukebox: [142, 176, 158], tower: [76, 104, 87], train: [30, 150, 289], dj: [112, 172, 207], climb: [6, 56, 80] };
+  var PATH = { nest: [6, 48, 247], bar: [50, 94, 158], cloud: [108, 170, 64], kintsugi: [6, 44, 158], books: [100, 138, 158], postcard: [8, 60, 207], jukebox: [142, 176, 158], tower: [76, 104, 87], train: [30, 150, 289], dj: [112, 172, 207], climb: [6, 56, 80] };
   var where = (World.cats && World.cats()) || { miso: "bar", yuzu: "books" }, catPos = {};
   function drawCat(k, f) {
     var c = CATS[k], p = PATH[where[k]] || PATH.bar, sp = k === "miso" ? .021 : .017, ph = k === "miso" ? 0 : 2.1;
