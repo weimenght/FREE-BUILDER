@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=4fbc6732bf"></script><script data-fbg src="/fbkit/fbg.js?v=64652f29d3" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=778904681c"></script><script data-fbg src="/fbkit/fbg.js?v=c32f6cda45" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1231,11 +1231,13 @@
         <button id="tab-btn-guest" class="tab active" onclick="switchAlbumTab('guest')" data-t="menu.guest">From the lab</button>
         <button id="tab-btn-gt" class="tab" onclick="switchAlbumTab('gt')" data-t="menu.signatures">Signatures</button>
         <button id="tab-btn-classic" class="tab" onclick="switchAlbumTab('classic')" data-t="menu.classics">Classics</button>
+        <button id="tab-btn-tap" class="tab" onclick="switchAlbumTab('tap')" data-t="menu.tap">On tap 🍺</button>
       </div>
       <p class="hint mb-2" data-t="menu.hint">Tap any drink and Wei will make it.</p>
       <div id="album-pane-gt" class="hidden flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
       <div id="album-pane-classic" class="hidden flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
       <div id="album-pane-guest" class="flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
+      <div id="album-pane-tap" class="hidden flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
     </div>
   </div>
 
@@ -3181,6 +3183,10 @@
       'menu.title':       ["Tonight's menu", "今日菜单", "今日菜單", "今日餐牌", "La carta de hoy", "La carta d'avui"],
       'menu.signatures':  ["Signatures", "招牌", "招牌", "招牌", "De la casa", "De la casa"],
       'menu.classics':    ["Classics", "经典", "經典", "經典", "Clásicos", "Clàssics"],
+      'menu.tap':         ["On tap 🍺", "生啤 🍺", "生啤 🍺", "生啤 🍺", "De barril 🍺", "De barril 🍺"],
+      'menu.tapEmpty':    ["No beers on tap yet. Brew one at the Brewery.", "还没有生啤。去啤酒坊酿一桶吧。", "還沒有生啤。去啤酒坊釀一桶吧。", "仲未有生啤。去啤酒坊釀一桶啦。", "Aún no hay cerveza de barril. Elabora una en la cervecería.", "Encara no hi ha cervesa de barril. Elabora'n una a la cerveseria."],
+      'menu.tapBrew':     ["Brew your own at the Brewery", "去啤酒坊酿你自己的", "去啤酒坊釀你自己的", "去啤酒坊釀你自己嘅", "Elabora la tuya en la cervecería", "Elabora la teva a la cerveseria"],
+      'menu.tapPour':     ["One {b}, brewed by {w}. Slow pour, good head. Cheers!", "一杯 {b}，{w} 酿的。慢慢倒，泡沫刚好。干杯！", "一杯 {b}，{w} 釀的。慢慢倒，泡沫剛好。乾杯！", "一杯 {b}，{w} 釀嘅。慢慢倒，啲泡啱啱好。飲杯！", "Una {b}, de {w}. Tirada despacio, buena espuma. ¡Salud!", "Una {b}, de {w}. Tirada a poc a poc, bona escuma. Salut!"],
       'menu.guest':       ["From the lab", "实验室出品", "實驗室出品", "實驗室出品", "Del laboratorio", "Del laboratori"],
       'menu.hint':        ["Tap any drink and Wei will make it.", "点一杯，Wei 马上做。", "點一杯，Wei 馬上做。", "揀一杯，Wei 即刻整。", "Toca una bebida y Wei la prepara.", "Toca una beguda i en Wei la prepara."],
 
@@ -7150,11 +7156,38 @@
 
     function switchAlbumTab(tab) {
       SoundEngine.playClick();
-      ['gt', 'classic', 'guest'].forEach(k => {
+      ['gt', 'classic', 'guest', 'tap'].forEach(k => {
         document.getElementById('album-pane-' + k).classList.toggle('hidden', k !== tab);
         document.getElementById('tab-btn-' + k).classList.toggle('active', k === tab);
       });
       if (tab === 'guest') loadGuestMenu();
+      if (tab === 'tap') loadTapMenu();
+    }
+
+    /* Beers brewed by visitors at the Brewery and shipped to this bar. */
+    async function loadTapMenu() {
+      const pane = document.getElementById('album-pane-tap');
+      pane.innerHTML = `<p class="label">${esc(T('common.loading'))}</p>`;
+      let rows = [];
+      try {
+        const u = SUPABASE_CONFIG.url;
+        if (u) { const r = await fetch(u + '/rest/v1/rpc/beer_list?p_venue=bar&p_sort=loved', { headers: { apikey: SUPABASE_CONFIG.anonKey, Authorization: 'Bearer ' + SUPABASE_CONFIG.anonKey } }); if (r.ok) rows = await r.json(); }
+      } catch (e) {}
+      pane.innerHTML = '';
+      if (!rows || !rows.length) { pane.innerHTML = `<p class="hint">${esc(T('menu.tapEmpty'))}</p>`; }
+      (rows || []).forEach(b => {
+        const abv = ((b.recipe && b.recipe.abv) || 5).toFixed(1);
+        const el = menuItem('🍺', `${b.name} · ${T('lab.by')} ${b.brewer}`, `${b.style} · ${abv}% · 🍻 ${b.cheers}`, () => { toggleCodexModal(false); go('counter'); pourBeer(b); });
+        const sw = document.createElement('i'); sw.style.cssText = `float:right;width:14px;height:14px;border:2px solid #000;background:${/^#[0-9a-f]{6}$/i.test(b.color) ? b.color : '#e8a030'}`; el.prepend(sw);
+        pane.appendChild(el);
+      });
+      const a = document.createElement('a'); a.href = '/game/brewery/'; a.className = 'opt-btn w-full !block text-center'; a.textContent = '🏭 ' + T('menu.tapBrew'); pane.appendChild(a);
+    }
+    function pourBeer(b) {
+      try { SoundEngine.playClick(); } catch (e) {}
+      showBubble(T('menu.tapPour').replace('{b}', b.name).replace('{w}', b.brewer), 3600);
+      setTimeout(() => { try { SoundEngine.playClink(); } catch (e) {} }, 900);
+      try { const u = SUPABASE_CONFIG.url; if (u) fetch(u + '/rest/v1/rpc/beer_pour', { method: 'POST', headers: { apikey: SUPABASE_CONFIG.anonKey, Authorization: 'Bearer ' + SUPABASE_CONFIG.anonKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ p_id: b.id }) }).catch(() => {}); } catch (e) {}
     }
 
     function menuItem(icon, title, desc, onClick) {

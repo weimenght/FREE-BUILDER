@@ -20,6 +20,14 @@ AUTHOR: FREE//BUILDER
 DESC: Pick a seed and plant it next to someone else's: cherry trees, sunflowers, peonies, ponds and stone lanterns. Everything grows over days, faster when people water it, and the garden keeps spreading.
 URL: garden/
 
+CODE: BREWERY
+ID: BW-14
+TITLE: The Brewery
+GENRE: Brew a beer, ship it to the bar
+AUTHOR: FREE//BUILDER
+DESC: Pick the malt, hops and yeast, add a twist like osmanthus or Sichuan pepper, and design the can. Ship it to Wei's Bar and Club Retro, where everyone can order it and raise a glass.
+URL: brewery/
+
 CODE: NEST
 ID: CN-11
 TITLE: The Cats' Nest
