@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=17ad813bfe"></script><script data-fbg src="/fbkit/fbg.js?v=f2ff4460a6" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=964439ade2"></script><script data-fbg src="/fbkit/fbg.js?v=c00e1eb17f" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Neighbourhood — FREE//BUILDER</title>
 <meta name="description" content="A little pixel neighbourhood: Wei's Bar, the bookshop, the jukebox, the post office, Sora park, the crag, the kintsugi studio, the club and the station. Tap a place to walk in.">
@@ -227,13 +227,18 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     if (wx === "rain" || wx === "storm") { for (var rd = 0; rd < 140; rd++) { var rx2 = (hash("rd" + rd) * WW + f * 1.5) % WW, ry2 = (hash("rr" + rd) * H + f * 6) % H; R(rx2, ry2, 1, 3, "rgba(170,200,255,.55)"); } if (wx === "storm" && f % 240 < 3) R(0, 0, WW, H, "rgba(255,255,255,.5)"); }
     if (wx === "snow") for (var sn = 0; sn < 120; sn++) { var snx = (hash("sn" + sn) * WW + Math.sin((f + sn * 9) / 18) * 4) % WW, sny = (hash("sy" + sn) * H + f * .8) % H; R(snx, sny, 1, 1, "#ffffff"); }
     if (wx === "fog") { g.fillStyle = "rgba(220,224,232,.22)"; g.fillRect(0, 0, WW, H); for (var fg = 0; fg < 7; fg++) R(((f * .2 + fg * 70) % 440) - 60, 70 + (fg % 4) * 60, 90, 6, "rgba(230,234,240,.25)"); }
-    drawCat("miso", f); drawCat("yuzu", f + 37);
+    drawCat("miso", f); drawCat("yuzu", f + 37); drawDog(f);
     if (night) { g.fillStyle = "rgba(10,10,40,.18)"; g.fillRect(0, 0, WW, H); }
-    ["miso", "yuzu"].forEach(function (k) { var b = kit[k], p = catPos[k]; if (b && p) { b.style.left = ((p[0] + 3) / WW * 100) + "%"; b.style.top = ((p[1] + 2) / H * 100) + "%"; } });
+    ["miso", "yuzu", "dog"].forEach(function (k) { var b = kit[k], p = catPos[k]; if (b && p) { b.style.left = ((p[0] + 3) / WW * 100) + "%"; b.style.top = ((p[1] + 2) / H * 100) + "%"; } });
   }
   var kit = {};
   function meow(k) { try { var A = new (window.AudioContext || window.webkitAudioContext)(), o = A.createOscillator(), g2 = A.createGain(), n = A.currentTime, fr = k === "miso" ? 620 : 760; o.type = "triangle"; o.frequency.setValueAtTime(fr, n); o.frequency.linearRampToValueAtTime(fr * 1.5, n + .12); o.frequency.linearRampToValueAtTime(fr * .9, n + .35); g2.gain.setValueAtTime(.0001, n); g2.gain.linearRampToValueAtTime(.06, n + .05); g2.gain.exponentialRampToValueAtTime(.0001, n + .4); o.connect(g2); g2.connect(A.destination); o.start(n); o.stop(n + .42); } catch (e) {} }
+  var DOGN = ["Mantou", "馒头", "饅頭", "Mantou", "Mantou"];
+  function woof() { try { var A = new (window.AudioContext || window.webkitAudioContext)(), n = A.currentTime; [0, .22].forEach(function (d) { var o = A.createOscillator(), g2 = A.createGain(), lp = A.createBiquadFilter(); o.type = "sawtooth"; o.frequency.setValueAtTime(340, n + d); o.frequency.exponentialRampToValueAtTime(170, n + d + .12); lp.type = "lowpass"; lp.frequency.value = 900; g2.gain.setValueAtTime(.0001, n + d); g2.gain.linearRampToValueAtTime(.05, n + d + .02); g2.gain.exponentialRampToValueAtTime(.0001, n + d + .14); o.connect(lp); lp.connect(g2); g2.connect(A.destination); o.start(n + d); o.stop(n + d + .16); }); } catch (e) {} }
   function kitties() {
+    var db = kit.dog || (kit.dog = document.createElement("button")); db.type = "button"; db.className = "kitty"; db.setAttribute("aria-label", DOGN[L()] || DOGN[0]);
+    db.onclick = function (e) { e.stopPropagation(); woof(); var h = document.createElement("span"); h.className = "heart"; h.textContent = "🐾 " + (DOGN[L()] || DOGN[0]); db.appendChild(h); setTimeout(function () { h.remove(); }, 1900); };
+    if (!db.parentNode) $("#zoom").appendChild(db);
     ["miso", "yuzu"].forEach(function (k) {
       var b = kit[k] || (kit[k] = document.createElement("button")); b.type = "button"; b.className = "kitty"; b.setAttribute("aria-label", CATS[k].n[L()] || CATS[k].n[0]);
       b.onclick = function (e) { e.stopPropagation(); meow(k); if (window.FBCatStory) FBCatStory.tap(where[k]); var h = document.createElement("span"); h.className = "heart"; h.textContent = "♥ " + (CATS[k].n[L()] || CATS[k].n[0]); b.appendChild(h); setTimeout(function () { h.remove(); }, 1900); };
@@ -296,6 +301,15 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(290, 266, 6, 3, "#c8a050"); R(296, 262, 2, 2, "#e8a0b0");   // sandcastle, shell
     var sb = 330 + Math.sin(f / 50) * 10; R(sb, 236, 1, 10, "#3a2a1c"); R(sb + 1, 236, 6, 8, "#fbeedd"); R(sb - 3, 246, 12, 3, "#8a5a33");   // a sailboat
     R(270, 150, 90, 16, night ? "#2e2c30" : "#c8b088"); for (var bw = 270; bw < 360; bw += 6) R(bw, 150, 1, 16, night ? "#3a383c" : "#a89068");   // the lane becomes a boardwalk
+  }
+  /* Mantou the dog: a quicker trot, a curly tail, a red collar */
+  var DOGPATH = { meadow: [-84, -10, 236], lake: [186, 266, 165], sea: [182, 206, 282], forest: [-86, -8, 170] }, dogAt = (World.dog && World.dog()) || "bar";
+  function drawDog(f) {
+    var p = DOGPATH[dogAt] || PATH[dogAt] || PATH.bar, sp = .03, u = .5 + .5 * Math.sin(f * sp + 1), dir = Math.cos(f * sp + 1) >= 0 ? 1 : -1;
+    var x = OX + Math.round(p[0] + (p[1] - p[0]) * u) + 6, y = p[2] - 5; catPos.dog = [x, y];
+    var B = "#e8c48a", Wt = "#fbf3e2", D2 = function (dx, dy, w, h, col) { R(dir > 0 ? x + dx : x + 9 - dx - w, y + dy, w, h, col); };
+    D2(1, 1, 6, 3, B); D2(3, 3, 3, 1, Wt); D2(6, -1, 3, 3, B); D2(6, -2, 1, 1, B); D2(8, -2, 1, 1, B); D2(8, 1, 1, 1, Wt); D2(7, 0, 1, 1, "#2a1a14"); D2(6, 2, 1, 1, "#c8402a");
+    D2(0, (f >> 1) % 2 ? -1 : 0, 1, 2, B); var st = (f >> 1) % 2; D2(st ? 1 : 2, 4, 1, 2, "#b88a4a"); D2(st ? 5 : 6, 4, 1, 2, "#b88a4a");
   }
   function mix(a, b, k) { var p = function (h, i) { return parseInt(h.substr(1 + i * 2, 2), 16); }; return "#" + [0, 1, 2].map(function (i) { return Math.round(p(a, i) * (1 - k) + p(b, i) * k).toString(16).padStart(2, "0"); }).join(""); }
 
