@@ -143,6 +143,22 @@
     @media (max-width: 1023.98px) and (orientation: landscape) and (max-height: 520px) {
       .ks-bench .indigo-workbench-frame { min-height: 92svh; }
     }
+    /* desktop and the 16:10 window: the whole studio fits on one screen; the side panels scroll, the bench takes the rest */
+    @media (min-width: 1024px) {
+      html, body { height: 100%; overflow: hidden; }
+      body { min-height: 0 !important; height: 100dvh; }
+      body > header { padding-top: 10px; padding-bottom: 4px; }
+      body > main { min-height: 0; grid-template-rows: minmax(0, 1fr); padding-top: 4px; padding-bottom: 4px; }
+      .ks-left, .ks-right, .ks-bench { min-height: 0; }
+      .ks-left, .ks-right { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(224,160,67,.35) transparent; padding-right: 2px; }
+      .ks-bench .indigo-workbench-frame { min-height: 0 !important; }
+      body > footer { padding-top: 0; padding-bottom: 6px; padding-right: 76px; }
+      html.fbsh-in body > footer { padding-right: 16px; }
+    }
+    @media (min-width: 1024px) and (max-height: 760px) {
+      .ks-sub { display: none; }
+      body > footer > div:first-child { display: none; }
+    }
   </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 
