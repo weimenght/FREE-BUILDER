@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9efbdcd865"></script><script data-fbg src="/fbkit/fbg.js?v=67d5f05725" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=4fbc6732bf"></script><script data-fbg src="/fbkit/fbg.js?v=64652f29d3" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Neighbourhood — FREE//BUILDER</title>
 <meta name="description" content="A little pixel neighbourhood: Wei's Bar, the bookshop, the jukebox, the post office, Sora park, the crag, the kintsugi studio, the club and the station. Tap a place to walk in.">
@@ -107,6 +107,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     { k: "forest", abs: 1, url: "/game/cloud/?place=forest", x: 4, y: 112, w: 82, h: 50, n: ["Pine Wood", "松林", "松林", "Pinar", "Pineda"] },
     { k: "sanctuary", abs: 1, url: "/game/sanctuary/", x: 40, y: 206, w: 48, h: 40, n: ["Animal Sanctuary", "动物庇护所", "動物庇護所", "Refugio de animales", "Refugi d'animals"] },
     { k: "meadow", abs: 1, url: "/game/cloud/?place=meadow", x: 4, y: 168, w: 82, h: 36, n: ["Wildflower Meadow", "野花草甸", "野花草甸", "Prado de flores", "Prat de flors"] },
+    { k: "garden", abs: 1, url: "/game/garden/", x: 2, y: 248, w: 86, h: 36, n: ["The Garden", "大家的花园", "大家的花園", "El Jardín", "El Jardí"] },
     { k: "pasture", abs: 1, url: "/game/cloud/?place=mountain", x: 276, y: 30, w: 80, h: 50, n: ["High Pasture", "高山牧场", "高山牧場", "Pasto alto", "Pastura alta"] },
     { k: "lake", abs: 1, url: "/game/cloud/?place=lake", x: 274, y: 104, w: 84, h: 66, n: ["Mirror Lake", "镜湖", "鏡湖", "Lago Espejo", "Llac Mirall"] },
     { k: "sea", abs: 1, url: "/game/cloud/?place=sea", x: 274, y: 204, w: 84, h: 88, n: ["Sandy Cove", "沙湾", "沙灣", "Cala de arena", "Cala de sorra"] }
@@ -316,8 +317,13 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(65, 224, 8, 10, "#2a1a14"); R(66, 225, 3, 9, "#c8a050"); R(69, 225, 3, 9, "#c8a050"); R(66, 218, 6, 4, lit ? "#f6c84a" : "#fbf3e2");
     R(42, 226, 10, 8, "#c8a878"); R(41, 224, 12, 2, "#2a5a8a"); R(45, 230, 4, 4, "#2a1a14");
     for (var fz = 40; fz < 88; fz += 4) R(fz, 236, 1, 5, "#c8a878"); R(40, 237, 48, 1, "#c8a878"); R(40, 240, 48, 1, "#c8a878");
-    for (var tf = 0; tf < 5; tf++) { R(0, 250 + tf * 7, 90, 6, night ? "#203a1c" : ["#7aa44a", "#8ab454", "#6a9440"][tf % 3]); R(0, 255 + tf * 7, 90, 1, night ? "#16281a" : "#5a7a36"); }
-    R(30, 254, 1, 10, "#6a4a2a"); R(26, 256, 9, 1, "#6a4a2a"); R(29, 251, 3, 3, "#c8a050");   // scarecrow
+    // the community garden: beds of flowers, young trees, a pond and a gate
+    R(0, 250, 90, 34, night ? "#1e3a24" : "#6aa44a");
+    for (var gb = 0; gb < 4; gb++) for (var gc = 0; gc < 6; gc++) { var gx = 4 + gc * 14, gy = 254 + gb * 7, gk = (gb * 6 + gc) % 7; R(gx, gy, 10, 4, night ? "#3a2a1c" : "#7a5a3a");
+      for (var fl2 = 0; fl2 < 4; fl2++) R(gx + 1 + fl2 * 2.4, gy + (fl2 % 2), 1, 1, night ? "#5a4a6a" : ["#f4b4c8", "#f6c84a", "#9a7ad8", "#e83a2a", "#fbfbf6", "#e870a8", "#e0402a"][gk]); }
+    [[8, 246], [40, 247], [74, 246]].forEach(function (tr2) { R(tr2[0] + 2, tr2[1] - 2, 2, 6, "#6a4a2a"); R(tr2[0], tr2[1] - 7, 6, 5, night ? "#4a2a3a" : "#f4b4c8"); R(tr2[0] + 1, tr2[1] - 8, 4, 1, night ? "#4a2a3a" : "#ffd6e2"); });
+    R(58, 276, 12, 6, night ? "#16305a" : "#4a8ac8"); R(60, 278, 3, 1, "rgba(255,255,255,.5)");
+    R(86, 260, 4, 16, "#8a5a33"); R(86, 260, 4, 1, "#c8a050");   // the gate onto the lane
     R(0, 108, 4, 4, night ? "#2a2a30" : "#8a8a84");
     /* EAST: a high pasture, Mirror Lake with its pavilion, a sandy cove */
     for (var x3 = 270; x3 < 360; x3++) { var h3 = 44 + Math.sin((x3 - 270) / 14) * 8 + Math.pow((x3 - 330) / 50, 2) * 10; R(x3, h3, 1, 86 - h3, night ? "#1e3a24" : "#7ab45a"); }
@@ -340,7 +346,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(270, 150, 90, 16, night ? "#2e2c30" : "#c8b088"); for (var bw = 270; bw < 360; bw += 6) R(bw, 150, 1, 16, night ? "#3a383c" : "#a89068");   // the lane becomes a boardwalk
   }
   /* Mantou the dog: a quicker trot, a curly tail, a red collar */
-  var DOGPATH = { sanctuary: [-48, -6, 246], meadow: [-84, -10, 204], lake: [186, 266, 165], sea: [182, 206, 282], forest: [-86, -8, 170], pasture: [190, 256, 82] }, dogAt = (World.dog && World.dog()) || "bar";
+  var DOGPATH = { garden: [-86, -10, 284], sanctuary: [-48, -6, 246], meadow: [-84, -10, 204], lake: [186, 266, 165], sea: [182, 206, 282], forest: [-86, -8, 170], pasture: [190, 256, 82] }, dogAt = (World.dog && World.dog()) || "bar";
   function mix(a, b, k) { var p = function (h, i) { return parseInt(h.substr(1 + i * 2, 2), 16); }; return "#" + [0, 1, 2].map(function (i) { return Math.round(p(a, i) * (1 - k) + p(b, i) * k).toString(16).padStart(2, "0"); }).join(""); }
 
   /* ---------- places you can walk into ---------- */

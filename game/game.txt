@@ -12,6 +12,14 @@ AUTHOR: FREE//BUILDER
 DESC: Lie back under an open sky that keeps your own time. Draw on it and watch your scribble puff into a cloud and drift off, hold still to breathe, double-tap and the clouds take a shape.
 URL: cloud/
 
+CODE: GARDEN
+ID: GD-13
+TITLE: The Garden
+GENRE: One endless garden, planted together
+AUTHOR: FREE//BUILDER
+DESC: Pick a seed and plant it next to someone else's: cherry trees, sunflowers, peonies, ponds and stone lanterns. Everything grows over days, faster when people water it, and the garden keeps spreading.
+URL: garden/
+
 CODE: NEST
 ID: CN-11
 TITLE: The Cats' Nest
