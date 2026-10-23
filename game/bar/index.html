@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=743842f0b5"></script><script data-fbg src="/fbkit/fbg.js?v=2c12cd9028" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=b4f6cf47f4"></script><script data-fbg src="/fbkit/fbg.js?v=2c12cd9028" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -4214,6 +4214,7 @@
     function setWeather(w, userClick = true) {
       if (userClick) SoundEngine.playClick();
       AppState.weather = w;
+      if (userClick && window.FBWorld) FBWorld.set(w);
       const icons = { rain: '🌧️', clear: '✨', snow: '❄️', fog: '🌫️', storm: '⚡' };
       document.getElementById('weather-display-icon').textContent = icons[w] || '🌧';
       WeatherSystem.createParticles();
@@ -4343,6 +4344,7 @@
     function setTimePreset(hour) {
       SoundEngine.playClick();
       updateClockHands(hour);
+      if (window.FBWorld && FBWorld.setHour) FBWorld.setHour(hour);
       toggleAtmosphereDrawer(false, true);
       if (AppState.inSanctuary) {
         AppState.currentTopic = null;
@@ -7448,7 +7450,7 @@
       Wall.init();
       Arcade.init();
       applyLanguage(true);
-      syncBeijingWeatherAndClock(true);
+      if (window.FBWorld) { updateClockHands(FBWorld.hour()); setWeather(FBWorld.weather(), false); } else syncBeijingWeatherAndClock(true);   // each visit: a random hour and sky, shared by the whole neighbourhood
 
       document.addEventListener('visibilitychange', () => { if (document.hidden) Arcade.autoPause(); });
       document.addEventListener('keydown', (e) => {
