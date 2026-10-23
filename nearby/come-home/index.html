@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=02f84761fb"></script><script data-fbg src="/fbkit/fbg.js?v=19c9340610" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9e091f9ca2"></script><script data-fbg src="/fbkit/fbg.js?v=871f4d2c52" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Come Home — FREE//BUILDER</title>
+<title>Come Home · Nearby</title>
 <meta name="description" content="Mantou the dog's home by the meadow: play fetch with him, follow his story, and help real animals find a home. Post an animal that needs one, or ask to adopt.">
 <meta name="theme-color" content="#24361f">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 16' shape-rendering='crispEdges'%3E%3Crect x='4' y='6' width='13' height='6' fill='%23e8c48a'/%3E%3Crect x='15' y='2' width='6' height='6' fill='%23e8c48a'/%3E%3Crect x='15' y='0' width='2' height='3' fill='%23e8c48a'/%3E%3Crect x='19' y='0' width='2' height='3' fill='%23e8c48a'/%3E%3Crect x='14' y='7' width='2' height='2' fill='%23c8402a'/%3E%3Crect x='1' y='2' width='3' height='4' fill='%23e8c48a'/%3E%3Crect x='5' y='12' width='2' height='4' fill='%23b88a4a'/%3E%3Crect x='14' y='12' width='2' height='4' fill='%23b88a4a'/%3E%3C/svg%3E">
@@ -104,7 +104,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function toast(m) { var e = $("toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 3000); }
   var W = {
-    title: ["COME HOME", "回家吧", "回家吧", "EL REFUGIO", "EL REFUGI"],
+    title: ["COME HOME", "回家吧", "回家吧", "VUELVE A CASA", "TORNA A CASA"],
     meet: ["MANTOU", "馒头", "饅頭", "MANTOU", "MANTOU"], mName: ["Mantou · 馒头", "馒头 · Mantou", "饅頭 · Mantou", "Mantou · 馒头", "Mantou · 馒头"],
     mBio: ["Found at the station on a rainy winter night, three years ago. Cream coat, curly tail, red collar. Loves tennis balls, trains and showing visitors around. Not up for adoption: he's the one who welcomes everyone else.", "三年前一个下雨的冬夜，在火车站被人发现。奶油色的毛，卷卷的尾巴，红项圈。喜欢网球、火车，还有带客人参观。它不参与领养：它是负责迎接大家的那一个。", "三年前一個下雨的冬夜，在火車站被人發現。奶油色的毛，捲捲的尾巴，紅項圈。喜歡網球、火車，還有帶客人參觀。牠不參與領養：牠是負責迎接大家的那一個。", "Lo encontraron en la estación una noche lluviosa de invierno, hace tres años. Pelo color crema, cola rizada, collar rojo. Le encantan las pelotas, los trenes y enseñar el refugio. No está en adopción: es él quien recibe a todos.", "El van trobar a l'estació una nit plujosa d'hivern, fa tres anys. Pèl color crema, cua arrissada, collar vermell. Li encanten les pilotes, els trens i ensenyar el refugi. No està en adopció: és ell qui rep tothom."],
     hint: ["Tap the grass to throw the ball. Tap Mantou to say hello.", "点草地扔球，点馒头跟它打招呼。", "點草地丟球，點饅頭跟牠打招呼。", "Toca la hierba para lanzar la pelota. Toca a Mantou para saludarlo.", "Toca l'herba per llançar la pilota. Toca en Mantou per saludar-lo."],
@@ -325,7 +325,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
-    document.title = (L() ? t("title") : "Come Home") + " — FREE//BUILDER";
+    document.title = (window.FBWorld && FBWorld.name) ? FBWorld.name("sanctuary") + " · " + FBWorld.name("map") : document.title;
     $("hint").textContent = t("hint"); $("mineBtn").setAttribute("aria-label", t("mineT")); $("mineBtn").title = t("mineT"); $("yard").setAttribute("aria-label", t("hint"));
     var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
     paintChips(); if (rows.length) paint();

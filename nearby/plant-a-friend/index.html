@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=02f84761fb"></script><script data-fbg src="/fbkit/fbg.js?v=19c9340610" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9e091f9ca2"></script><script data-fbg src="/fbkit/fbg.js?v=871f4d2c52" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>The Garden — FREE//BUILDER</title>
+<title>Plant a Friend · Nearby</title>
 <meta name="description" content="One endless garden that everyone plants together. Pick a seed, plant it next to someone else's, water what you pass, and come back to see it bloom.">
 <meta name="theme-color" content="#2f5a2a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%235f9443'/%3E%3Crect x='7' y='6' width='2' height='8' fill='%233f7a3a'/%3E%3Crect x='4' y='2' width='8' height='5' fill='%23f4b4c8'/%3E%3Crect x='6' y='1' width='4' height='1' fill='%23ffd6e2'/%3E%3C/svg%3E">
@@ -50,7 +50,7 @@ button{font:inherit;color:inherit}
     <div class="sign" data-t="title">PLANT A FRIEND</div>
     <div class="tools"><span class="count" id="count"></span><button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button></div>
   </header>
-  <h1 class="sr" data-t="title">The Garden</h1>
+  <h1 class="sr" data-t="title">Plant a Friend</h1>
   <div class="field" id="field">
     <canvas id="cv"></canvas>
     <div class="nav"><button class="pill" type="button" id="zin" aria-label="+">＋</button><button class="pill" type="button" id="zout" aria-label="−">－</button><button class="pill" type="button" id="newest">🌱</button></div>
@@ -74,7 +74,7 @@ button{font:inherit;color:inherit}
     taken: ["Someone just planted there.", "刚有人种在那里了。", "剛有人種在那裡了。", "Alguien acaba de plantar ahí.", "Algú hi acaba de plantar."],
     rest: ["That's plenty for today. Come back tomorrow to plant more.", "今天种得够多啦，明天再来种吧。", "今天種得夠多啦，明天再來種吧。", "Ya has plantado mucho hoy. Vuelve mañana.", "Ja has plantat molt avui. Torna demà."],
     fast: ["One at a time.", "一棵一棵来。", "一棵一棵來。", "De una en una.", "D'una en una."],
-    offline: ["The garden can't be reached right now.", "暂时连不上花园。", "暫時連不上花園。", "Ahora no se puede llegar al jardín.", "Ara no es pot arribar al jardí."],
+    offline: ["Plant a Friend can't be reached right now.", "暂时连不上“种个朋友”。", "暫時連不上「種個朋友」。", "Ahora no se puede llegar a Planta un Amigo.", "Ara no es pot arribar a Planta un Amic."],
     privacy: ["Kept on this device (your privacy choice).", "按你的隐私选择，只保存在这台设备上。", "按你的隱私選擇，只保存在這台裝置上。", "Se queda en este dispositivo (tu elección de privacidad).", "Es queda en aquest dispositiu (la teva elecció de privadesa)."],
     planted: ["Planted. Come back and watch it grow.", "种下了！回来看看它长大。", "種下了！回來看看它長大。", "Plantada. Vuelve a verla crecer.", "Plantada. Torna a veure-la créixer."],
     water: ["Water", "浇水", "澆水", "Regar", "Regar"], watered: ["Watered. It'll grow a little faster.", "浇好了，它会长得快一点。", "澆好了，它會長得快一點。", "Regada. Crecerá un poco más rápido.", "Regada. Creixerà una mica més de pressa."], wateredAlready: ["You've watered this one today.", "你今天已经浇过它了。", "你今天已經澆過它了。", "Ya la has regado hoy.", "Ja l'has regada avui."],
@@ -237,7 +237,7 @@ button{font:inherit;color:inherit}
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
-    document.title = (L() ? t("title") : "The Garden") + " — FREE//BUILDER";
+    document.title = (window.FBWorld && FBWorld.name) ? FBWorld.name("garden") + " · " + FBWorld.name("map") : document.title;
     $("zin").setAttribute("aria-label", t("zin")); $("zout").setAttribute("aria-label", t("zout")); $("newest").setAttribute("aria-label", t("newest")); $("newest").title = t("newest"); $("tray").setAttribute("aria-label", t("seeds"));
     $("field").setAttribute("aria-label", t("pick"));
     var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];

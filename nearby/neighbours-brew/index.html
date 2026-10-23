@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=02f84761fb"></script><script data-fbg src="/fbkit/fbg.js?v=19c9340610" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9e091f9ca2"></script><script data-fbg src="/fbkit/fbg.js?v=871f4d2c52" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Neighbours' Brew — FREE//BUILDER</title>
+<title>Neighbours' Brew · Nearby</title>
 <meta name="description" content="Brew your own beer: pick the malt, hops, yeast and a twist, design the can, and ship it to Next Door and Late Light for everyone to try.">
 <meta name="theme-color" content="#3a2214">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='3' y='5' width='8' height='10' fill='%23e8a030'/%3E%3Crect x='3' y='2' width='8' height='4' fill='%23fbf6ea'/%3E%3Crect x='11' y='7' width='3' height='5' fill='none' stroke='%23fbf6ea'/%3E%3C/svg%3E">
@@ -146,7 +146,7 @@ window.BeerArt = (function () {
     shipped: ["Brewed! On tap at {v}.", "酿好了！已送到{v}。", "釀好了！已送到{v}。", "¡Lista! De barril en {v}.", "Llesta! De barril a {v}."], shippedNone: ["Brewed! It's on the tap list.", "酿好了！已上架。", "釀好了！已上架。", "¡Lista! Ya está en la lista.", "Llesta! Ja és a la llista."],
     and: [" and ", "和", "和", " y ", " i "],
     rest: ["The kettle needs a rest. Try again a bit later.", "锅炉要歇一会儿，稍后再试。", "鍋爐要歇一會兒，稍後再試。", "La olla necesita un descanso. Prueba más tarde.", "L'olla necessita un descans. Prova-ho més tard."],
-    offline: ["The brewery can't be reached right now.", "暂时连不上邻家酿。", "暫時連不上鄰家釀。", "Ahora no se puede llegar a Cerveza Vecina.", "Ara no es pot arribar a Cervesa Veïna."],
+    offline: ["Neighbours' Brew can't be reached right now.", "暂时连不上邻家酿。", "暫時連不上鄰家釀。", "Ahora no se puede llegar a Cerveza Vecina.", "Ara no es pot arribar a Cervesa Veïna."],
     privacy: ["Kept on this device (your privacy choice).", "按你的隐私选择，只保存在这台设备上。", "按你的隱私選擇，只保存在這台裝置上。", "Se queda en este dispositivo (tu elección de privacidad).", "Es queda en aquest dispositiu (la teva elecció de privadesa)."],
     by: ["by {b}", "{b} 酿", "{b} 釀", "de {b}", "de {b}"]
   };
@@ -268,7 +268,7 @@ window.BeerArt = (function () {
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
-    document.title = (L() ? t("title") : "Neighbours' Brew") + " — FREE//BUILDER";
+    document.title = (window.FBWorld && FBWorld.name) ? FBWorld.name("brewery") + " · " + FBWorld.name("map") : document.title;
     var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
     paint(); if (rows.length) taps();
   }

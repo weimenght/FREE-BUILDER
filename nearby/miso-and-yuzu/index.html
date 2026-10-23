@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=02f84761fb"></script><script data-fbg src="/fbkit/fbg.js?v=19c9340610" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9e091f9ca2"></script><script data-fbg src="/fbkit/fbg.js?v=871f4d2c52" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Miso & Yuzu's — FREE//BUILDER</title>
+<title>Miso & Yuzu's · Nearby</title>
 <meta name="description" content="The little room where Miso and Yuzu live. Pet them, feed them a treat, wave a feather, and leaf through their album.">
 <meta name="theme-color" content="#2a1810">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 14' shape-rendering='crispEdges'%3E%3Crect x='4' y='6' width='11' height='5' fill='%23e8902a'/%3E%3Crect x='13' y='2' width='5' height='5' fill='%23e8902a'/%3E%3Crect x='13' y='0' width='2' height='2' fill='%23e8902a'/%3E%3Crect x='16' y='0' width='2' height='2' fill='%23e8902a'/%3E%3Crect x='0' y='3' width='2' height='4' fill='%23e8902a'/%3E%3Crect x='5' y='11' width='2' height='3' fill='%23b8641a'/%3E%3Crect x='12' y='11' width='2' height='3' fill='%23b8641a'/%3E%3C/svg%3E">
@@ -84,7 +84,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
   function t(a) { return a[L()] || a[0]; }
   function toast(m) { var e = $("toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 2200); }
-  var W = { title: ["MISO & YUZU'S", "味噌和柚子家", "味噌和柚子家", "EL NIDO DE LOS GATOS", "CAL MISO I LA YUZU"], meet: ["MEET THEM", "认识它们", "認識牠們", "CONÓCELOS", "CONEIX-LOS"], albumH: ["THE ALBUM", "相册", "相簿", "EL ÁLBUM", "L'ÀLBUM"],
+  var W = { title: ["MISO & YUZU'S", "味噌和柚子家", "味噌和柚子家", "CASA DE MISO Y YUZU", "CAL MISO I LA YUZU"], meet: ["MEET THEM", "认识它们", "認識牠們", "CONÓCELOS", "CONEIX-LOS"], albumH: ["THE ALBUM", "相册", "相簿", "EL ÁLBUM", "L'ÀLBUM"],
     tools: { pet: ["Pet", "摸摸", "摸摸", "Acariciar", "Acaronar"], treat: ["Treat", "零食", "零食", "Premio", "Premi"], toy: ["Feather", "逗猫棒", "逗貓棒", "Pluma", "Ploma"], brush: ["Brush", "梳毛", "梳毛", "Cepillar", "Raspallar"], lamp: ["Lamp", "台灯", "檯燈", "Lámpara", "Llum"], cam: ["Take a photo", "拍张照", "拍張照", "Hacer una foto", "Fer una foto"] },
     mood: { purr: ["{n} is purring.", "{n} 在打呼噜。", "{n} 在打呼嚕。", "{n} ronronea.", "{n} ronca de gust."], eat: ["Crunch, crunch.", "咔嚓咔嚓。", "咔嚓咔嚓。", "Cronch, cronch.", "Cruix, cruix."], pounce: ["{n} pounces!", "{n} 扑过去了！", "{n} 撲過去了！", "¡{n} salta!", "{n} salta!"], sleep: ["Shh. They're asleep.", "嘘，它们睡着了。", "噓，牠們睡著了。", "Shh. Están dormidos.", "Xst. Dormen."], fluff: ["So fluffy.", "毛蓬蓬的。", "毛蓬蓬的。", "Qué esponjoso.", "Que esponjós."], full: ["They've had enough treats for now.", "今天的零食够啦。", "今天的零食夠啦。", "Ya han comido bastantes premios.", "Ja han menjat prou premis."], photo: ["Saved to the album.", "已放进相册。", "已放進相簿。", "Guardada en el álbum.", "Desada a l'àlbum."], unlock: ["A new memory in the album!", "相册里多了一段回忆！", "相簿裡多了一段回憶！", "¡Un recuerdo nuevo en el álbum!", "Un record nou a l'àlbum!"] },
     yours: ["Your photo", "你拍的", "你拍的", "Tu foto", "La teva foto"], more: ["Keep playing with them to open this one.", "多陪它们玩玩，这张就会解锁。", "多陪牠們玩玩，這張就會解鎖。", "Juega más con ellos para desbloquearla.", "Juga més amb ells per desbloquejar-la."], bellLock: ["Finish The Lost Bell to open this one.", "完成「丢失的铃铛」后解锁。", "完成「遺失的鈴鐺」後解鎖。", "Termina La campana perdida para abrirla.", "Acaba La campana perduda per obrir-la."]
@@ -323,7 +323,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(W[e.getAttribute("data-t")]); });
-    document.title = (L() ? t(W.title) : "Miso & Yuzu's") + " — FREE//BUILDER";
+    document.title = (window.FBWorld && FBWorld.name) ? FBWorld.name("nest") + " · " + FBWorld.name("map") : document.title;
     [].forEach.call($("tools").children, function (b) { var n = t(W.tools[b.dataset.k]); b.setAttribute("aria-label", n); b.title = n; if (b.dataset.k === "pet") b.setAttribute("aria-pressed", tool === "pet"); });
     $("room").setAttribute("aria-label", t(W.title)); var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
     paintCats(); paintAlbum();

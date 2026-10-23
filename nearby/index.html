@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=02f84761fb"></script><script data-fbg src="/fbkit/fbg.js?v=19c9340610" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9e091f9ca2"></script><script data-fbg src="/fbkit/fbg.js?v=871f4d2c52" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Nearby — FREE//BUILDER</title>
 <meta name="description" content="Nearby: a small pixel town where nothing is asking for your attention. Have a drink at Next Door, lie back and watch the clouds, send a postcard, plant next to a stranger. Wei, the bartender, will show you around.">
@@ -86,34 +86,34 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
 
   /* ---------- the places (logical pixels on a 180×320 map) ---------- */
   var PLACES = [
-    { k: "climb", url: "/nearby/hold-on/", x: 4, y: 10, w: 56, h: 60, n: ["The Crag", "岩场", "岩場", "El risco", "El cingle"] },
+    { k: "climb", url: "/nearby/hold-on/", x: 4, y: 10, w: 56, h: 60, n: ["Hold On", "抓稳", "抓穩", "Agárrate", "Agafa't"] },
     { k: "cloud", url: "/nearby/lie-back/", x: 104, y: 40, w: 72, h: 40, n: ["Lie Back Park", "看云坡", "看雲坡", "Parque Panza Arriba", "Parc Panxa Enlaire"] },
     { k: "tower", url: "/nearby/slow-clock/", x: 80, y: 50, w: 20, h: 42, n: ["Slow Clock", "慢钟", "慢鐘", "Reloj Lento", "Rellotge Lent"] },
-    { k: "kintsugi", url: "/nearby/mended/", x: 4, y: 116, w: 40, h: 34, n: ["Kintsugi Studio", "金缮工房", "金繕工房", "Taller de kintsugi", "Taller de kintsugi"] },
-    { k: "bar", url: "/nearby/next-door/", x: 48, y: 110, w: 48, h: 40, n: ["Next Door", "“隔壁”", "“隔壁”", "Al Lado", "Al Costat"] },
+    { k: "kintsugi", url: "/nearby/mended/", x: 4, y: 116, w: 40, h: 34, n: ["Mended", "金缮坊", "金繕坊", "Remendado", "Adobat"] },
+    { k: "bar", url: "/nearby/next-door/", x: 48, y: 110, w: 48, h: 40, n: ["Next Door", "隔壁", "隔壁", "Al Lado", "Al Costat"] },
     { k: "books", url: "/nearby/borrowed-pages/", x: 100, y: 114, w: 38, h: 36, n: ["Borrowed Pages", "借来的书", "借來的書", "Páginas Prestadas", "Pàgines Manllevades"] },
-    { k: "jukebox", url: "/nearby/same-song/", x: 142, y: 122, w: 34, h: 28, n: ["Jukebox", "点唱机", "點唱機", "Gramola", "Gramola"] },
-    { k: "postcard", url: "/nearby/say-hello/", x: 6, y: 168, w: 56, h: 40, n: ["Say Hello", "邮局", "郵局", "Correos", "Correus"],
+    { k: "jukebox", url: "/nearby/same-song/", x: 142, y: 122, w: 34, h: 28, n: ["Same Song", "同一首歌", "同一首歌", "La Misma Canción", "La Mateixa Cançó"] },
+    { k: "postcard", url: "/nearby/say-hello/", x: 6, y: 168, w: 56, h: 40, n: ["Say Hello", "问个好", "問個好", "Di Hola", "Digues Hola"],
       counters: [
-        { k: "postcard", url: "/nearby/say-hello/", ic: "📮", n: ["Postcard", "明信片", "明信片", "Postal", "Postal"], d: ["Seal a card until a day you choose", "封存一张明信片，到你选的那天", "封存一張明信片，到你選的那天", "Cierra una postal hasta el día que elijas", "Tanca una postal fins al dia que triïs"] },
+        { k: "postcard", url: "/nearby/say-hello/", ic: "📮", n: ["Postcards", "明信片", "明信片", "Postales", "Postals"], d: ["Seal a card until a day you choose", "封存一张明信片，到你选的那天", "封存一張明信片，到你選的那天", "Cierra una postal hasta el día que elijas", "Tanca una postal fins al dia que triïs"] },
         { k: "love", url: "/nearby/handoff/", ic: "🕰️", n: ["Handoff", "Handoff", "Handoff", "Handoff", "Handoff"], d: ["For two people who live apart", "给相隔两地的两个人", "給相隔兩地的兩個人", "Para dos personas que viven lejos", "Per a dues persones que viuen lluny"] }
       ] },
     { k: "lang", url: "/learn/", x: 68, y: 176, w: 38, h: 32, n: ["Small Talk", "聊两句", "聊兩句", "De Charla", "De Xerrada"] },
-    { k: "dj", url: "/nearby/late-light/", x: 112, y: 204, w: 62, h: 42, n: ["Late Light", "夜灯", "夜燈", "Late Light", "Late Light"] },
-    { k: "brewery", url: "/nearby/neighbours-brew/", x: 106, y: 164, w: 70, h: 36, n: ["Neighbours' Brew", "邻家酿", "邻家酿", "Cerveza Vecina", "Cervesa Veïna"] },
+    { k: "dj", url: "/nearby/late-light/", x: 112, y: 204, w: 62, h: 42, n: ["Late Light", "夜灯", "夜燈", "Luz Tardía", "Llum Tardana"] },
+    { k: "brewery", url: "/nearby/neighbours-brew/", x: 106, y: 164, w: 70, h: 36, n: ["Neighbours' Brew", "邻家酿", "鄰家釀", "Cerveza Vecina", "Cervesa Veïna"] },
     { k: "nest", url: "/nearby/miso-and-yuzu/", x: 4, y: 212, w: 40, h: 34, n: ["Miso & Yuzu's", "味噌和柚子家", "味噌和柚子家", "Casa de Miso y Yuzu", "Cal Miso i la Yuzu"] },
-    { k: "train", url: "/nearby/station/", x: 30, y: 246, w: 120, h: 48, n: ["Station", "火车站", "火車站", "Estación", "Estació"] },
+    { k: "train", url: "/nearby/station/", x: 30, y: 246, w: 120, h: 48, n: ["Nearby Station", "近邻站", "近鄰站", "Estación Cerca", "Estació A Prop"] },
     /* the wild country around the town: each opens Sora's sky in that landscape */
-    { k: "peaks", abs: 1, url: "/nearby/lie-back/?place=snow", x: 4, y: 8, w: 70, h: 62, n: ["Snow Peaks", "雪峰", "雪峰", "Picos nevados", "Cims nevats"] },
+    { k: "peaks", abs: 1, url: "/nearby/lie-back/?place=snow", x: 4, y: 8, w: 70, h: 62, n: ["Snow Peaks", "雪峰", "雪峰", "Picos Nevados", "Cims Nevats"] },
     { k: "forest", abs: 1, url: "/nearby/lie-back/?place=forest", x: 4, y: 112, w: 82, h: 50, n: ["Pine Wood", "松林", "松林", "Pinar", "Pineda"] },
     { k: "sanctuary", abs: 1, url: "/nearby/come-home/", x: 40, y: 206, w: 48, h: 40, n: ["Come Home", "回家吧", "回家吧", "Vuelve a Casa", "Torna a Casa"] },
-    { k: "meadow", abs: 1, url: "/nearby/lie-back/?place=meadow", x: 4, y: 168, w: 82, h: 36, n: ["Wildflower Meadow", "野花草甸", "野花草甸", "Prado de flores", "Prat de flors"] },
-    { k: "garden", abs: 1, url: "/nearby/plant-a-friend/", x: 2, y: 248, w: 86, h: 36, n: ["The Garden", "种个朋友", "種個朋友", "El Jardín", "El Jardí"] },
+    { k: "meadow", abs: 1, url: "/nearby/lie-back/?place=meadow", x: 4, y: 168, w: 82, h: 36, n: ["Wildflower Meadow", "野花草甸", "野花草甸", "Prado de Flores", "Prat de Flors"] },
+    { k: "garden", abs: 1, url: "/nearby/plant-a-friend/", x: 2, y: 248, w: 86, h: 36, n: ["Plant a Friend", "种个朋友", "種個朋友", "Planta un Amigo", "Planta un Amic"] },
     { k: "restaurant", abs: 1, url: "/nearby/two-candles/", x: 288, y: 168, w: 70, h: 34, n: ["Two Candles", "双烛小馆", "雙燭小館", "Dos Velas", "Dues Espelmes"] },
-    { k: "pasture", abs: 1, url: "/nearby/lie-back/?place=mountain", x: 276, y: 30, w: 80, h: 50, n: ["High Pasture", "高山牧场", "高山牧場", "Pasto alto", "Pastura alta"] },
+    { k: "pasture", abs: 1, url: "/nearby/lie-back/?place=mountain", x: 276, y: 30, w: 80, h: 50, n: ["High Pasture", "高山牧场", "高山牧場", "Pasto Alto", "Pastura Alta"] },
     { k: "cabin", abs: 1, url: "/nearby/no-hurry/", x: 314, y: 40, w: 26, h: 22 },
     { k: "lake", abs: 1, url: "/nearby/lie-back/?place=lake", x: 274, y: 104, w: 84, h: 66, n: ["Mirror Lake", "镜湖", "鏡湖", "Lago Espejo", "Llac Mirall"] },
-    { k: "sea", abs: 1, url: "/nearby/lie-back/?place=sea", x: 274, y: 214, w: 84, h: 78, n: ["Sandy Cove", "沙湾", "沙灣", "Cala de arena", "Cala de sorra"] }
+    { k: "sea", abs: 1, url: "/nearby/lie-back/?place=sea", x: 274, y: 214, w: 84, h: 78, n: ["Sandy Cove", "沙湾", "沙灣", "Cala de Arena", "Cala de Sorra"] }
   ];
   var BELOW = { climb: 1, cloud: 0, peaks: 1 };
   var T = { title: ["NEARBY", "近邻", "近鄰", "CERCA", "A PROP"], all: ["All games", "全部游戏", "全部遊戲", "Todos los juegos", "Tots els jocs"], lang: ["Languages", "学语言", "學語言", "Idiomas", "Idiomes"], beijing: ["Beijing", "北京", "北京", "Pekín", "Pequín"], map: ["Map of Nearby", "近邻地图", "近鄰地圖", "Mapa del barrio", "Mapa del barri"], here: ["You were here", "你刚从这里来", "你剛從這裡來", "Venías de aquí", "Venies d'aquí"] };
@@ -426,7 +426,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
-    document.title = (World.name ? World.name("map") : "Nearby") + " — FREE//BUILDER";
+    document.title = World.name ? World.name("map") : "Nearby";
     $("#spots").setAttribute("aria-label", t("map")); var lab = $("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
     spots(); clock(); kitties();
   }

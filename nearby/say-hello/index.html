@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=02f84761fb"></script><script data-fbg src="/fbkit/fbg.js?v=19c9340610" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9e091f9ca2"></script><script data-fbg src="/fbkit/fbg.js?v=871f4d2c52" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Postcard — FREE//BUILDER</title>
+<title>Say Hello · Nearby</title>
 <meta name="description" content="Write a postcard, seal it until the day you choose, and send it to a friend or hang it on the wall in Next Door.">
 <meta name="theme-color" content="#1d130d">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%231d130d'/%3E%3Crect x='1' y='3' width='14' height='10' fill='%23f6ecd2'/%3E%3Crect x='10' y='4' width='4' height='4' fill='%23c8402a'/%3E%3Crect x='2' y='8' width='6' height='1' fill='%233a5a8c'/%3E%3Crect x='2' y='10' width='5' height='1' fill='%233a5a8c'/%3E%3C/svg%3E">
@@ -297,8 +297,8 @@ window.PCScenes = (function () {
     sent: ["Sent", "寄出的", "寄出的", "Enviadas", "Enviades"], none: ["Nothing sent yet", "还没寄过", "還沒寄過", "Aún no has enviado ninguna", "Encara no n'has enviat cap"],
     needMsg: ["Turn it over and write a few words", "翻过来写几句话吧", "翻過來寫幾句話吧", "Dale la vuelta y escribe unas palabras", "Gira-la i escriu unes paraules"],
     needFrom: ["Sign it on the back", "在背面署个名", "在背面署個名", "Fírmala por detrás", "Signa-la al darrere"],
-    offline: ["The post office is out of reach. Try again later.", "邮局暂时连不上，稍后再试。", "郵局暫時連不上，稍後再試。", "Correos no responde. Inténtalo más tarde.", "Correus no respon. Torna-ho a provar més tard."],
-    rest: ["The post office needs a short rest. Try again in a moment.", "邮局要歇一会儿，稍后再试。", "郵局要歇一會兒，稍後再試。", "Correos necesita un respiro. Prueba en un momento.", "Correus necessita un respir. Prova-ho d'aquí a un moment."],
+    offline: ["Say Hello is out of reach. Try again later.", "“问个好”暂时连不上，稍后再试。", "「問個好」暫時連不上，稍後再試。", "Di Hola no responde. Inténtalo más tarde.", "Digues Hola no respon. Torna-ho a provar més tard."],
+    rest: ["Say Hello needs a short rest. Try again in a moment.", "“问个好”要歇一会儿，稍后再试。", "「問個好」要歇一會兒，稍後再試。", "Di Hola necesita un respiro. Prueba en un momento.", "Digues Hola necessita un respir. Prova-ho d'aquí a un moment."],
     privacy: ["Kept on this device (your privacy choice).", "按你的隐私选择，只保存在这台设备上。", "按你的隱私選擇，只保存在這台裝置上。", "Se queda en este dispositivo (tu elección de privacidad).", "Es queda en aquest dispositiu (la teva elecció de privadesa)."],
     lost: ["This postcard can't be found.", "找不到这张明信片。", "找不到這張明信片。", "No se encuentra esta postal.", "No es troba aquesta postal."],
     forYou: ["For", "致", "致", "Para", "Per a"], fromW: ["from", "来自", "來自", "de", "de"],
@@ -540,7 +540,7 @@ window.PCScenes = (function () {
   /* ---------- language ---------- */
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
-    document.title = (L() ? t("title") : "Say Hello") + " — Nearby";
+    document.title = (window.FBWorld && FBWorld.name) ? FBWorld.name("postcard") + " · " + FBWorld.name("map") : document.title;
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
     document.querySelectorAll("[data-tp]").forEach(function (e) { e.placeholder = t(e.getAttribute("data-tp")); });
     $("#stamp").setAttribute("aria-label", t("stamp")); $("#stamp").title = reading ? "" : t("stamp");

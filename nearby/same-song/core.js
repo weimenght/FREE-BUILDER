@@ -206,7 +206,7 @@
     {"id": "h2", "title": "Last Train to Gulou", "name": "Wei", "house": true, "song": "1.104.0.0.00000000000008002200812200840008.80800808ffff"},
     {"id": "h3", "title": "Yuzu on the Piano", "name": "Yuzu", "house": true, "song": "1.96.0.1.00800020800812000801000000000000.82800808aaaa"},
     {"id": "h4", "title": "Miso's Midnight Snack", "name": "Miso", "house": true, "song": "1.112.3.2.00000000008004200800101020088002.90900808aaaa"},
-    {"id": "h5", "title": "Dog-Eared Waltz", "name": "Wei", "house": true, "song": "1.88.2.3.00000000108022008080002000080002.800002088888"},
+    {"id": "h5", "title": "Borrowed Pages Waltz", "name": "Wei", "house": true, "song": "1.88.2.3.00000000108022008080002000080002.800002088888"},
     {"id": "h6", "title": "Neon over Barcelona", "name": "Wei", "house": true, "song": "1.120.1.2.00800240882040082002000000000000.82900808ffff"}];
 
   var off = 0, plays = [], online = false, listeners = [], lastErr = "";

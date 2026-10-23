@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=02f84761fb"></script><script data-fbg src="/fbkit/fbg.js?v=19c9340610" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9e091f9ca2"></script><script data-fbg src="/fbkit/fbg.js?v=871f4d2c52" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Slow Clock — FREE//BUILDER</title>
+<title>Slow Clock · Nearby</title>
 <meta name="description" content="Climb the clock tower and set Nearby's hour and weather: every game you visit next follows it.">
 <meta name="theme-color" content="#14101e">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%2314101e'/%3E%3Crect x='5' y='3' width='6' height='13' fill='%23a8a094'/%3E%3Crect x='7' y='1' width='2' height='2' fill='%235a4a3a'/%3E%3Crect x='6' y='5' width='4' height='4' fill='%23fbeedd'/%3E%3Crect x='8' y='6' width='1' height='2' fill='%23b3261e'/%3E%3C/svg%3E">
@@ -140,7 +140,7 @@ main{max-width:560px;margin:0 auto;padding:6px 16px 100px}
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(T[e.getAttribute("data-t")]); });
-    document.title = (L() ? t(T.title) : "Slow Clock") + " — FREE//BUILDER";
+    document.title = (window.FBWorld && FBWorld.name) ? FBWorld.name("tower") + " · " + FBWorld.name("map") : document.title;
     $("dice").setAttribute("aria-label", t(T.dice)); $("dice").title = t(T.dice);
     var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
     paint();
