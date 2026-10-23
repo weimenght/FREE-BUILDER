@@ -26,7 +26,7 @@
   size(); addEventListener("resize", size);
 
   /* ---------- the sky keeps your time ---------- */
-  function byClock() { var h = new Date().getHours() + new Date().getMinutes() / 60; return h >= 5 && h < 10.5 ? "morning" : h >= 10.5 && h < 16.5 ? "noon" : h >= 16.5 && h < 19.5 ? "dusk" : "night"; }
+  function byClock() { var h = window.FBWorld ? FBWorld.hour() : new Date().getHours() + new Date().getMinutes() / 60;   /* the neighbourhood's hour for this visit */ return h >= 5 && h < 10.5 ? "morning" : h >= 10.5 && h < 16.5 ? "noon" : h >= 16.5 && h < 19.5 ? "dusk" : "night"; }
   var sky = byClock(); setSkyPalette(sky);
   setInterval(function () { var k = byClock(); if (k !== sky) { sky = k; setSkyPalette(k); } }, 60e3);
   function night() { return sky === "night"; }

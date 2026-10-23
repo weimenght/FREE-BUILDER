@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b4f6cf47f4"></script><script data-fbg src="/fbkit/fbg.js?v=2c12cd9028" defer></script>
+<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b4f6cf47f4"></script><script data-fbg src="/fbkit/fbg.js?v=1909bbbd0d" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Dog-Eared Corner — second-hand books next to Wei's Bar</title>
 <meta name="description" content="A four-room book house next door to Wei's Bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one, and pass it on by hand.">
@@ -681,7 +681,7 @@ details{margin-top:16px}summary{cursor:pointer;font:600 13px var(--sans);color:#
 
   /* ---------- sound: rain on the skylight and a needle on vinyl ---------- */
   /* ---------- weather and music: different every visit ---------- */
-  var WX = ["rain", "rain", "snow", "clear", "clear", "fog", "storm"][(Math.random() * 7) | 0];
+  var WX = window.FBWorld ? FBWorld.weather() : ["rain", "rain", "snow", "clear", "clear", "fog", "storm"][(Math.random() * 7) | 0];   /* same sky as the rest of the neighbourhood this visit */
   document.body.classList.add("wx-" + WX);
   (function gardenWeather() {
     var cv = $("#wxGarden"), g = cv.getContext("2d"), parts = [], room = $("#garden");

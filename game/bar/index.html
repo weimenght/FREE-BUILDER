@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=b4f6cf47f4"></script><script data-fbg src="/fbkit/fbg.js?v=2c12cd9028" defer></script>
+  <script>document.documentElement.classList.add('fb-autoin')</script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=b4f6cf47f4"></script><script data-fbg src="/fbkit/fbg.js?v=1909bbbd0d" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -300,6 +301,7 @@
     }
 
     /* ===== Door / name gate ===== */
+    .fb-autoin #view-door { visibility: hidden; }
     #view-door {
       position: fixed; inset: 0;
       display: flex; align-items: center; justify-content: center;
@@ -7121,6 +7123,7 @@
 
     function returnToDoor() {
       SoundEngine.playClick();
+      document.documentElement.classList.remove('fb-autoin');
       AppState.inSanctuary = false;
       Typer.stop();
       Arcade.autoPause();
@@ -7451,6 +7454,15 @@
       Arcade.init();
       applyLanguage(true);
       if (window.FBWorld) { updateClockHands(FBWorld.hour()); setWeather(FBWorld.weather(), false); } else syncBeijingWeatherAndClock(true);   // each visit: a random hour and sky, shared by the whole neighbourhood
+
+      /* you walk straight in from the neighbourhood: no door to push. Wei uses the name you gave anywhere on the site,
+         or a nickname until you change it (🙂 / 🚪 in the header). */
+      if (!Patron.name) {
+        const NICK = { en: ['Night Owl', 'Rain Walker', 'Lantern', 'Stray Cat', 'Tea Ghost'], zh: ['夜猫子', '雨中人', '灯笼', '流浪猫', '茶客'], tw: ['夜貓子', '雨中人', '燈籠', '流浪貓', '茶客'], yue: ['夜貓子', '雨中人', '燈籠', '流浪貓', '茶客'], es: ['Búho', 'Paseante', 'Farol', 'Gato callejero', 'Fantasma del té'], ca: ['Mussol', 'Passejant', 'Fanal', 'Gat del carrer', 'Fantasma del te'] };
+        const list = NICK[AppState.lang] || NICK.en;
+        document.getElementById('patron-name').value = list[Math.floor(Math.random() * list.length)] + ' ' + (10 + Math.floor(Math.random() * 90));
+      }
+      enterSanctuary().finally(() => document.documentElement.classList.remove('fb-autoin'));
 
       document.addEventListener('visibilitychange', () => { if (document.hidden) Arcade.autoPause(); });
       document.addEventListener('keydown', (e) => {
