@@ -837,10 +837,14 @@
       ["Firenze S.M.N.", "Santa Maria Novella", "Toscana", "metropolis", "it", "#1f4f9c", "fa-landmark", "Firenze Santa Maria Novella"],
       ["Vernazza", "Cinque Terre", "Liguria", "coastal", "it", "#0e7490", "fa-sailboat"],
       ["Zermatt", "Wallis", "Matterhorn", "alpine", "ch", "#203f8c", "fa-mountain"],
-      ["Grindelwald", "Berner Oberland", "Eiger", "snow", "ch", "#203f8c", "fa-snowflake"]
+      ["Grindelwald", "Berner Oberland", "Eiger", "snow", "ch", "#203f8c", "fa-snowflake"],
+      ["香港西九龍", "Hong Kong West Kowloon", "九龍", "metropolis", "cn", "#b91c1c", "fa-city", "香港西九龍", "hk"],
+      ["大埔墟", "Tai Po Market", "新界", "countryside", "cn", "#0f766e", "fa-seedling", "大埔墟", "hk"],
+      ["Aberystwyth", "Ceredigion", "Bae Ceredigion", "coastal", "uk", "#b91c1c", "fa-anchor", "Aberystwyth", "cy"],
+      ["Betws-y-Coed", "Conwy", "Eryri", "forest", "uk", "#166534", "fa-tree", "Betws-y-Coed", "cy"]
     ].forEach(function (r, i) {
       if (STATION_CATALOG.some(function (x) { return x.name === r[0]; })) return;
-      STATION_CATALOG.push({ name: r[0], sub: r[1], region: r[2], biome: r[3], look: r[4], ink: r[5], icon: r[6], say: r[7] || r[0], code: r[4].toUpperCase() + "-" + (60 + i) });
+      STATION_CATALOG.push({ name: r[0], sub: r[1], region: r[2], biome: r[3], look: r[4], ink: r[5], icon: r[6], say: r[7] || r[0], tongue: r[8], code: r[4].toUpperCase() + "-" + (60 + i) });
     });
   } catch (e) {}
 
@@ -855,20 +859,22 @@
     ca: ["ca-ES", "Propera estació: {n}. Si us plau, no oblideu les vostres pertinences."],
     us: ["en-US", "Now arriving at {n}. Please watch your step as you leave the train."],
     uk: ["en-GB", "We will shortly be arriving at {n}. Please remember to take all your belongings with you, and mind the gap."],
-    it: ["it-IT", "Signore e signori, stiamo arrivando a {n}. Vi preghiamo di non dimenticare i vostri effetti personali."]
+    it: ["it-IT", "Signore e signori, stiamo arrivando a {n}. Vi preghiamo di non dimenticare i vostri effetti personali."],
+    hk: ["zh-HK", "列車即將抵達{n}，請帶齊隨身物品，小心月台空隙。"],
+    cy: ["cy-GB", "Byddwn yn cyrraedd {n} cyn bo hir. Cofiwch fynd â'ch eiddo gyda chi."]
   };
   var CHIME = {   /* [frequencies, spacing, wave] */
     jp: [[659.3, 784, 987.8, 1318.5, 1174.7, 987.8], 0.16, "sine"], cn: [[523.3, 659.3, 784, 1046.5], 0.2, "triangle"],
     fr: [[659.3, 523.3, 784], 0.32, "sine"], de: [[784, 659.3], 0.55, "sine"], ch: [[880, 659.3, 523.3], 0.4, "sine"],
     es: [[784, 659.3, 523.3], 0.28, "triangle"], ca: [[784, 659.3, 523.3], 0.28, "triangle"], it: [[698.5, 880, 1046.5], 0.28, "sine"],
-    uk: [[659.3, 523.3], 0.5, "sine"], us: [[880, 880], 0.45, "triangle"]
+    uk: [[659.3, 523.3], 0.5, "sine"], us: [[880, 880], 0.45, "triangle"], hk: [[880, 698.5, 587.3], 0.26, "sine"], cy: [[659.3, 784, 523.3], 0.4, "sine"]
   };
-  function lookOf(st) { return st.look || (st.name === "Gulou Hutong" ? "cn" : st.jp ? "jp" : null); }
+  function lookOf(st) { return st.tongue || st.look || (st.name === "Gulou Hutong" ? "cn" : st.jp ? "jp" : null); }
   function spoken(st) { return st.say || (st.name === "Gulou Hutong" ? "鼓楼胡同" : st.jp && !st.look ? st.jp.replace(/駅$/, "") : st.name); }
   var voices = []; function loadVoices() { try { voices = speechSynthesis.getVoices() || []; } catch (e) {} }
   if (window.speechSynthesis) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
   function voiceFor(tag) { var l = tag.toLowerCase(), base = l.split("-")[0], best = null; voices.forEach(function (v) { var vl = (v.lang || "").toLowerCase().replace("_", "-"); if (vl === l) best = best && best.l === 2 ? best : { v: v, l: 2 }; else if (!best && vl.split("-")[0] === base) best = { v: v, l: 1 }; }); return best && best.v; }
-  var NEXT = { jp: "次は、{n}です。", cn: "下一站，{n}。", fr: "Prochain arrêt : {n}.", de: "Nächster Halt: {n}.", ch: "Nächster Halt: {n}.", es: "Próxima parada: {n}.", ca: "Propera parada: {n}.", us: "Next stop, {n}.", uk: "The next station is {n}.", it: "Prossima fermata: {n}." };
+  var NEXT = { jp: "次は、{n}です。", cn: "下一站，{n}。", fr: "Prochain arrêt : {n}.", de: "Nächster Halt: {n}.", ch: "Nächster Halt: {n}.", es: "Próxima parada: {n}.", ca: "Propera parada: {n}.", us: "Next stop, {n}.", uk: "The next station is {n}.", it: "Prossima fermata: {n}.", hk: "下一站：{n}。", cy: "Yr orsaf nesaf yw {n}." };
   /* say it in the station's own language; if this phone has no such voice, say it in English rather than not at all */
   function speak(st, line) {
     if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
@@ -894,6 +900,30 @@
   var lastNext = null;
   function nextUp() { try { if (state.trainState === "CRUISING" && state.station && state.station.name !== lastNext) { lastNext = state.station.name; speak(state.station, "next"); } } catch (e) {} }
   setInterval(function () { try { if (state.trainState === "CRUISING" && state.station && state.station.name !== lastNext && lastNext !== null) setTimeout(nextUp, 5000); } catch (e) {} }, 2000);
+  /* stations whose language you can learn next door: a small door appears while you are there */
+  var LEARN = {
+    ca: ["/language_learning/cat/", "Learn some Catalan", "学点加泰罗尼亚语", "學點加泰羅尼亞語", "Aprende un poco de catalán", "Aprèn una mica de català"],
+    es: ["/language_learning/es/", "Learn some Spanish", "学点西班牙语", "學點西班牙語", "Aprende un poco de español", "Aprèn una mica d'espanyol"],
+    hk: ["/language_learning/yue/", "Learn some Cantonese", "学点粤语", "學點粵語", "Aprende un poco de cantonés", "Aprèn una mica de cantonès"],
+    cy: ["/language_learning/cymraeg/", "Learn some Welsh", "学点威尔士语", "學點威爾斯語", "Aprende un poco de galés", "Aprèn una mica de gal·lès"],
+    cn: ["/language_learning/chengyu/", "Learn a chengyu", "学一个成语", "學一個成語", "Aprende un chengyu", "Aprèn un chengyu"]
+  };
+  var door = null, doorSt = null, doorT = 0;
+  function doorUp() {
+    try {
+      var st = state.station, lk = st && lookOf(st), L = LEARN[lk];
+      if (st !== doorSt) { doorSt = st; doorT = Date.now(); if (door) { door.remove(); door = null; } }
+      if (!L || state.trainState === "CRUISING" && Date.now() - doorT > 45000) { if (door) { door.remove(); door = null; } return; }
+      var i = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }[(window.FBL && FBL.get()) || "en"] || 0;
+      if (!door) {
+        door = document.createElement("a"); door.className = "tw-learn"; door.href = L[0]; door.setAttribute("data-fbt-skip", "");
+        if (!document.getElementById("tw-learn-css")) { var c = document.createElement("style"); c.id = "tw-learn-css"; c.textContent = ".tw-learn{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top));transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(20,16,12,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fbf1de;border:1px solid rgba(255,230,190,.25);font:600 14px/1.2 system-ui,-apple-system,'PingFang SC',sans-serif;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);animation:twL .5s ease both}.tw-learn:hover{background:rgba(40,30,20,.9)}@keyframes twL{from{opacity:0;transform:translate(-50%,-10px)}}"; document.head.appendChild(c); }
+        document.body.appendChild(door);
+      }
+      var txt = "🗣️ " + (L[1 + i] || L[1]) + " →"; if (door.textContent !== txt) door.textContent = txt;
+    } catch (e) {}
+  }
+  setInterval(doorUp, 1500);
   var chime0 = window.playStationArrivalChime;
   if (chime0) window.playStationArrivalChime = function () { try { if (state.station && announce(state.station)) return; } catch (e) {} return chime0.apply(this, arguments); };
   document.addEventListener("visibilitychange", function () { if (document.hidden && window.speechSynthesis) try { speechSynthesis.cancel(); } catch (e) {} });

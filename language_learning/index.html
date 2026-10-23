@@ -17,7 +17,7 @@
   main { width:100%; max-width:980px; margin:0 auto; padding:max(28px, env(safe-area-inset-top)) 16px 40px; flex:1; }
   .hello { display:flex; flex-wrap:wrap; gap:6px 14px; align-items:baseline; margin:0 0 6px; font:700 clamp(30px, 8vw, 52px)/1.05 "Playfair Display", Georgia, "Songti TC", serif; letter-spacing:-.01em; }
   .hello span { white-space:nowrap; }
-  .hello span:nth-child(1) { color:#DA121A; } .hello span:nth-child(2) { color:#C60B1E; opacity:.8; } .hello span:nth-child(3) { color:#D62839; font-family:"PingFang HK", "Noto Sans HK", "Microsoft JhengHei", sans-serif; font-weight:800; }
+  .hello span:nth-child(1) { color:#DA121A; } .hello span:nth-child(2) { color:#C60B1E; opacity:.8; } .hello span:nth-child(4) { color:#00843D; } .hello span:nth-child(3) { color:#D62839; font-family:"PingFang HK", "Noto Sans HK", "Microsoft JhengHei", sans-serif; font-weight:800; }
   .sub { margin:0 0 26px; color:var(--muted); font-size:16px; max-width:36em; }
   .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; }
   .lang { position:relative; display:flex; flex-direction:column; justify-content:space-between; min-height:250px; padding:22px 20px 18px; border-radius:22px; background:var(--card); border:1px solid var(--border);
@@ -50,6 +50,10 @@
     --pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='48' viewBox='0 0 72 48'%3E%3Cg fill='none' stroke='%23B3261E' stroke-opacity='.1' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M6 30c0-6 8-8 11-3 1-7 11-8 13-1 4-3 10 0 8 5H8'/%3E%3Cpath d='M20 27c2-2 5-1 5 2s-4 3-5 1'/%3E%3Cpath d='M42 12c0-5 7-7 9-2 2-5 10-4 10 2 3-1 6 2 4 4H44'/%3E%3Cpath d='M53 12c2-1 4 0 4 2s-3 2-4 1'/%3E%3C/g%3E%3C/svg%3E"); }
   .cy .bar { background:linear-gradient(90deg,#B3261E,#E9C46A 50%,#1C1917); }
   .cy .word { font-family:"Songti SC","STSong","Noto Serif SC","Noto Serif TC",serif; font-weight:900; letter-spacing:.1em; }
+  .cym { --ink:#C8102E; --flag:linear-gradient(#fff 0 66%,#00843D 66%);
+    --pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke-width='1.4'%3E%3Cpath d='M30 6L54 30L30 54L6 30Z' stroke='%23C8102E' stroke-opacity='.1'/%3E%3Cpath d='M30 18L42 30L30 42L18 30Z' stroke='%2300843D' stroke-opacity='.11'/%3E%3Cpath d='M30 26v8M26 30h8' stroke='%23C8102E' stroke-opacity='.13'/%3E%3C/g%3E%3C/svg%3E"); }
+  .cym .bar { background:linear-gradient(90deg,#fff,#fff 30%,#C8102E 30% 60%,#00843D 60%); }
+  .cym .logo { color:#C8102E; font:700 15px/1 "Playfair Display", Georgia, serif; border:1px solid rgba(0,0,0,.08); place-items:start center; padding-top:8px; }
   .note { margin-top:26px; color:var(--muted); font-size:13px; text-align:center; }
   @media (prefers-color-scheme: dark) { .lang .go { color:#111; } .ca, .es { --ink:#FFC94A; } .yue { --ink:#FF5C7A; } }
   @media (prefers-reduced-motion: reduce) { .lang, .lang .go { transition:none; } }
@@ -57,7 +61,7 @@
 </head>
 <body>
 <main>
-  <h1 class="hello" aria-label="Bon dia · Hola · 你好"><span>Bon dia!</span><span>¡Hola!</span><span>你好！</span></h1>
+  <h1 class="hello" aria-label="Bon dia · Hola · 你好 · Shwmae"><span>Bon dia!</span><span>¡Hola!</span><span>你好！</span><span>Shwmae!</span></h1>
   <p class="sub" data-t="sub">Pick a language. Flashcards with sound, little drills, and your progress kept on your own phone.</p>
   <div class="grid">
     <a class="lang ca" href="./cat/" lang="ca">
@@ -84,6 +88,12 @@
       <div class="word cyw">画龙点睛</div><div class="gloss"><b>huà lóng diǎn jīng</b> · <span data-t="cyG">to add the finishing touch</span></div></div>
       <span class="go" aria-hidden="true">→</span>
     </a>
+    <a class="lang cym" href="./cymraeg/" lang="cy">
+      <span class="bar"></span>
+      <div><div class="top"><span class="logo" aria-hidden="true">Cy</span><div><div class="name">Cymraeg <i>bob dydd</i></div><div class="what" data-t="cym">Welsh · words, mutations &amp; numbers</div></div></div>
+      <div class="word">hiraeth</div><div class="gloss"><b>HEER-aeth</b> · <span data-t="cymG">a deep longing for home</span></div></div>
+      <span class="go" aria-hidden="true">→</span>
+    </a>
   </div>
   <p class="note" data-t="note">No account. Nothing to install. Add it to your home screen if you like.</p>
 </main>
@@ -99,6 +109,8 @@
     yueG: ["to have yum cha", "喝早茶", "飲茶、吃點心", "tomar dim sum con té", "prendre dim sum amb te"],
     cy: ["Chinese idioms · 简体 & 繁體", "成语 · 简体和繁体", "成語 · 簡體和繁體", "Modismos chinos · 简体 y 繁體", "Frases fetes xineses · 简体 i 繁體"],
     cyG: ["to add the finishing touch", "比喻在关键处点上一笔，使内容更生动", "比喻在關鍵處點上一筆，使內容更生動", "dar el toque final", "donar el toc final"],
+    cym: ["Welsh · words, mutations & numbers", "威尔士语 · 单词、音变和数字", "威爾斯語 · 單字、音變和數字", "Galés · palabras, mutaciones y números", "Gal·lès · paraules, mutacions i nombres"],
+    cymG: ["a deep longing for home", "对家乡深深的思念", "對家鄉深深的思念", "una añoranza profunda del hogar", "un enyor profund de casa"],
     note: ["No account. Nothing to install. Add it to your home screen if you like.", "不用账号，不用安装。喜欢的话可以添加到主屏幕。", "不用帳號，不用安裝。喜歡的話可以加到主畫面。", "Sin cuenta. Nada que instalar. Si quieres, añádelo a tu pantalla de inicio.", "Sense compte. Res a instal·lar. Si vols, afegeix-ho a la pantalla d'inici."]
   };
   var L = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }[(window.FBL && FBL.get()) || "en"] || 0;
