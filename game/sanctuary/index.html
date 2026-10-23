@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b2339bbdda"></script><script data-fbg src="/fbkit/fbg.js?v=40b59472de" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>The Sanctuary — FREE//BUILDER</title>
+<meta name="description" content="Mantou the dog's home by the meadow: play fetch with him, follow his story, and help real animals find a home. Post an animal that needs one, or ask to adopt.">
+<meta name="theme-color" content="#24361f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 16' shape-rendering='crispEdges'%3E%3Crect x='4' y='6' width='13' height='6' fill='%23e8c48a'/%3E%3Crect x='15' y='2' width='6' height='6' fill='%23e8c48a'/%3E%3Crect x='15' y='0' width='2' height='3' fill='%23e8c48a'/%3E%3Crect x='19' y='0' width='2' height='3' fill='%23e8c48a'/%3E%3Crect x='14' y='7' width='2' height='2' fill='%23c8402a'/%3E%3Crect x='1' y='2' width='3' height='4' fill='%23e8c48a'/%3E%3Crect x='5' y='12' width='2' height='4' fill='%23b88a4a'/%3E%3Crect x='14' y='12' width='2' height='4' fill='%23b88a4a'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+:root{--bg:#1c2a18;--ink:#f6f1e2;--dim:rgba(246,241,226,.65);--a:#f6b73c;--g:#7ab45a;--card:#f6f1e2;--cink:#2a2418;--line:#000;--px:'Press Start 2P',ui-monospace,monospace;--vt:'VT323',ui-monospace,'PingFang SC','Microsoft YaHei',monospace;--ui:system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 20px/1.15 var(--vt);-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:repeating-conic-gradient(rgba(0,0,0,.18) 0 25%,transparent 0 50%) 0 0/4px 4px,radial-gradient(120% 60% at 50% 0,#2e4426,#1c2a18 70%)}
+button,input,textarea,select{font:inherit;color:inherit}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:max(12px,env(safe-area-inset-top)) 16px 8px;max-width:760px;margin:0 auto}
+.sign{font:400 12px/1.3 var(--px);letter-spacing:.05em;color:#fff3c0;text-shadow:2px 2px 0 #2f6a3a;padding:7px 9px;border:3px solid #ffd27a;box-shadow:inset 0 0 0 2px #2f6a3a,3px 3px 0 #000;background:#1e3a1e}
+.tools{display:flex;gap:8px}
+.pill{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:#2f4a2a;box-shadow:inset -3px -3px 0 rgba(0,0,0,.4),inset 3px 3px 0 rgba(255,255,255,.12),3px 3px 0 #000;cursor:pointer;font:400 18px/1 var(--vt);color:var(--ink);text-decoration:none}
+.pill .n{position:absolute;top:-8px;right:-8px;min-width:20px;height:20px;padding:0 4px;background:var(--a);color:#000;border:2px solid #000;font-size:15px;line-height:16px;text-align:center}
+main{max-width:760px;margin:0 auto;padding:4px 16px 110px}
+.yard{position:relative;border:4px solid #000;box-shadow:6px 6px 0 #000;background:#000;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.yard canvas{display:block;width:100%;height:auto;aspect-ratio:160/90;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated;cursor:pointer}
+.hint{text-align:center;color:var(--dim);font-size:19px;min-height:24px;margin:8px 0 0}
+h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:.06em}
+.me{display:flex;gap:14px;align-items:flex-start;padding:14px;background:#2a3a24;border:3px solid #000;box-shadow:4px 4px 0 #000}
+.me canvas{flex:none;width:88px;height:64px;image-rendering:pixelated}
+.me b{font:400 13px/1.4 var(--px)}.me p{margin:6px 0 0;color:#e8e2cc;font-size:19px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chip{min-width:48px;height:44px;padding:0 10px;border:3px solid #000;background:#2f4a2a;font-size:20px;cursor:pointer;box-shadow:3px 3px 0 #000}
+.chip[aria-pressed="true"]{background:var(--a);color:#14101e}
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.pet{display:flex;flex-direction:column;background:var(--card);color:var(--cink);border:3px solid #000;box-shadow:4px 4px 0 #000;font:15px/1.4 var(--ui)}
+.pet .ph{position:relative;aspect-ratio:4/3;background:#e8dfc4;display:grid;place-items:center;overflow:hidden}
+.pet .ph img{width:100%;height:100%;object-fit:cover}
+.pet .ph canvas{width:30%;height:auto;image-rendering:pixelated;opacity:.55}
+.pet .badge{position:absolute;left:8px;top:8px;padding:3px 8px;background:#2f6a3a;color:#fff;border:2px solid #000;font:700 12px/1.2 var(--ui)}
+.pet .bd{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px;flex:1}
+.pet h3{margin:0;font:700 18px/1.2 var(--ui)}
+.pet .meta{color:#6a6250;font-size:13px}
+.pet .story{margin:2px 0 0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.pet .row{display:flex;gap:8px;align-items:center;margin-top:auto;padding-top:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 14px;border:3px solid #000;background:var(--a);color:#1d130d;font:700 15px/1.1 var(--ui);cursor:pointer;box-shadow:3px 3px 0 #000;text-decoration:none}
+.btn.ghost{background:#fff8e8}.btn.green{background:var(--g)}.btn.red{background:#e8a0a0}
+.btn:active{transform:translate(2px,2px)}
+.flag{margin-left:auto;border:0;background:none;color:#8a8270;font:13px var(--ui);cursor:pointer;text-decoration:underline dotted}
+.empty{grid-column:1/-1;padding:20px;text-align:center;color:var(--dim);font-size:20px;border:3px dashed rgba(255,255,255,.2)}
+.add{margin-top:16px;width:100%}
+.scrim{position:fixed;top:0;right:0;bottom:0;left:0;z-index:10000;background:rgba(10,14,8,.78);display:flex;align-items:flex-end;justify-content:center;padding:12px}
+@media (min-width:640px){.scrim{align-items:center}}
+.sheet{position:relative;width:100%;max-width:520px;max-height:88vh;overflow:auto;background:var(--card);color:var(--cink);border:4px solid #000;box-shadow:6px 6px 0 #000;padding:18px 16px 16px;font:15px/1.45 var(--ui)}
+.sheet h3{margin:0 0 10px;font:400 13px/1.4 var(--px);color:#2f6a3a;padding-right:36px}
+.sheet label{display:block;margin:10px 0 4px;font-weight:700;font-size:14px}
+.sheet input,.sheet textarea,.sheet select{width:100%;padding:10px;border:2px solid #000;background:#fff;color:#1d130d;font:15px var(--ui)}
+.sheet textarea{min-height:84px;resize:vertical}
+.sheet .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sheet .check{display:flex;gap:8px;align-items:flex-start;font-weight:400;margin-top:10px}.sheet .check input{width:auto;margin-top:3px}
+.sheet .note{color:#6a6250;font-size:13px;margin:8px 0 0}
+.sheet .tips{margin:10px 0 0;padding:10px 12px 10px 28px;background:#efe6cc;border:2px solid #000;font-size:13px}
+.sheet .x{position:absolute;top:10px;right:10px;width:32px;height:32px;padding:0;border:2px solid #000;background:#fff8e8;cursor:pointer;color:transparent;overflow:hidden}
+.sheet .x::before,.sheet .x::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:3px;margin:-1.5px 0 0 -8px;background:#2a1d14;transform:rotate(45deg)}.sheet .x::after{transform:rotate(-45deg)}
+.sheet .go{margin-top:14px;width:100%}
+.prev{display:block;width:100%;max-height:220px;object-fit:cover;margin-top:8px;border:2px solid #000}
+.mine{border:2px solid #000;padding:10px;margin-top:10px;background:#fff}
+.mine b{font-size:16px}.mine .st{float:right;font-size:12px;padding:2px 6px;border:2px solid #000;background:#efe6cc}
+.ask{border-top:1px dashed #b8ae94;padding-top:8px;margin-top:8px}.ask small{color:#6a6250}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(16px);opacity:0;transition:.25s;z-index:60;background:#000;color:#fff3c0;border:3px solid var(--a);padding:8px 14px;font-size:19px;pointer-events:none;max-width:calc(100vw - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<link rel="manifest" href="/game/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Neighbourhood" data-fbapp></head>
+<body>
+<header class="top">
+  <div class="sign" data-t="title">THE SANCTUARY</div>
+  <div class="tools">
+    <button class="pill" type="button" id="mineBtn">🏡<span class="n" id="mineN" hidden></span></button>
+    <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
+  </div>
+</header>
+<main>
+  <h1 class="sr" data-t="title">The Sanctuary</h1>
+  <div class="yard" id="yard"><canvas id="cv" width="160" height="90"></canvas></div>
+  <p class="hint" id="hint"></p>
+
+  <h2 data-t="meet">MANTOU</h2>
+  <div class="me"><canvas id="meC" width="22" height="16"></canvas><div><b data-t="mName">Mantou · 馒头</b><p data-t="mBio"></p></div></div>
+
+  <h2 data-t="board">LOOKING FOR A HOME</h2>
+  <div class="chips" id="chips" role="group"></div>
+  <div class="board" id="board"></div>
+  <button class="btn green add" type="button" id="addBtn">＋ <span data-t="add">Find a home for an animal</span></button>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 };
+  function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
+  function t(k, v) { var a = W[k], s = (a && (a[L()] || a[0])) || k; if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]); return s; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function toast(m) { var e = $("toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 3000); }
+  var W = {
+    title: ["THE SANCTUARY", "动物庇护所", "動物庇護所", "EL REFUGIO", "EL REFUGI"],
+    meet: ["MANTOU", "馒头", "饅頭", "MANTOU", "MANTOU"], mName: ["Mantou · 馒头", "馒头 · Mantou", "饅頭 · Mantou", "Mantou · 馒头", "Mantou · 馒头"],
+    mBio: ["Found at the station on a rainy winter night, three years ago. Cream coat, curly tail, red collar. Loves tennis balls, trains and showing visitors around. Not up for adoption: he's the one who welcomes everyone else.", "三年前一个下雨的冬夜，在火车站被人发现。奶油色的毛，卷卷的尾巴，红项圈。喜欢网球、火车，还有带客人参观。它不参与领养：它是负责迎接大家的那一个。", "三年前一個下雨的冬夜，在火車站被人發現。奶油色的毛，捲捲的尾巴，紅項圈。喜歡網球、火車，還有帶客人參觀。牠不參與領養：牠是負責迎接大家的那一個。", "Lo encontraron en la estación una noche lluviosa de invierno, hace tres años. Pelo color crema, cola rizada, collar rojo. Le encantan las pelotas, los trenes y enseñar el refugio. No está en adopción: es él quien recibe a todos.", "El van trobar a l'estació una nit plujosa d'hivern, fa tres anys. Pèl color crema, cua arrissada, collar vermell. Li encanten les pilotes, els trens i ensenyar el refugi. No està en adopció: és ell qui rep tothom."],
+    hint: ["Tap the grass to throw the ball. Tap Mantou to say hello.", "点草地扔球，点馒头跟它打招呼。", "點草地丟球，點饅頭跟牠打招呼。", "Toca la hierba para lanzar la pelota. Toca a Mantou para saludarlo.", "Toca l'herba per llançar la pilota. Toca en Mantou per saludar-lo."],
+    good: ["Good boy!", "好狗狗！", "好狗狗！", "¡Buen chico!", "Bon gos!"],
+    board: ["LOOKING FOR A HOME", "等一个家", "等一個家", "BUSCAN HOGAR", "BUSQUEN LLAR"],
+    all: ["All", "全部", "全部", "Todos", "Tots"],
+    add: ["Find a home for an animal", "为一只动物找个家", "為一隻動物找個家", "Busca hogar para un animal", "Busca llar per a un animal"],
+    empty: ["No one is listed right now. If you're caring for an animal that needs a home, add it below.", "现在还没有动物在等。如果你正在照顾一只需要家的动物，可以在下面登记。", "現在還沒有動物在等。如果你正在照顧一隻需要家的動物，可以在下面登記。", "Ahora no hay ninguno. Si cuidas de un animal que necesita hogar, añádelo abajo.", "Ara no n'hi ha cap. Si cuides un animal que necessita llar, afegeix-lo a sota."],
+    offline: ["The board can't be reached right now.", "暂时连不上领养板。", "暫時連不上領養板。", "Ahora no se puede cargar el tablón.", "Ara no es pot carregar el tauler."],
+    home: ["Home found 🎉", "已找到家 🎉", "已找到家 🎉", "Ya tiene hogar 🎉", "Ja té llar 🎉"],
+    askBtn: ["Ask to adopt", "我想领养", "我想領養", "Quiero adoptar", "Vull adoptar"], report: ["Report", "举报", "檢舉", "Denunciar", "Denunciar"], reported: ["Thanks. We'll take a look.", "谢谢，我们会去看看。", "謝謝，我們會去看看。", "Gracias. Lo revisaremos.", "Gràcies. Ho revisarem."],
+    sp: { dog: ["Dog", "狗", "狗", "Perro", "Gos"], cat: ["Cat", "猫", "貓", "Gato", "Gat"], rabbit: ["Rabbit", "兔子", "兔子", "Conejo", "Conill"], bird: ["Bird", "鸟", "鳥", "Pájaro", "Ocell"], other: ["Other", "其他", "其他", "Otro", "Altres"] },
+    sex: { f: ["female", "母", "母", "hembra", "femella"], m: ["male", "公", "公", "macho", "mascle"], "?": ["", "", "", "", ""] },
+    by: ["cared for by {c}", "照顾者：{c}", "照顧者：{c}", "lo cuida {c}", "en té cura {c}"],
+    askT: ["Ask to adopt {n}", "申请领养 {n}", "申請領養 {n}", "Adoptar a {n}", "Adoptar en/na {n}"],
+    yourName: ["Your name", "你的名字", "你的名字", "Tu nombre", "El teu nom"], contact: ["How can they reach you?", "对方怎么联系你？", "對方怎麼聯絡你？", "¿Cómo pueden contactarte?", "Com et poden contactar?"],
+    contactPh: ["email, phone or WeChat", "邮箱、电话或微信", "電郵、電話或微信", "email, teléfono o WeChat", "correu, telèfon o WeChat"],
+    msg: ["Tell them about your home", "介绍一下你的家", "介紹一下你的家", "Cuéntales cómo es tu casa", "Explica'ls com és casa teva"],
+    private: ["Only the person caring for {n} can read this.", "只有照顾 {n} 的人能看到这些。", "只有照顧 {n} 的人能看到這些。", "Solo quien cuida de {n} puede leerlo.", "Només qui té cura de {n} ho pot llegir."],
+    tips: ["Meet the animal and the carer in person first.|Ask about vaccinations, neutering and health.|Never pay a stranger in advance. Adoption is not a sale.", "先和动物、照顾者当面见一面。|问清疫苗、绝育和健康情况。|不要提前给陌生人付钱。领养不是买卖。", "先和動物、照顧者當面見一面。|問清疫苗、結紮和健康情況。|不要提前給陌生人付錢。領養不是買賣。", "Conoce primero al animal y a quien lo cuida en persona.|Pregunta por vacunas, esterilización y salud.|Nunca pagues por adelantado a desconocidos. Adoptar no es comprar.", "Coneix primer l'animal i qui en té cura en persona.|Pregunta per vacunes, esterilització i salut.|No paguis mai per avançat a desconeguts. Adoptar no és comprar."],
+    send: ["Send", "发送", "送出", "Enviar", "Envia"], sent: ["Sent. They'll get in touch with you.", "已发送，对方会联系你。", "已送出，對方會聯絡你。", "Enviado. Se pondrán en contacto contigo.", "Enviat. Es posaran en contacte amb tu."],
+    postT: ["Find a home for an animal", "为一只动物找个家", "為一隻動物找個家", "Busca hogar para un animal", "Busca llar per a un animal"],
+    aName: ["Name", "名字", "名字", "Nombre", "Nom"], species: ["Kind", "种类", "種類", "Especie", "Espècie"], age: ["Age", "年龄", "年齡", "Edad", "Edat"], agePh: ["e.g. 2 years", "例如：2 岁", "例如：2 歲", "p. ej. 2 años", "p. ex. 2 anys"],
+    sexL: ["Sex", "性别", "性別", "Sexo", "Sexe"], unknown: ["not sure", "不确定", "不確定", "no sé", "no ho sé"], city: ["City", "城市", "城市", "Ciudad", "Ciutat"],
+    story: ["Their story and character", "它的故事和性格", "牠的故事和性格", "Su historia y carácter", "La seva història i caràcter"], photo: ["Photo", "照片", "照片", "Foto", "Foto"],
+    carer: ["Your name or rescue group", "你的名字或救助组织", "你的名字或救援組織", "Tu nombre o asociación", "El teu nom o associació"],
+    c1: ["I'm caring for this animal and will meet adopters in person.", "我正在照顾这只动物，会和领养人当面见面。", "我正在照顧這隻動物，會和領養人當面見面。", "Cuido de este animal y conoceré en persona a quien lo adopte.", "Tinc cura d'aquest animal i coneixeré en persona qui l'adopti."],
+    c2: ["This is an adoption, not a sale.", "这是领养，不是买卖。", "這是領養，不是買賣。", "Es una adopción, no una venta.", "És una adopció, no una venda."],
+    review: ["Wei checks every animal before it goes up, usually within a day.", "每只动物上墙前 Wei 都会先看过，一般一天之内。", "每隻動物上牆前 Wei 都會先看過，一般一天之內。", "Wei revisa cada animal antes de publicarlo, normalmente en un día.", "En Wei revisa cada animal abans de publicar-lo, normalment en un dia."],
+    postGo: ["Put up the notice", "贴出启事", "貼出啟事", "Publicar el anuncio", "Publica l'anunci"], posted: ["Thank you. It'll appear once Wei has checked it.", "谢谢！Wei 看过后就会贴出来。", "謝謝！Wei 看過後就會貼出來。", "Gracias. Aparecerá cuando Wei lo haya revisado.", "Gràcies. Apareixerà quan en Wei l'hagi revisat."],
+    need: ["Please fill in the name, city and your name, and tick both boxes.", "请填写名字、城市和你的名字，并勾选两项。", "請填寫名字、城市和你的名字，並勾選兩項。", "Rellena el nombre, la ciudad y tu nombre, y marca las dos casillas.", "Omple el nom, la ciutat i el teu nom, i marca les dues caselles."],
+    needAsk: ["Please add your name and how to reach you.", "请填写名字和联系方式。", "請填寫名字和聯絡方式。", "Añade tu nombre y cómo contactarte.", "Afegeix el teu nom i com contactar-te."],
+    fail: ["That didn't go through. Try again later.", "没有成功，请稍后再试。", "沒有成功，請稍後再試。", "No se ha podido. Inténtalo más tarde.", "No s'ha pogut. Torna-ho a provar més tard."],
+    privacy: ["Kept on this device (your privacy choice).", "按你的隐私选择，只保存在这台设备上。", "按你的隱私選擇，只保存在這台裝置上。", "Se queda en este dispositivo (tu elección de privacidad).", "Es queda en aquest dispositiu (la teva elecció de privadesa)."],
+    mineT: ["Your animals and requests", "你的动物和申请", "你的動物和申請", "Tus animales y solicitudes", "Els teus animals i sol·licituds"], mineNone: ["Nothing here yet.", "这里还什么都没有。", "這裡還什麼都沒有。", "Aún no hay nada.", "Encara no hi ha res."],
+    sWait: ["waiting for review", "等待审核", "等待審核", "en revisión", "en revisió"], sLive: ["listed", "已上墙", "已上牆", "publicado", "publicat"], sDone: ["home found", "已找到家", "已找到家", "con hogar", "amb llar"], sDown: ["taken down", "已撤下", "已撤下", "retirado", "retirat"],
+    adopted: ["🎉 Found a home", "🎉 找到家了", "🎉 找到家了", "🎉 Ya tiene hogar", "🎉 Ja té llar"], remove: ["Remove", "撤下", "撤下", "Quitar", "Treu"], closeAsk: ["Done", "已处理", "已處理", "Hecho", "Fet"],
+    asksN: ["{n} people asked", "{n} 人申请", "{n} 人申請", "{n} solicitudes", "{n} sol·licituds"], yourAsks: ["You asked about", "你申请过", "你申請過", "Has preguntado por", "Has demanat per"],
+    sure: ["Remove this notice?", "确定撤下这张启事吗？", "確定撤下這張啟事嗎？", "¿Quitar este anuncio?", "Treure aquest anunci?"]
+  };
+
+  /* ---------- the database ---------- */
+  var cfg = { url: "", key: "" };
+  function ready() { return new Promise(function (res) { if (window.FB_SUPABASE && FB_SUPABASE.url) { cfg.url = FB_SUPABASE.url; cfg.key = FB_SUPABASE.anonKey; return res(); } var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; res(); }; document.head.appendChild(sc); }); }
+  function api(fn, args, get) {
+    return ready().then(function () {
+      if (!cfg.url) throw new Error("offline");
+      var u = cfg.url + "/rest/v1/rpc/" + fn, h = { apikey: cfg.key, Authorization: "Bearer " + cfg.key, "Content-Type": "application/json" };
+      if (get) u += "?" + Object.keys(args).map(function (k) { return k + "=" + encodeURIComponent(args[k]); }).join("&");
+      return fetch(u, get ? { headers: h } : { method: "POST", headers: h, body: JSON.stringify(args) }).then(function (r) { return r.text().then(function (x) { var j = null; try { j = x ? JSON.parse(x) : null; } catch (e) {} if (!r.ok) throw new Error((j && j.message) || "HTTP " + r.status); return j; }); });
+    });
+  }
+  function key() { var k = null; try { k = localStorage.getItem("fb_device_key"); } catch (e) {} if (!k) { var a = new Uint8Array(32); crypto.getRandomValues(a); k = btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); try { localStorage.setItem("fb_device_key", k); } catch (e) {} } return k; }
+  function hasKey() { try { return !!localStorage.getItem("fb_device_key"); } catch (e) { return false; } }
+  function errMsg(e) { var m = String(e && e.message || e); return /privacy/i.test(m) ? t("privacy") : t("fail"); }
+
+  /* ---------- the yard: Mantou, a ball, and a few friends ---------- */
+  var cv = $("cv"), g = cv.getContext("2d"), WD = 160, HT = 90, GROUND = 78, f = 0;
+  function R(x, y, w, h, c, ctx) { (ctx || g).fillStyle = c; (ctx || g).fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967295; }
+  function dog(ctx, x, y, dir, pose, fr) {
+    var B = "#e8c48a", Wt = "#fbf3e2", D = "#b88a4a", P = function (dx, dy, w, h, c) { R(dir > 0 ? x + dx : x + 22 - dx - w, y - 16 + dy, w, h, c, ctx); };
+    if (pose === "sit") { P(6, 5, 9, 9, B); P(9, 8, 5, 6, Wt); P(12, 0, 7, 6, B); P(12, -2, 2, 3, B); P(17, -2, 2, 3, B); P(16, 3, 4, 3, Wt); P(19, 3, 1, 1, "#2a1a14"); P(14, 1, 1, 1, "#2a1a14"); P(12, 6, 3, 2, "#c8402a"); P(2, 6 + (fr >> 2) % 2, 4, 3, B); P(7, 14, 3, 2, D); P(12, 14, 3, 2, D); return; }
+    P(4, 6, 13, 6, B); P(9, 9, 6, 3, Wt); P(15, 2, 6, 6, B); P(15, 0, 2, 3, B); P(19, 0, 2, 3, B); P(18, 5, 4, 3, Wt); P(21, 5, 1, 1, "#2a1a14"); P(17, 3, 1, 1, "#2a1a14"); P(14, 7, 2, 2, "#c8402a");
+    var wag = (fr >> 1) % 2; P(1, 2 + wag, 3, 2, B); P(0, 4 + wag, 2, 2, B); P(2, 1 + wag, 2, 1, Wt);
+    var st = pose === "run" ? (fr >> 1) % 2 : 0; P(st ? 4 : 5, 12, 2, 4, D); P(st ? 15 : 14, 12, 2, 4, D); P(st ? 7 : 6, 12, 2, 3, D); P(st ? 12 : 13, 12, 2, 3, D);
+    if (pose === "ball") P(21, 6, 3, 3, "#d8f04a");
+  }
+  var M = { x: 60, dir: 1, pose: "sit", tx: 60, until: 0 }, ball = null, hearts = [], hen = { x: 128, dir: -1 }, bun = { x: 24, y: GROUND, vy: 0 };
+  function yard() {
+    var sky = window.FBWorld ? FBWorld.phase() : "day", wx = window.FBWorld ? FBWorld.weather() : "clear", night = sky === "night";
+    var S = { dawn: ["#7a5a8a", "#e8996a"], day: ["#86c2ee", "#c2e2f6"], dusk: ["#6a3a6e", "#f09a5a"], night: ["#0a0a1e", "#18183e"] }[sky];
+    R(0, 0, WD, 22, S[0]); R(0, 22, WD, 22, S[1]);
+    if (night) for (var s = 0; s < 16; s++) R(hash("s" + s) * WD, hash("y" + s) * 30, 1, 1, "#fff6c0");
+    for (var x = 0; x < WD; x += 2) R(x, 38 + Math.sin(x / 13) * 3, 2, 10, night ? "#1e2a3a" : "#7a96a8");
+    R(0, 46, WD, HT - 46, night ? "#1e3a24" : "#7ab45a"); for (var gy = 50; gy < HT; gy += 5) for (var gx = (gy % 10); gx < WD; gx += 9) R(gx, gy, 1, 2, night ? "#16301c" : "#5f9443");
+    // the barn, the kennels, a tree, the fence
+    R(96, 22, 44, 30, "#9c2418"); for (var by = 24; by < 52; by += 4) R(96, by, 44, 1, "#7c1a10"); R(92, 18, 52, 5, "#3a2a20"); for (var rf = 0; rf < 8; rf++) R(118 - rf * 3.2, 10 + rf, rf * 6.4, 1, "#3a2a20");
+    R(110, 36, 16, 16, "#2a1a14"); R(111, 37, 7, 15, "#c8a050"); R(118, 37, 7, 15, "#c8a050"); R(111, 37, 14, 1, "#2a1a14"); R(111, 37, 1, 14, "#2a1a14"); R(124, 37, 1, 14, "#2a1a14");
+    R(114, 26, 8, 6, night ? "#f6c84a" : "#fbf3e2"); x = 130; R(x, 14, 4, 3, "#2a2a30");   // old cat on the roof
+    R(8, 44, 22, 14, "#c8a878"); R(6, 41, 26, 4, "#7c2513"); R(15, 50, 8, 8, "#2a1a14"); R(36, 44, 22, 14, "#c8a878"); R(34, 41, 26, 4, "#2a5a8a"); R(43, 50, 8, 8, "#2a1a14");
+    R(74, 30, 3, 20, "#4a2e1a"); R(66, 20, 18, 12, night ? "#1a3a22" : "#3f7a3a"); R(69, 16, 12, 6, night ? "#1a3a22" : "#4a8a44");
+    for (var fx = 0; fx < WD; fx += 8) R(fx, 60, 2, 8, "#c8a878"); R(0, 62, WD, 1, "#c8a878"); R(0, 66, WD, 1, "#c8a878");
+    R(140, 70, 10, 4, "#8a8a84"); R(141, 71, 8, 2, "#4a8ac8");   // water bowl
+    // a hen pecking, a rabbit hopping
+    hen.x += hen.dir * .15; if (hen.x < 100 || hen.x > 150) hen.dir *= -1; var hx = Math.round(hen.x), pk = (f >> 3) % 3 === 0;
+    R(hx, GROUND - 6, 6, 4, "#fbfbf6"); R(hx + (hen.dir > 0 ? 5 : -1), GROUND - (pk ? 4 : 8), 2, 3, "#fbfbf6"); R(hx + (hen.dir > 0 ? 6 : -1), GROUND - (pk ? 4 : 8), 1, 1, "#c8402a"); R(hx + 2, GROUND - 2, 1, 2, "#f6b73c");
+    if (bun.y >= GROUND && Math.random() < .02) bun.vy = -1.6; bun.vy += .12; bun.y = Math.min(GROUND, bun.y + bun.vy); bun.x = 20 + Math.sin(f / 80) * 14;
+    R(bun.x, bun.y - 4, 5, 4, "#e8e0d8"); R(bun.x + 4, bun.y - 8, 1, 4, "#e8e0d8"); R(bun.x + 3, bun.y - 8, 1, 3, "#e8e0d8"); R(bun.x + 4, bun.y - 4, 1, 1, "#2a1a14");
+    if (wx === "rain" || wx === "storm") for (var r = 0; r < 40; r++) R((hash("r" + r) * WD + f * .7) % WD, (hash("q" + r) * HT + f * 3) % HT, 1, 3, "rgba(190,210,255,.6)");
+    if (wx === "snow") for (var n = 0; n < 40; n++) R((hash("n" + n) * WD) % WD, (hash("m" + n) * HT + f * .5) % HT, 1, 1, "#fff");
+  }
+  function think() {
+    var now = performance.now();
+    if (ball) {
+      if (ball.state === "fly") { ball.t += .04; ball.x = ball.x0 + (ball.x1 - ball.x0) * ball.t; ball.y = ball.y0 + (ball.y1 - ball.y0) * ball.t - Math.sin(ball.t * Math.PI) * 30; if (ball.t >= 1) { ball.state = "ground"; ball.y = ball.y1; } }
+      if (ball.state !== "carried") { M.tx = ball.x - 11; if (Math.abs(M.x - M.tx) < 2 && ball.state === "ground") { ball.state = "carried"; M.tx = 70; } }
+      else if (Math.abs(M.x - M.tx) < 2) { ball = null; M.pose = "sit"; M.until = now + 2500; hearts.push({ x: M.x + 14, y: GROUND - 20, a: 1 }); hint(t("good")); try { if (window.FBDogStory) FBDogStory.tap("sanctuary"); } catch (e) {} }
+    } else if (now > M.until) { M.until = now + 2500 + Math.random() * 4000; M.tx = Math.random() < .55 ? 4 + Math.random() * (WD - 30) : M.x; }
+    var dx = M.tx - M.x;
+    if (Math.abs(dx) > 1.2) { M.dir = dx > 0 ? 1 : -1; M.x += M.dir * (ball ? 1.6 : .6); M.pose = ball && ball.state === "carried" ? "ball" : ball ? "run" : "walk"; }
+    else if (!ball) M.pose = "sit";
+  }
+  function frame() {
+    f++; think(); yard();
+    dog(g, Math.round(M.x), GROUND + 2, M.dir, M.pose, f);
+    if (ball && ball.state !== "carried") { R(ball.x - 1, ball.y - 2, 3, 3, "#d8f04a"); R(ball.x, ball.y - 2, 1, 1, "#fff"); }
+    hearts = hearts.filter(function (h) { h.y -= .4; h.a -= .02; if (h.a <= 0) return false; g.globalAlpha = h.a; R(h.x, h.y, 2, 2, "#ff8fa0"); R(h.x + 2, h.y, 2, 2, "#ff8fa0"); R(h.x + 1, h.y + 2, 2, 1, "#ff8fa0"); g.globalAlpha = 1; return true; });
+    requestAnimationFrame(frame);
+  }
+  function woof() { try { var A = new (window.AudioContext || window.webkitAudioContext)(), n = A.currentTime; [0, .22].forEach(function (d) { var o = A.createOscillator(), g2 = A.createGain(), lp = A.createBiquadFilter(); o.type = "sawtooth"; o.frequency.setValueAtTime(340, n + d); o.frequency.exponentialRampToValueAtTime(170, n + d + .12); lp.type = "lowpass"; lp.frequency.value = 900; g2.gain.setValueAtTime(.0001, n + d); g2.gain.linearRampToValueAtTime(.05, n + d + .02); g2.gain.exponentialRampToValueAtTime(.0001, n + d + .14); o.connect(lp); lp.connect(g2); g2.connect(A.destination); o.start(n + d); o.stop(n + d + .16); }); } catch (e) {} }
+  function hint(m) { $("hint").textContent = m; clearTimeout(hint.t); hint.t = setTimeout(function () { $("hint").textContent = t("hint"); }, 2500); }
+  cv.addEventListener("click", function (e) {
+    var r = cv.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * WD, y = (e.clientY - r.top) / r.height * HT;
+    if (x > M.x - 2 && x < M.x + 24 && y > GROUND - 20 && y < GROUND + 4) { woof(); hearts.push({ x: M.x + 14, y: GROUND - 20, a: 1 }); M.pose = "sit"; M.until = performance.now() + 2000; try { if (window.FBDogStory) FBDogStory.tap("sanctuary"); } catch (er) {} return; }
+    if (y < 46) return;
+    ball = { state: "fly", t: 0, x0: M.x + 11, y0: GROUND - 10, x1: Math.max(4, Math.min(WD - 4, x)), y1: Math.max(68, Math.min(GROUND, y)), x: 0, y: 0 }; woof();
+  });
+
+  /* ---------- the adoption board ---------- */
+  var SP = [["", "🐾"], ["dog", "🐕"], ["cat", "🐈"], ["rabbit", "🐇"], ["bird", "🐦"], ["other", "✨"]], spNow = "", rows = [];
+  SP.forEach(function (s) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = s[1]; b.dataset.s = s[0]; b.onclick = function () { spNow = s[0]; paintChips(); load(); }; $("chips").appendChild(b); });
+  function paintChips() { [].forEach.call($("chips").children, function (b) { b.setAttribute("aria-pressed", b.dataset.s === spNow); var k = b.dataset.s; b.setAttribute("aria-label", k ? W.sp[k][L()] : t("all")); b.title = b.getAttribute("aria-label"); }); }
+  function silhouette(c, sp) { var x = c.getContext("2d"); c.width = 22; c.height = 16; if (sp === "dog" || sp === "other") dog(x, 0, 16, 1, "sit", 0); else { var r = function (a, b, w, h, col) { R(a, b, w, h, col, x); }; if (sp === "cat") { r(6, 6, 8, 8, "#6a6250"); r(9, 1, 6, 5, "#6a6250"); r(9, 0, 2, 2, "#6a6250"); r(13, 0, 2, 2, "#6a6250"); r(1, 11, 5, 2, "#6a6250"); } else if (sp === "rabbit") { r(6, 7, 9, 7, "#6a6250"); r(12, 3, 5, 5, "#6a6250"); r(13, 0, 1, 4, "#6a6250"); r(15, 0, 1, 4, "#6a6250"); } else { r(7, 6, 8, 6, "#6a6250"); r(13, 3, 4, 4, "#6a6250"); r(17, 5, 2, 1, "#6a6250"); r(4, 8, 4, 2, "#6a6250"); } } }
+  function load() {
+    var bd = $("board"); bd.innerHTML = '<p class="empty">…</p>';
+    api("sanctuary_list", { p_species: spNow }, true).then(function (r) { rows = r || []; paint(); }).catch(function () { bd.innerHTML = '<p class="empty">' + esc(t("offline")) + "</p>"; });
+  }
+  function paint() {
+    var bd = $("board"); bd.innerHTML = "";
+    if (!rows.length) { bd.innerHTML = '<p class="empty">' + esc(t("empty")) + "</p>"; return; }
+    rows.forEach(function (a) {
+      var c = document.createElement("article"); c.className = "pet";
+      c.innerHTML = '<div class="ph"></div><div class="bd"><h3></h3><div class="meta"></div><p class="story"></p><div class="row"></div></div>';
+      var ph = c.querySelector(".ph");
+      if (a.photo) { var im = document.createElement("img"); im.alt = a.name; im.loading = "lazy"; ph.appendChild(im); api("sanctuary_photo", { p_id: a.id }, true).then(function (u) { if (u && /^data:image\//.test(u)) im.src = u; }).catch(function () {}); }
+      else { var cs = document.createElement("canvas"); silhouette(cs, a.species); ph.appendChild(cs); }
+      if (a.adopted) { var bg = document.createElement("span"); bg.className = "badge"; bg.textContent = t("home"); ph.appendChild(bg); }
+      c.querySelector("h3").textContent = ({ dog: "🐕 ", cat: "🐈 ", rabbit: "🐇 ", bird: "🐦 " }[a.species] || "✨ ") + a.name;
+      c.querySelector(".meta").textContent = [W.sp[a.species] ? W.sp[a.species][L()] : "", a.age, (W.sex[a.sex] || W.sex["?"])[L()], a.city].filter(Boolean).join(" · ") + " — " + t("by", { c: a.carer });
+      c.querySelector(".story").textContent = a.story || "";
+      var row = c.querySelector(".row");
+      if (!a.adopted) { var b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = "🏡 " + t("askBtn"); b.onclick = function () { askSheet(a); }; row.appendChild(b); }
+      var fl = document.createElement("button"); fl.type = "button"; fl.className = "flag"; fl.textContent = "⚑ " + t("report"); fl.onclick = function () { api("sanctuary_report", { p_id: a.id }).then(function () { toast(t("reported")); fl.remove(); }).catch(function (e) { toast(errMsg(e)); }); }; row.appendChild(fl);
+      bd.appendChild(c);
+    });
+  }
+
+  /* ---------- sheets ---------- */
+  function sheet(html) {
+    var s = document.createElement("div"); s.className = "scrim"; s.innerHTML = '<div class="sheet" role="dialog" aria-modal="true">' + html + '<button type="button" class="x" aria-label="✕">✕</button></div>';
+    s.onclick = function (e) { if (e.target === s || e.target.closest(".x")) s.remove(); };
+    document.body.appendChild(s); var first = s.querySelector("input,textarea,select"); if (first) try { first.focus({ preventScroll: true }); } catch (e) {} return s;
+  }
+  function askSheet(a) {
+    var s = sheet('<h3></h3><label for="aN">' + esc(t("yourName")) + '</label><input id="aN" maxlength="40" autocomplete="nickname"><label for="aC">' + esc(t("contact")) + '</label><input id="aC" maxlength="120" placeholder="' + esc(t("contactPh")) + '"><label for="aM">' + esc(t("msg")) + '</label><textarea id="aM" maxlength="600"></textarea>' +
+      '<p class="note">🔒 ' + esc(t("private", { n: a.name })) + '</p><ul class="tips">' + t("tips").split("|").map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + '</ul><button type="button" class="btn go" id="aGo">' + esc(t("send")) + "</button>");
+    s.querySelector("h3").textContent = t("askT", { n: a.name });
+    try { var nk = localStorage.getItem("fb_nick"); if (nk) s.querySelector("#aN").value = nk; } catch (e) {}
+    s.querySelector("#aGo").onclick = function () {
+      var n = s.querySelector("#aN").value.trim(), c = s.querySelector("#aC").value.trim(), m = s.querySelector("#aM").value.trim(); if (!n || !c) { toast(t("needAsk")); return; }
+      this.disabled = true; var btn = this;
+      api("sanctuary_ask", { p_secret: key(), p_id: a.id, p_name: n, p_contact: c, p_message: m }).then(function () { s.remove(); toast("🐾 " + t("sent")); mine(); }).catch(function (e) { btn.disabled = false; toast(errMsg(e)); });
+    };
+  }
+  /* photos are shrunk on the phone before they leave it: 640px, JPEG */
+  function shrink(file) {
+    return new Promise(function (res, rej) {
+      var r = new FileReader(); r.onerror = rej; r.onload = function () { var im = new Image(); im.onerror = rej; im.onload = function () { var s = Math.min(1, 640 / Math.max(im.width, im.height)), c = document.createElement("canvas"); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s); c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); var q = .78, u = c.toDataURL("image/jpeg", q); while (u.length > 300000 && q > .3) { q -= .12; u = c.toDataURL("image/jpeg", q); } res(u); }; im.src = r.result; }; r.readAsDataURL(file);
+    });
+  }
+  function postSheet() {
+    var opts = ["dog", "cat", "rabbit", "bird", "other"].map(function (k) { return '<option value="' + k + '">' + esc(W.sp[k][L()]) + "</option>"; }).join("");
+    var s = sheet('<h3>' + esc(t("postT")) + '</h3><label for="pN">' + esc(t("aName")) + '</label><input id="pN" maxlength="40">' +
+      '<div class="two"><div><label for="pS">' + esc(t("species")) + '</label><select id="pS">' + opts + '</select></div><div><label for="pA">' + esc(t("age")) + '</label><input id="pA" maxlength="30" placeholder="' + esc(t("agePh")) + '"></div></div>' +
+      '<div class="two"><div><label for="pX">' + esc(t("sexL")) + '</label><select id="pX"><option value="?">' + esc(t("unknown")) + '</option><option value="f">' + esc(W.sex.f[L()]) + '</option><option value="m">' + esc(W.sex.m[L()]) + '</option></select></div><div><label for="pC">' + esc(t("city")) + '</label><input id="pC" maxlength="60"></div></div>' +
+      '<label for="pT">' + esc(t("story")) + '</label><textarea id="pT" maxlength="600"></textarea><label for="pP">' + esc(t("photo")) + '</label><input id="pP" type="file" accept="image/*"><img class="prev" id="pV" alt="" hidden>' +
+      '<label for="pK">' + esc(t("carer")) + '</label><input id="pK" maxlength="60"><label class="check"><input type="checkbox" id="c1"> ' + esc(t("c1")) + '</label><label class="check"><input type="checkbox" id="c2"> ' + esc(t("c2")) + '</label>' +
+      '<p class="note">👀 ' + esc(t("review")) + '</p><button type="button" class="btn green go" id="pGo">' + esc(t("postGo")) + "</button>");
+    var photo = "";
+    s.querySelector("#pP").onchange = function () { var fl = this.files && this.files[0]; if (!fl) return; shrink(fl).then(function (u) { photo = u; var v = s.querySelector("#pV"); v.src = u; v.hidden = false; }).catch(function () { photo = ""; }); };
+    s.querySelector("#pGo").onclick = function () {
+      var v = function (id) { return s.querySelector(id).value.trim(); }, body = { name: v("#pN"), species: v("#pS"), age: v("#pA"), sex: v("#pX"), city: v("#pC"), story: v("#pT"), carer: v("#pK"), photo: photo, lang: (window.FBL && FBL.get()) || "en" };
+      if (!body.name || !body.city || !body.carer || !s.querySelector("#c1").checked || !s.querySelector("#c2").checked) { toast(t("need")); return; }
+      var btn = this; btn.disabled = true;
+      api("sanctuary_post", { p_secret: key(), p_animal: body }).then(function () { s.remove(); toast("🐾 " + t("posted")); mine(); }).catch(function (e) { btn.disabled = false; toast(errMsg(e)); });
+    };
+  }
+  $("addBtn").onclick = postSheet;
+
+  /* ---------- your animals, and the requests people sent you ---------- */
+  var MINE = null;
+  function mine() {
+    if (!hasKey()) { paintMine(); return Promise.resolve(); }
+    return api("sanctuary_mine", { p_secret: key() }).then(function (j) { MINE = j; paintMine(); }).catch(function () {});
+  }
+  function paintMine() { var n = 0; if (MINE) MINE.animals.forEach(function (a) { n += (a.asks || []).length; }); var e = $("mineN"); e.hidden = !n; e.textContent = n; }
+  $("mineBtn").onclick = function () {
+    var h = "<h3>" + esc(t("mineT")) + "</h3>";
+    if (!MINE || (!MINE.animals.length && !MINE.asked.length)) h += '<p class="note">' + esc(t("mineNone")) + "</p>";
+    var s = sheet(h + '<div id="mList"></div>'), box = s.querySelector("#mList");
+    (MINE ? MINE.animals : []).forEach(function (a) {
+      var st = a.adopted ? t("sDone") : a.hidden ? t("sDown") : a.approved ? t("sLive") : t("sWait");
+      var d = document.createElement("div"); d.className = "mine"; d.innerHTML = '<span class="st"></span><b></b><div class="asks"></div><div class="row" style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"></div>';
+      d.querySelector(".st").textContent = st; d.querySelector("b").textContent = a.name + " · " + a.city;
+      var asks = d.querySelector(".asks");
+      (a.asks || []).forEach(function (q) { var x = document.createElement("div"); x.className = "ask"; x.innerHTML = "<b></b><div></div><p style='margin:4px 0'></p><small></small> "; x.querySelector("b").textContent = q.name; x.querySelector("div").textContent = "✉️ " + q.contact; x.querySelector("p").textContent = q.message || ""; x.querySelector("small").textContent = new Date(q.at).toLocaleDateString();
+        var dn = document.createElement("button"); dn.type = "button"; dn.className = "btn ghost"; dn.style.minHeight = "34px"; dn.textContent = t("closeAsk"); dn.onclick = function () { api("sanctuary_update", { p_secret: key(), p_id: q.id, p_action: "close_ask" }).then(function () { x.remove(); mine(); }); }; x.appendChild(dn); asks.appendChild(x); });
+      var row = d.querySelector(".row");
+      if (!a.adopted) { var ad = document.createElement("button"); ad.type = "button"; ad.className = "btn green"; ad.textContent = t("adopted"); ad.onclick = function () { api("sanctuary_update", { p_secret: key(), p_id: a.id, p_action: "adopted" }).then(function () { s.remove(); toast("🎉"); woof(); mine(); load(); }); }; row.appendChild(ad); }
+      var rm = document.createElement("button"); rm.type = "button"; rm.className = "btn red"; rm.textContent = t("remove"); rm.onclick = function () { if (!confirm(t("sure"))) return; api("sanctuary_update", { p_secret: key(), p_id: a.id, p_action: "remove" }).then(function () { s.remove(); mine(); load(); }); }; row.appendChild(rm);
+      box.appendChild(d);
+    });
+    if (MINE && MINE.asked.length) { var p = document.createElement("p"); p.className = "note"; p.textContent = t("yourAsks") + ": " + MINE.asked.map(function (q) { return q.name + (q.adopted ? " 🎉" : ""); }).join(", "); box.appendChild(p); }
+  };
+
+  /* ---------- words ---------- */
+  function words() {
+    document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
+    document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
+    document.title = (L() ? t("title") : "The Sanctuary") + " — FREE//BUILDER";
+    $("hint").textContent = t("hint"); $("mineBtn").setAttribute("aria-label", t("mineT")); $("mineBtn").title = t("mineT"); $("yard").setAttribute("aria-label", t("hint"));
+    var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
+    paintChips(); if (rows.length) paint();
+  }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
+  window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+  (function () { var c = $("meC"), x = c.getContext("2d"); dog(x, 0, 16, 1, "sit", 0); })();
+  words(); load(); mine(); requestAnimationFrame(frame);
+  /* arriving mid-story: Mantou has something to show you */
+  setTimeout(function () { try { var ds = FBWorld.dogStory(); if (!ds.done && ds.ch >= 1 && FBWorld.DSTORY[ds.ch] === "sanctuary") FBDogStory.tap("sanctuary"); } catch (e) {} }, 2500);
+})();
+</script>
+</body>
+</html>

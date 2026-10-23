@@ -20,6 +20,14 @@ AUTHOR: FREE//BUILDER
 DESC: The little room where Miso and Yuzu live. Stroke them till they purr, wave a feather, shake the treat tin, dim the lamp, and take photos for their album. The closer you get, the more of their story opens.
 URL: nest/
 
+CODE: SANCTUARY
+ID: AS-12
+TITLE: The Sanctuary
+GENRE: A dog's home, and real adoptions
+AUTHOR: FREE//BUILDER
+DESC: Mantou the dog lives here, by the meadow. Throw his ball, follow his story to the station and back, and help real animals find a home: put up a notice for one you're caring for, or ask to adopt.
+URL: sanctuary/
+
 CODE: TRAIN
 ID: TW-06
 TITLE: Train Window

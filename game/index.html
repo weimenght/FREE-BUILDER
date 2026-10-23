@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=964439ade2"></script><script data-fbg src="/fbkit/fbg.js?v=c00e1eb17f" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b2339bbdda"></script><script data-fbg src="/fbkit/fbg.js?v=40b59472de" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Neighbourhood — FREE//BUILDER</title>
 <meta name="description" content="A little pixel neighbourhood: Wei's Bar, the bookshop, the jukebox, the post office, Sora park, the crag, the kintsugi studio, the club and the station. Tap a place to walk in.">
@@ -105,7 +105,8 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     /* the wild country around the town: each opens Sora's sky in that landscape */
     { k: "peaks", abs: 1, url: "/game/cloud/?place=snow", x: 4, y: 8, w: 70, h: 62, n: ["Snow Peaks", "雪峰", "雪峰", "Picos nevados", "Cims nevats"] },
     { k: "forest", abs: 1, url: "/game/cloud/?place=forest", x: 4, y: 112, w: 82, h: 50, n: ["Pine Wood", "松林", "松林", "Pinar", "Pineda"] },
-    { k: "meadow", abs: 1, url: "/game/cloud/?place=meadow", x: 4, y: 172, w: 82, h: 70, n: ["Wildflower Meadow", "野花草甸", "野花草甸", "Prado de flores", "Prat de flors"] },
+    { k: "sanctuary", abs: 1, url: "/game/sanctuary/", x: 40, y: 206, w: 48, h: 40, n: ["Animal Sanctuary", "动物庇护所", "動物庇護所", "Refugio de animales", "Refugi d'animals"] },
+    { k: "meadow", abs: 1, url: "/game/cloud/?place=meadow", x: 4, y: 168, w: 82, h: 36, n: ["Wildflower Meadow", "野花草甸", "野花草甸", "Prado de flores", "Prat de flors"] },
     { k: "pasture", abs: 1, url: "/game/cloud/?place=mountain", x: 276, y: 30, w: 80, h: 50, n: ["High Pasture", "高山牧场", "高山牧場", "Pasto alto", "Pastura alta"] },
     { k: "lake", abs: 1, url: "/game/cloud/?place=lake", x: 274, y: 104, w: 84, h: 66, n: ["Mirror Lake", "镜湖", "鏡湖", "Lago Espejo", "Llac Mirall"] },
     { k: "sea", abs: 1, url: "/game/cloud/?place=sea", x: 274, y: 204, w: 84, h: 88, n: ["Sandy Cove", "沙湾", "沙灣", "Cala de arena", "Cala de sorra"] }
@@ -237,7 +238,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   function woof() { try { var A = new (window.AudioContext || window.webkitAudioContext)(), n = A.currentTime; [0, .22].forEach(function (d) { var o = A.createOscillator(), g2 = A.createGain(), lp = A.createBiquadFilter(); o.type = "sawtooth"; o.frequency.setValueAtTime(340, n + d); o.frequency.exponentialRampToValueAtTime(170, n + d + .12); lp.type = "lowpass"; lp.frequency.value = 900; g2.gain.setValueAtTime(.0001, n + d); g2.gain.linearRampToValueAtTime(.05, n + d + .02); g2.gain.exponentialRampToValueAtTime(.0001, n + d + .14); o.connect(lp); lp.connect(g2); g2.connect(A.destination); o.start(n + d); o.stop(n + d + .16); }); } catch (e) {} }
   function kitties() {
     var db = kit.dog || (kit.dog = document.createElement("button")); db.type = "button"; db.className = "kitty"; db.setAttribute("aria-label", DOGN[L()] || DOGN[0]);
-    db.onclick = function (e) { e.stopPropagation(); woof(); var h = document.createElement("span"); h.className = "heart"; h.textContent = "🐾 " + (DOGN[L()] || DOGN[0]); db.appendChild(h); setTimeout(function () { h.remove(); }, 1900); };
+    db.onclick = function (e) { e.stopPropagation(); woof(); if (window.FBDogStory) FBDogStory.tap(dogAt); var h = document.createElement("span"); h.className = "heart"; h.textContent = "🐾 " + (DOGN[L()] || DOGN[0]); db.appendChild(h); setTimeout(function () { h.remove(); }, 1900); };
     if (!db.parentNode) $("#zoom").appendChild(db);
     ["miso", "yuzu"].forEach(function (k) {
       var b = kit[k] || (kit[k] = document.createElement("button")); b.type = "button"; b.className = "kitty"; b.setAttribute("aria-label", CATS[k].n[L()] || CATS[k].n[0]);
@@ -278,7 +279,12 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     var wf = 74; R(wf, 40, 4, 46, night ? "#6a8aba" : "#cfe6f6"); for (var wd = 0; wd < 6; wd++) R(wf + (wd % 2), 40 + ((f * 2 + wd * 8) % 46), 2, 3, "#ffffff"); R(wf - 3, 84, 10, 3, "rgba(255,255,255,.6)");
     for (var tr = 0; tr < 26; tr++) { var tx = 2 + (tr * 13) % 84, ty = 118 + Math.floor(tr / 7) * 11 + (hash("t" + tr) * 4); R(tx + 3, ty + 8, 2, 3, "#4a2e1a"); R(tx + 2, ty, 4, 3, D); R(tx + 1, ty + 3, 6, 3, D); R(tx, ty + 6, 8, 3, night ? "#163020" : "#346a32"); }
     for (var fl = 0; fl < 60; fl++) { var fx = 3 + hash("fl" + fl) * 84, fy = 178 + hash("fy" + fl) * 62; R(fx, fy, 1, 2, D); R(fx, fy - 1, 1, 1, ["#ffffff", "#f6d84a", "#f4a0b8", "#c9a6ff", "#ff7a5a"][fl % 5]); }
-    R(60, 222, 8, 8, "#c8a050"); R(61, 221, 6, 1, "#a87a30"); R(62, 225, 2, 2, "#3a2a1c"); for (var bz = 0; bz < 3; bz++) R(62 + Math.sin((f + bz * 13) / 6) * 6, 215 + Math.cos((f + bz * 7) / 5) * 4, 1, 1, "#f6d84a");   // beehive and bees
+    R(10, 196, 8, 8, "#c8a050"); R(11, 195, 6, 1, "#a87a30"); R(12, 199, 2, 2, "#3a2a1c"); for (var bz = 0; bz < 3; bz++) R(12 + Math.sin((f + bz * 13) / 6) * 6, 189 + Math.cos((f + bz * 7) / 5) * 4, 1, 1, "#f6d84a");   // beehive and bees
+    // the animal sanctuary: a red barn, two kennels and a fenced yard (Mantou's home)
+    R(56, 216, 26, 18, "#9c2418"); for (var bb = 218; bb < 234; bb += 3) R(56, bb, 26, 1, "#7c1a10"); for (var br = 0; br < 7; br++) R(69 - br * 2.2, 208 + br, br * 4.4 + 1, 1, "#3a2a20");
+    R(65, 224, 8, 10, "#2a1a14"); R(66, 225, 3, 9, "#c8a050"); R(69, 225, 3, 9, "#c8a050"); R(66, 218, 6, 4, lit ? "#f6c84a" : "#fbf3e2");
+    R(42, 226, 10, 8, "#c8a878"); R(41, 224, 12, 2, "#2a5a8a"); R(45, 230, 4, 4, "#2a1a14");
+    for (var fz = 40; fz < 88; fz += 4) R(fz, 236, 1, 5, "#c8a878"); R(40, 237, 48, 1, "#c8a878"); R(40, 240, 48, 1, "#c8a878");
     for (var tf = 0; tf < 5; tf++) { R(0, 250 + tf * 7, 90, 6, night ? "#203a1c" : ["#7aa44a", "#8ab454", "#6a9440"][tf % 3]); R(0, 255 + tf * 7, 90, 1, night ? "#16281a" : "#5a7a36"); }
     R(30, 254, 1, 10, "#6a4a2a"); R(26, 256, 9, 1, "#6a4a2a"); R(29, 251, 3, 3, "#c8a050");   // scarecrow
     R(0, 108, 4, 4, night ? "#2a2a30" : "#8a8a84");
@@ -303,7 +309,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(270, 150, 90, 16, night ? "#2e2c30" : "#c8b088"); for (var bw = 270; bw < 360; bw += 6) R(bw, 150, 1, 16, night ? "#3a383c" : "#a89068");   // the lane becomes a boardwalk
   }
   /* Mantou the dog: a quicker trot, a curly tail, a red collar */
-  var DOGPATH = { meadow: [-84, -10, 236], lake: [186, 266, 165], sea: [182, 206, 282], forest: [-86, -8, 170] }, dogAt = (World.dog && World.dog()) || "bar";
+  var DOGPATH = { sanctuary: [-48, -6, 246], meadow: [-84, -10, 204], lake: [186, 266, 165], sea: [182, 206, 282], forest: [-86, -8, 170] }, dogAt = (World.dog && World.dog()) || "bar";
   function drawDog(f) {
     var p = DOGPATH[dogAt] || PATH[dogAt] || PATH.bar, sp = .03, u = .5 + .5 * Math.sin(f * sp + 1), dir = Math.cos(f * sp + 1) >= 0 ? 1 : -1;
     var x = OX + Math.round(p[0] + (p[1] - p[0]) * u) + 6, y = p[2] - 5; catPos.dog = [x, y];
