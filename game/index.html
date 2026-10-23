@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b4f6cf47f4"></script><script data-fbg src="/fbkit/fbg.js?v=1909bbbd0d" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dcf3901930"></script><script data-fbg src="/fbkit/fbg.js?v=bf61b28b31" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Neighbourhood — FREE//BUILDER</title>
 <meta name="description" content="A little pixel neighbourhood: Wei's Bar, the bookshop, the jukebox, the post office, Sora park, the crag, the kintsugi studio, the club and the station. Tap a place to walk in.">
@@ -42,6 +42,9 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
 .desk a b{font-size:24px;font-weight:400}.desk a small{display:block;font-size:16px;opacity:.7}
 .desk a:hover,.desk a:focus-visible{background:#f6b73c}
 .desk .x{position:absolute;top:6px;right:6px;width:30px;height:30px;border:2px solid #000;background:#0e1e16;color:#f6ecd2;font:inherit;cursor:pointer}
+.kitty{position:absolute;width:9%;aspect-ratio:1;margin:-6% 0 0 -4.5%;border:0;padding:0;background:none;cursor:pointer;z-index:3}
+.kitty .heart{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);white-space:nowrap;padding:1px 5px;background:rgba(10,8,14,.85);border:2px solid #000;color:#ff9fb2;font:400 16px/1 var(--vt);animation:pop 1.8s ease-out forwards;pointer-events:none}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,6px)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-16px)}}
 .foot{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px auto 90px;padding:0 16px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -69,6 +72,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
   var PLACES = [
     { k: "climb", url: "/game/climb/", x: 4, y: 10, w: 56, h: 60, n: ["The Crag", "岩场", "岩場", "El risco", "El cingle"] },
     { k: "cloud", url: "/game/cloud/", x: 104, y: 40, w: 72, h: 40, n: ["Sora Park", "Sora 公园", "Sora 公園", "Parque Sora", "Parc Sora"] },
+    { k: "tower", url: "/game/tower/", x: 80, y: 50, w: 20, h: 42, n: ["Clock Tower", "钟楼", "鐘樓", "Torre del reloj", "Torre del rellotge"] },
     { k: "kintsugi", url: "/game/kintsugi/", x: 4, y: 116, w: 40, h: 34, n: ["Kintsugi Studio", "金缮工房", "金繕工房", "Taller de kintsugi", "Taller de kintsugi"] },
     { k: "bar", url: "/game/bar/", x: 48, y: 110, w: 48, h: 40, n: ["Wei's Bar", "Wei 的酒吧", "Wei 的酒吧", "Bar de Wei", "Bar d'en Wei"] },
     { k: "books", url: "/game/books/", x: 100, y: 114, w: 38, h: 36, n: ["Dog-Eared Corner", "折角书屋", "折角書屋", "Página Doblada", "Pàgina Doblegada"] },
@@ -186,7 +190,31 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
     if (wx === "rain" || wx === "storm") { for (var rd = 0; rd < 70; rd++) { var rx2 = (hash("rd" + rd) * W + f * 1.5) % W, ry2 = (hash("rr" + rd) * H + f * 6) % H; R(rx2, ry2, 1, 3, "rgba(170,200,255,.55)"); } if (wx === "storm" && f % 240 < 3) R(0, 0, W, H, "rgba(255,255,255,.5)"); }
     if (wx === "snow") for (var sn = 0; sn < 60; sn++) { var snx = (hash("sn" + sn) * W + Math.sin((f + sn * 9) / 18) * 4) % W, sny = (hash("sy" + sn) * H + f * .8) % H; R(snx, sny, 1, 1, "#ffffff"); }
     if (wx === "fog") { g.fillStyle = "rgba(220,224,232,.22)"; g.fillRect(0, 0, W, H); for (var fg = 0; fg < 4; fg++) R(((f * .2 + fg * 70) % 260) - 60, 70 + fg * 60, 90, 6, "rgba(230,234,240,.25)"); }
+    drawCat("miso", f); drawCat("yuzu", f + 37);
     if (night) { g.fillStyle = "rgba(10,10,40,.18)"; g.fillRect(0, 0, W, H); }
+    ["miso", "yuzu"].forEach(function (k) { var b = kit[k], p = catPos[k]; if (b && p) { b.style.left = ((p[0] + 3) / W * 100) + "%"; b.style.top = ((p[1] + 2) / H * 100) + "%"; } });
+  }
+  var kit = {};
+  function meow(k) { try { var A = new (window.AudioContext || window.webkitAudioContext)(), o = A.createOscillator(), g2 = A.createGain(), n = A.currentTime, fr = k === "miso" ? 620 : 760; o.type = "triangle"; o.frequency.setValueAtTime(fr, n); o.frequency.linearRampToValueAtTime(fr * 1.5, n + .12); o.frequency.linearRampToValueAtTime(fr * .9, n + .35); g2.gain.setValueAtTime(.0001, n); g2.gain.linearRampToValueAtTime(.06, n + .05); g2.gain.exponentialRampToValueAtTime(.0001, n + .4); o.connect(g2); g2.connect(A.destination); o.start(n); o.stop(n + .42); } catch (e) {} }
+  function kitties() {
+    ["miso", "yuzu"].forEach(function (k) {
+      var b = kit[k] || (kit[k] = document.createElement("button")); b.type = "button"; b.className = "kitty"; b.setAttribute("aria-label", CATS[k].n[L()] || CATS[k].n[0]);
+      b.onclick = function (e) { e.stopPropagation(); meow(k); if (window.FBCatStory) FBCatStory.tap(where[k]); var h = document.createElement("span"); h.className = "heart"; h.textContent = "♥ " + (CATS[k].n[L()] || CATS[k].n[0]); b.appendChild(h); setTimeout(function () { h.remove(); }, 1900); };
+      if (!b.parentNode) $("#zoom").appendChild(b);
+    });
+  }
+  /* Miso and Yuzu: out and about, near wherever they wandered to this visit */
+  var CATS = { miso: { b: "#1c1a1f", e: "#f6d84a", n: ["Miso", "味噌", "味噌", "Miso", "Miso"] }, yuzu: { b: "#e8902a", e: "#3a2a1c", s: "#b8641a", n: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"] } };
+  var PATH = { bar: [50, 94, 158], cloud: [108, 170, 64], kintsugi: [6, 44, 158], books: [100, 138, 158], postcard: [8, 60, 207], jukebox: [142, 176, 158], tower: [76, 104, 87], train: [30, 150, 289], dj: [112, 172, 207], climb: [6, 56, 80] };
+  var where = (World.cats && World.cats()) || { miso: "bar", yuzu: "books" }, catPos = {};
+  function drawCat(k, f) {
+    var c = CATS[k], p = PATH[where[k]] || PATH.bar, sp = k === "miso" ? .021 : .017, ph = k === "miso" ? 0 : 2.1;
+    var u = .5 + .5 * Math.sin(f * sp + ph), dir = Math.cos(f * sp + ph) >= 0 ? 1 : -1, sit = Math.abs(Math.cos(f * sp + ph)) < .12;   /* they pause at each end of their stroll */
+    var x = Math.round(p[0] + (p[1] - p[0]) * u), y = p[2] - 4; catPos[k] = [x, y];
+    var R2 = function (dx, dy, w, h, col) { R(dir > 0 ? x + dx : x + 7 - dx - w, y + dy, w, h, col); };
+    R2(0, 1, 5, 2, c.b); R2(4, 0, 3, 2, c.b); R2(4, -1, 1, 1, c.b); R2(6, -1, 1, 1, c.b); R2(5, 0, 1, 1, c.e); R2(-1, 0, 1, 2, c.b);
+    if (c.s) { R2(1, 1, 1, 2, c.s); R2(3, 1, 1, 2, c.s); }
+    var step = (f >> 1) % 2; if (sit) { R2(0, 3, 5, 1, c.b); } else { R2(step ? 0 : 1, 3, 1, 1, c.b); R2(step ? 3 : 4, 3, 1, 1, c.b); }
   }
   function mix(a, b, k) { var p = function (h, i) { return parseInt(h.substr(1 + i * 2, 2), 16); }; return "#" + [0, 1, 2].map(function (i) { return Math.round(p(a, i) * (1 - k) + p(b, i) * k).toString(16).padStart(2, "0"); }).join(""); }
 
@@ -239,7 +267,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
     document.title = (L() ? t("title") : "The Neighbourhood") + " — FREE//BUILDER";
     $("#spots").setAttribute("aria-label", t("map")); var lab = $("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
-    spots(); clock();
+    spots(); clock(); kitties();
   }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
   window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
