@@ -908,16 +908,21 @@
     cy: ["/learn/cymraeg/", "Learn some Welsh", "学点威尔士语", "學點威爾斯語", "Aprende un poco de galés", "Aprèn una mica de gal·lès"],
     cn: ["/learn/chengyu/", "Learn a chengyu", "学一个成语", "學一個成語", "Aprende un chengyu", "Aprèn un chengyu"]
   };
-  var door = null, doorSt = null, doorT = 0;
+  var CSS_LEARN = ".tw-learn{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top));transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(20,16,12,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fbf1de;border:1px solid rgba(255,230,190,.25);font:600 14px/1.2 system-ui,-apple-system,'PingFang SC',sans-serif;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);animation:twL .5s ease backwards}.tw-learn:hover{background:rgba(40,30,20,.9)}@keyframes twL{from{opacity:0;transform:translate(-50%,-10px)}}.tw-learn{transition:opacity 1.6s ease,transform 1.6s ease}.tw-learn.gone{opacity:0;transform:translate(-50%,-8px);pointer-events:none}";
+  var door = null, doorSt = null, doorT = 0, doorSeen = null, SHOW = 12000;
+  function doorAway() {   /* drifts up and fades, like a station sign going past */
+    var d = door; door = null; if (!d) return; d.classList.add("gone"); setTimeout(function () { d.remove(); }, 1700);
+  }
   function doorUp() {
     try {
       var st = state.station, lk = st && lookOf(st), L = LEARN[lk];
-      if (st !== doorSt) { doorSt = st; doorT = Date.now(); if (door) { door.remove(); door = null; } }
-      if (!L || state.trainState === "CRUISING" && Date.now() - doorT > 45000) { if (door) { door.remove(); door = null; } return; }
+      if (st !== doorSt) { doorSt = st; doorT = Date.now(); doorAway(); }
+      if (!L || doorSeen === st) return;
+      if (door && !door.matches(":hover") && Date.now() - doorT > SHOW) { doorSeen = st; doorAway(); return; }   /* once per station, then gone by itself */
       var i = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }[(window.FBL && FBL.get()) || "en"] || 0;
       if (!door) {
         door = document.createElement("a"); door.className = "tw-learn"; door.href = L[0]; door.setAttribute("data-fbt-skip", "");
-        if (!document.getElementById("tw-learn-css")) { var c = document.createElement("style"); c.id = "tw-learn-css"; c.textContent = ".tw-learn{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top));transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(20,16,12,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fbf1de;border:1px solid rgba(255,230,190,.25);font:600 14px/1.2 system-ui,-apple-system,'PingFang SC',sans-serif;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);animation:twL .5s ease both}.tw-learn:hover{background:rgba(40,30,20,.9)}@keyframes twL{from{opacity:0;transform:translate(-50%,-10px)}}"; document.head.appendChild(c); }
+        if (!document.getElementById("tw-learn-css")) { var c = document.createElement("style"); c.id = "tw-learn-css"; c.textContent = CSS_LEARN; document.head.appendChild(c); }
         document.body.appendChild(door);
       }
       var txt = "🗣️ " + (L[1 + i] || L[1]) + " →"; if (door.textContent !== txt) door.textContent = txt;
