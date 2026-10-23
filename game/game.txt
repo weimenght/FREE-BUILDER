@@ -28,6 +28,14 @@ AUTHOR: FREE//BUILDER
 DESC: Light up a few bulbs and you have a tune. Press it into a record, sign it, then drop a coin: it plays in Wei's Bar and the book corner at the same second, with your name on it.
 URL: jukebox/
 
+CODE: POSTCARD
+ID: PC-10
+TITLE: Postcard
+GENRE: Slow mail with a sealed date
+AUTHOR: FREE//BUILDER
+DESC: Pick a picture and a stamp, write on the back, and seal it until the day you choose. Send the link to a friend, who can't open it a minute early, or hang it on the wall in Wei's Bar.
+URL: postcard/
+
 CODE: BAR
 ID: WB-03
 TITLE: Wei's Bar & Coffee

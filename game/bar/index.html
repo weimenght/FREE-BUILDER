@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=bcb35b3953"></script><script data-fbg src="/fbkit/fbg.js?v=64bd371faa" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=743842f0b5"></script><script data-fbg src="/fbkit/fbg.js?v=2c12cd9028" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -729,7 +729,7 @@
       *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
     }
   </style>
-</head>
+<link rel="manifest" href="/game/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Neighbourhood" data-fbapp></head>
 <body class="grain no-select">
 
   <canvas id="weather-canvas" class="fixed inset-0 w-full h-full pointer-events-none" style="z-index:0"></canvas>
@@ -1114,6 +1114,7 @@
             <div class="tabs">
               <button class="tab active" data-walltab="graffiti" onclick="Wall.tab('graffiti')" data-t="wall.tabGraffiti">Graffiti</button>
               <button class="tab" data-walltab="memos" onclick="Wall.tab('memos')" data-t="wall.tabMemos">Memo board</button>
+              <button class="tab" data-walltab="cards" onclick="Wall.tab('cards')">📮 <span data-t="wall.tabCards">Postcards</span></button>
             </div>
             <p class="hint" id="wall-hint" data-t="wall.hintGraffiti">Paint on the bricks, then sign it.</p>
           </div>
@@ -1143,6 +1144,15 @@
               <div class="label mb-2" data-t="wall.gallery">On the wall</div>
               <div id="graf-gallery" class="brick2 p-2 rounded-md grid gap-2" style="border:2px solid #000;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));min-height:160px"></div>
             </div>
+          </div>
+
+          <div id="wall-cards" class="hidden">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+              <a class="btn btn-amber" href="/game/postcard/?to=bar">✍️ <span data-t="wall.writeCard">Write a postcard</span></a>
+              <a class="btn" href="/game/">🗺️ <span data-t="wall.map">Map</span></a>
+            </div>
+            <div id="pc-board" class="pc-board"></div>
+            <div id="pc-trips" class="mt-4"></div>
           </div>
 
           <div id="wall-memos" class="hidden">
@@ -3274,6 +3284,14 @@
 
       // Wall
       'wall.tabGraffiti': ["Graffiti", "涂鸦", "塗鴉", "塗鴉", "Grafiti", "Grafit"],
+      'wall.tabCards':    ["Postcards", "明信片", "明信片", "明信片", "Postales", "Postals"],
+      'wall.writeCard':   ["Write a postcard", "写一张明信片", "寫一張明信片", "寫張明信片", "Escribe una postal", "Escriu una postal"],
+      'wall.map':         ["Map", "地图", "地圖", "地圖", "Mapa", "Mapa"],
+      'wall.hintCards':   ["Cards people sent to the bar. Sealed ones wait for their date.", "大家寄到酒吧的明信片。封着的要等到日子才能看。", "大家寄到酒吧的明信片。封著的要等到日子才能看。", "大家寄嚟酒吧嘅明信片。封住嘅要等到日子先睇得。", "Postales que la gente ha enviado al bar. Las cerradas esperan su fecha.", "Postals que la gent ha enviat al bar. Les tancades esperen la seva data."],
+      'wall.trips':       ["From your travels (only on this device)", "你的旅途纪念（只在这台设备上）", "你的旅途紀念（只在這台裝置上）", "你嘅旅程紀念（只喺呢部機）", "De tus viajes (solo en este dispositivo)", "Dels teus viatges (només en aquest dispositiu)"],
+      'wall.noCards':     ["No postcards yet. Be the first.", "还没有明信片，来寄第一张吧。", "還沒有明信片，來寄第一張吧。", "未有明信片，你嚟寄第一張啦。", "Aún no hay postales. Envía la primera.", "Encara no hi ha postals. Envia la primera."],
+      'wall.opens':       ["Opens {d}", "{d} 可以拆开", "{d} 可以拆開", "{d} 可以拆", "Se abre el {d}", "S'obre el {d}"],
+      'wall.sendAsCard':  ["Send as a postcard", "做成明信片寄出", "做成明信片寄出", "整成明信片寄出", "Enviar como postal", "Envia-la com a postal"],
       'wall.tabMemos':    ["Memo board", "留言板", "留言板", "留言板", "Tablón de notas", "Suro de notes"],
       'wall.hintGraffiti':["Paint on the bricks, then sign it.", "在砖墙上画，然后签名。", "在磚牆上畫，然後簽名。", "喺磚牆度畫，畫完簽名。", "Pinta en los ladrillos y fírmalo.", "Pinta als maons i signa-ho."],
       'wall.hintMemos':   ["Write a note. Everyone who visits can read it.", "写张便条，来过的人都能看到。", "寫張便條，來過的人都看得到。", "寫張紙仔，嚟過嘅人都睇到。", "Escribe una nota. Todos los que vengan la verán.", "Escriu una nota. Tothom qui vingui la veurà."],
@@ -4356,9 +4374,10 @@
           else if ([45, 48].includes(code)) w = 'fog';
           else if ([95, 96, 99].includes(code)) w = 'storm';
           setWeather(w, false);
+          if (window.FBWorld) FBWorld.set(w);   // the other games use the bar's live Beijing weather for a while
         }
       } catch (e) {
-        setWeather('rain', false);
+        setWeather(window.FBWorld ? FBWorld.weather() : 'rain', false);
       }
 
       toggleAtmosphereDrawer(false, silent);
@@ -7056,7 +7075,7 @@
       setText('studio-creator', name);
 
       const weathers = ['rain', 'clear', 'snow', 'fog', 'storm'];
-      setWeather(weathers[Math.floor(Math.random() * weathers.length)], false);
+      setWeather(window.FBWorld ? FBWorld.weather() : weathers[Math.floor(Math.random() * weathers.length)], false);   // the neighbourhood's weather, same in every game
 
       const barMoods = ['nightOwl', 'sarcastic', 'empath', 'poetic'];
       const cafeMoods = ['baristaJoy', 'poetic', 'empath'];
@@ -7073,7 +7092,7 @@
       document.getElementById('view-door').classList.add('hidden');
       document.getElementById('view-sanctuary').classList.remove('hidden');
 
-      const hashRoom = (location.hash || '').slice(1);
+      const hashRoom = (location.hash || '').slice(1).split('-')[0];
       go(['counter', 'lab', 'studio', 'wall', 'arcade'].includes(hashRoom) ? hashRoom : 'counter');
 
       evaluateWeiState();
@@ -7460,7 +7479,7 @@
       };
       Arcade.start = function () { if (this.memex) return; return start(); };
       var room = document.getElementById("room-arcade");
-      function load() { if (!fr.getAttribute("src") && room && !room.classList.contains("hidden") && Arcade.memex) fr.src = "../?cabinet=1"; }
+      function load() { if (!fr.getAttribute("src") && room && !room.classList.contains("hidden") && Arcade.memex) fr.src = "../memex.html?cabinet=1"; }
       if (room) new MutationObserver(load).observe(room, { attributes: true, attributeFilter: ["class"] });
       var init = Arcade.init.bind(Arcade);
       Arcade.init = function () { var r = init(); Arcade.pick("memex", true); return r; };
@@ -7527,6 +7546,101 @@
         if (currentRoom === "lab") { go0("counter"); try { showToast(L[lang()] || L.en); } catch (e) {} }
       }
     }, 1000);
+  })();
+</script>
+<script>
+  /* the Wall's postcard board: cards hung by visitors from /game/postcard/, and souvenirs from the other games on this device */
+  (function () {
+    var css = document.createElement("style");
+    css.textContent = '.pc-board{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));padding:16px;background:#6b4a2e;border:3px solid #000;box-shadow:inset 0 0 0 3px #8a6240;background-image:radial-gradient(rgba(0,0,0,.18) 1px,transparent 1.5px);background-size:6px 6px;min-height:180px}'
+      + '.pcm{position:relative;display:block;width:100%;padding:0;border:3px solid #000;background:#000;box-shadow:3px 3px 0 rgba(0,0,0,.5);cursor:pointer;transform:rotate(var(--r));transition:transform .15s}'
+      + '.pcm:hover,.pcm:focus-visible{transform:rotate(0) scale(1.04);z-index:2}'
+      + '.pcm canvas{display:block;width:100%;aspect-ratio:16/11;image-rendering:pixelated}'
+      + '.pcm::before{content:"";position:absolute;top:-8px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff8a7a,#b3261e);border:2px solid #000;z-index:2}'
+      + '.pcm .cap{position:absolute;left:0;right:0;bottom:0;padding:3px 6px;background:rgba(0,0,0,.6);color:#fff3c0;font-size:15px;line-height:1.1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
+      + '.pcm.sealed canvas{filter:sepia(.6) brightness(.55)}.pcm.sealed .lock{position:absolute;inset:0;display:grid;place-items:center;font-size:30px;text-shadow:2px 2px 0 #000}'
+      + '.pcv{background:#f6ecd2;color:var(--pc-ink,#2c4a86);border:3px solid #000;display:grid;grid-template-columns:1.4fr 1fr;min-height:220px}.pcv .m{padding:12px;font:600 22px/26px Caveat,"Kaiti SC",STKaiti,cursive;white-space:pre-wrap;word-break:break-word;border-right:2px solid rgba(60,40,20,.35);background:repeating-linear-gradient(transparent 0 25px,rgba(60,90,140,.22) 25px 26px)}'
+      + '.pcv .s{padding:10px;display:flex;flex-direction:column;gap:6px;font:600 21px/1.1 Caveat,"Kaiti SC",STKaiti,cursive}.pcv .st{align-self:flex-end;width:50px;height:60px;display:grid;place-items:center;font-size:24px;border:4px dotted #fffaf0;outline:2px solid rgba(0,0,0,.2)}.pcv .s small{font:15px VT323,monospace;color:rgba(60,40,20,.65);text-transform:uppercase}'
+      + '.trips{display:flex;gap:12px;overflow-x:auto;padding:6px 2px 10px;scrollbar-width:thin}.trip{flex:0 0 auto;width:120px;text-align:center;font-size:15px;color:#e8d6b4;text-decoration:none}.trip .ic{display:grid;place-items:center;width:96px;height:96px;margin:0 auto 4px;border:3px solid #000;background:#2a1810;box-shadow:3px 3px 0 #000;overflow:hidden}.trip img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated}'
+      + '.trip .stampc{width:78px;height:78px;border-radius:50%;border:3px double currentColor;display:grid;place-items:center;font:14px/1.05 VT323,monospace;transform:rotate(-8deg);padding:6px}.trip small{display:block;color:#a08a6a}.trip button{margin-top:4px;font-size:14px;color:var(--amber-2);text-decoration:underline dotted}';
+    document.head.appendChild(css);
+
+    var PC = null;
+    function scenes() {
+      if (window.PCScenes) return Promise.resolve(window.PCScenes);
+      if (PC) return PC;
+      PC = fetch("/game/postcard/").then(function (r) { return r.text(); }).then(function (h) {
+        var m = /<script id="pc-scenes">([\s\S]*?)<\/script>/.exec(h); if (m) (0, eval)(m[1]); return window.PCScenes;
+      }).catch(function () { PC = null; return null; });
+      return PC;
+    }
+    function wallCards() {
+      var u = SUPABASE_CONFIG.url; if (!u) return Promise.resolve([]);
+      return fetch(u + "/rest/v1/rpc/postcard_wall?p_limit=40", { headers: { apikey: SUPABASE_CONFIG.anonKey, Authorization: "Bearer " + SUPABASE_CONFIG.anonKey } })
+        .then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
+    }
+    var LOC = { en: "en-GB", zh: "zh-CN", tw: "zh-TW", yue: "zh-HK", es: "es-ES", ca: "ca-ES" };
+    function when(d) { try { return new Intl.DateTimeFormat(LOC[AppState.lang] || "en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(d)); } catch (e) { return new Date(d).toLocaleString(); } }
+    function rot(id) { var h = 0; for (var i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) | 0; return ((h % 9) - 4) * .9 + "deg"; }
+
+    function board() {
+      var el = document.getElementById("pc-board"); if (!el) return;
+      el.innerHTML = '<p class="label">' + esc(T("common.loading")) + "</p>";
+      Promise.all([scenes(), wallCards()]).then(function (r) {
+        var P = r[0], cards = r[1] || []; el.innerHTML = "";
+        if (!cards.length) { el.innerHTML = '<p class="font-hand text-[22px] text-[#fff3dc]" style="grid-column:1/-1;text-shadow:1px 1px 0 #000">' + esc(T("wall.noCards")) + "</p>"; return; }
+        cards.forEach(function (c) {
+          var b = document.createElement("button"); b.type = "button"; b.className = "pcm" + (c.sealed ? " sealed" : ""); b.style.setProperty("--r", rot(c.id));
+          var cv = document.createElement("canvas"); b.appendChild(cv); if (P) P.draw(cv, c.scene, c.id);
+          b.insertAdjacentHTML("beforeend", (c.sealed ? '<span class="lock">🔒</span>' : "") + '<span class="cap">' + esc(c.sealed ? T("wall.opens").replace("{d}", when(c.open_at)) : (c.place ? c.place + " · " : "") + c.from) + "</span>");
+          b.setAttribute("aria-label", c.sealed ? T("wall.opens").replace("{d}", when(c.open_at)) : c.from);
+          b.onclick = function () { SoundEngine.playClick(); show(c, P); };
+          el.appendChild(b);
+        });
+      });
+    }
+    function show(c, P) {
+      var st = (P && P.STAMPS[c.stamp]) || ["✉️", "#c8402a"], ink = (P && P.INK[c.ink]) || "#2c4a86";
+      var m = document.createElement("div"); m.className = "modal-backdrop";
+      m.innerHTML = '<div class="modal panel" style="max-width:520px"><div class="pcv" style="--pc-ink:' + ink + '"><div class="m"></div><div class="s"><span class="st" style="background:' + st[1] + '">' + st[0] + '</span><span style="margin-top:auto"></span></div></div>'
+        + '<div class="flex gap-2 mt-3"><a class="btn btn-amber flex-1" href="/game/postcard/?to=' + encodeURIComponent(c.from) + "&scene=" + encodeURIComponent(c.scene) + '">✍️ ' + esc(T("wall.writeCard")) + '</a><button class="btn" type="button">✕</button></div></div>';
+      m.querySelector(".m").textContent = c.sealed ? "🔒 " + T("wall.opens").replace("{d}", when(c.open_at)) : (c.msg || "");
+      var s = m.querySelector(".s span:last-child"); s.innerHTML = ""; s.appendChild(document.createTextNode("— " + c.from + (c.place ? ", " + c.place : "")));
+      m.onclick = function (e) { if (e.target === m || e.target.closest("button.btn")) m.remove(); };
+      document.body.appendChild(m);
+    }
+    function trips() {
+      var el = document.getElementById("pc-trips"); if (!el) return;
+      var items = [];
+      function get(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
+      (get("train_window_stamps_v1") || []).slice(0, 8).forEach(function (s) {
+        items.push('<div class="trip"><a class="ic" href="/game/train/" style="color:' + esc(s.ink || "#9e2a2b") + '"><span class="stampc">🚃<br>' + esc(s.name) + "</span></a><small>" + esc(s.date || "") + '</small><button type="button" data-card="' + esc(s.name) + '">📮 ' + esc(T("wall.sendAsCard")) + "</button></div>");
+      });
+      (get("kintsugi_studio_shelf_v2") || []).slice(0, 6).forEach(function (k) {
+        items.push('<a class="trip" href="/game/kintsugi/"><span class="ic">' + (k.imageDataUrl && /^data:image\//.test(k.imageDataUrl) ? '<img alt="" src="' + esc(k.imageDataUrl) + '">' : "🍵") + "</span>" + esc(k.title || k.vesselName || "") + "<small>" + esc(k.date || "") + "</small></a>");
+      });
+      (get("crag_master_authentic_ascents_v6") || []).slice(0, 6).forEach(function (a) {
+        items.push('<a class="trip" href="/game/climb/"><span class="ic" style="font-size:40px">🏔️</span>' + esc(a.location || "") + "<small>" + esc((a.grade || "") + " · " + (a.height || 0) + "m") + "</small></a>");
+      });
+      el.innerHTML = items.length ? '<div class="label mb-2">' + esc(T("wall.trips")) + '</div><div class="trips">' + items.join("") + "</div>" : "";
+      el.querySelectorAll("[data-card]").forEach(function (b) { b.onclick = function () { location.href = "/game/postcard/?scene=train&stamp=train&place=" + encodeURIComponent(b.dataset.card); }; });
+    }
+
+    var tab0 = Wall.tab.bind(Wall), enter0 = Wall.onEnter.bind(Wall);
+    Wall.tab = function (t) {
+      var on = t === "cards";
+      document.getElementById("wall-cards").classList.toggle("hidden", !on);
+      if (!on) return tab0(t);
+      document.querySelectorAll("[data-walltab]").forEach(function (b) { b.classList.toggle("active", b.dataset.walltab === "cards"); });
+      document.getElementById("wall-graffiti").classList.add("hidden"); document.getElementById("wall-memos").classList.add("hidden");
+      var hint = document.getElementById("wall-hint"); hint.dataset.t = "wall.hintCards"; hint.textContent = T("wall.hintCards");
+      board(); trips(); SoundEngine.playClick();
+    };
+    Wall.onEnter = function () { if (!document.getElementById("wall-cards").classList.contains("hidden")) { board(); trips(); } else enter0(); };
+    if (location.hash === "#wall-cards" || location.hash === "#wall") {
+      var iv = setInterval(function () { if (window.currentRoom === "wall" || (typeof currentRoom !== "undefined" && currentRoom === "wall")) { clearInterval(iv); Wall.tab("cards"); } }, 300);
+      setTimeout(function () { clearInterval(iv); }, 60000);
+    }
   })();
 </script>
 <script>

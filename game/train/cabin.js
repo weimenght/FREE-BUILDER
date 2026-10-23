@@ -72,8 +72,10 @@
       var pick = function (a) { return a[(Math.random() * a.length) | 0]; };
       var st = pick(STATION_CATALOG.filter(function (x) { return x.name !== "Gulou Hutong" || Math.random() < 0.5; }));
       state.station = st; setBiome(st.biome, false);
-      setTimeOfDay(pick(["dawn", "afternoon", "sunset", "night", "night", "sunset"]));
-      setWeather(pickWeather());
+      /* you board from the neighbourhood: same hour and weather as Wei's Bar, then the journey changes them */
+      var W = window.FBWorld, ph = W ? W.phase() : null;
+      setTimeOfDay(ph ? { dawn: "dawn", day: "afternoon", dusk: "sunset", night: "night" }[ph] : pick(["dawn", "afternoon", "sunset", "night", "night", "sunset"]));
+      setWeather(W ? W.weather() : pickWeather());
       state.stationScrollOffset = -cw * 6; state.trainState = "CRUISING";
       if (typeof RADIO_TRACKS !== "undefined") { state.trackIndex = (Math.random() * RADIO_TRACKS.length) | 0; var tt = $("radioTrackTitle"); if (tt) tt.textContent = RADIO_TRACKS[state.trackIndex].title; }
       if (typeof DRINKS_MENU !== "undefined") state.drinkIndex = (Math.random() * DRINKS_MENU.length) | 0;
