@@ -19,15 +19,31 @@ body{min-height:100vh;overflow-x:hidden;background:repeating-conic-gradient(rgba
 .tools{display:flex;gap:8px;align-items:center}
 .pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:#2a2238;box-shadow:inset -3px -3px 0 rgba(0,0,0,.45),inset 3px 3px 0 rgba(255,255,255,.12),3px 3px 0 #000;cursor:pointer;font:400 18px/1 var(--vt);color:var(--ink);text-decoration:none}
 .clock{font-size:20px;color:var(--a);white-space:nowrap}
-@media (max-width:440px){.sign{font-size:10px;padding:6px 7px}.clock .cty{display:none}.top{gap:6px;padding-left:12px;padding-right:12px}}
-.wrap{position:relative;width:min(calc(100% - 32px),calc((100dvh - 130px) * 9 / 16),620px);margin:4px auto 0;aspect-ratio:180/320;border:4px solid #000;box-shadow:6px 6px 0 #000;overflow:hidden;background:#000}
-@supports not (height:100dvh){.wrap{width:min(calc(100% - 32px),calc((100vh - 130px) * 9 / 16),620px)}}
-@media (max-width:560px){.wrap{width:calc(100% - 32px)}}
-.zoom{position:absolute;inset:0;transition:transform .65s cubic-bezier(.6,0,.4,1),filter .65s}
+@media (max-width:440px){.sign{font-size:9px;letter-spacing:0;padding:6px 6px}.clock{font-size:17px}.tools{gap:5px}.tools .pill{padding:0 7px;min-width:40px;height:40px}.top{gap:6px;padding-left:12px;padding-right:12px}}
+/* the world is 360×320: the town in the middle, wild country either side.
+   Wide screens see all of it. Phones held upright see the town and swipe sideways to the hills, the woods, the lake and the sea.
+   Short screens (a phone on its side, a small laptop) get a comfortable width and scroll down. */
+.wrap{position:relative;width:calc(100% - 32px);max-width:1100px;margin:4px auto 0;border:4px solid #000;box-shadow:6px 6px 0 #000;overflow:hidden;background:#000}
+.wrap::before{content:"";display:block;padding-top:88.8889%}
+@supports (aspect-ratio:1){.wrap{aspect-ratio:360/320}.wrap::before{display:none}}
+@media (min-height:601px){.wrap{width:min(calc(100% - 32px),calc((100vh - 130px) * 9 / 8),1100px)}}
+@supports (height:100dvh){@media (min-height:601px){.wrap{width:min(calc(100% - 32px),calc((100dvh - 130px) * 9 / 8),1100px)}}}
+@media (max-height:600px) and (orientation:landscape){.wrap{width:min(calc(100% - 32px),760px)}.top{max-width:none;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}}
+.pan{position:absolute;top:0;right:0;bottom:0;left:0;overflow:hidden}
+@media (max-width:599px) and (orientation:portrait){
+  .wrap{width:calc(100% - 32px)}.wrap::before{padding-top:177.7778%}@supports (aspect-ratio:1){.wrap{aspect-ratio:180/320}}
+  .pan{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}.pan::-webkit-scrollbar{display:none}
+  .zoom.zoom{position:relative;width:200%;height:100%}
+  .edge.edge{display:grid}.edge.edge[hidden]{display:none}
+}
+.edge{display:none;position:absolute;top:50%;z-index:4;width:26px;height:44px;margin-top:-22px;place-items:center;border:2px solid #000;background:rgba(10,8,14,.75);color:#fff3c0;font:400 20px/1 var(--vt);cursor:pointer;transition:opacity .3s}
+.edge.l{left:0;border-left:0}.edge.r{right:0;border-right:0}.edge[hidden]{display:none}
+.top{flex-wrap:wrap}
+.zoom{position:absolute;top:0;right:0;bottom:0;left:0;transition:transform .65s cubic-bezier(.6,0,.4,1),filter .65s}
 .zoom.go{filter:brightness(1.6) saturate(1.2)}
-canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
+canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated}
 .spot{position:absolute;display:block;border:0;background:transparent;cursor:pointer;text-decoration:none;color:inherit;outline:none}
-.spot:focus-visible::after,.spot:hover::after{content:"";position:absolute;inset:-3px;border:2px dashed #fff3c0;animation:ants .6s steps(2) infinite}
+.spot:focus-visible::after,.spot:hover::after{content:"";position:absolute;top:-3px;right:-3px;bottom:-3px;left:-3px;border:2px dashed #fff3c0;animation:ants .6s steps(2) infinite}
 @keyframes ants{50%{border-color:#f6b73c}}
 .tag{position:absolute;left:50%;bottom:calc(100% + 2px);transform:translateX(-50%);white-space:nowrap;padding:2px 5px 1px;background:rgba(10,8,14,.82);border:2px solid #000;color:#fff3c0;font:400 clamp(13px,3.6vw,18px)/1 var(--vt);pointer-events:none;box-shadow:2px 2px 0 rgba(0,0,0,.6)}
 .tag.below{bottom:auto;top:calc(100% + 2px)}
@@ -42,7 +58,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
 .desk a b{font-size:24px;font-weight:400}.desk a small{display:block;font-size:16px;opacity:.7}
 .desk a:hover,.desk a:focus-visible{background:#f6b73c}
 .desk .x{position:absolute;top:6px;right:6px;width:30px;height:30px;border:2px solid #000;background:#0e1e16;color:#f6ecd2;font:inherit;cursor:pointer}
-.kitty{position:absolute;width:9%;aspect-ratio:1;margin:-6% 0 0 -4.5%;border:0;padding:0;background:none;cursor:pointer;z-index:3}
+.kitty{position:absolute;width:4.5%;height:5.06%;margin:-3% 0 0 -2.25%;border:0;padding:0;background:none;cursor:pointer;z-index:3}
 .kitty .heart{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);white-space:nowrap;padding:1px 5px;background:rgba(10,8,14,.85);border:2px solid #000;color:#ff9fb2;font:400 16px/1 var(--vt);animation:pop 1.8s ease-out forwards;pointer-events:none}
 @keyframes pop{0%{opacity:0;transform:translate(-50%,6px)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-16px)}}
 .foot{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px auto 90px;padding:0 16px}
@@ -59,13 +75,13 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
   </div>
 </header>
 <h1 class="sr" data-t="title">The Neighbourhood</h1>
-<div class="wrap" id="wrap"><div class="zoom" id="zoom"><canvas id="map" width="180" height="320"></canvas><nav id="spots" aria-label="Places"></nav></div></div>
+<div class="wrap" id="wrap"><div class="pan" id="pan"><div class="zoom" id="zoom"><canvas id="map" width="360" height="320"></canvas><nav id="spots" aria-label="Places"></nav></div></div><button class="edge l" id="edgeL" type="button" aria-label="◀">‹</button><button class="edge r" id="edgeR" type="button" aria-label="▶">›</button></div>
 <div class="foot"></div>
 
 <script>
 (function () {
   "use strict";
-  var W = 180, H = 320, cv = document.getElementById("map"), g = cv.getContext("2d"); g.imageSmoothingEnabled = false;
+  var W = 180, WW = 360, OX = 90, H = 320, cv = document.getElementById("map"), g = cv.getContext("2d"); g.imageSmoothingEnabled = false;
   var $ = function (s) { return document.querySelector(s); };
 
   /* ---------- the places (logical pixels on a 180×320 map) ---------- */
@@ -85,9 +101,16 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
     { k: "lang", url: "/language_learning/", x: 68, y: 176, w: 38, h: 32, n: ["Language School", "语言学校", "語言學校", "Escuela de idiomas", "Escola d'idiomes"] },
     { k: "dj", url: "/game/dj/", x: 112, y: 166, w: 62, h: 42, n: ["Club Retro", "复古俱乐部", "復古俱樂部", "Club Retro", "Club Retro"] },
     { k: "nest", url: "/game/nest/", x: 4, y: 212, w: 40, h: 34, n: ["Cats' Nest", "猫窝", "貓窩", "Nido de gatos", "Niu dels gats"] },
-    { k: "train", url: "/game/train/", x: 30, y: 246, w: 120, h: 48, n: ["Station", "火车站", "火車站", "Estación", "Estació"] }
+    { k: "train", url: "/game/train/", x: 30, y: 246, w: 120, h: 48, n: ["Station", "火车站", "火車站", "Estación", "Estació"] },
+    /* the wild country around the town: each opens Sora's sky in that landscape */
+    { k: "peaks", abs: 1, url: "/game/cloud/?place=snow", x: 4, y: 8, w: 70, h: 62, n: ["Snow Peaks", "雪峰", "雪峰", "Picos nevados", "Cims nevats"] },
+    { k: "forest", abs: 1, url: "/game/cloud/?place=forest", x: 4, y: 112, w: 82, h: 50, n: ["Pine Wood", "松林", "松林", "Pinar", "Pineda"] },
+    { k: "meadow", abs: 1, url: "/game/cloud/?place=meadow", x: 4, y: 172, w: 82, h: 70, n: ["Wildflower Meadow", "野花草甸", "野花草甸", "Prado de flores", "Prat de flors"] },
+    { k: "pasture", abs: 1, url: "/game/cloud/?place=mountain", x: 276, y: 30, w: 80, h: 50, n: ["High Pasture", "高山牧场", "高山牧場", "Pasto alto", "Pastura alta"] },
+    { k: "lake", abs: 1, url: "/game/cloud/?place=lake", x: 274, y: 104, w: 84, h: 66, n: ["Mirror Lake", "镜湖", "鏡湖", "Lago Espejo", "Llac Mirall"] },
+    { k: "sea", abs: 1, url: "/game/cloud/?place=sea", x: 274, y: 204, w: 84, h: 88, n: ["Sandy Cove", "沙湾", "沙灣", "Cala de arena", "Cala de sorra"] }
   ];
-  var BELOW = { climb: 1, cloud: 0 };
+  var BELOW = { climb: 1, cloud: 0, peaks: 1 };
   var T = { title: ["THE NEIGHBOURHOOD", "街坊地图", "街坊地圖", "EL BARRIO", "EL BARRI"], all: ["All games", "全部游戏", "全部遊戲", "Todos los juegos", "Tots els jocs"], lang: ["Languages", "学语言", "學語言", "Idiomas", "Idiomes"], beijing: ["Beijing", "北京", "北京", "Pekín", "Pequín"], map: ["Map of the neighbourhood", "街坊地图", "街坊地圖", "Mapa del barrio", "Mapa del barri"], here: ["You were here", "你刚从这里来", "你剛從這裡來", "Venías de aquí", "Venies d'aquí"] };
   var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 };
   function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
@@ -108,6 +131,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
   function draw(f) {
     var ph = World.phase(), wx = World.weather(), night = ph === "night", lit = night || ph === "dusk", sky = SKY[ph];
     if (wx === "rain" || wx === "storm" || wx === "fog") sky = sky.map(function (c) { return mix(c, "#6a6e7a", .45); });
+    g.save(); g.translate(OX, 0);
     for (var i = 0; i < 4; i++) R(0, i * 20, W, 21, sky[i]);
     if (night) for (var s = 0; s < 30; s++) { var sx = hash("s" + s) * W, sy = hash("t" + s) * 70; if (hash("tw" + s + ((f / 12) | 0)) > .15) R(sx, sy, 1, 1, "#fff6c0"); }
     if (wx === "clear" || wx === "fog") { if (night) { R(150, 10, 8, 8, "#fff2c8"); R(153, 9, 7, 7, sky[0]); } else if (ph === "day") { R(146, 8, 10, 10, "#fff2b0"); R(144, 10, 14, 6, "#fff2b0"); R(148, 6, 6, 14, "#fff2b0"); } else { R(146, 30, 12, 6, "#ffd07a"); } }
@@ -185,7 +209,8 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
     for (var ny = 0; ny < 12; ny++) R(24 - ny * 1.3 - 2, 210 + ny, ny * 2.6 + 4, 1, "#7c2513");
     R(19, 230, 10, 12, "#1d130d"); R(20, 229, 8, 1, "#1d130d"); R(22, 233, 4, 3, lit ? "#f6c84a" : "#2a1a14");
     R(13, 225, 3, 3, "#ff8fa0"); R(14, 228, 1, 1, "#ff8fa0"); R(32, 226, 4, 2, "#5a8aaa"); R(30, 226, 2, 2, "#5a8aaa");
-    // station
+    // station (on the same grass as the rest of the country)
+    R(0, 246, W, 38, night ? "#1e2a1e" : "#6a9a4a"); R(84, 246, 12, 8, night ? "#2e2c30" : "#a8a49c");
     R(30, 254, 120, 30, night ? "#4a3a30" : "#b89878"); R(26, 248, 128, 6, "#5a2a1e"); R(78, 238, 24, 16, night ? "#4a3a30" : "#b89878"); R(76, 234, 28, 4, "#5a2a1e");
     R(85, 241, 10, 10, "#fbeedd"); var hh2 = World.hour(); R(89, 242, 2, 4, "#222"); R(90, 245, Math.round(Math.cos((hh2 % 12) / 12 * 6.28 - 1.57) * 3), 1, "#b3261e");
     for (var sw = 34; sw < 146; sw += 10) if (sw < 80 || sw > 98) win(sw, 260, lit, f);
@@ -194,15 +219,17 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
     // tracks
     R(0, 298, W, 10, "#5a4a3a"); for (var sl = 0; sl < W; sl += 5) R(sl, 298, 2, 10, "#3a2a1e"); R(0, 300, W, 1, "#c8c8c8"); R(0, 305, W, 1, "#c8c8c8");
     R(0, 308, W, 12, night ? "#1e2a1e" : "#6a9a4a");
-    // a train comes through every so often
-    var cyc = f % 600; if (cyc < 200) { var tx0 = W + 10 - cyc * 1.6; for (var car = 0; car < 4; car++) { var x0 = tx0 + car * 34; R(x0, 286, 32, 13, car ? "#2c4a86" : "#b3261e"); R(x0, 286, 32, 2, "#fbeedd"); for (var cw = 0; cw < 4; cw++) R(x0 + 3 + cw * 7, 290, 5, 4, lit ? "#f6c84a" : "#9ac0d8"); } }
+    g.restore();
+    wilds(f, sky, ph, wx, night, lit);
+    // a train comes through every so often, right across the country
+    var cyc = f % 600; if (cyc < 260) { var tx0 = WW + 10 - cyc * 2.2; for (var car = 0; car < 4; car++) { var x0 = tx0 + car * 34; R(x0, 286, 32, 13, car ? "#2c4a86" : "#b3261e"); R(x0, 286, 32, 2, "#fbeedd"); for (var cw = 0; cw < 4; cw++) R(x0 + 3 + cw * 7, 290, 5, 4, lit ? "#f6c84a" : "#9ac0d8"); } }
     // weather on top
-    if (wx === "rain" || wx === "storm") { for (var rd = 0; rd < 70; rd++) { var rx2 = (hash("rd" + rd) * W + f * 1.5) % W, ry2 = (hash("rr" + rd) * H + f * 6) % H; R(rx2, ry2, 1, 3, "rgba(170,200,255,.55)"); } if (wx === "storm" && f % 240 < 3) R(0, 0, W, H, "rgba(255,255,255,.5)"); }
-    if (wx === "snow") for (var sn = 0; sn < 60; sn++) { var snx = (hash("sn" + sn) * W + Math.sin((f + sn * 9) / 18) * 4) % W, sny = (hash("sy" + sn) * H + f * .8) % H; R(snx, sny, 1, 1, "#ffffff"); }
-    if (wx === "fog") { g.fillStyle = "rgba(220,224,232,.22)"; g.fillRect(0, 0, W, H); for (var fg = 0; fg < 4; fg++) R(((f * .2 + fg * 70) % 260) - 60, 70 + fg * 60, 90, 6, "rgba(230,234,240,.25)"); }
+    if (wx === "rain" || wx === "storm") { for (var rd = 0; rd < 140; rd++) { var rx2 = (hash("rd" + rd) * WW + f * 1.5) % WW, ry2 = (hash("rr" + rd) * H + f * 6) % H; R(rx2, ry2, 1, 3, "rgba(170,200,255,.55)"); } if (wx === "storm" && f % 240 < 3) R(0, 0, WW, H, "rgba(255,255,255,.5)"); }
+    if (wx === "snow") for (var sn = 0; sn < 120; sn++) { var snx = (hash("sn" + sn) * WW + Math.sin((f + sn * 9) / 18) * 4) % WW, sny = (hash("sy" + sn) * H + f * .8) % H; R(snx, sny, 1, 1, "#ffffff"); }
+    if (wx === "fog") { g.fillStyle = "rgba(220,224,232,.22)"; g.fillRect(0, 0, WW, H); for (var fg = 0; fg < 7; fg++) R(((f * .2 + fg * 70) % 440) - 60, 70 + (fg % 4) * 60, 90, 6, "rgba(230,234,240,.25)"); }
     drawCat("miso", f); drawCat("yuzu", f + 37);
-    if (night) { g.fillStyle = "rgba(10,10,40,.18)"; g.fillRect(0, 0, W, H); }
-    ["miso", "yuzu"].forEach(function (k) { var b = kit[k], p = catPos[k]; if (b && p) { b.style.left = ((p[0] + 3) / W * 100) + "%"; b.style.top = ((p[1] + 2) / H * 100) + "%"; } });
+    if (night) { g.fillStyle = "rgba(10,10,40,.18)"; g.fillRect(0, 0, WW, H); }
+    ["miso", "yuzu"].forEach(function (k) { var b = kit[k], p = catPos[k]; if (b && p) { b.style.left = ((p[0] + 3) / WW * 100) + "%"; b.style.top = ((p[1] + 2) / H * 100) + "%"; } });
   }
   var kit = {};
   function meow(k) { try { var A = new (window.AudioContext || window.webkitAudioContext)(), o = A.createOscillator(), g2 = A.createGain(), n = A.currentTime, fr = k === "miso" ? 620 : 760; o.type = "triangle"; o.frequency.setValueAtTime(fr, n); o.frequency.linearRampToValueAtTime(fr * 1.5, n + .12); o.frequency.linearRampToValueAtTime(fr * .9, n + .35); g2.gain.setValueAtTime(.0001, n); g2.gain.linearRampToValueAtTime(.06, n + .05); g2.gain.exponentialRampToValueAtTime(.0001, n + .4); o.connect(g2); g2.connect(A.destination); o.start(n); o.stop(n + .42); } catch (e) {} }
@@ -220,11 +247,55 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
   function drawCat(k, f) {
     var c = CATS[k], p = PATH[where[k]] || PATH.bar, sp = k === "miso" ? .021 : .017, ph = k === "miso" ? 0 : 2.1;
     var u = .5 + .5 * Math.sin(f * sp + ph), dir = Math.cos(f * sp + ph) >= 0 ? 1 : -1, sit = Math.abs(Math.cos(f * sp + ph)) < .12;   /* they pause at each end of their stroll */
-    var x = Math.round(p[0] + (p[1] - p[0]) * u), y = p[2] - 4; catPos[k] = [x, y];
+    var x = OX + Math.round(p[0] + (p[1] - p[0]) * u), y = p[2] - 4; catPos[k] = [x, y];
     var R2 = function (dx, dy, w, h, col) { R(dir > 0 ? x + dx : x + 7 - dx - w, y + dy, w, h, col); };
     R2(0, 1, 5, 2, c.b); R2(4, 0, 3, 2, c.b); R2(4, -1, 1, 1, c.b); R2(6, -1, 1, 1, c.b); R2(5, 0, 1, 1, c.e); R2(-1, 0, 1, 2, c.b);
     if (c.s) { R2(1, 1, 1, 2, c.s); R2(3, 1, 1, 2, c.s); }
     var step = (f >> 1) % 2; if (sit) { R2(0, 3, 5, 1, c.b); } else { R2(step ? 0 : 1, 3, 1, 1, c.b); R2(step ? 3 : 4, 3, 1, 1, c.b); }
+  }
+  /* ---------- the wild country either side of town ---------- */
+  function wilds(f, sky, ph, wx, night, lit) {
+    var G = night ? "#1e2a1e" : "#6a9a4a", G2 = night ? "#1a3220" : "#5f9443", D = night ? "#14281a" : "#3f7a3a";
+    [0, 270].forEach(function (x0) {
+      for (var i = 0; i < 4; i++) R(x0, i * 20, 90, 21, sky[i]);
+      if (night) for (var s = 0; s < 18; s++) { if (hash("w" + x0 + s + ((f / 12) | 0)) > .15) R(x0 + hash("wx" + x0 + s) * 90, hash("wy" + x0 + s) * 60, 1, 1, "#fff6c0"); }
+      var cc = night ? "rgba(140,140,180,.35)" : (wx === "clear" ? "#ffffff" : "#c8ccd6");
+      for (var c = 0; c < 2; c++) { var cx = x0 + ((hash("wc" + x0 + c) * 150 + f * (.05 + c * .02)) % 150) - 30, cy = 8 + hash("wcy" + x0 + c) * 26; R(cx, cy + 3, 22, 4, cc); R(cx + 4, cy, 9, 4, cc); }
+      // river runs through, the lane and the rails carry on
+      R(x0, 84, 90, 2, G); R(x0, 86, 90, 16, night ? "#14284a" : "#3a7ab8"); R(x0, 102, 90, 6, G);
+      R(x0, 108, 90, 4, night ? "#2a2a30" : "#8a8a84");
+      R(x0, 112, 90, 172, G); R(x0, 284, 90, 8, "#8a8a84"); R(x0, 292, 90, 2, "#5a5a54");
+      R(x0, 298, 90, 10, "#5a4a3a"); for (var sl = x0; sl < x0 + 90; sl += 5) R(sl, 298, 2, 10, "#3a2a1e"); R(x0, 300, 90, 1, "#c8c8c8"); R(x0, 305, 90, 1, "#c8c8c8"); R(x0, 308, 90, 12, G);
+    });
+    /* WEST: snow peaks with a waterfall, a pine wood, a wildflower meadow, terraced fields */
+    for (var x = 0; x < 90; x++) { var top = 8 + Math.abs(((x + 14) % 46) - 23) * 1.6 + (hash("pk" + x) - .5) * 3; R(x, top, 1, 86 - top, night ? "#2e3442" : "#7a8494"); if (top < 30) R(x, top, 1, Math.max(2, 30 - top), night ? "#c8ccd8" : "#f4f6fa"); }
+    for (var x2 = 0; x2 < 90; x2++) { var h2 = 54 + Math.sin(x2 / 9) * 4; R(x2, h2, 1, 32, night ? "#232a36" : "#5a6680"); }
+    var wf = 74; R(wf, 40, 4, 46, night ? "#6a8aba" : "#cfe6f6"); for (var wd = 0; wd < 6; wd++) R(wf + (wd % 2), 40 + ((f * 2 + wd * 8) % 46), 2, 3, "#ffffff"); R(wf - 3, 84, 10, 3, "rgba(255,255,255,.6)");
+    for (var tr = 0; tr < 26; tr++) { var tx = 2 + (tr * 13) % 84, ty = 118 + Math.floor(tr / 7) * 11 + (hash("t" + tr) * 4); R(tx + 3, ty + 8, 2, 3, "#4a2e1a"); R(tx + 2, ty, 4, 3, D); R(tx + 1, ty + 3, 6, 3, D); R(tx, ty + 6, 8, 3, night ? "#163020" : "#346a32"); }
+    for (var fl = 0; fl < 60; fl++) { var fx = 3 + hash("fl" + fl) * 84, fy = 178 + hash("fy" + fl) * 62; R(fx, fy, 1, 2, D); R(fx, fy - 1, 1, 1, ["#ffffff", "#f6d84a", "#f4a0b8", "#c9a6ff", "#ff7a5a"][fl % 5]); }
+    R(60, 222, 8, 8, "#c8a050"); R(61, 221, 6, 1, "#a87a30"); R(62, 225, 2, 2, "#3a2a1c"); for (var bz = 0; bz < 3; bz++) R(62 + Math.sin((f + bz * 13) / 6) * 6, 215 + Math.cos((f + bz * 7) / 5) * 4, 1, 1, "#f6d84a");   // beehive and bees
+    for (var tf = 0; tf < 5; tf++) { R(0, 250 + tf * 7, 90, 6, night ? "#203a1c" : ["#7aa44a", "#8ab454", "#6a9440"][tf % 3]); R(0, 255 + tf * 7, 90, 1, night ? "#16281a" : "#5a7a36"); }
+    R(30, 254, 1, 10, "#6a4a2a"); R(26, 256, 9, 1, "#6a4a2a"); R(29, 251, 3, 3, "#c8a050");   // scarecrow
+    R(0, 108, 4, 4, night ? "#2a2a30" : "#8a8a84");
+    /* EAST: a high pasture, Mirror Lake with its pavilion, a sandy cove */
+    for (var x3 = 270; x3 < 360; x3++) { var h3 = 44 + Math.sin((x3 - 270) / 14) * 8 + Math.pow((x3 - 330) / 50, 2) * 10; R(x3, h3, 1, 86 - h3, night ? "#1e3a24" : "#7ab45a"); }
+    for (var cw = 0; cw < 4; cw++) { var cxw = 290 + cw * 16 + Math.sin((f + cw * 40) / 60) * 3, cyw = 62 + (cw % 2) * 6; R(cxw, cyw, 6, 3, "#fbfbf6"); R(cxw + 5, cyw - 1, 2, 2, "#fbfbf6"); R(cxw + 1, cyw + 1, 2, 1, "#2a2a2a"); R(cxw, cyw + 3, 1, 2, "#2a2a2a"); R(cxw + 5, cyw + 3, 1, 2, "#2a2a2a"); }
+    R(322, 50, 10, 8, "#c8a050"); R(320, 46, 14, 4, "#7c2513"); R(326, 52, 2, 6, "#3a2a1c");   // a herder's hut
+    var LK = night ? "#16305a" : "#4a8ac8";
+    for (var ly = 104; ly < 168; ly++) { var half = Math.sqrt(Math.max(0, 1 - Math.pow((ly - 136) / 32, 2))) * 42; R(316 - half, ly, half * 2, 1, LK); }
+    for (var lr = 0; lr < 18; lr++) { var lx = 282 + hash("lk" + lr) * 64, lyy = 112 + hash("lky" + lr) * 46; R(lx + Math.sin((f + lr * 7) / 16) * 2, lyy, 4, 1, night ? "rgba(246,200,74,.35)" : "rgba(255,255,255,.5)"); }
+    R(300, 118, 18, 2, "#6a4a2a"); R(302, 112, 14, 6, "#b3261e"); R(300, 110, 18, 2, "#2a2a30"); R(303, 120, 1, 6, "#6a4a2a"); R(314, 120, 1, 6, "#6a4a2a");   // pavilion on stilts
+    var bxx = 330 + Math.sin(f / 40) * 6; R(bxx, 146, 10, 3, "#8a5a33"); R(bxx + 4, 143, 1, 3, "#3a2a1c");   // rowing boat
+    for (var du = 0; du < 3; du++) { var dxx = 292 + du * 6 + Math.sin((f + du * 30) / 25) * 4; R(dxx, 158, 3, 2, "#fbfbf6"); R(dxx + 2, 157, 1, 1, "#fbfbf6"); R(dxx + 3, 157, 1, 1, "#f6b73c"); }
+    for (var rd2 = 0; rd2 < 12; rd2++) { var rx3 = 276 + rd2 * 3 + (rd2 > 5 ? 54 : 0); R(rx3, 162 - (rd2 % 3), 1, 6, "#4a7a3a"); R(rx3, 161 - (rd2 % 3), 1, 2, "#8a5a33"); }
+    R(270, 86, 6, 16, night ? "#14284a" : "#3a7ab8");   // the river feeds the lake
+    var SA = night ? "#8a7a5a" : "#e8d29a", SE = night ? "#14284a" : "#3a8ac8";
+    R(270, 204, 90, 80, SA); for (var se = 0; se < 80; se++) { var edge = 300 + Math.sin(se / 9) * 8; R(edge, 204 + se, 360 - edge, 1, SE); }
+    for (var wv = 0; wv < 10; wv++) { var wvx = 312 + hash("wv" + wv) * 46, wvy = 210 + ((hash("wvy" + wv) * 70 + f * .2) % 70); R(wvx, wvy, 6, 1, "rgba(255,255,255,.55)"); }
+    R(282, 230, 1, 12, "#6a4a2a"); R(276, 226, 13, 4, "#c8402a"); R(278, 224, 9, 2, "#f6ecd2");   // a beach umbrella
+    R(290, 266, 6, 3, "#c8a050"); R(296, 262, 2, 2, "#e8a0b0");   // sandcastle, shell
+    var sb = 330 + Math.sin(f / 50) * 10; R(sb, 236, 1, 10, "#3a2a1c"); R(sb + 1, 236, 6, 8, "#fbeedd"); R(sb - 3, 246, 12, 3, "#8a5a33");   // a sailboat
+    R(270, 150, 90, 16, night ? "#2e2c30" : "#c8b088"); for (var bw = 270; bw < 360; bw += 6) R(bw, 150, 1, 16, night ? "#3a383c" : "#a89068");   // the lane becomes a boardwalk
   }
   function mix(a, b, k) { var p = function (h, i) { return parseInt(h.substr(1 + i * 2, 2), 16); }; return "#" + [0, 1, 2].map(function (i) { return Math.round(p(a, i) * (1 - k) + p(b, i) * k).toString(16).padStart(2, "0"); }).join(""); }
 
@@ -233,7 +304,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
     var nav = $("#spots"); nav.innerHTML = "";
     PLACES.forEach(function (p) {
       var a = document.createElement("a"); a.className = "spot"; a.href = p.url; a.dataset.k = p.k;
-      a.style.left = (p.x / W * 100) + "%"; a.style.top = (p.y / H * 100) + "%"; a.style.width = (p.w / W * 100) + "%"; a.style.height = (p.h / H * 100) + "%";
+      a.style.left = (px(p) / WW * 100) + "%"; a.style.top = (p.y / H * 100) + "%"; a.style.width = (p.w / WW * 100) + "%"; a.style.height = (p.h / H * 100) + "%";
       var name = p.n[L()] || p.n[0]; a.setAttribute("aria-label", name);
       a.innerHTML = '<span class="tag' + (BELOW[p.k] ? " below" : "") + '"></span>'; a.firstChild.textContent = name;
       if (from && from === p.k) { var h = document.createElement("span"); h.className = "here"; h.textContent = "📍"; h.title = t("here"); a.appendChild(h); }
@@ -246,8 +317,9 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
       nav.appendChild(a);
     });
   }
+  function px(p) { return p.abs ? p.x : p.x + OX; }
   function walk(p, url) {
-    var z = $("#zoom"), cx = (p.x + p.w / 2) / W * 100, cy = (p.y + p.h / 2) / H * 100;
+    var z = $("#zoom"), cx = (px(p) + p.w / 2) / WW * 100, cy = (p.y + p.h / 2) / H * 100;
     z.style.transformOrigin = cx + "% " + cy + "%"; z.style.transform = "scale(3.2)"; z.classList.add("go");
     setTimeout(function () { location.href = url; }, 520);
   }
@@ -282,9 +354,17 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
   window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
 
+  /* phones upright: start on the town; the arrows (or a swipe) look east and west */
+  var pan = $("#pan");
+  function edges() { var max = pan.scrollWidth - pan.clientWidth; $("#edgeL").hidden = pan.scrollLeft < 8 || max < 8; $("#edgeR").hidden = pan.scrollLeft > max - 8 || max < 8; }
+  function centre() { pan.scrollLeft = (pan.scrollWidth - pan.clientWidth) / 2; edges(); }
+  pan.addEventListener("scroll", edges, { passive: true });
+  $("#edgeL").onclick = function () { pan.scrollBy({ left: -pan.clientWidth * .8, behavior: "smooth" }); };
+  $("#edgeR").onclick = function () { pan.scrollBy({ left: pan.clientWidth * .8, behavior: "smooth" }); };
+  window.addEventListener("resize", function () { clearTimeout(centre.t); centre.t = setTimeout(centre, 150); });
   var f = 0, last = 0;
   function loop(ts) { if (ts - last > 110) { last = ts; f++; draw(f); } requestAnimationFrame(loop); }
-  words(); draw(0); setInterval(clock, 20000);
+  words(); draw(0); setInterval(clock, 20000); centre();
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) requestAnimationFrame(loop);
 })();
 </script>
