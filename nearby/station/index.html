@@ -1166,7 +1166,7 @@
     let fireflies = [];
 
     function resizeCanvas() {
-      const rect = canvas.parentElement.getBoundingClientRect();
+      const pe = canvas.parentElement, rect = { width: pe.clientWidth, height: pe.clientHeight };   /* inside the border, so pixels match the glass exactly */
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       cw = Math.max(300, rect.width);
       ch = Math.max(180, rect.height);
@@ -3560,6 +3560,8 @@
       initWorldEntities();
       resizeCanvas();
       window.addEventListener("resize", resizeCanvas);
+      /* the window's box changes with the layout (boarding, panels, portrait), not only with the screen: keep the drawing the same shape as the glass */
+      if (window.ResizeObserver) { let rq = 0; new ResizeObserver(() => { cancelAnimationFrame(rq); rq = requestAnimationFrame(() => { const pe = canvas.parentElement; if (Math.abs(pe.clientWidth - cw) > 1 || Math.abs(pe.clientHeight - ch) > 1) resizeCanvas(); }); }).observe(canvas.parentElement); }
 
       loadStamps();
       loadThoughts();

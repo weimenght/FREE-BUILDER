@@ -114,7 +114,11 @@
     else if (!rq && !standalone()) homeHint();
     function lock() { setTimeout(fit, 400); }   /* any way up: no forced landscape */
   }
-  function heart(k) { var t = Math.PI - k * 2 * Math.PI, x = 16 * Math.pow(Math.sin(t), 3), y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t); return { x: 0.7 + x / 260, y: 0.42 - y / 150 }; }
+  function heart(k) {   /* drawn in real pixels, so it stays a heart on a tall phone window too */
+    var t = Math.PI - k * 2 * Math.PI, x = 16 * Math.pow(Math.sin(t), 3), y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+    var W = cw || 1, H = ch || 1, u = Math.min(W / 260, H / 150), cx = W > H ? 0.7 : 0.5;
+    return { x: cx + x * u / W, y: 0.42 - y * u / H };
+  }
   function standalone() { return (window.matchMedia && matchMedia("(display-mode: fullscreen), (display-mode: standalone)").matches) || navigator.standalone === true; }
   function homeHint() {   /* iPhone Safari has no full screen for pages: show the two taps that give one */
     try { if (localStorage.getItem("train_home_hint")) return; localStorage.setItem("train_home_hint", "1"); } catch (e) {}
@@ -267,8 +271,12 @@
       mistCtx.beginPath(); mistCtx.moveTo(a.x * cw, a.y * ch); mistCtx.lineTo(b.x * cw + 0.01, b.y * ch); mistCtx.stroke(); mistCtx.restore();
     } catch (e) {}
   }
-  function flush() { if (!pen || pen.length < 2) return; var pts = pen.map(function (p) { return [+p.x.toFixed(4), +p.y.toFixed(4)]; }); send("ink", { pts: pts }); pen = [pen[pen.length - 1]]; }
-  function inkFrom(p) { if (!p || !p.pts) return; for (var i = 1; i < p.pts.length; i++) finger({ x: p.pts[i - 1][0], y: p.pts[i - 1][1] }, { x: p.pts[i][0], y: p.pts[i][1] }); }
+  /* strokes travel in shape-safe units (from the centre, in multiples of the window's short side), so a heart drawn on a wide screen is still a heart on a phone held upright */
+  function sq() { return Math.min(cw, ch) || 1; }
+  function toS(p) { var S = sq(); return [+((p.x * cw - cw / 2) / S).toFixed(4), +((p.y * ch - ch / 2) / S).toFixed(4)]; }
+  function fromS(q) { var S = sq(); return { x: (cw / 2 + q[0] * S) / cw, y: (ch / 2 + q[1] * S) / ch }; }
+  function flush() { if (!pen || pen.length < 2) return; send("ink", { s: 1, pts: pen.map(toS) }); pen = [pen[pen.length - 1]]; }
+  function inkFrom(p) { if (!p || !p.pts) return; var P = p.pts.map(function (q) { return p.s ? fromS(q) : { x: q[0], y: q[1] }; }); for (var i = 1; i < P.length; i++) finger(P[i - 1], P[i]); }
   window.wipeGlassAt = function () {};   /* the engine's hover-wipe would erase writing; the finger does it now */
   function ink(p) {
     var box = document.createElement("div"); box.className = "cb-ink"; place(box, p);
