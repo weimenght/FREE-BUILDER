@@ -14,7 +14,7 @@
     board: "Board", quiet: "board quietly", lead: "A sleeper car through cities, mountains and sea. Nothing to do but look out of the window.",
     saved: "A friend saved you a seat in cabin", tip: "Drag to wipe the glass · hold to write · double-tap to knock",
     share: "Share this cabin", shareLead: "Friends who open this link sit in your car and see the same window, live. No names, nothing saved: the cabin disappears when everyone leaves.",
-    homeScreen: "Add to Home Screen", getOff: "Get off here", stay: "Stay aboard", bar: "Wei's Bar & Coffee", books: "The Dog-Eared Corner", copy: "Copy link", copied: "Link copied", joinLbl: "Got a friend's code?", join: "Join", badCode: "Four letters, like KTRB", yourCode: "Your cabin", close: "Close", leave: "Leave the shared cabin", alone: "Just you in this car",
+    homeScreen: "Add to Home Screen", getOff: "Get off here", stay: "Stay aboard", bar: "Next Door", books: "Borrowed Pages", copy: "Copy link", copied: "Link copied", joinLbl: "Got a friend's code?", join: "Join", badCode: "Four letters, like KTRB", yourCode: "Your cabin", close: "Close", leave: "Leave the shared cabin", alone: "Just you in this car",
     aboard: "{n} aboard", joined: "Someone boarded", left: "Someone stepped off", knock: "knock knock", write: "Write on the glass…",
     sound: "Sound", controls: "All controls", connecting: "Joining the cabin…", lost: "Lost the cabin's signal — retrying", host: "You're steering the journey",
     tunnelOut: "Out of the tunnel —", pass: "An express train thunders past", star: "A shooting star — make a wish", rainIn: "Rain on the glass", fogIn: "Fog rolls in", snowIn: "Snow begins to fall", clearIn: "The sky clears"
@@ -61,8 +61,8 @@
     ".cb-cat{position:absolute;left:0;bottom:2%;z-index:24;width:clamp(56px,9%,96px);aspect-ratio:64/40;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}.cb-cat svg{width:100%;height:100%;overflow:visible}.cb-cat.rev svg{transform:scaleX(-1)}" +
     ".cb-cat .legs{animation:cbStep .38s steps(2) infinite}.cb-cat.sit .legs{animation:none}.cb-cat .tail{transform-origin:8px 22px;animation:cbTail 1.6s ease-in-out infinite}@keyframes cbStep{50%{transform:translateY(-1px)}}@keyframes cbTail{50%{transform:rotate(-14deg)}}" +
     ".cb-heart{position:absolute;left:60%;top:-30%;color:#ff8fa0;font:700 18px system-ui;animation:cbUp 1.2s ease-out forwards;pointer-events:none}@keyframes cbUp{to{transform:translateY(-34px);opacity:0}}" +
-    ".cb-rotate{display:none}@media (orientation:portrait) and (max-width:700px){.cb-rotate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:32px;background:#0a0705;color:#f5e6c8;font:28px/1 Georgia,serif}.cb-rotate b{display:block;font-size:56px;margin-bottom:18px;animation:cbTurn 2.4s ease-in-out infinite}.cb-rotate span{opacity:.5}}" +
-    "@keyframes cbTurn{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(90deg)}}" +
+    ".cb-rotate{display:none!important}" +   /* upright phones ride too: the window just grows tall */
+    "@media (orientation:portrait){body.cb-on #cabinContainer{padding:4px}body.cb-on .windowsill-ledge{flex-wrap:wrap}}" +
     "@media (prefers-color-scheme:dark){.cb-card{background:#1f1915;color:#f2e8d8}.cb-card button{border-color:#f2e8d8}.cb-card button.pri{background:#f2e8d8;color:#1f1915}}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
@@ -72,7 +72,7 @@
       var pick = function (a) { return a[(Math.random() * a.length) | 0]; };
       var st = pick(STATION_CATALOG.filter(function (x) { return x.name !== "Gulou Hutong" || Math.random() < 0.5; }));
       state.station = st; setBiome(st.biome, false);
-      /* you board from the neighbourhood: same hour and weather as Wei's Bar, then the journey changes them */
+      /* you board from Nearby: same hour and weather as Next Door, then the journey changes them */
       var W = window.FBWorld, ph = W ? W.phase() : null;
       setTimeOfDay(ph ? { dawn: "dawn", day: "afternoon", dusk: "sunset", night: "night" }[ph] : pick(["dawn", "afternoon", "sunset", "night", "night", "sunset"]));
       setWeather(W ? W.weather() : pickWeather());
@@ -106,12 +106,13 @@
   }
   /* boarding takes the whole screen (browsers allow it only from a tap), sideways on phones */
   function full() {
+    if (window.self !== window.top) { setTimeout(fit, 400); return; }   /* inside the town's frame: the frame is the screen */
     var de = document.documentElement, rq = de.requestFullscreen || de.webkitRequestFullscreen;
     if (rq && !document.fullscreenElement && !document.webkitFullscreenElement) {
       try { var p = rq.call(de, { navigationUI: "hide" }); if (p && p.then) p.then(lock, function () {}); else lock(); } catch (e) {}
     }
     else if (!rq && !standalone()) homeHint();
-    function lock() { try { screen.orientation && screen.orientation.lock && screen.orientation.lock("landscape").catch(function () {}); } catch (e) {} setTimeout(fit, 400); }
+    function lock() { setTimeout(fit, 400); }   /* any way up: no forced landscape */
   }
   function heart(k) { var t = Math.PI - k * 2 * Math.PI, x = 16 * Math.pow(Math.sin(t), 3), y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t); return { x: 0.7 + x / 260, y: 0.42 - y / 150 }; }
   function standalone() { return (window.matchMedia && matchMedia("(display-mode: fullscreen), (display-mode: standalone)").matches) || navigator.standalone === true; }
@@ -127,7 +128,7 @@
     var el = $("windowViewport"); if (!el) return;
     var bezel = el.closest(".window-bezel") || el.parentElement;
     var chrome = bezel.getBoundingClientRect().height - el.getBoundingClientRect().height;   /* frame + sill around the glass */
-    var h = Math.min(innerHeight - chrome - 20, el.getBoundingClientRect().width * (innerHeight > innerWidth ? 1.1 : 0.68));   /* fill the height, but stay a wide window */
+    var h = Math.min(innerHeight - chrome - 20, el.getBoundingClientRect().width * (innerHeight > innerWidth ? 1.9 : 0.68));   /* upright: a tall window; sideways: a wide one */
     el.style.setProperty("height", Math.max(170, Math.round(h)) + "px", "important");
     setTimeout(function () { try { resizeCanvas(); } catch (e) {} }, 60);
   }
@@ -239,7 +240,7 @@
     if (atHutong() && state.trainState === "STOPPED" && catBoarded !== state.station.name + state.scrollDist.toFixed(0).slice(0, -3)) { catBoarded = state.station.name + state.scrollDist.toFixed(0).slice(0, -3); if (Math.random() < 0.7) { var c = Math.random() < 0.5 ? "Yuzu" : "Miso"; setTimeout(function () { catWalk(c, -1, true); }, 3000); } }
   }, 2000);
 
-  /* ---------- getting off at the hutong: Wei's Bar and the book corner ---------- */
+  /* ---------- getting off at the hutong: Next Door and the book corner ---------- */
   var HUTONG = "Gulou Hutong", wantOff = null;
   function atHutong() { return state.station && state.station.name === HUTONG; }
   function stopFor(k) {
@@ -449,6 +450,6 @@
   addEventListener("load", function () {
     if (!invite) shuffle();
     glass(); boardCard();
-    var r = document.createElement("div"); r.className = "cb-rotate"; r.setAttribute("role", "img"); r.setAttribute("aria-label", "Turn your phone sideways"); r.innerHTML = "<div><b>📱</b><span>↻</span></div>"; document.body.appendChild(r);
+    /* (no "turn your phone" screen: the train runs upright too) */
   });
 })();

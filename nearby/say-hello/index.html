@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=76726a190b"></script><script data-fbg src="/fbkit/fbg.js?v=1446f335bb" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=02f84761fb"></script><script data-fbg src="/fbkit/fbg.js?v=19c9340610" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Postcard — FREE//BUILDER</title>
-<meta name="description" content="Write a postcard, seal it until the day you choose, and send it to a friend or hang it on the wall in Wei's Bar.">
+<meta name="description" content="Write a postcard, seal it until the day you choose, and send it to a friend or hang it on the wall in Next Door.">
 <meta name="theme-color" content="#1d130d">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%231d130d'/%3E%3Crect x='1' y='3' width='14' height='10' fill='%23f6ecd2'/%3E%3Crect x='10' y='4' width='4' height='4' fill='%23c8402a'/%3E%3Crect x='2' y='8' width='6' height='1' fill='%233a5a8c'/%3E%3Crect x='2' y='10' width='5' height='1' fill='%233a5a8c'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/fonts/g/fonts.css">
@@ -107,10 +107,10 @@ main{max-width:620px;margin:0 auto;padding:10px 16px 110px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
-<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Neighbourhood" data-fbapp></head>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
 <header class="top">
-  <div class="sign" data-t="title">POSTCARD</div>
+  <div class="sign" data-t="title">SAY HELLO</div>
   <div class="tools">
     <button class="pill" type="button" id="sentBtn" aria-label="Sent">📮<span class="n" id="sentN" hidden></span></button>
     <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
@@ -149,7 +149,7 @@ main{max-width:620px;margin:0 auto;padding:10px 16px 110px}
     <div class="opens" id="opens"></div>
     <div class="send">
       <button class="big" type="button" id="toFriend"><span class="e">✉️</span><span data-t="friend">Send to a friend</span></button>
-      <button class="big alt" type="button" id="toBar"><span class="e">🍸</span><span data-t="bar">Hang in Wei's Bar</span></button>
+      <button class="big alt" type="button" id="toBar"><span class="e">🍸</span><span data-t="bar">Hang in Next Door</span></button>
     </div>
   </section>
 
@@ -160,12 +160,12 @@ main{max-width:620px;margin:0 auto;padding:10px 16px 110px}
     <div class="row" id="readBtns"></div>
   </section>
 
-  <p class="foot"><a href="/nearby/next-door/#wall-cards" data-t="seeWall">The Wall in Wei's Bar →</a><br><a href="/nearby/handoff/">🕰️ <span data-t="handoff">Next counter: Handoff, for two people apart</span></a></p>
+  <p class="foot"><a href="/nearby/next-door/#wall-cards" data-t="seeWall">The Wall in Next Door →</a><br><a href="/nearby/handoff/">🕰️ <span data-t="handoff">Next counter: Handoff, for two people apart</span></a></p>
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script id="pc-scenes">
-/* Postcard pictures, drawn as pixels so every card is light (Wei's Bar borrows this block to draw the Wall). */
+/* Postcard pictures, drawn as pixels so every card is light (Next Door borrows this block to draw the Wall). */
 window.PCScenes = (function () {
   var W = 160, H = 110;
   function rng(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return function () { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 10000) / 10000; }; }
@@ -274,7 +274,7 @@ window.PCScenes = (function () {
 
   /* ---------- words ---------- */
   var T = {
-    title: ["POSTCARD", "明信片", "明信片", "POSTAL", "POSTAL"],
+    title: ["SAY HELLO", "问个好", "問個好", "DI HOLA", "DIGUES HOLA"],
     greet: ["Greetings from", "寄自", "寄自", "Saludos desde", "Records des de"],
     placePh: ["somewhere", "某个地方", "某個地方", "algún lugar", "algun lloc"],
     msgPh: ["Write something…", "写点什么……", "寫點什麼……", "Escribe algo…", "Escriu alguna cosa…"],
@@ -286,11 +286,11 @@ window.PCScenes = (function () {
     rightAway: ["Can be opened right away", "收到就能拆", "收到就能拆", "Se abre en cuanto llegue", "S'obre tan bon punt arribi"],
     sealedTill: ["Sealed until {d}", "封存到 {d}", "封存到 {d}", "Cerrada hasta el {d}", "Tancada fins al {d}"],
     friend: ["Send to a friend", "寄给朋友", "寄給朋友", "Enviar a un amigo", "Envia a un amic"],
-    bar: ["Hang in Wei's Bar", "挂到 Wei 的酒吧", "掛到 Wei 的酒吧", "Colgar en el bar de Wei", "Penja-la al bar d'en Wei"],
+    bar: ["Hang in Next Door", "挂到 “隔壁”", "掛到 “隔壁”", "Colgar en Al Lado", "Penja-la a Al Costat"],
     posted: ["Posted. Give them this link:", "寄出了。把这个链接给对方：", "寄出了。把這個連結給對方：", "Enviada. Dale este enlace:", "Enviada. Dona-li aquest enllaç:"],
-    onWall: ["It's on the wall in Wei's Bar.", "已经挂在 Wei 酒吧的墙上了。", "已經掛在 Wei 酒吧的牆上了。", "Ya está en la pared del bar de Wei.", "Ja és a la paret del bar d'en Wei."],
+    onWall: ["It's on the wall in Next Door.", "已经挂在 “隔壁”的墙上了。", "已經掛在 “隔壁”的牆上了。", "Ya está en la pared de Al Lado.", "Ja és a la paret d'Al Costat."],
     seeBar: ["See it in the bar →", "去酒吧看看 →", "去酒吧看看 →", "Verla en el bar →", "Veure-la al bar →"],
-    seeWall: ["The Wall in Wei's Bar →", "Wei 酒吧的明信片墙 →", "Wei 酒吧的明信片牆 →", "La pared del bar de Wei →", "La paret del bar d'en Wei →"],
+    seeWall: ["The Wall in Next Door →", "“隔壁”的明信片墙 →", "“隔壁”的明信片牆 →", "La pared de Al Lado →", "La paret d'Al Costat →"],
     copy: ["Copy", "复制", "複製", "Copiar", "Copia"], copied: ["Copied ✓", "已复制 ✓", "已複製 ✓", "Copiado ✓", "Copiat ✓"], share: ["Share", "分享", "分享", "Compartir", "Comparteix"],
     remind: ["Remind me", "提醒我", "提醒我", "Recuérdamelo", "Recorda-m'ho"],
     reply: ["Write back", "回一张", "回一張", "Responder", "Respon"], own: ["Write your own", "自己写一张", "自己寫一張", "Escribe la tuya", "Escriu la teva"],
@@ -311,7 +311,7 @@ window.PCScenes = (function () {
     handoff: ["Next counter: Handoff, for two people apart", "隔壁窗口：Handoff，给相隔两地的两个人", "隔壁窗口：Handoff，給相隔兩地的兩個人", "Siguiente ventanilla: Handoff, para dos personas lejos", "Següent finestreta: Handoff, per a dues persones lluny"],
     lang: ["Language", "语言", "語言", "Idioma", "Idioma"], close: ["Close", "关闭", "關閉", "Cerrar", "Tanca"],
     day: ["d", "天", "天", "d", "d"],
-    scenes: { hutong: ["Hutong", "胡同", "胡同", "Hutong", "Hutong"], sky: ["Sora sky", "Sora 的天空", "Sora 的天空", "Cielo de Sora", "Cel de Sora"], peak: ["Crag", "山崖", "山崖", "Risco", "Cingle"], sea: ["Sea", "海", "海", "Mar", "Mar"], train: ["Train window", "车窗", "車窗", "Ventanilla", "Finestra del tren"], bowl: ["Kintsugi bowl", "金继碗", "金繼碗", "Cuenco kintsugi", "Bol kintsugi"], bar: ["Wei's Bar", "Wei 的酒吧", "Wei 的酒吧", "Bar de Wei", "Bar d'en Wei"], night: ["City night", "城市夜景", "城市夜景", "Noche en la ciudad", "Nit a la ciutat"] }
+    scenes: { hutong: ["Hutong", "胡同", "胡同", "Hutong", "Hutong"], sky: ["Sora sky", "Sora 的天空", "Sora 的天空", "Cielo de Sora", "Cel de Sora"], peak: ["Crag", "山崖", "山崖", "Risco", "Cingle"], sea: ["Sea", "海", "海", "Mar", "Mar"], train: ["Train window", "车窗", "車窗", "Ventanilla", "Finestra del tren"], bowl: ["Kintsugi bowl", "金继碗", "金繼碗", "Cuenco kintsugi", "Bol kintsugi"], bar: ["Next Door", "“隔壁”", "“隔壁”", "Al Lado", "Al Costat"], night: ["City night", "城市夜景", "城市夜景", "Noche en la ciudad", "Nit a la ciutat"] }
   };
   var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }, LOC = ["en-GB", "zh-CN", "zh-TW", "es-ES", "ca-ES"];
   function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
@@ -540,7 +540,7 @@ window.PCScenes = (function () {
   /* ---------- language ---------- */
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
-    document.title = (L() ? t("title") : "Postcard") + " — FREE//BUILDER";
+    document.title = (L() ? t("title") : "Say Hello") + " — Nearby";
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
     document.querySelectorAll("[data-tp]").forEach(function (e) { e.placeholder = t(e.getAttribute("data-tp")); });
     $("#stamp").setAttribute("aria-label", t("stamp")); $("#stamp").title = reading ? "" : t("stamp");

@@ -417,18 +417,18 @@
       slots(1.2, 70, function (x, i) { ctx.fillStyle = css(land("#3a2e28", 0)); ctx.fillRect(x, ch * 0.9, 4 * S, ch * 0.1); ctx.fillStyle = css(land("#f4f7fc", 0)); ctx.fillRect(x - 1, ch * 0.9 - 3 * S, 6 * S, 3 * S); }, 60);
     }
   };
-  /* Wei's Bar and the book corner, side by side on the lane; rects remembered so a tap can find them */
+  /* Next Door and the book corner, side by side on the lane; rects remembered so a tap can find them */
   var HITS = [];
   function shopfronts(x, base, k) {
     k = k || 1; var lit = L.lights, w = 150 * S * k, h = 120 * S * k, gap = 44 * S * k, bx = x - w - gap / 2, kx = x + gap / 2;
-    /* Wei's Bar: dark wood, two arched amber windows, a neon name */
+    /* Next Door: dark wood, two arched amber windows, a neon name */
     ctx.fillStyle = css(land("#3a2414", 0.1)); ctx.fillRect(bx, base - h, w, h);
     ctx.fillStyle = css(land("#2a2a30", 0.1)); ctx.beginPath(); ctx.moveTo(bx - 10 * S * k, base - h); ctx.lineTo(bx + w / 2, base - h - 26 * S * k); ctx.lineTo(bx + w + 10 * S * k, base - h); ctx.fill();
     for (var q = 0; q < 2; q++) { var wx = bx + 18 * S * k + q * 72 * S * k, wy = base - h * 0.72, ww = 44 * S * k, wh = 50 * S * k, g = ctx.createRadialGradient(wx + ww / 2, wy + wh * 0.8, 2, wx + ww / 2, wy + wh * 0.6, ww);
       g.addColorStop(0, css([255, 214, 140], 0.5 + lit * 0.5)); g.addColorStop(1, css([200, 110, 40], 0.4 + lit * 0.5)); ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(wx, wy + wh); ctx.lineTo(wx, wy + ww / 2); ctx.arc(wx + ww / 2, wy + ww / 2, ww / 2, Math.PI, 0); ctx.lineTo(wx + ww, wy + wh); ctx.fill(); }
     if (lit > 0.2) glowDot(bx + w / 2, base - h * 0.45, w * 0.9, [255, 180, 100], 0.22 * lit);
     ctx.save(); ctx.font = "italic 600 " + Math.round(15 * S * k) + "px Georgia,'Songti SC',serif"; ctx.textAlign = "center"; ctx.fillStyle = lit > 0.3 ? "#ffd9a8" : "#e8c39a"; if (lit > 0.3) { ctx.shadowColor = "#ff8a3a"; ctx.shadowBlur = 12; }
-    fitText("Wei's Bar & Coffee", bx + w / 2, base - h - 30 * S * k, w + gap * 0.8); ctx.restore();
+    fitText("Next Door", bx + w / 2, base - h - 30 * S * k, w + gap * 0.8); ctx.restore();
     /* two cats on the step, sometimes */
     if (Math.floor(state.scrollDist / 4000) % 2 === 0) { ctx.fillStyle = "#e8913a"; ctx.beginPath(); ctx.ellipse(bx + 20 * S * k, base - 5 * S * k, 8 * S * k, 5 * S * k, 0, 0, TAU); ctx.arc(bx + 27 * S * k, base - 10 * S * k, 4 * S * k, 0, TAU); ctx.fill(); ctx.fillStyle = "#231b17"; ctx.beginPath(); ctx.ellipse(bx + w - 22 * S * k, base - 5 * S * k, 8 * S * k, 5 * S * k, 0, 0, TAU); ctx.arc(bx + w - 29 * S * k, base - 10 * S * k, 4 * S * k, 0, TAU); ctx.fill(); }
     /* the book corner: green door, a wide window of shelves */
@@ -442,7 +442,7 @@
     ctx.fillStyle = css(land("#2f5a3a", 0.1)); ctx.fillRect(kx + w * 0.7, base - h * 0.78, w * 0.22, h * 0.78);
     ctx.fillStyle = "#c8a050"; ctx.beginPath(); ctx.arc(kx + w * 0.74, base - h * 0.4, 2 * S * k, 0, TAU); ctx.fill();
     if (lit > 0.2) glowDot(sx + sw / 2, sy + sh / 2, w * 0.8, [255, 210, 140], 0.2 * lit);
-    ctx.save(); ctx.font = "600 " + Math.round(13 * S * k) + "px Georgia,'Songti SC',serif"; ctx.textAlign = "center"; ctx.fillStyle = "#f3dfb8"; fitText("📖 The Dog-Eared Corner", kx + w / 2, base - h - 30 * S * k, w + gap * 0.8); ctx.restore();
+    ctx.save(); ctx.font = "600 " + Math.round(13 * S * k) + "px Georgia,'Songti SC',serif"; ctx.textAlign = "center"; ctx.fillStyle = "#f3dfb8"; fitText("📖 Borrowed Pages", kx + w / 2, base - h - 30 * S * k, w + gap * 0.8); ctx.restore();
     HITS.push({ k: "bar", x: bx, y: base - h - 30 * S * k, w: w, h: h + 30 * S * k }, { k: "books", x: kx, y: base - h - 30 * S * k, w: w, h: h + 30 * S * k });
   }
   function hutongHouse(x, base, w, h, i) {
@@ -783,7 +783,7 @@
     requestAnimationFrame(window.renderScene);
   };
 
-  /* ---------- getting off: tap Wei's Bar or the book corner ---------- */
+  /* ---------- getting off: tap Next Door or the book corner ---------- */
   window.TrainView = { hit: function (x, y) { for (var i = HITS.length - 1; i >= 0; i--) { var h = HITS[i]; if (x >= h.x && x <= h.x + h.w && y >= h.y && y <= h.y + h.h) return h.k; } return null; } };
 
   /* the mist never clears completely, whatever the weather */

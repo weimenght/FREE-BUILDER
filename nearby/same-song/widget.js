@@ -1,5 +1,5 @@
 /* FREE//BUILDER Jukebox · the machine
-   The same jukebox stands in the studio, in Wei's Bar and in the Dog-Eared Corner, and plays the same record at the same second.
+   The same jukebox stands in the studio, in Next Door and in Borrowed Pages, and plays the same record at the same second.
    JBW.mount(el, {venue})  → the machine and its record shelf, inline (the studio)
    JBW.corner({venue, dock}) → a little jukebox in a venue; tap it and the machine opens
    Venues hear about it through a window event: "jukebox" {detail:{on:true|false}} — so their own music can step aside. */

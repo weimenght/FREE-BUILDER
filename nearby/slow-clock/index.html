@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=76726a190b"></script><script data-fbg src="/fbkit/fbg.js?v=1446f335bb" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=02f84761fb"></script><script data-fbg src="/fbkit/fbg.js?v=19c9340610" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>The Clock Tower — FREE//BUILDER</title>
-<meta name="description" content="Climb the clock tower and set the neighbourhood's hour and weather: every game you visit next follows it.">
+<title>Slow Clock — FREE//BUILDER</title>
+<meta name="description" content="Climb the clock tower and set Nearby's hour and weather: every game you visit next follows it.">
 <meta name="theme-color" content="#14101e">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%2314101e'/%3E%3Crect x='5' y='3' width='6' height='13' fill='%23a8a094'/%3E%3Crect x='7' y='1' width='2' height='2' fill='%235a4a3a'/%3E%3Crect x='6' y='5' width='4' height='4' fill='%23fbeedd'/%3E%3Crect x='8' y='6' width='1' height='2' fill='%23b3261e'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/fonts/g/fonts.css">
@@ -44,14 +44,14 @@ main{max-width:560px;margin:0 auto;padding:6px 16px 100px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
-<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Neighbourhood" data-fbapp></head>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
 <header class="top">
-  <div class="sign" data-t="title">THE CLOCK TOWER</div>
+  <div class="sign" data-t="title">SLOW CLOCK</div>
   <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
 </header>
 <main>
-  <h1 class="sr" data-t="title">The Clock Tower</h1>
+  <h1 class="sr" data-t="title">Slow Clock</h1>
   <div class="tower" id="tower">
     <div class="sky"><canvas id="sky" width="120" height="40"></canvas></div>
     <div class="face" id="face" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="24">
@@ -73,9 +73,9 @@ main{max-width:560px;margin:0 auto;padding:6px 16px 100px}
   var $ = function (id) { return document.getElementById(id); };
   var World = window.FBWorld || { h: 21, w: "clear", hour: function () { return this.h; }, weather: function () { return this.w; }, setHour: function (h) { this.h = h; }, set: function (w) { this.w = w; }, phase: function () { return "night"; } };
   var T = {
-    title: ["THE CLOCK TOWER", "钟楼", "鐘樓", "LA TORRE DEL RELOJ", "LA TORRE DEL RELLOTGE"],
+    title: ["SLOW CLOCK", "慢钟", "慢鐘", "RELOJ LENTO", "RELLOTGE LENT"],
     sky: ["The sky", "天气", "天氣", "El cielo", "El cel"],
-    back: ["Ring the bell, back to town", "敲钟，回到街坊", "敲鐘，回到街坊", "Toca la campana y vuelve", "Toca la campana i torna"],
+    back: ["Ring the bell, back to town", "敲钟，回到近邻", "敲鐘，回到近鄰", "Toca la campana y vuelve", "Toca la campana i torna"],
     dice: ["Surprise me", "随便来", "隨便來", "Sorpréndeme", "Sorprèn-me"],
     clock: ["Drag the hand to set the hour", "拖动指针调时间", "拖動指針調時間", "Arrastra la aguja para cambiar la hora", "Arrossega l'agulla per canviar l'hora"],
     phase: { dawn: ["Dawn", "黎明", "黎明", "Amanecer", "Alba"], day: ["Day", "白天", "白天", "Día", "Dia"], dusk: ["Dusk", "黄昏", "黃昏", "Atardecer", "Capvespre"], night: ["Night", "夜晚", "夜晚", "Noche", "Nit"] },
@@ -140,7 +140,7 @@ main{max-width:560px;margin:0 auto;padding:6px 16px 100px}
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(T[e.getAttribute("data-t")]); });
-    document.title = (L() ? t(T.title) : "The Clock Tower") + " — FREE//BUILDER";
+    document.title = (L() ? t(T.title) : "Slow Clock") + " — FREE//BUILDER";
     $("dice").setAttribute("aria-label", t(T.dice)); $("dice").title = t(T.dice);
     var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
     paint();

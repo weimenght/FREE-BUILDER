@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=76726a190b"></script><script data-fbg src="/fbkit/fbg.js?v=1446f335bb" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=02f84761fb"></script><script data-fbg src="/fbkit/fbg.js?v=19c9340610" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>The Neighbourhood — FREE//BUILDER</title>
-<meta name="description" content="A little pixel neighbourhood: Wei's Bar, the bookshop, the jukebox, the post office, Sora park, the crag, the kintsugi studio, the club and the station. Tap a place to walk in.">
+<title>Nearby — FREE//BUILDER</title>
+<meta name="description" content="Nearby: a small pixel town where nothing is asking for your attention. Have a drink at Next Door, lie back and watch the clouds, send a postcard, plant next to a stranger. Wei, the bartender, will show you around.">
 <meta name="theme-color" content="#14101e">
 <link rel="apple-touch-icon" href="/nearby/apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%2314101e'/%3E%3Crect x='1' y='9' width='14' height='6' fill='%236a9a4a'/%3E%3Crect x='3' y='5' width='5' height='5' fill='%238a8580'/%3E%3Crect x='3' y='4' width='5' height='1' fill='%233a3a40'/%3E%3Crect x='5' y='7' width='1' height='3' fill='%23b3261e'/%3E%3Crect x='10' y='6' width='4' height='4' fill='%232a6a4a'/%3E%3Crect x='11' y='2' width='1' height='4' fill='%23e0402a'/%3E%3C/svg%3E">
@@ -65,16 +65,16 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
-<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Neighbourhood" data-fbapp></head>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
 <header class="top">
-  <div class="sign" data-t="title">THE NEIGHBOURHOOD</div>
+  <div class="sign" data-t="title">NEARBY</div>
   <div class="tools">
     <span class="clock" id="clock" aria-live="off"></span>
     <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
   </div>
 </header>
-<h1 class="sr" data-t="title">The Neighbourhood</h1>
+<h1 class="sr" data-t="title">Nearby</h1>
 <div class="wrap" id="wrap"><div class="pan" id="pan"><div class="zoom" id="zoom"><canvas id="map" width="360" height="320"></canvas><nav id="spots" aria-label="Places"></nav></div></div><button class="edge l" id="edgeL" type="button" aria-label="◀">‹</button><button class="edge r" id="edgeR" type="button" aria-label="▶">›</button></div>
 <div class="foot"></div>
 
@@ -87,35 +87,36 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   /* ---------- the places (logical pixels on a 180×320 map) ---------- */
   var PLACES = [
     { k: "climb", url: "/nearby/hold-on/", x: 4, y: 10, w: 56, h: 60, n: ["The Crag", "岩场", "岩場", "El risco", "El cingle"] },
-    { k: "cloud", url: "/nearby/lie-back/", x: 104, y: 40, w: 72, h: 40, n: ["Sora Park", "Sora 公园", "Sora 公園", "Parque Sora", "Parc Sora"] },
-    { k: "tower", url: "/nearby/slow-clock/", x: 80, y: 50, w: 20, h: 42, n: ["Clock Tower", "钟楼", "鐘樓", "Torre del reloj", "Torre del rellotge"] },
+    { k: "cloud", url: "/nearby/lie-back/", x: 104, y: 40, w: 72, h: 40, n: ["Lie Back Park", "看云坡", "看雲坡", "Parque Panza Arriba", "Parc Panxa Enlaire"] },
+    { k: "tower", url: "/nearby/slow-clock/", x: 80, y: 50, w: 20, h: 42, n: ["Slow Clock", "慢钟", "慢鐘", "Reloj Lento", "Rellotge Lent"] },
     { k: "kintsugi", url: "/nearby/mended/", x: 4, y: 116, w: 40, h: 34, n: ["Kintsugi Studio", "金缮工房", "金繕工房", "Taller de kintsugi", "Taller de kintsugi"] },
-    { k: "bar", url: "/nearby/next-door/", x: 48, y: 110, w: 48, h: 40, n: ["Wei's Bar", "Wei 的酒吧", "Wei 的酒吧", "Bar de Wei", "Bar d'en Wei"] },
-    { k: "books", url: "/nearby/borrowed-pages/", x: 100, y: 114, w: 38, h: 36, n: ["Dog-Eared Corner", "折角书屋", "折角書屋", "Página Doblada", "Pàgina Doblegada"] },
+    { k: "bar", url: "/nearby/next-door/", x: 48, y: 110, w: 48, h: 40, n: ["Next Door", "“隔壁”", "“隔壁”", "Al Lado", "Al Costat"] },
+    { k: "books", url: "/nearby/borrowed-pages/", x: 100, y: 114, w: 38, h: 36, n: ["Borrowed Pages", "借来的书", "借來的書", "Páginas Prestadas", "Pàgines Manllevades"] },
     { k: "jukebox", url: "/nearby/same-song/", x: 142, y: 122, w: 34, h: 28, n: ["Jukebox", "点唱机", "點唱機", "Gramola", "Gramola"] },
-    { k: "postcard", url: "/nearby/say-hello/", x: 6, y: 168, w: 56, h: 40, n: ["Post Office", "邮局", "郵局", "Correos", "Correus"],
+    { k: "postcard", url: "/nearby/say-hello/", x: 6, y: 168, w: 56, h: 40, n: ["Say Hello", "邮局", "郵局", "Correos", "Correus"],
       counters: [
         { k: "postcard", url: "/nearby/say-hello/", ic: "📮", n: ["Postcard", "明信片", "明信片", "Postal", "Postal"], d: ["Seal a card until a day you choose", "封存一张明信片，到你选的那天", "封存一張明信片，到你選的那天", "Cierra una postal hasta el día que elijas", "Tanca una postal fins al dia que triïs"] },
         { k: "love", url: "/nearby/handoff/", ic: "🕰️", n: ["Handoff", "Handoff", "Handoff", "Handoff", "Handoff"], d: ["For two people who live apart", "给相隔两地的两个人", "給相隔兩地的兩個人", "Para dos personas que viven lejos", "Per a dues persones que viuen lluny"] }
       ] },
-    { k: "lang", url: "/learn/", x: 68, y: 176, w: 38, h: 32, n: ["Language School", "语言学校", "語言學校", "Escuela de idiomas", "Escola d'idiomes"] },
-    { k: "dj", url: "/nearby/late-light/", x: 112, y: 166, w: 62, h: 42, n: ["Club Retro", "复古俱乐部", "復古俱樂部", "Club Retro", "Club Retro"] },
-    { k: "brewery", url: "/nearby/neighbours-brew/", x: 106, y: 212, w: 70, h: 32, n: ["The Brewery", "啤酒坊", "啤酒坊", "La Cervecería", "La Cerveseria"] },
-    { k: "nest", url: "/nearby/miso-and-yuzu/", x: 4, y: 212, w: 40, h: 34, n: ["Cats' Nest", "猫窝", "貓窩", "Nido de gatos", "Niu dels gats"] },
+    { k: "lang", url: "/learn/", x: 68, y: 176, w: 38, h: 32, n: ["Small Talk", "聊两句", "聊兩句", "De Charla", "De Xerrada"] },
+    { k: "dj", url: "/nearby/late-light/", x: 112, y: 204, w: 62, h: 42, n: ["Late Light", "夜灯", "夜燈", "Late Light", "Late Light"] },
+    { k: "brewery", url: "/nearby/neighbours-brew/", x: 106, y: 164, w: 70, h: 36, n: ["Neighbours' Brew", "邻家酿", "邻家酿", "Cerveza Vecina", "Cervesa Veïna"] },
+    { k: "nest", url: "/nearby/miso-and-yuzu/", x: 4, y: 212, w: 40, h: 34, n: ["Miso & Yuzu's", "味噌和柚子家", "味噌和柚子家", "Casa de Miso y Yuzu", "Cal Miso i la Yuzu"] },
     { k: "train", url: "/nearby/station/", x: 30, y: 246, w: 120, h: 48, n: ["Station", "火车站", "火車站", "Estación", "Estació"] },
     /* the wild country around the town: each opens Sora's sky in that landscape */
     { k: "peaks", abs: 1, url: "/nearby/lie-back/?place=snow", x: 4, y: 8, w: 70, h: 62, n: ["Snow Peaks", "雪峰", "雪峰", "Picos nevados", "Cims nevats"] },
     { k: "forest", abs: 1, url: "/nearby/lie-back/?place=forest", x: 4, y: 112, w: 82, h: 50, n: ["Pine Wood", "松林", "松林", "Pinar", "Pineda"] },
-    { k: "sanctuary", abs: 1, url: "/nearby/come-home/", x: 40, y: 206, w: 48, h: 40, n: ["Animal Sanctuary", "动物庇护所", "動物庇護所", "Refugio de animales", "Refugi d'animals"] },
+    { k: "sanctuary", abs: 1, url: "/nearby/come-home/", x: 40, y: 206, w: 48, h: 40, n: ["Come Home", "回家吧", "回家吧", "Vuelve a Casa", "Torna a Casa"] },
     { k: "meadow", abs: 1, url: "/nearby/lie-back/?place=meadow", x: 4, y: 168, w: 82, h: 36, n: ["Wildflower Meadow", "野花草甸", "野花草甸", "Prado de flores", "Prat de flors"] },
-    { k: "garden", abs: 1, url: "/nearby/plant-a-friend/", x: 2, y: 248, w: 86, h: 36, n: ["The Garden", "大家的花园", "大家的花園", "El Jardín", "El Jardí"] },
+    { k: "garden", abs: 1, url: "/nearby/plant-a-friend/", x: 2, y: 248, w: 86, h: 36, n: ["The Garden", "种个朋友", "種個朋友", "El Jardín", "El Jardí"] },
     { k: "restaurant", abs: 1, url: "/nearby/two-candles/", x: 288, y: 168, w: 70, h: 34, n: ["Two Candles", "双烛小馆", "雙燭小館", "Dos Velas", "Dues Espelmes"] },
     { k: "pasture", abs: 1, url: "/nearby/lie-back/?place=mountain", x: 276, y: 30, w: 80, h: 50, n: ["High Pasture", "高山牧场", "高山牧場", "Pasto alto", "Pastura alta"] },
+    { k: "cabin", abs: 1, url: "/nearby/no-hurry/", x: 314, y: 40, w: 26, h: 22 },
     { k: "lake", abs: 1, url: "/nearby/lie-back/?place=lake", x: 274, y: 104, w: 84, h: 66, n: ["Mirror Lake", "镜湖", "鏡湖", "Lago Espejo", "Llac Mirall"] },
     { k: "sea", abs: 1, url: "/nearby/lie-back/?place=sea", x: 274, y: 214, w: 84, h: 78, n: ["Sandy Cove", "沙湾", "沙灣", "Cala de arena", "Cala de sorra"] }
   ];
   var BELOW = { climb: 1, cloud: 0, peaks: 1 };
-  var T = { title: ["THE NEIGHBOURHOOD", "街坊地图", "街坊地圖", "EL BARRIO", "EL BARRI"], all: ["All games", "全部游戏", "全部遊戲", "Todos los juegos", "Tots els jocs"], lang: ["Languages", "学语言", "學語言", "Idiomas", "Idiomes"], beijing: ["Beijing", "北京", "北京", "Pekín", "Pequín"], map: ["Map of the neighbourhood", "街坊地图", "街坊地圖", "Mapa del barrio", "Mapa del barri"], here: ["You were here", "你刚从这里来", "你剛從這裡來", "Venías de aquí", "Venies d'aquí"] };
+  var T = { title: ["NEARBY", "近邻", "近鄰", "CERCA", "A PROP"], all: ["All games", "全部游戏", "全部遊戲", "Todos los juegos", "Tots els jocs"], lang: ["Languages", "学语言", "學語言", "Idiomas", "Idiomes"], beijing: ["Beijing", "北京", "北京", "Pekín", "Pequín"], map: ["Map of Nearby", "近邻地图", "近鄰地圖", "Mapa del barrio", "Mapa del barri"], here: ["You were here", "你刚从这里来", "你剛從這裡來", "Venías de aquí", "Venies d'aquí"] };
   var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 };
   function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
   function t(k) { return T[k][L()] || T[k][0]; }
@@ -171,7 +172,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(4, 124, 40, 26, night ? "#3a2a20" : "#6a4a32"); R(2, 118, 44, 6, "#2a2a30"); R(6, 116, 36, 2, "#3a3a40");
     R(16, 132, 16, 18, "#1e2238"); R(17, 132, 6, 8, "#2c4a86"); R(25, 132, 6, 8, "#2c4a86"); R(21, 134, 6, 3, "#f6c84a");
     win(8, 130, lit, f); win(37, 130, lit, f);
-    // Wei's Bar
+    // Next Door
     R(48, 118, 48, 32, night ? "#4a4642" : "#8a8580"); for (var by = 120; by < 150; by += 4) for (var bx = 48 + ((by / 4) % 2) * 3; bx < 96; bx += 6) R(bx, by, 5, 3, night ? "#54504c" : "#96918b");
     R(46, 112, 52, 6, "#2a2a30"); R(48, 110, 48, 2, "#3a3a40");
     R(64, 132, 16, 18, "#2a1a14"); R(65, 133, 7, 17, "#9c2418"); R(72, 133, 7, 17, "#9c2418");
@@ -179,7 +180,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     [[54, 130], [88, 130]].forEach(function (l) { R(l[0], l[1], 4, 5, lit ? "#ff6a4a" : "#c8402a"); R(l[0] + 1, l[1] + 5, 2, 1, "#f6b73c"); if (lit) R(l[0] - 2, l[1] - 2, 8, 9, "rgba(255,140,80,.18)"); });
     R(51, 140, 6, 6, lit ? "#f6c84a" : "#3a4a6a"); R(87, 140, 6, 6, lit ? "#f6c84a" : "#3a4a6a");
     R(84, 114, 5, 3, "#111"); R(85, 113, 1, 1, "#111"); R(88, 113, 1, 1, "#111");   // a cat on the roof
-    // bookshop: the same house Wei's Bar sees through its window (dark timber, a tiled roof strung with lights, a wall of books, green door, open-book sign, red lantern)
+    // bookshop: the same house Next Door sees through its window (dark timber, a tiled roof strung with lights, a wall of books, green door, open-book sign, red lantern)
     R(100, 122, 38, 28, night ? "#3a2a1e" : "#4a3424"); R(98, 118, 42, 4, "#2a2a30"); R(100, 116, 38, 2, "#3a3a40");
     for (var fl = 101; fl < 138; fl += 4) R(fl, 120, 1, 1, lit ? "#ffd68a" : "#8a7a5a");
     R(102, 126, 20, 20, lit ? "#f6c84a" : "#e8b060"); R(102, 126, 20, 1, "#2a180e"); R(102, 145, 20, 1, "#2a180e"); R(102, 126, 1, 20, "#2a180e"); R(121, 126, 1, 20, "#2a180e"); R(111, 126, 1, 20, "#3a2414");
@@ -198,16 +199,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     // language school
     R(70, 182, 34, 26, night ? "#4a3a4a" : "#c8a888"); R(68, 178, 38, 4, "#5a3a3a"); R(84, 172, 6, 6, "#5a3a3a"); R(86, 168, 1, 4, "#5a3a3a"); R(87, 168, 5, 3, ["#c8402a", "#f6c84a", "#2a6a9a"][((f / 20) | 0) % 3]);
     R(82, 194, 10, 14, "#3a2a20"); win(73, 188, lit, f); win(96, 188, lit, f); R(74, 198, 4, 4, "#fbeedd"); R(96, 198, 4, 4, "#fbeedd");
-    // club
-    R(112, 174, 62, 34, "#1a1420"); R(110, 170, 66, 4, "#0a0a10");
-    var neon = night || ph === "dusk" ? (((f / 3) | 0) % 9 === 0 ? .4 : 1) : .45;
-    g.globalAlpha = neon; R(118, 178, 50, 8, "#ff3ad0"); R(120, 179, 46, 6, "#1a1420"); ["#7affc1", "#ff3ad0", "#f6b73c", "#7ab8ff"].forEach(function (c, i) { R(124 + i * 11, 180, 7, 2, c); }); g.globalAlpha = 1;
-    R(136, 192, 14, 16, "#2a2238"); R(137, 193, 12, 15, night ? "#4a2a6a" : "#3a2a4a");
-    if (night || ph === "dusk") for (var qn = 0; qn < 4; qn++) { R(118 + qn * 4, 202, 2, 6, ["#c8402a", "#2a6a9a", "#f6c84a", "#7affc1"][qn]); R(118 + qn * 4, 200, 2, 2, "#f5d49a"); }
-    for (var sp = 0; sp < 5; sp++) R(152 + sp * 4, 196 + Math.abs(Math.sin((f + sp * 9) / 5)) * -4, 2, 2, ["#ff3ad0", "#7affc1", "#f6b73c", "#7ab8ff", "#fff"][sp]);
-    // paths down to the station
-    R(0, 208, W, 38, night ? "#1e2a1e" : "#6a9a4a"); R(84, 208, 12, 38, night ? "#2e2c30" : "#a8a49c");
-    for (var tr = 0; tr < 7; tr++) { var tx = 10 + tr * 26 + (tr > 2 ? 14 : 0), ty = 214 + hash("tr" + tr) * 20; if (tx > 80 || tx < 44) continue; R(tx + 3, ty + 6, 2, 5, "#4a2e1a"); R(tx, ty, 8, 7, night ? "#1a3a22" : "#3f7a3a"); }
+    g.save(); g.translate(0, -46);   // Neighbours' Brew: up on the high street, next door to the bar it supplies
     // the brewery: brick brewhouse, a copper kettle with its chimney, two silver tanks
     R(108, 220, 40, 24, night ? "#4a2a1e" : "#9a4a2a"); for (var bb = 222; bb < 244; bb += 4) R(108, bb, 40, 1, night ? "#3a2018" : "#7a3820");
     R(106, 216, 44, 4, "#3a2214"); R(112, 212, 8, 4, "#3a2214"); R(114, 204, 4, 8, "#b8662a"); R(115, 204, 1, 8, "#e8a060");
@@ -216,6 +208,19 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(122, 232, 12, 12, "#2a1a10"); R(123, 233, 10, 11, lit ? "#f6c84a" : "#6a3a20"); win(111, 232, lit, f); win(140, 232, lit, f);
     [[152, 0], [164, 1]].forEach(function (tk) { R(tk[0], 222, 10, 20, "#b0b0b8"); R(tk[0] + 1, 220, 8, 2, "#c8c8d0"); R(tk[0] + 2, 223, 2, 18, "rgba(255,255,255,.5)"); R(tk[0] + 1, 242, 2, 2, "#5a5a60"); R(tk[0] + 7, 242, 2, 2, "#5a5a60"); });
     R(150, 238, 26, 1, "#8a8a90"); for (var kg = 0; kg < 3; kg++) R(151 + kg * 7, 239, 5, 5, "#6a4a2a");
+    g.restore();
+    // paths down to the station
+    R(0, 208, W, 38, night ? "#1e2a1e" : "#6a9a4a"); R(84, 208, 12, 38, night ? "#2e2c30" : "#a8a49c");
+    for (var tr = 0; tr < 7; tr++) { var tx = 10 + tr * 26 + (tr > 2 ? 14 : 0), ty = 214 + hash("tr" + tr) * 20; if (tx > 80 || tx < 44) continue; R(tx + 3, ty + 6, 2, 5, "#4a2e1a"); R(tx, ty, 8, 7, night ? "#1a3a22" : "#3f7a3a"); }
+    g.save(); g.translate(0, 38);   // Late Light: down by the station, where the night trains come in
+    // club
+    R(112, 174, 62, 34, "#1a1420"); R(110, 170, 66, 4, "#0a0a10");
+    var neon = night || ph === "dusk" ? (((f / 3) | 0) % 9 === 0 ? .4 : 1) : .45;
+    g.globalAlpha = neon; R(118, 178, 50, 8, "#ff3ad0"); R(120, 179, 46, 6, "#1a1420"); ["#7affc1", "#ff3ad0", "#f6b73c", "#7ab8ff"].forEach(function (c, i) { R(124 + i * 11, 180, 7, 2, c); }); g.globalAlpha = 1;
+    R(136, 192, 14, 16, "#2a2238"); R(137, 193, 12, 15, night ? "#4a2a6a" : "#3a2a4a");
+    if (night || ph === "dusk") for (var qn = 0; qn < 4; qn++) { R(118 + qn * 4, 202, 2, 6, ["#c8402a", "#2a6a9a", "#f6c84a", "#7affc1"][qn]); R(118 + qn * 4, 200, 2, 2, "#f5d49a"); }
+    for (var sp = 0; sp < 5; sp++) R(152 + sp * 4, 196 + Math.abs(Math.sin((f + sp * 9) / 5)) * -4, 2, 2, ["#ff3ad0", "#7affc1", "#f6b73c", "#7ab8ff", "#fff"][sp]);
+    g.restore();
     // the cats' nest: a little A-frame with a round door
     R(10, 222, 28, 20, night ? "#4a3020" : "#a8743a"); for (var nb = 224; nb < 242; nb += 4) R(10, nb, 28, 1, night ? "#3a2418" : "#8a5a2a");
     for (var ny = 0; ny < 12; ny++) R(24 - ny * 1.3 - 2, 210 + ny, ny * 2.6 + 4, 1, "#7c2513");
@@ -259,7 +264,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   }
   /* Miso and Yuzu: out and about, near wherever they wandered to this visit */
   var CATS = { miso: { b: "#1c1a1f", e: "#f6d84a", n: ["Miso", "味噌", "味噌", "Miso", "Miso"] }, yuzu: { b: "#e8902a", e: "#3a2a1c", s: "#b8641a", n: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"] } };
-  var PATH = { nest: [6, 48, 247], bar: [50, 94, 158], cloud: [108, 170, 64], kintsugi: [6, 44, 158], books: [100, 138, 158], postcard: [8, 60, 207], jukebox: [142, 176, 158], tower: [76, 104, 87], train: [30, 150, 289], dj: [112, 172, 207], brewery: [108, 176, 245], restaurant: [196, 264, 203], climb: [6, 56, 80] };
+  var PATH = { nest: [6, 48, 247], bar: [50, 94, 158], cloud: [108, 170, 64], kintsugi: [6, 44, 158], books: [100, 138, 158], postcard: [8, 60, 207], jukebox: [142, 176, 158], tower: [76, 104, 87], train: [30, 150, 289], dj: [112, 172, 246], brewery: [108, 176, 199], restaurant: [196, 264, 203], climb: [6, 56, 80] };
   var where = (World.cats && World.cats()) || { miso: "bar", yuzu: "books" }, catPos = {};
   /* where each animal is, how it moves, and what they do when they meet */
   function placeOf(k) { return k === "dog" ? dogAt : where[k]; }
@@ -338,7 +343,11 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     /* EAST: a high pasture, Mirror Lake with its pavilion, a sandy cove */
     for (var x3 = 270; x3 < 360; x3++) { var h3 = 44 + Math.sin((x3 - 270) / 14) * 8 + Math.pow((x3 - 330) / 50, 2) * 10; R(x3, h3, 1, 86 - h3, night ? "#1e3a24" : "#7ab45a"); }
     for (var cw = 0; cw < 4; cw++) { var cxw = 290 + cw * 16 + Math.sin((f + cw * 40) / 60) * 3, cyw = 62 + (cw % 2) * 6; R(cxw, cyw, 6, 3, "#fbfbf6"); R(cxw + 5, cyw - 1, 2, 2, "#fbfbf6"); R(cxw + 1, cyw + 1, 2, 1, "#2a2a2a"); R(cxw, cyw + 3, 1, 2, "#2a2a2a"); R(cxw + 5, cyw + 3, 1, 2, "#2a2a2a"); }
-    R(322, 50, 10, 8, "#c8a050"); R(320, 46, 14, 4, "#7c2513"); R(326, 52, 2, 6, "#3a2a1c");   // a herder's hut
+    // No Hurry: a small cabin with a big window and a bench facing the view. Nothing to do here.
+    R(318, 48, 18, 11, night ? "#6a5032" : "#c8a050"); for (var cb = 50; cb < 59; cb += 3) R(318, cb, 18, 1, night ? "#5a4028" : "#a88038");
+    R(316, 44, 22, 4, "#7c2513"); R(318, 42, 18, 2, "#5a1a0e"); R(332, 38, 3, 6, "#4a3a2c"); if (lit) R(332 + Math.sin(f / 7), 34 - (f % 12) / 3, 2, 2, "rgba(220,220,220,.5)");
+    R(321, 50, 7, 5, lit ? "#f6c84a" : "#9ac0d8"); R(324, 50, 1, 5, "#5a4028"); R(330, 51, 4, 8, "#3a2a1c");
+    R(339, 56, 8, 1, "#6a4a2a"); R(339, 57, 1, 2, "#4a3a2c"); R(346, 57, 1, 2, "#4a3a2c");
     var LK = night ? "#16305a" : "#4a8ac8";
     for (var ly = 104; ly < 168; ly++) { var half = Math.sqrt(Math.max(0, 1 - Math.pow((ly - 136) / 32, 2))) * 42; R(316 - half, ly, half * 2, 1, LK); }
     for (var lr = 0; lr < 18; lr++) { var lx = 282 + hash("lk" + lr) * 64, lyy = 112 + hash("lky" + lr) * 46; R(lx + Math.sin((f + lr * 7) / 16) * 2, lyy, 4, 1, night ? "rgba(246,200,74,.35)" : "rgba(255,255,255,.5)"); }
@@ -374,7 +383,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     PLACES.forEach(function (p) {
       var a = document.createElement("a"); a.className = "spot"; a.href = p.url; a.dataset.k = p.k;
       a.style.left = (px(p) / WW * 100) + "%"; a.style.top = (p.y / H * 100) + "%"; a.style.width = (p.w / WW * 100) + "%"; a.style.height = (p.h / H * 100) + "%";
-      var name = p.n[L()] || p.n[0]; a.setAttribute("aria-label", name);
+      var name = World.name ? World.name(p.k) : (p.n[L()] || p.n[0]); a.setAttribute("aria-label", name);
       a.innerHTML = '<span class="tag' + (BELOW[p.k] ? " below" : "") + '"></span>'; a.firstChild.textContent = name;
       if (from && from === p.k) { var h = document.createElement("span"); h.className = "here"; h.textContent = "📍"; h.title = t("here"); a.appendChild(h); }
       a.addEventListener("click", function (e) {
@@ -390,16 +399,17 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   function walk(p, url) {
     var z = $("#zoom"), cx = (px(p) + p.w / 2) / WW * 100, cy = (p.y + p.h / 2) / H * 100;
     z.style.transformOrigin = cx + "% " + cy + "%"; z.style.transform = "scale(3.2)"; z.classList.add("go");
-    setTimeout(function () { location.href = url; }, 520);
+    setTimeout(function () { if (window.FBShell) { FBShell.open(url); setTimeout(function () { z.style.transform = ""; z.classList.remove("go"); }, 350); } else location.href = url; }, 520);
   }
   /* the post office has two counters: postcards, and Handoff for people who live apart */
   function desk(p) {
     var old = document.querySelector(".desk"); if (old) old.remove();
-    var d = document.createElement("div"); d.className = "desk"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", p.n[L()] || p.n[0]);
-    var h = document.createElement("h2"); h.textContent = (p.n[L()] || p.n[0]).toUpperCase(); d.appendChild(h);
+    var pn = World.name ? World.name(p.k) : (p.n[L()] || p.n[0]);
+    var d = document.createElement("div"); d.className = "desk"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", pn);
+    var h = document.createElement("h2"); h.textContent = pn.toUpperCase(); d.appendChild(h);
     p.counters.forEach(function (c) {
       var a = document.createElement("a"); a.href = c.url; a.innerHTML = "<b></b><span></span>"; a.firstChild.textContent = c.ic;
-      a.lastChild.textContent = c.n[L()] || c.n[0]; var sm = document.createElement("small"); sm.textContent = c.d[L()] || c.d[0]; a.lastChild.appendChild(sm);
+      a.lastChild.textContent = c.k === "love" && World.name ? World.name("love") : (c.n[L()] || c.n[0]); var sm = document.createElement("small"); sm.textContent = (World.line && World.line(c.k)) || c.d[L()] || c.d[0]; a.lastChild.appendChild(sm);
       a.onclick = function (e) { if (e.metaKey || e.ctrlKey || matchMedia("(prefers-reduced-motion: reduce)").matches) return; e.preventDefault(); d.remove(); walk(p, c.url); };
       d.appendChild(a);
     });
@@ -416,7 +426,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
-    document.title = (L() ? t("title") : "The Neighbourhood") + " — FREE//BUILDER";
+    document.title = (World.name ? World.name("map") : "Nearby") + " — FREE//BUILDER";
     $("#spots").setAttribute("aria-label", t("map")); var lab = $("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
     spots(); clock(); kitties();
   }
@@ -432,7 +442,10 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   $("#edgeR").onclick = function () { pan.scrollBy({ left: pan.clientWidth * .8, behavior: "smooth" }); };
   window.addEventListener("resize", function () { clearTimeout(centre.t); centre.t = setTimeout(centre, 150); });
   var f = 0, last = 0;
-  function loop(ts) { if (ts - last > 110) { last = ts; f++; draw(f); } requestAnimationFrame(loop); }
+  function covered() { return document.documentElement.classList.contains("fbsh-open") && innerHeight > innerWidth; }   /* a place fills the phone: the town rests */
+  function loop(ts) { if (ts - last > 110 && !covered()) { last = ts; f++; draw(f); } requestAnimationFrame(loop); }
+  /* back from a place: the 📍 shows where you were */
+  window.FBMapBack = function (k) { if (k) { from = k; spots(); kitties(); } };
   words(); draw(0); setInterval(clock, 20000); centre();
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) requestAnimationFrame(loop);
 })();

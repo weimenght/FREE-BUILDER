@@ -6,15 +6,23 @@
 
 CODE: SORA
 ID: SK-08
-TITLE: Sora
+TITLE: Lie Back Park
 GENRE: Cloud watching for a blank mind
 AUTHOR: FREE//BUILDER
 DESC: Lie back under an open sky that keeps your own time. Draw on it and watch your scribble puff into a cloud and drift off, hold still to breathe, double-tap and the clouds take a shape.
 URL: lie-back/
 
+CODE: CABIN
+ID: NH-16
+TITLE: No Hurry
+GENRE: A cabin with a view, and nothing to do
+AUTHOR: FREE//BUILDER
+DESC: A small cabin on the high pasture with one big window. Clouds drift, cows wander, the weather does what it does. There is nothing to win and nothing to finish. Stay as long as you like.
+URL: no-hurry/
+
 CODE: GARDEN
 ID: GD-13
-TITLE: The Garden
+TITLE: Plant a Friend
 GENRE: One endless garden, planted together
 AUTHOR: FREE//BUILDER
 DESC: Pick a seed and plant it next to someone else's: cherry trees, sunflowers, peonies, ponds and stone lanterns. Everything grows over days, faster when people water it, and the garden keeps spreading.
@@ -22,15 +30,15 @@ URL: plant-a-friend/
 
 CODE: BREWERY
 ID: BW-14
-TITLE: The Brewery
+TITLE: Neighbours' Brew
 GENRE: Brew a beer, ship it to the bar
 AUTHOR: FREE//BUILDER
-DESC: Pick the malt, hops and yeast, add a twist like osmanthus or Sichuan pepper, and design the can. Ship it to Wei's Bar and Club Retro, where everyone can order it and raise a glass.
+DESC: Pick the malt, hops and yeast, add a twist like osmanthus or Sichuan pepper, and design the can. Send it to Next Door and Late Light, where everyone can order it and raise a glass.
 URL: neighbours-brew/
 
 CODE: NEST
 ID: CN-11
-TITLE: The Cats' Nest
+TITLE: Miso & Yuzu's
 GENRE: Two cats, up close
 AUTHOR: FREE//BUILDER
 DESC: The little room where Miso and Yuzu live. Stroke them till they purr, wave a feather, shake the treat tin, dim the lamp, and take photos for their album. The closer you get, the more of their story opens.
@@ -38,7 +46,7 @@ URL: miso-and-yuzu/
 
 CODE: SANCTUARY
 ID: AS-12
-TITLE: The Sanctuary
+TITLE: Come Home
 GENRE: A dog's home, and real adoptions
 AUTHOR: FREE//BUILDER
 DESC: Mantou the dog lives here, by the meadow. Throw his ball, follow his story to the station and back, and help real animals find a home: put up a notice for one you're caring for, or ask to adopt.
@@ -46,7 +54,7 @@ URL: come-home/
 
 CODE: TRAIN
 ID: TW-06
-TITLE: Train Window
+TITLE: Nearby Station
 GENRE: Sleeper car daydream
 AUTHOR: FREE//BUILDER
 DESC: Board a night sleeper and just look out. Stations from Kyoto to Sitges roll by, each in its own style and announced in its own language. Write on the fogged glass, and share your cabin so friends ride the same window, live.
@@ -54,39 +62,39 @@ URL: station/
 
 CODE: JUKEBOX
 ID: JB-09
-TITLE: Jukebox
+TITLE: Same Song
 GENRE: Light-up tunes, one shared record player
 AUTHOR: FREE//BUILDER
-DESC: Light up a few bulbs and you have a tune. Press it into a record, sign it, then drop a coin: it plays in Wei's Bar and the book corner at the same second, with your name on it.
+DESC: Light up a few bulbs and you have a tune. Press it into a record, sign it, then drop a coin: it plays Next Door and in Borrowed Pages at the same second, with your name on it.
 URL: same-song/
 
 CODE: POSTCARD
 ID: PC-10
-TITLE: Postcard
+TITLE: Say Hello
 GENRE: Slow mail with a sealed date
 AUTHOR: FREE//BUILDER
-DESC: Pick a picture and a stamp, write on the back, and seal it until the day you choose. Send the link to a friend, who can't open it a minute early, or hang it on the wall in Wei's Bar.
+DESC: Pick a picture and a stamp, write on the back, and seal it until the day you choose. Send the link to a friend, who can't open it a minute early, or hang it on the Wall at Next Door.
 URL: say-hello/
 
 CODE: BAR
 ID: WB-03
-TITLE: Wei's Bar & Coffee
+TITLE: Next Door
 GENRE: Cosy hutong hangout
 AUTHOR: FREE//BUILDER
-DESC: A tiny hutong counter: coffee by day, cocktails by night. Chat with Wei, pet the cats, drop a coin in the jukebox and leave a note for the next guest. If Wei's out, sneak behind the bar and mix your own.
+DESC: A tiny hutong counter: coffee by day, cocktails by night. Wei knows everyone and everywhere in town: ask him where to go, read the postcards on the Wall, pet the cats. If he's out, sneak behind the bar and mix your own.
 URL: next-door/
 
 CODE: BOOKS
 ID: DE-05
-TITLE: The Dog-Eared Corner
+TITLE: Borrowed Pages
 GENRE: Second-hand book swap
 AUTHOR: FREE//BUILDER
-DESC: A four-room book house next door to Wei's Bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one and pass it on by hand. The cats come over from the bar.
+DESC: A four-room book house next door to the bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, borrow one and pass it on by hand. The cats come over from the bar.
 URL: borrowed-pages/
 
 CODE: KINTSUGI
 ID: KS-07
-TITLE: Kintsugi Studio
+TITLE: Mended
 GENRE: Golden joinery, slow craft
 AUTHOR: FREE//BUILDER
 DESC: Pick a broken bowl and mend it the old way. Fit the shards, seal the cracks with lacquer, then dust the seams with gold. Sign the finished piece into a book every visitor can leaf through.
@@ -110,7 +118,7 @@ URL: handoff/
 
 CODE: DJ
 ID: RD-02
-TITLE: Retro DJ World Tour
+TITLE: Late Light
 GENRE: 8-bit rhythm and turntables
 AUTHOR: FREE//BUILDER
 DESC: Hit the records as they cross the line, scratch through the bars and drop the bass when the hype is full. Tour city to city, each with its own twist, or jam on pads and loops.
@@ -118,7 +126,7 @@ URL: late-light/
 
 CODE: CLIMB
 ID: CM-01
-TITLE: Crag Master
+TITLE: Hold On
 GENRE: Route-reading climbing tactics
 AUTHOR: FREE//BUILDER
 DESC: Read the wall, plan your hands, then commit. Ten real crags from Montserrat to El Capitan, 5.6 to 5.15d. Clip every bolt, chalk at the rests, and tie in with a friend to swap leads up a multi-pitch.

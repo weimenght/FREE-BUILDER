@@ -26,7 +26,7 @@
   size(); addEventListener("resize", size);
 
   /* ---------- the sky keeps your time ---------- */
-  function byClock() { var h = window.FBWorld ? FBWorld.hour() : new Date().getHours() + new Date().getMinutes() / 60;   /* the neighbourhood's hour for this visit */ return h >= 5 && h < 10.5 ? "morning" : h >= 10.5 && h < 16.5 ? "noon" : h >= 16.5 && h < 19.5 ? "dusk" : "night"; }
+  function byClock() { var h = window.FBWorld ? FBWorld.hour() : new Date().getHours() + new Date().getMinutes() / 60;   /* Nearby's hour for this visit */ return h >= 5 && h < 10.5 ? "morning" : h >= 10.5 && h < 16.5 ? "noon" : h >= 16.5 && h < 19.5 ? "dusk" : "night"; }
   var sky = byClock(); setSkyPalette(sky);
   setInterval(function () { var k = byClock(); if (k !== sky) { sky = k; setSkyPalette(k); } }, 60e3);
   function night() { return sky === "night"; }
@@ -51,7 +51,7 @@
     snow: { n: 0.1, tall: 0.6, far: [150, 160, 140], near: [120, 130, 110], flowers: [], fl: 0, seed: 0 }
   }[SCENE];
   var X = night() ? { stars: true, flies: Math.random() < 0.7 } : { rainbow: Math.random() < 0.3, shower: Math.random() < 0.3, kite: Math.random() < 0.45, plane: Math.random() < 0.6, flies: sky === "dusk" && Math.random() < 0.6 };
-  try { var WW = window.FBWorld && FBWorld.weather(); if (WW && !night()) { X.shower = WW === "rain" || WW === "storm"; if (WW === "fog" || WW === "snow") X.rainbow = false; } } catch (e) {}   /* rain in the neighbourhood rains here too */
+  try { var WW = window.FBWorld && FBWorld.weather(); if (WW && !night()) { X.shower = WW === "rain" || WW === "storm"; if (WW === "fog" || WW === "snow") X.rainbow = false; } } catch (e) {}   /* rain in Nearby rains here too */
   if (X.shower) X.rainbow = false;   /* a passing shower brings its own rainbow afterwards */
   if (SCENE === "snow") { X.flies = false; X.shower = false; X.rainbow = false; } if (SCENE === "dunes") { X.shower = false; X.rainbow = false; }
   try { if (typeof setBreezeSpeed === "function") setBreezeSpeed(pick([50, 90, 130, 180])); } catch (e) {}

@@ -1,5 +1,5 @@
 /* FREE//BUILDER Jukebox · core
-   One shared turntable for the studio (/nearby/same-song/), Wei's Bar and the Dog-Eared Corner.
+   One shared turntable for the studio (/nearby/same-song/), Next Door and Borrowed Pages.
    - a song is a short code: 1.<bpm>.<mood>.<instrument>.<melody 8x16 as 32 hex>.<drums 3x16 as 12 hex>
    - the synth turns that code into a ~30 s arrangement (intro, bass, drums, full, lift, outro)
    - the clock asks the database what is playing for everyone, and plays it from the right second
@@ -275,7 +275,7 @@
     spunAt: ["played in {v} by {n}", "{n} 在{v}点播", "{n} 在{v}點播", "puesta en {v} por {n}", "posada a {v} per {n}"],
     spunAt0: ["played in {v}", "在{v}点播", "在{v}點播", "puesta en {v}", "posada a {v}"],
     studio: ["the studio", "录音室", "錄音室", "el estudio", "l'estudi"],
-    bar: ["Wei's Bar", "Wei 的酒吧", "Wei 的酒吧", "el bar de Wei", "el bar d'en Wei"],
+    bar: ["Next Door", "“隔壁”", "“隔壁”", "Al Lado", "Al Costat"],
     books: ["the book corner", "书角", "書角", "el rincón de libros", "el racó de llibres"],
     house: ["house record", "店里的唱片", "店裡的唱片", "disco de la casa", "disc de la casa"],
     by: ["by {n}", "{n} 作", "{n} 作", "de {n}", "de {n}"],
