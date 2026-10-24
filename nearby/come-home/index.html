@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=9eb1352236" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=750e36e3ce" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Come Home · Nearby</title>
 <meta name="description" content="Mantou the dog's home by the meadow: play fetch with him, follow his story, and help real animals find a home. Post an animal that needs one, or ask to adopt.">
@@ -106,7 +106,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
   var W = {
     title: ["COME HOME", "回家吧", "回家吧", "VUELVE A CASA", "TORNA A CASA"],
     meet: ["MANTOU", "馒头", "饅頭", "MANTOU", "MANTOU"], mName: ["Mantou · 馒头", "馒头 · Mantou", "饅頭 · Mantou", "Mantou · 馒头", "Mantou · 馒头"],
-    mBio: ["Found at the station on a rainy winter night, three years ago. Cream coat, curly tail, red collar. Loves tennis balls, trains and showing visitors around. Not up for adoption: he's the one who welcomes everyone else.", "三年前一个下雨的冬夜，在火车站被人发现。奶油色的毛，卷卷的尾巴，红项圈。喜欢网球、火车，还有带客人参观。它不参与领养：它是负责迎接大家的那一个。", "三年前一個下雨的冬夜，在火車站被人發現。奶油色的毛，捲捲的尾巴，紅項圈。喜歡網球、火車，還有帶客人參觀。牠不參與領養：牠是負責迎接大家的那一個。", "Lo encontraron en la estación una noche lluviosa de invierno, hace tres años. Pelo color crema, cola rizada, collar rojo. Le encantan las pelotas, los trenes y enseñar el refugio. No está en adopción: es él quien recibe a todos.", "El van trobar a l'estació una nit plujosa d'hivern, fa tres anys. Pèl color crema, cua arrissada, collar vermell. Li encanten les pilotes, els trens i ensenyar el refugi. No està en adopció: és ell qui rep tothom."],
+    mBio: ["Found at the station on a rainy night. Loves tennis balls and trains. Not for adoption: he welcomes everyone else.", "一个雨夜在火车站被人发现。爱网球，爱火车。它不参与领养：它负责迎接大家。", "一個雨夜在火車站被人發現。愛網球，愛火車。牠不參與領養：牠負責迎接大家。", "Lo encontraron en la estación una noche de lluvia. Le encantan las pelotas y los trenes. No está en adopción: él recibe a todos.", "El van trobar a l'estació una nit de pluja. Li encanten les pilotes i els trens. No està en adopció: ell rep tothom."],
     hint: ["Tap the grass to throw the ball. Tap Mantou to say hello.", "点草地扔球，点馒头跟它打招呼。", "點草地丟球，點饅頭跟牠打招呼。", "Toca la hierba para lanzar la pelota. Toca a Mantou para saludarlo.", "Toca l'herba per llançar la pilota. Toca en Mantou per saludar-lo."],
     good: ["Good boy!", "好狗狗！", "好狗狗！", "¡Buen chico!", "Bon gos!"],
     board: ["LOOKING FOR A HOME", "等一个家", "等一個家", "BUSCAN HOGAR", "BUSQUEN LLAR"],
@@ -216,7 +216,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
     requestAnimationFrame(frame);
   }
   function woof() { try { var A = new (window.AudioContext || window.webkitAudioContext)(), n = A.currentTime; [0, .22].forEach(function (d) { var o = A.createOscillator(), g2 = A.createGain(), lp = A.createBiquadFilter(); o.type = "sawtooth"; o.frequency.setValueAtTime(340, n + d); o.frequency.exponentialRampToValueAtTime(170, n + d + .12); lp.type = "lowpass"; lp.frequency.value = 900; g2.gain.setValueAtTime(.0001, n + d); g2.gain.linearRampToValueAtTime(.05, n + d + .02); g2.gain.exponentialRampToValueAtTime(.0001, n + d + .14); o.connect(lp); lp.connect(g2); g2.connect(A.destination); o.start(n + d); o.stop(n + d + .16); }); } catch (e) {} }
-  function hint(m) { $("hint").textContent = m; clearTimeout(hint.t); hint.t = setTimeout(function () { $("hint").textContent = t("hint"); }, 2500); }
+  function hint(m) { $("hint").textContent = m; clearTimeout(hint.t); hint.t = setTimeout(function () { $("hint").textContent = ""; }, 2500); }
   cv.addEventListener("click", function (e) {
     var r = cv.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * WD, y = (e.clientY - r.top) / r.height * HT;
     if (x > M.x - 2 && x < M.x + 24 && y > GROUND - 20 && y < GROUND + 4) { woof(); hearts.push({ x: M.x + 14, y: GROUND - 20, a: 1 }); M.pose = "sit"; M.until = performance.now() + 2000; try { if (window.FBDogStory) FBDogStory.tap("sanctuary"); } catch (er) {} return; }
@@ -326,7 +326,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
     document.title = (window.FBWorld && FBWorld.name) ? FBWorld.name("sanctuary") + " · " + FBWorld.name("map") : document.title;
-    $("hint").textContent = t("hint"); $("mineBtn").setAttribute("aria-label", t("mineT")); $("mineBtn").title = t("mineT"); $("yard").setAttribute("aria-label", t("hint"));
+    $("hint").textContent = ""; $("mineBtn").setAttribute("aria-label", t("mineT")); $("mineBtn").title = t("mineT"); $("yard").setAttribute("aria-label", t("hint"));
     var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
     paintChips(); if (rows.length) paint();
   }

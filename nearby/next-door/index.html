@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=9eb1352236" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=750e36e3ce" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -982,7 +982,7 @@
                   <span id="sleep-header-badge" class="font-retro text-[14px] text-[var(--muted)] animate-pulse"></span>
                 </div>
                 <p id="sleep-story-text" class="text-[14px] leading-snug mt-1"></p>
-                <p id="sleep-poke-tip" class="label mt-1"></p>
+                <p id="sleep-poke-tip" class="label mt-1" hidden></p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3 gap-1.5 mt-2">
                   <button id="sleep-wake" onclick="wakeUpBartender()" class="opt-btn">🔔 <span id="sleep-btn-wake" class="flex-1"></span></button>
                   <a id="away-go" class="opt-btn" href="/nearby/lie-back/" style="display:none">↗ <span id="away-go-lbl" class="flex-1"></span></a>
@@ -7063,7 +7063,7 @@
       if (!el) return;
       if (Patron.name && Bond.visits > 0) {
         const lv = Bond.level();
-        el.textContent = `${fmt(T('door.welcome'), { name: esc(Patron.name) }).replace(/&amp;/g, '&')} · ♥ ${L(WeiText.levels[lv].name)}`;
+        el.textContent = fmt(T('door.welcome'), { name: esc(Patron.name) }).replace(/&amp;/g, '&');
       } else el.textContent = '';
     }
 

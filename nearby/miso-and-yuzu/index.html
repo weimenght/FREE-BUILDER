@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=9eb1352236" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=750e36e3ce" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Miso & Yuzu's · Nearby</title>
 <meta name="description" content="The little room where Miso and Yuzu live. Pet them, feed them a treat, wave a feather, and leaf through their album.">
@@ -371,7 +371,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     ["miso", "yuzu"].forEach(function (k) {
       var d = $("c-" + k), lv = Math.min(5, Math.floor(S[k] / 12)); d.querySelector("b").textContent = t(CATS[k].n); d.querySelector(".hearts").textContent = "♥".repeat(lv) + "♡".repeat(5 - lv);
       d.querySelector(".hearts").setAttribute("aria-label", lv + "/5");
-      var ul = d.querySelector("ul"); ul.innerHTML = ""; CATS[k].facts.forEach(function (fa) { var li = document.createElement("li"); li.textContent = t(fa); ul.appendChild(li); });
+      var ul = d.querySelector("ul"); ul.innerHTML = ""; CATS[k].facts.filter(function (fa, i) { return i === 0 || /^Likes/.test(fa[0]); }).forEach(function (fa) { var li = document.createElement("li"); li.textContent = t(fa); ul.appendChild(li); });
     });
   }
   function words() {

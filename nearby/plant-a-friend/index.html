@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=9eb1352236" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=750e36e3ce" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Plant a Friend · Nearby</title>
 <meta name="description" content="One endless garden that everyone plants together. Pick a seed, plant it next to someone else's, water what you pass, and come back to see it bloom.">
@@ -36,6 +36,7 @@ button{font:inherit;color:inherit}
 .card button.go{padding:8px 14px;border:2px solid #000;background:#7ac4e8;font:700 14px var(--ui);cursor:pointer;box-shadow:2px 2px 0 #000;color:#1d130d}
 .card .x{position:absolute;top:8px;right:8px;width:28px;height:28px;padding:0;border:2px solid #000;background:#fff8e8;color:transparent;cursor:pointer;overflow:hidden}
 .card .x::before,.card .x::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:3px;margin:-1.5px 0 0 -7px;background:#2a1d14;transform:rotate(45deg)}.card .x::after{transform:rotate(-45deg)}
+.tray.nudge{animation:nudge .5s steps(4)}@keyframes nudge{25%{transform:translateY(-8px)}50%{transform:translateY(0)}75%{transform:translateY(-4px)}}
 @keyframes up{from{transform:translate(-50%,12px);opacity:0}}
 .toast{position:fixed;left:50%;top:calc(80px + env(safe-area-inset-top));transform:translateX(-50%) translateY(-10px);opacity:0;transition:.25s;z-index:60;background:#000;color:#fff3c0;border:3px solid var(--a);padding:8px 14px;font-size:19px;pointer-events:none;max-width:calc(100vw - 32px);text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%)}
@@ -212,7 +213,7 @@ button{font:inherit;color:inherit}
   function tap(tl) {
     closeCard(); var p = plants[tl.x + "," + tl.y];
     if (p) { info(p); return; }
-    if (!sel) { toast(t("pick")); return; }
+    if (!sel) { var tr = $("tray"); tr.classList.remove("nudge"); void tr.offsetWidth; tr.classList.add("nudge"); return; }
     if (!canPlant(tl)) { toast(t("near")); return; }
     var tmp = [0, tl.x, tl.y, sel, 0, 0]; put(tmp); chime(523);
     api("garden_plant", { p_secret: key(), p_x: tl.x, p_y: tl.y, p_kind: sel }).then(function (id) { var q = plants[tl.x + "," + tl.y]; if (q) q[0] = id; total++; paintCount(); toast(t("planted")); })
@@ -252,7 +253,6 @@ button{font:inherit;color:inherit}
   if (!isNaN(qx) && !isNaN(qy)) { cx = qx + .5; cy = qy + .5; load(true); stats(); }
   else stats().then(function (s) { if (s && s.newest) { cx = s.newest[0] + .5; cy = s.newest[1] + .5; } load(true); });
   setInterval(function () { if (!document.hidden) { load(true); stats(); } }, 25000);
-  setTimeout(function () { toast(t("pick")); }, 1500);
   requestAnimationFrame(frame);
 })();
 </script>
