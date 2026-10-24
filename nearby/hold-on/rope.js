@@ -9,7 +9,7 @@
   var R = { code: "", host: false, tx: null, peer: null, role: null, active: false, me: "", led: { me: 0, them: 0 }, soft: false, slack: false, lastPose: null, cheerAt: 0 };
   var W_LOGICAL = 360;
   var cfg = { url: "", key: "", rt: "" };
-  (function keys() { var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; cfg.rt = c.realtimeUrl || ""; }; document.head.appendChild(sc); })();
+  (function keys() { var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; cfg.rt = c.realtimeUrl || ""; cfg.done = true; }; document.head.appendChild(sc); })();
 
   /* ---------- look ---------- */
   var css = "" +
@@ -38,22 +38,28 @@
   /* ---------- the relay (Supabase Realtime broadcast; tabs on one device without keys) ---------- */
   function transport(code, onMsg, onStatus) {
     var topic = "realtime:fbclimb-" + code;
+    if (!cfg.done) {   /* an invite link can join before the keys have loaded: wait for them, so both sides meet on the same channel */
+      var inner = null, gone = false, q = [];
+      (function wait() { if (gone) return; if (!cfg.done) return setTimeout(wait, 100); inner = transport(code, onMsg, onStatus); q.forEach(function (a) { inner.send(a[0], a[1]); }); })();
+      return { send: function (ev, p) { if (inner) inner.send(ev, p); else q.push([ev, p]); }, close: function () { gone = true; if (inner) inner.close(); } };
+    }
     if (!cfg.url) {
       var bc = null; try { bc = new BroadcastChannel("fb_climb_" + code); bc.onmessage = function (e) { onMsg(e.data.event, e.data.payload); }; } catch (e) {}
       setTimeout(function () { onMsg("_ready", {}); }, 0);
       return { send: function (ev, p) { try { bc && bc.postMessage({ event: ev, payload: p }); } catch (e) {} }, close: function () { try { bc && bc.close(); } catch (e) {} } };
     }
-    var ws = null, ref = 0, hb = null, closed = false, tries = 0, joined = false;
+    var att = 0, ws = null, ref = 0, hb = null, closed = false, tries = 0, joined = false;
     var base = (cfg.rt || cfg.url.replace(/^http/, "ws") + "/realtime/v1/websocket").replace(/\/$/, "");
     var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "apikey=" + encodeURIComponent(cfg.key) + "&vsn=1.0.0";
     var raw = function (m) { try { ws && ws.readyState === 1 && ws.send(JSON.stringify(m)); } catch (e) {} };
     function connect() {
       onStatus("connecting");
-      try { ws = new WebSocket(url); } catch (e) { return retry(); }
-      ws.onopen = function () { tries = 0; raw({ topic: topic, event: "phx_join", ref: String(++ref), payload: { config: { broadcast: { self: false, ack: false }, presence: { key: "" }, private: false }, access_token: cfg.key } }); clearInterval(hb); hb = setInterval(function () { raw({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(++ref) }); }, 25000); };
+      try { if (window.FBWorld && FBWorld.rtUrl) url = FBWorld.rtUrl(cfg, att++); ws = new WebSocket(url); } catch (e) { return retry(); }
+      ws.onopen = function () { tries = 0; raw({ topic: topic, event: "phx_join", ref: String(++ref), payload: { config: { broadcast: { self: false, ack: false }, presence: { key: "" }, private: !!(window.FBWorld && FBWorld.rtPriv && FBWorld.rtPriv()) }, access_token: cfg.key } }); clearInterval(hb); hb = setInterval(function () { raw({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(++ref) }); }, 25000); };
       ws.onmessage = function (e) {
         var m; try { m = JSON.parse(e.data); } catch (_) { return; }
-        if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "ok" && !joined) { joined = true; onStatus("ok"); onMsg("_ready", {}); }
+        if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "ok" && !joined) { joined = true; if (window.FBWorld && FBWorld.rtGood) FBWorld.rtGood(url); onStatus("ok"); onMsg("_ready", {}); }
+        else if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "error" && !joined) { if (window.FBWorld && FBWorld.rtPriv) FBWorld.rtPriv(true); att--; try { ws.close(); } catch (_) {} }   /* a project that only allows private channels: rejoin as private */
         else if (m.event === "broadcast" && m.payload) onMsg(m.payload.event, m.payload.payload);
         else if (m.event === "phx_error" || m.event === "phx_close") { joined = false; onStatus("bad"); }
       };

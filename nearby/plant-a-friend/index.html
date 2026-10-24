@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=750e36e3ce" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b15f9632bf"></script><script data-fbg src="/fbkit/fbg.js?v=ef829f2c59" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Plant a Friend · Nearby</title>
 <meta name="description" content="One endless garden that everyone plants together. Pick a seed, plant it next to someone else's, water what you pass, and come back to see it bloom.">
@@ -32,7 +32,7 @@ button{font:inherit;color:inherit}
 .seed[aria-pressed="true"]{background:var(--a);box-shadow:0 0 0 3px #fff,3px 3px 0 #000}.seed[aria-pressed="true"] span{color:#1d130d}
 .card{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:4;width:min(320px,calc(100% - 24px));padding:12px 14px;background:#f6f1e2;color:#2a2418;border:3px solid #000;box-shadow:4px 4px 0 #000;font:15px/1.4 var(--ui);animation:up .25s steps(3)}
 .card b{display:block;font:700 16px var(--ui)}.card small{color:#6a6250}
-.card .row{display:flex;gap:8px;margin-top:10px}
+.card .row{display:flex;gap:8px;margin-top:10px}.card .row input{flex:1;min-width:0;padding:8px;border:2px solid #000;font:16px var(--ui);background:#fff}.card .who{margin-top:4px;font:14px var(--ui);display:flex;align-items:center;gap:6px}.card .rp{margin-left:auto;margin-right:30px;border:0;background:none;color:#9a8f78;cursor:pointer;font-size:13px}
 .card button.go{padding:8px 14px;border:2px solid #000;background:#7ac4e8;font:700 14px var(--ui);cursor:pointer;box-shadow:2px 2px 0 #000;color:#1d130d}
 .card .x{position:absolute;top:8px;right:8px;width:28px;height:28px;padding:0;border:2px solid #000;background:#fff8e8;color:transparent;cursor:pointer;overflow:hidden}
 .card .x::before,.card .x::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:3px;margin:-1.5px 0 0 -7px;background:#2a1d14;transform:rotate(45deg)}.card .x::after{transform:rotate(-45deg)}
@@ -49,7 +49,7 @@ button{font:inherit;color:inherit}
 <div class="app">
   <header class="top">
     <div class="sign" data-t="title">PLANT A FRIEND</div>
-    <div class="tools"><span class="count" id="count"></span><button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button></div>
+    <div class="tools"><button class="pill" type="button" id="me"></button><span class="count" id="count"></span><button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button></div>
   </header>
   <h1 class="sr" data-t="title">Plant a Friend</h1>
   <div class="field" id="field">
@@ -78,6 +78,10 @@ button{font:inherit;color:inherit}
     offline: ["Plant a Friend can't be reached right now.", "暂时连不上“种个朋友”。", "暫時連不上「種個朋友」。", "Ahora no se puede llegar a Planta un Amigo.", "Ara no es pot arribar a Planta un Amic."],
     privacy: ["Kept on this device (your privacy choice).", "按你的隐私选择，只保存在这台设备上。", "按你的隱私選擇，只保存在這台裝置上。", "Se queda en este dispositivo (tu elección de privacidad).", "Es queda en aquest dispositiu (la teva elecció de privadesa)."],
     planted: ["Planted. Come back and watch it grow.", "种下了！回来看看它长大。", "種下了！回來看看它長大。", "Plantada. Vuelve a verla crecer.", "Plantada. Torna a veure-la créixer."],
+    by: ["planted by {n}", "{n} 种的", "{n} 種的", "plantada por {n}", "plantada per {n}"],
+    who: ["Who's planting?", "谁来种？", "誰來種？", "¿Quién planta?", "Qui planta?"],
+    yourName: ["Your name", "你的名字", "你的名字", "Tu nombre", "El teu nom"],
+    report: ["Report this name", "举报这个名字", "檢舉這個名字", "Denunciar este nombre", "Denunciar aquest nom"],
     water: ["Water", "浇水", "澆水", "Regar", "Regar"], watered: ["Watered. It'll grow a little faster.", "浇好了，它会长得快一点。", "澆好了，它會長得快一點。", "Regada. Crecerá un poco más rápido.", "Regada. Creixerà una mica més de pressa."], wateredAlready: ["You've watered this one today.", "你今天已经浇过它了。", "你今天已經澆過它了。", "Ya la has regado hoy.", "Ja l'has regada avui."],
     st: ["seedling", "幼苗", "幼苗", "brote", "brot"], st1: ["young", "小苗", "小苗", "joven", "jove"], st2: ["grown", "长大了", "長大了", "crecida", "crescuda"], st3: ["in full bloom", "盛开", "盛開", "en plena flor", "en plena flor"], st3t: ["fully grown", "长成大树", "長成大樹", "adulto", "adult"],
     ago: ["planted {n} ago", "{n}前种下", "{n}前種下", "plantada hace {n}", "plantada fa {n}"], min: ["{n} min", "{n} 分钟", "{n} 分鐘", "{n} min", "{n} min"], hr: ["{n} h", "{n} 小时", "{n} 小時", "{n} h", "{n} h"], day: ["{n} days", "{n} 天", "{n} 天", "{n} días", "{n} dies"],
@@ -106,7 +110,7 @@ button{font:inherit;color:inherit}
 
   /* ---------- the garden in memory: "x,y" -> [id, x, y, kind, age seconds at load, waters, loadedAt] ---------- */
   var plants = {}, loaded = null, total = 0;
-  function put(r) { plants[r[1] + "," + r[2]] = [r[0], r[1], r[2], r[3], r[4], r[5], Date.now()]; }
+  function put(r) { plants[r[1] + "," + r[2]] = [r[0], r[1], r[2], r[3], r[4], r[5], Date.now(), r[6] || null]; }   /* [7] = who planted it */
   function age(p) { return p[4] + (Date.now() - p[6]) / 1000; }
   function stage(p) { var e = age(p) * (1 + .25 * p[5]); return KIND[p[3]] && KIND[p[3]].fixed ? 3 : e < 600 ? 0 : e < 21600 ? 1 : e < 172800 ? 2 : 3; }
   function view() { var w = cv.clientWidth / T, h = cv.clientHeight / T; return [Math.floor(cx - w / 2) - 2, Math.floor(cy - h / 2) - 3, Math.ceil(cx + w / 2) + 2, Math.ceil(cy + h / 2) + 2]; }
@@ -169,6 +173,8 @@ button{font:inherit;color:inherit}
     }
     if (hover && sel) { g.fillStyle = hover.ok ? "rgba(255,255,255,.22)" : "rgba(232,80,60,.25)"; g.fillRect(sx(hover.x), sy(hover.y), Math.ceil(TS), Math.ceil(TS)); g.strokeStyle = hover.ok ? "#fff3c0" : "#e8503c"; g.lineWidth = Math.max(1, DPR * 2); g.strokeRect(sx(hover.x) + 1, sy(hover.y) + 1, Math.ceil(TS) - 2, Math.ceil(TS) - 2); }
     for (var yy = y0; yy <= y1; yy++) for (var xx = x0; xx <= x1; xx++) { var p = plants[xx + "," + yy]; if (!p) continue; OXp = sx(xx); OYp = sy(yy); ctx = g; drawPlant(p[3], stage(p), xx, yy, night); }
+    if (T >= 40) { g.font = Math.round(13 * DPR) + "px 'VT323',monospace"; g.textAlign = "center"; g.textBaseline = "top";   /* close up, each plant shows who planted it */
+      for (var ny = y0; ny <= y1; ny++) for (var nx = x0; nx <= x1; nx++) { var q = plants[nx + "," + ny]; if (!q || !q[7]) continue; var lx = sx(nx) + TS / 2, ly = sy(ny) + TS - 2 * DPR, tw = g.measureText(q[7]).width + 6 * DPR; g.fillStyle = "rgba(20,30,16,.62)"; g.fillRect(lx - tw / 2, ly, tw, 13 * DPR); g.fillStyle = "#f6f1e2"; g.fillText(q[7], lx, ly + DPR); } }
     if (night) { g.fillStyle = "rgba(8,10,40,.32)"; g.fillRect(0, 0, w, h); for (var ff = 0; ff < 14; ff++) { var fx = (hash(ff, 1) * w + Math.sin((f + ff * 30) / 40) * 30) % w, fy = (hash(ff, 2) * h + Math.cos((f + ff * 20) / 50) * 20) % h; if ((f + ff * 7) % 60 < 40) { g.fillStyle = "#e8f07a"; g.fillRect(fx, fy, 2 * DPR, 2 * DPR); } } }
     else if (ph === "dusk" || ph === "dawn") { g.fillStyle = "rgba(240,140,90,.12)"; g.fillRect(0, 0, w, h); }
     if (wx === "rain" || wx === "storm") { g.fillStyle = "rgba(190,210,255,.55)"; for (var rd = 0; rd < 120; rd++) g.fillRect((hash(rd, 3) * w + f * 3 * DPR) % w, (hash(rd, 4) * h + f * 9 * DPR) % h, DPR, 6 * DPR); }
@@ -210,13 +216,26 @@ button{font:inherit;color:inherit}
   function chime(fq) { try { var A = new (window.AudioContext || window.webkitAudioContext)(), n = A.currentTime; [fq, fq * 1.5].forEach(function (q, i) { var o = A.createOscillator(), gg = A.createGain(); o.type = "triangle"; o.frequency.value = q; gg.gain.setValueAtTime(.05, n + i * .08); gg.gain.exponentialRampToValueAtTime(.0001, n + i * .08 + .5); o.connect(gg); gg.connect(A.destination); o.start(n + i * .08); o.stop(n + i * .08 + .55); }); } catch (e) {} }
   var card = null;
   function closeCard() { if (card) { card.remove(); card = null; } }
+  function nick(v) { try { if (v != null) localStorage.setItem("fb_nick", v); return (localStorage.getItem("fb_nick") || "").trim(); } catch (e) { return ""; } }
+  var askedName = false;
+  function askName(then) {   /* the first planting of a visit: who is planting? (blank is fine) */
+    closeCard(); card = document.createElement("div"); card.className = "card"; card.setAttribute("role", "dialog");
+    card.innerHTML = '<b></b><div class="row"><input maxlength="24" autocomplete="nickname"><button type="button" class="go">🌱</button></div><button type="button" class="x" aria-label="✕">✕</button>';
+    card.querySelector("b").textContent = t("who"); var inp = card.querySelector("input"); inp.placeholder = t("yourName"); inp.setAttribute("aria-label", t("yourName")); inp.value = nick();
+    var go = function () { askedName = true; nick(inp.value.trim().slice(0, 24)); paintMe(); closeCard(); then(); };
+    card.querySelector(".go").onclick = go; inp.onkeydown = function (e) { if (e.key === "Enter") go(); };
+    card.querySelector(".x").onclick = function () { askedName = true; closeCard(); then(); };
+    field.appendChild(card); setTimeout(function () { inp.focus(); }, 30);
+  }
+  function paintMe() { var b = $("me"); if (b) { var n = nick(); b.textContent = n ? "🙂 " + n : "🙂"; b.setAttribute("aria-label", t("yourName")); } }
   function tap(tl) {
     closeCard(); var p = plants[tl.x + "," + tl.y];
     if (p) { info(p); return; }
     if (!sel) { var tr = $("tray"); tr.classList.remove("nudge"); void tr.offsetWidth; tr.classList.add("nudge"); return; }
     if (!canPlant(tl)) { toast(t("near")); return; }
-    var tmp = [0, tl.x, tl.y, sel, 0, 0]; put(tmp); chime(523);
-    api("garden_plant", { p_secret: key(), p_x: tl.x, p_y: tl.y, p_kind: sel }).then(function (id) { var q = plants[tl.x + "," + tl.y]; if (q) q[0] = id; total++; paintCount(); toast(t("planted")); })
+    if (!askedName) { askName(function () { tap(tl); }); return; }
+    var tmp = [0, tl.x, tl.y, sel, 0, 0, nick() || null]; put(tmp); chime(523);
+    api("garden_plant_named", { p_secret: key(), p_x: tl.x, p_y: tl.y, p_kind: sel, p_name: nick() }).then(function (id) { var q = plants[tl.x + "," + tl.y]; if (q) q[0] = id; total++; paintCount(); toast(t("planted")); })
       .catch(function (e) { delete plants[tl.x + "," + tl.y]; var m = String(e && e.message || e); toast(/near/.test(m) ? t("near") : /taken/.test(m) ? t("taken") : /rest/.test(m) ? t("rest") : /fast/.test(m) ? t("fast") : /privacy/i.test(m) ? t("privacy") : t("offline")); load(true); });
   }
   function ago(sec) { var m = Math.floor(sec / 60), h = Math.floor(sec / 3600), d = Math.floor(sec / 86400); return t("ago").replace("{n}", d ? t("day").replace("{n}", d) : h ? t("hr").replace("{n}", h) : t("min").replace("{n}", Math.max(1, m))); }
@@ -226,6 +245,8 @@ button{font:inherit;color:inherit}
     card.innerHTML = '<b></b><small></small><div class="row"></div><button type="button" class="x" aria-label="✕">✕</button>';
     card.querySelector("b").textContent = k.n[L()] || k.n[0];
     card.querySelector("small").textContent = (k.fixed ? "" : lab + " · ") + ago(age(p)) + (k.fixed ? "" : " · " + t("waters").replace("{n}", p[5]));
+    if (p[7]) { var who = document.createElement("div"); who.className = "who"; who.textContent = "🌱 " + t("by").replace("{n}", p[7]); card.insertBefore(who, card.querySelector(".row"));
+      if (p[0]) { var rp = document.createElement("button"); rp.type = "button"; rp.className = "rp"; rp.textContent = "⚑"; rp.title = t("report"); rp.setAttribute("aria-label", t("report")); rp.onclick = function () { rp.disabled = true; api("garden_report_name", { p_secret: key(), p_id: p[0] }).then(function () { rp.textContent = "✓"; }).catch(function () {}); }; who.appendChild(rp); } }
     if (!k.fixed && p[0]) { var b = document.createElement("button"); b.type = "button"; b.className = "go"; b.textContent = "💧 " + t("water"); b.onclick = function () { b.disabled = true; api("garden_water", { p_secret: key(), p_id: p[0] }).then(function (n) { if (n < 0) toast(t("wateredAlready")); else { p[5] = n; toast("💧 " + t("watered")); chime(784); } closeCard(); }).catch(function () { b.disabled = false; toast(t("offline")); }); }; card.querySelector(".row").appendChild(b); }
     card.querySelector(".x").onclick = closeCard; field.appendChild(card);
   }
@@ -235,12 +256,14 @@ button{font:inherit;color:inherit}
   KINDS.forEach(function (k) { var b = document.createElement("button"); b.type = "button"; b.className = "seed"; b.dataset.k = k[0]; b.appendChild(trayIcon(k[0])); var sp = document.createElement("span"); b.appendChild(sp); b.onclick = function () { sel = sel === k[0] ? null : k[0]; paintTray(); closeCard(); }; $("tray").appendChild(b); });
   function paintTray() { [].forEach.call($("tray").children, function (b) { var n = KIND[b.dataset.k].n; b.setAttribute("aria-pressed", b.dataset.k === sel); b.lastChild.textContent = n[L()] || n[0]; b.setAttribute("aria-label", n[L()] || n[0]); }); }
 
+  $("me").onclick = function () { askName(function () {}); };
   function words() {
     document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L()];
     document.querySelectorAll("[data-t]").forEach(function (e) { e.textContent = t(e.getAttribute("data-t")); });
     document.title = (window.FBWorld && FBWorld.name) ? FBWorld.name("garden") + " · " + FBWorld.name("map") : document.title;
     $("zin").setAttribute("aria-label", t("zin")); $("zout").setAttribute("aria-label", t("zout")); $("newest").setAttribute("aria-label", t("newest")); $("newest").title = t("newest"); $("tray").setAttribute("aria-label", t("seeds"));
     $("field").setAttribute("aria-label", t("pick"));
+    paintMe();
     var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
     paintTray();
   }

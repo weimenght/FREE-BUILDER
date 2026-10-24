@@ -58,8 +58,8 @@
     ".cb-home{position:fixed;top:max(10px,env(safe-area-inset-top));left:50%;transform:translate(-50%,-140%);z-index:70;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 14px;border-radius:999px;background:rgba(248,239,224,.96);color:#2a1a10;font:600 13px system-ui,-apple-system,sans-serif;box-shadow:0 10px 30px -10px #000;transition:transform .5s}.cb-home.on{transform:translate(-50%,0)}.cb-home svg{width:18px;height:18px;color:#1a73e8}.cb-home b{display:grid;place-items:center;width:20px;height:20px;border:1.5px solid currentColor;border-radius:5px;font-size:13px}.cb-home button{width:28px;height:28px;border:0;border-radius:50%;background:rgba(42,26,16,.08);font-size:16px;cursor:pointer;color:inherit}" +
     ".cb-stn{display:block;font:11px/1.4 ui-monospace,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;opacity:.6;margin-bottom:12px;text-align:center}.cb-doors{display:grid;grid-template-columns:1fr 1fr;gap:10px}" +
     ".cb-door{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;border-radius:16px;border:1.5px solid rgba(42,26,16,.25);text-decoration:none;color:inherit;text-align:center;transition:.2s}.cb-door b{font-size:34px;line-height:1}.cb-door span{font:400 17px/1.2 Georgia,'Songti SC',serif}.cb-door small{font:600 12px system-ui,sans-serif;opacity:.7}.cb-door.on,.cb-door:hover,.cb-door:focus-visible{border-color:currentColor;background:rgba(255,190,110,.18)}" +
-    ".cb-cat{position:absolute;left:0;bottom:2%;z-index:24;width:clamp(56px,9%,96px);aspect-ratio:64/40;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}.cb-cat svg{width:100%;height:100%;overflow:visible}.cb-cat.rev svg{transform:scaleX(-1)}" +
-    ".cb-cat .legs{animation:cbStep .38s steps(2) infinite}.cb-cat.sit .legs{animation:none}.cb-cat .tail{transform-origin:8px 22px;animation:cbTail 1.6s ease-in-out infinite}@keyframes cbStep{50%{transform:translateY(-1px)}}@keyframes cbTail{50%{transform:rotate(-14deg)}}" +
+    ".cb-cat{position:absolute;left:0;bottom:2%;z-index:24;width:clamp(56px,9%,96px);aspect-ratio:18/14;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.35))}.cb-cat svg{width:100%;height:100%;overflow:visible;image-rendering:pixelated}.cb-cat.rev svg{transform:scaleX(-1)}" +
+    ".cb-cat .legs{animation:cbStep .3s steps(1) infinite}.cb-cat .legs.l2{animation-direction:reverse}.cb-cat.sit .legs{animation:none}.cb-cat .tail{transform-origin:3px 6px;animation:cbTail 1.6s steps(2) infinite}@keyframes cbStep{50%{opacity:0}}@keyframes cbTail{50%{transform:rotate(-14deg)}}" +
     ".cb-heart{position:absolute;left:60%;top:-30%;color:#ff8fa0;font:700 18px system-ui;animation:cbUp 1.2s ease-out forwards;pointer-events:none}@keyframes cbUp{to{transform:translateY(-34px);opacity:0}}" +
     ".cb-rotate{display:none!important}" +   /* upright phones ride too: the window just grows tall */
     "@media (orientation:portrait){body.cb-on #cabinContainer{padding:4px}body.cb-on .windowsill-ledge{flex-wrap:wrap}}" +
@@ -210,13 +210,13 @@
     });
   }
   /* ---------- Yuzu and Miso ride along: along the sill, past the glass ---------- */
-  var CAT = { Yuzu: { body: "#e8913a", belly: "#f8dcae", eye: "#4f9a62", stripe: "#b5611d" }, Miso: { body: "#231b17", belly: "#3a2f29", eye: "#f2c94c", stripe: "#231b17" } };
+  /* the same pixel cats as everywhere in town (FBWorld.PETS, drawn like Next Door's sprites) */
+  var PET = (window.FBWorld && FBWorld.PETS) || { miso: { b: "#231b17", d: "#3a2f29", e: "#f2c94c", nose: "#c98272" }, yuzu: { b: "#e8913a", d: "#b5611d", belly: "#f8dcae", e: "#4f9a62", nose: "#e07a8a" } };
+  var CAT = { Yuzu: PET.yuzu, Miso: PET.miso };
   function catSvg(c) {
-    var k = CAT[c];
-    return '<svg viewBox="0 0 64 40" aria-hidden="true"><path d="M8 26c0-9 10-14 24-14s20 4 22 10l-2 6H10z" fill="' + k.body + '"/><path d="M14 28h34" stroke="' + k.belly + '" stroke-width="4" stroke-linecap="round"/>' +
-      '<path class="tail" d="M8 22c-6-2-8-8-4-12" fill="none" stroke="' + k.body + '" stroke-width="4" stroke-linecap="round"/><circle cx="52" cy="17" r="9" fill="' + k.body + '"/><path d="M45 11l2-8 5 6zM59 11l-2-8-5 6z" fill="' + k.body + '"/>' +
-      '<circle cx="49" cy="16" r="1.6" fill="' + k.eye + '"/><circle cx="55" cy="16" r="1.6" fill="' + k.eye + '"/><path d="M20 16l2 6M28 14l1 6" stroke="' + k.stripe + '" stroke-width="2" opacity=".6"/>' +
-      '<g class="legs" fill="' + k.body + '"><rect x="14" y="28" width="4" height="10" rx="2"/><rect x="22" y="28" width="4" height="10" rx="2"/><rect x="40" y="28" width="4" height="10" rx="2"/><rect x="47" y="28" width="4" height="10" rx="2"/></g></svg>';
+    if (window.FBWorld && FBWorld.petSvg) return FBWorld.petSvg(c.toLowerCase());
+    var C = CAT[c], r = function (x, y, w, h, f) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + f + '"/>'; };
+    return '<svg viewBox="0 0 18 14" shape-rendering="crispEdges" aria-hidden="true">' + r(4, 6, 11, 5, C.b) + r(13, 2, 5, 5, C.b) + r(13, 0, 2, 2, C.b) + r(16, 0, 2, 2, C.b) + r(14, 3, 1, 1, C.e) + r(16, 3, 1, 1, C.e) + '</svg>';
   }
   function catWalk(name, dir, sit) {
     if (!S.boarded || document.querySelector(".cb-cat")) return;
@@ -426,22 +426,28 @@
   /* Supabase Realtime broadcast over the raw Phoenix protocol (same relay as Room Mode, works in mainland China) */
   function transport(code, onMsg, onStatus) {
     var topic = "realtime:fbtrain-" + code;
+    if (!cfg.done) {   /* an invite link can join before the keys have loaded: wait for them, so both sides meet on the same channel */
+      var inner = null, gone = false, q = [];
+      (function wait() { if (gone) return; if (!cfg.done) return setTimeout(wait, 100); inner = transport(code, onMsg, onStatus); q.forEach(function (a) { inner.send(a[0], a[1]); }); })();
+      return { send: function (ev, p) { if (inner) inner.send(ev, p); else q.push([ev, p]); }, close: function () { gone = true; if (inner) inner.close(); } };
+    }
     if (!cfg.url) {   /* no keys yet (offline preview): connect tabs on this device */
       var bc = null; try { bc = new BroadcastChannel("fb_train_" + code); bc.onmessage = function (e) { onMsg(e.data.event, e.data.payload); }; } catch (e) {}
       setTimeout(function () { onMsg("_ready", {}); }, 0);
       return { send: function (ev, p) { try { bc && bc.postMessage({ event: ev, payload: p }); } catch (e) {} }, close: function () { try { bc && bc.close(); } catch (e) {} } };
     }
-    var ws = null, ref = 0, hb = null, closed = false, tries = 0, joined = false;
+    var att = 0, ws = null, ref = 0, hb = null, closed = false, tries = 0, joined = false;
     var base = (cfg.rt || cfg.url.replace(/^http/, "ws") + "/realtime/v1/websocket").replace(/\/$/, "");
     var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "apikey=" + encodeURIComponent(cfg.key) + "&vsn=1.0.0";
     var raw = function (m) { try { ws && ws.readyState === 1 && ws.send(JSON.stringify(m)); } catch (e) {} };
     function connect() {
       onStatus("connecting");
-      try { ws = new WebSocket(url); } catch (e) { return retry(); }
-      ws.onopen = function () { tries = 0; raw({ topic: topic, event: "phx_join", ref: String(++ref), payload: { config: { broadcast: { self: false, ack: false }, presence: { key: "" }, private: false }, access_token: cfg.key } }); clearInterval(hb); hb = setInterval(function () { raw({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(++ref) }); }, 25000); };
+      try { if (window.FBWorld && FBWorld.rtUrl) url = FBWorld.rtUrl(cfg, att++); ws = new WebSocket(url); } catch (e) { return retry(); }
+      ws.onopen = function () { tries = 0; raw({ topic: topic, event: "phx_join", ref: String(++ref), payload: { config: { broadcast: { self: false, ack: false }, presence: { key: "" }, private: !!(window.FBWorld && FBWorld.rtPriv && FBWorld.rtPriv()) }, access_token: cfg.key } }); clearInterval(hb); hb = setInterval(function () { raw({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(++ref) }); }, 25000); };
       ws.onmessage = function (e) {
         var m; try { m = JSON.parse(e.data); } catch (_) { return; }
-        if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "ok" && !joined) { joined = true; onStatus("ok"); onMsg("_ready", {}); }
+        if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "ok" && !joined) { joined = true; if (window.FBWorld && FBWorld.rtGood) FBWorld.rtGood(url); onStatus("ok"); onMsg("_ready", {}); }
+        else if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "error" && !joined) { if (window.FBWorld && FBWorld.rtPriv) FBWorld.rtPriv(true); att--; try { ws.close(); } catch (_) {} }   /* a project that only allows private channels: rejoin as private */
         else if (m.event === "broadcast" && m.payload) onMsg(m.payload.event, m.payload.payload);
         else if (m.event === "phx_error" || m.event === "phx_close") { joined = false; onStatus("bad"); }
       };
@@ -452,7 +458,7 @@
     connect();
     return { send: function (ev, p) { if (joined) raw({ topic: topic, event: "broadcast", ref: String(++ref), payload: { type: "broadcast", event: ev, payload: p } }); }, close: function () { closed = true; clearInterval(hb); try { ws && ws.close(); } catch (e) {} } };
   }
-  (function keys() { var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; cfg.rt = c.realtimeUrl || ""; }; document.head.appendChild(sc); })();
+  (function keys() { var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; cfg.rt = c.realtimeUrl || ""; cfg.done = true; }; document.head.appendChild(sc); })();
 
   window.FBCabin = { T: T, state: S, director: director, join: join, leave: leave };
   addEventListener("load", function () {

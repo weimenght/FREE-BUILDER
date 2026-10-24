@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=750e36e3ce" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b15f9632bf"></script><script data-fbg src="/fbkit/fbg.js?v=ef829f2c59" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Two Candles · Nearby</title>
 <meta name="description" content="A candlelit table for two people who live apart. Sit down together from anywhere, cook the same dinner step by step, raise a glass, and talk until the candles go out.">
@@ -270,17 +270,18 @@ main{max-width:760px;margin:0 auto;padding:4px 16px 120px}
   function transport(code, onMsg, onStatus) {
     var topic = "realtime:fbtable-" + code;
     if (!cfg.url) { var bc = null; try { bc = new BroadcastChannel("fb_table_" + code); bc.onmessage = function (e) { onMsg(e.data.event, e.data.payload); }; } catch (e) {} setTimeout(function () { onStatus("ok"); onMsg("_ready", {}); }, 0); return { send: function (ev, p) { try { bc && bc.postMessage({ event: ev, payload: p }); } catch (e) {} }, close: function () { try { bc && bc.close(); } catch (e) {} } }; }
-    var ws = null, ref = 0, hb = null, closed = false, tries = 0, joined = false;
+    var att = 0, ws = null, ref = 0, hb = null, closed = false, tries = 0, joined = false;
     var base = (cfg.rt || cfg.url.replace(/^http/, "ws") + "/realtime/v1/websocket").replace(/\/$/, "");
     var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "apikey=" + encodeURIComponent(cfg.key) + "&vsn=1.0.0";
     var raw = function (m) { try { ws && ws.readyState === 1 && ws.send(JSON.stringify(m)); } catch (e) {} };
     function connect() {
       onStatus("connecting");
-      try { ws = new WebSocket(url); } catch (e) { return retry(); }
-      ws.onopen = function () { tries = 0; raw({ topic: topic, event: "phx_join", ref: String(++ref), payload: { config: { broadcast: { self: false, ack: false }, presence: { key: "" }, private: false }, access_token: cfg.key } }); clearInterval(hb); hb = setInterval(function () { raw({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(++ref) }); }, 25000); };
+      try { if (window.FBWorld && FBWorld.rtUrl) url = FBWorld.rtUrl(cfg, att++); ws = new WebSocket(url); } catch (e) { return retry(); }
+      ws.onopen = function () { tries = 0; raw({ topic: topic, event: "phx_join", ref: String(++ref), payload: { config: { broadcast: { self: false, ack: false }, presence: { key: "" }, private: !!(window.FBWorld && FBWorld.rtPriv && FBWorld.rtPriv()) }, access_token: cfg.key } }); clearInterval(hb); hb = setInterval(function () { raw({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(++ref) }); }, 25000); };
       ws.onmessage = function (e) {
         var m; try { m = JSON.parse(e.data); } catch (_) { return; }
-        if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "ok" && !joined) { joined = true; onStatus("ok"); onMsg("_ready", {}); }
+        if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "ok" && !joined) { joined = true; if (window.FBWorld && FBWorld.rtGood) FBWorld.rtGood(url); onStatus("ok"); onMsg("_ready", {}); }
+        else if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "error" && !joined) { if (window.FBWorld && FBWorld.rtPriv) FBWorld.rtPriv(true); att--; try { ws.close(); } catch (_) {} }   /* a project that only allows private channels: rejoin as private */
         else if (m.event === "broadcast" && m.payload) onMsg(m.payload.event, m.payload.payload);
         else if (m.event === "phx_error" || m.event === "phx_close") { joined = false; onStatus("bad"); }
       };
