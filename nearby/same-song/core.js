@@ -13,7 +13,7 @@
     { k: "sun", root: 60, scale: [0, 2, 4, 7, 9], prog: [[0, 4, 7], [7, 11, 14], [9, 12, 16], [5, 9, 12]], col: "#f6b73c" },        /* C major pentatonic, I V vi IV */
     { k: "rain", root: 57, scale: [0, 3, 5, 7, 10], prog: [[0, 3, 7], [-4, 0, 3], [3, 7, 10], [-2, 2, 5]], col: "#5b8def" },       /* A minor, i VI III VII */
     { k: "lantern", root: 62, scale: [0, 2, 5, 7, 9], prog: [[0, 7, 14], [5, 9, 12], [-3, 2, 9], [-5, 2, 7]], col: "#e2553f" },    /* D gong-ish open fifths */
-    { k: "smoke", root: 55, scale: [0, 3, 5, 6, 7, 10], prog: [[0, 4, 10], [5, 9, 15], [0, 4, 10], [7, 11, 17]], col: "#9b6fd8" }  /* G blues, 7th chords */
+    { k: "smoke", root: 55, scale: [0, 3, 5, 7, 10], prog: [[0, 4, 10], [5, 9, 15], [0, 4, 10], [7, 11, 17]], col: "#9b6fd8" }  /* G minor pentatonic over bluesy 7ths */
   ];
   var INSTR = ["musicbox", "piano", "chip", "pluck"];
   var ROWS = 8, STEPS = 16, LOOPS = 6;
@@ -47,16 +47,18 @@
       if (!rhythm[st % 8] || (st % 8 && R() < 0.08)) continue;
       row = Math.max(0, Math.min(ROWS - 1, row + [-2, -1, -1, 0, 1, 1, 2][Math.floor(R() * 7)]));
       s.mel[row][st] = true;
-      if (st % 4 === 0 && R() < 0.25) s.mel[Math.min(ROWS - 1, row + 2)][st] = true;
     }
-    var beat = Math.floor(R() * 3);
-    for (st = 0; st < STEPS; st++) {
-      s.drum[0][st] = st % 8 === 0 || (beat === 1 && st === 10) || (beat === 2 && (st === 6 || st === 11));
-      s.drum[1][st] = st % 8 === 4 || (beat === 2 && st === 15);
-      s.drum[2][st] = beat === 0 ? st % 2 === 0 : (st % 2 === 0 || R() < 0.2);
-    }
+    s.drum = groove(1 + Math.floor(R() * 3));
     return s;
   }
+  /* four grooves for the beat button: none, soft, walk, dance (kick / clap / hat rows) */
+  var GROOVES = [
+    ["0000", "0000", "0000"],
+    ["8080", "0000", "2222"],
+    ["8020", "0808", "aaaa"],
+    ["8888", "0808", "ffff"]];
+  function groove(i) { return hexToBits(GROOVES[i].join(""), 3); }
+  function grooveOf(d) { var h = bitsToHex(d); for (var i = 0; i < GROOVES.length; i++) if (GROOVES[i].join("") === h) return i; return -1; }
   function hue(code) { var h = 0; code = String(code); for (var i = 0; i < code.length; i++) h = (h * 31 + code.charCodeAt(i)) >>> 0; return h % 360; }
 
   /* ---------------- sound ---------------- */
@@ -85,8 +87,8 @@
     g.gain.value = 0;
     if (inst === 0) {          /* music box: sine + bright partial, long ring */
       o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = f * 2;
-      o2 = ctx.createOscillator(); o2.type = "sine"; o2.frequency.value = f * 2 * 4.2; var g2 = ctx.createGain(); g2.gain.setValueAtTime(0.18 * vel, t); g2.gain.exponentialRampToValueAtTime(0.001, t + 0.25); o2.connect(g2); g2.connect(g);
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.32 * vel, t + 0.004); g.gain.exponentialRampToValueAtTime(0.001, t + 1.6);
+      o2 = ctx.createOscillator(); o2.type = "sine"; o2.frequency.value = f * 2 * 3; var g2 = ctx.createGain(); g2.gain.setValueAtTime(0.08 * vel, t); g2.gain.exponentialRampToValueAtTime(0.001, t + 0.25); o2.connect(g2); g2.connect(g);
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.28 * vel, t + 0.006); g.gain.exponentialRampToValueAtTime(0.001, t + 1.6);
       o.connect(g); out(g, 0.9); o.start(t); o2.start(t); o.stop(t + 1.7); o2.stop(t + 0.3);
     } else if (inst === 1) {   /* felt piano: triangle + soft saw through a closing filter */
       o = ctx.createOscillator(); o.type = "triangle"; o.frequency.value = f;
@@ -98,8 +100,8 @@
     } else if (inst === 2) {   /* chip: pulse with a little vibrato */
       o = ctx.createOscillator(); o.type = "square"; o.frequency.value = f * 2;
       var v = ctx.createOscillator(), vg = ctx.createGain(); v.frequency.value = 6; vg.gain.value = f * 0.012; v.connect(vg); vg.connect(o.frequency);
-      lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 3800; o.connect(lp); lp.connect(g);
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.13 * vel, t + 0.005); g.gain.setValueAtTime(0.1 * vel, t + len * 0.8); g.gain.exponentialRampToValueAtTime(0.001, t + len * 0.98);
+      lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 2400; o.connect(lp); lp.connect(g);
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.1 * vel, t + 0.005); g.gain.setValueAtTime(0.075 * vel, t + len * 0.8); g.gain.exponentialRampToValueAtTime(0.001, t + len * 0.98);
       out(g, 0.25); o.start(t); v.start(t); o.stop(t + len + 0.05); v.stop(t + len + 0.05);
     } else {                   /* pluck: guzheng / nylon guitar, filtered saw with a fast bloom */
       o = ctx.createOscillator(); o.type = "sawtooth"; o.frequency.value = f;
@@ -113,10 +115,10 @@
   function pad(chord, root, t, len, vol) {
     chord.forEach(function (iv, i) {
       var o = ctx.createOscillator(), g = ctx.createGain(), lp = ctx.createBiquadFilter();
-      o.type = "sawtooth"; o.frequency.value = hz(root - 12 + iv); o.detune.value = (i - 1) * 7;
-      lp.type = "lowpass"; lp.frequency.value = 900;
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.035 * vol, t + len * 0.3); g.gain.linearRampToValueAtTime(0.0, t + len);
-      o.connect(lp); lp.connect(g); out(g, 0.6); o.start(t); o.stop(t + len + 0.05);
+      o.type = "triangle"; o.frequency.value = hz(root - 12 + iv); o.detune.value = (i - 1) * 6;
+      lp.type = "lowpass"; lp.frequency.value = 1100;
+      g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.06 * vol, t + Math.min(0.35, len * 0.3)); g.gain.setValueAtTime(0.06 * vol, t + len * 0.75); g.gain.linearRampToValueAtTime(0.0001, t + len + 0.04);
+      o.connect(lp); lp.connect(g); out(g, 0.7); o.start(t); o.stop(t + len + 0.08);
     });
   }
   function bass(midi, t, len) {
@@ -129,11 +131,11 @@
     var g = ctx.createGain();
     if (kind === 0) {
       var o = ctx.createOscillator(); o.type = "sine"; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.14);
-      g.gain.setValueAtTime(0.75 * vel, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.32); o.connect(g); out(g, 0); o.start(t); o.stop(t + 0.34);
+      g.gain.setValueAtTime(0.6 * vel, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.32); o.connect(g); out(g, 0); o.start(t); o.stop(t + 0.34);
     } else {
       var s = ctx.createBufferSource(), f = ctx.createBiquadFilter(); s.buffer = noiseBuf;
-      if (kind === 1) { f.type = "bandpass"; f.frequency.value = 1800; f.Q.value = 0.8; g.gain.setValueAtTime(0.42 * vel, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.18); }
-      else { f.type = "highpass"; f.frequency.value = 7500; g.gain.setValueAtTime(0.14 * vel, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.05); }
+      if (kind === 1) { f.type = "bandpass"; f.frequency.value = 1500; f.Q.value = 0.7; g.gain.setValueAtTime(0.3 * vel, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.18); }
+      else { f.type = "highpass"; f.frequency.value = 8000; g.gain.setValueAtTime(0.08 * vel, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.05); }
       s.connect(f); f.connect(g); out(g, kind === 1 ? 0.3 : 0); s.start(t, Math.random() * 0.5); s.stop(t + 0.2);
     }
   }
@@ -158,8 +160,9 @@
           ch = m.prog[bar];
           if (st % 4 === 0) pad(ch, m.root, t, dt * 4, lp === 0 ? 0.6 : 1);
           if (lp >= 1 && (st % 8 === 0 || st % 8 === 6 || (lp >= 3 && st % 8 === 3))) bass(m.root - 24 + ch[0], t, dt * (st % 8 === 0 ? 2.5 : 1.5));
+          var many = 0; for (var r0 = 0; r0 < ROWS; r0++) if (s.mel[r0][st]) many++;
           for (var r = 0; r < ROWS; r++) if (s.mel[r][st]) {
-            var mid = rowNote(s.mood, r), vel = (st % 4 === 0 ? 1 : 0.8) * fade;
+            var mid = rowNote(s.mood, r), vel = (st % 4 === 0 ? 1 : 0.8) * fade * (0.92 + Math.random() * 0.08) / Math.sqrt(Math.max(1, many));
             note(s.inst, mid, t, dt, vel);
             if (!o.loop && lp === 4) note(s.inst === 0 ? 0 : s.inst, mid + 12, t + 0.008, dt, vel * 0.35);
           }
@@ -276,7 +279,7 @@
     spunAt0: ["played in {v}", "在{v}点播", "在{v}點播", "puesta en {v}", "posada a {v}"],
     studio: ["the studio", "录音室", "錄音室", "el estudio", "l'estudi"],
     bar: ["Next Door", "“隔壁”", "“隔壁”", "Al Lado", "Al Costat"],
-    books: ["the book corner", "书角", "書角", "el rincón de libros", "el racó de llibres"],
+    books: ["Borrowed Pages", "借来的书", "借來的書", "Páginas Prestadas", "Pàgines Manllevades"],
     house: ["house record", "店里的唱片", "店裡的唱片", "disco de la casa", "disc de la casa"],
     by: ["by {n}", "{n} 作", "{n} 作", "de {n}", "de {n}"],
     next: ["next", "下一首", "下一首", "después", "després"],
@@ -296,7 +299,7 @@
 
   window.JB = {
     MOODS: MOODS, INSTR: INSTR, ROWS: ROWS, STEPS: STEPS, LOOPS: LOOPS, HOUSE: HOUSE,
-    encode: encode, decode: decode, seconds: seconds, blank: blank, random: random, hue: hue, rowNote: rowNote,
+    encode: encode, decode: decode, groove: groove, grooveOf: grooveOf, GROOVES: GROOVES, seconds: seconds, blank: blank, random: random, hue: hue, rowNote: rowNote,
     audio: audio, unlock: unlock, Player: Player, note: function (i, m, v) { var c = audio(); if (c) note(i, m, c.currentTime + 0.01, 0.3, v || 0.8); },
     drum: function (k) { var c = audio(); if (c) drum(k, c.currentTime + 0.01, 0.9); },
     analyser: function () { audio(); return analyser; },

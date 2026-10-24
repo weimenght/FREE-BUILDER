@@ -1,7 +1,7 @@
 {
   "name": "Nearby",
   "short_name": "Nearby",
-  "description": "A small pixel town where nothing is asking for your attention. Have a drink next door, watch the clouds, send a postcard, plant next to a stranger.",
+  "description": "A small pixel town for finding your people, in real life. Wander alone or with a friend, make something for the neighbours, play with someone far away.",
   "start_url": "/nearby/",
   "scope": "/nearby/",
   "display": "fullscreen",

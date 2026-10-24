@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=08ef4eaa1f"></script><script data-fbg src="/fbkit/fbg.js?v=1e1287f226" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=9eb1352236" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Same Song · Nearby</title>
 <meta name="description" content="Light up a little tune, press it into a record, and drop it in the jukebox that plays in Next Door and Borrowed Pages at the same time.">
@@ -43,7 +43,8 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
 .cell.ph{outline:2px solid #fff;outline-offset:-1px}
 .cell.on.ph{filter:brightness(1.3)}
 .gap{height:8px}
-.v .grid{grid-template-columns:repeat(8,minmax(0,1fr)) 6px repeat(3,minmax(0,1fr))}
+.v .grid{grid-template-columns:repeat(8,minmax(0,1fr))}
+.pill .dots{display:inline-flex;gap:2px;margin-left:2px}.pill .dots i{width:4px;height:4px;background:currentColor;opacity:.25}.pill .dots i.on{opacity:1}
 .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .play{width:62px;height:62px;border:4px solid #000;cursor:pointer;font:400 18px/1 var(--px);background:var(--a);color:#2a1205;box-shadow:inset -4px -4px 0 rgba(0,0,0,.3),inset 4px 4px 0 rgba(255,255,255,.45),4px 4px 0 #000;padding:0}
 .play:active{transform:translate(3px,3px);box-shadow:inset 4px 4px 0 rgba(0,0,0,.3),1px 1px 0 #000}
@@ -71,6 +72,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
 .say{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translateX(-50%);padding:10px 14px;background:#f6ead0;color:#2a1205;border:3px solid #000;box-shadow:4px 4px 0 #000;font:400 20px/1.1 var(--vt);z-index:90;opacity:0;pointer-events:none;max-width:92vw;text-align:center}
 .say.show{opacity:1}
 .err{animation:shake .3s steps(3)}@keyframes shake{33%{transform:translateX(-6px)}66%{transform:translateX(6px)}}
+#machine.fresh{animation:fresh 1.6s steps(8)}@keyframes fresh{0%,100%{filter:none}20%,60%{filter:brightness(1.5) drop-shadow(0 0 12px var(--a))}}
 .room h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (max-width:420px){.chip{width:42px;height:42px;font-size:20px}.tempo input{width:84px}.press{height:52px;padding-right:12px}.sign{font-size:18px}}
 @media (prefers-reduced-motion:reduce){.sign,.press .v1{animation:none}}
@@ -93,6 +95,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
     <div class="bar">
       <button class="play" id="play" type="button" aria-label="Play">▶</button>
       <div class="tempo"><span aria-hidden="true">🐢</span><input id="bpm" type="range" min="72" max="132" step="4" value="100" aria-label="Tempo"><span aria-hidden="true">🐇</span></div>
+      <button class="pill" id="beat" type="button"><span aria-hidden="true">🥁</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
       <button class="pill" id="dice" type="button" aria-label="Surprise me">🎲</button>
       <button class="pill" id="wipe" type="button" aria-label="Clear">🧽</button>
       <button class="press" id="press" type="button"><span class="v1" aria-hidden="true"></span><span data-t="press">Press it</span></button>
@@ -120,6 +123,8 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
     untitled: ["Untitled", "无题", "無題", "Sin título", "Sense títol"],
     yourName: ["Your name", "你的名字", "你的名字", "Tu nombre", "El teu nom"],
     titleA: ["Song title", "歌名", "歌名", "Título", "Títol"],
+    upNext: ["💿 Up next · 🍸 Next Door · 📚 Borrowed Pages · here", "💿 下一首 · 🍸 隔壁 · 📚 借来的书 · 这里", "💿 下一首 · 🍸 隔壁 · 📚 借來的書 · 這裡", "💿 Suena ahora · 🍸 Al Lado · 📚 Páginas Prestadas · aquí", "💿 Sona ara · 🍸 Al Costat · 📚 Pàgines Manllevades · aquí"],
+    beat: [["No drums", "不要鼓", "不要鼓", "Sin batería", "Sense bateria"], ["Soft beat", "轻拍", "輕拍", "Ritmo suave", "Ritme suau"], ["Walking beat", "慢走", "慢走", "Ritmo de paseo", "Ritme de passeig"], ["Dance beat", "跳舞", "跳舞", "Ritmo para bailar", "Ritme per ballar"]],
     inBox: ["In the jukebox ✓ — drop a coin to play it everywhere", "已放进点唱机 ✓ 投一枚硬币，所有地方都会播放", "已放進點唱機 ✓ 投一枚硬幣，所有地方都會播放", "En la gramola ✓ — echa una moneda y sonará en todas partes", "A la gramola ✓ — tira una moneda i sonarà a tot arreu"],
     empty: ["Light up a few notes first", "先点亮几个音符", "先點亮幾個音符", "Enciende unas notas primero", "Encén unes notes primer"],
     away: ["The jukebox is out of reach right now — your tune is kept here", "点唱机暂时连不上，你的曲子保存在这台设备上", "點唱機暫時連不上，你的曲子保存在這台裝置上", "La gramola no responde ahora: tu melodía queda guardada aquí", "La gramola no respon ara: la teva melodia queda desada aquí"],
@@ -144,7 +149,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
     moodBtns.forEach(function (b, i) { b.setAttribute("aria-label", T.moods[i][L]); b.title = T.moods[i][L]; });
     instBtns.forEach(function (b, i) { b.setAttribute("aria-label", T.insts[i][L]); b.title = T.insts[i][L]; });
     var lab = $("[data-fbl-label]"); if (lab && window.FBL) lab.textContent = FBL.SHORT[FBL.get() || "en"];
-    if (window.JBW) JBW.paint();
+    if (window.JBW) JBW.paint(); if (typeof paintBeat === "function") paintBeat();
   }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
   window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
@@ -175,7 +180,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
     vert = window.matchMedia("(max-width:640px)").matches;
     var g = $("#grid"); g.innerHTML = ""; cells = [];
     $("#roll").classList.toggle("v", vert);
-    for (var r = 0; r < 11; r++) for (var c = 0; c < 16; c++) {
+    for (var r = 0; r < 8; r++) for (var c = 0; c < 16; c++) {
       var drum = r >= 8, b = document.createElement("button"); b.type = "button";
       b.className = "cell" + (drum ? " d" : "") + (c % 4 === 0 && c ? " q" : "");
       var rr = drum ? r - 8 : r;
@@ -185,8 +190,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
       b.dataset.r = r; b.dataset.c = c;
       g.appendChild(b); cells.push({ el: b, r: r, c: c });
     }
-    if (!vert) { var sp = document.createElement("div"); sp.className = "gap"; sp.style.gridRow = "9"; sp.style.gridColumn = "1 / -1"; g.appendChild(sp); }
-    paintCells(); paintChips();
+    paintCells(); paintChips(); paintBeat();
   }
   function on(r, c) { return r < 8 ? song.mel[r][c] : song.drum[r - 8][c]; }
   function setCell(r, c, v) { if (r < 8) song.mel[r][c] = v; else song.drum[r - 8][c] = v; }
@@ -206,6 +210,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
   $("#grid").addEventListener("keydown", function (e) { var el = e.target.closest(".cell"); if (el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); painting = !on(+el.dataset.r, +el.dataset.c); apply(el); painting = null; save(); } });
   function apply(el) {
     var r = +el.dataset.r, c = +el.dataset.c; if (on(r, c) === painting) return;
+    if (painting && r < 8) for (var o = 0; o < 8; o++) if (o !== r && song.mel[o][c]) { song.mel[o][c] = false; var oc = cells[o * 16 + c].el; oc.classList.remove("on"); oc.setAttribute("aria-pressed", "false"); }
     setCell(r, c, painting); el.classList.toggle("on", painting); el.setAttribute("aria-pressed", painting ? "true" : "false");
     if (painting && !prev.playing()) { if (r < 8) JB.note(song.inst, JB.rowNote(song.mood, r), 0.8); else JB.drum(r - 8); }
     prev.set(song);
@@ -227,8 +232,14 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
   }
   $("#play").onclick = function () { if (prev.playing()) { stopPreview(); if (resumeJukebox) { resumeJukebox = false; JB.listen(true); JBW.fire(); JBW.paint(); } } else startPreview(); };
   $("#bpm").addEventListener("input", function () { song.bpm = +this.value; prev.set(song); if (prev.playing()) { prev.stop(); prev.play(song, { loop: true, onStep: stepLight }); } save(); });
-  $("#dice").onclick = function () { var keepI = song.inst; song = JB.random(); if (Math.random() < .5) song.inst = keepI; paintCells(); paintChips(); save(); if (prev.playing()) { prev.stop(); prev.play(song, { loop: true, onStep: stepLight }); } else startPreview(); };
-  $("#wipe").onclick = function () { var b = JB.blank(); b.mood = song.mood; b.inst = song.inst; b.bpm = song.bpm; song = b; paintCells(); prev.set(song); save(); };
+  $("#dice").onclick = function () { var keepI = song.inst; song = JB.random(); if (Math.random() < .5) song.inst = keepI; paintCells(); paintChips(); paintBeat(); save(); if (prev.playing()) { prev.stop(); prev.play(song, { loop: true, onStep: stepLight }); } else startPreview(); };
+  function paintBeat() {
+    var g = JB.grooveOf(song.drum), b = $("#beat"); if (!b) return;
+    b.querySelectorAll(".dots i").forEach(function (d, i) { d.classList.toggle("on", g > i); });
+    var lab = g < 0 ? T.beat[1][lang()] : T.beat[g][lang()]; b.setAttribute("aria-label", lab); b.title = lab;
+  }
+  $("#beat").onclick = function () { JB.unlock(); var g = (JB.grooveOf(song.drum) + 1) % 4; song.drum = JB.groove(g); paintBeat(); prev.set(song); save(); if (!prev.playing()) startPreview(); };
+  $("#wipe").onclick = function () { var b = JB.blank(); b.mood = song.mood; b.inst = song.inst; b.bpm = song.bpm; b.drum = song.drum; song = b; paintCells(); prev.set(song); save(); };
   window.addEventListener("jukebox", function (e) { if (e.detail && e.detail.on && prev.playing()) { resumeJukebox = false; stopPreview(); } });
 
   /* ---------- pressing a record ---------- */
@@ -260,7 +271,10 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
       go.disabled = true; ls("jb_title", "");
       JB.press(name, title, code).then(function (id) {
         $(".vinyl", sc).classList.add("away");
-        setTimeout(function () { close(); JBW.refresh(id); var m = $("#machine"); if (window.innerWidth < 900) m.scrollIntoView({ behavior: "smooth", block: "start" }); say(t("inBox")); }, 850);
+        stopPreview(); resumeJukebox = false;
+        var queued = JB.spin(id, "studio").then(function () { return true; }, function () { return false; });
+        setTimeout(function () { close(); JBW.refresh(id); var m = $("#machine"); if (window.innerWidth < 900) m.scrollIntoView({ behavior: "smooth", block: "start" });
+          queued.then(function (ok) { if (ok) { if (!JB.listening()) JB.listen(true); JBW.fire(); JBW.paint(); m.classList.remove("fresh"); void m.offsetWidth; m.classList.add("fresh"); } say(t(ok ? "upNext" : "inBox")); }); }, 850);
       }).catch(function (e) {
         go.disabled = false; ls("jb_title", title);
         say(/rest|fast/.test(String(e && e.message)) ? t("rest") : t("away"));

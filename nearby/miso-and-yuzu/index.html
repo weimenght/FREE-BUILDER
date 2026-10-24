@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=08ef4eaa1f"></script><script data-fbg src="/fbkit/fbg.js?v=1e1287f226" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bdfce8f9ac"></script><script data-fbg src="/fbkit/fbg.js?v=9eb1352236" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Miso & Yuzu's · Nearby</title>
 <meta name="description" content="The little room where Miso and Yuzu live. Pet them, feed them a treat, wave a feather, and leaf through their album.">
@@ -45,6 +45,11 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
 .pola span{position:absolute;left:4px;right:4px;bottom:4px;font:600 16px/1 var(--hand);color:#3a2a1c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pola.locked canvas{filter:brightness(.25) blur(1px)}
 .pola.locked::after{content:"🔒";position:absolute;inset:6px 6px 26px;display:grid;place-items:center;font-size:28px}
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:14px;padding:16px 14px;background:#b8875a;border:3px solid #000;box-shadow:inset 0 0 0 4px #8a5a34;background-image:radial-gradient(rgba(60,30,10,.25) 1px,transparent 1.5px);background-size:7px 7px;min-height:90px}
+.board .pola{padding-bottom:8px}.board .pola::before{content:"📌";position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:16px;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.4))}
+.board .pola.mine{outline:2px dashed #fff3c0;outline-offset:2px}.board .empty{grid-column:1/-1;margin:0;font:400 20px/1.3 var(--vt,monospace);color:#3a2214;text-align:center;align-self:center}
+.pinme{position:absolute;right:6px;bottom:30px;padding:3px 7px;border:2px solid #000;background:#f6b73c;color:#1d130d;font:400 15px/1 var(--vt,monospace);cursor:pointer;box-shadow:2px 2px 0 #000}.pinme[disabled]{background:#cfc4a8;cursor:default}
+.big .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}.big .acts button{padding:6px 10px;border:2px solid #000;background:#fbf6ea;color:#3a2a1c;font:400 16px var(--vt,monospace);cursor:pointer}
 .scrim{position:fixed;inset:0;z-index:50;background:rgba(10,6,4,.8);display:grid;place-items:center;padding:16px}
 .big{width:min(520px,100%);padding:12px 12px 16px;background:#fbf6ea;color:#3a2a1c;box-shadow:6px 6px 0 #000;animation:up .3s steps(4)}
 .big canvas,.big img{display:block;width:100%;aspect-ratio:160/110;image-rendering:pixelated}
@@ -68,6 +73,9 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   <div class="tools" id="tools" role="toolbar"></div>
   <p class="mood" id="mood" aria-live="polite"></p>
 
+  <h2 data-t="boardH">THE BOARD</h2>
+  <div class="board" id="board" aria-live="polite"></div>
+
   <h2 data-t="meet">MEET THEM</h2>
   <div class="cats" id="cats"></div>
 
@@ -87,6 +95,13 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   var W = { title: ["MISO & YUZU'S", "味噌和柚子家", "味噌和柚子家", "CASA DE MISO Y YUZU", "CAL MISO I LA YUZU"], meet: ["MEET THEM", "认识它们", "認識牠們", "CONÓCELOS", "CONEIX-LOS"], albumH: ["THE ALBUM", "相册", "相簿", "EL ÁLBUM", "L'ÀLBUM"],
     tools: { pet: ["Pet", "摸摸", "摸摸", "Acariciar", "Acaronar"], treat: ["Treat", "零食", "零食", "Premio", "Premi"], toy: ["Feather", "逗猫棒", "逗貓棒", "Pluma", "Ploma"], brush: ["Brush", "梳毛", "梳毛", "Cepillar", "Raspallar"], lamp: ["Lamp", "台灯", "檯燈", "Lámpara", "Llum"], cam: ["Take a photo", "拍张照", "拍張照", "Hacer una foto", "Fer una foto"] },
     mood: { purr: ["{n} is purring.", "{n} 在打呼噜。", "{n} 在打呼嚕。", "{n} ronronea.", "{n} ronca de gust."], eat: ["Crunch, crunch.", "咔嚓咔嚓。", "咔嚓咔嚓。", "Cronch, cronch.", "Cruix, cruix."], pounce: ["{n} pounces!", "{n} 扑过去了！", "{n} 撲過去了！", "¡{n} salta!", "{n} salta!"], sleep: ["Shh. They're asleep.", "嘘，它们睡着了。", "噓，牠們睡著了。", "Shh. Están dormidos.", "Xst. Dormen."], fluff: ["So fluffy.", "毛蓬蓬的。", "毛蓬蓬的。", "Qué esponjoso.", "Que esponjós."], full: ["They've had enough treats for now.", "今天的零食够啦。", "今天的零食夠啦。", "Ya han comido bastantes premios.", "Ja han menjat prou premis."], photo: ["Saved to the album.", "已放进相册。", "已放進相簿。", "Guardada en el álbum.", "Desada a l'àlbum."], unlock: ["A new memory in the album!", "相册里多了一段回忆！", "相簿裡多了一段回憶！", "¡Un recuerdo nuevo en el álbum!", "Un record nou a l'àlbum!"] },
+    boardH: ["THE BOARD", "照片墙", "照片牆", "EL TABLÓN", "EL TAULER"],
+    pin: ["📌 Pin it", "📌 钉上墙", "📌 釘上牆", "📌 Clávala", "📌 Clava-la"], pinned: ["📌 On the board", "📌 已上墙", "📌 已上牆", "📌 En el tablón", "📌 Al tauler"],
+    unpin: ["Take it down", "取下来", "取下來", "Quitarla", "Treure-la"], report: ["⚑ Report", "⚑ 举报", "⚑ 檢舉", "⚑ Denunciar", "⚑ Denunciar"], thanks: ["Thanks. Wei will look.", "谢谢，Wei 会看看。", "謝謝，Wei 會看看。", "Gracias. Wei lo mirará.", "Gràcies. En Wei ho mirarà."],
+    empty: ["📷 Nobody's caught them yet.", "📷 还没人抓拍到它们。", "📷 還沒人抓拍到牠們。", "📷 Aún nadie las ha pillado.", "📷 Encara ningú les ha enxampat."],
+    rest: ["That's enough photos for today.", "今天拍够啦。", "今天拍夠啦。", "Ya hay bastantes fotos por hoy.", "Ja n'hi ha prou de fotos per avui."],
+    off: ["The board is out of reach right now.", "暂时够不着照片墙。", "暫時夠不著照片牆。", "Ahora no se llega al tablón.", "Ara no s'arriba al tauler."],
+    pinnedBy: ["Pinned {d}", "{d} 钉上的", "{d} 釘上的", "Clavada el {d}", "Clavada el {d}"],
     yours: ["Your photo", "你拍的", "你拍的", "Tu foto", "La teva foto"], more: ["Keep playing with them to open this one.", "多陪它们玩玩，这张就会解锁。", "多陪牠們玩玩，這張就會解鎖。", "Juega más con ellos para desbloquearla.", "Juga més amb ells per desbloquejar-la."], bellLock: ["Finish The Lost Bell to open this one.", "完成「丢失的铃铛」后解锁。", "完成「遺失的鈴鐺」後解鎖。", "Termina La campana perdida para abrirla.", "Acaba La campana perduda per obrir-la."]
   };
   var PET = (window.FBWorld && FBWorld.PETS) || { miso: { b: "#231b17", d: "#3a2f29", e: "#f2c94c", nose: "#c98272" }, yuzu: { b: "#e8913a", d: "#b5611d", e: "#4f9a62", nose: "#e07a8a", stripe: "#b5611d", belly: "#f8dcae" } };
@@ -295,7 +310,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   function enlarge(node, caption, sub) {
     var s = document.createElement("div"); s.className = "scrim"; var big = document.createElement("div"); big.className = "big"; big.appendChild(node);
     var p = document.createElement("p"); p.textContent = caption; big.appendChild(p); if (sub) { var sm = document.createElement("small"); sm.textContent = sub; big.appendChild(sm); }
-    s.appendChild(big); s.onclick = function () { s.remove(); }; document.body.appendChild(s);
+    s.appendChild(big); s.onclick = function () { s.remove(); }; document.body.appendChild(s); return s;
   }
   function paintAlbum() {
     var al = $("album"); al.innerHTML = "";
@@ -310,8 +325,46 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
       var b = document.createElement("button"); b.type = "button"; b.className = "pola"; b.style.setProperty("--r", ((hash(String(ph.d)) - .5) * 7).toFixed(1) + "deg");
       var im = document.createElement("img"); im.src = ph.u; im.alt = ""; b.appendChild(im); var sp = document.createElement("span"); sp.textContent = t(W.yours) + " · " + new Date(ph.d).toLocaleDateString(); b.appendChild(sp);
       b.onclick = function () { var im2 = document.createElement("img"); im2.src = ph.u; im2.alt = ""; enlarge(im2, t(W.yours), new Date(ph.d).toLocaleString()); };
-      al.appendChild(b);
+      var pb = document.createElement("span"); pb.className = "pinme"; pb.setAttribute("role", "button"); pb.tabIndex = 0; pb.textContent = ph.pinned ? t(W.pinned) : t(W.pin); if (ph.pinned) pb.setAttribute("disabled", "");
+      pb.onclick = function (ev) { ev.stopPropagation(); if (!ph.pinned && !pb.hasAttribute("disabled")) { pb.setAttribute("disabled", ""); pin(ph, { set disabled(v) { if (!v) pb.removeAttribute("disabled"); }, set textContent(v) { pb.textContent = v; } }); } };
+      b.appendChild(pb); al.appendChild(b);
     });
+  }
+  /* ---------- the board: photos visitors pinned (Supabase: nest_pin / nest_wall) ---------- */
+  var cfg = null;
+  function sb() { if (cfg) return cfg; cfg = new Promise(function (res) { if (window.FB_SUPABASE && FB_SUPABASE.url) return res(FB_SUPABASE); var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { res(window.FB_SUPABASE || {}); }; document.head.appendChild(sc); }); return cfg; }
+  function api(fn, args, get) {
+    return sb().then(function (c) { if (!c.url) throw new Error("offline");
+      var u = c.url + "/rest/v1/rpc/" + fn, h = { apikey: c.anonKey, Authorization: "Bearer " + c.anonKey, "Content-Type": "application/json" };
+      if (get) u += "?" + Object.keys(args).map(function (k) { return k + "=" + encodeURIComponent(args[k]); }).join("&");
+      return fetch(u, get ? { headers: h } : { method: "POST", headers: h, body: JSON.stringify(args) }).then(function (r) { return r.text().then(function (x) { var j = null; try { j = x ? JSON.parse(x) : null; } catch (e) {} if (!r.ok) throw new Error((j && j.message) || "HTTP " + r.status); return j; }); });
+    });
+  }
+  function key() { var k = null; try { k = localStorage.getItem("fb_device_key"); } catch (e) {} if (!k) { var a = new Uint8Array(32); crypto.getRandomValues(a); k = btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); try { localStorage.setItem("fb_device_key", k); } catch (e) {} } return k; }
+  var mine = [];
+  function paintBoard() {
+    var bd = $("board");
+    Promise.all([api("nest_wall", { p_limit: 24 }, true), api("nest_mine", { p_secret: key() }).catch(function () { return []; })]).then(function (r) {
+      var list = r[0] || []; mine = (r[1] || []).map(String); bd.innerHTML = "";
+      if (!list.length) { var e = document.createElement("p"); e.className = "empty"; e.textContent = t(W.empty); bd.appendChild(e); return; }
+      list.forEach(function (ph) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "pola" + (mine.indexOf(ph.id) >= 0 ? " mine" : ""); b.style.setProperty("--r", ((hash(ph.id) - .5) * 9).toFixed(1) + "deg");
+        var im = document.createElement("img"); im.src = ph.img; im.alt = ""; im.loading = "lazy"; b.appendChild(im);
+        b.onclick = function () { var im2 = document.createElement("img"); im2.src = ph.img; im2.alt = ""; var s = enlarge(im2, t(W.pinnedBy).replace("{d}", new Date(ph.at).toLocaleDateString()));
+          var acts = document.createElement("div"); acts.className = "acts"; var x = document.createElement("button"); x.type = "button";
+          if (mine.indexOf(ph.id) >= 0) { x.textContent = t(W.unpin); x.onclick = function (ev) { ev.stopPropagation(); api("nest_unpin", { p_secret: key(), p_id: ph.id }).then(function () { s.remove(); paintBoard(); }); }; }
+          else { x.textContent = t(W.report); x.onclick = function (ev) { ev.stopPropagation(); api("nest_report", { p_secret: key(), p_id: ph.id }).then(function () { toast(t(W.thanks)); s.remove(); }); }; }
+          acts.appendChild(x); s.querySelector(".big").appendChild(acts); };
+        bd.appendChild(b);
+      });
+    }).catch(function () { bd.innerHTML = ""; var e = document.createElement("p"); e.className = "empty"; e.textContent = t(W.off); bd.appendChild(e); });
+  }
+  function pin(ph, btn) {
+    btn.disabled = true;
+    api("nest_pin", { p_secret: key(), p_img: ph.u }).then(function (id) {
+      ph.pinned = id; save(); btn.textContent = t(W.pinned); shutter(); paintBoard();
+      setTimeout(function () { var bd = $("board"); if (bd.scrollIntoView) bd.scrollIntoView({ behavior: "smooth", block: "center" }); }, 400);
+    }).catch(function (e) { btn.disabled = false; toast(/rest|too fast|a day/i.test(String(e && e.message)) ? t(W.rest) : t(W.off)); });
   }
   function paintCats() {
     var box = $("cats"); if (!box.children.length) ["miso", "yuzu"].forEach(function (k) { var d = document.createElement("article"); d.className = "cat"; d.id = "c-" + k; d.innerHTML = '<header><canvas width="18" height="15"></canvas><div><b></b><span class="hearts"></span></div></header><ul></ul>'; drawCat(d.querySelector("canvas").getContext("2d"), k, 0, 15, "sit", 1, 0, {}); d.querySelector("header").onclick = function () { meow(k); }; box.appendChild(d); });
@@ -332,7 +385,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
   window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
   if (World.phase() === "night" && Math.random() < .5) { lamp = false; setTimeout(function () { var b = document.querySelector('[data-k="lamp"]'); if (b) b.setAttribute("aria-pressed", "true"); }, 0); cats.miso.x = BED - 8; cats.yuzu.x = BED + 12; cats.miso.pose = cats.yuzu.pose = "sleep"; }
-  words(); unlockedBefore = unlockedCount();
+  words(); unlockedBefore = unlockedCount(); paintBoard();
   requestAnimationFrame(frame);
 })();
 </script>

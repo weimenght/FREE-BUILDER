@@ -65,7 +65,7 @@ ID: JB-09
 TITLE: Same Song
 GENRE: Light-up tunes, one shared record player
 AUTHOR: FREE//BUILDER
-DESC: Light up a few bulbs and you have a tune. Press it into a record, sign it, then drop a coin: it plays Next Door and in Borrowed Pages at the same second, with your name on it.
+DESC: Light one bulb per beat and you have a tune; tap the drum for a groove. Press it into a record and sign it: it plays Next Door, in Borrowed Pages and here at the same second, with your name on it.
 URL: same-song/
 
 CODE: POSTCARD
@@ -121,7 +121,7 @@ ID: RD-02
 TITLE: Late Light
 GENRE: 8-bit rhythm and turntables
 AUTHOR: FREE//BUILDER
-DESC: Hit the records as they cross the line, scratch through the bars and drop the bass when the hype is full. Tour city to city, each with its own twist, or jam on pads and loops.
+DESC: Hit the records as they cross the line, scratch through the bars and drop the bass when the hype is full. Tour city to city, each with its own twist. Better with a friend: send a link, take a deck each.
 URL: late-light/
 
 CODE: CLIMB
