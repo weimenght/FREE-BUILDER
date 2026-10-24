@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=76862546fc"></script><script data-fbg src="/fbkit/fbg.js?v=7b87b2077a" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7077d8ab13"></script><script data-fbg src="/fbkit/fbg.js?v=ff97316023" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Nearby — FREE//BUILDER</title>
 <meta name="description" content="Nearby: a small pixel town where nothing is asking for your attention. Have a drink at Next Door, lie back and watch the clouds, send a postcard, plant next to a stranger. Wei, the bartender, will show you around.">
@@ -47,6 +47,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
 @keyframes ants{50%{border-color:#f6b73c}}
 .tag{position:absolute;left:50%;bottom:calc(100% + 2px);transform:translateX(-50%);white-space:nowrap;padding:2px 5px 1px;background:rgba(10,8,14,.82);border:2px solid #000;color:#fff3c0;font:400 clamp(13px,3.6vw,18px)/1 var(--vt);pointer-events:none;box-shadow:2px 2px 0 rgba(0,0,0,.6)}
 .tag.below{bottom:auto;top:calc(100% + 2px)}
+.tag{transition:opacity .6s}.spot.known .tag:not([data-here]){opacity:0}.spot.known:hover .tag,.spot.known:focus-visible .tag{opacity:1}
 .spot:hover .tag,.spot:focus-visible .tag{background:var(--a);color:#14101e}
 .here{position:absolute;left:50%;bottom:calc(100% + 22px);transform:translateX(-50%);font-size:22px;animation:hop .7s steps(2) infinite;pointer-events:none;filter:drop-shadow(2px 2px 0 #000)}
 .tag.below+.here{bottom:auto;top:calc(100% + 22px)}
@@ -244,11 +245,50 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     if (wx === "rain" || wx === "storm") { for (var rd = 0; rd < 140; rd++) { var rx2 = (hash("rd" + rd) * WW + f * 1.5) % WW, ry2 = (hash("rr" + rd) * H + f * 6) % H; R(rx2, ry2, 1, 3, "rgba(170,200,255,.55)"); } if (wx === "storm" && f % 240 < 3) R(0, 0, WW, H, "rgba(255,255,255,.5)"); }
     if (wx === "snow") for (var sn = 0; sn < 120; sn++) { var snx = (hash("sn" + sn) * WW + Math.sin((f + sn * 9) / 18) * 4) % WW, sny = (hash("sy" + sn) * H + f * .8) % H; R(snx, sny, 1, 1, "#ffffff"); }
     if (wx === "fog") { g.fillStyle = "rgba(220,224,232,.22)"; g.fillRect(0, 0, WW, H); for (var fg = 0; fg < 7; fg++) R(((f * .2 + fg * 70) % 440) - 60, 70 + (fg % 4) * 60, 90, 6, "rgba(230,234,240,.25)"); }
+    mono();
     drawAnimals(f);
     if (night) { g.fillStyle = "rgba(10,10,40,.18)"; g.fillRect(0, 0, WW, H); }
     ["miso", "yuzu", "dog"].forEach(function (k) { var b = kit[k], p = catPos[k]; if (b && p) { b.style.left = ((p[0] + 3) / WW * 100) + "%"; b.style.top = ((p[1] + 2) / H * 100) + "%"; } });
   }
   var kit = {};
+  /* the town starts in black and white; every place you have been to keeps its colour. Places you know well lose their name tags (hover or focus to see them). */
+  var MASK = null, LIT = {}, GLOW = {}, KNOW = 3;
+  function litNow() {
+    var v = null; try { v = JSON.parse(localStorage.getItem("fb_lit") || "null"); } catch (e) {}
+    if (!v) { v = {}; for (var i = 0; i < localStorage.length; i++) { var key = localStorage.key(i), m = /^fb_seen_(.+)$/.exec(key); if (m && m[1] !== "map") v[m[1]] = 1; } try { localStorage.setItem("fb_lit", JSON.stringify(v)); } catch (e) {} }   /* returning visitors: the places they have already been to */
+    if (v.love) v.postcard = Math.max(v.postcard || 0, 1);   /* Handoff's counter is in Say Hello */
+    return v;
+  }
+  function relight() {
+    var was = LIT, now = Date.now(); LIT = litNow();
+    Object.keys(LIT).forEach(function (k) { if (!was[k] && Object.keys(was).length + 1 > 0 && MASK) GLOW[k] = now; });   /* a place you just visited blooms into colour */
+    MASK = new Float32Array(WW * H);
+    PLACES.forEach(function (p) { if (LIT[p.k]) paint(p, 1); });
+    document.querySelectorAll(".spot[data-k]").forEach(function (a) { a.classList.toggle("known", (LIT[a.dataset.k] || 0) >= KNOW); });
+  }
+  function paint(p, a) {
+    var x0 = Math.round(px(p)) - 4, y0 = Math.round(p.y) - 6, x1 = x0 + p.w + 8, y1 = y0 + p.h + 10, F = 7;
+    for (var y = Math.max(0, y0 - F); y < Math.min(H, y1 + F); y++) for (var x = Math.max(0, x0 - F); x < Math.min(WW, x1 + F); x++) {
+      var dx = x < x0 ? x0 - x : x > x1 ? x - x1 : 0, dy = y < y0 ? y0 - y : y > y1 ? y - y1 : 0, d = Math.sqrt(dx * dx + dy * dy), m = Math.max(0, 1 - d / F) * a, i = y * WW + x;
+      if (m > MASK[i]) MASK[i] = m;
+    }
+  }
+  function mono() {
+    if (!MASK) relight();
+    var now = Date.now(), blooming = Object.keys(GLOW).filter(function (k) { return now - GLOW[k] < 2400; });
+    if (blooming.length) { PLACES.forEach(function (p) { if (blooming.indexOf(p.k) >= 0) { var tt = (now - GLOW[p.k]) / 2400; p.__g = tt * tt * (3 - 2 * tt); } }); }
+    var img = g.getImageData(0, 0, WW, H), d = img.data;
+    for (var i = 0, j = 0; i < d.length; i += 4, j++) {
+      var m = MASK[j]; if (m >= 1) continue;
+      var r = d[i], gg = d[i + 1], b = d[i + 2], l = r * .3 + gg * .59 + b * .11;
+      d[i] = l + (r - l) * m; d[i + 1] = l + (gg - l) * m; d[i + 2] = l + (b - l) * m;
+    }
+    if (blooming.length) {   /* re-grey the blooming places in proportion, so they fade in instead of switching */
+      PLACES.forEach(function (p) { if (blooming.indexOf(p.k) < 0) return; var a = 1 - (p.__g || 0), x0 = Math.max(0, Math.round(px(p)) - 11), y0 = Math.max(0, Math.round(p.y) - 13), x1 = Math.min(WW, x0 + p.w + 22), y1 = Math.min(H, y0 + p.h + 24);
+        for (var y = y0; y < y1; y++) for (var x = x0; x < x1; x++) { var k = (y * WW + x) * 4, l2 = d[k] * .3 + d[k + 1] * .59 + d[k + 2] * .11; d[k] += (l2 - d[k]) * a; d[k + 1] += (l2 - d[k + 1]) * a; d[k + 2] += (l2 - d[k + 2]) * a; } });
+    }
+    g.putImageData(img, 0, 0);
+  }
   function meow(k) { try { var A = new (window.AudioContext || window.webkitAudioContext)(), o = A.createOscillator(), g2 = A.createGain(), n = A.currentTime, fr = k === "miso" ? 620 : 760; o.type = "triangle"; o.frequency.setValueAtTime(fr, n); o.frequency.linearRampToValueAtTime(fr * 1.5, n + .12); o.frequency.linearRampToValueAtTime(fr * .9, n + .35); g2.gain.setValueAtTime(.0001, n); g2.gain.linearRampToValueAtTime(.06, n + .05); g2.gain.exponentialRampToValueAtTime(.0001, n + .4); o.connect(g2); g2.connect(A.destination); o.start(n); o.stop(n + .42); } catch (e) {} }
   var DOGN = ["Mantou", "馒头", "饅頭", "Mantou", "Mantou"];
   function woof() { try { var A = new (window.AudioContext || window.webkitAudioContext)(), n = A.currentTime; [0, .22].forEach(function (d) { var o = A.createOscillator(), g2 = A.createGain(), lp = A.createBiquadFilter(); o.type = "sawtooth"; o.frequency.setValueAtTime(340, n + d); o.frequency.exponentialRampToValueAtTime(170, n + d + .12); lp.type = "lowpass"; lp.frequency.value = 900; g2.gain.setValueAtTime(.0001, n + d); g2.gain.linearRampToValueAtTime(.05, n + d + .02); g2.gain.exponentialRampToValueAtTime(.0001, n + d + .14); o.connect(lp); lp.connect(g2); g2.connect(A.destination); o.start(n + d); o.stop(n + d + .16); }); } catch (e) {} }
@@ -386,6 +426,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
       a.style.left = (px(p) / WW * 100) + "%"; a.style.top = (p.y / H * 100) + "%"; a.style.width = (p.w / WW * 100) + "%"; a.style.height = (p.h / H * 100) + "%";
       var name = World.name ? World.name(p.k) : (p.n[L()] || p.n[0]); a.setAttribute("aria-label", name);
       a.innerHTML = '<span class="tag' + (BELOW[p.k] ? " below" : "") + '"></span>'; a.firstChild.textContent = name;
+      if ((LIT[p.k] || 0) >= KNOW) a.classList.add("known");
       if (from && from === p.k) { var h = document.createElement("span"); h.className = "here"; h.textContent = "📍"; h.title = t("here"); a.appendChild(h); }
       a.addEventListener("click", function (e) {
         if (e.metaKey || e.ctrlKey || e.shiftKey) return;
@@ -446,7 +487,8 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   function covered() { return document.documentElement.classList.contains("fbsh-open") && innerHeight > innerWidth; }   /* a place fills the phone: the town rests */
   function loop(ts) { if (ts - last > 110 && !covered()) { last = ts; f++; draw(f); } requestAnimationFrame(loop); }
   /* back from a place: the 📍 shows where you were */
-  window.FBMapBack = function (k) { if (k) { from = k; spots(); kitties(); } };
+  window.FBMapBack = function (k) { if (k) { from = k; spots(); kitties(); } relight(); };
+  addEventListener("storage", function (e) { if (e.key === "fb_lit") relight(); });
   words(); draw(0); setInterval(clock, 20000); centre();
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) requestAnimationFrame(loop);
 })();

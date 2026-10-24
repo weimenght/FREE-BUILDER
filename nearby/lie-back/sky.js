@@ -4,7 +4,7 @@
    - press and hold: breathe in as the ring grows, let go to breathe out
    - double-tap: the clouds gather into a shape; now and then they do it on their own
    - tap the grass: dandelion seeds
-   - the sky follows your clock; each visit brings something else (a rainbow, a kite, a plane, shooting stars, fireflies)
+   - the sky follows your clock; each visit brings something else (a rainbow, a plane, shooting stars, fireflies, and a visitor that belongs to the place: geese, an eagle, gulls, herons, falling leaves, a hawk, snowflakes)
    Uses the engine's globals: state, cw, ch, setSkyPalette, triggerRandomPareidolia, spawnDandelionGust, toggleAudioEngine … */
 (function () {
   "use strict";
@@ -50,7 +50,7 @@
     dunes: { n: 0.14, tall: 1.3, far: [200, 170, 110], near: [170, 140, 90], flowers: [], fl: 0, seed: 0.1 },
     snow: { n: 0.1, tall: 0.6, far: [150, 160, 140], near: [120, 130, 110], flowers: [], fl: 0, seed: 0 }
   }[SCENE];
-  var X = night() ? { stars: true, flies: Math.random() < 0.7 } : { rainbow: Math.random() < 0.3, shower: Math.random() < 0.3, kite: Math.random() < 0.45, plane: Math.random() < 0.6, flies: sky === "dusk" && Math.random() < 0.6 };
+  var X = night() ? { stars: true, flies: Math.random() < 0.7 } : { rainbow: Math.random() < 0.3, shower: Math.random() < 0.3, visitor: Math.random() < 0.6, plane: Math.random() < 0.6, flies: sky === "dusk" && Math.random() < 0.6 };
   try { var WW = window.FBWorld && FBWorld.weather(); if (WW && !night()) { X.shower = WW === "rain" || WW === "storm"; if (WW === "fog" || WW === "snow") X.rainbow = false; } } catch (e) {}   /* rain in Nearby rains here too */
   if (X.shower) X.rainbow = false;   /* a passing shower brings its own rainbow afterwards */
   if (SCENE === "snow") { X.flies = false; X.shower = false; X.rainbow = false; } if (SCENE === "dunes") { X.shower = false; X.rainbow = false; }
@@ -178,8 +178,40 @@
   }
   function vignette() { var vg = g.createRadialGradient(W / 2, H * 0.45, Math.min(W, H) * 0.35, W / 2, H * 0.45, Math.max(W, H) * 0.8); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, night() ? "rgba(0,0,10,.35)" : "rgba(20,30,50,.18)"); g.fillStyle = vg; g.fillRect(0, 0, W, H); }
 
-  var stars = [], flies = [], kite = { x: -60, y: 0, p: 0 }, plane = null, shoot = null, bow = { a: 0, t: 0 }, t0 = performance.now();
+  var stars = [], flies = [], vis = null, plane = null, shoot = null, bow = { a: 0, t: 0 }, t0 = performance.now();
   for (var i = 0; i < 40; i++) flies.push({ x: Math.random(), y: 0.8 + Math.random() * 0.17, p: Math.random() * TAU, v: 0.3 + Math.random() * 0.7 });
+  /* geese over the meadow, an eagle over the pasture, gulls at the cove, herons at the lake, leaves in the wood, a hawk over the dunes, snow on the peaks */
+  var KIND = { meadow: "geese", mountain: "eagle", sea: "gulls", lake: "herons", forest: "leaves", dunes: "hawk", snow: "flakes" }[SCENE] || "geese";
+  function bird(x, y, s, flap, col) { var w = Math.sin(flap) * 0.6 * s; g.strokeStyle = col; g.lineWidth = Math.max(1.2, s * 0.18); g.lineCap = "round"; g.beginPath(); g.moveTo(x - s, y - w); g.quadraticCurveTo(x - s * 0.4, y - s * 0.2 - w * 0.4, x, y); g.quadraticCurveTo(x + s * 0.4, y - s * 0.2 - w * 0.4, x + s, y - w); g.stroke(); }
+  function visitor(t) {
+    if (!vis) { if (Math.random() > 0.004) return; var dir = Math.random() < 0.5 ? 1 : -1; vis = { t0: t, dir: dir, y: H * (0.12 + Math.random() * 0.2), n: 5 + Math.floor(Math.random() * 6), seed: Math.random() * 100, p: [] }; }
+    var k = t - vis.t0, dir = vis.dir, ink = sky === "dusk" ? "rgba(40,30,40,.75)" : "rgba(40,48,60,.6)";
+    g.save();
+    if (KIND === "geese" || KIND === "herons" || KIND === "gulls") {
+      var speed = KIND === "herons" ? 18 : KIND === "gulls" ? 26 : 34, x0 = dir > 0 ? -80 + k * speed : W + 80 - k * speed;
+      for (var i = 0; i < (KIND === "gulls" ? 3 : vis.n); i++) {
+        var row = Math.ceil(i / 2), side = i % 2 ? 1 : -1, bx, by, sz;
+        if (KIND === "geese") { bx = x0 - dir * row * 15; by = vis.y + side * row * 8; sz = 7; }   /* a V: two arms trailing the leader */
+        else if (KIND === "herons") { bx = x0 - dir * i * 46; by = vis.y + 40 + Math.sin(k * 0.6 + i) * 6; sz = 12; }
+        else { bx = x0 - dir * i * 70 + Math.sin(k * 0.4 + i * 2) * 30; by = vis.y + Math.sin(k * 0.5 + i) * 18; sz = 9; }
+        bird(bx, by, sz, k * (KIND === "herons" ? 3 : KIND === "gulls" ? 2.2 : 5) + i, KIND === "gulls" ? "rgba(255,255,255,.9)" : ink);
+      }
+      if ((dir > 0 && x0 - vis.n * 46 > W + 100) || (dir < 0 && x0 + vis.n * 46 < -100)) vis = null;
+    } else if (KIND === "eagle" || KIND === "hawk") {   /* slow circles on a thermal, then away */
+      var cx = W * (0.3 + 0.4 * ((vis.seed % 10) / 10)), cy = vis.y + 20, r = KIND === "eagle" ? 70 : 50, a = k * 0.35;
+      var ex = cx + Math.cos(a) * r + (k > 40 ? (k - 40) * 20 * dir : 0), ey = cy + Math.sin(a) * r * 0.35;
+      bird(ex, ey, KIND === "eagle" ? 16 : 11, Math.sin(k * 0.8) > 0.92 ? k * 6 : 0.4, ink);
+      if (ex < -60 || ex > W + 60) vis = null;
+    } else {   /* leaves or snowflakes falling for a while */
+      if (vis.p.length < 26 && Math.random() < 0.25 && k < 30) vis.p.push({ x: Math.random() * W, y: -10, v: 0.4 + Math.random() * 0.6, ph: Math.random() * 6, c: KIND === "leaves" ? ["#c8742a", "#e0a03a", "#a8502a", "#d8b44a"][Math.floor(Math.random() * 4)] : "#ffffff" });
+      vis.p.forEach(function (q) { q.y += q.v * (KIND === "leaves" ? 1.2 : 0.7); q.ph += 0.03; var qx = q.x + Math.sin(q.ph) * (KIND === "leaves" ? 22 : 10);
+        g.fillStyle = q.c; g.globalAlpha = KIND === "leaves" ? 0.9 : 0.85;
+        if (KIND === "leaves") { g.save(); g.translate(qx, q.y); g.rotate(Math.sin(q.ph * 1.7)); g.beginPath(); g.ellipse(0, 0, 6, 3, 0, 0, TAU); g.fill(); g.restore(); } else { g.beginPath(); g.arc(qx, q.y, 2.2, 0, TAU); g.fill(); } });
+      vis.p = vis.p.filter(function (q) { return q.y < H * 0.95; }); g.globalAlpha = 1;
+      if (k > 30 && !vis.p.length) vis = null;
+    }
+    g.restore();
+  }
   function frame(now) {
     var t = (now - t0) / 1000; g.clearRect(0, 0, W, H);
     light(t); shower(t);
@@ -191,12 +223,8 @@
     }
     /* a rainbow after rain that never came, fading in and out */
     if (X.rainbow) { bow.a = Math.min(1, Math.max(0, Math.sin(Math.min(Math.PI, (t - (bow.start || 6)) / 70 * Math.PI)))); if (bow.a > 0.01) { var cx = W * 0.78, cy = H * 0.95, R = Math.max(W, H) * 0.55, cols = ["255,80,80", "255,160,60", "255,230,90", "110,220,120", "90,170,255", "150,110,255"]; g.save(); g.globalAlpha = 0.16 * bow.a; g.lineWidth = R * 0.018; cols.forEach(function (c, i) { g.strokeStyle = "rgb(" + c + ")"; g.beginPath(); g.arc(cx, cy, R - i * g.lineWidth, Math.PI * 1.05, Math.PI * 1.75); g.stroke(); }); g.restore(); } }
-    /* a kite on a long string */
-    if (X.kite) { kite.p += 0.02; kite.x = W * 0.15 + Math.sin(t * 0.07) * W * 0.08; kite.y = H * 0.26 + Math.sin(kite.p) * 10; var kx = kite.x, ky = kite.y, r = Math.sin(kite.p * 0.7) * 0.25;
-      g.save(); g.strokeStyle = "rgba(255,255,255,.55)"; g.lineWidth = 1; g.beginPath(); g.moveTo(kx, ky + 22); g.quadraticCurveTo(kx + 40, H * 0.7, kx - 30, H + 10); g.stroke();
-      g.translate(kx, ky); g.rotate(r); g.fillStyle = "#e4554a"; g.beginPath(); g.moveTo(0, -22); g.lineTo(15, 0); g.lineTo(0, 22); g.lineTo(-15, 0); g.closePath(); g.fill(); g.fillStyle = "#f2c94c"; g.beginPath(); g.moveTo(0, -22); g.lineTo(15, 0); g.lineTo(0, 0); g.closePath(); g.fill();
-      g.strokeStyle = "rgba(255,255,255,.7)"; g.beginPath(); g.moveTo(0, 22); for (var q = 1; q < 6; q++) g.lineTo(Math.sin(kite.p * 2 + q) * 6, 22 + q * 9); g.stroke();
-      for (var q2 = 1; q2 < 5; q2++) { g.fillStyle = q2 % 2 ? "#e4554a" : "#f2c94c"; g.beginPath(); g.arc(Math.sin(kite.p * 2 + q2) * 6, 22 + q2 * 9, 2.5, 0, TAU); g.fill(); } g.restore(); }
+    /* a visitor that belongs to this place, drifting through now and then */
+    if (X.visitor && !night()) visitor(t);
     /* a plane high up, drawing a contrail that spreads and fades */
     if (X.plane) { if (!plane && Math.random() < 0.002) plane = { x: -20, y: H * (0.08 + Math.random() * 0.15), v: 0.35 + Math.random() * 0.3, trail: [] };
       if (plane) { plane.x += plane.v; plane.y -= plane.v * 0.08; plane.trail.push({ x: plane.x, y: plane.y, a: 1 }); if (plane.trail.length > 600) plane.trail.shift();

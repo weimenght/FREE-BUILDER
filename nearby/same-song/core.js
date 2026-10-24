@@ -256,7 +256,7 @@
   document.addEventListener("visibilitychange", function () { if (!document.hidden && pollT) poll().then(tick); });
 
   function records(limit) {
-    return rest("jukebox_records?select=id,name,title,song,house,spins,created_at&order=created_at.desc&limit=" + (limit || 60))
+    return rest("town_song_records?select=id,name,title,song,house,spins,created_at&order=created_at.desc&limit=" + (limit || 60))
       .then(function (r) { return r && r.length ? r : HOUSE.slice(); }).catch(function () { return HOUSE.slice(); });
   }
   function spin(id, venue) {

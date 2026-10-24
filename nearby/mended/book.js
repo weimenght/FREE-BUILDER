@@ -86,7 +86,7 @@
   function more() {
     if (done || loading || !cfg.url) return Promise.resolve();
     loading = true;
-    return rest("kintsugi_book?select=id,name,title,vessel,metal,img,created_at&order=created_at.desc&limit=8&offset=" + pages.length)
+    return rest("town_mended_book?select=id,name,title,vessel,metal,img,created_at&order=created_at.desc&limit=8&offset=" + pages.length)
       .then(function (rows) { rows = rows || []; pages = pages.concat(rows); if (rows.length < 8) done = true; loading = false; })
       .catch(function () { loading = false; done = true; });
   }

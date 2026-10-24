@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=76862546fc"></script><script data-fbg src="/fbkit/fbg.js?v=7b87b2077a" defer></script>
+<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7077d8ab13"></script><script data-fbg src="/fbkit/fbg.js?v=ff97316023" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Borrowed Pages · Nearby</title>
 <meta name="description" content="A four-room book house next door to the bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one, and pass it on by hand.">
@@ -405,7 +405,7 @@ details{margin-top:16px}summary{cursor:pointer;font:600 13px var(--sans);color:#
   }
   function load() {
     if (!cfg.url) { books = seedBooks(); render(); return Promise.resolve(); }
-    return rest("book_shelf?select=" + COLS + "&order=created_at.asc").then(function (rows) {
+    return rest("town_books_shelf?select=" + COLS + "&order=created_at.asc").then(function (rows) {
       live = true; books = seedBooks().concat(rows || []); render();   /* the house's reading copies are always there; visitors' books join them */
     }).catch(function () { books = seedBooks(); render(); });
   }
@@ -506,7 +506,7 @@ details{margin-top:16px}summary{cursor:pointer;font:600 13px var(--sans);color:#
       '<div class="lcard"><div class="lh"><span>' + esc(t("name")) + '</span><span aria-hidden="true">📇</span></div><ol id="lin"><li class="cur">' + esc(owner(b)) + " <small>" + esc(t("now")) + "</small></li></ol></div></div>" +
       '<div class="pg">' + (b.house ? '<div class="card">' + esc(t("houseNote")) + '<span class="by">— ' + esc(t("name")) + "</span></div>"
         : b.note ? '<div class="card">' + esc(b.note) + '<span class="by">— ' + esc(b.owner_name) + "</span></div>" : '<div class="card blank">' + esc(t("noNote")) + "</div>") + actions(b) + "</div></div>", "", function () { openBook(id); });
-    if (live && !b.house) rest("book_lineage?select=owner_name,line,since&book_id=eq." + b.id + "&order=since.asc").then(function (rows) {
+    if (live && !b.house) rest("town_books_lineage?select=owner_name,line,since&book_id=eq." + b.id + "&order=since.asc").then(function (rows) {
       if (!rows || !rows.length || !$("#lin", s)) return;
       $("#lin", s).innerHTML = rows.map(function (r, i) { var cur = i === rows.length - 1; return "<li" + (cur ? ' class="cur"' : "") + ">" + esc(r.owner_name) + " <small>" + (i ? "🤝 " : "📥 ") + esc(date(r.since)) + (cur ? " · " + esc(t("now")) : "") + "</small></li>"; }).join("");
     }).catch(function () {});

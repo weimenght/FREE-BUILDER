@@ -4,7 +4,8 @@
   "description": "A small pixel town where nothing is asking for your attention. Have a drink next door, watch the clouds, send a postcard, plant next to a stranger.",
   "start_url": "/nearby/",
   "scope": "/nearby/",
-  "display": "standalone",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
   "background_color": "#14101e",
   "theme_color": "#14101e",
   "icons": [
