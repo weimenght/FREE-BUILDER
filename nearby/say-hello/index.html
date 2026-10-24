@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7077d8ab13"></script><script data-fbg src="/fbkit/fbg.js?v=ff97316023" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=08ef4eaa1f"></script><script data-fbg src="/fbkit/fbg.js?v=1e1287f226" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Say Hello · Nearby</title>
 <meta name="description" content="Write a postcard, seal it until the day you choose, and send it to a friend or hang it on the wall in Next Door.">
@@ -419,7 +419,7 @@ window.PCScenes = (function () {
   }
   function paintWhen() { $("#opens").textContent = when === "now" || at <= new Date() ? "🔓 " + t("rightAway") : "🔒 " + t("sealedTill", { d: fmt(at) }); }
 
-  function send(wall) {
+  function send(wall, again) {
     if (!card.msg.trim()) { flip(true); setTimeout(function () { $("#msg").focus(); }, 500); toast(t("needMsg")); return; }
     if (!card.from.trim()) { flip(true); setTimeout(function () { $("#from").focus(); }, 500); toast(t("needFrom")); return; }
     var btns = [$("#toFriend"), $("#toBar")]; btns.forEach(function (b) { b.disabled = true; });
@@ -431,6 +431,7 @@ window.PCScenes = (function () {
       done(id, wall, body);
     }).catch(function (e) {
       var m = String(e && e.message || e);
+      if (/privacy|offline/i.test(m) && !again && window.FBC && FBC.reask && FBC.choice("postcard") === false) { FBC.reask("postcard"); btns.forEach(function (b) { b.disabled = false; }); return send(wall, true); }   /* pressing Send means they want it sent: ask once more */
       toast(/privacy/i.test(m) ? t("privacy") : /rest|too fast|a day/i.test(m) ? t("rest") : t("offline"));
     }).then(function () { btns.forEach(function (b) { b.disabled = false; }); });
   }
