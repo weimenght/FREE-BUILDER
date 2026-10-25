@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=bff79215d6"></script><script data-fbg src="/fbkit/fbg.js?v=f7422115eb" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=61743b6c1d"></script><script data-fbg src="/fbkit/fbg.js?v=f4a5904859" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>No Hurry · Nearby</title>
 <meta name="description" content="A cabin on the high pasture with a big window. Clouds, cows, weather. Nothing to do here, and that's the point.">
@@ -23,7 +23,7 @@ canvas#cv{touch-action:none}
 <h1 class="sr" id="h1">No Hurry</h1>
 <canvas id="cv" role="img" aria-label="A view from a cabin window over a high pasture"></canvas>
 <p class="cap" id="cap"></p>
-<button class="snd" id="snd" type="button" aria-pressed="false">🔈</button>
+<button class="snd" id="snd" type="button" data-fb-snd aria-pressed="false">🔈</button>
 <script>
 (function () {
   "use strict";
@@ -114,6 +114,7 @@ canvas#cv{touch-action:none}
   }
   function stopSound() { nodes.forEach(function (n) { try { n.stop(); } catch (e) {} }); nodes = []; }
   var snd = document.getElementById("snd");
+  (window.FB_SOUND_ON = window.FB_SOUND_ON || []).push(function () { if (snd.getAttribute("aria-pressed") !== "true") snd.click(); });   /* in town: the fire and wind start with your first tap */
   snd.onclick = function () { var on = snd.getAttribute("aria-pressed") !== "true"; snd.setAttribute("aria-pressed", on); snd.textContent = on ? "🔊" : "🔈"; if (on) startSound(); else stopSound(); };
 
   function words() {

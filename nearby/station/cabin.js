@@ -13,9 +13,9 @@
   var T = {   /* every word the cabin layer shows */
     board: "Board", quiet: "board quietly", lead: "A sleeper car through cities, mountains and sea. Nothing to do but look out of the window.",
     saved: "A friend saved you a seat in cabin", tip: "Drag to wipe the glass · hold to write · double-tap to knock",
-    share: "Share this cabin", shareLead: "Friends who open this link sit in your car and see the same window, live. No names, nothing saved: the cabin disappears when everyone leaves.",
-    homeScreen: "Add to Home Screen", getOff: "Get off here", stay: "Stay aboard", bar: "Next Door", books: "Borrowed Pages", copy: "Copy link", copied: "Link copied", joinLbl: "Got a friend's code?", join: "Join", badCode: "Four letters, like KTRB", yourCode: "Your cabin", close: "Close", leave: "Leave the shared cabin", alone: "Just you in this car",
-    aboard: "{n} aboard", joined: "Someone boarded", left: "Someone stepped off", knock: "knock knock", write: "Write on the glass…",
+    share: "With a friend", shareLead: "Friends who open this link sit in your car and see the same window, live. No names, nothing saved: the cabin disappears when everyone leaves.",
+    homeScreen: "Add to Home Screen", getOff: "Get off here", stay: "Stay aboard", bar: "Next Door", books: "Borrowed Pages", copy: "↗ Send the link", copied: "Link copied", joinLbl: "or type their code", join: "Join", badCode: "Four letters, like KTRB", yourCode: "Your cabin", close: "Close", leave: "Go alone", alone: "Just you in this car",
+    aboard: "{n} aboard", joined: "Your friend is here", left: "Your friend left", knock: "knock knock", write: "Write on the glass…",
     sound: "Sound", controls: "All controls", connecting: "Joining the cabin…", lost: "Lost the cabin's signal — retrying", host: "You're steering the journey",
     tunnelOut: "Out of the tunnel —", pass: "An express train thunders past", star: "A shooting star — make a wish", rainIn: "Rain on the glass", fogIn: "Fog rolls in", snowIn: "Snow begins to fall", clearIn: "The sky clears"
   };
@@ -89,11 +89,11 @@
   }
 
   /* ---------- boarding ---------- */
-  var qs = new URLSearchParams(location.search), invite = (qs.get("cabin") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
+  var qs = new URLSearchParams(location.search), invite = (qs.get("with") || qs.get("cabin") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
   function boardCard() {
     var d = document.createElement("div"); d.className = "cb-board";
     d.innerHTML = '<div class="cb-ticket"><small>Sleeper Car No. 04</small><h1>' + (invite ? "🎟️ " + invite : "Train Window") + '</h1>' +
-      '<button class="cb-go" type="button">' + T.board + ' <span aria-hidden="true">→</span></button><button class="cb-q" type="button" aria-label="' + T.quiet + '" title="' + T.quiet + '">🔇</button></div>';
+      '<button class="cb-go" type="button">' + T.board + ' <span aria-hidden="true">→</span></button><button class="cb-q" type="button" data-fb-snd aria-label="' + T.quiet + '" title="' + T.quiet + '">🔇</button></div>';
     document.body.appendChild(d);
     var go = function (sound) {
       d.style.opacity = "0"; setTimeout(function () { d.remove(); }, 800);
@@ -151,7 +151,7 @@
   var D, seatsEl, idleT;
   function dock() {
     D = document.createElement("div"); D.className = "cb-dock"; D.setAttribute("role", "toolbar"); D.setAttribute("aria-label", "Cabin");
-    D.innerHTML = '<span class="cb-seats" aria-live="polite"></span><button type="button" data-a="sound" aria-label="' + T.sound + '">🔊</button><button type="button" data-a="share" aria-label="' + T.share + '">🎟️</button><button type="button" data-a="more" aria-label="' + T.controls + '">☰</button>';
+    D.innerHTML = '<span class="cb-seats" aria-live="polite"></span><button type="button" data-a="sound" data-fb-snd aria-label="' + T.sound + '">🔊</button><button type="button" data-a="share" aria-label="' + T.share + '">👥</button><button type="button" data-a="more" aria-label="' + T.controls + '">☰</button>';
     document.body.appendChild(D); seatsEl = D.querySelector(".cb-seats");
     var credit = document.querySelector(".fbg"); if (credit) D.appendChild(credit); else setTimeout(function () { var c = document.querySelector(".fbg"); if (c && D) D.appendChild(c); }, 1500);
     D.addEventListener("click", function (e) {
@@ -391,19 +391,19 @@
   addEventListener("pagehide", function () { if (S.tx) send("bye", {}); });
 
   function newCode() { var A = "BCDFGHJKLMNPQRSTVWXZ", s = ""; for (var i = 0; i < 4; i++) s += A[(Math.random() * A.length) | 0]; return s; }
-  function link() { var u = new URL(location.href); u.search = "?cabin=" + S.code; u.hash = ""; return u.toString(); }
+  function link() { var u = new URL(location.href); u.search = "?with=" + S.code; u.hash = ""; return u.toString(); }
   function join(code, creating) {
     S.code = code; seats();
     if (S.tx) S.tx.close();
     S.tx = transport(code, onMsg, function (st) { S.net = st; if (st === "bad") toast(T.lost); });
     if (creating) director.start(); else { director.stop(); toast(T.connecting); setTimeout(reelect, 8000); }
-    try { history.replaceState(null, "", "?cabin=" + code); } catch (e) {}
+    try { history.replaceState(null, "", "?with=" + code); } catch (e) {}
   }
   function leave() { if (S.tx) { send("bye", {}); S.tx.close(); } S.tx = null; S.code = ""; S.peers = {}; seats(); director.start(); try { history.replaceState(null, "", location.pathname); } catch (e) {} }
   function shareSheet() {
     if (!S.code) join(newCode(), true);
     var w = document.createElement("div"); w.className = "cb-sheet";
-    w.innerHTML = '<div class="cb-card" role="dialog" aria-modal="true" aria-labelledby="cb-sh"><h2 id="cb-sh">' + T.share + '</h2><p class="mut">' + T.shareLead + '</p><div class="code" aria-label="' + T.yourCode + '">' + S.code + '</div>' +
+    w.innerHTML = '<div class="cb-card" role="dialog" aria-modal="true" aria-labelledby="cb-sh"><h2 id="cb-sh"><span aria-hidden="true">👥 </span>' + T.share + '</h2><div class="code" aria-label="' + T.yourCode + '">' + S.code + '</div>' +
       '<div class="row"><button type="button" class="pri" data-a="copy">' + T.copy + '</button><button type="button" data-a="close">' + T.close + '</button></div>' +
       '<form class="cb-join"><label for="cb-jc">' + T.joinLbl + '</label><div class="row"><input id="cb-jc" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="····" inputmode="text"><button type="submit">' + T.join + '</button></div><p class="mut cb-jerr" aria-live="polite"></p></form>' +
       '<div class="row"><button type="button" data-a="leave">' + T.leave + '</button></div></div>';
@@ -412,7 +412,7 @@
     jc.addEventListener("input", function () { jc.value = jc.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4); });
     w.querySelector(".cb-join").addEventListener("submit", function (e) {
       e.preventDefault(); var c = jc.value;
-      if (c.length !== 4) { w.querySelector(".cb-jerr").textContent = T.badCode; jc.focus(); return; }
+      if (c.length !== 4) { jc.focus(); if (jc.animate) jc.animate([{ transform: "translateX(0)" }, { transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0)" }], { duration: 240 }); return; }   /* a nudge, not a sentence */
       w.remove(); if (c !== S.code) { if (S.tx) send("bye", {}); S.peers = {}; join(c, false); }
     });
     w.addEventListener("click", function (e) {

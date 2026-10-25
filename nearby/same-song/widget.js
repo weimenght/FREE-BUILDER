@@ -66,7 +66,7 @@
     o = o || {}; var venue = venueOf(o);
     var m = el("div", "jbm off", '<canvas class="jbm-px" width="80" height="62" aria-hidden="true"></canvas><div class="jbm-body">' +
       '<div class="jbm-card"><b>·</b><span></span><small></small></div>' +
-      '<div class="jbm-low"><button type="button" class="jbm-spk" aria-label="Listen" data-jb-ia="listen">🔇</button><canvas class="jbm-vu" width="48" height="18"></canvas><div class="jbm-slot" aria-hidden="true"></div></div>' +
+      '<div class="jbm-low"><button type="button" class="jbm-spk" aria-label="Listen" data-jb-ia="listen">▶</button><canvas class="jbm-vu" width="48" height="18"></canvas><div class="jbm-slot" aria-hidden="true"></div></div>' +
       '<div class="jbm-next" aria-live="polite"></div><div class="jbm-toast" role="status"></div></div>');
     var shelf = el("div", "jbs"); shelf.setAttribute("role", "list");
     host.appendChild(m); if (o.shelf !== false) host.appendChild(shelf);
@@ -82,7 +82,7 @@
   function paint(M, s) {
     var m = M.el, p = s.now, on = JB.listening();
     m.classList.toggle("off", !on); m.classList.toggle("on", on);
-    var spk = m.querySelector(".jbm-spk"); spk.textContent = on ? "🔊" : "🔇"; spk.setAttribute("aria-pressed", on ? "true" : "false");
+    var spk = m.querySelector(".jbm-spk"); spk.textContent = on ? "❚❚" : "▶";   /* the machine plays or rests; volume and silence are the top bar's 🔈 */ spk.setAttribute("aria-pressed", on ? "true" : "false");
     var card = m.querySelector(".jbm-card");
     var key = p ? p.record_id + "@" + p.s : "";
     M.playing = !!p; if (p) M.h = JB.hue(p.song + p.title);

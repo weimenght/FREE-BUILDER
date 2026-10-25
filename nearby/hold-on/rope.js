@@ -14,7 +14,7 @@
   /* ---------- look ---------- */
   var css = "" +
     ".rp-btn{width:100%;min-height:44px;display:flex;align-items:center;justify-content:center;gap:6px;background:#0f172a;color:#fde68a;border:2px solid #f59e0b;font:10px/1.4 'Press Start 2P',monospace;cursor:pointer;box-shadow:3px 3px 0 #000}" +
-    ".rp-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}" +
+    ".rp-btn{text-transform:uppercase}.rp-btn.on{background:#1f6f62;border-color:#8ee6d4;color:#eef2ff}.rp-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}" +
     ".rp-sheet{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;background:rgba(2,6,23,.86)}" +
     ".rp-sheet{width:100vw;height:100vh;height:100dvh}.rp-card{width:min(420px,calc(100vw - 32px));background:#0b1220;border:3px solid #22d3ee;box-shadow:6px 6px 0 #000;padding:16px;color:#e2e8f0;font:16px/1.35 system-ui,sans-serif}" +
     ".rp-card h3{margin:0 0 10px;font:12px/1.5 'Press Start 2P',monospace;color:#67e8f9}" +
@@ -35,57 +35,31 @@
     "#rpShout{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);z-index:31;font:14px/1.4 'Press Start 2P',monospace;color:#fde047;text-shadow:3px 3px 0 #000;pointer-events:none;opacity:0;transition:opacity .2s;text-align:center}#rpShout.show{opacity:1}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
-  /* ---------- the relay (Supabase Realtime broadcast; tabs on one device without keys) ---------- */
-  function transport(code, onMsg, onStatus) {
-    var topic = "realtime:fbclimb-" + code;
-    if (!cfg.done) {   /* an invite link can join before the keys have loaded: wait for them, so both sides meet on the same channel */
-      var inner = null, gone = false, q = [];
-      (function wait() { if (gone) return; if (!cfg.done) return setTimeout(wait, 100); inner = transport(code, onMsg, onStatus); q.forEach(function (a) { inner.send(a[0], a[1]); }); })();
-      return { send: function (ev, p) { if (inner) inner.send(ev, p); else q.push([ev, p]); }, close: function () { gone = true; if (inner) inner.close(); } };
-    }
-    if (!cfg.url) {
-      var bc = null; try { bc = new BroadcastChannel("fb_climb_" + code); bc.onmessage = function (e) { onMsg(e.data.event, e.data.payload); }; } catch (e) {}
-      setTimeout(function () { onMsg("_ready", {}); }, 0);
-      return { send: function (ev, p) { try { bc && bc.postMessage({ event: ev, payload: p }); } catch (e) {} }, close: function () { try { bc && bc.close(); } catch (e) {} } };
-    }
-    var att = 0, ws = null, ref = 0, hb = null, closed = false, tries = 0, joined = false;
-    var base = (cfg.rt || cfg.url.replace(/^http/, "ws") + "/realtime/v1/websocket").replace(/\/$/, "");
-    var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "apikey=" + encodeURIComponent(cfg.key) + "&vsn=1.0.0";
-    var raw = function (m) { try { ws && ws.readyState === 1 && ws.send(JSON.stringify(m)); } catch (e) {} };
-    function connect() {
-      onStatus("connecting");
-      try { if (window.FBWorld && FBWorld.rtUrl) url = FBWorld.rtUrl(cfg, att++); ws = new WebSocket(url); } catch (e) { return retry(); }
-      ws.onopen = function () { tries = 0; raw({ topic: topic, event: "phx_join", ref: String(++ref), payload: { config: { broadcast: { self: false, ack: false }, presence: { key: "" }, private: !!(window.FBWorld && FBWorld.rtPriv && FBWorld.rtPriv()) }, access_token: cfg.key } }); clearInterval(hb); hb = setInterval(function () { raw({ topic: "phoenix", event: "heartbeat", payload: {}, ref: String(++ref) }); }, 25000); };
-      ws.onmessage = function (e) {
-        var m; try { m = JSON.parse(e.data); } catch (_) { return; }
-        if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "ok" && !joined) { joined = true; if (window.FBWorld && FBWorld.rtGood) FBWorld.rtGood(url); onStatus("ok"); onMsg("_ready", {}); }
-        else if (m.event === "phx_reply" && m.topic === topic && m.payload && m.payload.status === "error" && !joined) { if (window.FBWorld && FBWorld.rtPriv) FBWorld.rtPriv(true); att--; try { ws.close(); } catch (_) {} }   /* a project that only allows private channels: rejoin as private */
-        else if (m.event === "broadcast" && m.payload) onMsg(m.payload.event, m.payload.payload);
-        else if (m.event === "phx_error" || m.event === "phx_close") { joined = false; onStatus("bad"); }
-      };
-      ws.onclose = function () { joined = false; clearInterval(hb); if (!closed) retry(); };
-      ws.onerror = function () { try { ws.close(); } catch (_) {} };
-    }
-    function retry() { onStatus("bad"); setTimeout(function () { if (!closed) connect(); }, Math.min(15000, 800 * Math.pow(2, tries++))); }
-    connect();
-    return { send: function (ev, p) { if (joined) raw({ topic: topic, event: "broadcast", ref: String(++ref), payload: { type: "broadcast", event: ev, payload: p } }); }, close: function () { closed = true; clearInterval(hb); try { ws && ws.close(); } catch (e) {} } };
-  }
-  function send(ev, p) { if (R.tx) R.tx.send(ev, p || {}); }
-  function newCode() { var A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", s = ""; for (var i = 0; i < 4; i++) s += A[Math.floor(Math.random() * A.length)]; return s; }
-  function link() { var u = new URL(location.href); u.search = ""; u.hash = ""; u.searchParams.set("rope", R.code); return u.toString(); }
-  function myName() { var v = ($("callsignInput") && $("callsignInput").value.trim()) || (typeof callsign !== "undefined" && callsign) || ""; return v.slice(0, 16) || "Climber"; }
-
-  /* ---------- joining up ---------- */
-  function join(code, host) {
-    if (R.tx) { send("bye"); R.tx.close(); }
-    R.code = code; R.host = host; R.peer = null;
-    R.tx = transport(code, onMsg, function (s) { R.net = s; paintSheet(); });
-    paintSheet();
+  /* ---------- with a friend: the town's one card (/nearby/duo.js), channel fbclimb-<code>; old ?rope= links still work ---------- */
+  var duo = null;
+  var TX = {
+    btn: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"],
+    go: ["🧗 Tie in & climb", "🧗 系好绳，出发", "🧗 繫好繩，出發", "🧗 Encordaos y a escalar", "🧗 Encordeu-vos i a escalar"],
+    wait: ["{n} ties you in", "{n} 来系绳", "{n} 來繫繩", "{n} te encuerda", "{n} t'encorda"],
+    partner: ["your partner", "搭档", "搭檔", "tu compañero", "el teu company"]
+  };
+  function tl(a) { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; return a[i] || a[0]; }
+  function send(ev, p) { if (duo) duo.send(ev, p || {}); }
+  function myName() { var v = ($("callsignInput") && $("callsignInput").value.trim()) || (typeof callsign !== "undefined" && callsign) || ""; try { v = v || localStorage.getItem("fb_nick") || ""; } catch (e) {} return v.slice(0, 16); }
+  function hostNow() { return !!(duo && duo.host()); }
+  function startDuo() {
+    if (duo || !window.FBDuo) return;
+    duo = FBDuo({ topic: "fbclimb", legacy: "rope", name: myName,
+      start: { go: TX.go, wait: TX.wait.map(function (w) { return w; }) }, onStart: goClimb,
+      onPeer: function (here, n) {
+        if (here) { R.peer = { n: n || tl(TX.partner), c: 0 }; send("me", { n: myName(), c: charIdx() }); }
+        else { var was = R.active; R.peer = null; if (was) { R.active = false; setRole("lead"); document.body.classList.remove("rp-on"); } }
+        paintBtn();
+      },
+      onMsg: onMsg, onState: paintBtn });
   }
   function onMsg(ev, p) {
-    if (ev === "_ready") { send("hi", { n: myName(), c: charIdx(), h: R.host }); return; }
-    if (ev === "hi") { var first = !R.peer; R.peer = { n: String(p.n || "Partner").slice(0, 16), c: p.c | 0 }; if (first) send("hi", { n: myName(), c: charIdx(), h: R.host }); paintSheet(); return; }
-    if (ev === "bye") { R.peer = null; if (R.active) { toast("🪢 " + "Your partner untied. Climbing on alone."); R.active = false; setRole("lead"); document.body.classList.remove("rp-on"); } paintSheet(); return; }
+    if (ev === "me") { R.peer = { n: String(p.n || (R.peer && R.peer.n) || tl(TX.partner)).slice(0, 16), c: p.c | 0 }; paintBtn(); return; }
     if (ev === "start") return startRope(p, "belay");
     if (!R.active) return;
     if (ev === "pose") { R.lastPose = p; if (R.role === "belay") applyBolts(p.k); return; }
@@ -98,42 +72,18 @@
     if (ev === "end" && R.role === "belay") { endTogether(p); return; }
   }
   function charIdx() { try { return typeof charIndex === "number" ? charIndex : 0; } catch (e) { return 0; } }
-
-  /* ---------- the invite sheet ---------- */
-  var sheet = null;
-  function openSheet() {
-    if (!R.code) join(newCode(), true);
-    sheet = document.createElement("div"); sheet.className = "rp-sheet"; sheet.setAttribute("role", "dialog");
-    sheet.innerHTML = '<div class="rp-card"><button class="rp-x" data-a="x" aria-label="Close">×</button><h3>🪢 ROPE TEAM</h3>' +
-      '<div style="font-size:14px;color:#94a3b8">Send this to a friend. You swap leads at every anchor.</div>' +
-      '<div class="rp-code" id="rpCode"></div><button class="rp-go" data-a="share" style="background:#22d3ee">📨 SHARE INVITE</button>' +
-      '<div class="rp-or">or join a friend</div><div class="rp-row"><input id="rpIn" maxlength="4" autocomplete="off" autocapitalize="characters" aria-label="Code"><button data-a="join">JOIN</button></div>' +
-      '<div class="rp-st" id="rpSt"></div><button class="rp-go" data-a="go" id="rpGo" disabled>🧗 TIE IN & CLIMB</button></div>';
-    document.body.appendChild(sheet);
-    sheet.addEventListener("click", function (e) {
-      var b = e.target.closest("button"); if (e.target === sheet) return closeSheet(); if (!b) return;
-      var a = b.dataset.a;
-      if (a === "x") closeSheet();
-      if (a === "share") { var u = link(); if (navigator.share) navigator.share({ title: "Crag Master · rope team", text: "Tie in with me: " + R.code, url: u }).catch(function () {}); else if (navigator.clipboard) navigator.clipboard.writeText(u).then(function () { b.textContent = "✓ LINK COPIED"; }); }
-      if (a === "join") { var c = ($("rpIn").value || "").toUpperCase().replace(/[^A-Z0-9]/g, ""); if (c.length === 4 && c !== R.code) join(c, false); }
-      if (a === "go") goClimb();
-    });
-    paintSheet();
-  }
-  function closeSheet() { if (sheet) sheet.remove(); sheet = null; }
-  function paintSheet() {
-    var b = $("rpBtn"); if (b) b.lastElementChild.textContent = R.peer ? "TIE IN WITH " + R.peer.n.toUpperCase() : "CLIMB WITH A FRIEND";
-    if (!sheet) return;
-    $("rpCode").textContent = R.code;
-    var stx = R.net === "bad" ? "Reconnecting…" : R.peer ? "<b>" + esc(R.peer.n) + "</b> is here." : R.net === "ok" || !cfg.url ? "Waiting for your partner…" : "Connecting…";
-    $("rpSt").innerHTML = stx;
-    $("rpGo").disabled = !R.peer || !R.host; $("rpGo").textContent = R.host ? "🧗 TIE IN & CLIMB" : "⏳ " + (R.peer ? R.peer.n.toUpperCase() + " STARTS" : "WAITING");
+  function openSheet() { startDuo(); if (duo) duo.open(); }
+  function closeSheet() { if (duo) duo.close(); }
+  function paintBtn() {   /* the title-screen button: 👥 With a friend, teal once your friend is here */
+    var b = $("rpBtn"); if (!b) return; var here = !!(duo && duo.peer());
+    b.classList.toggle("on", here); b.lastElementChild.textContent = tl(TX.btn) + (here && R.peer ? " · " + R.peer.n : "");
   }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
   /* ---------- starting together ---------- */
   function goClimb() {
-    if (!R.peer || !R.host) return;
+    if (!R.peer || !hostNow()) return;
+    var ci = $("callsignInput"); if (ci && !ci.value.trim() && myName()) ci.value = myName();   /* the name you gave in town is your callsign */
     if (!validateCallsign()) { closeSheet(); return; }
     var p = { seed: (Math.random() * 1e9) | 0, crag: currentCrag.id, t: TIMES.indexOf(currentTime), w: WEATHERS.indexOf(currentWeather), n: myName(), c: charIdx() };
     send("start", p); startRope(p, "lead");
@@ -150,7 +100,7 @@
     startDirectClimb();
     if (gameState !== STATES.PLAYING) { R.active = false; return; }
     document.body.classList.add("rp-on");
-    send("hi", { n: myName(), c: charIdx(), h: R.host });
+    send("me", { n: myName(), c: charIdx() });
     setRole(role);
     toast(role === "lead" ? "🧗 You lead pitch 1 — " + R.peer.n + " has you on belay." : "🪢 " + R.peer.n + " leads pitch 1. Feed slack, catch falls!");
   }
@@ -364,12 +314,11 @@
     $("rpCheer").onclick = function () { if (!R.active || R.role !== "belay") return; var now = Date.now(); if (now - R.cheerAt < 15000) return; R.cheerAt = now; send("cheer"); shout("💪 ALLEZ!"); var b = this; b.disabled = true; setTimeout(function () { b.disabled = false; }, 15000); };
     /* the button on the title screen */
     var lb = $("showLeaderboardBtn");
-    if (lb && lb.parentNode) { var b = document.createElement("button"); b.id = "rpBtn"; b.type = "button"; b.className = "rp-btn"; b.innerHTML = '<span aria-hidden="true">🪢</span><span>CLIMB WITH A FRIEND</span>'; lb.parentNode.insertBefore(b, lb); b.onclick = function () { try { sound.init(); } catch (e) {} openSheet(); }; }
+    if (lb && lb.parentNode) { var b = document.createElement("button"); b.id = "rpBtn"; b.type = "button"; b.className = "rp-btn"; b.innerHTML = '<span aria-hidden="true">👥</span><span></span>'; b.setAttribute("data-fbt-skip", ""); lb.parentNode.insertBefore(b, lb); b.onclick = function () { try { sound.init(); } catch (e) {} openSheet(); }; }
     logButton("showLeaderboardBtn"); logButton("gameOverLbBtn");
-    var inv = new URLSearchParams(location.search).get("rope");
-    if (inv && /^[A-Z0-9]{4}$/i.test(inv)) { join(inv.toUpperCase(), false); openSheet(); }
+    startDuo(); paintBtn();   /* an invite link (?with= or the old ?rope=) sits you down and shows the card */
+    addEventListener("fbl:lang", paintBtn);
   }
-  addEventListener("pagehide", function () { if (R.tx) send("bye"); });
   if (document.readyState === "loading") addEventListener("DOMContentLoaded", mount); else mount();
   window.FBRope = R;
 })();

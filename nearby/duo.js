@@ -1,10 +1,19 @@
 /* Nearby · with a friend
-   One small "invite a friend" sheet for the places you can do alone or together (Sandy Cove, Snow Peaks).
-   A four-letter code and a link; the two of you meet on a Supabase Realtime broadcast channel (through the
-   relay or directly, see FBWorld.rtUrl). Nothing is stored: what you send goes live to your friend only.
+   The one "with a friend" card for every place you can do alone or together: Sandy Cove, Snow Peaks, Mirror Lake,
+   Pine Wood, Wildflower Meadow, Hold On, Late Light, Next Door. Same 👥 card everywhere: a four-letter code,
+   "Send the link", "or type their code", who is here, "Go alone". Same link: ?with=CODE. Same quiet notes when a friend
+   sits down or leaves. You meet on a Supabase Realtime broadcast channel (relay first, then direct, see FBWorld.rtUrl);
+   nothing is stored: what you send goes live to your friend only.
 
-   var duo = FBDuo({ topic: "fbcove", onMsg: function (ev, p) {}, onPeer: function (here) {} });
-   duo.send("pos", {...});  duo.open();  duo.peer();  duo.ensure(code?);  duo.link();  */
+   var duo = FBDuo({
+     topic: "fbcove",                        // channel prefix, must be allowed by the realtime.messages policy
+     name: function () { return "Mia"; },    // optional: your name for your friend ("Mia is here"); default: fb_nick
+     legacy: "rope",                         // optional: an older link parameter that still works (?rope=CODE)
+     start: { go: [5 langs], wait: [5 langs] }, // optional: a step the host starts ("Tie in & climb"); the guest waits
+     onStart: function () {},                // the host pressed it
+     onMsg: function (ev, p) {}, onPeer: function (here, name) {}, onState: function ({code, peer}) {}
+   });
+   duo.send(ev, p)  duo.open()  duo.peer()  duo.peerName()  duo.host()  duo.code()  duo.leave()  duo.ensure(code?)  duo.link()  duo.repaint() */
 (function () {
   "use strict";
   var W = {
@@ -14,13 +23,20 @@
     orJoin: ["or type their code", "或者输入对方的代码", "或者輸入對方的代碼", "o escribe su código", "o escriu el seu codi"],
     join: ["Join", "加入", "加入", "Unirse", "Unir-se"],
     wait: ["Waiting for your friend…", "等朋友来……", "等朋友來……", "Esperando a tu amigo…", "Esperant el teu amic…"],
+    joining: ["Joining your friend…", "正在找你的朋友……", "正在找你的朋友……", "Uniéndote a tu amigo…", "Unint-te al teu amic…"],
     here: ["Your friend is here", "朋友来了", "朋友來了", "Tu amigo está aquí", "El teu amic és aquí"],
+    hereN: ["{n} is here", "{n} 来了", "{n} 來了", "{n} está aquí", "{n} és aquí"],
     left: ["Your friend left", "朋友走了", "朋友走了", "Tu amigo se ha ido", "El teu amic se n'ha anat"],
+    leftN: ["{n} left", "{n} 走了", "{n} 走了", "{n} se ha ido", "{n} se n'ha anat"],
     alone: ["Go alone", "一个人去", "一個人去", "Ir solo", "Anar sol"],
+    close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"],
+    theyStart: ["Your friend starts", "朋友来开始", "朋友來開始", "Empieza tu amigo", "Comença el teu amic"],
+    friend: ["Your friend", "朋友", "朋友", "Tu amigo", "El teu amic"],
     lost: ["Reconnecting…", "重新连接中……", "重新連線中……", "Reconectando…", "Tornant a connectar…"]
   };
   function li() { return ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
-  function t(k) { return W[k][li()] || W[k][0]; }
+  function tx(a) { return a[li()] || a[0]; }
+  function t(k) { return tx(W[k]); }
   var cfgP = new Promise(function (res) {
     if (window.FB_SUPABASE && FB_SUPABASE.url) return res(FB_SUPABASE);
     var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { res(window.FB_SUPABASE || {}); }; document.head.appendChild(sc);
@@ -55,65 +71,87 @@
   }
   var css = ".fbduo{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;background:rgba(6,8,16,.72)}" +
     ".fbduo-c{position:relative;width:min(340px,100%);padding:18px 18px 14px;background:#1d2433;color:#eef2ff;border:3px solid #000;box-shadow:5px 5px 0 #000;text-align:center;font:400 20px/1.2 'VT323',ui-monospace,monospace}" +
-    ".fbduo-c h2{margin:0 0 10px;font:400 12px/1.4 'Press Start 2P',monospace;color:#ffd166}.fbduo-x{position:absolute;top:6px;right:8px;background:none;border:0;color:#eef2ff;font-size:20px;cursor:pointer}" +
+    ".fbduo-c h2{margin:0 0 10px;font:400 12px/1.4 'Press Start 2P',monospace;color:#ffd166}.fbduo-x{position:absolute;top:2px;right:2px;min-width:44px;min-height:44px;background:none;border:0;color:#eef2ff;font-size:20px;cursor:pointer}" +
     ".fbduo-code{font:400 26px/1 'Press Start 2P',monospace;letter-spacing:.25em;color:#8ee6d4;margin:6px 0 14px}" +
-    ".fbduo button.b{min-height:44px;padding:0 14px;border:3px solid #000;background:#ffd166;color:#1d130d;font:400 11px/1 'Press Start 2P',monospace;cursor:pointer;box-shadow:3px 3px 0 #000}.fbduo button.b2{background:#3a4560;color:#eef2ff}" +
+    ".fbduo button.b{min-height:44px;padding:0 14px;border:3px solid #000;background:#ffd166;color:#1d130d;font:400 11px/1 'Press Start 2P',monospace;cursor:pointer;box-shadow:3px 3px 0 #000}.fbduo button.b2{background:#3a4560;color:#eef2ff}.fbduo button.b:disabled{opacity:.45;cursor:default}" +
+    ".fbduo button.go{display:block;width:100%;margin-top:4px;background:#8ee6d4}" +
     ".fbduo-or{margin:14px 0 6px;color:#9aa6c2}.fbduo-row{display:flex;gap:8px;justify-content:center}.fbduo-row input{width:120px;min-height:44px;text-align:center;font:400 20px/1 'Press Start 2P',monospace;letter-spacing:.2em;text-transform:uppercase;background:#0e1320;color:#fff;border:3px solid #000}" +
-    ".fbduo-st{min-height:1.3em;margin:12px 0 4px;color:#a7f3d0}";
+    ".fbduo-st{min-height:1.3em;margin:12px 0 8px;color:#a7f3d0}.fbduo-alone{margin-top:8px}" +
+    ".fbduo-toast{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:95;padding:7px 12px;background:rgba(42,29,20,.96);color:#fbeedd;border:3px solid #000;box-shadow:3px 3px 0 #000;font:400 19px/1.1 'VT323',ui-monospace,monospace;pointer-events:none;transition:opacity .6s}";
+  var styled = false;
   window.FBDuo = function (o) {
-    var D = { code: "", host: false, tx: null, peerSeen: 0, me: Math.random().toString(36).slice(2, 9), net: "" }, sheet = null, beat = null;
-    var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+    var D = { code: "", host: false, tx: null, peerSeen: 0, peerName: "", me: Math.random().toString(36).slice(2, 9), net: "" }, sheet = null, beat = null;
+    if (!styled) { styled = true; var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st); }
+    function myName() { try { return String((o.name ? o.name() : localStorage.getItem("fb_nick")) || "").slice(0, 24); } catch (e) { return ""; } }   /* the name you gave anywhere in town, if any */
     function peer() { return Date.now() - D.peerSeen < 12000; }
     function newCode() { var A = "BCDFGHJKLMNPQRSTVWXZ", s = ""; for (var i = 0; i < 4; i++) s += A[(Math.random() * A.length) | 0]; return s; }
+    function clean(c) { return String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4); }
     function link() { var u = new URL(location.href); u.search = "?with=" + D.code; u.hash = ""; return u.toString(); }
+    function note(k, n) {   /* the town's quiet note when the page has it, a small one of our own otherwise */
+      var m = n ? t(k + "N").replace("{n}", n) : t(k);
+      if (o.onNote) return o.onNote(m);
+      if (window.FBG && FBG.note) return FBG.note({ icon: "👥", text: m, ms: 4200 });
+      var d = document.createElement("div"); d.className = "fbduo-toast"; d.setAttribute("role", "status"); d.textContent = "👥 " + m; document.body.appendChild(d);
+      setTimeout(function () { d.style.opacity = "0"; setTimeout(function () { d.remove(); }, 700); }, 3600);
+    }
     function onMsg(ev, p) {
-      if (ev === "_ready") { send("hi", {}); return; }
+      if (ev === "_ready") { send("hi", { n: myName() }); return; }
       if (!p || p.by === D.me) return;
       var was = peer(); D.peerSeen = Date.now();
-      if (ev === "bye") { D.peerSeen = 0; paint(); if (o.onPeer) o.onPeer(false); note(t("left")); return; }
-      if (!was) { paint(); if (o.onPeer) o.onPeer(true); if (ev === "hi") send("hi", {}); note(t("here")); if (D.host && sheet) setTimeout(close, 900); }
-      if (ev !== "hi" && ev !== "beat" && o.onMsg) o.onMsg(ev, p);
+      if ((ev === "hi" || ev === "nm") && p.n) D.peerName = String(p.n).slice(0, 24);
+      if (ev === "bye") { D.peerSeen = 0; paint(); if (o.onPeer) o.onPeer(false, D.peerName); note("left", D.peerName); return; }
+      if (!was) { if (ev === "hi") send("hi", { n: myName() }); paint(); if (o.onPeer) o.onPeer(true, D.peerName); note("here", D.peerName); if (sheet && !o.start) setTimeout(close, 900); }
+      else if (ev === "hi" || ev === "nm") paint();
+      if (ev !== "hi" && ev !== "beat" && ev !== "nm" && o.onMsg) o.onMsg(ev, p);
     }
     function send(ev, p) { if (D.tx) { p = p || {}; p.by = D.me; D.tx.send(ev, p); } }
     function join(code, host) {
-      if (D.tx) { send("bye", {}); D.tx.close(); }
-      D.code = code; D.host = host; D.peerSeen = 0;
-      cfgP.then(function (cfg) { D.tx = transport(o.topic + "-" + code, onMsg, function (s) { D.net = s; paint(); }, cfg); });
-      clearInterval(beat); beat = setInterval(function () { send("beat", {}); if (!peer() && D.peerSeen && o.onPeer) { D.peerSeen = 0; o.onPeer(false); paint(); } }, 4000);
-      try { history.replaceState(null, "", "?with=" + code); } catch (e) {}
+      if (D.tx) { send("bye", {}); D.tx.close(); D.tx = null; }
+      if (peer() && o.onPeer) o.onPeer(false, D.peerName);
+      D.code = code; D.host = host; D.peerSeen = 0; D.peerName = ""; D.net = "connecting";
+      cfgP.then(function () { if (D.code !== code) return; D.tx = transport(o.topic + "-" + code, onMsg, function (s) { D.net = s; paint(); }, window.FB_SUPABASE || {}); });
+      clearInterval(beat); beat = setInterval(function () { send("beat", {}); if (!peer() && D.peerSeen) { D.peerSeen = 0; if (o.onPeer) o.onPeer(false, D.peerName); note("left", D.peerName); paint(); } }, 4000);
+      try { history.replaceState(null, "", "?with=" + code + location.hash); } catch (e) {}
       paint();
     }
-    function leave() { send("bye", {}); if (D.tx) D.tx.close(); D.tx = null; D.code = ""; D.peerSeen = 0; clearInterval(beat); try { history.replaceState(null, "", location.pathname); } catch (e) {} if (o.onPeer) o.onPeer(false); paint(); }
-    function note(m) { if (o.onNote) o.onNote(m); }
+    function leave() { send("bye", {}); if (D.tx) D.tx.close(); D.tx = null; D.code = ""; var was = peer(); D.peerSeen = 0; clearInterval(beat); try { history.replaceState(null, "", location.pathname + location.hash); } catch (e) {} if (was && o.onPeer) o.onPeer(false, D.peerName); paint(); }
     function close() { if (sheet) { sheet.remove(); sheet = null; } }
     function open() {
       if (!D.code) join(newCode(), true);
-      close(); sheet = document.createElement("div"); sheet.className = "fbduo"; sheet.setAttribute("role", "dialog");
-      sheet.innerHTML = '<div class="fbduo-c"><button type="button" class="fbduo-x" aria-label="✕">✕</button><h2></h2><div class="fbduo-code"></div>' +
+      close(); sheet = document.createElement("div"); sheet.className = "fbduo"; sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-modal", "true"); sheet.setAttribute("data-fbt-skip", "");
+      sheet.innerHTML = '<div class="fbduo-c"><button type="button" class="fbduo-x">✕</button><h2></h2><div class="fbduo-code"></div>' +
         '<button type="button" class="b fbduo-send"></button><div class="fbduo-or"></div><div class="fbduo-row"><input maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Code"><button type="button" class="b b2 fbduo-join"></button></div>' +
-        '<p class="fbduo-st"></p><button type="button" class="b b2 fbduo-alone" hidden></button></div>';
+        '<p class="fbduo-st" aria-live="polite"></p><button type="button" class="b go fbduo-go" hidden></button><button type="button" class="b b2 fbduo-alone" hidden></button></div>';
       document.body.appendChild(sheet);
       sheet.querySelector("h2").textContent = "👥 " + t("title");
+      sheet.querySelector(".fbduo-x").setAttribute("aria-label", t("close"));
       sheet.querySelector(".fbduo-send").textContent = "↗ " + t("send"); sheet.querySelector(".fbduo-or").textContent = t("orJoin"); sheet.querySelector(".fbduo-join").textContent = t("join"); sheet.querySelector(".fbduo-alone").textContent = t("alone");
       sheet.querySelector(".fbduo-x").onclick = close; sheet.onclick = function (e) { if (e.target === sheet) close(); };
-      var inp = sheet.querySelector("input"); inp.oninput = function () { inp.value = inp.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4); };
-      sheet.querySelector(".fbduo-join").onclick = function () { if (inp.value.length === 4 && inp.value !== D.code) { join(inp.value, false); } };
+      var inp = sheet.querySelector("input"); inp.oninput = function () { inp.value = clean(inp.value); };
+      var doJoin = function () { if (inp.value.length === 4 && inp.value !== D.code) join(inp.value, false); else { inp.focus(); inp.animate && inp.animate([{ transform: "translateX(0)" }, { transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0)" }], { duration: 240 }); } };
+      sheet.querySelector(".fbduo-join").onclick = doJoin; inp.onkeydown = function (e) { if (e.key === "Enter") doJoin(); };
       sheet.querySelector(".fbduo-send").onclick = function () { var u = link(), b = this; if (navigator.share) navigator.share({ title: document.title, url: u }).catch(function () {}); else if (navigator.clipboard) navigator.clipboard.writeText(u).then(function () { b.textContent = "✓ " + t("copied"); }); };
+      sheet.querySelector(".fbduo-go").onclick = function () { if (D.host && peer() && o.onStart) { close(); o.onStart(); } };
       sheet.querySelector(".fbduo-alone").onclick = function () { leave(); close(); };
       paint();
     }
     function paint() {
-      if (o.onState) o.onState({ code: D.code, peer: peer() });
+      if (o.onState) o.onState({ code: D.code, peer: peer(), name: D.peerName });
       if (!sheet) return;
+      var here = peer();
       sheet.querySelector(".fbduo-code").textContent = D.code;
-      sheet.querySelector(".fbduo-st").textContent = peer() ? "● " + t("here") : D.net === "bad" ? t("lost") : t("wait");
+      sheet.querySelector(".fbduo-st").textContent = here ? "● " + (D.peerName ? t("hereN").replace("{n}", D.peerName) : t("here")) : D.net === "bad" ? t("lost") : D.host ? t("wait") : t("joining");
+      var g = sheet.querySelector(".fbduo-go");
+      g.hidden = !o.start || !here;
+      if (o.start) { g.disabled = !D.host; g.textContent = D.host ? tx(o.start.go) : "⏳ " + (o.start.wait ? tx(o.start.wait).replace("{n}", D.peerName || t("friend")) : t("theyStart")); }
       sheet.querySelector(".fbduo-alone").hidden = !D.code;
     }
     addEventListener("pagehide", function () { send("bye", {}); });
-    var inv = (new URLSearchParams(location.search).get("with") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
-    if (inv.length === 4) join(inv, false);
-    /* sit down without the sheet: join a given code, or start one (the bar's seat, a gifted drink) */
-    function ensure(code) { code = (code || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4); if (code.length === 4) { if (code !== D.code) join(code, false); } else if (!D.code) join(newCode(), true); return D.code; }
-    return { send: send, open: open, peer: peer, leave: leave, ensure: ensure, link: link, host: function () { return D.host; }, code: function () { return D.code; } };
+    addEventListener("fbl:lang", function () { if (sheet) { close(); open(); } });
+    var qs = new URLSearchParams(location.search), inv = clean(qs.get("with") || (o.legacy && qs.get(o.legacy)) || "");
+    if (inv.length === 4) { join(inv, false); if (o.start) setTimeout(open, 300); else note("joining"); }
+    function ensure(code) { code = clean(code); if (code.length === 4) { if (code !== D.code) join(code, false); } else if (!D.code) join(newCode(), true); return D.code; }
+    return { send: send, open: open, close: close, peer: peer, peerName: function () { return D.peerName; }, leave: leave, ensure: ensure, link: link, repaint: paint, rename: function () { send("nm", { n: myName() }); },
+      host: function () { return D.host; }, code: function () { return D.code; } };
   };
 })();

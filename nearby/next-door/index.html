@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=bff79215d6"></script><script data-fbg src="/fbkit/fbg.js?v=f7422115eb" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=61743b6c1d"></script><script data-fbg src="/fbkit/fbg.js?v=f4a5904859" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -802,7 +802,7 @@
           <span id="weather-display-icon">🌧️</span><span id="time-display-badge" class="show-400 font-retro text-[15px] text-[var(--amber-2)]">22:30</span>
         </button>
         <button onclick="returnToDoor()" class="icon-btn hide-sm" aria-label="Door" data-tt="name.change">🚪</button>
-        <button class="icon-btn" onclick="openLangMenu(this)" aria-haspopup="menu"><span class="lang-short font-retro text-[15px]">EN</span></button>
+        <button class="icon-btn" data-fb-shell onclick="openLangMenu(this)" aria-haspopup="menu"><span class="lang-short font-retro text-[15px]">EN</span></button>
         <span class="db-dot" id="db-dot" title=""></span>
       </div>
     </header>
@@ -8010,7 +8010,8 @@
   /* ---- the seat ---- */
   let duo = null;
   duo = window.FBDuo ? FBDuo({
-    topic: 'fbbar',
+    topic: 'fbbar', name: myName,
+    onNote() {},   /* Wei and the stool at the counter say it here */
     onPeer(here) { if (here && duo) { duo.send('me', { n: myName(), i: lastServed ? lastServed.i : '' }); } else friend = { n: '', i: '' }; paintSeat(); },
     onMsg(ev, p) {
       if (ev === 'me') {
@@ -8132,6 +8133,7 @@
 })();
 </script>
 <style>
+  html.fbsh-in #btn-lofi{pointer-events:none}   /* in town the radio just plays; ⏭ changes the record, 🔈 in the top bar is the sound switch */
   #friend-seat{position:absolute;left:33%;bottom:3px;transform:translateX(-50%);z-index:7;display:flex;flex-direction:column;align-items:center;gap:0;background:none;border:0;padding:0;cursor:pointer;min-width:44px;min-height:44px;justify-content:flex-end}
   #friend-seat[hidden]{display:none}
   #friend-seat .fs-drink{font-size:20px;line-height:1;min-height:20px}
