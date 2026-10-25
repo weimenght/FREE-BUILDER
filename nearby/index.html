@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=c9cfe35465"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=1f95a47efc" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=6fe70eecda"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ebf3d33308" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Nearby — FREE//BUILDER</title>
 <meta name="description" content="Nearby: a small pixel town for finding your people, in real life. Wander alone or with a friend, leave something you made for the neighbours, borrow a real book, play with someone far away. Wei, the bartender, will show you around.">
@@ -345,9 +345,31 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     if (c.s) { R2(1, 1, 1, 2, c.s); R2(3, 1, 1, 2, c.s); } if (c.belly) R2(1, 2, 3, 1, c.belly);
     if (sit) R2(0, 3, 5, 1, c.b); else { R2(st ? 0 : 1, 3, 1, 1, c.b); R2(st ? 3 : 4, 3, 1, 1, c.b); }
   }
+  /* your own animals (registered at Come Home): out wherever they wandered this half hour, a little heart now and then so you can spot them */
+  function drawMine(f) {
+    var mine = (World.myPets && World.myPets()) || [], night = World.phase && World.phase() === "night";
+    mine.forEach(function (p, i) {
+      var pl = World.petAt(p.id), path = PATH[pl] || DOGPATH[pl]; if (!path) return;
+      var P = World.petSpec(p).P, dog = p.kind === "dog", a = f * .019 + i * 2.3 + (p.id % 7), u = .5 + .5 * Math.sin(a), dir = Math.cos(a) >= 0 ? 1 : -1, st = (f >> 1) % 2;
+      var x = OX + Math.round(path[0] + (path[1] - path[0]) * (night ? .3 + i * .1 : u)), y = path[2] - (dog ? 5 : 4);
+      if (dog) {
+        var D2 = function (dx, dy, w, h, col) { R(dir > 0 ? x + dx : x + 9 - dx - w, y + dy, w, h, col); };
+        if (night) { D2(1, 2, 7, 3, P.b); D2(6, 1, 3, 2, P.b); D2(3, 3, 3, 1, P.w); return; }
+        D2(1, 1, 6, 3, P.b); D2(3, 3, 3, 1, P.w); D2(6, -1, 3, 3, P.b); D2(6, -2, 1, 1, P.b); D2(8, -2, 1, 1, P.b); D2(8, 1, 1, 1, P.w); D2(7, 0, 1, 1, P.e); D2(6, 2, 1, 1, P.collar);
+        D2(0, st ? -1 : 0, 1, 2, P.b); D2(st ? 1 : 2, 4, 1, 2, P.d); D2(st ? 5 : 6, 4, 1, 2, P.d);
+      } else {
+        var R2 = function (dx, dy, w, h, col) { R(dir > 0 ? x + dx : x + 7 - dx - w, y + dy, w, h, col); };
+        if (night) { R2(0, 2, 6, 2, P.b); R2(4, 1, 2, 2, P.b); R2(-1, 3, 2, 1, P.b); if (P.stripe) R2(2, 2, 1, 2, P.stripe); return; }
+        R2(0, 1, 5, 2, P.b); R2(4, 0, 3, 2, P.b); R2(4, -1, 1, 1, P.b); R2(6, -1, 1, 1, P.b); R2(5, 0, 1, 1, P.e); R2(-1, 0, 1, 2, P.b);
+        if (P.stripe) { R2(1, 1, 1, 2, P.stripe); R2(3, 1, 1, 2, P.stripe); } if (P.belly !== P.b) R2(1, 2, 3, 1, P.belly);
+        R2(st ? 0 : 1, 3, 1, 1, P.b); R2(st ? 3 : 4, 3, 1, 1, P.b);
+      }
+      if ((f + i * 20) % 50 === 0) hearts.push({ x: x + 3, y: y - 4, a: 1 });
+    });
+  }
   var hearts = [];
   function drawAnimals(f) {
-    dust = {}; ["miso", "yuzu", "dog"].forEach(function (k) { drawAnimal(k, f); });
+    dust = {}; ["miso", "yuzu", "dog"].forEach(function (k) { drawAnimal(k, f); }); drawMine(f);
     for (var pl in dust) { var d = dust[pl], jx = (f % 2) ? 1 : -1; R(d[0] - 6 + jx, d[1] - 8, 14, 7, "rgba(240,230,210,.9)"); R(d[0] - 4, d[1] - 10, 10, 2, "rgba(240,230,210,.8)"); R(d[0] - 3 + jx * 2, d[1] - 9, 2, 2, "#1c1a1f"); R(d[0] + 3 - jx, d[1] - 7, 2, 2, "#e8902a"); if (f % 4 < 2) { R(d[0] - 7, d[1] - 13, 1, 1, "#f6d84a"); R(d[0] + 8, d[1] - 12, 1, 1, "#f6d84a"); } }
     for (var pk in dust) { /* the fighters share one dust ball; keep their tap targets on it */ ["miso", "yuzu", "dog"].forEach(function (k) { if (placeOf(k) === pk) catPos[k] = [dust[pk][0] - 2, dust[pk][1] - 8]; }); }
     hearts = hearts.filter(function (h) { h.y -= .3; h.a -= .04; if (h.a <= 0) return false; g.globalAlpha = h.a; R(h.x, h.y, 1, 1, "#ff8fa0"); R(h.x + 2, h.y, 1, 1, "#ff8fa0"); R(h.x, h.y + 1, 3, 1, "#ff8fa0"); R(h.x + 1, h.y + 2, 1, 1, "#ff8fa0"); g.globalAlpha = 1; return true; });

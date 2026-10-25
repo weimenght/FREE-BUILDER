@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=c9cfe35465"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=1f95a47efc" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=6fe70eecda"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ebf3d33308" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Come Home · Nearby</title>
 <meta name="description" content="Mantou the dog's home by the meadow: play fetch with him, follow his story, and help real animals find a home. Post an animal that needs one, or ask to adopt.">
@@ -42,6 +42,12 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
 .pet .story{margin:2px 0 0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .pet .row{display:flex;gap:8px;align-items:center;margin-top:auto;padding-top:8px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 14px;border:3px solid #000;background:var(--a);color:#1d130d;font:700 15px/1.1 var(--ui);cursor:pointer;box-shadow:3px 3px 0 #000;text-decoration:none}
+.pets{display:grid;gap:10px;margin-bottom:12px}.mypet{display:flex;gap:12px;align-items:center;padding:10px 12px;background:#2a3a24;border:3px solid #000;box-shadow:4px 4px 0 #000}
+.mypet canvas{flex:none;width:66px;height:48px;image-rendering:pixelated}.mypet b{font:400 13px/1.4 var(--px);color:#fbeedd}.mypet p{margin:4px 0 0;color:#e8e2cc;font-size:18px;text-align:left}.mypet a{color:#ffd27a}.mypet>div{min-width:0}.mypet .bye{margin-left:auto;flex:none;min-height:36px;padding:0 10px;font-size:16px}
+.mk{display:grid;gap:8px}.mk .pv{display:grid;place-items:center;height:120px;background:linear-gradient(#bfe3f5,#bfe3f5 62%,#7ab45a 62%);border:3px solid #000}.mk .pv canvas{width:132px;height:96px;image-rendering:pixelated}
+.mk .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.mk .row>span{flex:0 0 100%;font-weight:700;font-size:14px}
+.mk .sw{width:36px;height:36px;border:3px solid #000;cursor:pointer;box-shadow:2px 2px 0 #000;padding:0}.mk .sw[aria-pressed="true"]{outline:3px solid #fff;outline-offset:-6px;box-shadow:0 0 0 3px #f6b73c}
+.mk .kind{min-width:64px;min-height:44px;font-size:26px;border:3px solid #000;background:#fff8e8;cursor:pointer}.mk .kind[aria-pressed="true"]{background:#f6b73c}
 .btn.ghost{background:#fff8e8}.btn.green{background:var(--g)}.btn.red{background:#e8a0a0}
 .btn:active{transform:translate(2px,2px)}
 .flag{margin-left:auto;border:0;background:none;color:#8a8270;font:13px var(--ui);cursor:pointer;text-decoration:underline dotted}
@@ -86,6 +92,10 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
 
   <h2 data-t="meet">MANTOU</h2>
   <div class="me"><canvas id="meC" width="22" height="16"></canvas><div><b data-t="mName">Mantou · 馒头</b><p data-t="mBio"></p></div></div>
+
+  <h2 data-t="yoursH">YOUR ANIMAL IN TOWN</h2>
+  <div class="pets" id="pets"></div>
+  <button class="btn green add" type="button" id="petBtn">🐾 <span data-t="petAdd">Bring your animal to town</span></button>
 
   <h2 data-t="board">LOOKING FOR A HOME</h2>
   <div class="chips" id="chips" role="group"></div>
@@ -143,6 +153,20 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
     sWait: ["waiting for review", "等待审核", "等待審核", "en revisión", "en revisió"], sLive: ["listed", "已上墙", "已上牆", "publicado", "publicat"], sDone: ["home found", "已找到家", "已找到家", "con hogar", "amb llar"], sDown: ["taken down", "已撤下", "已撤下", "retirado", "retirat"],
     adopted: ["🎉 Found a home", "🎉 找到家了", "🎉 找到家了", "🎉 Ya tiene hogar", "🎉 Ja té llar"], remove: ["Remove", "撤下", "撤下", "Quitar", "Treu"], closeAsk: ["Done", "已处理", "已處理", "Hecho", "Fet"],
     asksN: ["{n} people asked", "{n} 人申请", "{n} 人申請", "{n} solicitudes", "{n} sol·licituds"], yourAsks: ["You asked about", "你申请过", "你申請過", "Has preguntado por", "Has demanat per"],
+    yoursH: ["YOUR ANIMAL IN TOWN", "你的动物也来镇上", "你的動物也來鎮上", "TU ANIMAL EN EL PUEBLO", "EL TEU ANIMAL AL POBLE"],
+    petAdd: ["Bring your animal to town", "带你的动物来镇上", "帶你的動物來鎮上", "Trae a tu animal al pueblo", "Porta el teu animal al poble"],
+    petT: ["Your animal, in pixels", "把你的动物画成像素", "把你的動物畫成像素", "Tu animal, en píxeles", "El teu animal, en píxels"],
+    coat: ["Coat", "毛色", "毛色", "Pelaje", "Pelatge"], eyes: ["Eyes", "眼睛", "眼睛", "Ojos", "Ulls"], belly: ["Belly and face", "肚子和脸", "肚子和臉", "Barriga y cara", "Panxa i cara"],
+    stripes: ["Stripes", "条纹", "條紋", "Rayas", "Ratlles"], collar: ["Collar", "项圈", "項圈", "Collar", "Collar"],
+    petName: ["Their name", "它的名字", "牠的名字", "Su nombre", "El seu nom"], petLine: ["One line about them (optional)", "一句话介绍它（可不填）", "一句話介紹牠（可不填）", "Una frase sobre él (opcional)", "Una frase sobre ell (opcional)"],
+    petLinePh: ["Sleeps on the warm laptop", "爱睡在暖暖的电脑上", "愛睡在暖暖的電腦上", "Duerme sobre el portátil caliente", "Dorm sobre el portàtil calent"],
+    owner: ["Your name (optional)", "你的名字（可不填）", "你的名字（可不填）", "Tu nombre (opcional)", "El teu nom (opcional)"],
+    real: ["This is my own animal, in real life.", "这是我自己的、真实的动物。", "這是我自己的、真實的動物。", "Es mi animal, de verdad.", "És el meu animal, de debò."],
+    petGo: ["Let them out into town", "放它去镇上", "放牠去鎮上", "Déjalo salir al pueblo", "Deixa'l sortir al poble"],
+    petNow: ["Now at {p}", "现在在{p}", "現在在{p}", "Ahora en {p}", "Ara a {p}"],
+    petBye: ["Home", "回家", "回家", "A casa", "A casa"], petSure: ["Take {n} home from town?", "要把 {n} 带回家，不再在镇上走吗？", "要把 {n} 帶回家，不再在鎮上走嗎？", "¿Llevar a {n} a casa y sacarlo del pueblo?", "Portar en {n} a casa i treure'l del poble?"],
+    petFull: ["Three animals is the most for one home.", "一个家最多三只。", "一個家最多三隻。", "Tres animales como mucho por casa.", "Tres animals com a màxim per casa."],
+    petNeed: ["Give them a name, and tick the box.", "写上名字，并勾选。", "寫上名字，並勾選。", "Ponle un nombre y marca la casilla.", "Posa-li un nom i marca la casella."],
     sure: ["Remove this notice?", "确定撤下这张启事吗？", "確定撤下這張啟事嗎？", "¿Quitar este anuncio?", "Treure aquest anunci?"]
   };
 
@@ -333,7 +357,60 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
   window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
   (function () { var c = $("meC"), x = c.getContext("2d"); dog(x, 0, 16, 1, "sit", 0); })();
-  words(); load(); mine(); requestAnimationFrame(frame);
+  /* ---------- your own animal in town: drawn like Miso, Yuzu and Mantou, wandering from place to place ---------- */
+  var COATS = ["#231b17", "#5a5a60", "#a8a8ae", "#f4f0e6", "#e8c48a", "#e8913a", "#b5611d", "#7a4a2a", "#c89a5a", "#3a2a24"],
+      EYES = ["#f2c94c", "#4f9a62", "#5a9ad8", "#c8822a", "#2a1a14"], LIGHT = ["", "#fbf3e2", "#f8dcae"], COLLARS = ["", "#c8402a", "#2a6ac8", "#3a9a4a", "#f6c84a"];
+  function myPets() { return (window.FBWorld && FBWorld.myPets) ? FBWorld.myPets() : []; }
+  function petsMine() { if (!hasKey()) { paintPets(); return; } api("pet_mine", { p_secret: key() }).then(function (l) { if (Array.isArray(l) && window.FBWorld) FBWorld.myPets(l.filter(function (p) { return !p.hidden; })); paintPets(); }).catch(paintPets); }
+  function drawSpec(cv, p) { var x = cv.getContext("2d"); x.clearRect(0, 0, cv.width, cv.height); if (window.FBWorld && FBWorld.drawPet) FBWorld.drawPet(x, FBWorld.petSpec(p), cv.width / 2, cv.height - 1, Math.floor(cv.height / 16) || 1, {}); }
+  function paintPets() {
+    var box = $("pets"); box.innerHTML = ""; var list = myPets();
+    $("petBtn").hidden = list.length >= 3;
+    list.forEach(function (p) {
+      var d = document.createElement("div"); d.className = "mypet"; var cv = document.createElement("canvas"); cv.width = 22; cv.height = 16; d.appendChild(cv); drawSpec(cv, p);
+      var tx = document.createElement("div"), b = document.createElement("b"), pp = document.createElement("p"); b.textContent = p.name; tx.appendChild(b);
+      var at = FBWorld.petAt(p.id), a = document.createElement("a"); a.href = FBWorld.url ? FBWorld.url(at) : "#"; a.textContent = (FBWorld.icon ? FBWorld.icon(at) + " " : "") + (FBWorld.name ? FBWorld.name(at) : at);
+      var parts = t("petNow").split("{p}"); pp.appendChild(document.createTextNode(parts[0])); pp.appendChild(a); pp.appendChild(document.createTextNode(parts[1] || "")); tx.appendChild(pp); d.appendChild(tx);
+      var bye = document.createElement("button"); bye.type = "button"; bye.className = "btn ghost bye"; bye.textContent = "🏠 " + t("petBye");
+      bye.onclick = function () { if (!confirm(t("petSure", { n: p.name }))) return; api("pet_forget", { p_secret: key(), p_id: p.id }).then(petsMine).catch(function () { toast(t("fail")); }); };
+      d.appendChild(bye); box.appendChild(d);
+    });
+  }
+  $("petBtn").onclick = function () {
+    if (myPets().length >= 3) { toast(t("petFull")); return; }
+    var P = { kind: "cat", look: { b: COATS[5], e: EYES[1], belly: LIGHT[2], s: 1, w: "", c: "" } };
+    var s = sheet('<h3>' + esc(t("petT")) + '</h3><div class="mk"><div class="row" id="pk"></div><div class="pv"><canvas id="pv" width="22" height="16"></canvas></div>' +
+      '<div class="row" id="pc"><span>' + esc(t("coat")) + '</span></div><div class="row" id="pe"><span>' + esc(t("eyes")) + '</span></div><div class="row" id="pb"><span>' + esc(t("belly")) + '</span></div>' +
+      '<div class="row" id="ps"><span>' + esc(t("stripes")) + '</span></div><div class="row" id="pcl"><span>' + esc(t("collar")) + '</span></div></div>' +
+      '<label for="pN">' + esc(t("petName")) + '</label><input id="pN" maxlength="20" autocomplete="off"><label for="pL">' + esc(t("petLine")) + '</label><input id="pL" maxlength="60" placeholder="' + esc(t("petLinePh")) + '">' +
+      '<label for="pO">' + esc(t("owner")) + '</label><input id="pO" maxlength="24" autocomplete="nickname"><label class="check"><input type="checkbox" id="pR"> ' + esc(t("real")) + '</label>' +
+      '<button type="button" class="btn green go" id="pGo">🐾 ' + esc(t("petGo")) + '</button>');
+    try { s.querySelector("#pO").value = localStorage.getItem("fb_nick") || ""; } catch (e) {}
+    function draw() { drawSpec(s.querySelector("#pv"), P); s.querySelector("#ps").hidden = P.kind !== "cat"; s.querySelector("#pcl").hidden = P.kind !== "dog"; }
+    function sw(row, list, field, label) {
+      var r = s.querySelector(row); list.forEach(function (c) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "sw"; b.style.background = c || (field === "c" ? "repeating-linear-gradient(45deg,#fff8e8 0 4px,#e8d8b8 4px 8px)" : P.look.b);
+        if (!c && field !== "c") b.dataset.same = "1"; b.setAttribute("aria-label", label + " " + (c || "—")); b.setAttribute("aria-pressed", String((P.look[field] || "") === c));
+        b.onclick = function () { P.look[field] = c; r.querySelectorAll(".sw").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); }); s.querySelectorAll(".sw[data-same]").forEach(function (o) { o.style.background = P.look.b; }); draw(); };
+        r.appendChild(b);
+      });
+    }
+    var pk = s.querySelector("#pk"); [["cat", "🐈"], ["dog", "🐕"]].forEach(function (k) { var b = document.createElement("button"); b.type = "button"; b.className = "kind"; b.textContent = k[1]; b.setAttribute("aria-label", t("sp")[k[0]] ? k[0] : k[0]); b.setAttribute("aria-pressed", String(P.kind === k[0])); b.onclick = function () { P.kind = k[0]; if (k[0] === "dog") { P.look.c = P.look.c || COLLARS[1]; P.look.e = EYES[4]; } pk.querySelectorAll(".kind").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); }); draw(); }; pk.appendChild(b); });
+    sw("#pc", COATS, "b", t("coat")); sw("#pe", EYES, "e", t("eyes")); sw("#pb", LIGHT, P.kind === "dog" ? "w" : "belly", t("belly"));
+    var st = s.querySelector("#ps"); [[0, "—"], [1, "≋"]].forEach(function (v) { var b = document.createElement("button"); b.type = "button"; b.className = "kind"; b.style.fontSize = "20px"; b.textContent = v[1]; b.setAttribute("aria-pressed", String(P.look.s === v[0])); b.onclick = function () { P.look.s = v[0]; st.querySelectorAll(".kind").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); }); draw(); }; st.appendChild(b); });
+    sw("#pcl", COLLARS, "c", t("collar"));
+    draw();
+    s.querySelector("#pGo").onclick = function () {
+      var n = s.querySelector("#pN").value.trim(); if (!n || !s.querySelector("#pR").checked) { toast(t("petNeed")); return; }
+      if (P.kind === "dog") { P.look.w = P.look.w || P.look.belly || ""; delete P.look.s; } else delete P.look.c;
+      var go = this; go.disabled = true;
+      api("pet_add", { p_secret: key(), p_kind: P.kind, p_name: n, p_look: P.look, p_line: s.querySelector("#pL").value, p_owner: s.querySelector("#pO").value })
+        .then(function () { s.remove(); try { sessionStorage.removeItem("fb_pets_v"); } catch (e) {} petsMine(); })
+        .catch(function (e) { go.disabled = false; toast(/3 animals/.test(String(e && e.message)) ? t("petFull") : t("fail")); });
+    };
+  };
+
+  words(); load(); mine(); petsMine(); requestAnimationFrame(frame);
   /* arriving mid-story: Mantou has something to show you */
   setTimeout(function () { try { var ds = FBWorld.dogStory(); if (!ds.done && ds.ch >= 1 && FBWorld.DSTORY[ds.ch] === "sanctuary") FBDogStory.tap("sanctuary"); } catch (e) {} }, 2500);
 })();
