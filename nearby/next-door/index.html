@@ -1109,17 +1109,17 @@
       <!-- ============ ROOM: WALL ============ -->
       <section id="room-wall" class="room hidden">
         <div class="room-inner">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-            <div class="tabs">
-              <button class="tab active" data-walltab="graffiti" onclick="Wall.tab('graffiti')" data-t="wall.tabGraffiti">Graffiti</button>
-              <button class="tab" data-walltab="memos" onclick="Wall.tab('memos')" data-t="wall.tabMemos">Memo board</button>
-              <button class="tab" data-walltab="cards" onclick="Wall.tab('cards')">📮 <span data-t="wall.tabCards">Postcards</span></button>
-            </div>
-            <p class="hint" id="wall-hint" data-t="wall.hintGraffiti">Paint on the bricks, then sign it.</p>
+          <!-- one wall: graffiti and postcards hang together, as far back as anyone has painted -->
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <button class="btn btn-amber" type="button" onclick="Wall.paint(true)">🎨 <span data-t="wall.paint">Paint</span></button>
+            <a class="btn" href="/nearby/say-hello/?to=bar">✍️ <span data-t="wall.writeCard">Write a postcard</span></a>
           </div>
-
-          <div id="wall-graffiti" class="wall-grid">
-            <div class="panel p-3">
+          <div id="wall-one" class="wall-one"></div>
+          <div id="wall-more" class="wall-more" aria-hidden="true"></div>
+          <div id="pc-trips" class="mt-4"></div>
+          <div id="wall-paint" class="paint-sheet hidden" role="dialog" aria-modal="true">
+            <div class="panel p-3 paint-card">
+              <button type="button" class="btn ps-x paint-x" onclick="Wall.paint(false)" aria-label="✕">✕</button>
               <div class="brick2 p-2 rounded-md" style="border:2px solid #000">
                 <canvas id="graf-canvas" width="160" height="100"></canvas>
               </div>
@@ -1139,32 +1139,9 @@
                 <button class="btn btn-amber flex-1" onclick="Wall.saveTag()">🖋 <span data-t="wall.sign">Sign & tag the wall</span></button>
               </div>
             </div>
-            <div class="panel p-3">
-              <div class="label mb-2" data-t="wall.gallery">On the wall</div>
-              <div id="graf-gallery" class="brick2 p-2 rounded-md grid gap-2" style="border:2px solid #000;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));min-height:160px"></div>
-            </div>
           </div>
-
-          <div id="wall-cards" class="hidden">
-            <div class="flex flex-wrap items-center gap-2 mb-3">
-              <a class="btn btn-amber" href="/nearby/say-hello/?to=bar">✍️ <span data-t="wall.writeCard">Write a postcard</span></a>
-              <a class="btn" href="/nearby/">🗺️ <span data-t="wall.map">Map</span></a>
-            </div>
-            <div id="pc-board" class="pc-board"></div>
-            <div id="pc-trips" class="mt-4"></div>
-          </div>
-
-          <div id="wall-memos" class="hidden">
-            <div class="panel p-3 mb-3">
-              <textarea id="memo-text" class="field font-hand text-[22px] leading-tight" rows="2" maxlength="160" data-tp="wall.memoPh" placeholder="Leave a note for the next guest…"></textarea>
-              <div class="flex flex-wrap items-center gap-2 mt-2">
-                <div id="memo-colors" class="flex gap-1.5"></div>
-                <span id="memo-count" class="label ml-auto">0/160</span>
-                <button class="btn btn-amber" onclick="Wall.pinMemo()">📌 <span data-t="wall.pin">Pin it</span></button>
-              </div>
-            </div>
-            <div class="cork"><div id="memo-board" class="memo-grid"></div></div>
-          </div>
+          <!-- kept for the scripts that still look for them -->
+          <div hidden><div id="wall-graffiti"><div id="graf-gallery"></div></div><div id="wall-cards"><div id="pc-board"></div></div><div id="wall-memos"><textarea id="memo-text"></textarea><div id="memo-colors"></div><span id="memo-count"></span><div id="memo-board"></div></div><p id="wall-hint"></p></div>
         </div>
       </section>
 
@@ -3292,6 +3269,7 @@
       // Wall
       'wall.tabGraffiti': ["Graffiti", "涂鸦", "塗鴉", "塗鴉", "Grafiti", "Grafit"],
       'wall.tabCards':    ["Postcards", "明信片", "明信片", "明信片", "Postales", "Postals"],
+      'wall.paint':       ["Paint", "涂鸦", "塗鴉", "塗鴉", "Pinta", "Pinta"],
       'wall.writeCard':   ["Write a postcard", "写一张明信片", "寫一張明信片", "寫張明信片", "Escribe una postal", "Escriu una postal"],
       'wall.map':         ["Map", "地图", "地圖", "地圖", "Mapa", "Mapa"],
       'wall.hintCards':   ["Cards people sent to the bar. Sealed ones wait for their date.", "大家寄到酒吧的明信片。封着的要等到日子才能看。", "大家寄到酒吧的明信片。封著的要等到日子才能看。", "大家寄嚟酒吧嘅明信片。封住嘅要等到日子先睇得。", "Postales que la gente ha enviado al bar. Las cerradas esperan su fecha.", "Postals que la gent ha enviat al bar. Les tancades esperen la seva data."],
@@ -7620,8 +7598,9 @@
     function lang() { try { return localStorage.getItem("weis-lang") || "en"; } catch (e) { return "en"; } }
     function open(on) { document.body.classList.toggle("lab-open", !!on); }
     var sneak0 = window.openSneakMixer;
-    window.openSneakMixer = function () { var r = sneak0 && sneak0.apply(this, arguments); if (AppState.weiState === "asleep") { open(true); setTimeout(function () { go("lab"); }, 700); } return r; };
     var go0 = window.go;
+    /* no mixer in the chat box: sneaking behind the counter opens the Lab itself */
+    window.openSneakMixer = function () { try { SoundEngine.playClick(); } catch (e) {} open(true); go0.call(this, "lab"); };
     window.go = function (room) { if (room === "lab" && !(AppState.weiState === "asleep" && document.body.classList.contains("lab-open"))) room = "counter"; return go0.call(this, room); };
     setInterval(function () {
       if (document.body.classList.contains("lab-open") && AppState.weiState !== "asleep") {
@@ -7720,6 +7699,7 @@
       board(); trips(); SoundEngine.playClick();
     };
     Wall.onEnter = function () { if (!document.getElementById("wall-cards").classList.contains("hidden")) { board(); trips(); } else enter0(); };
+    window.WallCards = { scenes: scenes, show: show, rot: rot, when: when, trips: trips };
     if (location.hash === "#wall-cards" || location.hash === "#wall") {
       var iv = setInterval(function () { if (window.currentRoom === "wall" || (typeof currentRoom !== "undefined" && currentRoom === "wall")) { clearInterval(iv); Wall.tab("cards"); } }, 300);
       setTimeout(function () { clearInterval(iv); }, 60000);
@@ -8289,6 +8269,79 @@
   #picks-sheet .ps-list{display:grid;gap:6px}
   #picks-sheet .ps-item{display:flex;align-items:center;gap:10px}#picks-sheet .ps-i{font-size:22px;flex:none}#picks-sheet .ps-t{display:grid;min-width:0}#picks-sheet .ps-t b{font-weight:400}#picks-sheet .ps-t small{font-size:15px;opacity:.75;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   #picks-sheet .ps-f{display:grid;gap:3px}#picks-sheet .ps-none{margin:0;font-size:14px;color:var(--muted)}#picks-sheet .ps-add{min-height:44px}
+</style>
+<script>
+/* ===== One wall: graffiti and postcards hang together, as far back as anyone has painted =====
+   🎨 opens the bricks to paint on; signing hangs it on the wall. As many as you like. The wall keeps going as you scroll. */
+(function () {
+  const PAGE = 18;
+  let gBefore = null, cBefore = null, gDone = false, cDone = false, busy = false, first = true, P = null;
+  const one = () => document.getElementById('wall-one');
+  function rotOf(k) { let h = 0; k = String(k); for (let i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) | 0; return ((h % 9) - 4) * .8 + 'deg'; }
+  async function grafPage() {
+    if (gDone) return [];
+    let rows = [];
+    if (DB.sb) {
+      try { let q = DB.sb.from(DB_T('graffiti')).select('*').order('created_at', { ascending: false }).limit(PAGE); if (gBefore) q = q.lt('created_at', gBefore); const r = await q; rows = r.data || []; } catch (e) { rows = []; }
+    } else { rows = gBefore ? [] : await DB.list('graffiti', { limit: 200 }); gDone = true; }
+    rows = rows.filter(r => typeof r.image === 'string' && r.image.startsWith('data:image/png'));
+    if (rows.length < PAGE && DB.sb) gDone = true; if (rows.length) gBefore = rows[rows.length - 1].created_at;
+    return rows;
+  }
+  async function cardPage() {
+    if (cDone || !SUPABASE_CONFIG.url) { cDone = true; return []; }
+    try {
+      const u = SUPABASE_CONFIG.url + '/rest/v1/rpc/postcard_wall_page?p_limit=' + PAGE + (cBefore ? '&p_before=' + encodeURIComponent(cBefore) : '');
+      const r = await fetch(u, { headers: { apikey: SUPABASE_CONFIG.anonKey, Authorization: 'Bearer ' + SUPABASE_CONFIG.anonKey } });
+      const rows = r.ok ? await r.json() : [];
+      if (!Array.isArray(rows) || rows.length < PAGE) cDone = true; if (rows.length) cBefore = rows[rows.length - 1].sent;
+      return rows || [];
+    } catch (e) { cDone = true; return []; }
+  }
+  function tag(r) {
+    const t = document.createElement('button'); t.type = 'button'; t.className = 'tag-tile hang'; t.style.setProperty('--r', rotOf(r.id || r.created_at));
+    const img = document.createElement('img'); img.src = r.image; img.alt = r.patron || ''; img.loading = 'lazy';
+    const sig = document.createElement('span'); sig.className = 'sig'; sig.textContent = r.patron || '';
+    t.append(img, sig);
+    t.onclick = () => { document.getElementById('viewer-img').src = r.image; setText('viewer-cap', `— ${r.patron || ''} · ${timeAgo(r.created_at)}`); document.getElementById('viewer-modal').classList.remove('hidden'); };
+    return t;
+  }
+  function card(c) {
+    const W = window.WallCards; const b = document.createElement('button'); b.type = 'button'; b.className = 'pcm hang' + (c.sealed ? ' sealed' : ''); b.style.setProperty('--r', W ? W.rot(c.id) : '0deg');
+    const cv = document.createElement('canvas'); b.appendChild(cv); if (P) P.draw(cv, c.scene, c.id);
+    const cap = document.createElement('span'); cap.className = 'cap'; cap.textContent = c.sealed ? '🔒 ' + T('wall.opens').replace('{d}', W ? W.when(c.open_at) : '') : (c.place ? c.place + ' · ' : '') + c.from; b.appendChild(cap);
+    b.onclick = () => { SoundEngine.playClick(); if (W) W.show(c, P); };
+    return b;
+  }
+  async function more() {
+    if (busy || (gDone && cDone)) return; busy = true;
+    if (!P && window.WallCards) { try { P = await WallCards.scenes(); } catch (e) {} }
+    const [g, c] = await Promise.all([grafPage(), cardPage()]);
+    const items = g.map(r => ({ t: r.created_at, n: () => tag(r) })).concat(c.map(x => ({ t: x.sent, n: () => card(x) }))).sort((a, b) => String(b.t).localeCompare(String(a.t)));
+    const el = one();
+    if (first) { el.innerHTML = ''; first = false; if (!items.length) el.innerHTML = `<p class="font-hand text-[22px] text-[#fff3dc] p-3" style="grid-column:1/-1;text-shadow:1px 1px 0 #000">${esc(T('wall.emptyWall'))}</p>`; }
+    items.forEach(i => el.appendChild(i.n()));
+    busy = false;
+    const s = document.getElementById('wall-more'); if (s && s.getBoundingClientRect().top < innerHeight + 200 && !(gDone && cDone)) more();
+  }
+  function reload() { gBefore = cBefore = null; gDone = cDone = false; first = true; one().innerHTML = '<p class="label">' + esc(T('common.loading')) + '</p>'; more(); if (window.WallCards) WallCards.trips(); }
+  try { new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) more(); }, { rootMargin: '300px' }).observe(document.getElementById('wall-more')); } catch (e) {}
+  Wall.tab = function () { reload(); };
+  Wall.onEnter = function () { if (first || !one().children.length) reload(); else if (window.WallCards) WallCards.trips(); };
+  Wall.paint = function (on) { document.getElementById('wall-paint').classList.toggle('hidden', !on); if (on) SoundEngine.playClick(); };
+  const save0 = Wall.saveTag.bind(Wall);
+  Wall.saveTag = async function () { if (this.isBlank()) return save0(); await save0(); Wall.paint(false); reload(); };
+})();
+</script>
+<style>
+  .wall-one{display:grid;gap:18px 14px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));padding:18px 14px;border:3px solid #000;box-shadow:inset 0 0 0 3px rgba(0,0,0,.25);background-color:#7a3f2a;background-image:linear-gradient(#5a2c1e 2px,transparent 2px),linear-gradient(90deg,#5a2c1e 2px,transparent 2px),linear-gradient(90deg,#5a2c1e 2px,transparent 2px);background-size:56px 28px,56px 56px,56px 56px;background-position:0 0,0 0,28px 28px;min-height:200px}
+  .wall-one .hang{transform:rotate(var(--r,0deg));box-shadow:3px 4px 0 rgba(0,0,0,.45);position:relative}
+  .wall-one .hang::before{content:"";position:absolute;top:-6px;left:50%;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:#c9c2b4;border:1px solid #000;z-index:2}
+  .wall-more{height:1px}
+  .paint-sheet{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:12px;background:rgba(10,6,4,.7)}.paint-sheet.hidden{display:none}
+  .paint-sheet .paint-card{position:relative;width:min(560px,100%);max-height:calc(100vh - 24px);overflow:auto}
+  .paint-sheet .paint-x{position:absolute;top:6px;right:6px;min-width:40px;min-height:40px;padding:0;z-index:2}
+  .paint-sheet #graf-canvas{width:100%;height:auto;image-rendering:pixelated;touch-action:none;display:block}
 </style>
 </body>
 </html>
