@@ -107,6 +107,25 @@ main{max-width:620px;margin:0 auto;padding:10px 16px 110px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<style data-fit>
+/* in town: the top bar already names the place; everything fits one screen (phone upright, or side by side on a wide frame) */
+html.fbsh-in body{min-height:0}
+html.fbsh-in .top .sign{display:none}
+html.fbsh-in .top{position:fixed;top:8px;right:10px;z-index:20;padding:0;margin:0;max-width:none}
+html.fbsh-in main{padding:8px 12px 12px}
+html.fbsh-in .foot{display:none}
+html.fbsh-in .stage{margin:2px auto 8px;max-width:min(560px,calc((100vh - 330px) * 1.333));max-width:min(560px,calc((100dvh - 330px) * 1.333))}
+html.fbsh-in #write .row,html.fbsh-in #write .lbl,html.fbsh-in #write .opens{margin-top:6px;margin-bottom:6px}
+html.fbsh-in #scenes{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scrollbar-width:none;padding:3px 4px 6px}html.fbsh-in #scenes::-webkit-scrollbar{display:none}html.fbsh-in #scenes>*{flex:none}
+@media (max-height:700px){html.fbsh-in .chip{min-width:40px;height:40px;font-size:19px}html.fbsh-in .chip.t{font-size:17px}html.fbsh-in .big{min-height:50px}html.fbsh-in .stage{max-width:min(560px,calc((100dvh - 315px) * 1.333))}html.fbsh-in #opens{display:none}}
+@media (min-aspect-ratio:5/4) and (min-width:640px){
+  html.fbsh-in main{max-width:1180px;min-height:100vh;min-height:100dvh;box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,1fr);gap:8px 24px;align-items:center;align-content:center}
+  html.fbsh-in .stage{width:100%;max-width:min(100%,calc((100dvh - 40px) * 1.333));margin:0 auto}
+  html.fbsh-in #write,html.fbsh-in #read{grid-column:2;align-self:center}
+  html.fbsh-in #scenes{flex-wrap:wrap;overflow:visible;justify-content:center}
+  html.fbsh-in .stage{grid-row:1 / span 2}
+}
+</style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
 <header class="top">
