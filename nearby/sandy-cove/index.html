@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=f1d99c3db4"></script><script data-fbg src="/fbkit/fbg.js?v=f7422115eb" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Sandy Cove · Nearby</title>
+<meta name="description" content="Row a little boat around the cove. Lanterns drift on the water; gather a few and let them go. Alone, or with a friend in the next boat.">
+<meta name="theme-color" content="#0b132b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%231a535c'/%3E%3Crect x='3' y='8' width='10' height='3' fill='%239c6644'/%3E%3Crect x='7' y='4' width='2' height='2' fill='%23ffd166'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+:root{color-scheme:dark}
+html,body{margin:0;height:100%;background:#0b132b;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated}
+.bar{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));display:flex;gap:8px;z-index:5}
+.bar button,.bar a{display:grid;place-items:center;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:rgba(15,23,42,.6);color:#eef2ff;font:400 18px/1 'VT323',monospace;text-decoration:none;cursor:pointer;box-shadow:3px 3px 0 #000}
+.bar button[aria-pressed="true"]{background:#7a5a16;color:#fff3c0}
+.bar .duo.on{background:#1f6f62}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<body>
+<h1 class="sr" id="h1">Sandy Cove</h1>
+<canvas id="cv" role="img" aria-label="A rowing boat on the water of a cove"></canvas>
+<div class="bar">
+  <button type="button" class="duo" id="duo" aria-label="With a friend">👥</button>
+  <button type="button" id="anchor" aria-pressed="false" aria-label="Drop anchor">⚓</button>
+  <a id="lie" href="/nearby/lie-back/?place=sea" aria-label="Lie back on the sand">☁️</a>
+</div>
+<script src="/nearby/duo.js"></script>
+<script>
+/* Sandy Cove: row a little boat around the cove. Lanterns drift on the water; row through one and it follows you
+   on a string. Drop anchor and they rise, one by one, into the sky. Nothing to count, nothing to win.
+   With a friend: their boat on the same water, the same lanterns (whoever reaches one first takes it). */
+(function () {
+  "use strict";
+  var W = window.FBWorld || { phase: function () { return "day"; }, weather: function () { return "clear"; } };
+  var cv = document.getElementById("cv"), ctx = cv.getContext("2d", { alpha: false }), PX = 4, width = 100, height = 100;
+  function resize() { width = Math.max(90, Math.ceil(innerWidth / PX)); height = Math.max(90, Math.ceil(innerHeight / PX)); cv.width = width; cv.height = height; ctx.imageSmoothingEnabled = false; }
+  addEventListener("resize", resize); resize();
+
+  /* ---------- the sea follows the town's hour ---------- */
+  var PAL = {
+    day: { deep: [26, 110, 130], mid: [56, 160, 170], spark: [190, 236, 232], sand: [236, 206, 140], grass: [96, 176, 110], treeL: [70, 150, 100], treeD: [30, 80, 60], rockL: [150, 160, 176], rockD: [84, 90, 112], hull: [156, 102, 68], inner: [212, 163, 115], seat: [127, 79, 36], hull2: [60, 120, 140], inner2: [150, 205, 210], glow: [255, 209, 102], core: [255, 255, 255], fire: 0 },
+    dusk: { deep: [59, 40, 84], mid: [138, 79, 125], spark: [244, 162, 97], sand: [214, 140, 105], grass: [69, 123, 109], treeL: [53, 92, 92], treeD: [29, 45, 68], rockL: [119, 107, 130], rockD: [61, 52, 79], hull: [122, 73, 62], inner: [181, 124, 98], seat: [92, 51, 43], hull2: [52, 92, 104], inner2: [120, 160, 170], glow: [255, 159, 28], core: [255, 250, 220], fire: .55 },
+    night: { deep: [11, 19, 43], mid: [28, 37, 65], spark: [91, 192, 190], sand: [74, 87, 110], grass: [34, 87, 90], treeL: [24, 62, 75], treeD: [10, 28, 43], rockL: [58, 70, 94], rockD: [28, 35, 51], hull: [74, 53, 49], inner: [115, 88, 78], seat: [54, 37, 35], hull2: [32, 62, 74], inner2: [70, 110, 120], glow: [255, 183, 3], core: [255, 255, 255], fire: 1 }
+  };
+  function palKey() { var p = W.phase(); return p === "night" ? "night" : p === "dusk" || p === "dawn" ? "dusk" : "day"; }
+  var C = JSON.parse(JSON.stringify(PAL[palKey()]));
+  function ease() { var T = PAL[palKey()]; for (var k in T) { if (Array.isArray(T[k])) for (var i = 0; i < 3; i++) C[k][i] += (T[k][i] - C[k][i]) * .02; else C[k] += (T[k] - C[k]) * .02; } }
+  function rgb(c, a) { return a == null || a >= 1 ? "rgb(" + (c[0] | 0) + "," + (c[1] | 0) + "," + (c[2] | 0) + ")" : "rgba(" + (c[0] | 0) + "," + (c[1] | 0) + "," + (c[2] | 0) + "," + a.toFixed(2) + ")"; }
+
+  /* ---------- sound: water, oars, a soft chime (the town's own sound steps back on its own) ---------- */
+  var A = null, water = null, waterF = null, PENTA = [261.63, 293.66, 329.63, 392, 440, 523.25, 587.33, 659.25];
+  function audio() {
+    if (A) { if (A.state === "suspended") A.resume(); return; }
+    try { A = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+    var n = A.sampleRate * 2, b = A.createBuffer(1, n, A.sampleRate), d = b.getChannelData(0), last = 0;
+    for (var i = 0; i < n; i++) { last = (last + .02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 2.5; }
+    var s = A.createBufferSource(); s.buffer = b; s.loop = true; waterF = A.createBiquadFilter(); waterF.type = "lowpass"; waterF.frequency.value = 260; water = A.createGain(); water.gain.value = .05;
+    s.connect(waterF); waterF.connect(water); water.connect(A.destination); s.start();
+  }
+  function splash() { if (!A) return; var n = A.currentTime, o = A.createOscillator(), g = A.createGain(); o.frequency.setValueAtTime(110 + Math.random() * 25, n); o.frequency.exponentialRampToValueAtTime(48, n + .16); g.gain.setValueAtTime(.03, n); g.gain.exponentialRampToValueAtTime(.001, n + .18); o.connect(g); g.connect(A.destination); o.start(n); o.stop(n + .2); }
+  function chime() { if (!A) return; var n = A.currentTime, o = A.createOscillator(), g = A.createGain(); o.type = "triangle"; o.frequency.value = PENTA[(Math.random() * PENTA.length) | 0]; g.gain.setValueAtTime(.001, n); g.gain.linearRampToValueAtTime(.06, n + .03); g.gain.exponentialRampToValueAtTime(.0008, n + 1.8); o.connect(g); g.connect(A.destination); o.start(n); o.stop(n + 1.9); }
+
+  /* ---------- the cove, the same for everyone: chunks from a fixed hash ---------- */
+  var CH = 160, taken = {}, cache = {};
+  function h2(x, y, s) { var h = Math.imul(x ^ s, 374761393) + Math.imul(y ^ s, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+  function chunk(cx, cy) {
+    var key = cx + "," + cy; if (cache[key]) return cache[key];
+    var c = { island: null, rocks: [], foam: [], lantern: null }, spawn = cx === 0 && cy === 0, r1 = h2(cx, cy, 101);
+    if (!spawn && r1 < .24) { var r = 14 + (h2(cx, cy, 104) * 14 | 0), tr = []; for (var t = 0; t < 1 + (h2(cx, cy, 105) * 3 | 0); t++) { var an = h2(cx, cy, 110 + t) * 6.283, di = h2(cx, cy, 120 + t) * r * .45; tr.push({ ox: Math.round(Math.cos(an) * di), oy: Math.round(Math.sin(an) * di), s: 4 + (h2(cx, cy, 130 + t) * 4 | 0) }); }
+      c.island = { x: Math.round(cx * CH + CH * (.3 + .4 * h2(cx, cy, 102))), y: Math.round(cy * CH + CH * (.3 + .4 * h2(cx, cy, 103))), r: r, trees: tr }; }
+    if (!spawn && !c.island && r1 < .5) c.rocks.push({ x: Math.round(cx * CH + CH * (.25 + .5 * h2(cx, cy, 201))), y: Math.round(cy * CH + CH * (.25 + .5 * h2(cx, cy, 202))), r: 5 + (h2(cx, cy, 203) * 5 | 0) });
+    for (var i = 0; i < (h2(cx, cy, 301) * 6 | 0); i++) c.foam.push({ x: Math.round(cx * CH + h2(cx, cy, 310 + i) * CH), y: Math.round(cy * CH + h2(cx, cy, 330 + i) * CH), w: 2 + (h2(cx, cy, 350 + i) * 4 | 0) });
+    if (h2(cx, cy, 401) < .55) { var lx = Math.round(cx * CH + CH * (.2 + .6 * h2(cx, cy, 402))), ly = Math.round(cy * CH + CH * (.2 + .6 * h2(cx, cy, 403))); if (c.island && Math.hypot(lx - c.island.x, ly - c.island.y) < c.island.r + 9) lx += c.island.r + 10; c.lantern = { id: cx + ":" + cy, x: lx, y: ly, ph: h2(cx, cy, 404) * 6.283 }; }
+    return (cache[key] = c);
+  }
+
+  /* ---------- you, your friend, the gulls ---------- */
+  var boat = { x: /[?&]with=/.test(location.search) ? 22 : 0, y: /[?&]with=/.test(location.search) ? 10 : 0, vx: 0, vy: 0, a: -Math.PI / 2, va: 0, oar: 0, anchored: false, string: [], rowing: false };
+  var mate = null;   /* { x, y, a, oar, string, t } from the other boat */
+  var cam = { x: 0, y: 0 }, ripples = [], sparks = [], rising = [], gulls = [], time = 0, wake = 0, lastSign = 1;
+  function flock(bx, by) { var an = Math.random() * 6.283, d = 70 + Math.random() * 60, dir = Math.random() * 6.283, prev = null; gulls = []; for (var i = 0; i < 3; i++) { var g = { x: bx + Math.cos(an) * d - Math.cos(dir) * 7 * i, y: by + Math.sin(an) * d - Math.sin(dir) * 7 * i, a: dir, sp: .12, lead: prev, t: i * 5 }; gulls.push(g); prev = g; } }
+  flock(25, -35);
+
+  var keys = {}, ptr = { on: false, x: 0, y: 0 };
+  addEventListener("keydown", function (e) { keys[e.code] = true; audio(); });
+  addEventListener("keyup", function (e) { keys[e.code] = false; });
+  function at(e) { var r = cv.getBoundingClientRect(); ptr.x = (e.clientX - r.left) / (r.width / width); ptr.y = (e.clientY - r.top) / (r.height / height); }
+  cv.addEventListener("pointerdown", function (e) { ptr.on = true; at(e); audio(); try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
+  cv.addEventListener("pointermove", function (e) { if (ptr.on) at(e); });
+  ["pointerup", "pointercancel"].forEach(function (ev) { cv.addEventListener(ev, function () { ptr.on = false; }); });
+
+  var anchorBtn = document.getElementById("anchor");
+  function setAnchor(on) {
+    boat.anchored = on; anchorBtn.setAttribute("aria-pressed", String(on)); ripples.push({ x: boat.x, y: boat.y, r: 2, max: 15, a: .85 }); splash();
+    if (on) boat.string.forEach(function (l, i) { setTimeout(function () { var k = boat.string.indexOf(l); if (k < 0 || !boat.anchored) return; boat.string.splice(k, 1); rising.push({ x: l.x, y: l.y, vy: -.12, life: 1, wob: Math.random() * 6 }); chime(); if (duo) duo.send("rise", { x: l.x, y: l.y }); }, 700 + i * 900); });
+  }
+  anchorBtn.onclick = function () { audio(); setAnchor(!boat.anchored); };
+
+  /* ---------- with a friend ---------- */
+  var duo = window.FBDuo ? FBDuo({ topic: "fbcove",
+    onMsg: function (ev, p) {
+      if (ev === "pos") { if (!mate) mate = { x: p.x, y: p.y, a: p.a, oar: 0, string: [], tx: p.x, ty: p.y }; mate.tx = p.x; mate.ty = p.y; mate.a = p.a; mate.oar = p.o; mate.n = p.n; mate.t = Date.now(); }
+      if (ev === "take" && p.id) taken[p.id] = 1;
+      if (ev === "rise") rising.push({ x: p.x, y: p.y, vy: -.12, life: 1, wob: Math.random() * 6 });
+    },
+    onPeer: function (here) { if (!here) mate = null; else if (duo) duo.send("pos", { x: boat.x, y: boat.y, a: boat.a, o: boat.oar, n: boat.string.length }); },
+    onState: function (s) { document.getElementById("duo").classList.toggle("on", s.peer); }
+  }) : null;
+  document.getElementById("duo").onclick = function () { audio(); if (duo) duo.open(); };
+  setInterval(function () { if (duo && duo.peer()) duo.send("pos", { x: Math.round(boat.x * 10) / 10, y: Math.round(boat.y * 10) / 10, a: Math.round(boat.a * 100) / 100, o: Math.round(boat.oar * 100) / 100, n: boat.string.length }); }, 150);
+
+  /* ---------- the world moves ---------- */
+  function update() {
+    time += .035; ease();
+    var thrust = 0, turn = 0;
+    if (!boat.anchored) {
+      if (keys.ArrowUp || keys.KeyW) thrust += .015; if (keys.ArrowDown || keys.KeyS) thrust -= .008;
+      if (keys.ArrowLeft || keys.KeyA) turn -= .0045; if (keys.ArrowRight || keys.KeyD) turn += .0045;
+      if (ptr.on) { var sx = boat.x - cam.x + width / 2, sy = boat.y - cam.y + height / 2, dx = ptr.x - sx, dy = ptr.y - sy, d = Math.hypot(dx, dy);
+        if (d > 6) { var diff = Math.atan2(dy, dx) - boat.a; while (diff < -Math.PI) diff += 6.283; while (diff > Math.PI) diff -= 6.283; turn += Math.max(-.005, Math.min(.005, diff * .018)); thrust += Math.min(.015, d * .00045); } }
+    } else if (ptr.on || keys.ArrowUp || keys.KeyW) setAnchor(false);   /* rowing again lifts the anchor */
+    boat.va = (boat.va + turn) * .86; boat.a += boat.va;
+    boat.vx += Math.cos(boat.a) * thrust; boat.vy += Math.sin(boat.a) * thrust;
+    var drag = boat.anchored ? .85 : .968; boat.vx *= drag; boat.vy *= drag; boat.x += boat.vx; boat.y += boat.vy;
+    var sp = Math.hypot(boat.vx, boat.vy);
+    if (waterF) waterF.frequency.setTargetAtTime(220 + Math.min(350, sp * 420), A.currentTime, .1);
+    if (Math.abs(thrust) > .001 || Math.abs(turn) > .001) {
+      boat.oar += .16; var sg = Math.sin(boat.oar) >= 0 ? 1 : -1;
+      if (sg !== lastSign && sg === 1) { splash(); var sa = boat.a + Math.PI / 2, ox = Math.cos(sa) * 7, oy = Math.sin(sa) * 7; ripples.push({ x: boat.x + ox, y: boat.y + oy, r: 1, max: 7, a: .65 }, { x: boat.x - ox, y: boat.y - oy, r: 1, max: 7, a: .65 }); }
+      lastSign = sg;
+    } else boat.oar += (0 - Math.sin(boat.oar)) * .08;
+    wake++; if (sp > .07 && wake % 6 === 0) ripples.push({ x: boat.x - Math.cos(boat.a) * 6, y: boat.y - Math.sin(boat.a) * 6, r: 1.5, max: 9 + sp * 8, a: .55 }); else if (wake % 45 === 0) ripples.push({ x: boat.x, y: boat.y, r: 3, max: 11, a: .35 });
+
+    var ccx = Math.floor(boat.x / CH), ccy = Math.floor(boat.y / CH);
+    for (var oy2 = -1; oy2 <= 1; oy2++) for (var ox2 = -1; ox2 <= 1; ox2++) {
+      var c = chunk(ccx + ox2, ccy + oy2);
+      if (c.island) { var di = Math.hypot(boat.x - c.island.x, boat.y - c.island.y), mn = c.island.r + 6; if (di < mn && di > .001) { var nx = (boat.x - c.island.x) / di, ny = (boat.y - c.island.y) / di; boat.x += nx * (mn - di) * .4; boat.y += ny * (mn - di) * .4; boat.vx += nx * .06; boat.vy += ny * .06; } }
+      c.rocks.forEach(function (rk) { var dd = Math.hypot(boat.x - rk.x, boat.y - rk.y), m2 = rk.r + 5; if (dd < m2 && dd > .001) { var nx2 = (boat.x - rk.x) / dd, ny2 = (boat.y - rk.y) / dd; boat.x += nx2 * (m2 - dd) * .5; boat.y += ny2 * (m2 - dd) * .5; boat.vx += nx2 * .05; boat.vy += ny2 * .05; } });
+      if (c.lantern && !taken[c.lantern.id] && boat.string.length < 7 && Math.hypot(boat.x - c.lantern.x, boat.y - c.lantern.y) < 11) {
+        taken[c.lantern.id] = 1; boat.string.push({ x: c.lantern.x, y: c.lantern.y }); chime(); if (duo) duo.send("take", { id: c.lantern.id });
+        ripples.push({ x: c.lantern.x, y: c.lantern.y, r: 1, max: 16, a: .9 });
+        for (var p = 0; p < 10; p++) { var pa = p / 10 * 6.283; sparks.push({ x: c.lantern.x, y: c.lantern.y, vx: Math.cos(pa) * (.3 + Math.random() * .4), vy: Math.sin(pa) * (.3 + Math.random() * .4) - .2, life: 1 }); }
+      }
+    }
+    /* the lanterns you gathered follow on a string */
+    var px = boat.x - Math.cos(boat.a) * 8, py = boat.y - Math.sin(boat.a) * 8;
+    boat.string.forEach(function (l) { var dx2 = px - l.x, dy2 = py - l.y, d2 = Math.hypot(dx2, dy2); if (d2 > 6) { l.x += dx2 / d2 * (d2 - 6) * .2; l.y += dy2 / d2 * (d2 - 6) * .2; } px = l.x; py = l.y; });
+    if (mate) { mate.x += (mate.tx - mate.x) * .2; mate.y += (mate.ty - mate.y) * .2; if (Date.now() - mate.t > 12000) mate = null; }
+
+    if (gulls.length && Math.hypot(gulls[0].x - boat.x, gulls[0].y - boat.y) > 260) flock(boat.x, boat.y);
+    gulls.forEach(function (g) {
+      if (!g.lead) { g.a += Math.sin(time * .7 + g.x * .05) * .012; var db = Math.hypot(g.x - boat.x, g.y - boat.y); if (db < 28) { g.a += (Math.atan2(g.y - boat.y, g.x - boat.x) - g.a) * .05; g.sp = .22; } else g.sp += (.12 - g.sp) * .05; g.x += Math.cos(g.a) * g.sp; g.y += Math.sin(g.a) * g.sp; }
+      else { var gx = g.lead.x - g.x, gy = g.lead.y - g.y, gd = Math.hypot(gx, gy); if (gd > 7) { g.a = Math.atan2(gy, gx); g.x += Math.cos(g.a) * (gd - 6.8) * .18; g.y += Math.sin(g.a) * (gd - 6.8) * .18; } }
+      if (++g.t % 18 === 0) ripples.push({ x: g.x, y: g.y, r: 1, max: 5, a: .35 });
+    });
+    for (var i = ripples.length - 1; i >= 0; i--) { var rp = ripples[i]; rp.r += .14; rp.a -= .012; if (rp.a <= 0 || rp.r >= rp.max) ripples.splice(i, 1); }
+    for (i = sparks.length - 1; i >= 0; i--) { var s = sparks[i]; s.x += s.vx; s.y += s.vy; s.life -= .025; if (s.life <= 0) sparks.splice(i, 1); }
+    for (i = rising.length - 1; i >= 0; i--) { var rr = rising[i]; rr.y += rr.vy; rr.vy -= .002; rr.x += Math.sin(time * 2 + rr.wob) * .15; rr.life -= .0035; if (rr.life <= 0) rising.splice(i, 1); }
+    var look = 12 * Math.min(1, sp * 3); cam.x += (boat.x + Math.cos(boat.a) * look - cam.x) * .08; cam.y += (boat.y + Math.sin(boat.a) * look - cam.y) * .08;
+  }
+
+  /* ---------- drawing ---------- */
+  function disc(cx, cy, r, col) { ctx.fillStyle = col; var ix = Math.round(cx), iy = Math.round(cy), r2 = r * r; for (var y = -r; y <= r; y++) for (var x = -r; x <= r; x++) if (x * x + y * y <= r2 + .5) ctx.fillRect(ix + x, iy + y, 1, 1); }
+  function ring(cx, cy, r, col) { ctx.fillStyle = col; var ix = Math.round(cx), iy = Math.round(cy), i2 = (r - .85) * (r - .85), o2 = (r + .45) * (r + .45), b = Math.ceil(r + 1); for (var y = -b; y <= b; y++) for (var x = -b; x <= b; x++) { var d = x * x + y * y; if (d >= i2 && d <= o2) ctx.fillRect(ix + x, iy + y, 1, 1); } }
+  function line(x0, y0, x1, y1, col) { ctx.fillStyle = col; x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1); var dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1, dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1, er = dx + dy; for (var n = 0; n < 200; n++) { ctx.fillRect(x0, y0, 1, 1); if (x0 === x1 && y0 === y1) break; var e2 = 2 * er; if (e2 >= dy) { er += dy; x0 += sx; } if (e2 <= dx) { er += dx; y0 += sy; } } }
+  function lantern(sx, sy, big) { disc(sx, sy, big ? 5 : 3, rgb(C.glow, .22 + .2 * C.fire)); disc(sx, sy, 2, rgb(C.glow, .85)); ctx.fillStyle = rgb(C.core); ctx.fillRect(Math.round(sx), Math.round(sy), 1, 1); }
+  function drawBoat(x, y, a, oar, hull, inner) {
+    var ix = Math.round(x), iy = Math.round(y), co = Math.cos(a), si = Math.sin(a), st = Math.sin(oar) * .55;
+    [-1, 1].forEach(function (s) { var lx = ix - si * s * 3.5, ly = iy + co * s * 3.5, od = a + s * Math.PI / 2 - s * st; line(lx, ly, lx + Math.cos(od) * 6.5, ly + Math.sin(od) * 6.5, rgb(inner)); });
+    for (var dy = -10; dy <= 10; dy++) for (var dx = -10; dx <= 10; dx++) {
+      var lx2 = dx * co + dy * si, ly2 = -dx * si + dy * co, tap = lx2 > 0 ? 1 - lx2 / 7.5 * .35 : 1, d = lx2 * lx2 / 56.25 + ly2 * ly2 / ((3.8 * tap) * (3.8 * tap));
+      if (d <= 1) { ctx.fillStyle = d > .72 || lx2 > 5.1 || lx2 < -5.4 ? rgb(hull) : Math.abs(lx2 - 1) < 1.1 || Math.abs(lx2 + 3.2) < 1 ? rgb(C.seat) : rgb(inner); ctx.fillRect(ix + dx, iy + dy, 1, 1); }
+    }
+    var bx = Math.round(ix + co * 6), by = Math.round(iy + si * 6); if (C.fire > .1) disc(bx, by, 4, rgb(C.glow, .22 * C.fire)); ctx.fillStyle = rgb(C.glow); ctx.fillRect(bx, by, 1, 1);
+  }
+  function render() {
+    ctx.fillStyle = rgb(C.deep); ctx.fillRect(0, 0, width, height);
+    var L = cam.x - width / 2, T = cam.y - height / 2, step = 16;
+    for (var wy = Math.floor(T / step) * step; wy < T + height + step; wy += step) for (var wx = Math.floor(L / step) * step; wx < L + width + step; wx += step) {
+      var hh = h2(wx, wy, 777), wave = Math.sin(time * 1.3 + wx * .04 + wy * .06 + hh * 6), sx = Math.round(wx - L + Math.sin(time + hh * 10) * 2), sy = Math.round(wy - T);
+      if (wave > .45) { ctx.fillStyle = rgb(C.mid); ctx.fillRect(sx, sy, 3, 1); } if (wave > .88) { ctx.fillStyle = rgb(C.spark); ctx.fillRect(sx + 1, sy, 1, 1); }
+    }
+    ripples.forEach(function (rp) { var sx2 = rp.x - L, sy2 = rp.y - T; if (sx2 > -20 && sx2 < width + 20 && sy2 > -20 && sy2 < height + 20) ring(sx2, sy2, rp.r, rgb(C.spark, rp.a * .65)); });
+    for (var cy = Math.floor((T - 40) / CH); cy <= Math.floor((T + height + 40) / CH); cy++) for (var cx = Math.floor((L - 40) / CH); cx <= Math.floor((L + width + 40) / CH); cx++) {
+      var c = chunk(cx, cy);
+      c.foam.forEach(function (f) { var fx = Math.round(f.x - L + Math.sin(time * .6 + f.x) * 2), fy = Math.round(f.y - T); if (fx < -10 || fx > width + 10 || fy < -5 || fy > height + 5) return; ctx.fillStyle = rgb(C.spark, .5); ctx.fillRect(fx, fy, f.w, 1); });
+      c.rocks.forEach(function (rk) { var rx = Math.round(rk.x - L), ry = Math.round(rk.y - T); disc(rx, ry + 1, rk.r, rgb(C.rockD)); disc(rx, ry, rk.r - 1, rgb(C.rockL)); });
+      if (c.island) { var is = c.island, ix = Math.round(is.x - L), iy = Math.round(is.y - T); if (ix > -is.r - 15 && ix < width + is.r + 15 && iy > -is.r - 15 && iy < height + is.r + 15) { disc(ix, iy, is.r + 3, rgb(C.mid)); disc(ix, iy, is.r, rgb(C.sand)); disc(ix, iy - 1, Math.max(2, is.r - 5), rgb(C.grass)); is.trees.forEach(function (tr) { disc(ix + tr.ox, iy + tr.oy + 1, tr.s, rgb(C.treeD)); disc(ix + tr.ox, iy + tr.oy - 1, Math.max(2, tr.s - 1), rgb(C.treeL)); }); } }
+      if (c.lantern && !taken[c.lantern.id]) { var ln = c.lantern; lantern(Math.round(ln.x - L), Math.round(ln.y - T + Math.sin(time * 2 + ln.ph) * 1.2), true); }
+    }
+    gulls.forEach(function (g) { var gx = Math.round(g.x - L), gy = Math.round(g.y - T); if (gx < -10 || gx > width + 10 || gy < -10 || gy > height + 10) return; ctx.fillStyle = "#f8fafc"; ctx.fillRect(gx - 1, gy - 1, 3, 2); ctx.fillStyle = "#94a3b8"; ctx.fillRect(gx - 1, gy - 1, 1, 1); var hx = gx + Math.round(Math.cos(g.a)), hy = gy - 1 + Math.round(Math.sin(g.a)); ctx.fillStyle = "#f8fafc"; ctx.fillRect(hx, hy, 1, 1); ctx.fillStyle = "#f59e0b"; ctx.fillRect(hx + Math.round(Math.cos(g.a)), hy, 1, 1); });
+    function strung(list, bx, by) { var lx = bx, ly = by; list.forEach(function (l) { line(lx - L, ly - T, l.x - L, l.y - T, rgb(C.inner, .5)); lx = l.x; ly = l.y; }); list.forEach(function (l) { lantern(l.x - L, l.y - T + Math.sin(time * 2 + l.x) * .8, false); }); }
+    strung(boat.string, boat.x - Math.cos(boat.a) * 6, boat.y - Math.sin(boat.a) * 6);
+    if (mate) { drawBoat(mate.x - L, mate.y - T, mate.a, mate.oar, C.hull2, C.inner2); for (var m = 0; m < (mate.n || 0); m++) lantern(mate.x - L - Math.cos(mate.a) * (8 + m * 6), mate.y - T - Math.sin(mate.a) * (8 + m * 6), false); }
+    drawBoat(boat.x - L, boat.y - T, boat.a, boat.oar, C.hull, C.inner);
+    sparks.forEach(function (s) { ctx.fillStyle = rgb(C.glow, s.life); ctx.fillRect(Math.round(s.x - L), Math.round(s.y - T), 1, 1); });
+    /* lanterns let go: they rise off the water and out of the picture */
+    rising.forEach(function (rr) { var rx = rr.x - L, ry = rr.y - T; disc(rx, ry, 3, rgb(C.glow, .25 * rr.life)); ctx.fillStyle = rgb(C.glow, Math.min(1, rr.life * 1.5)); ctx.fillRect(Math.round(rx), Math.round(ry), 1, 2); });
+    if (C.fire > .05) for (var k = 0; k < 22; k++) { var fx2 = ((h2(k, 1, 9) * 320 - cam.x * .4 + Math.sin(time * .6 + k) * 18) % width + width) % width, fy2 = ((h2(k, 2, 9) * 240 - cam.y * .4 + Math.cos(time * .5 + k) * 18) % height + height) % height, pu = (Math.sin(time * 2.5 + k) + 1) / 2; if (pu > .3) { ctx.fillStyle = "rgba(254,240,138," + (pu * C.fire * .85).toFixed(2) + ")"; ctx.fillRect(Math.round(fx2), Math.round(fy2), 1, 1); } }
+    var wx2 = W.weather();
+    if (wx2 === "rain" || wx2 === "storm") { ctx.fillStyle = rgb(C.spark, .45); for (var rd = 0; rd < width * height / 140; rd++) { var dx3 = (h2(rd, 3, 5) * width + time * 40) % width, dy3 = (h2(rd, 4, 5) * height + time * 120) % height; ctx.fillRect(Math.round(dx3), Math.round(dy3), 1, 2); } }
+    if (wx2 === "fog") { ctx.fillStyle = "rgba(220,226,236,.28)"; ctx.fillRect(0, 0, width, height); }
+    if (wx2 === "snow") { ctx.fillStyle = "#fff"; for (var sn = 0; sn < width * height / 220; sn++) ctx.fillRect(Math.round((h2(sn, 5, 5) * width + Math.sin(time + sn) * 3) % width), Math.round((h2(sn, 6, 5) * height + time * 12) % height), 1, 1); }
+  }
+  (function loop() { update(); render(); requestAnimationFrame(loop); })();
+
+  /* the one word on the page lives in its labels, in five languages */
+  var T5 = { boat: ["A rowing boat on the water of a cove", "海湾水面上的一条小划艇", "海灣水面上的一條小划艇", "Una barca de remos en el agua de la cala", "Una barca de rems a l'aigua de la cala"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], anchor: ["Drop anchor", "抛锚", "拋錨", "Echar el ancla", "Tirar l'àncora"], lie: ["Lie back on the sand", "躺在沙滩上", "躺在沙灘上", "Túmbate en la arena", "Estira't a la sorra"] };
+  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", T5.boat[i]); [["duo", "duo"], ["anchor", "anchor"], ["lie", "lie"]].forEach(function (p) { var e = document.getElementById(p[0]); e.setAttribute("aria-label", T5[p[1]][i]); e.title = T5[p[1]][i]; }); var nm = window.FBWorld && FBWorld.name ? FBWorld.name("sea") : "Sandy Cove"; document.getElementById("h1").textContent = nm; }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+  words();
+})();
+</script>
+</body>
+</html>

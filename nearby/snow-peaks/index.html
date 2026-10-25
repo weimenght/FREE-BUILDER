@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=f1d99c3db4"></script><script data-fbg src="/fbkit/fbg.js?v=f7422115eb" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Snow Peaks · Nearby</title>
+<meta name="description" content="Fresh snow and a long slope. Carve your own line through the pines, alone or next to a friend.">
+<meta name="theme-color" content="#0b101b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%23ecf3f9'/%3E%3Crect x='3' y='4' width='3' height='8' fill='%232c4a52'/%3E%3Crect x='9' y='6' width='3' height='3' fill='%23e54b4b'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+:root{color-scheme:light}
+html,body{margin:0;height:100%;background:#0b101b;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated}
+.bar{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));display:flex;gap:8px;z-index:5}
+.bar button,.bar a{display:grid;place-items:center;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:rgba(15,23,42,.55);color:#eef2ff;font:400 18px/1 'VT323',monospace;text-decoration:none;cursor:pointer;box-shadow:3px 3px 0 #000}
+.bar .duo.on{background:#1f6f62}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<body>
+<h1 class="sr" id="h1">Snow Peaks</h1>
+<canvas id="cv" role="img" aria-label="A skier carving down a snowy slope"></canvas>
+<div class="bar">
+  <button type="button" class="duo" id="duo" aria-label="With a friend">👥</button>
+  <a id="lie" href="/nearby/lie-back/?place=snow" aria-label="Lie back in the snow">☁️</a>
+</div>
+<script src="/nearby/duo.js"></script>
+<script>
+/* Snow Peaks: a long, quiet slope. Lean left or right and carve. Brush a pine and you tumble into the powder,
+   then get up and go on: no crashes that end anything, no metres, no best. Mantou sometimes runs alongside.
+   With a friend: their skier on the same slope (the same trees for both), wherever they are on it. */
+(function () {
+  "use strict";
+  var W = window.FBWorld || { phase: function () { return "day"; }, weather: function () { return "clear"; } };
+  var cv = document.getElementById("cv"), ctx = cv.getContext("2d", { alpha: false }), PX = 3, gw = 140, gh = 180;
+  function resize() { gw = Math.max(120, Math.floor(innerWidth / PX)); gh = Math.max(160, Math.floor(innerHeight / PX)); cv.width = gw; cv.height = gh; ctx.imageSmoothingEnabled = false; }
+  addEventListener("resize", resize); resize();
+
+  var PAL = {
+    day: { snow: [236, 243, 249], shadow: [203, 218, 233], treeD: [44, 74, 82], treeL: [68, 108, 114], rock: [120, 138, 156], trail: [214, 227, 240], me: [229, 75, 75], scarf: [247, 178, 103], mate: [60, 140, 190], mateScarf: [250, 230, 140] },
+    dusk: { snow: [246, 216, 206], shadow: [214, 168, 178], treeD: [56, 43, 71], treeL: [92, 66, 102], rock: [130, 104, 128], trail: [226, 185, 188], me: [242, 100, 64], scarf: [255, 214, 112], mate: [70, 120, 170], mateScarf: [255, 236, 160] },
+    night: { snow: [26, 36, 59], shadow: [17, 24, 43], treeD: [11, 16, 29], treeL: [22, 33, 56], rock: [45, 58, 86], trail: [20, 29, 50], me: [255, 110, 110], scarf: [255, 224, 130], mate: [110, 170, 230], mateScarf: [255, 240, 170] }
+  };
+  function key() { var p = W.phase(); return p === "night" ? "night" : p === "dusk" || p === "dawn" ? "dusk" : "day"; }
+  var C = JSON.parse(JSON.stringify(PAL[key()]));
+  function ease() { var T = PAL[key()]; for (var k in T) for (var i = 0; i < 3; i++) C[k][i] += (T[k][i] - C[k][i]) * .02; }
+  function rgb(c) { return "rgb(" + (c[0] | 0) + "," + (c[1] | 0) + "," + (c[2] | 0) + ")"; }
+
+  /* ---------- sound: the carve in the snow, a chime off a jump ---------- */
+  var A = null, windF = null, windG = null, NOTES = [261.63, 293.66, 329.63, 392, 440, 523.25, 587.33, 659.25];
+  function audio() {
+    if (A) { if (A.state === "suspended") A.resume(); return; }
+    try { A = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+    var n = A.sampleRate * 3, b = A.createBuffer(1, n, A.sampleRate), d = b.getChannelData(0), b0 = 0, b1 = 0, b2 = 0;
+    for (var i = 0; i < n; i++) { var w = Math.random() * 2 - 1; b0 = .99886 * b0 + w * .0555179; b1 = .99332 * b1 + w * .0750759; b2 = .969 * b2 + w * .153852; d[i] = (b0 + b1 + b2 + w * .5362) * .05; }
+    var s = A.createBufferSource(); s.buffer = b; s.loop = true; windF = A.createBiquadFilter(); windF.type = "bandpass"; windF.frequency.value = 320; windF.Q.value = 1.8; windG = A.createGain(); windG.gain.value = .04;
+    s.connect(windF); windF.connect(windG); windG.connect(A.destination); s.start();
+  }
+  function chime(hi) { if (!A) return; var n = A.currentTime, o = A.createOscillator(), g = A.createGain(), pool = hi ? NOTES.slice(3) : NOTES.slice(0, 5); o.frequency.value = pool[(Math.random() * pool.length) | 0]; g.gain.setValueAtTime(.001, n); g.gain.linearRampToValueAtTime(.05, n + .04); g.gain.exponentialRampToValueAtTime(.0001, n + 1.8); o.connect(g); g.connect(A.destination); o.start(n); o.stop(n + 1.9); }
+  function poof() { if (!A) return; var n = A.currentTime, o = A.createOscillator(), g = A.createGain(); o.type = "triangle"; o.frequency.setValueAtTime(110, n); o.frequency.exponentialRampToValueAtTime(40, n + .3); g.gain.setValueAtTime(.08, n); g.gain.exponentialRampToValueAtTime(.001, n + .35); o.connect(g); g.connect(A.destination); o.start(n); o.stop(n + .4); }
+
+  /* ---------- the slope: the same trees for everyone, row by row ---------- */
+  var ROW = 22;
+  function h2(a, b) { var h = Math.imul(a ^ 0x5bd1e995, 374761393) + Math.imul(b, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+  var rows = {};
+  function row(r) {
+    if (rows[r]) return rows[r];
+    var out = [], n = r < 6 ? 1 : 2 + (h2(r, 1) * 3 | 0);
+    for (var i = 0; i < n; i++) { var x = (h2(r, 10 + i) - .5) * 520, t = h2(r, 30 + i), type = t < .62 ? "pine" : t < .82 ? "tall" : t < .95 ? "rock" : "ramp";
+      if (r < 6 && Math.abs(x) < 30) continue; out.push({ x: x, d: r * ROW + h2(r, 50 + i) * ROW, type: type, r: type === "ramp" ? 6 : 4 }); }
+    var keys = Object.keys(rows); if (keys.length > 80) delete rows[keys[0]];
+    return (rows[r] = out);
+  }
+
+  var me = { x: 0, d: 0, a: 0, ta: 0, sp: 1.6, z: 0, vz: 0, fall: 0, scarf: [] }, mate = null;
+  var trails = [], powder = [], flakes = [], t0 = performance.now(), started = false;
+  for (var i = 0; i < 45; i++) flakes.push({ x: Math.random() * 400, y: Math.random() * 400, s: Math.random() * .4 + .2, dr: (Math.random() - .5) * .3 });
+
+  var keys = { l: false, r: false }, ptr = { on: false, x: 0 };
+  addEventListener("keydown", function (e) { if (/^(ArrowLeft|a|A)$/.test(e.key)) keys.l = true; if (/^(ArrowRight|d|D)$/.test(e.key)) keys.r = true; audio(); started = true; });
+  addEventListener("keyup", function (e) { if (/^(ArrowLeft|a|A)$/.test(e.key)) keys.l = false; if (/^(ArrowRight|d|D)$/.test(e.key)) keys.r = false; });
+  cv.addEventListener("pointerdown", function (e) { ptr.on = true; ptr.x = e.clientX; audio(); started = true; try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
+  cv.addEventListener("pointermove", function (e) { if (ptr.on) ptr.x = e.clientX; });
+  ["pointerup", "pointercancel"].forEach(function (ev) { cv.addEventListener(ev, function () { ptr.on = false; }); });
+
+  var duo = window.FBDuo ? FBDuo({ topic: "fbpeak",
+    onMsg: function (ev, p) { if (ev === "pos") { if (!mate) mate = { x: p.x, d: p.d, a: p.a, z: p.z, f: p.f }; mate.tx = p.x; mate.td = p.d; mate.a = p.a; mate.z = p.z; mate.f = p.f; mate.t = Date.now(); } },
+    onPeer: function (here) { if (!here) mate = null; },
+    onState: function (s) { document.getElementById("duo").classList.toggle("on", s.peer); }
+  }) : null;
+  document.getElementById("duo").onclick = function () { audio(); if (duo) duo.open(); };
+  setInterval(function () { if (duo && duo.peer()) duo.send("pos", { x: Math.round(me.x * 10) / 10, d: Math.round(me.d * 10) / 10, a: Math.round(me.a * 100) / 100, z: Math.round(me.z * 10) / 10, f: me.fall > 0 ? 1 : 0 }); }, 120);
+
+  function dogHere() { try { return W.dog && W.dog() === "peaks" && W.phase() !== "night"; } catch (e) { return false; } }
+
+  function update() {
+    ease();
+    if (!started) me.ta = Math.sin(performance.now() * .0012) * .55;   /* before your first touch the skier makes lazy S-turns by itself */
+    else if (keys.l && !keys.r) me.ta = -.95; else if (keys.r && !keys.l) me.ta = .95;
+    else if (ptr.on) me.ta = Math.max(-.98, Math.min(.98, (ptr.x / innerWidth * 2 - 1) * 1.25)); else me.ta *= .93;
+    me.a += (me.ta - me.a) * .12;
+    var turn = Math.abs(me.a);
+    if (me.fall > 0) { me.fall--; me.sp *= .9; }
+    else me.sp += ((1.65 + .4) * (1 - turn * .28) - me.sp) * .05;
+    var vx = me.fall > 0 ? 0 : Math.sin(me.a * 1.15) * me.sp * 1.35, vy = Math.cos(me.a * 1.15) * me.sp;
+    me.x += vx; me.d += vy;
+    if (windF) { windF.frequency.setTargetAtTime(240 + turn * 420 + me.sp * 60, A.currentTime, .1); windG.gain.setTargetAtTime(.03 + turn * .05, A.currentTime, .1); }
+    if (me.z > 0 || me.vz) { me.z += me.vz; me.vz -= .11; if (me.z <= 0) { me.z = 0; me.vz = 0; for (var k = 0; k < 8; k++) powder.push({ x: me.x + (Math.random() - .5) * 6, d: me.d + 2, vx: (Math.random() - .5) * 1.4, vy: (Math.random() - .5) * .8, life: 16 }); } }
+    if (me.z === 0 && me.fall === 0) { trails.push({ x: me.x, d: me.d }); if (trails.length > 400) trails.shift(); if (turn > .38 && Math.random() < .65) { var sd = me.a > 0 ? -1 : 1; powder.push({ x: me.x + sd * 2, d: me.d, vx: sd * (.4 + Math.random() * .5), vy: -.2, life: 14 }); } }
+    me.scarf.unshift({ x: me.x, d: me.d }); if (me.scarf.length > 7) me.scarf.pop();
+    /* the trees near you */
+    var r0 = Math.floor((me.d - 10) / ROW);
+    for (var r = r0; r <= r0 + 1; r++) row(r).forEach(function (ob) {
+      var dx = ob.x - me.x, dd = ob.d - me.d, dist = Math.hypot(dx, dd);
+      if (ob.type === "ramp") { if (dist < ob.r && me.z === 0 && me.fall === 0) { me.vz = 2.05; chime(true); } }
+      else if (me.z < 5 && me.fall === 0 && dist < ob.r + 1.5) { me.fall = 70; poof(); for (var q = 0; q < 14; q++) powder.push({ x: me.x, d: me.d, vx: (Math.random() - .5) * 2.4, vy: (Math.random() - .5) * 2.4, life: 24 }); me.x += dx > 0 ? -5 : 5; }
+    });
+    for (var i = powder.length - 1; i >= 0; i--) { var p = powder[i]; p.x += p.vx; p.d += p.vy; if (--p.life <= 0) powder.splice(i, 1); }
+    flakes.forEach(function (f) { f.y -= me.sp * .35 - f.s; f.x += f.dr; if (f.y < 0) f.y = gh; if (f.y > gh) f.y = 0; if (f.x < 0) f.x = gw; if (f.x > gw) f.x = 0; });
+    if (mate) { mate.x += (mate.tx - mate.x) * .25; mate.d += (mate.td - mate.d) * .25; if (Date.now() - mate.t > 12000) mate = null; }
+  }
+
+  function pine(x, y, tall) {
+    x = Math.round(x); y = Math.round(y); ctx.fillStyle = rgb(C.shadow); ctx.fillRect(x - 4, y + 1, 11, 3);
+    ctx.fillStyle = rgb(C.treeD); ctx.fillRect(x - 1, y - 2, 2, 4);
+    var L = tall ? 4 : 3; for (var i = 0; i < L; i++) { var ly = y - 4 - i * 4, w = (L - i) * 2 + 2; ctx.fillStyle = rgb(C.treeD); ctx.fillRect(x - w, ly, w * 2, 3); ctx.fillRect(x - w + 1, ly - 2, (w - 1) * 2, 2); ctx.fillStyle = rgb(C.treeL); ctx.fillRect(x - w, ly, w, 2); ctx.fillRect(x - w + 1, ly - 2, w - 1, 2); ctx.fillStyle = rgb(C.snow); ctx.fillRect(x - w + 1, ly - 2, Math.max(1, w - 2), 1); }
+    var ty = y - 4 - (L - 1) * 4 - 4; ctx.fillStyle = rgb(C.treeL); ctx.fillRect(x - 1, ty, 2, 2); ctx.fillStyle = rgb(C.snow); ctx.fillRect(x - 1, ty, 1, 1);
+  }
+  function rock(x, y) { x = Math.round(x); y = Math.round(y); ctx.fillStyle = rgb(C.shadow); ctx.fillRect(x - 4, y + 1, 9, 2); ctx.fillStyle = rgb(C.rock); ctx.fillRect(x - 4, y - 2, 8, 4); ctx.fillRect(x - 3, y - 4, 6, 2); ctx.fillStyle = rgb(C.snow); ctx.fillRect(x - 3, y - 4, 4, 1); }
+  function ramp(x, y) { x = Math.round(x); y = Math.round(y); ctx.fillStyle = rgb(C.shadow); ctx.fillRect(x - 6, y - 2, 12, 4); ctx.fillStyle = rgb(C.treeL); ctx.fillRect(x - 6, y - 3, 12, 1); ctx.fillStyle = rgb(C.me); ctx.fillRect(x - 7, y - 6, 1, 5); ctx.fillRect(x + 6, y - 6, 1, 5); ctx.fillStyle = rgb(C.scarf); ctx.fillRect(x - 6, y - 6, 2, 2); ctx.fillRect(x + 7, y - 6, 2, 2); }
+  function skier(x, y, a, z, fallen, body, scarf, trail) {
+    x = Math.round(x); var yy = Math.round(y - z), sh = Math.round(a * 3);
+    ctx.fillStyle = rgb(C.shadow); var w = z > 0 ? 4 : 6; ctx.fillRect(x - (w >> 1), Math.round(y) + 2, w, 2);
+    if (fallen) { ctx.fillStyle = rgb(C.treeD); ctx.fillRect(x - 5, yy - 1, 10, 1); ctx.fillRect(x - 1, yy - 4, 1, 8); ctx.fillStyle = rgb(body); ctx.fillRect(x - 2, yy - 2, 4, 4); ctx.fillStyle = rgb(scarf); ctx.fillRect(x + 1, yy - 3, 3, 2); return; }
+    ctx.fillStyle = rgb(C.treeD); for (var s = -2; s <= 3; s++) { var sx = Math.round(s * a * 1.3); ctx.fillRect(x - 2 + sx, yy + s, 1, 1); ctx.fillRect(x + 1 + sx, yy + s, 1, 1); }
+    if (trail) { ctx.fillStyle = rgb(scarf); trail.forEach(function (p, i) { if (i) ctx.fillRect(Math.round(x + (p.x - me.x)), Math.round(yy - 3 - (me.d - p.d) * .85), 2, 1); }); }
+    ctx.fillStyle = rgb(body); ctx.fillRect(x - 2 + Math.round(sh * .3), yy - 4, 4, 4);
+    ctx.fillStyle = rgb(C.treeD); ctx.fillRect(x - 1 + Math.round(sh * .4), yy - 6, 3, 2); ctx.fillStyle = rgb(scarf); ctx.fillRect(x - 1 + Math.round(sh * .4), yy - 7, 3, 1);
+  }
+  function draw() {
+    ctx.fillStyle = rgb(C.snow); ctx.fillRect(0, 0, gw, gh);
+    var sy = Math.floor(gh * .28), ox = Math.floor(gw / 2) - me.x;
+    function Y(d) { return sy + (d - me.d); }
+    ctx.fillStyle = rgb(C.trail); trails.forEach(function (t) { var ty = Y(t.d) + 3; if (ty < -4 || ty > gh) return; ctx.fillRect(Math.round(t.x + ox) - 2, Math.round(ty), 1, 2); ctx.fillRect(Math.round(t.x + ox) + 1, Math.round(ty), 1, 2); });
+    var list = [], r0 = Math.floor((me.d - sy - 10) / ROW), r1 = Math.floor((me.d + gh) / ROW) + 1;
+    for (var r = r0; r <= r1; r++) row(r).forEach(function (ob) { list.push({ y: Y(ob.d), x: ob.x + ox, ob: ob }); });
+    list.push({ y: sy, me: true });
+    if (mate) list.push({ y: Y(mate.d), x: mate.x + ox, mate: true });
+    if (dogHere()) list.push({ y: sy + 6, x: gw / 2 + 14 + Math.sin(performance.now() / 600) * 4, dog: true });
+    list.sort(function (a, b) { return a.y - b.y; });
+    list.forEach(function (it) {
+      if (it.me) skier(gw / 2, sy, me.a, me.z, me.fall > 0, C.me, C.scarf, me.scarf);
+      else if (it.mate) { if (it.y > -20 && it.y < gh + 20) skier(it.x, it.y, mate.a, mate.z, mate.f, C.mate, C.mateScarf, null); }
+      else if (it.dog) { if (W.drawPet) W.drawPet(ctx, "dog", it.x, it.y, 1, { flip: me.a < -.2, step: (performance.now() / 150) | 0 }); }
+      else { if (it.x < -25 || it.x > gw + 25 || it.y < -30 || it.y > gh + 10) return; var t = it.ob.type; if (t === "pine") pine(it.x, it.y, false); else if (t === "tall") pine(it.x, it.y, true); else if (t === "rock") rock(it.x, it.y); else ramp(it.x, it.y); }
+    });
+    powder.forEach(function (p) { ctx.fillStyle = p.life % 2 ? rgb(C.shadow) : rgb(C.snow); ctx.fillRect(Math.round(p.x + ox), Math.round(Y(p.d)), 2, 2); });
+    /* the friend is far up or down the slope: a small arrow at the edge shows which way */
+    if (mate) { var my2 = Y(mate.d); if (my2 < -6 || my2 > gh + 6) { ctx.fillStyle = rgb(C.mate); var ax = Math.max(4, Math.min(gw - 6, mate.x + ox)), ay = my2 < 0 ? 4 : gh - 6; ctx.fillRect(ax - 1, ay, 3, 2); ctx.fillRect(ax, my2 < 0 ? ay - 1 : ay + 2, 1, 1); } }
+    ctx.fillStyle = rgb(C.shadow); flakes.forEach(function (f) { ctx.fillRect(Math.round(f.x), Math.round(f.y), 1, 1); });
+    if (key() === "night" && W.weather() === "clear") { ctx.fillStyle = "rgba(255,255,255,.7)"; for (var s2 = 0; s2 < 30; s2++) if ((performance.now() / 700 + s2) % 9 > 1) ctx.fillRect((s2 * 53) % gw, (s2 * 29) % (gh / 4), 1, 1); }
+    var wx = W.weather(); if (wx === "fog") { ctx.fillStyle = "rgba(225,230,240,.35)"; ctx.fillRect(0, 0, gw, gh); }
+  }
+  (function loop() { update(); draw(); requestAnimationFrame(loop); })();
+
+  var T5 = { cv: ["A skier carving down a snowy slope", "一位滑雪者在雪坡上划出弧线", "一位滑雪者在雪坡上劃出弧線", "Un esquiador trazando curvas en una ladera nevada", "Un esquiador traçant corbes en un pendent nevat"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], lie: ["Lie back in the snow", "躺在雪里", "躺在雪裡", "Túmbate en la nieve", "Estira't a la neu"] };
+  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", T5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); e.setAttribute("aria-label", T5[k][i]); e.title = T5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("peaks") : "Snow Peaks"; }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+  words();
+})();
+</script>
+</body>
+</html>

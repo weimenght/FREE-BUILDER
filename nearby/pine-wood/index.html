@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=f1d99c3db4"></script><script data-fbg src="/fbkit/fbg.js?v=f7422115eb" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Pine Wood · Nearby</title>
+<meta name="description" content="A slow walk under the pines. Stone lanterns, mist, fireflies, and sometimes a cat on the path. Alone, or with a friend somewhere else on the same path.">
+<meta name="theme-color" content="#090d16">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%23101826'/%3E%3Crect x='7' y='2' width='2' height='2' fill='%2326474e'/%3E%3Crect x='5' y='4' width='6' height='4' fill='%2326474e'/%3E%3Crect x='3' y='8' width='10' height='4' fill='%2326474e'/%3E%3Crect x='7' y='12' width='2' height='3' fill='%231a2a30'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+html,body{margin:0;height:100%;background:#090d16;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated;cursor:pointer}
+.bar{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));display:flex;gap:8px;z-index:5}
+.bar button,.bar a{display:grid;place-items:center;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:rgba(15,18,28,.6);color:#eef2ff;font:400 18px/1 'VT323',monospace;text-decoration:none;cursor:pointer;box-shadow:3px 3px 0 #000}
+.bar .duo.on{background:#1f6f62}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<body>
+<h1 class="sr" id="h1">Pine Wood</h1>
+<canvas id="cv" role="img" aria-label="A path through a pine wood"></canvas>
+<div class="bar">
+  <button type="button" class="duo" id="duo" aria-label="With a friend">👥</button>
+  <a id="lie" href="/nearby/lie-back/?place=forest" aria-label="Lie back under the pines">☁️</a>
+</div>
+<script src="/nearby/duo.js"></script>
+<script>
+/* Pine Wood: hold the left or right half of the screen (or the arrow keys) and walk. The path goes on as long as
+   you do. Stone lanterns glow as you pass them at dusk and night; Mantou or the cats, when they wandered into
+   the wood today, fall in step beside you. With a friend: you walk the same path and see each other when near. */
+(function () {
+  "use strict";
+  var WD = window.FBWorld || { phase: function () { return "night"; }, weather: function () { return "clear"; }, cats: function () { return {}; }, dog: function () { return ""; } };
+  var cv = document.getElementById("cv"), ctx = cv.getContext("2d"), PX = 3, W = 200, H = 180, GY = 148;
+  function resize() { W = Math.max(150, Math.floor(innerWidth / PX)); H = Math.max(150, Math.floor(innerHeight / PX)); GY = Math.round(H * .82); cv.width = W; cv.height = H; ctx.imageSmoothingEnabled = false; }
+  addEventListener("resize", resize); resize();
+
+  var PAL = {
+    night: { sky: ["#0b101b", "#101826", "#162233", "#1e3042", "#284152"], far: "#141f2e", near: "#182636", t1: ["#182b38", "#111d26"], t2: ["#1e3842", "#15252c"], t3: ["#26474e", "#1a2a30"], fg: ["#0b1319", "#070c10"], ground: "#121d24", rim: "#2d4c4e", tuft: "#385e58", mist: "175,215,225", moon: "#f5f3ce", stars: true, flies: true, lit: 1 },
+    dusk: { sky: ["#2a1d3a", "#4a2a4a", "#7a3e52", "#b0604f", "#d9875a"], far: "#3a2a44", near: "#2e2238", t1: ["#3a3048", "#2a2234"], t2: ["#2f3a44", "#222a32"], t3: ["#26404a", "#1a2a30"], fg: ["#120f18", "#0a0810"], ground: "#1d1a22", rim: "#4a4a4e", tuft: "#5a5e58", mist: "230,190,200", moon: "#ffcf9a", stars: false, flies: true, lit: .7 },
+    day: { sky: ["#7fb0d0", "#93c0da", "#a9cfe2", "#bfdce9", "#d4e8ef"], far: "#8aa6b8", near: "#7a98a8", t1: ["#5f8a8a", "#4a6e70"], t2: ["#4a7a6e", "#3a5e56"], t3: ["#3a6a56", "#2a4a3e"], fg: ["#1e3a2c", "#142a20"], ground: "#4a5e3a", rim: "#6a8a4e", tuft: "#7aa05a", mist: "235,245,240", moon: "#fff9d6", stars: false, flies: false, lit: 0 }
+  };
+  function pal() { var p = WD.phase(); return PAL[p === "night" ? "night" : p === "dusk" || p === "dawn" ? "dusk" : "day"]; }
+
+  /* ---------- sound: the wind in the pines, footsteps, now and then a far note ---------- */
+  var A = null, wf = null, NOTES = [261.63, 293.66, 329.63, 392, 440, 523.25, 587.33, 659.25];
+  function audio() {
+    if (A) { if (A.state === "suspended") A.resume(); return; }
+    try { A = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+    var n = A.sampleRate * 4, b = A.createBuffer(1, n, A.sampleRate), d = b.getChannelData(0), last = 0;
+    for (var i = 0; i < n; i++) { last = (last + .02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * .15 * 3; }
+    var s = A.createBufferSource(); s.buffer = b; s.loop = true; wf = A.createBiquadFilter(); wf.type = "bandpass"; wf.frequency.value = 320; wf.Q.value = 1.8; var gn = A.createGain(); gn.gain.value = .12; s.connect(wf); wf.connect(gn); gn.connect(A.destination); s.start();
+  }
+  function step() { if (!A) return; var n = A.currentTime, len = Math.floor(A.sampleRate * .045), b = A.createBuffer(1, len, A.sampleRate), d = b.getChannelData(0); for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * .35)); var s = A.createBufferSource(), f = A.createBiquadFilter(), g = A.createGain(); s.buffer = b; f.type = "lowpass"; f.frequency.value = 600 + Math.random() * 250; g.gain.setValueAtTime(.04, n); g.gain.exponentialRampToValueAtTime(.001, n + .045); s.connect(f); f.connect(g); g.connect(A.destination); s.start(n); }
+  function note() { if (!A) return; var n = A.currentTime, o = A.createOscillator(), g = A.createGain(); o.frequency.value = NOTES[(Math.random() * NOTES.length) | 0]; g.gain.setValueAtTime(.0001, n); g.gain.linearRampToValueAtTime(.02, n + .4); g.gain.exponentialRampToValueAtTime(.0001, n + 4.5); o.connect(g); g.connect(A.destination); o.start(n); o.stop(n + 4.6); }
+
+  function hash(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453123; return x - Math.floor(x); }
+  var camX = 0, time = 0, me = { face: 1, frame: 0, moving: false, sp: 38, stepT: 0 }, mate = null, lit = {};
+  var stars = []; for (var i = 0; i < 45; i++) stars.push({ x: hash(i * 10), y: hash(i * 10 + 1), ph: hash(i * 10 + 2) * 6.3, sp: .8 + hash(i * 10 + 3) * 1.5 });
+  var parts = []; for (i = 0; i < 28; i++) parts.push({ x: Math.random() * 400, y: 35 + Math.random() * 100, vx: -4 - Math.random() * 6, vy: 1.5 + Math.random() * 3, fly: i < 12, ph: Math.random() * 6.3 });
+  var keys = { l: false, r: false }, pdir = 0, prompt = 1;
+  addEventListener("keydown", function (e) { audio(); if (/^(ArrowLeft|a|A)$/.test(e.key)) keys.l = true; if (/^(ArrowRight|d|D)$/.test(e.key)) keys.r = true; });
+  addEventListener("keyup", function (e) { if (/^(ArrowLeft|a|A)$/.test(e.key)) keys.l = false; if (/^(ArrowRight|d|D)$/.test(e.key)) keys.r = false; });
+  cv.addEventListener("pointerdown", function (e) { audio(); pdir = e.clientX < innerWidth / 2 ? -1 : 1; try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
+  cv.addEventListener("pointermove", function (e) { if (pdir) pdir = e.clientX < innerWidth / 2 ? -1 : 1; });
+  ["pointerup", "pointercancel"].forEach(function (ev) { cv.addEventListener(ev, function () { pdir = 0; }); });
+
+  var duo = window.FBDuo ? FBDuo({ topic: "fbwood",
+    onMsg: function (ev, p) { if (ev === "pos") { if (!mate) mate = { x: p.x, f: p.f, m: p.m }; mate.tx = p.x; mate.f = p.f; mate.m = p.m; mate.t = Date.now(); } },
+    onPeer: function (here) { if (!here) mate = null; },
+    onState: function (s) { document.getElementById("duo").classList.toggle("on", s.peer); }
+  }) : null;
+  document.getElementById("duo").onclick = function () { audio(); if (duo) duo.open(); };
+  setInterval(function () { if (duo && duo.peer()) duo.send("pos", { x: Math.round(camX), f: me.face, m: me.moving ? 1 : 0 }); }, 150);
+
+  /* who walks with you today */
+  function companions() { var out = [], c = WD.cats ? WD.cats() : {}; if (c.miso === "forest") out.push("miso"); if (c.yuzu === "forest") out.push("yuzu"); try { if (WD.dog && WD.dog() === "forest") out.push("dog"); } catch (e) {} return out; }
+  var pals = companions().map(function (k, i) { return { k: k, x: -18 - i * 12, step: 0 }; });
+
+  function update(dt) {
+    time += dt; var dir = 0; if (keys.l) dir--; if (keys.r) dir++; if (pdir) dir = pdir;
+    if (dir) { me.face = dir; me.moving = true; camX += dir * me.sp * dt; me.frame += dt * 6.5; prompt = Math.max(0, prompt - dt * 1.5); me.stepT += dt; if (me.stepT > .31) { me.stepT = 0; step(); } }
+    else { me.moving = false; me.frame = 0; me.stepT = .25; }
+    if (wf) wf.frequency.setTargetAtTime(260 + Math.sin(time * .4) * 90 + (me.moving ? 60 : 0), A.currentTime, .2);
+    if (A && Math.random() < dt * .12) note();
+    parts.forEach(function (p) { if (p.fly) { p.x += Math.sin(time * 1.2 + p.ph) * 6 * dt - dir * me.sp * .85 * dt; p.y += Math.cos(time * 1.5 + p.ph) * 4 * dt; } else { p.x += p.vx * dt - dir * me.sp * .9 * dt; p.y += p.vy * dt + Math.sin(time * 2 + p.ph) * 1.5 * dt; } if (p.x < -10) p.x += W + 20; if (p.x > W + 10) p.x -= W + 20; if (p.y > GY - 2) p.y = 30; if (p.y < 25) p.y = GY - 10; });
+    /* the animals keep a few steps behind you, and sit when you stop */
+    pals.forEach(function (a, i) { var want = -me.face * (16 + i * 12); a.x += (want - a.x) * Math.min(1, dt * 2.2); if (me.moving) a.step += dt * 8; });
+    if (mate) { mate.x += (mate.tx - mate.x) * .2; if (Date.now() - mate.t > 12000) mate = null; }
+  }
+  function pine(x, gy, h, tiers, fol, trunk, sway) {
+    var tw = h > 70 ? 2 : 1, th = Math.max(4, Math.floor(h * .16)); ctx.fillStyle = trunk; ctx.fillRect(Math.round(x - tw / 2), Math.round(gy - th), tw, th);
+    ctx.fillStyle = fol; var top = gy - h, fh = h - th + 3;
+    for (var t = 0; t < tiers; t++) { var tt = top + t / tiers * fh * .72, tb = top + (t + 1.35) / tiers * fh, ht = tb - tt, mw = 4 + (t + 1) / tiers * (h * .44);
+      for (var py = 0; py < ht; py++) { var y = Math.round(tt + py); if (y >= gy - th + 2) continue; var w = Math.max(1, Math.floor(py / ht * mw / 2) * 2 + 1), hf = Math.max(0, (gy - y) / h); ctx.fillRect(Math.round(x - w / 2) + Math.round(sway * hf * hf), y, w, 1); } }
+  }
+  function layer(par, cell, mn, mx, cols, off, dens) {
+    var L = camX * par - 60, R = camX * par + W + 60;
+    for (var c = Math.floor(L / cell); c <= Math.floor(R / cell); c++) { if (hash(c * 19.3 + par * 100) > dens) continue; var wx = c * cell + hash(c * 37.7 + par * 200) * cell * .8, h = Math.floor(mn + hash(c * 73.1 + par * 300) * (mx - mn)); pine(Math.round(wx - camX * par), GY + off, h, Math.max(3, Math.floor(h / 15)), cols[0], cols[1], Math.sin(time * 1.4 + c * .9) * 1.8 * par); }
+  }
+  function lanterns(P) {
+    var par = .92, cell = 140, L = camX * par - 80, R = camX * par + W + 80;
+    for (var c = Math.floor(L / cell); c <= Math.floor(R / cell); c++) {
+      var r = hash(c * 91.7), sx = Math.round(c * cell + hash(c * 13.3) * 60 - camX * par);
+      if (r < .3) {
+        if (Math.abs(sx - W / 2) < 10) lit[c] = 1;   /* you pass it: it stays lit for the rest of your walk */
+        ctx.fillStyle = "#26333d"; ctx.fillRect(sx - 2, GY - 3, 5, 3); ctx.fillRect(sx - 1, GY - 9, 3, 6); ctx.fillRect(sx - 3, GY - 10, 7, 1); ctx.fillRect(sx - 2, GY - 14, 5, 4); ctx.fillRect(sx - 4, GY - 15, 9, 1); ctx.fillRect(sx - 2, GY - 16, 5, 1); ctx.fillRect(sx, GY - 17, 1, 1);
+        if (lit[c] && P.lit) { ctx.fillStyle = Math.sin(time * 7 + c) > -.8 ? "#ffcf6b" : "#e6a845"; ctx.fillRect(sx - 1, GY - 13, 3, 2); ctx.fillStyle = "rgba(255,207,107," + (.14 * P.lit + .06) + ")"; ctx.fillRect(sx - 6, GY - 18, 13, 12); }
+        else { ctx.fillStyle = "#1a242c"; ctx.fillRect(sx - 1, GY - 13, 3, 2); }
+      } else if (r > .65) { ctx.fillStyle = "#1b2630"; ctx.fillRect(sx - 4, GY - 4, 8, 4); ctx.fillRect(sx - 3, GY - 5, 6, 1); ctx.fillStyle = "#2d4742"; ctx.fillRect(sx - 3, GY - 5, 5, 1); ctx.fillRect(sx - 2, GY - 4, 3, 1); }
+    }
+  }
+  function walker(x, y, face, moving, frame, cloak, cloakD, scarf, hat) {
+    var f = moving ? Math.floor(frame) % 4 : 0, bob = f === 1 || f === 3 ? -1 : 0;
+    ctx.fillStyle = "rgba(5,8,12,.45)"; ctx.fillRect(x - 3, y - 1, 7, 1);
+    ctx.fillStyle = "#151c24"; if (!moving || f === 0 || f === 2) { ctx.fillRect(x - 1, y - 3, 1, 3); ctx.fillRect(x + 1, y - 3, 1, 3); } else if (f === 1) { ctx.fillRect(x - 2, y - 3, 1, 3); ctx.fillRect(x + 2, y - 4, 1, 3); } else { ctx.fillRect(x - 1, y - 4, 1, 3); ctx.fillRect(x + 1, y - 3, 1, 3); }
+    ctx.fillStyle = cloak; ctx.fillRect(x - 2, y - 9 + bob, 5, 6); ctx.fillStyle = cloakD; ctx.fillRect(face === 1 ? x - 2 : x + 1, y - 9 + bob, 2, 6);
+    ctx.fillStyle = "#f2d3ab"; ctx.fillRect(x - 1, y - 12 + bob, 3, 3);
+    ctx.fillStyle = hat; ctx.fillRect(x - 3, y - 13 + bob, 7, 1); ctx.fillRect(x - 2, y - 14 + bob, 5, 1); ctx.fillRect(x - 1, y - 15 + bob, 3, 1);
+    ctx.fillStyle = scarf; ctx.fillRect(x - 2, y - 9 + bob, 5, 1); var tx = face === 1 ? x - 3 : x + 3; ctx.fillRect(tx, y - 9 + bob + (moving && f % 2 ? -1 : 0), 2, 1); ctx.fillRect(tx - face, y - 8 + bob, 1, 1);
+    ctx.fillStyle = "#8c6d53"; var sx = x + face * 3, lift = f === 1 ? -1 : 0; ctx.fillRect(sx, y - 11 + bob + lift, 1, 11 - lift);
+  }
+  function render() {
+    var P = pal(), bh = Math.ceil(GY / P.sky.length);
+    P.sky.forEach(function (c, i) { ctx.fillStyle = c; ctx.fillRect(0, i * bh, W, bh + 1); });
+    if (P.stars) stars.forEach(function (s) { var tw = Math.sin(time * s.sp + s.ph); if (tw > -.2) { ctx.fillStyle = tw > .6 ? "#fff" : "#8aa6ba"; ctx.fillRect(Math.floor((((s.x * W) - camX * .01) % W + W) % W), Math.floor(s.y * GY * .6), 1, 1); } });
+    var mx = Math.round(W * .78), my = Math.round(GY * .22); ctx.fillStyle = P.moon;
+    for (var dy = -6; dy <= 6; dy++) for (var dx = -6; dx <= 6; dx++) if (dx * dx + dy * dy <= 38 && (!P.stars || (dx - 2.5) * (dx - 2.5) + (dy - 1.5) * (dy - 1.5) > 26)) ctx.fillRect(mx + dx, my + dy, 1, 1);
+    ctx.fillStyle = P.far; for (var x = 0; x < W; x++) { var wx = (x + camX * .04) * .018, h = Math.floor(GY * .62 + Math.sin(wx) * 14 + Math.cos(wx * 2.3) * 6); ctx.fillRect(x, h, 1, GY - h); }
+    ctx.fillStyle = P.near; for (x = 0; x < W; x++) { var wx2 = (x + camX * .08 + 120) * .025, h2 = Math.floor(GY * .73 + Math.sin(wx2) * 10 + Math.sin(wx2 * 3.1) * 4); ctx.fillRect(x, h2, 1, GY - h2); }
+    layer(.18, 12, 34, 54, P.t1, 0, .85); mist(P, GY - 14, 10, .05, .22);
+    layer(.42, 20, 52, 85, P.t2, 0, .78); mist(P, GY - 8, 8, .06, .48);
+    layer(.75, 34, 76, 118, P.t3, 0, .72);
+    lanterns(P);
+    ctx.fillStyle = P.ground; ctx.fillRect(0, GY, W, H - GY); ctx.fillStyle = P.rim; ctx.fillRect(0, GY, W, 1);
+    for (var c = Math.floor((camX - 20) / 6); c <= Math.floor((camX + W + 20) / 6); c++) { var r = hash(c * 43.1), gx = Math.round(c * 6 - camX); if (r < .45) { ctx.fillStyle = P.tuft; ctx.fillRect(gx, GY - 1, 2, 1); if (r < .2) ctx.fillRect(gx + 1, GY - 2, 1, 1); } }
+    if (mate) { var mxs = Math.round(W / 2 + (mate.x - camX)); if (mxs > -10 && mxs < W + 10) walker(mxs, GY, mate.f, mate.m, time * 6.5, "#5c3b4e", "#47293b", "#f0c34a", "#3b4b5c"); else { ctx.fillStyle = "#f0c34a"; var ex = mxs < 0 ? 3 : W - 5; ctx.fillRect(ex, GY + 6, 2, 2); } }
+    var asleep = WD.phase() === "night";
+    pals.forEach(function (a) { if (WD.drawPet) WD.drawPet(ctx, a.k, Math.round(W / 2 + a.x), GY, 1, { flip: me.face < 0, step: me.moving ? Math.floor(a.step) : 0, asleep: asleep && !me.moving }); });
+    walker(Math.floor(W / 2), GY, me.face, me.moving, me.frame, "#3b4e5c", "#2c3b47", "#d95b43", "#5c4b3b");
+    parts.forEach(function (p) { if (p.fly) { if (!P.flies) return; var gl = Math.sin(time * 3 + p.ph); if (gl > -.1) { ctx.fillStyle = gl > .5 ? "#e8f59d" : "#9ab865"; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); } } else { ctx.fillStyle = P.tuft; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); } });
+    layer(1.35, 135, 135, 175, P.fg, 14, .42);
+    if (prompt > .01) { ctx.fillStyle = "rgba(210,225,230," + prompt * .55 + ")"; var cx = Math.floor(W / 2), cy = Math.min(H - 6, GY + 16); ctx.fillRect(cx - 14, cy, 1, 1); ctx.fillRect(cx - 13, cy - 1, 1, 3); ctx.fillRect(cx - 12, cy - 2, 1, 5); ctx.fillRect(cx + 14, cy, 1, 1); ctx.fillRect(cx + 13, cy - 1, 1, 3); ctx.fillRect(cx + 12, cy - 2, 1, 5); }
+    var wx3 = WD.weather(); if (wx3 === "rain" || wx3 === "storm") { ctx.fillStyle = "rgba(190,210,230,.35)"; for (var q = 0; q < W * H / 170; q++) ctx.fillRect(Math.round((q * 37 + time * 30) % W), Math.round((q * 53 + time * 140) % H), 1, 2); }
+    if (wx3 === "fog") { ctx.fillStyle = "rgba(200,215,220,.25)"; ctx.fillRect(0, 0, W, H); }
+  }
+  function mist(P, y, h, a, sp) { ctx.fillStyle = "rgba(" + P.mist + "," + (WD.weather() === "fog" ? a * 2.5 : a) + ")"; for (var x = 0; x < W; x += 2) ctx.fillRect(x, Math.round(y + Math.sin((x + camX * sp + time * 8) * .04) * 2), 2, h); }
+  var last = performance.now();
+  (function loop(now) { now = now || performance.now(); var dt = Math.min(.1, (now - last) / 1000); last = now; update(dt); render(); requestAnimationFrame(loop); })();
+
+  var L5 = { cv: ["A path through a pine wood", "穿过松林的小路", "穿過松林的小路", "Un sendero por un pinar", "Un camí per una pineda"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], lie: ["Lie back under the pines", "在松树下躺一会儿", "在松樹下躺一會兒", "Túmbate bajo los pinos", "Estira't sota els pins"] };
+  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("forest") : "Pine Wood"; }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+  words();
+})();
+</script>
+</body>
+</html>

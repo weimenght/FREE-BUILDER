@@ -12,6 +12,46 @@ AUTHOR: FREE//BUILDER
 DESC: Lie back under an open sky that keeps your own time. Draw on it and watch your scribble puff into a cloud and drift off, hold still to breathe, double-tap and the clouds take a shape.
 URL: lie-back/
 
+CODE: COVE
+ID: CV-21
+TITLE: Sandy Cove
+GENRE: Row out, gather lanterns, let them go
+AUTHOR: FREE//BUILDER
+DESC: Row a little boat around the cove. Lanterns drift on the water; row through one and it follows you on a string. Drop anchor and they rise into the sky. With a friend, their boat rows beside yours.
+URL: sandy-cove/
+
+CODE: PEAKS
+ID: SP-22
+TITLE: Snow Peaks
+GENRE: Fresh snow, your own line
+AUTHOR: FREE//BUILDER
+DESC: Lean left and right and carve down a long, quiet slope. Brush a pine and you tumble into the powder, then get up and go on. No metres, no best. Mantou sometimes runs alongside; a friend skis the same slope.
+URL: snow-peaks/
+
+CODE: LAKE
+ID: ML-23
+TITLE: Mirror Lake
+GENRE: Fishing from the dock
+AUTHOR: FREE//BUILDER
+DESC: Cast from a wooden dock, wait for the float to dip, and reel in. Then let the fish go, give it to the cat on the dock, or send it to Next Door, where Wei cooks it. A friend can sit beside you.
+URL: mirror-lake/
+
+CODE: WOOD
+ID: PW-24
+TITLE: Pine Wood
+GENRE: A walk under the pines
+AUTHOR: FREE//BUILDER
+DESC: Hold a side of the screen and walk a path that never ends. Stone lanterns glow as you pass them at dusk; mist, fireflies, and sometimes Mantou or a cat falls in step beside you. A friend walks the same path.
+URL: pine-wood/
+
+CODE: MEADOW
+ID: WM-25
+TITLE: Wildflower Meadow
+GENRE: Walk Mantou, the sheep go home
+AUTHOR: FREE//BUILDER
+DESC: Mantou follows your finger; a tap is a woof. The sheep drift away from him and flowers open where they walk. When the flock is home in the pen they settle, and later wander out again. At night everyone sleeps. A friend can be the second shepherd.
+URL: wildflower-meadow/
+
 CODE: CABIN
 ID: NH-16
 TITLE: No Hurry

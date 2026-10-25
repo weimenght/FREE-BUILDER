@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=b15f9632bf"></script><script data-fbg src="/fbkit/fbg.js?v=ef829f2c59" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=f1d99c3db4"></script><script data-fbg src="/fbkit/fbg.js?v=f7422115eb" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -7379,22 +7379,44 @@
       renderWei(`"${L(g.line)}"`, buttons, COMPACT_GRID, 'gift');
     }
 
+    /* Wei asleep or out: the cats run the bar. Ask them and they offer what cats can manage. */
+    const CAT_MENU = [
+      { k: 'sardine', icon: '🐟', name: ["Sardine Special", "小鱼干特调", "", "魚乾特調", "Especial de sardinas", "Especial de sardines"] },
+      { k: 'milk', icon: '🥛', name: ["Warm milk & honey", "热牛奶加蜂蜜", "", "熱奶加蜜糖", "Leche tibia con miel", "Llet tèbia amb mel"] },
+      { k: 'pick', icon: '🎲', name: ["Whatever Miso picks", "味噌随便选", "", "味噌揀乜就乜", "Lo que elija Miso", "El que triï en Miso"] },
+      { k: 'tea', icon: '🍵', name: ["Tea (mostly in the cup)", "茶（大部分在杯里）", "", "茶（大部分喺杯度）", "Té (casi todo en la taza)", "Te (gairebé tot a la tassa)"] },
+      { k: 'nip', icon: '🌿', name: ["Catnip tonic", "猫薄荷汤力", "", "貓草湯力", "Tónica de hierba gatera", "Tònica de nepeta"] },
+      { k: 'box', icon: '📦', name: ["The box", "那个纸箱", "", "嗰個紙箱", "La caja", "La caixa"] }
+    ];
     function askCatToBartend() {
-      SoundEngine.playMeow(1.2);
-      setTimeout(() => SoundEngine.playMeow(0.8), 200);
-      setTimeout(() => SoundEngine.playClink(), 500);
-      Cats.setPose('miso', 'sit'); Cats.setPose('yuzu', 'sit');
-      Cats.moveTo('miso', 42); Cats.moveTo('yuzu', 58);
+      SoundEngine.playMeow(1.2); setTimeout(() => SoundEngine.playMeow(0.8), 200);
+      Cats.setPose('miso', 'sit'); Cats.setPose('yuzu', 'sit'); Cats.moveTo('miso', 42); Cats.moveTo('yuzu', 58);
+      let m = document.getElementById('cat-menu'); if (m) m.remove();
+      m = document.createElement('div'); m.id = 'cat-menu'; m.setAttribute('role', 'dialog');
+      m.style.cssText = 'position:fixed;left:50%;bottom:calc(16px + var(--safe-b, 0px));transform:translateX(-50%);z-index:96;width:min(360px,calc(100vw - 24px));padding:10px;background:#2a1a10;border:3px solid #000;box-shadow:4px 4px 0 #000;display:grid;grid-template-columns:1fr 1fr;gap:6px';
+      CAT_MENU.forEach(it => { const b = document.createElement('button'); b.type = 'button'; b.className = 'opt-btn'; b.style.cssText = 'display:flex;align-items:center;gap:6px;justify-content:flex-start;min-height:44px'; b.innerHTML = '<span aria-hidden="true">' + it.icon + '</span><span></span>'; b.lastChild.textContent = L(lx(it.name)); b.onclick = () => { m.remove(); catServe(it.k); }; m.appendChild(b); });
+      const x = document.createElement('button'); x.type = 'button'; x.className = 'opt-btn'; x.textContent = '🐾'; x.setAttribute('aria-label', '✕'); x.style.gridColumn = '1 / -1'; x.onclick = () => { m.remove(); Cats.returnHome('miso'); Cats.returnHome('yuzu'); }; m.appendChild(x);
+      document.body.appendChild(m);
+    }
+    function catServe(k) {
+      setTimeout(() => SoundEngine.playClink(), 400);
       setTimeout(() => { Cats.returnHome('miso'); Cats.returnHome('yuzu'); }, 2500);
-      showServed({
-        icon: '🐟',
-        name: L(lx(["Miso & Yuzu's Sardine Special", "味噌和柚子的小鱼干特调", "", "味噌同柚子嘅魚乾特調", "Especial de sardinas de Miso y Yuzu", "Especial de sardines d'en Miso i la Yuzu"])),
-        sub: L(lx(["Fishiness 100% · paw-approved", "鱼味 100% · 肉垫认证", "", "魚味 100% · 貓爪認證", "Sabor a pescado 100% · aprobado por patitas", "Gust de peix 100% · aprovat per potetes"])),
-        desc: L(lx(["\"Miso nudged the glass across with one paw. Yuzu balanced a dried sardine on the rim. Surprisingly smooth.\"", "\"味噌用肉垫把杯子推了过来，柚子在杯沿放了一条小鱼干。意外地顺口。\"", "", "\"味噌用貓爪推隻杯過嚟，柚子喺杯邊擺咗條魚乾。估唔到幾順喉。\"", "\"Miso empujó el vaso con la patita y Yuzu dejó una sardina en el borde. Sorprendentemente suave.\"", "\"En Miso ha empès el got amb la poteta i la Yuzu hi ha posat una sardina a la vora. Sorprenentment suau.\""])),
-        formula: '🐟 · 🌿 · 🥛',
-        reactable: false
-      });
-      DB.log('cats_serve', {});
+      const S6 = a => L(lx(a));
+      if (k === 'pick') {   /* Miso walks along the menu and sits on one: a real drink from the menu */
+        const keys = Object.keys(DrinkManifest).filter(d => DrinkManifest[d].type === (AppState.isBarOpen ? 'bar' : 'cafe'));
+        serveItemByKey(keys[(Math.random() * keys.length) | 0]); setTimeout(() => showBubble(S6(["🐾 *Miso sat on it. That's the order.*", "🐾 *味噌坐在了这一项上。就点它了。*", "", "🐾 *味噌坐咗喺呢樣上面。就要呢樣。*", "🐾 *Miso se sentó encima. Ese es el pedido.*", "🐾 *En Miso s'hi va asseure a sobre. Aquesta és la comanda.*"]), 2800), 600);
+        DB.log('cats_serve', { k }); return;
+      }
+      const D = {
+        sardine: { icon: '🐟', name: ["Miso & Yuzu's Sardine Special", "味噌和柚子的小鱼干特调", "", "味噌同柚子嘅魚乾特調", "Especial de sardinas de Miso y Yuzu", "Especial de sardines d'en Miso i la Yuzu"], sub: ["Fishiness 100% · paw-approved", "鱼味 100% · 肉垫认证", "", "魚味 100% · 貓爪認證", "Sabor a pescado 100% · aprobado por patitas", "Gust de peix 100% · aprovat per potetes"], desc: ["\"Miso nudged the glass across with one paw. Yuzu balanced a dried sardine on the rim.\"", "\"味噌用肉垫把杯子推了过来，柚子在杯沿放了一条小鱼干。\"", "", "\"味噌用肉墊推杯過嚟，柚子喺杯邊放咗條魚乾。\"", "\"Miso empujó el vaso con una pata. Yuzu equilibró una sardina en el borde.\"", "\"En Miso va empènyer el got amb una pota. La Yuzu va equilibrar una sardina a la vora.\""], f: '🐟 · 🌿 · 🥛' },
+        milk: { icon: '🥛', name: ["Warm milk & honey", "热牛奶加蜂蜜", "", "熱奶加蜜糖", "Leche tibia con miel", "Llet tèbia amb mel"], sub: ["Two saucers for them, one cup for you", "两碟给它们，一杯给你", "", "兩碟俾佢哋，一杯俾你", "Dos platitos para ellos, una taza para ti", "Dos platets per a ells, una tassa per a tu"], desc: ["\"Yuzu warmed it by sitting next to the kettle. It counts.\"", "\"柚子坐在水壶旁边把它焐热了。算数的。\"", "", "\"柚子坐喺水煲隔籬焗暖咗佢。計數嘅。\"", "\"Yuzu la calentó sentándose junto al hervidor. Cuenta.\"", "\"La Yuzu la va escalfar asseient-se al costat del bullidor. Compta.\""], f: '🥛 · 🍯' },
+        tea: { icon: '🍵', name: ["Tea, mostly in the cup", "茶，大部分在杯里", "", "茶，大部分喺杯度", "Té, casi todo en la taza", "Te, gairebé tot a la tassa"], sub: ["Jasmine · a little on the bar", "茉莉 · 吧台上也有一点", "", "茉莉 · 吧枱都有啲", "Jazmín · un poco en la barra", "Gessamí · una mica a la barra"], desc: ["\"Yuzu pushed the cup to the very edge, looked at you, and stopped. Generous.\"", "\"柚子把杯子推到吧台最边上，看了你一眼，停住了。很大方。\"", "", "\"柚子推杯推到吧枱邊，望一望你，停咗手。好大方。\"", "\"Yuzu empujó la taza hasta el borde, te miró y paró. Generosa.\"", "\"La Yuzu va empènyer la tassa fins a la vora, et va mirar i es va aturar. Generosa.\""], f: '🍵 · 🐾' },
+        nip: { icon: '🌿', name: AppState.isBarOpen ? ["Catnip tonic", "猫薄荷汤力", "", "貓草湯力", "Tónica de hierba gatera", "Tònica de nepeta"] : ["Catnip lemonade", "猫薄荷柠檬水", "", "貓草檸檬水", "Limonada de hierba gatera", "Llimonada de nepeta"], sub: ["Garnish chosen by Miso, then eaten by Miso", "装饰是味噌选的，然后被味噌吃了", "", "裝飾係味噌揀嘅，跟住俾味噌食咗", "Adorno elegido por Miso y luego comido por Miso", "Guarnició triada per en Miso i després menjada per en Miso"], desc: ["\"There was a sprig on top. There isn't now.\"", "\"上面原本有一小枝。现在没有了。\"", "", "\"上面本來有一枝。而家冇咗。\"", "\"Había una ramita encima. Ya no.\"", "\"Hi havia una branqueta a sobre. Ja no.\""], f: AppState.isBarOpen ? '🍸 · 🌿' : '🍋 · 🌿' },
+        box: { icon: '📦', name: ["The box", "那个纸箱", "", "嗰個紙箱", "La caja", "La caixa"], sub: ["Nothing to drink. Miso is in it.", "没有喝的。味噌在里面。", "", "冇嘢飲。味噌喺入面。", "Nada de beber. Miso está dentro.", "Res per beure. En Miso hi és a dins."], desc: ["\"It's the best seat in the bar and it isn't yours.\"", "\"这是店里最好的座位，但不是你的。\"", "", "\"呢個係成間酒吧最好嘅位，但唔係你嘅。\"", "\"Es el mejor sitio del bar y no es tuyo.\"", "\"És el millor seient del bar i no és teu.\""], f: '📦 · 🐈‍⬛' }
+      }[k];
+      if (k === 'box') { SoundEngine.playMeow(0.9); }
+      showServed({ icon: D.icon, name: S6(D.name), sub: S6(D.sub), desc: S6(D.desc), formula: D.f, reactable: false });
+      DB.log('cats_serve', { k });
     }
 
     function openSneakMixer() {
@@ -7924,12 +7946,21 @@
     },
     function news() { if (window.townTalk) window.townTalk(); else BITS[0](); }
   ];
+  /* a fish you sent from Mirror Lake: Wei cooks it the next time you sit down */
+  function fish() {
+    let f = null; try { f = JSON.parse(localStorage.getItem('fb_fish_for_wei') || 'null'); localStorage.removeItem('fb_fish_for_wei'); } catch (e) {}
+    if (!f || !f.n) return false;
+    const n = f.n;
+    say(S("*lifts a lid: a {f}, grilled with salt and lemon* Someone caught this at Mirror Lake. Looks a lot like you. Eat.".replace('{f}', n[0]), "*掀开盖子：一条{f}，撒了盐，挤了柠檬* 有人在镜湖钓的。长得挺像你的。吃吧。".replace('{f}', n[1]), "*levanta una tapa: un {f} a la brasa con sal y limón* Alguien lo pescó en Lago Espejo. Se parece mucho a ti. Come.".replace('{f}', n[3]), "*aixeca una tapa: un {f} a la brasa amb sal i llimona* Algú el va pescar al Llac Mirall. S'assembla molt a tu. Menja.".replace('{f}', n[4])),
+      [B(S("🎣 Catch another", "🎣 再去钓一条", "🎣 Pesca otro", "🎣 Pesca'n un altre"), () => go('lake')), again()]);
+    return true;
+  }
   let bag = [];
   function next() { if (!bag.length) bag = BITS.map((f, i) => i).sort(() => Math.random() - .5); return BITS[bag.pop()]; }   /* every bit once before any repeats */
   let timer = null;
   window.weiFollowUp = function (delay) {
     clearTimeout(timer);
-    timer = setTimeout(() => { if (AppState.uiMode !== 'served' || AppState.weiState !== 'awake') return; next()(); }, delay);
+    timer = setTimeout(() => { if (AppState.uiMode !== 'served' || AppState.weiState !== 'awake') return; if (fish()) return; next()(); }, delay);
   };
 })();
 </script>

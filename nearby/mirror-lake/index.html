@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=f1d99c3db4"></script><script data-fbg src="/fbkit/fbg.js?v=f7422115eb" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Mirror Lake · Nearby</title>
+<meta name="description" content="A wooden dock on a still lake. Cast, wait, reel in, and let the fish go, give it to a cat, or send it to Next Door's kitchen. Alone, or side by side with a friend.">
+<meta name="theme-color" content="#090a10">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%232a5c75'/%3E%3Crect x='3' y='7' width='8' height='3' fill='%23f59e0b'/%3E%3Crect x='11' y='6' width='2' height='5' fill='%23ef4444'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+html,body{margin:0;height:100%;background:#090a10;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated;cursor:pointer}
+.bar{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));display:flex;gap:8px;z-index:5}
+.bar button,.bar a{display:grid;place-items:center;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:rgba(15,18,28,.6);color:#eef2ff;font:400 18px/1 'VT323',monospace;text-decoration:none;cursor:pointer;box-shadow:3px 3px 0 #000}
+.bar .duo.on{background:#1f6f62}
+.catch{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%);z-index:6;display:none;gap:10px;flex-direction:column;align-items:center;padding:14px 16px 12px;background:#121624;border:3px solid #000;box-shadow:5px 5px 0 #000;color:#f8fafc;font:400 22px/1.1 'VT323',monospace;text-align:center}
+.catch.on{display:flex}
+.catch canvas{width:144px;height:72px;cursor:default}
+.catch .row{display:flex;gap:10px}
+.catch button{min-width:56px;height:52px;border:3px solid #000;background:#2b3550;color:#fff;font-size:26px;cursor:pointer;box-shadow:3px 3px 0 #000}
+.catch button:focus-visible{outline:3px solid #ffd166}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<body>
+<h1 class="sr" id="h1">Mirror Lake</h1>
+<canvas id="cv" role="img" aria-label="Fishing from a wooden dock on a lake"></canvas>
+<div class="bar">
+  <button type="button" class="duo" id="duo" aria-label="With a friend">👥</button>
+  <a id="lie" href="/nearby/lie-back/?place=lake" aria-label="Lie back by the lake">☁️</a>
+</div>
+<div class="catch" id="catch" role="dialog" aria-live="polite">
+  <canvas id="fishc" width="48" height="24" aria-hidden="true"></canvas>
+  <div id="fishn"></div>
+  <div class="row"><button type="button" id="letgo">💧</button><button type="button" id="give"></button></div>
+</div>
+<script src="/nearby/duo.js"></script>
+<script>
+/* Mirror Lake: hold to swing the rod back, let go to cast. Wait. When the float dips hard, tap; then hold to keep
+   the fish inside the green and let go to give it line. Every fish goes somewhere: back into the lake, to the cat
+   on the dock (when one of them is here today), or to Next Door, where Wei cooks it. Nothing is counted.
+   With a friend: you sit side by side on the same dock and see each other's float. */
+(function () {
+  "use strict";
+  var W = window.FBWorld || { phase: function () { return "day"; }, weather: function () { return "clear"; }, cats: function () { return {}; } };
+  var LI = function () { return ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; };
+  var cv = document.getElementById("cv"), ctx = cv.getContext("2d"), PX = 3, GW = 200, GH = 180, WY = 110;
+  function resize() { GW = Math.max(150, Math.floor(innerWidth / PX)); GH = Math.max(150, Math.floor(innerHeight / PX)); WY = Math.round(GH * .6); cv.width = GW; cv.height = GH; ctx.imageSmoothingEnabled = false; scenery(); }
+
+  /* ---------- the hour of the town paints the lake ---------- */
+  var THEMES = {
+    dawn: { sky: ["#1d1e38", "#3c2d54", "#7a4968", "#c97b76", "#f4b584"], sun: "#ffdfb0", sunY: .75, night: false, far: "#2c2240", mid: "#1f1930", trees: "#141122", water: ["#8c5669", "#5a3a54", "#35253d", "#1d1629", "#100c1a"], shim: "#f9caa7", flies: false },
+    day: { sky: ["#2b5876", "#3c7899", "#579bb8", "#7ec0d6", "#b7e3ed"], sun: "#fff9d6", sunY: .3, night: false, far: "#466d85", mid: "#2e5166", trees: "#1c3747", water: ["#5394b0", "#3d7994", "#2a5c75", "#1b4157", "#102938"], shim: "#d9f7ff", flies: false },
+    dusk: { sky: ["#16132b", "#331c3d", "#6b2747", "#ab464a", "#e38154"], sun: "#ff9e6d", sunY: .85, night: false, far: "#2a162d", mid: "#1c0f21", trees: "#110914", water: ["#9e4048", "#66263b", "#3f192d", "#241020", "#120812"], shim: "#ffb884", flies: true },
+    night: { sky: ["#050711", "#090e1f", "#111a33", "#192647", "#233359"], sun: "#e6f0ff", sunY: .35, night: true, far: "#10182b", mid: "#0b1120", trees: "#060913", water: ["#1a2847", "#131d36", "#0d1426", "#080c18", "#04060d"], shim: "#9cc2ff", flies: true }
+  };
+  function theme() { return THEMES[W.phase()] || THEMES.day; }
+
+  /* ---------- fish of this lake (names only: no stars, no sizes, no records) ---------- */
+  var FISH = [
+    { n: ["Silver Minnow", "银鱼", "銀魚", "Pececillo Plateado", "Peixet Platejat"], c1: "#cbd5e1", c2: "#64748b", fin: "#94a3b8", sp: .75 },
+    { n: ["Sunlit Perch", "金鲈", "金鱸", "Perca Dorada", "Perca Daurada"], c1: "#f59e0b", c2: "#b45309", fin: "#ef4444", sp: .85 },
+    { n: ["Cobalt Gill", "蓝鳃鱼", "藍鰓魚", "Agalla Azul", "Ganya Blava"], c1: "#38bdf8", c2: "#0369a1", fin: "#fbbf24", sp: .8 },
+    { n: ["Moss Carp", "苔鲤", "苔鯉", "Carpa de Musgo", "Carpa de Molsa"], c1: "#84cc16", c2: "#3f6212", fin: "#a3e635", sp: .7 },
+    { n: ["Prism Trout", "虹鳟", "虹鱒", "Trucha Prisma", "Truita Prisma"], c1: "#f472b6", c2: "#6ee7b7", fin: "#fbcfe8", sp: 1 },
+    { n: ["Lantern Koi", "灯笼锦鲤", "燈籠錦鯉", "Koi Farol", "Koi Fanal"], c1: "#fb7185", c2: "#fff1f2", fin: "#fda4af", sp: .92 },
+    { n: ["Dusk Whisker", "暮色鲶鱼", "暮色鯰魚", "Bigotes del Ocaso", "Bigotis del Capvespre"], c1: "#64748b", c2: "#1e293b", fin: "#475569", sp: .78, dusk: true },
+    { n: ["Star-Fallen Fish", "星落鱼", "星落魚", "Pez de Estrella Caída", "Peix d'Estel Caigut"], c1: "#fde047", c2: "#38bdf8", fin: "#ffffff", sp: 1.2, night: true }
+  ];
+  function pickFish() { var ph = W.phase(), pool = FISH.filter(function (f) { return f.night ? ph === "night" && Math.random() < .5 : f.dusk ? ph !== "day" : true; }); return pool[(Math.random() * pool.length) | 0]; }
+  function drawFish(g, f, cx, cy) { g.save(); g.translate(cx, cy); g.fillStyle = f.fin; g.fillRect(-9, -3, 2, 6); g.fillRect(-11, -5, 2, 3); g.fillRect(-11, 2, 2, 3); g.fillRect(-2, -6, 5, 2); g.fillRect(-1, 4, 4, 2); g.fillStyle = f.c1; g.fillRect(-7, -3, 14, 6); g.fillRect(-5, -4, 10, 8); g.fillRect(5, -2, 3, 4); g.fillStyle = f.c2; g.fillRect(-5, 1, 10, 3); g.fillRect(-3, -4, 2, 3); g.fillRect(1, -4, 2, 3); g.fillStyle = f.fin; g.fillRect(1, 1, 3, 2); g.fillStyle = "#090a10"; g.fillRect(4, -2, 2, 2); g.fillStyle = "#fff"; g.fillRect(4, -2, 1, 1); g.restore(); }
+
+  /* ---------- sound ---------- */
+  var A = null;
+  function audio() { if (!A) { try { A = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } if (A && A.state === "suspended") A.resume(); }
+  function tone(f, type, dur, vol, to) { if (!A) return; var n = A.currentTime, o = A.createOscillator(), g = A.createGain(); o.type = type; o.frequency.setValueAtTime(f, n); if (to) o.frequency.exponentialRampToValueAtTime(to, n + dur); g.gain.setValueAtTime(vol, n); g.gain.exponentialRampToValueAtTime(.0008, n + dur); o.connect(g); g.connect(A.destination); o.start(n); o.stop(n + dur); }
+  var S = { cast: function () { tone(240, "sine", .22, .05, 580); }, plop: function () { tone(170, "triangle", .16, .06, 55); }, nib: function () { tone(320, "sine", .06, .03, 240); }, bite: function () { tone(520, "square", .09, .04, 680); setTimeout(function () { tone(680, "square", .12, .04, 880); }, 75); }, tick: function () { tone(190 + Math.random() * 60, "triangle", .03, .02); }, land: function () { [440, 554.37, 659.25, 880].forEach(function (f, i) { setTimeout(function () { tone(f, "triangle", .38, .05); }, i * 85); }); }, slip: function () { tone(300, "sawtooth", .18, .03, 130); } };
+
+  /* ---------- scenery ---------- */
+  var stars = [], clouds = [], flies = [], shadows = [], ridge = [];
+  function scenery() {
+    stars = []; for (var i = 0; i < 60; i++) stars.push({ x: (Math.random() * GW) | 0, y: (Math.random() * (WY - 28)) | 0, ph: Math.random() * 6.3, sp: .02 + Math.random() * .04 });
+    clouds = []; for (i = 0; i < 5; i++) clouds.push({ x: i * GW / 4 + Math.random() * 30, y: 16 + (i % 3) * 14, w: 26 + (Math.random() * 22 | 0), sp: .03 + Math.random() * .03 });
+    flies = []; for (i = 0; i < 16; i++) flies.push({ x: Math.random() * GW, y: WY - 50 + Math.random() * 48, vx: (Math.random() - .5) * .2, vy: (Math.random() - .5) * .15, ph: Math.random() * 6.3 });
+    shadows = []; for (i = 0; i < 7; i++) shadows.push({ x: Math.random() * GW, y: WY + 14 + Math.random() * (GH - WY - 24), dir: Math.random() < .5 ? 1 : -1, sp: .12 + Math.random() * .22, s: 3 + (Math.random() * 4 | 0) });
+    ridge = []; for (var x = 0; x < GW; x++) ridge.push({ far: Math.floor(18 + Math.sin(x * .025) * 10 + Math.cos(x * .06) * 5), mid: Math.floor(10 + Math.sin(x * .04 + 1.4) * 7 + Math.sin(x * .11) * 3) });
+  }
+  addEventListener("resize", resize); resize();
+  var ripples = [], drops = [];
+  function ripple(x, max) { ripples.push({ x: x, r: 1, max: max || 14, a: .9 }); }
+  function splash(x, n) { for (var i = 0; i < (n || 10); i++) drops.push({ x: x, y: WY, vx: (Math.random() - .5) * 1.8, vy: -.9 - Math.random() * 1.6, life: 1 }); ripple(x, 16); }
+
+  /* ---------- you on the dock (and your friend beside you) ---------- */
+  function ax() { return Math.round(GW * .2); }
+  var g = { st: "idle", hold: false, pow: 0, pdir: 1, b: { x: 0, y: 0, vx: 0, vy: 0, sink: 0 }, wait: 0, nib: 0, biteT: 0, fish: null, reel: { bar: .5, bv: 0, fy: .5, ft: .5, fv: 0, timer: 0, prog: .3 }, time: 0 };
+  var mate = null;
+  function down() { audio(); if (cardOn) return; g.hold = true;
+    if (g.st === "idle") { g.st = "charge"; g.pow = .08; g.pdir = 1; }
+    else if (g.st === "wait") { S.slip(); ripple(g.b.x, 8); g.st = "idle"; }
+    else if (g.st === "bite") { S.bite(); splash(g.b.x, 12); g.fish = pickFish(); var r = g.reel; r.bar = .35; r.bv = 0; r.fy = .35; r.ft = .6; r.fv = 0; r.timer = 25; r.prog = .3; g.st = "reel"; } }
+  function up() { if (!g.hold) return; g.hold = false; if (g.st === "charge") cast(); }
+  function cast() { S.cast(); g.st = "cast"; var tx = ax() + 20, ty = WY - 24; g.b.x = tx; g.b.y = ty; var target = ax() + 47 + g.pow * (GW - ax() - 75); g.b.vx = (target - tx) / 34; g.b.vy = -2.4; g.b.sink = 0; }
+  cv.addEventListener("pointerdown", function (e) { e.preventDefault(); down(); });
+  addEventListener("pointerup", up); addEventListener("pointercancel", up);
+  addEventListener("keydown", function (e) { if ((e.code === "Space" || e.code === "Enter" || e.code === "ArrowUp") && !e.repeat) { e.preventDefault(); down(); } });
+  addEventListener("keyup", function (e) { if (e.code === "Space" || e.code === "Enter" || e.code === "ArrowUp") up(); });
+
+  /* ---------- where the fish goes ---------- */
+  var cardOn = false, card = document.getElementById("catch"), give = document.getElementById("give");
+  function catHere() { var c = W.cats ? W.cats() : {}; return c.miso === "lake" ? "miso" : c.yuzu === "lake" ? "yuzu" : null; }
+  var T5 = { cat: ["Give it to {c}", "给{c}", "給{c}", "Dáselo a {c}", "Dona-li a {c}"], wei: ["Send it to Next Door", "送去“隔壁”", "送去「隔壁」", "Mándalo a Al Lado", "Envia'l a Al Costat"], go: ["Let it go", "放回湖里", "放回湖裡", "Suéltalo", "Deixa'l anar"] };
+  function showCard(f) {
+    cardOn = true; card.classList.add("on");
+    var fc = document.getElementById("fishc").getContext("2d"); fc.clearRect(0, 0, 48, 24); drawFish(fc, f, 24, 12);
+    document.getElementById("fishn").textContent = f.n[LI()] || f.n[0];
+    var c = catHere(), L = LI(); give.textContent = c ? "🐈" : "🍸"; give.title = c ? T5.cat[L].replace("{c}", W.name ? W.name(c) || (c === "miso" ? "Miso" : "Yuzu") : c) : T5.wei[L];
+    if (c) give.title = T5.cat[L].replace("{c}", c === "miso" ? ["Miso", "味噌", "味噌", "Miso", "Miso"][L] : ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"][L]);
+    give.setAttribute("aria-label", give.title); var lg = document.getElementById("letgo"); lg.title = T5.go[L]; lg.setAttribute("aria-label", T5.go[L]);
+    setTimeout(function () { give.focus(); }, 50);
+  }
+  function hideCard() { cardOn = false; card.classList.remove("on"); g.st = "idle"; }
+  document.getElementById("letgo").onclick = function () { splash(GW * .55, 12); S.plop(); hideCard(); };
+  give.onclick = function () {
+    var c = catHere();
+    if (c) { catFed = 180; } else { try { localStorage.setItem("fb_fish_for_wei", JSON.stringify({ n: g.fish.n, t: Date.now() })); } catch (e) {} }   /* Wei grills it the next time you sit at the counter */
+    S.land(); hideCard();
+  };
+  var catFed = 0;
+
+  /* ---------- with a friend ---------- */
+  var duo = window.FBDuo ? FBDuo({ topic: "fblake",
+    onMsg: function (ev, p) {
+      if (ev === "s") { if (!mate) mate = {}; mate.st = p.st; mate.bx = p.bx; mate.by = p.by; mate.pow = p.pw; mate.t = Date.now(); }
+      if (ev === "land") { if (!mate) mate = {}; mate.jump = { f: FISH[p.f] || FISH[0], t: 0 }; }
+    },
+    onPeer: function (here) { if (!here) mate = null; else mate = mate || { st: "idle" }; },
+    onState: function (s) { document.getElementById("duo").classList.toggle("on", s.peer); }
+  }) : null;
+  document.getElementById("duo").onclick = function () { audio(); if (duo) duo.open(); };
+  setInterval(function () { if (duo && duo.peer()) duo.send("s", { st: g.st, bx: Math.round(g.b.x - ax()), by: Math.round(g.b.y - WY), pw: Math.round(g.pow * 100) / 100 }); }, 150);
+
+  function update() {
+    g.time++;
+    clouds.forEach(function (c) { c.x += c.sp; if (c.x - c.w > GW) c.x = -c.w; });
+    flies.forEach(function (f) { f.x += f.vx + Math.sin(g.time * .03 + f.ph) * .08; f.y += f.vy + Math.cos(g.time * .04 + f.ph) * .06; if (f.x < 10) f.x = GW - 10; if (f.x > GW - 10) f.x = 10; if (f.y < WY - 55) f.vy = Math.abs(f.vy); if (f.y > WY - 4) f.vy = -Math.abs(f.vy); });
+    shadows.forEach(function (s) { s.x += s.sp * s.dir; if (s.dir === 1 && s.x > GW + 20) s.x = -20; if (s.dir === -1 && s.x < -20) s.x = GW + 20; });
+    for (var i = ripples.length - 1; i >= 0; i--) { var r = ripples[i]; r.r += .25; r.a -= .018; if (r.a <= 0 || r.r >= r.max) ripples.splice(i, 1); }
+    for (i = drops.length - 1; i >= 0; i--) { var d = drops[i]; d.x += d.vx; d.y += d.vy; d.vy += .12; d.life -= .04; if (d.y >= WY + 2 || d.life <= 0) drops.splice(i, 1); }
+    if (catFed > 0) catFed--;
+    if (mate && mate.jump) { mate.jump.t++; if (mate.jump.t > 90) mate.jump = null; }
+    if (mate && mate.t && Date.now() - mate.t > 12000) mate = null;
+    switch (g.st) {
+      case "charge": g.pow += .022 * g.pdir; if (g.pow >= 1) { g.pow = 1; g.pdir = -1; } else if (g.pow <= .08) { g.pow = .08; g.pdir = 1; } break;
+      case "cast": g.b.x += g.b.vx; g.b.y += g.b.vy; g.b.vy += .14; if (g.b.y >= WY) { g.b.y = WY; S.plop(); splash(g.b.x, 8); g.st = "wait"; g.wait = 95 + (Math.random() * 140 | 0); g.nib = 1 + (Math.random() * 2 | 0); } break;
+      case "wait": g.b.sink *= .85; if (g.time % 70 === 0) ripple(g.b.x, 9); if (--g.wait <= 0) { if (g.nib > 0) { g.nib--; g.b.sink = 2.5; S.nib(); ripple(g.b.x, 10); g.wait = 55 + (Math.random() * 75 | 0); } else { g.st = "bite"; g.biteT = 52; g.b.sink = 5; S.bite(); splash(g.b.x, 7); } } break;
+      case "bite": if (--g.biteT <= 0) { S.slip(); g.st = "wait"; g.b.sink = 0; g.wait = 110 + (Math.random() * 120 | 0); g.nib = 1; } break;
+      case "reel":
+        var R = g.reel, f = g.fish;
+        if (g.hold) { R.bv += .0022; if (g.time % 7 === 0) S.tick(); } else R.bv -= .002;
+        R.bv *= .9; R.bar = Math.max(.12, Math.min(.88, R.bar + R.bv)); if (R.bar === .12 || R.bar === .88) R.bv = 0;
+        if (--R.timer <= 0) { R.ft = .12 + Math.random() * .76; R.timer = Math.floor((28 + Math.random() * 42) / f.sp); }
+        R.fv += Math.sign(R.ft - R.fy) * .0012 * f.sp; R.fv *= .92; R.fy = Math.max(.08, Math.min(.92, R.fy + R.fv));
+        if (g.time % 10 === 0) ripple(g.b.x + (Math.random() - .5) * 6, 10);
+        g.b.x += (ax() + 35 - g.b.x) * .004;
+        if (Math.abs(R.bar - R.fy) <= .145) R.prog += .0052; else R.prog -= .0034 * f.sp;
+        if (R.prog >= 1) { S.land(); splash(g.b.x, 15); g.st = "caught"; showCard(f); if (duo) duo.send("land", { f: FISH.indexOf(f) }); }
+        else if (R.prog <= 0) { S.slip(); ripple(g.b.x, 14); g.st = "idle"; }
+        break;
+    }
+  }
+
+  function px(x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(Math.round(x), Math.round(y), w, h); }
+  function line(x0, y0, x1, y1, c) { ctx.fillStyle = c; x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1); var dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1, e = dx - dy; for (var n = 0; n < 400; n++) { ctx.fillRect(x0, y0, 1, 1); if (x0 === x1 && y0 === y1) break; var e2 = 2 * e; if (e2 > -dy) { e -= dy; x0 += sx; } if (e2 < dx) { e += dx; y0 += sy; } } }
+  function curve(x0, y0, x1, y1, sag) { ctx.fillStyle = "rgba(226,232,240,.55)"; for (var i = 0; i <= 26; i++) { var t = i / 26; ctx.fillRect(Math.round(x0 + (x1 - x0) * t), Math.round(y0 + (y1 - y0) * t + Math.sin(t * Math.PI) * sag), 1, 1); } }
+  function angler(x, coat, hat, st, bx, by, pow) {
+    var br = Math.floor(Math.sin(g.time * .05) * .6), skin = "#f3d5b5";
+    px(x + 3, WY - 11, 2, 1, "#334155"); px(x + 4, WY - 10, 2, 1, "#334155"); px(x + 4, WY - 9, 2, 1, "#1e293b");
+    px(x + 2, WY - 16 + br, 4, 1, coat); px(x + 1, WY - 15 + br, 6, 3, coat); px(x + 2, WY - 12 + br, 4, 1, "#334155");
+    px(x + 2, WY - 19 + br, 4, 3, skin); px(x + 3, WY - 18 + br, 2, 1, "#1e293b");
+    px(x + 2, WY - 22 + br, 4, 1, hat); px(x + 1, WY - 21 + br, 6, 1, hat); px(x, WY - 20 + br, 8, 1, hat);
+    var hx = x + 6, hy = WY - 13 + br, tx = x + 20, ty = WY - 24;
+    if (st === "charge") { tx = x + 8 - Math.round(pow * 8); ty = WY - 24 - Math.round(pow * 4); } else if (st === "bite" || st === "reel") { tx = x + 22; ty = WY - 19 + Math.round(Math.sin(g.time * .4) * 2); }
+    line(hx, hy, tx, ty, "#a16207");
+    if (st === "idle" || st === "charge" || st === "caught") { var iy = ty + 6 + Math.round(Math.sin(g.time * .08)); line(tx, ty, tx, iy, "rgba(226,232,240,.55)"); px(tx, iy, 2, 2, "#ef4444"); }
+    else { curve(tx, ty, bx, by, st === "reel" ? 1 : 6); if (by <= WY + 3) { px(bx - 1, by - 2, 3, 2, "#fff"); px(bx - 1, by, 3, 2, "#ef4444"); } if (st === "bite") { var bo = Math.floor(Math.sin(g.time * .45) * 2); px(bx, by - 13 + bo, 2, 5, "#fde047"); px(bx, by - 6 + bo, 2, 2, "#fde047"); } }
+  }
+  function render() {
+    var T = theme(), band = Math.ceil(WY / T.sky.length);
+    T.sky.forEach(function (c, i) { px(0, i * band, GW, band + 1, c); });
+    if (W.phase() !== "day") stars.forEach(function (s) { var tw = Math.sin(g.time * s.sp + s.ph); if (tw > -.2) { ctx.fillStyle = "rgba(255,255,255," + ((T.night ? .9 : .35) * (.5 + tw * .5)) + ")"; ctx.fillRect(s.x, s.y, 1, 1); } });
+    var sx = Math.round(GW * .76), sy = Math.round(WY * T.sunY); ctx.fillStyle = T.sun;
+    for (var dy = -9; dy <= 9; dy++) for (var dx = -9; dx <= 9; dx++) if (dx * dx + dy * dy <= 81 && !(T.night && (dx - 3) * (dx - 3) + (dy - 2) * (dy - 2) <= 52)) ctx.fillRect(sx + dx, sy + dy, 1, 1);
+    ctx.fillStyle = T.night ? "rgba(148,163,184,.12)" : "rgba(255,255,255,.22)"; clouds.forEach(function (c) { var x = Math.floor(c.x); ctx.fillRect(x, c.y, c.w, 3); ctx.fillRect(x + 4, c.y - 2, c.w - 8, 2); });
+    for (var x = 0; x < GW; x++) { var m = ridge[x]; px(x, WY - m.far, 1, m.far, T.far); px(x, WY - m.mid, 1, m.mid, T.mid); if (x > GW * .3 && x % 4 === 0) { var th = 5 + ((x * 7) % 6); px(x, WY - th, 1, th, T.trees); px(x - 1, WY - th + 2, 3, th - 2, T.trees); } }
+    var wh = GH - WY, wb = Math.ceil(wh / T.water.length); T.water.forEach(function (c, i) { px(0, WY + i * wb, GW, wb + 1, c); });
+    ctx.globalAlpha = .35; px(0, WY, GW, 1, T.shim); ctx.globalAlpha = 1;
+    ctx.fillStyle = T.shim; for (var y = WY + 2; y < GH - 6; y += 3) { var dep = (y - WY) / wh, sw = Math.sin(g.time * .05 + y * .35) * (2 + dep * 5), w = Math.max(2, Math.floor((1 - dep * .7) * 14)); ctx.globalAlpha = .45 * (1 - dep * .65); ctx.fillRect(Math.round(sx + sw - w / 2), y, w, 1); } ctx.globalAlpha = 1;
+    shadows.forEach(function (s) { ctx.fillStyle = "rgba(6,10,20,.32)"; ctx.fillRect(Math.round(s.x), Math.round(s.y), s.s, 2); ctx.fillRect(s.dir === 1 ? Math.round(s.x) - 2 : Math.round(s.x) + s.s, Math.round(s.y) - 1, 2, 4); });
+    ripples.forEach(function (r) { ctx.fillStyle = T.shim; ctx.globalAlpha = Math.max(0, r.a * .6); ctx.fillRect(Math.round(r.x - r.r), WY, Math.round(r.r * 2), 1); if (r.r > 4) ctx.fillRect(Math.round(r.x - r.r * .6), WY + 2, Math.round(r.r * 1.2), 1); }); ctx.globalAlpha = 1;
+    /* the reeds, the dock, the lantern on its post */
+    var A0 = ax(), dockEnd = A0 + 14 + (mate ? 16 : 0);
+    [8, 12, 17, 21].forEach(function (rx, i) { var s2 = Math.round(Math.sin(g.time * .03 + i)), h = 14 + (i % 3) * 4; px(rx + s2, WY - h, 1, h + 3, "#1e293b"); if (i % 2 === 0) px(rx + s2, WY - h + 2, 1, 4, "#475569"); });
+    for (var p = 14; p < dockEnd; p += 28) { px(p, WY + 1, 5, 14, "rgba(10,12,22,.45)"); px(p, WY - 12, 5, 13, "#3e2723"); px(p + 1, WY - 12, 2, 12, "#5d4037"); }
+    px(0, WY - 10, dockEnd + 4, 4, "#4e342e"); ctx.fillStyle = "#6d4c41"; for (var k = 2; k < dockEnd + 2; k += 6) ctx.fillRect(k, WY - 10, 4, 2);
+    var lx = dockEnd, ly = WY - 15; px(lx + 1, ly, 1, 1, "#27272a"); px(lx, ly + 1, 3, 1, "#27272a"); px(lx, ly + 2, 3, 2, "#fbbf24"); px(lx, ly + 4, 3, 1, "#27272a");
+    var gr = ctx.createRadialGradient(lx + 1.5, ly + 2.5, 1, lx + 1.5, ly + 2.5, 14 + Math.sin(g.time * .08) * 1.5); gr.addColorStop(0, "rgba(251,191,36,.45)"); gr.addColorStop(1, "rgba(251,191,36,0)"); ctx.fillStyle = gr; ctx.fillRect(lx - 16, ly - 16, 36, 36);
+    /* a cat on the dock, when one of them came to the lake today: the town's own pixels */
+    var c = catHere(); if (c && W.drawPet) W.drawPet(ctx, c, A0 - 14, WY - 10, 1, { flip: true, asleep: W.phase() === "night" || (g.st === "idle" && catFed === 0 && Math.sin(g.time / 400) > .3) });
+    if (catFed > 0 && c) { ctx.fillStyle = "#f26b7a"; var hy = WY - 26 - (180 - catFed) / 12; ctx.fillRect(A0 - 15, hy, 2, 2); ctx.fillRect(A0 - 12, hy, 2, 2); ctx.fillRect(A0 - 14, hy + 1, 3, 2); ctx.fillRect(A0 - 13, hy + 3, 1, 1); }
+    if (mate) { var mx = A0 + 16; angler(mx, "#2f6f8f", "#d6c9a8", mate.st || "idle", mx + (mate.bx || 20), WY + (mate.by || 0), mate.pow || 0); if (mate.jump) { var jt = mate.jump.t; drawFish(ctx, mate.jump.f, mx + 30, WY - 10 - Math.sin(jt / 90 * Math.PI) * 18); } }
+    var bob = Math.sin(g.time * .09) * 1.1, by = g.st === "cast" ? g.b.y : WY + bob + g.b.sink;
+    angler(A0, "#c85a32", "#eab308", g.st, g.b.x, by, g.pow);
+    if (T.flies) flies.forEach(function (f) { var gl = .5 + Math.sin(g.time * .08 + f.ph) * .5; if (gl > .25) { ctx.fillStyle = "rgba(253,224,71," + gl * .85 + ")"; ctx.fillRect(Math.round(f.x), Math.round(f.y), 1, 1); } });
+    ctx.fillStyle = T.shim; drops.forEach(function (d) { ctx.fillRect(Math.round(d.x), Math.round(d.y), 1, 1); });
+    if (g.st === "charge") { px(A0 - 7, WY - 41, 30, 6, "rgba(9,10,16,.85)"); px(A0 - 6, WY - 40, Math.round(28 * g.pow), 4, g.pow > .85 ? "#fbbf24" : "#38bdf8"); }
+    if (g.st === "reel") {
+      var R = g.reel, uX = Math.min(GW - 24, Math.max(A0 + 40, Math.round(g.b.x) - 10)), uY = Math.max(8, WY - 80), uH = 66, uW = 11, inside = Math.abs(R.bar - R.fy) <= .145;
+      px(uX - 2, uY - 2, uW + 9, uH + 4, "rgba(9,10,16,.85)"); px(uX - 1, uY - 1, uW + 2, uH + 2, "#334155"); px(uX, uY, uW, uH, "#0f172a");
+      var bh = Math.round(.145 * uH), bc = uY + Math.round((1 - R.bar) * uH), bt = Math.max(uY, bc - bh), bb = Math.min(uY + uH, bc + bh);
+      px(uX + 1, bt, uW - 2, bb - bt, inside ? "rgba(74,222,128,.45)" : "rgba(148,163,184,.25)"); px(uX + 1, bt, uW - 2, 1, inside ? "#4ade80" : "#94a3b8"); px(uX + 1, bb - 1, uW - 2, 1, inside ? "#4ade80" : "#94a3b8");
+      var fpy = uY + Math.round((1 - R.fy) * (uH - 6)) + 3; px(uX + 3, fpy - 1, 5, 3, "#fde047"); px(uX + 2, fpy, 1, 1, "#fde047");
+      var ph = Math.round(R.prog * uH); px(uX + uW + 2, uY, 3, uH, "#1e293b"); px(uX + uW + 2, uY + uH - ph, 3, ph, "#4ade80");
+    }
+    var wx = W.weather(); if (wx === "rain" || wx === "storm") { ctx.fillStyle = "rgba(200,220,255,.35)"; for (var q = 0; q < GW * GH / 160; q++) ctx.fillRect(Math.round((q * 37 + g.time * 1.2) % GW), Math.round((q * 53 + g.time * 4) % GH), 1, 2); }
+    if (wx === "fog") { ctx.fillStyle = "rgba(220,226,236,.25)"; ctx.fillRect(0, 0, GW, GH); }
+  }
+  (function loop() { update(); render(); requestAnimationFrame(loop); })();
+
+  var L5 = { cv: ["Fishing from a wooden dock on a lake", "在湖边的木栈桥上钓鱼", "在湖邊的木棧橋上釣魚", "Pescando desde un muelle de madera en un lago", "Pescant des d'un moll de fusta en un llac"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], lie: ["Lie back by the lake", "在湖边躺一会儿", "在湖邊躺一會兒", "Túmbate junto al lago", "Estira't vora el llac"] };
+  function words() { var i = LI(); cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("lake") : "Mirror Lake"; }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+  words();
+})();
+</script>
+</body>
+</html>
