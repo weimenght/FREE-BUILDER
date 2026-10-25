@@ -4,7 +4,7 @@
    relay or directly, see FBWorld.rtUrl). Nothing is stored: what you send goes live to your friend only.
 
    var duo = FBDuo({ topic: "fbcove", onMsg: function (ev, p) {}, onPeer: function (here) {} });
-   duo.send("pos", {...});  duo.open();  duo.peer();  */
+   duo.send("pos", {...});  duo.open();  duo.peer();  duo.ensure(code?);  duo.link();  */
 (function () {
   "use strict";
   var W = {
@@ -112,6 +112,8 @@
     addEventListener("pagehide", function () { send("bye", {}); });
     var inv = (new URLSearchParams(location.search).get("with") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
     if (inv.length === 4) join(inv, false);
-    return { send: send, open: open, peer: peer, leave: leave, host: function () { return D.host; }, code: function () { return D.code; } };
+    /* sit down without the sheet: join a given code, or start one (the bar's seat, a gifted drink) */
+    function ensure(code) { code = (code || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4); if (code.length === 4) { if (code !== D.code) join(code, false); } else if (!D.code) join(newCode(), true); return D.code; }
+    return { send: send, open: open, peer: peer, leave: leave, ensure: ensure, link: link, host: function () { return D.host; }, code: function () { return D.code; } };
   };
 })();
