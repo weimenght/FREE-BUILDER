@@ -878,6 +878,9 @@
   /* say it in the station's own language; if this phone has no such voice, say it in English rather than not at all */
   function speak(st, line) {
     if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
+    /* the guard only speaks to people on the train: not while you are elsewhere in town, not with the sound off */
+    if (window.__fbAsleep || document.hidden) return;
+    try { if (window.parent !== window && window.parent.FBSound && !window.parent.FBSound.on()) return; } catch (e) {}
     if (!voices.length) loadVoices();
     var lk = lookOf(st), vo = VOICE[lk], v = vo ? voiceFor(vo[0]) : null, text;
     if (!v && lk === "ch") v = voiceFor("de-DE");

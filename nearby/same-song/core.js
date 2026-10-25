@@ -65,13 +65,13 @@
   var ctx = null, master = null, duck = null, comp = null, verb = null, noiseBuf = null, analyser = null;
   function audio() {
     if (ctx) return ctx;
-    var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
-    ctx = new AC();
+    var X = window.JB_EXT, AC = window.AudioContext || window.webkitAudioContext; if (!AC && !(X && X.ctx)) return null;
+    ctx = X && X.ctx ? X.ctx : new AC();   /* the town's shell hands over its own context and a bus, so its 🔈 and ducking cover the records too */
     comp = ctx.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 3;
     master = ctx.createGain(); master.gain.value = 0.8;
     duck = ctx.createGain(); duck.gain.value = 1;
     analyser = ctx.createAnalyser(); analyser.fftSize = 256;
-    master.connect(duck); duck.connect(comp); comp.connect(analyser); analyser.connect(ctx.destination);
+    master.connect(duck); duck.connect(comp); comp.connect(analyser); analyser.connect(X && X.dest ? X.dest : ctx.destination);
     /* a small room: two filtered delays */
     verb = ctx.createGain(); verb.gain.value = 0.22;
     [0.113, 0.177].forEach(function (t, i) { var d = ctx.createDelay(1); d.delayTime.value = t; var fb = ctx.createGain(); fb.gain.value = 0.32; var lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 2600 - i * 700; verb.connect(d); d.connect(lp); lp.connect(fb); fb.connect(d); lp.connect(master); });
@@ -210,7 +210,19 @@
     {"id": "h3", "title": "Yuzu on the Piano", "name": "Yuzu", "house": true, "song": "1.96.0.1.00800020800812000801000000000000.82800808aaaa"},
     {"id": "h4", "title": "Miso's Midnight Snack", "name": "Miso", "house": true, "song": "1.112.3.2.00000000008004200800101020088002.90900808aaaa"},
     {"id": "h5", "title": "Borrowed Pages Waltz", "name": "Wei", "house": true, "song": "1.88.2.3.00000000108022008080002000080002.800002088888"},
-    {"id": "h6", "title": "Neon over Barcelona", "name": "Wei", "house": true, "song": "1.120.1.2.00800240882040082002000000000000.82900808ffff"}];
+    {"id": "h6", "title": "Neon over Barcelona", "name": "Wei", "house": true, "song": "1.120.1.2.00800240882040082002000000000000.82900808ffff"},
+    {"id": "h7", "title": "Lanterns at Nine", "name": "Wei", "house": true, "song": "1.120.2.0.00000000000000000000008080404808.808000002222"},
+    {"id": "h8", "title": "Smoke Rings", "name": "Miso", "house": true, "song": "1.120.3.2.000000000000000100040142a4880a00.80200808aaaa"},
+    {"id": "h9", "title": "Slow Clock, Fast Heart", "name": "Wei", "house": true, "song": "1.96.3.3.000000000000000000018000080223a8.808000002222"},
+    {"id": "h10", "title": "Sunday Dumplings", "name": "Mantou", "house": true, "song": "1.88.0.3.00000000000060029010002c08c00600.80200808aaaa"},
+    {"id": "h11", "title": "Umbrellas on Gulou", "name": "Wei", "house": true, "song": "1.96.1.2.00000000000008001400019880010004.88880808ffff"},
+    {"id": "h12", "title": "Mantou's Morning Run", "name": "Mantou", "house": true, "song": "1.120.0.2.0000000000000000840008002281012e.88880808ffff"},
+    {"id": "h13", "title": "Tea Gone Cold", "name": "Yuzu", "house": true, "song": "1.88.0.1.00000000000089000200008200190000.808000002222"},
+    {"id": "h14", "title": "Paper Lantern Parade", "name": "Wei", "house": true, "song": "1.112.2.1.00000000000000008205050a40c00800.808000002222"},
+    {"id": "h15", "title": "Night Bus Home", "name": "Miso", "house": true, "song": "1.112.3.0.0000000000000400a0240a0200880000.808000002222"},
+    {"id": "h16", "title": "Kite over the Meadow", "name": "Yuzu", "house": true, "song": "1.78.2.3.00000001018888100000100000000000.808000002222"},
+    {"id": "h17", "title": "Pine Wood Drizzle", "name": "Wei", "house": true, "song": "1.112.1.3.00000000000000000000800108080786.88880808ffff"},
+    {"id": "h18", "title": "Last Light on the Sill", "name": "Yuzu", "house": true, "song": "1.96.3.1.00000000000000000000888000080103.808000002222"}];
 
   var off = 0, plays = [], online = false, listeners = [], lastErr = "";
   function now() { return Date.now() + off; }
