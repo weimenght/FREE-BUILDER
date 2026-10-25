@@ -16,7 +16,7 @@
     share: "With a friend", shareLead: "Friends who open this link sit in your car and see the same window, live. No names, nothing saved: the cabin disappears when everyone leaves.",
     homeScreen: "Add to Home Screen", getOff: "Get off here", stay: "Stay aboard", bar: "Next Door", books: "Borrowed Pages", copy: "↗ Send the link", copied: "Link copied", joinLbl: "or type their code", join: "Join", badCode: "Four letters, like KTRB", yourCode: "Your cabin", close: "Close", leave: "Go alone", alone: "Just you in this car",
     aboard: "{n} aboard", joined: "Your friend is here", left: "Your friend left", knock: "knock knock", write: "Write on the glass…",
-    sound: "Sound", controls: "All controls", connecting: "Joining the cabin…", lost: "Lost the cabin's signal — retrying", host: "You're steering the journey",
+    sound: "Sound", controls: "All controls", shuffle: "Somewhere else", connecting: "Joining the cabin…", lost: "Lost the cabin's signal — retrying", host: "You're steering the journey",
     tunnelOut: "Out of the tunnel —", pass: "An express train thunders past", star: "A shooting star — make a wish", rainIn: "Rain on the glass", fogIn: "Fog rolls in", snowIn: "Snow begins to fall", clearIn: "The sky clears"
   };
   var cfg = { url: "", key: "", rt: "" };
@@ -27,7 +27,7 @@
   function toast(m) { toast.ok = true; try { window.showWindowToast(m); } catch (e) {} toast.ok = false; }
 
   /* ---------- look & feel ---------- */
-  var css = "#sanctuaryWelcomeOverlay,#zenFloatingControls,#portraitBanner{display:none!important}" +
+  var css = "#sanctuaryWelcomeOverlay,#zenFloatingControls,#portraitBanner,.tw-learn{display:none!important}" +
     "#glassWhisperContainer,#notebookModal,[onclick='cycleWarmDrink()'],[onclick='openNotebookModal(false)'],#drawerWhisperBtn,[onclick='toggleWindowWhispers()'],[onclick='cycleWindowWhisperPrompt()']{display:none!important}" +
     "body.cb-on #glassWhisperContainer,body.cb-on #windowToast:empty{display:none!important}body.cb-on #cabinContainer>div>div:first-child{display:none!important}" +
     "body.cb-on #cabinContainer{max-width:none;padding:6px 8px}body.cb-on #cabinContainer>div>div:last-child{grid-column:1/-1}" +
@@ -147,18 +147,36 @@
     if (invite) join(invite, false); else director.start();
   }
 
-  /* ---------- the dock: sound, share, everything else ---------- */
+  function inTown() { try { return document.documentElement.classList.contains("fbsh-in") || (window.parent !== window && !!window.parent.FBShell); } catch (e) { return false; } }
+  /* 🔀: the window goes dark for a breath and opens somewhere else (in a shared cabin everyone aboard sees the new view) */
+  function somewhereElse() {
+    var vpEl = vp(); if (vpEl) { vpEl.style.transition = "opacity .5s"; vpEl.style.opacity = "0"; }
+    setTimeout(function () {
+      try {
+        var pick = function (a) { return a[(Math.random() * a.length) | 0]; };
+        if (state.inTunnel) toggleMountainTunnel();
+        var st = pick(STATION_CATALOG.filter(function (x) { return x !== state.station; }));
+        state.station = st; setBiome(st.biome, false); setTimeOfDay(pick(TIMES)); setWeather(pickWeather());
+        state.trainState = "CRUISING"; state.stationScrollOffset = -cw * 6; syncHUDAndButtons();
+      } catch (e) { shuffle(); }
+      if (vpEl) vpEl.style.opacity = "1";
+      try { if (state.station) toast("🚉 " + state.station.name); } catch (e) {}
+      try { if (S.code) sync(); } catch (e) {}
+    }, 520);
+  }
+
+  /* ---------- the dock: shuffle and share (sound lives in the top bar in town) ---------- */
   var D, seatsEl, idleT;
   function dock() {
     D = document.createElement("div"); D.className = "cb-dock"; D.setAttribute("role", "toolbar"); D.setAttribute("aria-label", "Cabin");
-    D.innerHTML = '<span class="cb-seats" aria-live="polite"></span><button type="button" data-a="sound" data-fb-snd aria-label="' + T.sound + '">🔊</button><button type="button" data-a="share" aria-label="' + T.share + '">👥</button><button type="button" data-a="more" aria-label="' + T.controls + '">☰</button>';
+    D.innerHTML = '<span class="cb-seats" aria-live="polite"></span><button type="button" data-a="sound" data-fb-snd aria-label="' + T.sound + '">🔊</button><button type="button" data-a="shuffle" aria-label="' + T.shuffle + '" title="' + T.shuffle + '">🔀</button><button type="button" data-a="share" aria-label="' + T.share + '" title="' + T.share + '">👥</button>';
     document.body.appendChild(D); seatsEl = D.querySelector(".cb-seats");
     var credit = document.querySelector(".fbg"); if (credit) D.appendChild(credit); else setTimeout(function () { var c = document.querySelector(".fbg"); if (c && D) D.appendChild(c); }, 1500);
     D.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
       if (b.dataset.a === "sound") { try { toggleAudioEngine(); } catch (x) {} paintDock(); }
       if (b.dataset.a === "share") shareSheet();
-      if (b.dataset.a === "more") { try { toggleZenMode(); } catch (x) {} }
+      if (b.dataset.a === "shuffle") somewhereElse();
     });
     var wake = function () { D.classList.remove("idle"); clearTimeout(idleT); idleT = setTimeout(function () { D.classList.add("idle"); }, 4000); };
     ["pointermove", "pointerdown", "keydown"].forEach(function (ev) { addEventListener(ev, wake, { passive: true }); });
@@ -463,7 +481,10 @@
   window.FBCabin = { T: T, state: S, director: director, join: join, leave: leave };
   addEventListener("load", function () {
     if (!invite) shuffle();
-    glass(); boardCard();
+    glass();
+    /* in town the shell's first tap already woke the sound: no ticket, you are simply on the train */
+    if (inTown()) { boarded(); (window.FB_SOUND_ON = window.FB_SOUND_ON || []).push(function () { unlockAudio(); try { if (!isAudioPlaying) toggleAudioEngine(); if (typeof audioCtx !== "undefined" && audioCtx && audioCtx.resume) audioCtx.resume(); } catch (e) {} paintDock(); }); }
+    else boardCard();
     /* (no "turn your phone" screen: the train runs upright too) */
   });
 })();
