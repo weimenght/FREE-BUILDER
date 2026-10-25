@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=61743b6c1d"></script><script data-fbg src="/fbkit/fbg.js?v=f4a5904859" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=db0451748a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=f7dc3df882" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Mirror Lake · Nearby</title>
 <meta name="description" content="A wooden dock on a still lake. Cast, wait, reel in, and let the fish go, give it to a cat, or send it to Next Door's kitchen. Alone, or side by side with a friend.">
@@ -12,14 +12,12 @@
 html,body{margin:0;height:100%;background:#090a10;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated;cursor:pointer}
 .bar{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));display:flex;gap:8px;z-index:5}
-.bar button,.bar a{display:grid;place-items:center;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:rgba(15,18,28,.6);color:#eef2ff;font:400 18px/1 'VT323',monospace;text-decoration:none;cursor:pointer;box-shadow:3px 3px 0 #000}
-.bar .duo.on{background:#1f6f62}
+.bar>*{display:grid;place-items:center}
 .catch{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%);z-index:6;display:none;gap:10px;flex-direction:column;align-items:center;padding:14px 16px 12px;background:#121624;border:3px solid #000;box-shadow:5px 5px 0 #000;color:#f8fafc;font:400 22px/1.1 'VT323',monospace;text-align:center}
 .catch.on{display:flex}
 .catch canvas{width:144px;height:72px;cursor:default}
 .catch .row{display:flex;gap:10px}
-.catch button{min-width:56px;height:52px;border:3px solid #000;background:#2b3550;color:#fff;font-size:26px;cursor:pointer;box-shadow:3px 3px 0 #000}
-.catch button:focus-visible{outline:3px solid #ffd166}
+.catch button{min-width:56px;height:52px;font-size:26px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
@@ -27,13 +25,13 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 <h1 class="sr" id="h1">Mirror Lake</h1>
 <canvas id="cv" role="img" aria-label="Fishing from a wooden dock on a lake"></canvas>
 <div class="bar">
-  <button type="button" class="duo" id="duo" aria-label="With a friend">👥</button>
-  <a id="lie" href="/nearby/lie-back/?place=lake" aria-label="Lie back by the lake">☁️</a>
+  <button type="button" class="duo fbb fbb-glass fbb-icon" id="duo" aria-label="With a friend">👥</button>
+  <a class="fbb fbb-glass fbb-icon" id="lie" href="/nearby/lie-back/?place=lake" aria-label="Lie back by the lake">☁️</a>
 </div>
 <div class="catch" id="catch" role="dialog" aria-live="polite">
   <canvas id="fishc" width="48" height="24" aria-hidden="true"></canvas>
   <div id="fishn"></div>
-  <div class="row"><button type="button" id="letgo">💧</button><button type="button" id="give"></button></div>
+  <div class="row"><button type="button" class="fbb" id="letgo">💧</button><button type="button" class="fbb" id="give"></button></div>
 </div>
 <script src="/nearby/duo.js"></script>
 <script>

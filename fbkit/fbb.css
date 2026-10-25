@@ -1,0 +1,89 @@
+/* Nearby · one button for the whole town (→ /fbkit/fbb.css, linked on every town page by release.py)
+   Pixel wood: VT323, a 3px black border, a bevel, a hard drop shadow. Pressing pushes it in; amber means chosen or "go";
+   teal means a friend is here. Every button is at least 44px to touch, shows a ring when reached by keyboard, and fades
+   when it can't be used.
+
+   Classes, for new buttons and the town's shared parts (top bar, Wei, the friend card, first-visit cards):
+     .fbb                 wood, 44px high
+     .fbb-pri             amber: the one thing to do next
+     .fbb-glass           see-through, for buttons over a landscape
+     .fbb-icon            44px square, an emoji alone
+     .fbb-lg              56px high, a bigger label
+     .fbb-choice          full width, left aligned: one of Wei's choices
+     [aria-pressed=true] / .on    chosen (amber with a white ring); .fbb-glass.on / #duo.on: a friend is here (teal)
+   The town's own pages (html.fbt) get the same look on the classes they already use: .pill .chip .tool .seed .big,
+   and Next Door's .btn .btn-amber .opt-btn .icon-btn .chip-btn; each page keeps its own sizes. */
+:root {
+  --fbb-ink: #fbeedd; --fbb-wood: #3a2214; --fbb-wood-hi: #4d2e1a; --fbb-amber: #f6b73c; --fbb-amber-hi: #ffc95a; --fbb-amber-ink: #1d130d;
+  --fbb-teal: #1f6f62; --fbb-glass: rgba(14, 16, 26, .62); --fbb-glass-hi: rgba(30, 34, 52, .78);
+  --fbb-bevel: inset -3px -3px 0 rgba(0, 0, 0, .38), inset 3px 3px 0 rgba(255, 220, 170, .16);
+  --fbb-bevel-pri: inset -3px -3px 0 rgba(0, 0, 0, .22), inset 3px 3px 0 rgba(255, 255, 255, .42);
+  --fbb-drop: 3px 3px 0 #000;
+  --fbb-font: "VT323", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-monospace, monospace;
+}
+
+/* ---------- the button ---------- */
+.fbb,
+html.fbt :is(button, a):is(.pill, .chip, .tool, .seed, .big),
+html.fbt :is(button, a):is(.btn, .opt-btn, .icon-btn, .chip-btn) {
+  -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box; min-height: 44px; border: 3px solid #000; border-radius: 0;
+  background: var(--fbb-wood); color: var(--fbb-ink); font-family: var(--fbb-font); font-weight: 400; letter-spacing: .02em;
+  box-shadow: var(--fbb-bevel), var(--fbb-drop); text-decoration: none; cursor: pointer;
+  transition: background-color .12s, transform .06s, box-shadow .06s;
+}
+.fbb { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; font-size: 20px; line-height: 1; }
+.fbb-icon { width: 44px; min-width: 44px; padding: 0; font-size: 22px; }
+.fbb-lg { min-height: 56px; padding: 0 18px; font-size: 23px; }
+.fbb-choice { display: flex; width: 100%; justify-content: flex-start; text-align: left; padding: 8px 12px; font-size: 19px; line-height: 1.15; }
+
+/* amber: go */
+.fbb-pri,
+html.fbt :is(button, a).big,
+html.fbt :is(button, a).btn-amber { background: var(--fbb-amber); color: var(--fbb-amber-ink); box-shadow: var(--fbb-bevel-pri), var(--fbb-drop); }
+html.fbt :is(button, a).big { border-width: 3px; }
+html.fbt :is(button, a).big.alt { background: var(--fbb-wood); color: var(--fbb-ink); box-shadow: var(--fbb-bevel), var(--fbb-drop); }
+
+/* see-through, over a landscape */
+.fbb-glass { background: var(--fbb-glass); color: #eef2ff; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); box-shadow: inset 2px 2px 0 rgba(255, 255, 255, .12), var(--fbb-drop); }
+
+/* hover, where there is a pointer that hovers */
+@media (hover: hover) {
+  .fbb:hover, html.fbt :is(button, a):is(.pill, .chip, .tool, .seed, .big.alt, .btn, .opt-btn, .icon-btn, .chip-btn):hover { background-color: var(--fbb-wood-hi); }
+  .fbb-pri:hover, html.fbt :is(button, a):is(.big:not(.alt), .btn-amber):hover { background-color: var(--fbb-amber-hi); }
+  .fbb-glass:hover { background-color: var(--fbb-glass-hi); }
+}
+
+/* pressed in */
+.fbb:active:not(:disabled),
+html.fbt :is(button, a):is(.pill, .chip, .tool, .seed, .big, .btn, .opt-btn, .icon-btn, .chip-btn):active:not(:disabled) {
+  transform: translate(2px, 2px); box-shadow: inset 3px 3px 0 rgba(0, 0, 0, .35), 1px 1px 0 #000;
+}
+
+/* chosen */
+.fbb[aria-pressed="true"], .fbb.on:not(.fbb-glass),
+html.fbt :is(button, a):is(.pill, .chip, .tool, .seed, .btn, .opt-btn, .icon-btn, .chip-btn):is([aria-pressed="true"], .active) {
+  background: var(--fbb-amber); color: var(--fbb-amber-ink); box-shadow: var(--fbb-bevel-pri), 0 0 0 3px #fff, 5px 5px 0 #000;
+}
+html.fbt :is(button, a):is(.pill, .chip, .tool, .seed, .btn, .opt-btn, .icon-btn, .chip-btn):is([aria-pressed="true"], .active) :is(span, small, b) { color: inherit; }
+/* a friend is here */
+.fbb-glass.on, .fbb.fbb-friend.on { background: var(--fbb-teal); color: #eef2ff; box-shadow: inset 2px 2px 0 rgba(255, 255, 255, .2), 0 0 0 2px #8ee6d4, var(--fbb-drop); }
+
+/* reached by keyboard */
+.fbb:focus-visible,
+html.fbt :is(button, a):is(.pill, .chip, .tool, .seed, .big, .btn, .opt-btn, .icon-btn, .chip-btn):focus-visible { outline: 3px solid var(--fbb-amber); outline-offset: 3px; }
+.fbb-pri:focus-visible, html.fbt :is(button, a):is(.big, .btn-amber):focus-visible { outline-color: #fff; }
+
+/* can't be used yet */
+.fbb:disabled, .fbb[aria-disabled="true"],
+html.fbt :is(button, a):is(.pill, .chip, .tool, .seed, .big, .btn, .opt-btn, .icon-btn, .chip-btn):is(:disabled, [aria-disabled="true"]) {
+  opacity: .45; cursor: default; transform: none; box-shadow: var(--fbb-bevel); filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) { .fbb, html.fbt :is(button, a) { transition: none; } }
+
+/* Next Door's own classes: VT323 needs a larger size than the old pixel font to read the same */
+html.fbt :is(button, a).opt-btn { font-size: 19px; line-height: 1.15; }
+html.fbt :is(button, a).btn { font-size: 19px; line-height: 1; }
+html.fbt :is(button, a).btn.btn-sm { min-height: 36px; font-size: 17px; }
+html.fbt :is(button, a):is(.icon-btn, .chip-btn) { min-height: 36px; font-size: 18px; }

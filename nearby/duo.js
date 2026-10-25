@@ -70,12 +70,11 @@
     return { send: function (ev, p) { if (joined) raw({ topic: topic, event: "broadcast", ref: String(++ref), payload: { type: "broadcast", event: ev, payload: p } }); }, close: function () { closed = true; clearInterval(hb); try { ws && ws.close(); } catch (e) {} } };
   }
   var css = ".fbduo{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;background:rgba(6,8,16,.72)}" +
-    ".fbduo-c{position:relative;width:min(340px,100%);padding:18px 18px 14px;background:#1d2433;color:#eef2ff;border:3px solid #000;box-shadow:5px 5px 0 #000;text-align:center;font:400 20px/1.2 'VT323',ui-monospace,monospace}" +
-    ".fbduo-c h2{margin:0 0 10px;font:400 12px/1.4 'Press Start 2P',monospace;color:#ffd166}.fbduo-x{position:absolute;top:2px;right:2px;min-width:44px;min-height:44px;background:none;border:0;color:#eef2ff;font-size:20px;cursor:pointer}" +
+    ".fbduo-c{position:relative;width:min(340px,100%);padding:18px 18px 14px;background:#2a1d14;color:#fbeedd;border:3px solid #000;box-shadow:6px 6px 0 #000,inset 0 0 0 2px #5a3a22;text-align:center;font:400 20px/1.2 'VT323',ui-monospace,monospace}" +
+    ".fbduo-c h2{margin:0 0 10px;font:400 12px/1.4 'Press Start 2P',monospace;color:#ffd166}.fbduo-x{position:absolute;top:6px;right:6px;width:40px;min-width:40px;min-height:40px;height:40px;font-size:20px}" +
     ".fbduo-code{font:400 26px/1 'Press Start 2P',monospace;letter-spacing:.25em;color:#8ee6d4;margin:6px 0 14px}" +
-    ".fbduo button.b{min-height:44px;padding:0 14px;border:3px solid #000;background:#ffd166;color:#1d130d;font:400 11px/1 'Press Start 2P',monospace;cursor:pointer;box-shadow:3px 3px 0 #000}.fbduo button.b2{background:#3a4560;color:#eef2ff}.fbduo button.b:disabled{opacity:.45;cursor:default}" +
-    ".fbduo button.go{display:block;width:100%;margin-top:4px;background:#8ee6d4}" +
-    ".fbduo-or{margin:14px 0 6px;color:#9aa6c2}.fbduo-row{display:flex;gap:8px;justify-content:center}.fbduo-row input{width:120px;min-height:44px;text-align:center;font:400 20px/1 'Press Start 2P',monospace;letter-spacing:.2em;text-transform:uppercase;background:#0e1320;color:#fff;border:3px solid #000}" +
+    ".fbduo button.b{min-height:44px;padding:0 14px;font-size:20px}.fbduo button.go{display:flex;width:100%;margin-top:4px}" +
+        ".fbduo-or{margin:14px 0 6px;color:#9aa6c2}.fbduo-row{display:flex;gap:8px;justify-content:center}.fbduo-row input{width:120px;min-height:44px;box-shadow:inset 3px 3px 0 rgba(0,0,0,.5);text-align:center;font:400 20px/1 'Press Start 2P',monospace;letter-spacing:.2em;text-transform:uppercase;background:#0e1320;color:#fff;border:3px solid #000}" +
     ".fbduo-st{min-height:1.3em;margin:12px 0 8px;color:#a7f3d0}.fbduo-alone{margin-top:8px}" +
     ".fbduo-toast{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:95;padding:7px 12px;background:rgba(42,29,20,.96);color:#fbeedd;border:3px solid #000;box-shadow:3px 3px 0 #000;font:400 19px/1.1 'VT323',ui-monospace,monospace;pointer-events:none;transition:opacity .6s}";
   var styled = false;
@@ -119,9 +118,9 @@
     function open() {
       if (!D.code) join(newCode(), true);
       close(); sheet = document.createElement("div"); sheet.className = "fbduo"; sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-modal", "true"); sheet.setAttribute("data-fbt-skip", "");
-      sheet.innerHTML = '<div class="fbduo-c"><button type="button" class="fbduo-x">✕</button><h2></h2><div class="fbduo-code"></div>' +
-        '<button type="button" class="b fbduo-send"></button><div class="fbduo-or"></div><div class="fbduo-row"><input maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Code"><button type="button" class="b b2 fbduo-join"></button></div>' +
-        '<p class="fbduo-st" aria-live="polite"></p><button type="button" class="b go fbduo-go" hidden></button><button type="button" class="b b2 fbduo-alone" hidden></button></div>';
+      sheet.innerHTML = '<div class="fbduo-c"><button type="button" class="fbduo-x fbb fbb-icon">✕</button><h2></h2><div class="fbduo-code"></div>' +
+        '<button type="button" class="b fbb fbb-pri fbduo-send"></button><div class="fbduo-or"></div><div class="fbduo-row"><input maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Code"><button type="button" class="b fbb fbduo-join"></button></div>' +
+        '<p class="fbduo-st" aria-live="polite"></p><button type="button" class="b go fbb fbb-pri fbduo-go" hidden></button><button type="button" class="b fbb fbduo-alone" hidden></button></div>';
       document.body.appendChild(sheet);
       sheet.querySelector("h2").textContent = "👥 " + t("title");
       sheet.querySelector(".fbduo-x").setAttribute("aria-label", t("close"));

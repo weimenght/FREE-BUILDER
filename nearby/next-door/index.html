@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=61743b6c1d"></script><script data-fbg src="/fbkit/fbg.js?v=f4a5904859" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=db0451748a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=f7dc3df882" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -298,7 +298,7 @@
     }
 
     /* ===== Door / name gate ===== */
-    .fb-autoin #view-door { visibility: hidden; }
+    #view-door { display: none !important; }   /* no door: you walk straight in from the town */
     #view-door {
       position: fixed; inset: 0;
       display: flex; align-items: center; justify-content: center;
@@ -798,10 +798,9 @@
           </button>
           <button onclick="skipTrack(event)" class="h-[34px] px-2" style="border-left:1px solid var(--line)" aria-label="Next">⏭</button>
         </div>
-        <button id="btn-atmo-trigger" onclick="toggleAtmosphereDrawer()" class="icon-btn">
+        <button id="btn-atmo-trigger" onclick="toSlowClock()" class="icon-btn">
           <span id="weather-display-icon">🌧️</span><span id="time-display-badge" class="show-400 font-retro text-[15px] text-[var(--amber-2)]">22:30</span>
         </button>
-        <button onclick="returnToDoor()" class="icon-btn hide-sm" aria-label="Door" data-tt="name.change">🚪</button>
         <button class="icon-btn" data-fb-shell onclick="openLangMenu(this)" aria-haspopup="menu"><span class="lang-short font-retro text-[15px]">EN</span></button>
         <span class="db-dot" id="db-dot" title=""></span>
       </div>
@@ -7131,18 +7130,27 @@
       }
     }
 
+    /* no door any more: tap your name to change what Wei calls you */
     function returnToDoor() {
       SoundEngine.playClick();
-      document.documentElement.classList.remove('fb-autoin');
-      AppState.inSanctuary = false;
-      Typer.stop();
-      Arcade.autoPause();
-      if (Cats.laser) Cats.stopLaser();
-      document.getElementById('view-sanctuary').classList.add('hidden');
-      document.getElementById('view-door').classList.remove('hidden');
-      document.getElementById('patron-name').value = Patron.name;
-      doorLine();
+      let m = document.getElementById('name-sheet'); if (m) { m.remove(); return; }
+      m = document.createElement('form'); m.id = 'name-sheet'; m.setAttribute('role', 'dialog');
+      m.style.cssText = 'position:fixed;left:50%;top:calc(var(--head-h,56px) + var(--safe-t,0px) + 8px);transform:translateX(-50%);z-index:96;width:min(320px,calc(100vw - 24px));padding:12px;background:#2a1a10;border:3px solid #000;box-shadow:4px 4px 0 #000;display:grid;gap:8px';
+      m.innerHTML = '<label class="label"></label><input class="field" maxlength="24" autocomplete="nickname" required><button type="submit" class="btn btn-amber">✓</button>';
+      m.querySelector('label').textContent = T('door.nameLabel'); const inp = m.querySelector('input'); inp.value = Patron.name || '';
+      m.onsubmit = async (e) => { e.preventDefault(); const n = Patron.clean(inp.value); if (!n) { inp.focus(); return; } Patron.name = n; setText('patron-chip-name', n); setText('studio-creator', n); m.remove(); try { await Patron.enter(n); } catch (x) {} };
+      document.body.appendChild(m); setTimeout(() => inp.focus(), 30);
     }
+    /* the hour and the sky belong to Slow Clock; the badge shows them and takes you there */
+    function toSlowClock() { SoundEngine.playClick(); try { if (window.parent !== window && window.parent.FBShell) { window.parent.FBShell.open('/nearby/slow-clock/'); return; } } catch (e) {} location.href = '/nearby/slow-clock/'; }
+    function followTown() {   /* the town's clock moves on while you sit here */
+      if (!window.FBWorld || !AppState.inSanctuary) return;
+      const wasBar = AppState.isBarOpen; updateClockHands(FBWorld.hour());
+      if (FBWorld.weather() !== AppState.weather) setWeather(FBWorld.weather(), false);
+      if (wasBar !== AppState.isBarOpen && AppState.uiMode !== 'served') { AppState.currentTopic = null; try { evaluateWeiState(); renderCurrentDialogue(); } catch (e) {} }
+    }
+    setInterval(followTown, 60000); addEventListener('fbback', followTown);
+    try { const tb = document.getElementById('btn-atmo-trigger'); if (tb && window.FBWorld && FBWorld.name) { tb.title = FBWorld.name('tower'); tb.setAttribute('aria-label', tb.title); } } catch (e) {}
 
     function tapLogo() {
       SoundEngine.playClink();

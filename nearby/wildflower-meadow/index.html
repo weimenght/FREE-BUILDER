@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=61743b6c1d"></script><script data-fbg src="/fbkit/fbg.js?v=f4a5904859" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=db0451748a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=f7dc3df882" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Wildflower Meadow · Nearby</title>
 <meta name="description" content="Mantou and a small flock on a meadow nobody planted. Walk him around and the sheep drift home to the pen. Alone, or with a friend as the second shepherd.">
@@ -12,8 +12,7 @@
 html,body{margin:0;height:100%;background:#212b22;overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated;cursor:crosshair}
 .bar{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));display:flex;gap:8px;z-index:5}
-.bar button,.bar a{display:grid;place-items:center;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:rgba(33,43,34,.7);color:#e6eed6;font:400 18px/1 'VT323',monospace;text-decoration:none;cursor:pointer;box-shadow:3px 3px 0 #000}
-.bar .duo.on{background:#1f6f62}
+.bar>*{display:grid;place-items:center}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
@@ -21,8 +20,8 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 <h1 class="sr" id="h1">Wildflower Meadow</h1>
 <canvas id="cv" role="img" aria-label="Mantou and a flock of sheep on a meadow"></canvas>
 <div class="bar">
-  <button type="button" class="duo" id="duo" aria-label="With a friend">👥</button>
-  <a id="lie" href="/nearby/lie-back/?place=meadow" aria-label="Lie back in the flowers">☁️</a>
+  <button type="button" class="duo fbb fbb-glass fbb-icon" id="duo" aria-label="With a friend">👥</button>
+  <a class="fbb fbb-glass fbb-icon" id="lie" href="/nearby/lie-back/?place=meadow" aria-label="Lie back in the flowers">☁️</a>
 </div>
 <script src="/nearby/duo.js"></script>
 <script>
