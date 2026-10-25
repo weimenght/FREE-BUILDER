@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=db0451748a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=f7dc3df882" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=c9cfe35465"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=1f95a47efc" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -4761,6 +4761,7 @@
       const mode = AppState.isBarOpen ? 'bar' : 'cafe';
       const chips = [
         { id: 'topic', label: WeiText.ui.order, fn: () => { AppState.currentTopic = null; renderCurrentDialogue(); } },
+        { id: 'picks', label: { en: "📍 Neighbours' picks", zh: '📍 邻居的心头好', es: '📍 Lo que eligen los vecinos', ca: '📍 El que trien els veïns' }, fn: () => window.BarPicks && BarPicks.open() },
         { id: 'chat', label: WeiText.ui.chat, fn: openChat },
         { id: 'riddle', label: WeiText.ui.riddle, fn: startRiddle },
         { id: 'gift', label: WeiText.ui.gift, fn: openGifts },
@@ -8057,6 +8058,7 @@
   showServed = function (o) {
     _show.apply(this, arguments);
     lastServed = { k: pendingKey || null, i: o.icon, n: String(o.name || '').replace(/ 🎁$/, '').slice(0, 60) };
+    if (o.pick) lastServed.pk = { s: o.pick.shop, a: o.pick.area, f: o.pick.find || '', m: o.pick.map || '' };   /* a neighbour's pick travels with the gift: where to find the real one */
     const g = document.getElementById('res-btn-gift'); if (g) { g.title = X(T.gift); g.setAttribute('aria-label', X(T.gift)); }
     if (duo && duo.peer()) duo.send('me', { n: myName(), i: o.icon });
     document.getElementById('gift-row') && !o.gift && document.getElementById('gift-row').remove();
@@ -8108,7 +8110,7 @@
       if (!g || !g.drink) { showBubble(X(T.gone), 3600); return; }
       const d = g.drink, m = d.k && DrinkManifest[d.k];
       SoundEngine.playClink();
-      showServed({ icon: drinkIcon(d), name: drinkName(d) + ' 🎁', sub: g.from ? X(T.fromX).replace('{n}', g.from) : X(T.fromAnon), desc: g.note ? '"' + g.note + '"' : (m ? L(m.desc) : ''), formula: m ? m.formula : '', reactable: false, gift: true });
+      showServed({ icon: drinkIcon(d), name: drinkName(d) + ' 🎁', sub: g.from ? X(T.fromX).replace('{n}', g.from) : X(T.fromAnon), desc: g.note ? '"' + g.note + '"' : (m ? L(m.desc) : ''), formula: m ? m.formula : (d.pk ? '📍 ' + d.pk.s + ' · ' + d.pk.a : ''), reactable: false, gift: true, pick: d.pk ? { shop: d.pk.s, area: d.pk.a, find: d.pk.f, map: d.pk.m } : null, real: d.k || null });
       if (awake()) { showBubble(X(T.paid), 3200); animateWei('wei-wiggle'); } else showBubble(X(T.catsPaid), 3600);
       const desc = document.getElementById('res-description');
       const row = document.createElement('div'); row.id = 'gift-row'; row.className = 'flex gap-1.5 mb-2';
@@ -8137,7 +8139,7 @@
   }
   function whenIn(f, ms) { const t = setInterval(() => { if (AppState.inSanctuary) { clearInterval(t); setTimeout(f, ms); } }, 300); }
   if (GIFT.length === 6) whenIn(land, 1400); else whenIn(report, 5200);
-  window.BarGift = { open: sheet, seat() { if (duo) duo.open(); } };
+  window.BarGift = { open: sheet, seat() { if (duo) duo.open(); }, last() { return lastServed; } };
 })();
 </script>
 <style>
@@ -8156,6 +8158,137 @@
   #gift-sheet .gs-x{background:none;border:0;color:var(--cream);font-size:18px;min-width:44px;min-height:44px}
   #gift-sheet label{display:grid;gap:3px}#gift-sheet .gs-send{min-height:44px}#gift-sheet .gs-seat{justify-content:center;min-height:44px}
   #gift-sheet .gs-st{min-height:1.2em;margin:0;font-size:13px;color:var(--amber-2);word-break:break-all}
+</style>
+<script>
+/* ===== Neighbours' picks: real favourites from where people live =====
+   A coffee, a beer, a dish someone loves, with the shop, the area and how to find it (town_bar_picks). Order one at the counter
+   and the card tells you where to have the real one: 🗺️ opens it in your phone's maps. Wei's own menu points to the real thing
+   it is ("find a negroni near you"). Picks are public; hidden after 3 reports; 6 a day. */
+(function () {
+  const X = a => L(lx(a));
+  const KINDS = [['coffee', '☕'], ['tea', '🍵'], ['beer', '🍺'], ['cocktail', '🍸'], ['wine', '🍷'], ['food', '🍜'], ['sweet', '🍰'], ['other', '✨']];
+  const T = {
+    title: ["Neighbours' picks", "邻居的心头好", "鄰居的心頭好", "鄰居嘅心頭好", "Lo que eligen los vecinos", "El que trien els veïns"],
+    where: ["Where? A city or a street", "在哪？城市或街区", "在哪？城市或街區", "喺邊？城市或者街區", "¿Dónde? Una ciudad o un barrio", "On? Una ciutat o un barri"],
+    add: ["＋ Add your favourite", "＋ 加上你的心头好", "＋ 加上你的心頭好", "＋ 加你嘅心頭好", "＋ Añade tu favorito", "＋ Afegeix el teu preferit"],
+    none: ["Nobody has written one here yet.", "这里还没人写过。", "這裡還沒人寫過。", "呢度仲未有人寫過。", "Aquí aún no ha escrito nadie.", "Aquí encara no hi ha escrit ningú."],
+    what: ["What is it?", "是什么？", "是什麼？", "係咩？", "¿Qué es?", "Què és?"],
+    shop: ["Where you have it (the shop)", "在哪家店喝到/吃到", "在哪家店喝到／吃到", "喺邊間舖", "Dónde lo tomas (el local)", "On el prens (el local)"],
+    area: ["Street, area, city", "街道、街区、城市", "街道、街區、城市", "街、區、城市", "Calle, barrio, ciudad", "Carrer, barri, ciutat"],
+    find: ["How to find it (optional)", "怎么找到（可不填）", "怎麼找到（可不填）", "點樣搵（可以唔填）", "Cómo encontrarlo (opcional)", "Com trobar-lo (opcional)"],
+    map: ["Map link (optional)", "地图链接（可不填）", "地圖連結（可不填）", "地圖連結（可以唔填）", "Enlace del mapa (opcional)", "Enllaç del mapa (opcional)"],
+    sign: ["Sign it (optional)", "署名（可不填）", "署名（可不填）", "署名（可以唔填）", "Fírmalo (opcional)", "Signa'l (opcional)"],
+    send: ["✓ Put it on the board", "✓ 写上黑板", "✓ 寫上黑板", "✓ 寫上黑板", "✓ Ponlo en la pizarra", "✓ Posa-ho a la pissarra"],
+    chalk: ["*writes it on the chalkboard, slowly, so it's spelled right* Next round, someone orders yours.", "*一笔一划写上黑板，生怕写错* 下一轮，就有人点你这杯了。", "*一筆一劃寫上黑板，生怕寫錯* 下一輪，就有人點你這杯了。", "*一筆一劃寫上黑板，驚寫錯* 下一輪，就有人叫你呢杯喇。", "*lo escribe en la pizarra, despacio, para no equivocarse* La próxima ronda, alguien pide el tuyo.", "*ho escriu a la pissarra, a poc a poc, per no equivocar-se* La propera ronda, algú demana el teu."],
+    rest: ["*taps the chalk* Six today. Tomorrow.", "*敲敲粉笔* 今天六个了，明天吧。", "*敲敲粉筆* 今天六個了，明天吧。", "*敲敲粉筆* 今日六個喇，聽日啦。", "*da golpecitos con la tiza* Seis hoy. Mañana.", "*dona copets amb el guix* Sis avui. Demà."],
+    off: ["The line to the street is down. Try in a bit.", "和街上的联系断了，等一会儿再试。", "和街上的聯繫斷了，等一會兒再試。", "同街外嘅聯絡斷咗，等陣再試。", "No hay línea con la calle. Prueba en un rato.", "No hi ha línia amb el carrer. Prova-ho d'aquí a una estona."],
+    findIt: ["🗺️ Find it", "🗺️去找它", "🗺️去找它", "🗺️去搵佢", "🗺️ Encuéntralo", "🗺️ Troba'l"],
+    nearYou: ["🗺️ Find one near you", "🗺️ 找附近的一杯", "🗺️ 找附近的一杯", "🗺️ 搵附近嘅一杯", "🗺️ Busca uno cerca", "🗺️ Busca'n un a prop"],
+    by: ["picked by {n}", "{n} 的心头好", "{n} 的心頭好", "{n} 嘅心頭好", "elegido por {n}", "triat per {n}"],
+    serve: ["*reads the chalkboard, makes his best guess at it* The real one is in {a}. This is me trying.", "*看了看黑板，尽力还原* 真正的在{a}。这杯是我的尝试。", "*看了看黑板，盡力還原* 真正的在{a}。這杯是我的嘗試。", "*睇一睇黑板，盡力整* 真嘅喺{a}。呢杯係我試吓。", "*lee la pizarra y lo intenta* El de verdad está en {a}. Este es mi intento.", "*llegeix la pissarra i ho intenta* El de veritat és a {a}. Aquest és el meu intent."],
+    report: ["Not right", "不妥", "不妥", "唔妥", "No está bien", "No està bé"],
+    kind: { coffee: ["Coffee", "咖啡", "咖啡", "咖啡", "Café", "Cafè"], tea: ["Tea", "茶", "茶", "茶", "Té", "Te"], beer: ["Beer", "啤酒", "啤酒", "啤酒", "Cerveza", "Cervesa"], cocktail: ["Cocktail", "鸡尾酒", "雞尾酒", "雞尾酒", "Cóctel", "Còctel"], wine: ["Wine", "葡萄酒", "葡萄酒", "葡萄酒", "Vino", "Vi"], food: ["Food", "吃的", "吃的", "食嘅", "Comida", "Menjar"], sweet: ["Something sweet", "甜点", "甜點", "甜品", "Algo dulce", "Alguna cosa dolça"], other: ["Something else", "别的", "別的", "其他", "Otra cosa", "Una altra cosa"] }
+  };
+  /* Wei's own menu is made of real things: this is what to look for near you */
+  const REAL = {
+    jasmine_gulou: ["gin and tonic", "金汤力", "gin tonic", "gintònic"], catalan: ["gin and tonic", "金汤力", "gin tonic", "gintònic"], kyoto: ["gin and tonic", "金汤力", "gin tonic", "gintònic"],
+    catalan_vermut: ["vermouth bar", "味美思", "vermutería", "vermuteria"], oldfashioned: ["old fashioned cocktail", "古典鸡尾酒", "old fashioned", "old fashioned"],
+    negroni: ["negroni", "尼格罗尼", "negroni", "negroni"], paperplane: ["cocktail bar", "鸡尾酒吧", "coctelería", "cocteleria"], last_word: ["cocktail bar", "鸡尾酒吧", "coctelería", "cocteleria"],
+    smoked_rosemary: ["whisky highball", "威士忌嗨棒", "highball de whisky", "highball de whisky"], sazerac: ["sazerac", "萨泽拉克", "sazerac", "sazerac"],
+    gesha_pourover: ["specialty coffee pour over", "精品手冲咖啡", "café de especialidad", "cafè d'especialitat"], yunnan_honey_pour: ["specialty coffee pour over", "精品手冲咖啡", "café de especialidad", "cafè d'especialitat"],
+    dirty_espresso: ["dirty coffee", "脏脏咖啡", "café dirty", "cafè dirty"], barceloneta_cortado: ["cortado", "可塔朵", "cortado", "tallat"],
+    croissant_combo: ["croissant flat white", "可颂 澳白", "cruasán flat white", "croissant flat white"], coldbrew_tonic: ["cold brew tonic", "冷萃汤力", "cold brew tónica", "cold brew tònica"],
+    einspanner: ["einspänner coffee", "维也纳咖啡", "café vienés", "cafè vienès"], matcha_cloud: ["matcha latte", "抹茶拿铁", "matcha latte", "matcha latte"], wei_notebook: ["jasmine tea", "茉莉花茶", "té de jazmín", "te de gessamí"]
+  };
+  function realQ(k) { const r = REAL[k]; if (!r) return ''; const lg = AppState.lang; return lg === 'zh' || lg === 'tw' || lg === 'yue' ? r[1] : lg === 'es' ? r[2] : lg === 'ca' ? r[3] : r[0]; }
+  function mapsUrl(q, url) {   /* the visitor's own maps: Apple Maps on Apple devices, the system's map app on Android, OpenStreetMap elsewhere */
+    if (url && /^https:\/\//.test(url)) return url;
+    const ua = navigator.userAgent || '';
+    if (/iPhone|iPad|Macintosh/.test(ua) && 'ontouchend' in document || /iPhone|iPad/.test(ua)) return 'https://maps.apple.com/?q=' + encodeURIComponent(q);
+    if (/Android/.test(ua)) return 'geo:0,0?q=' + encodeURIComponent(q);
+    return 'https://www.openstreetmap.org/search?query=' + encodeURIComponent(q);
+  }
+  function key() { let k = null; try { k = localStorage.getItem('fb_device_key'); } catch (e) {} if (!k) { const a = new Uint8Array(32); crypto.getRandomValues(a); k = btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); try { localStorage.setItem('fb_device_key', k); } catch (e) {} } return k; }
+  function rpc(fn, args) { if (!DB.sb) return Promise.reject(new Error('offline')); return DB.sb.rpc(fn, args).then(r => { if (r.error) throw r.error; return r.data; }); }
+  const awake = () => AppState.weiState === 'awake' && !(window.WeiAway && WeiAway.on());
+  const icon = k => (KINDS.find(x => x[0] === k) || KINDS[7])[1];
+  function el(tag, cls, txt) { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+
+  let kind = null, q = '', sheetEl = null, timer = null;
+  function close() { if (sheetEl) sheetEl.remove(); sheetEl = null; }
+  function open() {
+    close(); sheetEl = el('div', ''); sheetEl.id = 'picks-sheet'; sheetEl.setAttribute('role', 'dialog');
+    const top = el('div', 'ps-top'); top.appendChild(el('b', '', '📍 ' + X(T.title))); const x = el('button', 'btn ps-x', '✕'); x.type = 'button'; x.setAttribute('aria-label', '✕'); x.onclick = close; top.appendChild(x);
+    const chips = el('div', 'ps-kinds'); const all = el('button', 'chip-btn', '✳'); all.type = 'button'; all.setAttribute('aria-pressed', String(!kind)); all.onclick = () => { kind = null; open(); }; chips.appendChild(all);
+    KINDS.forEach(([k, ic]) => { const b = el('button', 'chip-btn', ic); b.type = 'button'; b.title = X(T.kind[k]); b.setAttribute('aria-label', b.title); b.setAttribute('aria-pressed', String(kind === k)); b.onclick = () => { kind = k; open(); }; chips.appendChild(b); });
+    const where = el('input', 'field ps-q'); where.placeholder = X(T.where); where.value = q; where.setAttribute('aria-label', X(T.where)); where.oninput = () => { q = where.value; clearTimeout(timer); timer = setTimeout(fill, 350); };
+    const list = el('div', 'ps-list'); list.setAttribute('aria-live', 'polite');
+    const add = el('button', 'btn btn-amber ps-add', X(T.add)); add.type = 'button'; add.onclick = form;
+    [top, chips, where, list, add].forEach(n => sheetEl.appendChild(n));
+    document.body.appendChild(sheetEl); fill();
+    function fill() {
+      list.textContent = '…';
+      rpc('bar_pick_list', { p_kind: kind, p_q: q.trim() || null, p_limit: 40 }).then(rows => {
+        list.innerHTML = '';
+        if (!rows || !rows.length) { list.appendChild(el('p', 'ps-none', X(T.none))); return; }
+        rows.forEach(r => {
+          const b = el('button', 'opt-btn ps-item'); b.type = 'button';
+          b.appendChild(el('span', 'ps-i', r.icon || icon(r.kind))); const t = el('span', 'ps-t'); t.appendChild(el('b', '', r.name)); t.appendChild(el('small', '', r.shop + ' · ' + r.area)); b.appendChild(t);
+          b.onclick = () => { close(); serve(r); }; list.appendChild(b);
+        });
+      }).catch(() => { list.textContent = X(T.off); });
+    }
+  }
+  function form() {
+    close(); sheetEl = el('form', ''); sheetEl.id = 'picks-sheet'; sheetEl.setAttribute('role', 'dialog');
+    let k = kind || 'coffee';
+    const top = el('div', 'ps-top'); top.appendChild(el('b', '', X(T.add).replace('＋ ', '📍 '))); const x = el('button', 'btn ps-x', '✕'); x.type = 'button'; x.onclick = open; top.appendChild(x); sheetEl.appendChild(top);
+    const chips = el('div', 'ps-kinds'); KINDS.forEach(([kk, ic]) => { const b = el('button', 'chip-btn', ic); b.type = 'button'; b.title = X(T.kind[kk]); b.setAttribute('aria-label', b.title); b.setAttribute('aria-pressed', String(k === kk)); b.onclick = () => { k = kk; chips.querySelectorAll('button').forEach(o => o.setAttribute('aria-pressed', String(o === b))); }; chips.appendChild(b); }); sheetEl.appendChild(chips);
+    const fld = (label, max, req, val, type) => { const l = el('label', 'label ps-f'); l.appendChild(el('span', '', label)); const i = el('input', 'field'); i.maxLength = max; if (req) i.required = true; if (type) i.type = type; if (val) i.value = val; i.autocomplete = 'off'; l.appendChild(i); sheetEl.appendChild(l); return i; };
+    const nm = fld(X(T.what), 40, true), sh = fld(X(T.shop), 60, true), ar = fld(X(T.area), 60, true), fd = fld(X(T.find), 140), mp = fld(X(T.map), 300, false, '', 'url');
+    const by = fld(X(T.sign), 24, false, (typeof Patron !== 'undefined' && Patron.name) || (function () { try { return localStorage.getItem('fb_nick') || ''; } catch (e) { return ''; } })());
+    const go = el('button', 'btn btn-amber ps-add', X(T.send)); go.type = 'submit'; sheetEl.appendChild(go);
+    const st = el('p', 'ps-none'); st.setAttribute('aria-live', 'polite'); sheetEl.appendChild(st);
+    sheetEl.onsubmit = e => {
+      e.preventDefault(); go.disabled = true; st.textContent = '…';
+      rpc('bar_pick_add', { p_secret: key(), p_kind: k, p_icon: icon(k), p_name: nm.value, p_shop: sh.value, p_area: ar.value, p_find: fd.value, p_map: mp.value, p_by: by.value })
+        .then(() => { SoundEngine.playClick(); if (awake()) { showBubble(X(T.chalk), 4000); animateWei('wei-wiggle'); } kind = k; q = ''; open(); })
+        .catch(err => { go.disabled = false; st.textContent = /rest/.test(String(err && err.message)) ? X(T.rest) : X(T.off); });
+    };
+    document.body.appendChild(sheetEl); setTimeout(() => nm.focus(), 30);
+  }
+  function serve(r) {
+    SoundEngine.playClink();
+    showServed({ icon: r.icon || icon(r.kind), name: r.name, sub: '📍 ' + r.shop + ' · ' + r.area, desc: r.find ? '"' + r.find + '"' : '', formula: r.by ? X(T.by).replace('{n}', r.by) : '', reactable: false, pick: r });
+    if (awake()) { showBubble(X(T.serve).replace('{a}', r.area), 3600); animateWei('wei-wiggle'); }
+    else ['miso', 'yuzu'].forEach(id => Cats.say(id, '📍', 1400));
+  }
+  /* every card at the counter gets a way to the real thing */
+  const _show = showServed;
+  showServed = function (o) {
+    _show.apply(this, arguments);
+    const old = document.getElementById('pick-row'); if (old) old.remove();
+    const last = window.BarGift && BarGift.last ? BarGift.last() : null, p = o.pick, rk = o.real || (last && last.k);
+    let href = '', label = '';
+    if (p) { href = mapsUrl(p.shop + ' ' + p.area, p.map); label = X(T.findIt); }
+    else if (rk && REAL[rk]) { href = mapsUrl(realQ(rk)); label = X(T.nearYou); }
+    if (!href) return;
+    const row = el('div', 'flex gap-1.5 mb-2 flex-wrap'); row.id = 'pick-row';
+    const a = el('a', 'btn btn-sm', label); a.href = href; if (/^https:/.test(href)) { a.target = '_blank'; a.rel = 'noopener'; } row.appendChild(a);
+    if (p && p.id) { const rp = el('button', 'btn btn-sm', '⚑'); rp.type = 'button'; rp.title = X(T.report); rp.setAttribute('aria-label', rp.title); rp.onclick = () => { rp.disabled = true; rpc('bar_pick_report', { p_secret: key(), p_id: p.id }).then(() => { rp.textContent = '✓'; }).catch(() => { rp.disabled = false; }); }; row.appendChild(rp); }
+    const desc = document.getElementById('res-description'); (document.getElementById('gift-row') || desc).after(row);
+  };
+  window.BarPicks = { open };
+})();
+</script>
+<style>
+  #picks-sheet{position:fixed;left:50%;bottom:calc(12px + var(--safe-b, 0px));transform:translateX(-50%);z-index:96;width:min(420px,calc(100vw - 20px));max-height:min(78vh,640px);overflow:auto;padding:12px;background:#2a1a10;border:3px solid #000;box-shadow:5px 5px 0 #000,inset 0 0 0 2px #5a3a22;display:grid;gap:8px}
+  #picks-sheet .ps-top{display:flex;align-items:center;gap:8px;color:var(--amber-2);font-size:15px}#picks-sheet .ps-top b{flex:1}
+  #picks-sheet .ps-x{min-width:40px;min-height:40px;padding:0}
+  #picks-sheet .ps-kinds{display:flex;flex-wrap:wrap;gap:6px}#picks-sheet .ps-kinds .chip-btn{min-width:40px;min-height:40px;padding:0 6px;font-size:20px}
+  #picks-sheet .ps-list{display:grid;gap:6px}
+  #picks-sheet .ps-item{display:flex;align-items:center;gap:10px}#picks-sheet .ps-i{font-size:22px;flex:none}#picks-sheet .ps-t{display:grid;min-width:0}#picks-sheet .ps-t b{font-weight:400}#picks-sheet .ps-t small{font-size:15px;opacity:.75;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #picks-sheet .ps-f{display:grid;gap:3px}#picks-sheet .ps-none{margin:0;font-size:14px;color:var(--muted)}#picks-sheet .ps-add{min-height:44px}
 </style>
 </body>
 </html>
