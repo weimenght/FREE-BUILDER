@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" class="fbt">
+<html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Come Home · Nearby</title>
 <meta name="description" content="Mantou the dog's home by the meadow: play fetch with him, follow his story, and help real animals find a home. Post an animal that needs one, or ask to adopt.">
@@ -79,15 +79,16 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
 <header class="top">
-  <div class="sign" data-t="title">COME HOME</div>
-  <div class="tools">
+  <div class="sign fit-title" data-t="title">COME HOME</div>
+  <div class="tools fit-head">
     <button class="pill" type="button" id="mineBtn">🏡<span class="n" id="mineN" hidden></span></button>
     <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
   </div>
 </header>
-<main>
+<main class="fit-main">
   <h1 class="sr" data-t="title">Come Home</h1>
-  <div class="yard" id="yard"><canvas id="cv" width="160" height="90"></canvas></div>
+  <div class="yard fit-hero" id="yard" style="--fit-ar:1.78"><canvas id="cv" width="160" height="90"></canvas></div>
+  <div class="fit-panel">
   <p class="hint" id="hint"></p>
 
   <h2 data-t="meet">MANTOU</h2>
@@ -101,6 +102,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
   <div class="chips" id="chips" role="group"></div>
   <div class="board" id="board"></div>
   <button class="btn green add" type="button" id="addBtn">＋ <span data-t="add">Find a home for an animal</span></button>
+  </div>
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

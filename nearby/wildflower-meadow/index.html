@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Wildflower Meadow · Nearby</title>
 <meta name="description" content="Mantou and a small flock on a meadow nobody planted. Walk him around and the sheep drift home to the pen. Alone, or with a friend as the second shepherd.">
@@ -21,7 +21,6 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 <canvas id="cv" role="img" aria-label="Mantou and a flock of sheep on a meadow"></canvas>
 <div class="bar">
   <button type="button" class="duo fbb fbb-glass fbb-icon" id="duo" aria-label="With a friend">👥</button>
-  <a class="fbb fbb-glass fbb-icon" id="lie" href="/nearby/lie-back/?place=meadow" aria-label="Lie back in the flowers">☁️</a>
 </div>
 <script src="/nearby/duo.js"></script>
 <script>
@@ -190,7 +189,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   (function loop() { update(); render(); requestAnimationFrame(loop); })();
 
   var L5 = { cv: ["Mantou and a flock of sheep on a meadow", "馒头和一群羊在草甸上", "饅頭和一群羊在草甸上", "Mantou y un rebaño de ovejas en un prado", "En Mantou i un ramat d'ovelles en un prat"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], lie: ["Lie back in the flowers", "躺在花丛里", "躺在花叢裡", "Túmbate entre las flores", "Estira't entre les flors"] };
-  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("meadow") : "Wildflower Meadow"; }
+  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); if (!e) return; e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("meadow") : "Wildflower Meadow"; }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
   words();
 })();

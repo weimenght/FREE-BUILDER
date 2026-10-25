@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Sandy Cove · Nearby</title>
 <meta name="description" content="Row a little boat around the cove. Lanterns drift on the water; gather a few and let them go. Alone, or with a friend in the next boat.">
@@ -23,7 +23,6 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 <div class="bar">
   <button type="button" class="duo fbb fbb-glass fbb-icon" id="duo" aria-label="With a friend">👥</button>
   <button type="button" class="fbb fbb-glass fbb-icon" id="anchor" aria-pressed="false" aria-label="Drop anchor">⚓</button>
-  <a class="fbb fbb-glass fbb-icon" id="lie" href="/nearby/lie-back/?place=sea" aria-label="Lie back on the sand">☁️</a>
 </div>
 <script src="/nearby/duo.js"></script>
 <script>
@@ -207,7 +206,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 
   /* the one word on the page lives in its labels, in five languages */
   var T5 = { boat: ["A rowing boat on the water of a cove", "海湾水面上的一条小划艇", "海灣水面上的一條小划艇", "Una barca de remos en el agua de la cala", "Una barca de rems a l'aigua de la cala"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], anchor: ["Drop anchor", "抛锚", "拋錨", "Echar el ancla", "Tirar l'àncora"], lie: ["Lie back on the sand", "躺在沙滩上", "躺在沙灘上", "Túmbate en la arena", "Estira't a la sorra"] };
-  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", T5.boat[i]); [["duo", "duo"], ["anchor", "anchor"], ["lie", "lie"]].forEach(function (p) { var e = document.getElementById(p[0]); e.setAttribute("aria-label", T5[p[1]][i]); e.title = T5[p[1]][i]; }); var nm = window.FBWorld && FBWorld.name ? FBWorld.name("sea") : "Sandy Cove"; document.getElementById("h1").textContent = nm; }
+  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", T5.boat[i]); [["duo", "duo"], ["anchor", "anchor"], ["lie", "lie"]].forEach(function (p) { var e = document.getElementById(p[0]); if (!e) return; e.setAttribute("aria-label", T5[p[1]][i]); e.title = T5[p[1]][i]; }); var nm = window.FBWorld && FBWorld.name ? FBWorld.name("sea") : "Sandy Cove"; document.getElementById("h1").textContent = nm; }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
   words();
 })();

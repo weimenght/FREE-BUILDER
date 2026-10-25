@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Mirror Lake · Nearby</title>
 <meta name="description" content="A wooden dock on a still lake. Cast, wait, reel in, and let the fish go, give it to a cat, or send it to Next Door's kitchen. Alone, or side by side with a friend.">
@@ -26,7 +26,6 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 <canvas id="cv" role="img" aria-label="Fishing from a wooden dock on a lake"></canvas>
 <div class="bar">
   <button type="button" class="duo fbb fbb-glass fbb-icon" id="duo" aria-label="With a friend">👥</button>
-  <a class="fbb fbb-glass fbb-icon" id="lie" href="/nearby/lie-back/?place=lake" aria-label="Lie back by the lake">☁️</a>
 </div>
 <div class="catch" id="catch" role="dialog" aria-live="polite">
   <canvas id="fishc" width="48" height="24" aria-hidden="true"></canvas>
@@ -226,7 +225,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   (function loop() { update(); render(); requestAnimationFrame(loop); })();
 
   var L5 = { cv: ["Fishing from a wooden dock on a lake", "在湖边的木栈桥上钓鱼", "在湖邊的木棧橋上釣魚", "Pescando desde un muelle de madera en un lago", "Pescant des d'un moll de fusta en un llac"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], lie: ["Lie back by the lake", "在湖边躺一会儿", "在湖邊躺一會兒", "Túmbate junto al lago", "Estira't vora el llac"] };
-  function words() { var i = LI(); cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("lake") : "Mirror Lake"; }
+  function words() { var i = LI(); cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); if (!e) return; e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("lake") : "Mirror Lake"; }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
   words();
 })();

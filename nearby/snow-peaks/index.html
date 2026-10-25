@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Snow Peaks · Nearby</title>
 <meta name="description" content="Fresh snow and a long slope. Carve your own line through the pines, alone or next to a friend.">
@@ -22,7 +22,6 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 <canvas id="cv" role="img" aria-label="A skier carving down a snowy slope"></canvas>
 <div class="bar">
   <button type="button" class="duo fbb fbb-glass fbb-icon" id="duo" aria-label="With a friend">👥</button>
-  <a class="fbb fbb-glass fbb-icon" id="lie" href="/nearby/lie-back/?place=snow" aria-label="Lie back in the snow">☁️</a>
 </div>
 <script src="/nearby/duo.js"></script>
 <script>
@@ -164,7 +163,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   (function loop() { update(); draw(); requestAnimationFrame(loop); })();
 
   var T5 = { cv: ["A skier carving down a snowy slope", "一位滑雪者在雪坡上划出弧线", "一位滑雪者在雪坡上劃出弧線", "Un esquiador trazando curvas en una ladera nevada", "Un esquiador traçant corbes en un pendent nevat"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], lie: ["Lie back in the snow", "躺在雪里", "躺在雪裡", "Túmbate en la nieve", "Estira't a la neu"] };
-  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", T5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); e.setAttribute("aria-label", T5[k][i]); e.title = T5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("peaks") : "Snow Peaks"; }
+  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", T5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); if (!e) return; e.setAttribute("aria-label", T5[k][i]); e.title = T5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("peaks") : "Snow Peaks"; }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
   words();
 })();

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Pine Wood · Nearby</title>
 <meta name="description" content="A slow walk under the pines. Stone lanterns, mist, fireflies, and sometimes a cat on the path. Alone, or with a friend somewhere else on the same path.">
@@ -21,7 +21,6 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 <canvas id="cv" role="img" aria-label="A path through a pine wood"></canvas>
 <div class="bar">
   <button type="button" class="duo fbb fbb-glass fbb-icon" id="duo" aria-label="With a friend">👥</button>
-  <a class="fbb fbb-glass fbb-icon" id="lie" href="/nearby/lie-back/?place=forest" aria-label="Lie back under the pines">☁️</a>
 </div>
 <script src="/nearby/duo.js"></script>
 <script>
@@ -149,7 +148,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   (function loop(now) { now = now || performance.now(); var dt = Math.min(.1, (now - last) / 1000); last = now; update(dt); render(); requestAnimationFrame(loop); })();
 
   var L5 = { cv: ["A path through a pine wood", "穿过松林的小路", "穿過松林的小路", "Un sendero por un pinar", "Un camí per una pineda"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], lie: ["Lie back under the pines", "在松树下躺一会儿", "在松樹下躺一會兒", "Túmbate bajo los pinos", "Estira't sota els pins"] };
-  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("forest") : "Pine Wood"; }
+  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); if (!e) return; e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("forest") : "Pine Wood"; }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
   words();
 })();
