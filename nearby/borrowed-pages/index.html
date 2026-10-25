@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
+<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2c7e20266a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=603c781334" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Borrowed Pages · Nearby</title>
 <meta name="description" content="A four-room book house next door to the bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one, and pass it on by hand.">
@@ -337,10 +337,6 @@ details{margin-top:16px}summary{cursor:pointer;font:600 13px var(--sans);color:#
   </section>
 </main>
 
-<div class="foot">
-  <button type="button" id="privacyBtn">🔒 <span data-i="privacy">Privacy</span></button>
-  <a href="../next-door/" data-i="barLink">Next Door →</a>
-</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -773,7 +769,7 @@ details{margin-top:16px}summary{cursor:pointer;font:600 13px var(--sans);color:#
 
   paintWords();
   $("#tuckTop").onclick = function () { tuckForm(); };
-  $("#mine").onclick = ledger; $("#privacyBtn").onclick = privacy; $("#snd").onclick = function () { sound(); };
+  $("#mine").onclick = ledger; $("#snd").onclick = function () { sound(); };
   floors(); later(); setTimeout(catWalk, 6000); setTimeout(peek, 2500); setInterval(peek, 14000);
   (function keys() {
     var sc = document.createElement("script"); sc.src = "/config.js";
