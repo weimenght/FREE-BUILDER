@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=6fe70eecda"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ebf3d33308" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1146,20 +1146,6 @@
       </section>
 
       <!-- ============ ROOM: ARCADE ============ -->
-      <section id="room-arcade" class="room hidden">
-        <div class="room-inner">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-2" hidden style="display:none">
-            <div class="tabs" id="arcade-tabs">
-              <button class="tab active" data-game="memex" onclick="Arcade.pick('memex')">📼 <span>MEMEX-68</span></button>
-            </div>
-          </div>
-          <div class="memex-cab" id="memex-cab" hidden>
-            <div class="memex-bezel"><iframe id="memex-frame" title="MEMEX-68" loading="lazy"></iframe></div>
-            <div class="memex-plate" aria-hidden="true"><span>MEMEX-68</span><i></i><i></i><i></i></div>
-          </div>
-          
-        </div>
-      </section>
     </main>
 
     <nav id="app-dock" class="dock" aria-label="Rooms">
@@ -1168,7 +1154,6 @@
       <button class="dock-btn" data-room="lab" onclick="go('lab')"><span class="ic">🧪</span><span class="lbl" data-t="dock.lab">Lab</span></button>
       <button class="dock-btn" data-room="studio" onclick="go('studio')"><span class="ic">🎶</span><span class="lbl" data-t="dock.studio">Studio</span></button>
       <button class="dock-btn" data-room="wall" onclick="go('wall')"><span class="ic">🧱</span><span class="lbl" data-t="dock.wall">Wall</span></button>
-      <button class="dock-btn" data-room="arcade" onclick="go('arcade')"><span class="ic">🕹️</span><span class="lbl" data-t="dock.arcade">Arcade</span></button>
     </nav>
   </div>
 
@@ -7085,7 +7070,7 @@
       document.getElementById('view-sanctuary').classList.remove('hidden');
 
       const hashRoom = (location.hash || '').slice(1).split('-')[0];
-      go(['counter', 'lab', 'studio', 'wall', 'arcade'].includes(hashRoom) ? hashRoom : 'counter');
+      go(['counter', 'lab', 'studio', 'wall'].includes(hashRoom) ? hashRoom : 'counter');   /* the arcade moved to Last Coin, by Late Light */
 
       evaluateWeiState();
       Cats.syncSleep();
@@ -7521,32 +7506,6 @@
   </script>
 <script>/* the lit shop window across the lane opens the book corner */
   document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest(".nd-shop")) location.href = "../borrowed-pages/"; });
-</script>
-<script>/* the arcade opens on MEMEX-68: the terminal that lists every game, with the bar's own little games one tab over */
-  (function () {
-    function ready() {
-      if (typeof Arcade !== "object" || !Arcade.pick) return setTimeout(ready, 300);
-      var pick = Arcade.pick.bind(Arcade), start = Arcade.start.bind(Arcade);
-      var cab = document.getElementById("memex-cab"), grid = document.querySelector("#room-arcade .arcade-grid"), fr = document.getElementById("memex-frame");
-      Arcade.pick = function (g, quiet) {
-        var memex = g === "memex";
-        cab.hidden = !memex; if (grid) grid.style.display = memex ? "none" : "";
-        Arcade.memex = memex; if (!memex) return pick(g, quiet);
-        cancelAnimationFrame(this.raf); this.state = "memex";
-        document.querySelectorAll("#arcade-tabs [data-game]").forEach(function (b) { b.classList.toggle("active", b.dataset.game === "memex"); });
-        load();
-        if (!quiet) try { SoundEngine.playClick(); } catch (e) {}
-      };
-      Arcade.start = function () { if (this.memex) return; return start(); };
-      var room = document.getElementById("room-arcade");
-      function load() { if (!fr.getAttribute("src") && room && !room.classList.contains("hidden") && Arcade.memex) fr.src = "../memex.html?cabinet=1"; }
-      if (room) new MutationObserver(load).observe(room, { attributes: true, attributeFilter: ["class"] });
-      var init = Arcade.init.bind(Arcade);
-      Arcade.init = function () { var r = init(); Arcade.pick("memex", true); return r; };
-      if (Arcade.cv) Arcade.pick("memex", true); else { cab.hidden = false; if (grid) grid.style.display = "none"; }
-    }
-    ready();
-  })();
 </script>
 <script src="/nearby/duo.js"></script>
 <script src="../same-song/core.js"></script><script src="../same-song/widget.js"></script>

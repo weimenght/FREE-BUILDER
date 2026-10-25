@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=6fe70eecda"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ebf3d33308" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2cef86fa81"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=27637e4c41" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ab1cfc40bd" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Nearby — FREE//BUILDER</title>
 <meta name="description" content="Nearby: a small pixel town for finding your people, in real life. Wander alone or with a friend, leave something you made for the neighbours, borrow a real book, play with someone far away. Wei, the bartender, will show you around.">
@@ -113,6 +113,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     { k: "restaurant", abs: 1, url: "/nearby/two-candles/", x: 288, y: 168, w: 70, h: 34, n: ["Two Candles", "双烛小馆", "雙燭小館", "Dos Velas", "Dues Espelmes"] },
     { k: "pasture", abs: 1, url: "/nearby/lie-back/?place=mountain", x: 276, y: 30, w: 80, h: 50, n: ["High Pasture", "高山牧场", "高山牧場", "Pasto Alto", "Pastura Alta"] },
     { k: "cabin", abs: 1, url: "/nearby/no-hurry/", x: 314, y: 40, w: 26, h: 22 },
+    { k: "arcade", quiet: 1, url: "/nearby/arcade/", x: 160, y: 232, w: 14, h: 16 },   /* no name tag: you find it or you don't */
     { k: "lake", abs: 1, url: "/nearby/mirror-lake/", x: 274, y: 104, w: 84, h: 66, n: ["Mirror Lake", "镜湖", "鏡湖", "Lago Espejo", "Llac Mirall"] },
     { k: "sea", abs: 1, url: "/nearby/sandy-cove/", x: 274, y: 214, w: 84, h: 78, n: ["Sandy Cove", "沙湾", "沙灣", "Cala de Arena", "Cala de Sorra"] }
   ];
@@ -125,7 +126,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   /* where you came from: ?from=bar, or the game you just left */
   var from = new URLSearchParams(location.search).get("from");
   if (!from) try { var r = new URL(document.referrer); if (r.origin === location.origin) { if (window.FBWorld && FBWorld.here) { from = FBWorld.here(r.pathname); if (from === "map") from = null; } } } catch (e) {}
-  from = { love: "postcard", memex: "bar" }[from] || from;
+  from = { love: "postcard", memex: "arcade" }[from] || from;
 
   /* ---------- pixels ---------- */
   function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
@@ -222,6 +223,8 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(136, 192, 14, 16, "#2a2238"); R(137, 193, 12, 15, night ? "#4a2a6a" : "#3a2a4a");
     if (night || ph === "dusk") for (var qn = 0; qn < 4; qn++) { R(118 + qn * 4, 202, 2, 6, ["#c8402a", "#2a6a9a", "#f6c84a", "#7affc1"][qn]); R(118 + qn * 4, 200, 2, 2, "#f5d49a"); }
     for (var sp = 0; sp < 5; sp++) R(152 + sp * 4, 196 + Math.abs(Math.sin((f + sp * 9) / 5)) * -4, 2, 2, ["#ff3ad0", "#7affc1", "#f6b73c", "#7ab8ff", "#fff"][sp]);
+    /* an old arcade cabinet against the club wall, no sign: its screen flickers if you look */
+    R(163, 197, 8, 11, "#2a1a3a"); R(163, 196, 8, 2, "#ff3ad0"); R(164, 199, 6, 4, ((f >> 2) % 7) ? ["#7affc1", "#7ab8ff", "#f6b73c"][(f >> 4) % 3] : "#1a1420"); R(165, 204, 1, 2, "#c8402a"); R(168, 205, 2, 1, "#f6b73c"); R(162, 208, 10, 1, "#0a0a10");
     g.restore();
     // the cats' nest: a little A-frame with a round door
     R(10, 222, 28, 20, night ? "#4a3020" : "#a8743a"); for (var nb = 224; nb < 242; nb += 4) R(10, nb, 28, 1, night ? "#3a2418" : "#8a5a2a");
@@ -464,7 +467,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
       var a = document.createElement("a"); a.className = "spot"; a.href = p.url; a.dataset.k = p.k;
       a.style.left = (px(p) / WW * 100) + "%"; a.style.top = (p.y / H * 100) + "%"; a.style.width = (p.w / WW * 100) + "%"; a.style.height = (p.h / H * 100) + "%";
       var name = World.name ? World.name(p.k) : (p.n[L()] || p.n[0]); a.setAttribute("aria-label", name);
-      a.innerHTML = '<span class="tag' + (BELOW[p.k] ? " below" : "") + '"></span>'; a.firstChild.textContent = name;
+      a.innerHTML = '<span class="tag' + (BELOW[p.k] ? " below" : "") + '"></span>'; a.firstChild.textContent = name; if (p.quiet) a.firstChild.style.display = "none";
       if ((LIT[p.k] || 0) >= KNOW) a.classList.add("known");
       if (from && from === p.k) { var h = document.createElement("span"); h.className = "here"; h.textContent = "📍"; h.title = t("here"); a.appendChild(h); }
       a.addEventListener("click", function (e) {
