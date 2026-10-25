@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=603c781334" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=f458550e28" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Slow Clock · Nearby</title>
 <meta name="description" content="Climb the clock tower and set Nearby's hour and weather: every game you visit next follows it.">
@@ -50,6 +50,12 @@ html.fbsh-in body{min-height:0}
 html.fbsh-in .top{display:none}
 html.fbsh-in main{padding:8px 14px 12px}
 html.fbsh-in .face{width:min(80vw,280px,calc(100vh - 400px));width:min(80vw,280px,calc(100dvh - 400px));min-width:150px;margin:8px auto 4px}
+@media (max-height:720px) and (max-aspect-ratio:5/4){
+  html.fbsh-in .lbl{display:none}
+  html.fbsh-in .sky canvas{height:max(52px,11dvh);width:100%}
+  html.fbsh-in .face{width:max(130px,min(70vw,calc(100dvh - 440px)));min-width:0;margin:4px auto 0}
+  html.fbsh-in main{padding:6px 12px 8px}
+}
 @media (min-aspect-ratio:5/4) and (min-width:640px){
   html.fbsh-in main{max-width:1000px;min-height:100vh;min-height:100dvh;box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,1fr);gap:6px 28px;align-content:center;align-items:center}
   html.fbsh-in .tower{grid-row:1 / span 4}

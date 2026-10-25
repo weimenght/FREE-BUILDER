@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" class="fbt">
+<html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=603c781334" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=f458550e28" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Two Candles · Nearby</title>
 <meta name="description" content="A candlelit table for two people who live apart. Sit down together from anywhere, cook the same dinner step by step, raise a glass, and talk until the candles go out.">
@@ -64,17 +64,19 @@ main{max-width:760px;margin:0 auto;padding:4px 16px 120px}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit .fit-panel .seats{margin-top:0}
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
-<header class="top">
-  <div class="sign" data-t="title">TWO CANDLES</div>
-  <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
+<header class="top fit-head">
+  <div class="sign fit-title" data-t="title">TWO CANDLES</div>
+  <button class="pill" type="button" data-fb-shell data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
 </header>
-<main>
+<main class="fit-main">
   <h1 class="sr" data-t="title">Two Candles</h1>
-  <div class="stage"><canvas id="cv" width="160" height="96" role="img" aria-label="A candlelit table for two by a window"></canvas></div>
+  <div class="stage fit-hero" style="--fit-ar:1.667"><canvas id="cv" width="160" height="96" role="img" aria-label="A candlelit table for two by a window"></canvas></div>
 
+  <div class="fit-panel">
   <!-- the door: find your table -->
   <section id="lobby">
     <div class="panel" id="handoffBox">
@@ -143,6 +145,7 @@ main{max-width:760px;margin:0 auto;padding:4px 16px 120px}
       <ul class="times" id="times"></ul>
     </div>
   </section>
+  </div>
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

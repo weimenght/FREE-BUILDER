@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" class="fbt">
+<html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=603c781334" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=f458550e28" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Same Song · Nearby</title>
 <meta name="description" content="Light up a little tune, press it into a record, and drop it in the jukebox that plays in Next Door and Borrowed Pages at the same time.">
@@ -76,12 +76,29 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
 .room h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (max-width:420px){.chip{width:42px;height:42px;font-size:20px}.tempo input{width:84px}.press{height:52px;padding-right:12px}.sign{font-size:18px}}
 @media (prefers-reduced-motion:reduce){.sign,.press .v1{animation:none}}
+/* in town: one screen. Wide: desk and jukebox side by side, each scrolls inside itself. Upright: one at a time (💿 / 🎹), the roll stretches to fill */
+.fit-tab{display:none}
+html.fbsh-in.fbfit main{height:100%;min-height:0;padding:10px 12px 12px!important;overflow:hidden}
+@media (min-width:900px){html.fbsh-in.fbfit main{align-items:stretch}html.fbsh-in.fbfit .desk{align-self:start;max-height:100%;overflow:auto}html.fbsh-in.fbfit .room{position:static;max-height:100%;overflow:auto;padding-top:48px}}
+@media (max-width:899px){
+  html.fbsh-in.fbfit .fit-tab{display:inline-flex;font-size:22px}
+  html.fbsh-in.fbfit main{display:flex;flex-direction:column}
+  html.fbsh-in.fbfit .desk{flex:1;min-height:0;display:flex;flex-direction:column}
+  html.fbsh-in.fbfit .desk .row{padding-right:56px}
+  html.fbsh-in.fbfit .roll{flex:1 1 auto;min-height:0;display:flex;margin:10px 0}
+  html.fbsh-in.fbfit .grid{flex:1;grid-auto-rows:minmax(0,1fr)}
+  html.fbsh-in.fbfit .cell{aspect-ratio:auto;min-height:0}
+  html.fbsh-in.fbfit main.jb .desk{display:none}
+  html.fbsh-in.fbfit main:not(.jb) .room{display:none}
+  html.fbsh-in.fbfit .room{flex:1;min-height:0;overflow:auto;padding-top:50px}
+}
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
-<header class="top">
-  <div class="sign" aria-label="Same Song">SAME <span>SONG</span></div>
-  <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
+<header class="top fit-head">
+  <button class="pill fit-tab" id="tab" type="button" aria-pressed="false"></button>
+  <div class="sign fit-title" aria-label="Same Song">SAME <span>SONG</span></div>
+  <button class="pill" type="button" data-fb-shell data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
 </header>
 
 <main>
@@ -273,7 +290,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
         $(".vinyl", sc).classList.add("away");
         stopPreview(); resumeJukebox = false;
         var queued = JB.spin(id, "studio").then(function () { return true; }, function () { return false; });
-        setTimeout(function () { close(); JBW.refresh(id); var m = $("#machine"); if (window.innerWidth < 900) m.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(function () { close(); JBW.refresh(id); var m = $("#machine"); if (window.SSTab && SSTab.fit()) SSTab.go(true); else if (window.innerWidth < 900) m.scrollIntoView({ behavior: "smooth", block: "start" });
           queued.then(function (ok) { if (ok) { if (!JB.listening()) JB.listen(true); JBW.fire(); JBW.paint(); m.classList.remove("fresh"); void m.offsetWidth; m.classList.add("fresh"); } say(t(ok ? "upNext" : "inBox")); }); }, 850);
       }).catch(function (e) {
         go.disabled = false; ls("jb_title", title);
@@ -295,6 +312,19 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
   build(); words();
   var mq = window.matchMedia("(max-width:640px)"); (mq.addEventListener ? mq.addEventListener("change", build) : mq.addListener(build));
   document.addEventListener("visibilitychange", function () { if (document.hidden && prev.playing()) stopPreview(); });
+})();
+</script>
+<script>
+/* Same Song in town on an upright screen: the desk or the jukebox, one at a time */
+window.SSTab = (function () {
+  var main = document.querySelector("main"), b = document.getElementById("tab");
+  var W = { jb: ["Jukebox", "点唱机", "點唱機", "Gramola", "Gramola"], desk: ["Make a tune", "写一段旋律", "寫一段旋律", "Haz una melodía", "Fes una melodia"] };
+  function li() { var l = (window.FBL && FBL.lang && FBL.lang()) || document.documentElement.lang || "en"; return { "zh": 1, "zh-Hans": 1, "zh-Hant": 2, "es": 3, "ca": 4 }[l] || 0; }
+  function fit() { return document.documentElement.classList.contains("fbsh-in") && window.matchMedia("(max-width:899px)").matches; }
+  function paint() { var on = main.classList.contains("jb"); b.textContent = on ? "🎹" : "💿"; var l = on ? W.desk[li()] : W.jb[li()]; b.setAttribute("aria-label", l); b.title = l; b.setAttribute("aria-pressed", String(on)); }
+  function go(v) { main.classList.toggle("jb", v === undefined ? !main.classList.contains("jb") : !!v); paint(); }
+  b.onclick = function () { go(); }; paint();
+  return { go: go, fit: fit };
 })();
 </script>
 </body>

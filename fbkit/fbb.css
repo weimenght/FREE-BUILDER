@@ -105,3 +105,9 @@ html.fbsh-in.fbfit .fit-panel > :first-child { margin-top: 0 !important; }
   html.fbsh-in.fbfit .fit-hero { flex: 0 1 auto; width: min(60%, calc((100vh - 28px) * var(--fit-ar, 1.78))); width: min(60%, calc((100dvh - 28px) * var(--fit-ar, 1.78))); }
   html.fbsh-in.fbfit .fit-panel { flex: 1 1 0; align-self: stretch; min-width: 300px; padding-top: 52px; }
 }
+/* a wide, short scene (a shopfront, a street) reads better above its panel even on a wide window: .fit-col keeps the column */
+@media (min-aspect-ratio: 5/4) and (min-width: 640px) {
+  html.fbsh-in.fbfit.fit-col .fit-main { flex-direction: column; align-items: stretch; max-width: 1100px !important; padding-top: 10px !important; }
+  html.fbsh-in.fbfit.fit-col .fit-hero { flex: none; width: min(100%, calc(var(--fit-h, 30vh) * var(--fit-ar, 1.78))); width: min(100%, calc(var(--fit-h, 30dvh) * var(--fit-ar, 1.78))); }
+  html.fbsh-in.fbfit.fit-col .fit-panel { flex: 1 1 0; min-width: 0; padding-top: 4px; }
+}

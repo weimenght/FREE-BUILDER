@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=603c781334" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=f458550e28" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -769,7 +769,7 @@
 
       <form id="name-form" class="mt-4 text-left" onsubmit="event.preventDefault(); enterSanctuary();">
         <label for="patron-name" class="label" data-t="door.nameLabel">What should Wei call you?</label>
-        <input id="patron-name" class="field mt-1" maxlength="24" autocomplete="nickname" required data-tp="door.namePh" placeholder="Your name">
+        <input id="patron-name" data-fb-nick-show class="field mt-1" maxlength="24" autocomplete="nickname" required data-tp="door.namePh" placeholder="Your name">
         <button id="btn-enter-venue" type="submit" class="btn btn-amber w-full mt-3 text-[15px]" style="min-height:44px">
           <span id="btn-enter-text" data-t="door.enter">Push the door</span><span>→</span>
         </button>
@@ -790,7 +790,7 @@
         </button>
       </div>
       <div class="flex items-center gap-1.5">
-        <div class="flex items-center rounded-md overflow-hidden" style="border:1px solid var(--line);background:rgba(12,8,6,.7)">
+        <div id="radio-box" hidden class="flex items-center rounded-md overflow-hidden" style="display:none;border:1px solid var(--line);background:rgba(12,8,6,.7)">
           <button id="btn-lofi" onclick="toggleBGM()" class="h-[34px] px-2 flex items-center gap-1.5" aria-label="Radio">
             <span id="eq-graphic" class="hidden items-end gap-[2px] h-3"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span>
             <span id="eq-mute-icon">📻</span>
@@ -798,7 +798,7 @@
           </button>
           <button onclick="skipTrack(event)" class="h-[34px] px-2" style="border-left:1px solid var(--line)" aria-label="Next">⏭</button>
         </div>
-        <button id="btn-atmo-trigger" onclick="toSlowClock()" class="icon-btn">
+        <button id="btn-atmo-trigger" hidden style="display:none" onclick="toSlowClock()" class="icon-btn">
           <span id="weather-display-icon">🌧️</span><span id="time-display-badge" class="show-400 font-retro text-[15px] text-[var(--amber-2)]">22:30</span>
         </button>
         <button class="icon-btn" data-fb-shell onclick="openLangMenu(this)" aria-haspopup="menu"><span class="lang-short font-retro text-[15px]">EN</span></button>
@@ -7100,7 +7100,7 @@
       let m = document.getElementById('name-sheet'); if (m) { m.remove(); return; }
       m = document.createElement('form'); m.id = 'name-sheet'; m.setAttribute('role', 'dialog');
       m.style.cssText = 'position:fixed;left:50%;top:calc(var(--head-h,56px) + var(--safe-t,0px) + 8px);transform:translateX(-50%);z-index:96;width:min(320px,calc(100vw - 24px));padding:12px;background:#2a1a10;border:3px solid #000;box-shadow:4px 4px 0 #000;display:grid;gap:8px';
-      m.innerHTML = '<label class="label"></label><input class="field" maxlength="24" autocomplete="nickname" required><button type="submit" class="btn btn-amber">✓</button>';
+      m.innerHTML = '<label class="label"></label><input class="field" maxlength="24" autocomplete="nickname" data-fb-nick-show required><button type="submit" class="btn btn-amber">✓</button>';
       m.querySelector('label').textContent = T('door.nameLabel'); const inp = m.querySelector('input'); inp.value = Patron.name || '';
       m.onsubmit = async (e) => { e.preventDefault(); const n = Patron.clean(inp.value); if (!n) { inp.focus(); return; } Patron.name = n; setText('patron-chip-name', n); setText('studio-creator', n); m.remove(); try { await Patron.enter(n); } catch (x) {} };
       document.body.appendChild(m); setTimeout(() => inp.focus(), 30);

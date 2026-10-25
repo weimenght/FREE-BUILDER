@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" class="fbt">
+<html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=603c781334" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=f458550e28" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Miso & Yuzu's · Nearby</title>
 <meta name="description" content="The little room where Miso and Yuzu live. Pet them, feed them a treat, wave a feather, and leaf through their album.">
@@ -63,13 +63,14 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
-<header class="top">
-  <div class="sign" data-t="title">MISO & YUZU'S</div>
-  <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
+<header class="top fit-head">
+  <div class="sign fit-title" data-t="title">MISO & YUZU'S</div>
+  <button class="pill" type="button" data-fb-shell data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
 </header>
-<main>
+<main class="fit-main">
   <h1 class="sr" data-t="title">Miso & Yuzu's</h1>
-  <div class="room" id="room"><canvas id="cv" width="160" height="110"></canvas><div class="flash" id="flash"></div></div>
+  <div class="room fit-hero" id="room" style="--fit-ar:1.4545;--fit-h:44vh"><canvas id="cv" width="160" height="110"></canvas><div class="flash" id="flash"></div></div>
+  <div class="fit-panel">
   <div class="tools" id="tools" role="toolbar"></div>
   <p class="mood" id="mood" aria-live="polite"></p>
 
@@ -81,6 +82,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
 
   <h2 data-t="albumH">THE ALBUM</h2>
   <div class="album" id="album"></div>
+  </div>
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

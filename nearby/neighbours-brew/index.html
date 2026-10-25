@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" class="fbt">
+<html lang="en" class="fbt fbfit fit-col">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=c4cae8b6ef" data-fbb><script data-fbg src="/fbkit/fbg.js?v=603c781334" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=f458550e28" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Neighbours' Brew · Nearby</title>
 <meta name="description" content="Brew your own beer: pick the malt, hops, yeast and a twist, design the can, and ship it to Next Door and Late Light for everyone to try.">
@@ -61,13 +61,14 @@ h2 .chips{margin-left:auto}
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
-<header class="top">
-  <div class="sign" data-t="title">NEIGHBOURS' BREW</div>
-  <button class="pill" type="button" data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
+<header class="top fit-head">
+  <div class="sign fit-title" data-t="title">NEIGHBOURS' BREW</div>
+  <button class="pill" type="button" data-fb-shell data-fbl-btn aria-label="Language"><span aria-hidden="true">🌐</span><span data-fbl-label>EN</span></button>
 </header>
-<main>
+<main class="fit-main">
   <h1 class="sr" data-t="title">Neighbours' Brew</h1>
-  <div class="house"><canvas id="house" width="160" height="64"></canvas></div>
+  <div class="house fit-hero" style="--fit-ar:2.5"><canvas id="house" width="160" height="64"></canvas></div>
+  <div class="fit-panel">
   <div class="grid">
     <section class="panel" aria-label="Recipe">
       <div class="step"><h3>🌾 <span data-t="malt">MALT</span></h3><div class="chips" id="malt"></div></div>
@@ -91,6 +92,7 @@ h2 .chips{margin-left:auto}
 
   <h2><span data-t="onTap">ON TAP</span><span class="chips" id="sort" hidden></span></h2>
   <div class="taps" id="taps"></div>
+  </div>
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
