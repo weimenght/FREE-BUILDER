@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=350ea45ebb"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=70b249695f" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=fb82b159c1"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=378938ab6e" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>No Hurry · Nearby</title>
 <meta name="description" content="A cabin on the high pasture with a big window. Clouds, cows, weather. Nothing to do here, and that's the point.">
@@ -67,17 +67,22 @@ canvas#cv{touch-action:none}
     var ph = W.phase(), wx = W.weather(), night = ph === "night", warm = night || ph === "dusk";
     // the room: wooden walls
     R(0, 0, PW, PH, night ? "#2a1a10" : "#5a3a22"); for (var x = 0; x < PW; x += 8) R(x, 0, 1, PH, night ? "#22140c" : "#4a2e1a");
-    // the window: wide on a computer, tall on a phone
-    var land = PW > PH, ww = Math.round(PW * (land ? .7 : .78)), wh = Math.round(PH * (land ? .62 : .55)), wx0 = Math.round((PW - ww) / 2), wy0 = Math.round(PH * (land ? .1 : .12));
-    g.save(); g.beginPath(); g.rect(wx0, wy0, ww, wh); g.clip(); view(wx0, wy0, ww, wh); g.restore();   /* the sky stays inside the window */
-    // rain on the glass
-    if (wx === "rain" || wx === "storm") { if (drops.length < ww / 2) drops.push({ x: Math.random(), y: 0, v: .002 + Math.random() * .004 }); drops.forEach(function (d) { d.y += d.v; if (d.y > 1) { d.y = 0; d.x = Math.random(); } R(wx0 + d.x * ww, wy0 + d.y * wh, 1, 3, "rgba(200,220,255,.55)"); }); }
-    var fr = Math.max(3, Math.round(ww / 60));
+    // the window is square, whatever the screen: the room around it grows instead
+    var land = PW > PH, side = Math.round(Math.min(PW * (land ? .6 : .8), PH * (land ? .66 : .5))), ww = side, wh = side, wx0 = Math.round((PW - ww) / 2), wy0 = Math.round((PH - wh) * (land ? .32 : .36));
+    g.save(); g.beginPath(); g.rect(wx0, wy0, ww, wh); g.clip(); view(wx0, wy0, ww, wh); outside(wx0, wy0, ww, wh); g.restore();   /* the sky stays inside the window */
+    var fr = Math.max(3, Math.round(ww / 60)), op = openT;
+    // rain on the glass (or, with the window open, straight past it)
+    if (wx === "rain" || wx === "storm") { if (drops.length < ww / 2) drops.push({ x: Math.random(), y: 0, v: .002 + Math.random() * .004 }); drops.forEach(function (d) { d.y += d.v * (op > .5 ? 4 : 1); if (d.y > 1) { d.y = 0; d.x = Math.random(); } R(wx0 + d.x * ww, wy0 + d.y * wh, 1, op > .5 ? 5 : 3, "rgba(200,220,255,.55)"); }); }
+    if (op < 1) { g.fillStyle = "rgba(220,235,255," + (.06 * (1 - op)) + ")"; g.fillRect(wx0, wy0, ww, wh); for (var gl = 0; gl < ww * .5; gl++) R(wx0 + ww * .12 + gl, wy0 + wh * .1 + gl * .8, 2, 1, "rgba(255,255,255," + (.07 * (1 - op)) + ")"); }   /* a little glass, gone when it opens */
     R(wx0 - fr, wy0 - fr, ww + fr * 2, fr, "#3a2414"); R(wx0 - fr, wy0 + wh, ww + fr * 2, fr, "#3a2414"); R(wx0 - fr, wy0, fr, wh, "#3a2414"); R(wx0 + ww, wy0, fr, wh, "#3a2414");
-    R(wx0 + ww / 2 - fr / 2, wy0, fr, wh, "#3a2414"); R(wx0, wy0 + wh * .45, ww, Math.max(2, fr / 2), "#3a2414");
+    // two casements: closed they meet in the middle, open they swing in against the frame
+    var sw = Math.round(ww / 2 * (1 - op * .82));
+    [[wx0, 1], [wx0 + ww, -1]].forEach(function (c) { var x = c[1] > 0 ? c[0] : c[0] - sw; R(x, wy0, sw, Math.max(2, fr / 2), "#3a2414"); R(x, wy0 + wh * .45, sw, Math.max(2, fr / 2), "#3a2414"); R(c[1] > 0 ? x + sw - fr : x, wy0, fr, wh, "#3a2414"); if (op > .05) { g.fillStyle = "rgba(200,225,255," + (.12 * op) + ")"; g.fillRect(x, wy0, sw, wh); } });
+    if (op > .5) { var cu = Math.sin(f / 9) * fr * .8 * op; R(wx0 - fr * 2 + cu, wy0 - fr, fr * 1.5, wh * .7, "rgba(240,226,200,.55)"); R(wx0 + ww + fr * .5 - cu, wy0 - fr, fr * 1.5, wh * .7, "rgba(240,226,200,.55)"); }   /* the curtains catch the breeze */
+    if (land && wx0 > 40) room(wx0, wy0, ww, wh, fr, night);
     // the sill: a mug, a plant, a candle at night; a cat if one wandered up here
     var sy = wy0 + wh + fr; R(wx0 - fr * 3, sy, ww + fr * 6, fr * 2, "#6a4428"); R(wx0 - fr * 3, sy + fr * 2, ww + fr * 6, 1, "#2a1a10");
-    var ms = Math.max(2, fr); G = { x0: wx0, ww: ww, sy: sy, ms: ms }; var mx = wx0 + ww * SILL.mug; R(mx, sy - ms * 4, ms * 3, ms * 4, "#e8dcc4"); R(mx + ms * 3, sy - ms * 3, ms, ms * 2, "#e8dcc4"); R(mx + ms * .5, sy - ms * 4, ms * 2, ms * .7, "#5a2a14");
+    var ms = Math.max(2, fr); G = { x0: wx0, ww: ww, sy: sy, ms: ms, wy: wy0 }; var mx = wx0 + ww * SILL.mug; R(mx, sy - ms * 4, ms * 3, ms * 4, "#e8dcc4"); R(mx + ms * 3, sy - ms * 3, ms, ms * 2, "#e8dcc4"); R(mx + ms * .5, sy - ms * 4, ms * 2, ms * .7, "#5a2a14");
     for (var st = 0; st < 3; st++) { var t = ((f * .6 + st * 20) % 60) / 60; R(mx + ms + Math.sin(t * 9 + st) * ms, sy - ms * 4 - t * ms * 8, 1, 2, "rgba(255,255,255," + (.5 - t * .5) + ")"); }
     var px = wx0 + ww * SILL.plant; R(px, sy - ms * 3, ms * 3, ms * 3, "#a8582a"); for (var lf = 0; lf < 5; lf++) R(px + ms * 1.5 + Math.sin(lf * 1.3) * ms * 2, sy - ms * 4 - lf * ms * .8, ms * 1.4, ms, "#4a8a3a");
     var cx = wx0 + ww * SILL.candle; R(cx, sy - ms * 4, ms, ms * 4, "#fbf1de"); R(cx + ms * .4, sy - ms * 4.6, ms * .2, ms * .6, "#3a2414");
@@ -87,6 +92,35 @@ canvas#cv{touch-action:none}
     // a warm glow from the stove, out of frame, on cold or late evenings
     if (warm || wx === "snow") { g.fillStyle = "rgba(240,120,40," + (.05 + Math.sin(f / 6) * .015) + ")"; g.fillRect(0, 0, PW, PH); }
   }
+  /* the window opens for a breath of air: then you see who is out there. Birds by day, a hare now and then,
+     and any neighbour's animal whose walk passes the cabin this half hour (Come Home → bring your animal to town). */
+  var open = false, openT = 0, birds = [], hare = null, pets = [];
+  try { open = sessionStorage.getItem("fb_cabin_open") === "1"; openT = open ? 1 : 0; } catch (e) {}
+  function loadPets() { try { if (window.FBG && FBG.pets && W.petAt) FBG.pets().then(function (l) { pets = (l || []).filter(function (p) { return W.petAt(p.id) === "cabin"; }).slice(0, 3).map(function (p, i) { return { p: p, x: .2 + i * .25 + Math.random() * .1, d: Math.random() < .5 ? 1 : -1, y: .82 + Math.random() * .1, step: 0, rest: 0 }; }); }); } catch (e) {} }
+  setTimeout(loadPets, 1500); addEventListener("fbback", loadPets);
+  function outside(x0, y0, w, h) {
+    var ph = W.phase(), night = ph === "night", wx = W.weather(), o = openT;
+    if (o < .3) return;
+    if (!night && wx !== "storm" && Math.random() < .004 && birds.length < 4) birds.push({ x: -0.05, y: .1 + Math.random() * .25, v: .0015 + Math.random() * .002, k: 3 + (Math.random() * 3 | 0) });
+    birds.forEach(function (b) { b.x += b.v; for (var i = 0; i < b.k; i++) { var bx = x0 + (b.x - i * .025) * w, by = y0 + (b.y + Math.abs(i - b.k / 2) * .012) * h, fl = (f + i * 3) % 8 < 4 ? 1 : 0; R(bx - 2, by - fl, 2, 1, "#2a2a3a"); R(bx, by, 1, 1, "#2a2a3a"); R(bx + 1, by - fl, 2, 1, "#2a2a3a"); } });
+    birds = birds.filter(function (b) { return b.x < 1.2; });
+    if (!night && !hare && Math.random() < .002) hare = { x: Math.random() < .5 ? -.05 : 1.05, y: .78 + Math.random() * .12, hop: 0 }; if (hare) { hare.d = hare.d || (hare.x < .5 ? 1 : -1); hare.hop += .25; hare.x += hare.d * (Math.sin(hare.hop) > 0 ? .004 : 0); var hx = x0 + hare.x * w, hy = y0 + hare.y * h - Math.max(0, Math.sin(hare.hop)) * 3; R(hx, hy, 4, 2, "#9a7a5a"); R(hx + (hare.d > 0 ? 3 : -1), hy - 2, 2, 2, "#9a7a5a"); R(hx + (hare.d > 0 ? 4 : 0), hy - 4, 1, 2, "#9a7a5a"); R(hx + (hare.d > 0 ? -1 : 4), hy, 1, 1, "#fbfbf6"); if (hare.x < -.1 || hare.x > 1.1) hare = null; }
+    pets.forEach(function (q) {
+      if (!night) { if (q.rest > 0) q.rest--; else { q.x += q.d * .0012; q.step += .2; if (q.x < .08 || q.x > .92 || Math.random() < .004) { q.d *= -1; q.rest = 40 + Math.random() * 80 | 0; } } }
+      try { var spec = W.petSpec ? W.petSpec(q.p) : q.p.kind; W.drawPet(g, spec, x0 + q.x * w, y0 + q.y * h, Math.max(1, Math.round(w / 160)), { flip: q.d < 0, step: Math.floor(q.step), asleep: night }); } catch (e) {}
+    });
+  }
+  function room(x0, y0, w, h, fr, night) {   /* on a wide screen the wall has room for a shelf and a lantern */
+    var lx = Math.round(x0 * .45), ly = y0 + h * .2, sh = Math.max(14, Math.round(x0 * .55));
+    R(lx - sh / 2, ly + sh * .5, sh, Math.max(2, fr / 2), "#3a2414");
+    for (var b = 0; b < 5; b++) R(lx - sh / 2 + 2 + b * (sh / 6), ly + sh * .5 - (6 + (b % 3) * 2) * fr / 3, sh / 7, (6 + (b % 3) * 2) * fr / 3, ["#8a3a2a", "#3a5a7a", "#c8a24a", "#4a6a3a", "#6a3a6a"][b]);
+    var rx = PW - lx, ry = y0 + h * .12; R(rx, 0, 1, ry, "#2a1a10"); R(rx - fr, ry, fr * 2 + 1, fr * 3, "#3a2414"); R(rx - fr + 1, ry + 1, fr * 2 - 1, fr * 3 - 2, night ? "#f6b73c" : "#c8a870");
+    if (night) { g.fillStyle = "rgba(246,183,60,.07)"; g.beginPath(); g.arc(rx, ry + fr * 1.5, fr * 10, 0, 6.3); g.fill(); }
+  }
+  function toggleWindow() { open = !open; try { sessionStorage.setItem("fb_cabin_open", open ? "1" : "0"); } catch (e) {} creak(); }
+  function inGlass(p) { return G && p.x > G.x0 && p.x < G.x0 + G.ww && p.y > G.wy && p.y < G.sy - G.ms * 5; }
+  function creak() { try { if (!AC) return; var n = AC.currentTime, o = AC.createOscillator(), gg = AC.createGain(); o.type = "sawtooth"; o.frequency.setValueAtTime(140, n); o.frequency.linearRampToValueAtTime(open ? 210 : 110, n + .35); gg.gain.setValueAtTime(.0001, n); gg.gain.linearRampToValueAtTime(.012, n + .05); gg.gain.exponentialRampToValueAtTime(.0001, n + .4); o.connect(gg); gg.connect(AC.destination); o.start(n); o.stop(n + .45); if (windG) windG.gain.setTargetAtTime(open ? .09 : .03, n, .6); } catch (e) {} }
+
   /* the sill: pick up the mug, the candle or the plant and set it down somewhere else; tap the candle to light it or blow it out */
   var SILL = { mug: .16, candle: .5, plant: .8 }, G = null, drag = null, flame = null;
   try { var sv = JSON.parse(sessionStorage.getItem("fb_cabin_sill") || "null"); if (sv) { SILL = sv.s || SILL; flame = sv.f; } } catch (e) {}
@@ -94,21 +128,21 @@ canvas#cv{touch-action:none}
   function keep() { try { sessionStorage.setItem("fb_cabin_sill", JSON.stringify({ s: SILL, f: flame })); } catch (e) {} }
   function at(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * PW / r.width, y: (e.clientY - r.top) * PH / r.height }; }
   function hit(p) { if (!G) return null; var best = null; ["mug", "candle", "plant"].forEach(function (k) { var x = G.x0 + G.ww * SILL[k], w = k === "candle" ? G.ms * 3 : G.ms * 5; if (p.x > x - G.ms && p.x < x + w && p.y > G.sy - G.ms * 9 && p.y < G.sy + G.ms * 2) best = k; }); return best; }
-  cv.addEventListener("pointerdown", function (e) { var p = at(e), k = hit(p); if (!k) return; drag = { k: k, dx: p.x - (G.x0 + G.ww * SILL[k]), x0: p.x, moved: false }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} cv.style.cursor = "grabbing"; });
-  cv.addEventListener("pointermove", function (e) { var p = at(e); if (drag) { if (Math.abs(p.x - drag.x0) > 2) drag.moved = true; SILL[drag.k] = Math.max(.02, Math.min(.92, (p.x - drag.dx - G.x0) / G.ww)); draw(); } else cv.style.cursor = hit(p) ? "grab" : ""; });
+  cv.addEventListener("pointerdown", function (e) { var p = at(e), k = hit(p); if (!k) { if (inGlass(p)) toggleWindow(); return; } drag = { k: k, dx: p.x - (G.x0 + G.ww * SILL[k]), x0: p.x, moved: false }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} cv.style.cursor = "grabbing"; });
+  cv.addEventListener("pointermove", function (e) { var p = at(e); if (drag) { if (Math.abs(p.x - drag.x0) > 2) drag.moved = true; SILL[drag.k] = Math.max(.02, Math.min(.92, (p.x - drag.dx - G.x0) / G.ww)); draw(); } else cv.style.cursor = hit(p) ? "grab" : inGlass(p) ? "pointer" : ""; });
   ["pointerup", "pointercancel"].forEach(function (ev) { cv.addEventListener(ev, function () { if (!drag) return; if (!drag.moved && drag.k === "candle") flame = !lit(); drag = null; cv.style.cursor = ""; keep(); draw(); }); });
   window.FBCabin = { sill: function () { return G; } };
-  function loop(ts) { if (ts - last > 80) { last = ts; f++; draw(); } requestAnimationFrame(loop); }
+  function loop(ts) { if (ts - last > 80) { last = ts; f++; openT += ((open ? 1 : 0) - openT) * .18; if (Math.abs(openT - (open ? 1 : 0)) < .01) openT = open ? 1 : 0; draw(); } requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
 
   /* sound, only if asked: wind, rain on the roof, a stove crackling */
-  var AC = null, nodes = [];
+  var AC = null, nodes = [], windG = null;
   function noise(A) { var b = A.createBuffer(1, A.sampleRate * 2, A.sampleRate), d = b.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; var s = A.createBufferSource(); s.buffer = b; s.loop = true; return s; }
   function startSound() {
     AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume();
     var wx = W.weather(), wind = noise(AC), lp = AC.createBiquadFilter(), gw = AC.createGain(); lp.type = "lowpass"; lp.frequency.value = wx === "rain" || wx === "storm" ? 1400 : 380; gw.gain.value = wx === "rain" || wx === "storm" ? .05 : .03;
     var lfo = AC.createOscillator(), lg = AC.createGain(); lfo.frequency.value = .07; lg.gain.value = 160; lfo.connect(lg); lg.connect(lp.frequency); lfo.start();
-    wind.connect(lp); lp.connect(gw); gw.connect(AC.destination); wind.start(); nodes.push(wind, lfo);
+    wind.connect(lp); lp.connect(gw); gw.connect(AC.destination); wind.start(); nodes.push(wind, lfo); windG = gw; if (open) gw.gain.value = .09;
     var crackle = setInterval(function () { if (Math.random() < .5) return; var s = noise(AC), hp = AC.createBiquadFilter(), gg = AC.createGain(), n = AC.currentTime; hp.type = "highpass"; hp.frequency.value = 2400; gg.gain.setValueAtTime(.05 * Math.random(), n); gg.gain.exponentialRampToValueAtTime(.0001, n + .05); s.connect(hp); hp.connect(gg); gg.connect(AC.destination); s.start(n); s.stop(n + .06); }, 160);
     nodes.push({ stop: function () { clearInterval(crackle); } });
   }
