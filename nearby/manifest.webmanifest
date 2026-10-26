@@ -4,8 +4,7 @@
   "description": "A small pixel town for finding your people, in real life. Wander alone or with a friend, make something for the neighbours, play with someone far away.",
   "start_url": "/nearby/",
   "scope": "/nearby/",
-  "display": "fullscreen",
-  "display_override": ["fullscreen", "standalone"],
+  "display": "standalone",
   "background_color": "#14101e",
   "theme_color": "#14101e",
   "icons": [

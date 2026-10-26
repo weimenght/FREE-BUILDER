@@ -27,7 +27,7 @@
   function toast(m) { toast.ok = true; try { window.showWindowToast(m); } catch (e) {} toast.ok = false; }
 
   /* ---------- look & feel ---------- */
-  var css = "#sanctuaryWelcomeOverlay,#zenFloatingControls,#portraitBanner,.tw-learn{display:none!important}" +
+  var css = "#sanctuaryWelcomeOverlay,#zenFloatingControls,#portraitBanner,.tw-learn,[onclick='cycleCabinLamp()']{display:none!important}" +   /* no lamp switch: the car's light follows the hour */
     "#glassWhisperContainer,#notebookModal,[onclick='cycleWarmDrink()'],[onclick='openNotebookModal(false)'],#drawerWhisperBtn,[onclick='toggleWindowWhispers()'],[onclick='cycleWindowWhisperPrompt()']{display:none!important}" +
     "body.cb-on #glassWhisperContainer,body.cb-on #windowToast:empty{display:none!important}body.cb-on #cabinContainer>div>div:first-child{display:none!important}" +
     "body.cb-on #cabinContainer{max-width:none;padding:6px 8px}body.cb-on #cabinContainer>div>div:last-child{grid-column:1/-1}" +
@@ -106,7 +106,7 @@
   }
   /* boarding takes the whole screen (browsers allow it only from a tap), sideways on phones */
   function full() {
-    if (window.self !== window.top) { setTimeout(fit, 400); return; }   /* inside the town's frame: the frame is the screen */
+    setTimeout(fit, 400); return;   /* boarding never takes over the screen by itself (less intrusive); the window just fits */
     var de = document.documentElement, rq = de.requestFullscreen || de.webkitRequestFullscreen;
     if (rq && !document.fullscreenElement && !document.webkitFullscreenElement) {
       try { var p = rq.call(de, { navigationUI: "hide" }); if (p && p.then) p.then(lock, function () {}); else lock(); } catch (e) {}
