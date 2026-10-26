@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=e66142e2d6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=1232912bf0" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=e66142e2d6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=5bebd54450" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -2351,9 +2351,9 @@
         id: "corporate_refuge",
         mood: "empath",
         text: {
-          en: "\"It's 8:45 AM. Out on the main road, commuters are sprinting toward the subway with dread in their eyes. Take your time behind this wooden door—work can wait fifteen minutes.\"",
-          zh: "\"现在是差一刻钟九点。外头大街上赶地铁的人脚步匆匆、眼神紧绷。在这扇木门后多坐一会儿吧——工作总能等个十五分钟的。\"",
-          es: "\"Son las 8:45. Fuera, la gente corre al metro con prisa y estrés. Tómate tu tiempo aquí detrás de la madera: el trabajo puede esperar quince minutos.\""
+          en: "\"Rush hour. Out on the main road, commuters are sprinting toward the subway with dread in their eyes. Take your time behind this wooden door—work can wait fifteen minutes.\"",
+          zh: "\"正是早高峰。外头大街上赶地铁的人脚步匆匆、眼神紧绷。在这扇木门后多坐一会儿吧——工作总能等个十五分钟的。\"",
+          es: "\"Hora punta. Fuera, la gente corre al metro con prisa y estrés. Tómate tu tiempo aquí detrás de la madera: el trabajo puede esperar quince minutos.\""
         },
         options: [
           {
@@ -4662,7 +4662,10 @@
     }
 
     function getNextUniqueTopic() {
-      const pool = AppState.isBarOpen ? BarTopicPool : CafeTopicPool;
+      /* the morning talk (sparrows, rush hour, morning shadows) only before 11 on the town's clock */
+      const MORNING = ['gesha_morning', 'courtyard_sparrows', 'gaudi_courtyard', 'corporate_refuge', 'microfoam_theology'];
+      const th = (window.FBWorld && FBWorld.hour) ? FBWorld.hour() % 24 : 9;
+      const pool = (AppState.isBarOpen ? BarTopicPool : CafeTopicPool).filter(t => th < 11 || !MORNING.includes(t.id));
       let candidates = pool.filter(t => !AppState.usedTopicIds.has(t.id));
       if (candidates.length === 0) {
         AppState.usedTopicIds.clear();
