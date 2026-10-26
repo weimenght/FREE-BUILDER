@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=724064a71a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=a82894db76" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=e66142e2d6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=fc76da3dbc" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Pine Wood · Nearby</title>
 <meta name="description" content="A slow walk under the pines. Stone lanterns, mist, fireflies, and sometimes a cat on the path. Alone, or with a friend somewhere else on the same path.">
@@ -76,8 +76,30 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   function companions() { var out = [], c = WD.cats ? WD.cats() : {}; if (c.miso === "forest") out.push("miso"); if (c.yuzu === "forest") out.push("yuzu"); try { if (WD.dog && WD.dog() === "forest") out.push("dog"); } catch (e) {} return out; }
   var pals = companions().map(function (k, i) { return { k: k, x: -18 - i * 12, step: 0 }; });
 
+  /* who else is out here: neighbours' animals on their walk (they wait on the path and fall in step when you reach them),
+     and other visitors in the wood right now, who pass you going the other way and wave. No names. */
+  var met = [], passers = [], nextPass = 15 + Math.random() * 25, waves = [];
+  function loadMet() { try { if (window.FBG && FBG.pets && WD.petAt) FBG.pets().then(function (l) { met = (l || []).filter(function (p) { return WD.petAt(p.id) === "forest"; }).slice(0, 3).map(function (p, i) { return { p: p, spec: WD.petSpec ? WD.petSpec(p) : p.kind, wx: camX + 180 + i * 240 + Math.random() * 60, joined: false }; }); }); } catch (e) {} }
+  setTimeout(loadMet, 1200); addEventListener("fbback", loadMet);
+  function others() { try { return window.parent !== window && window.parent.FBShell && window.parent.FBShell.others ? window.parent.FBShell.others("forest") : 0; } catch (e) { return 0; } }
+  var COATS = [["#7a4a3a", "#5a3428", "#e8b84a", "#3a3a4a"], ["#3a6a5a", "#2a4a40", "#f0d0a0", "#4a3a2a"], ["#6a5a8a", "#4a3a6a", "#e0e0e0", "#2a2a3a"], ["#8a6a3a", "#6a4a28", "#c8e0f0", "#3a2a1a"]];
+  function meet(dt) {
+    met.forEach(function (m) {
+      if (!m.joined && Math.abs(m.wx - camX) < 16) { m.joined = true; pals.push({ k: m.spec, x: -30 - pals.length * 14, step: 0 }); waves.push({ x: W / 2 + (m.wx - camX), t: 1.6, heart: 1 }); }
+    });
+    if (time > nextPass) { nextPass = time + 35 + Math.random() * 55; if (others() > 0 && WD.phase() !== "night") { var side = me.face >= 0 ? 1 : -1; passers.push({ wx: camX + side * (W / 2 + 16), v: -side * 16, c: COATS[(Math.random() * COATS.length) | 0], waved: false, f: 0 }); } }
+    passers.forEach(function (q) { q.wx += q.v * dt; q.f += dt * 6.5; if (!q.waved && Math.abs(q.wx - camX) < 12) { q.waved = true; waves.push({ x: W / 2 + (q.wx - camX), t: 1.8 }); waves.push({ x: W / 2, t: 1.8, me: 1 }); } });
+    passers = passers.filter(function (q) { return Math.abs(q.wx - camX) < W; });
+    waves.forEach(function (w) { w.t -= dt; }); waves = waves.filter(function (w) { return w.t > 0; });
+  }
+  function drawMeet(asleep) {
+    met.forEach(function (m) { if (m.joined) return; var sx = Math.round(W / 2 + (m.wx - camX)); if (sx > -20 && sx < W + 20 && WD.drawPet) WD.drawPet(ctx, m.spec, sx, GY, 1, { flip: m.wx > camX, asleep: asleep }); });
+    passers.forEach(function (q) { var sx = Math.round(W / 2 + (q.wx - camX)); if (sx > -10 && sx < W + 10) walker(sx, GY, q.v > 0 ? 1 : -1, true, q.f, q.c[0], q.c[1], q.c[2], q.c[3]); });
+    waves.forEach(function (w) { var x = Math.round(w.x), y = GY - 26 - Math.round((1.8 - w.t) * 3); if (w.heart) { ctx.fillStyle = "#f26b7a"; ctx.fillRect(x - 2, y, 2, 2); ctx.fillRect(x + 1, y, 2, 2); ctx.fillRect(x - 1, y + 1, 3, 2); ctx.fillRect(x, y + 3, 1, 1); } else { ctx.fillStyle = "#f2d3ab"; ctx.fillRect(x - 1, y, 3, 3); ctx.fillRect(x - 1, y - 2, 1, 2); ctx.fillRect(x + 1, y - 2, 1, 2); ctx.fillRect(x, y - 3, 1, 3); } });
+  }
+
   function update(dt) {
-    time += dt; var dir = 0; if (keys.l) dir--; if (keys.r) dir++; if (pdir) dir = pdir;
+    time += dt; meet(dt); var dir = 0; if (keys.l) dir--; if (keys.r) dir++; if (pdir) dir = pdir;
     if (dir) { me.face = dir; me.moving = true; camX += dir * me.sp * dt; me.frame += dt * 6.5; prompt = Math.max(0, prompt - dt * 1.5); me.stepT += dt; if (me.stepT > .31) { me.stepT = 0; step(); } }
     else { me.moving = false; me.frame = 0; me.stepT = .25; }
     if (wf) wf.frequency.setTargetAtTime(260 + Math.sin(time * .4) * 90 + (me.moving ? 60 : 0), A.currentTime, .2);
@@ -135,6 +157,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     for (var c = Math.floor((camX - 20) / 6); c <= Math.floor((camX + W + 20) / 6); c++) { var r = hash(c * 43.1), gx = Math.round(c * 6 - camX); if (r < .45) { ctx.fillStyle = P.tuft; ctx.fillRect(gx, GY - 1, 2, 1); if (r < .2) ctx.fillRect(gx + 1, GY - 2, 1, 1); } }
     if (mate) { var mxs = Math.round(W / 2 + (mate.x - camX)); if (mxs > -10 && mxs < W + 10) walker(mxs, GY, mate.f, mate.m, time * 6.5, "#5c3b4e", "#47293b", "#f0c34a", "#3b4b5c"); else { ctx.fillStyle = "#f0c34a"; var ex = mxs < 0 ? 3 : W - 5; ctx.fillRect(ex, GY + 6, 2, 2); } }
     var asleep = WD.phase() === "night";
+    drawMeet(asleep);
     pals.forEach(function (a) { if (WD.drawPet) WD.drawPet(ctx, a.k, Math.round(W / 2 + a.x), GY, 1, { flip: me.face < 0, step: me.moving ? Math.floor(a.step) : 0, asleep: asleep && !me.moving }); });
     walker(Math.floor(W / 2), GY, me.face, me.moving, me.frame, "#3b4e5c", "#2c3b47", "#d95b43", "#5c4b3b");
     parts.forEach(function (p) { if (p.fly) { if (!P.flies) return; var gl = Math.sin(time * 3 + p.ph); if (gl > -.1) { ctx.fillStyle = gl > .5 ? "#e8f59d" : "#9ab865"; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); } } else { ctx.fillStyle = P.tuft; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); } });
