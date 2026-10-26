@@ -443,6 +443,15 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(270, 204, 90, 80, SA); for (var se = 0; se < 80; se++) { var edge = 300 + Math.sin(se / 9) * 8; R(edge, 204 + se, 360 - edge, 1, SE); }
     for (var wv = 0; wv < 10; wv++) { var wvx = 312 + hash("wv" + wv) * 46, wvy = 210 + ((hash("wvy" + wv) * 70 + f * .2) % 70); R(wvx, wvy, 6, 1, "rgba(255,255,255,.55)"); }
     R(282, 230, 1, 12, "#6a4a2a"); R(276, 226, 13, 4, "#c8402a"); R(278, 224, 9, 2, "#f6ecd2");   // a beach umbrella
+    /* birds by day: a skein over the hills now and then, gulls wheeling over the cove; fish jump in Mirror Lake and off the cove */
+    if (!night && wx !== "storm") {
+      var sk = f % 900; if (sk < 420) { var bx0 = -20 + sk * .95, by0 = 22 + Math.sin(f / 30) * 2; for (var bi = 0; bi < 5; bi++) { var bx = bx0 - bi * 4, by = by0 + Math.ceil(bi / 2) * 2 * (bi % 2 ? 1 : -1), up = ((f + bi * 3) % 6 < 3) ? 1 : 0; R(bx - 2, by - up, 2, 1, "#2a2a34"); R(bx, by, 1, 1, "#2a2a34"); R(bx + 1, by - up, 2, 1, "#2a2a34"); } }
+      for (var gi = 0; gi < 2; gi++) { var ga = f / 40 + gi * 3, gx = 332 + Math.cos(ga) * 18, gy = 198 + Math.sin(ga) * 6, up2 = ((f + gi * 4) % 8 < 4) ? 1 : 0; R(gx - 2, gy - up2, 2, 1, "#f4f4f0"); R(gx, gy, 1, 1, "#f4f4f0"); R(gx + 1, gy - up2, 2, 1, "#f4f4f0"); }
+    }
+    [[318, 138, 26, 18, "#c8d4dc"], [336, 248, 18, 28, "#d8e4ea"]].forEach(function (w, wi) {
+      var per = 140 + wi * 60, n = Math.floor((f + wi * 70) / per), k = (f + wi * 70) % per, jx = w[0] + (hash("fj" + wi + n) - .5) * w[2] * 2, jy = w[1] + (hash("fy" + wi + n) - .5) * w[3];
+      if (k < 10) { var u = k / 10; R(jx + u * 6, jy - Math.sin(u * Math.PI) * 5, 3, 1, w[4]); } else if (k < 26) { var rr = (k - 10) / 4; R(jx + 6 - rr, jy, rr * 2 + 1, 1, "rgba(255,255,255," + (.6 - (k - 10) / 30) + ")"); }
+    });
     R(290, 266, 6, 3, "#c8a050"); R(296, 262, 2, 2, "#e8a0b0");   // sandcastle, shell
     var sb = 330 + Math.sin(f / 50) * 10; R(sb, 236, 1, 10, "#3a2a1c"); R(sb + 1, 236, 6, 8, "#fbeedd"); R(sb - 3, 246, 12, 3, "#8a5a33");   // a sailboat
     // Two Candles: a little white restaurant on the lakeshore, a terrace table for two under string lights
