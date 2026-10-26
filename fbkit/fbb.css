@@ -111,3 +111,45 @@ html.fbsh-in.fbfit .fit-panel > :first-child { margin-top: 0 !important; }
   html.fbsh-in.fbfit.fit-col .fit-hero { flex: none; width: min(100%, calc(var(--fit-h, 30vh) * var(--fit-ar, 1.78))); width: min(100%, calc(var(--fit-h, 30dvh) * var(--fit-ar, 1.78))); }
   html.fbsh-in.fbfit.fit-col .fit-panel { flex: 1 1 0; min-width: 0; padding-top: 4px; }
 }
+
+/* ---------- light mode: the same town in paper and light oak (follows the device; dark keeps the night look) ----------
+   Only the town's shared parts change: buttons, the top bar, Wei's card, notes, first-visit and story cards, the privacy
+   card, the friend card and the waiting card; inside a place only those cards change, its own buttons and drawing keep
+   the night look. */
+@media (prefers-color-scheme: light) {
+  html:has(.fbsh), html .fbw, html .fbn, html .fbs, html .fbo, html .fbduo, html .fbc-town, html .fbc-intro, html .fbsh-wait {
+    --fbb-ink: #2b1a0f; --fbb-wood: #d6ad7a; --fbb-wood-hi: #e4c093; --fbb-amber: #f2a93b; --fbb-amber-hi: #ffbe55;
+    --fbb-glass: rgba(250, 242, 226, .74); --fbb-glass-hi: rgba(255, 248, 234, .88);
+    --fbb-bevel: inset -3px -3px 0 rgba(110, 62, 24, .3), inset 3px 3px 0 rgba(255, 255, 255, .55);
+    --fbl-paper: #f4e8cf; --fbl-paper2: #e9d6b0; --fbl-ink: #2b1a0f; --fbl-muted: #6e5638; --fbl-label: #9a530b;
+  }
+  html .fbsh { background: var(--fbl-paper2); color: var(--fbl-ink); box-shadow: 0 3px 0 rgba(60, 36, 14, .25); }
+  html .fbsh .fbsh-home { color: var(--fbl-ink); }
+  html .fbsh-mid { color: var(--fbl-label); }
+  html .fbsh .fbsh-wei.zz { background: #c9b892; }
+  html .fbsh .fbsh-wei.zz::after { color: #5a3a1a; }
+  html .fbsh-frame, html .fbsh-frame iframe { background: var(--fbl-paper); }
+  html .fbsh-dim { background: rgba(70, 44, 20, .3); }
+  html .fbw, html .fbn.fbn, html .fbs.fbs, html .fbsh-wait, html .fbo, html .fbduo-c, html .fbc.fbc-town, html .fbc-intro, html .fbduo-toast {
+    background: rgba(246, 236, 214, .97); color: var(--fbl-ink); box-shadow: 6px 6px 0 rgba(0, 0, 0, .55), inset 0 0 0 2px #c9a26e;
+  }
+  html .fbn.fbn, html .fbs.fbs, html .fbsh-wait { box-shadow: 4px 4px 0 rgba(0, 0, 0, .45); }
+  html .fbw-say { color: #3a220f; }
+  html .fbn .fbn-l, html .fbs .fbs-t, html .fbsh-wait b, html .fbduo-c h2, html .fbc-town .fbc-t, html .fbc-town .fbc-m, html .fbc-town .fbc-w, html .fbc-det { color: var(--fbl-label); }
+  html .fbn a.fbn-a { color: var(--fbl-label) !important; }
+  html .fbs .fbs-n, html .fbduo-or { color: var(--fbl-muted); }
+  html .fbs .fbs-x::before, html .fbs .fbs-x::after { background: var(--fbl-ink); }
+  html .fbs .fbs-x { border-color: rgba(0, 0, 0, .35); }
+  html .fbo li b { background: rgba(110, 62, 24, .12); }
+  html .fbw-opts .fbw-ghost { color: var(--fbl-ink); border-color: rgba(0, 0, 0, .3); }
+  html .fbw-set button, html .fbw-tags button, html .fbw-x, html .fbc-town .fbc-b button { background: var(--fbb-wood); color: var(--fbb-ink); }
+  html .fbc-town .fbc-b button:last-child { background: var(--fbb-amber); color: #1d130d; }
+  html .fbc-town .fbc-b button:hover, html .fbc-town .fbc-b button:focus-visible { background: var(--fbb-wood-hi); color: var(--fbb-ink); }
+  html .fbc-town .fbc-ps li { color: #3a2a1a; }
+  html .fbs-links a { background: var(--fbl-paper2); color: #7a4510; }
+  html .fbw-notes p { background: var(--fbl-paper2); color: var(--fbl-ink); }
+  html .fbw-notes p.me { background: #dfc392; }
+  html .fbduo { background: rgba(70, 44, 20, .35); }
+  html .fbduo-code { color: #136b5d; }
+  html .fbduo-st { color: #136b5d; }
+}
