@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Why Nearby · FREE//BUILDER</title>
+<meta name="description" content="Why Nearby exists: people are the end, AI and screens are tools. A small pixel town by FREE//BUILDER that sends you back to the people you love.">
+<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Why Nearby">
+<meta property="og:description" content="People are the end. AI and screens are tools.">
+<meta property="og:image" content="https://www.freebuilder.net/nearby/about/town.webp">
+<link rel="canonical" href="https://www.freebuilder.net/nearby/about/">
+<link rel="icon" href="/nearby/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+:root{color-scheme:light dark;--bg:#F7F6F2;--ink:#17171A;--mut:#6B6A70;--line:#E5E2DA;--card:#fff;--acc:#E2553F;--acc2:#C2412D;
+  --night:#14101e;--wood:#3a2214;--wood-hi:#4d2e1a;--cream:#fbeedd;--amber:#f6b73c;--glow:#fff3c0;
+  --sans:'Plus Jakarta Sans',system-ui,-apple-system,'PingFang SC','PingFang TC','Microsoft YaHei',sans-serif;
+  --pix:'VT323','PingFang SC','PingFang TC','Microsoft YaHei',ui-monospace,monospace;
+  --p2:'Press Start 2P','PingFang SC','PingFang TC','Microsoft YaHei',ui-monospace,monospace;
+  --mono:'Space Mono',ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#141416;--ink:#ECEBE6;--mut:#A8A7AD;--line:#303036;--card:#1D1D21;--acc:#F28C76;--acc2:#F28C76}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{overflow-x:clip;margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);-webkit-tap-highlight-color:transparent}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+.wrap{max-width:68rem;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* the one pixel button (same tokens as the town's .fbb) */
+.px{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:6px 14px;border:3px solid #000;border-radius:0;background:var(--wood);color:var(--cream);
+  font:400 21px/1.1 var(--pix);text-decoration:none;cursor:pointer;box-shadow:inset -3px -3px 0 rgba(0,0,0,.38),inset 3px 3px 0 rgba(255,220,170,.16),3px 3px 0 #000;transition:background-color .12s,transform .06s,box-shadow .06s}
+.px:active{transform:translate(2px,2px);box-shadow:inset 3px 3px 0 rgba(0,0,0,.35),1px 1px 0 #000}
+.px:focus-visible,.lang button:focus-visible,a:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+@media (hover:hover){.px:hover{background:var(--wood-hi)}.px.pri:hover{background:#ffc95a}}
+.px.pri{background:var(--amber);color:#1b0f07;box-shadow:inset -3px -3px 0 rgba(0,0,0,.22),inset 3px 3px 0 rgba(255,255,255,.35),3px 3px 0 #000}
+
+/* top bar: FREE//BUILDER on the left, the town and the language on the right */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:60px;padding-top:env(safe-area-inset-top)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:800 15px/1 'Syne',var(--sans);letter-spacing:-.01em}
+.mark{width:34px;height:34px;border-radius:10px;background:var(--ink);display:grid;place-items:center;flex:none}
+.mark svg{width:19px;height:19px;overflow:visible}
+.mark .last{transform-box:fill-box;transform-origin:center;transform:translate(2.5px,-2.5px) rotate(12deg);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.brand:hover .last,.brand:focus-visible .last{transform:none}
+@media (prefers-color-scheme:dark){.mark rect:not(.last){fill:#141416}}
+.tr{display:flex;gap:8px;align-items:center}
+@media (max-width:459px){.brand>span:last-child{display:none}.sh span.opt{display:none}}
+.tr .px{min-height:40px;font-size:19px;padding:4px 10px}
+.lang{position:relative}
+.lang-m{position:absolute;right:0;top:calc(100% + 8px);display:grid;min-width:10.5rem;padding:6px;background:#2a1d14;border:3px solid #000;box-shadow:5px 5px 0 #000;z-index:30}
+.lang-m[hidden]{display:none}
+.lang-m button{display:flex;justify-content:space-between;gap:12px;min-height:40px;padding:6px 10px;border:0;background:transparent;color:var(--cream);font:400 20px/1 var(--pix);text-align:left;cursor:pointer}
+.lang-m button[aria-checked="true"]{color:var(--amber)}
+.lang-m button:hover{background:var(--wood-hi)}
+.lang-m small{font:inherit;opacity:.6}
+
+/* hero */
+.hero{display:grid;gap:28px;align-items:center;padding-top:36px;padding-bottom:28px}
+@media (min-width:860px){.hero{grid-template-columns:1fr 1.05fr;gap:48px;padding-top:64px;padding-bottom:48px}}
+.kick{display:inline-block;font:400 11px/1.6 var(--p2);letter-spacing:.06em;color:var(--acc2);text-transform:uppercase}
+h1{margin:14px 0 14px;font:800 clamp(32px,7vw,56px)/1.02 'Syne',var(--sans);letter-spacing:-.025em}
+h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:normal;color:var(--acc)}
+:lang(zh) h1,:lang(zh-Hant) h1{letter-spacing:0;line-height:1.15}
+.sub{margin:0 0 22px;max-width:30rem;font-size:18px;color:var(--mut)}
+.go{display:flex;flex-wrap:wrap;gap:10px}
+.frame{position:relative;display:block;border:4px solid #000;box-shadow:8px 8px 0 #000;background:var(--night);text-decoration:none;overflow:hidden}
+.frame img{width:100%;image-rendering:auto;transition:filter 1.2s ease,transform 1.2s ease}
+.frame .cta{position:absolute;right:12px;bottom:12px}
+.frame .hour{position:absolute;left:12px;top:12px;padding:3px 8px;background:rgba(10,8,14,.82);border:2px solid #000;color:var(--glow);font:400 20px/1 var(--pix)}
+.frame.bw img{filter:grayscale(1) brightness(.85)}
+@media (hover:hover){.frame:hover img{transform:scale(1.015)}}
+
+/* section heads */
+.sec{padding-top:40px;padding-bottom:40px}
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:22px}
+.sh h2{margin:0;font:700 clamp(24px,4vw,32px)/1.1 'Syne',var(--sans);letter-spacing:-.015em}
+.sh span{font:400 11px/1 var(--mono);color:var(--mut);text-transform:uppercase;letter-spacing:.14em}
+
+/* house rules: a wooden board of six signs */
+.board{display:grid;gap:12px;grid-template-columns:1fr;padding:14px;background:var(--wood);border:3px solid #000;box-shadow:inset -4px -4px 0 rgba(0,0,0,.35),inset 4px 4px 0 rgba(255,220,170,.12),6px 6px 0 #000;
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.08) 0 2px,transparent 2px 22px)}
+@media (min-width:600px){.board{grid-template-columns:1fr 1fr}}
+@media (min-width:960px){.board{grid-template-columns:1fr 1fr 1fr;padding:18px;gap:14px}}
+.sign{display:flex;gap:12px;align-items:flex-start;padding:14px;background:#2a1d14;border:3px solid #000;color:var(--cream);box-shadow:3px 3px 0 #000}
+.sign i{flex:none;font-style:normal;font-size:26px;line-height:1;width:34px;text-align:center;padding-top:2px}
+.sign b{display:block;font:400 25px/1 var(--pix);color:var(--glow);margin-bottom:5px}
+.sign p{margin:0;font-size:14.5px;line-height:1.45;opacity:.86}
+.sign a{color:var(--amber)}
+
+/* a few places, as they are */
+.shots{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+@media (min-width:960px){.shots{grid-template-columns:repeat(4,1fr)}}
+.shot{display:flex;flex-direction:column;text-decoration:none;background:var(--card);border:3px solid #000;box-shadow:4px 4px 0 #000;transition:transform .08s,box-shadow .08s}
+.shot:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #000}
+@media (hover:hover){.shot:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000}}
+.shot .im{aspect-ratio:4/3;overflow:hidden;background:var(--night);border-bottom:3px solid #000}
+.shot img{width:100%;height:100%;object-fit:cover}
+.shot div+div{padding:10px 12px 12px}
+.shot b{display:block;font:700 15px/1.2 var(--sans)}
+.shot b span{margin-right:4px}
+.shot p{margin:4px 0 0;font-size:13px;line-height:1.4;color:var(--mut)}
+
+/* by day / after hours */
+.shift{display:grid;gap:14px}.shift>*{min-width:0}
+@media (min-width:760px){.shift{grid-template-columns:1fr auto 1fr;align-items:stretch}}
+.card{padding:24px;border-radius:22px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;gap:12px}
+.card .k{font:400 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.card h3{margin:0;display:flex;align-items:center;gap:10px;font:800 clamp(18px,5.4vw,26px)/1.05 'Syne',var(--sans);letter-spacing:-.02em}
+.card p{margin:0;flex:1}
+.card .lnk{align-self:flex-start;font:700 13px/1 var(--mono);text-decoration:underline;text-decoration-color:var(--acc);text-decoration-thickness:2px;text-underline-offset:5px}
+.card.night{border-radius:0;border:3px solid #000;box-shadow:6px 6px 0 #000;background:var(--night);color:var(--cream);position:relative;overflow:hidden}
+.card.night .k{font:400 10px/1.4 var(--p2);color:var(--amber);letter-spacing:.04em}
+.card.night h3{font:400 34px/1 var(--pix);color:var(--glow);letter-spacing:0}
+.card.night p,.card.night .k,.card.night h3,.card.night .px{position:relative}
+.stars i{position:absolute;width:2px;height:2px;background:#fff;opacity:.6;animation:tw 3.2s steps(2) infinite}
+@keyframes tw{50%{opacity:.12}}
+.mid{display:grid;place-items:center;text-align:center;padding:4px 0}
+.mid p{margin:0;max-width:16rem;font:400 italic 22px/1.2 'Instrument Serif',Georgia,serif;color:var(--ink)}
+@media (min-width:760px){.mid p{max-width:11rem}}
+.mid p::before{content:'';display:block;width:2px;height:22px;margin:0 auto 10px;background:var(--acc)}
+.mid p::after{content:'';display:block;width:2px;height:22px;margin:10px auto 0;background:var(--acc)}
+
+/* Wei */
+.wei{display:grid;gap:16px;align-items:center;padding:20px;background:#2a1d14;color:var(--cream);border:3px solid #000;box-shadow:6px 6px 0 #000,inset 0 0 0 2px #5a3a22}
+@media (min-width:700px){.wei{grid-template-columns:auto 1fr auto;gap:22px;padding:24px}}
+.wei canvas{width:112px;height:112px;image-rendering:pixelated;border:3px solid #000;background:#3a2414;display:block}
+.wei q{display:block;quotes:none;font:400 clamp(24px,3.4vw,30px)/1.15 var(--pix);color:var(--glow)}
+.wei small{display:block;margin-top:8px;font:400 12px/1.3 var(--mono);opacity:.6}
+.wei .acts{display:grid;gap:10px}
+.wei-h{display:flex;gap:16px;align-items:center}
+@media (min-width:700px){.wei-h{display:contents}}
+
+/* footer: the same line as every FREE//BUILDER page */
+.fbf{margin-top:56px;border-top:1px solid var(--line);padding-top:22px;padding-bottom:calc(22px + env(safe-area-inset-bottom));font:400 11px/1.6 var(--mono);letter-spacing:.02em}
+.fbf .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 20px;opacity:.68}
+.fbf nav{display:flex;flex-wrap:wrap;gap:6px 16px}
+.fbf a{text-decoration:none;border-bottom:1px solid transparent}.fbf a:hover{border-bottom-color:currentColor}
+.fbf .h{color:var(--acc)}.fbf .ai{border-bottom:1px dotted currentColor}
+
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.stars i{animation:none}.frame img{transition:none}}
+@media (hover:none),(pointer:coarse){.kb{display:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="FREE//BUILDER">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect class="last" x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg></span>
+      <span>FREE//BUILDER</span>
+    </a>
+    <div class="tr">
+      <a class="px" href="/nearby/"><span aria-hidden="true">🏘️</span><span data-k="town">Nearby</span></a>
+      <div class="lang">
+        <button class="px" type="button" id="lb" aria-haspopup="menu" aria-expanded="false" aria-label="Language"><span aria-hidden="true">🌐</span><span id="ll">EN</span></button>
+        <div class="lang-m" id="lm" role="menu" hidden></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <div>
+      <span class="kick" data-k="kick">Why Nearby</span>
+      <h1 data-kh="h1">People are the end.<br><em>AI and screens are tools.</em></h1>
+      <p class="sub" data-k="sub">So I built a small town that sends you back to your people.</p>
+      <div class="go">
+        <a class="px pri" href="/nearby/"><span data-k="walk">Walk in</span><span aria-hidden="true">→</span></a>
+        <a class="px" href="/nearby/next-door/"><span aria-hidden="true">🍸</span><span data-k="stool">Pull up a stool</span></a>
+      </div>
+    </div>
+    <a class="frame bw" id="hero" href="/nearby/">
+      <img src="town.webp" width="1200" height="1066" alt="" data-ka="mapAlt" fetchpriority="high">
+      <span class="hour" aria-hidden="true">☾ 20:00</span>
+    </a>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="h-rules">
+    <div class="sh rv"><h2 id="h-rules" data-k="rulesH">House rules</h2><span>06</span></div>
+    <div class="board rv">
+      <div class="sign"><i aria-hidden="true">👥</i><div><b data-k="r1t">Bring someone.</b><p data-k="r1">Every place works alone or with a friend far away. One link.</p></div></div>
+      <div class="sign"><i aria-hidden="true">🌿</i><div><b data-k="r2t">Then go outside.</b><p data-k="r2">Leaving a place ends with something to do off the screen.</p></div></div>
+      <div class="sign"><i aria-hidden="true">🛋️</i><div><b data-k="r3t">Doing nothing counts.</b><p data-k="r3">A cabin, a hill, the stars. Nothing to win.</p></div></div>
+      <div class="sign"><i aria-hidden="true">🚫</i><div><b data-k="r4t">No scores.</b><p data-k="r4">No streaks, no badges, no leaderboards.</p></div></div>
+      <div class="sign"><i aria-hidden="true">🍸</i><div><b data-k="r5t">Wei is a guide.</b><p data-k="r5">The bartender points you somewhere, then lets you go.</p></div></div>
+      <div class="sign"><i aria-hidden="true">🔒</i><div><b data-k="r6t">Yours stays yours.</b><p><a href="/privacy/" data-k="r6">Nothing leaves your device unless you say so. No tracking.</a></p></div></div>
+    </div>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="h-look">
+    <div class="sh rv"><h2 id="h-look" data-k="lookH">Look around</h2><span>04</span></div>
+    <div class="shots">
+      <a class="shot rv" href="/nearby/lie-back/"><div class="im"><img src="lie-back.webp" width="800" height="500" loading="lazy" alt=""></div><div><b><span aria-hidden="true">☁️</span><span data-p="cloud.n">Lie Back Park</span></b><p data-p="cloud.l">Lie on the grass and watch the clouds. That's it.</p></div></a>
+      <a class="shot rv" href="/nearby/no-hurry/"><div class="im"><img src="no-hurry.webp" width="800" height="625" loading="lazy" alt=""></div><div><b><span aria-hidden="true">🛖</span><span data-p="cabin.n">No Hurry</span></b><p data-p="cabin.l">A cabin with a view. Nothing to do here.</p></div></a>
+      <a class="shot rv" href="/nearby/say-hello/"><div class="im"><img src="say-hello.webp" width="800" height="496" loading="lazy" alt=""></div><div><b><span aria-hidden="true">📮</span><span data-p="postcard.n">Say Hello</span></b><p data-p="postcard.l">Send a postcard that opens on the day you choose.</p></div></a>
+      <a class="shot rv" href="/nearby/two-candles/"><div class="im"><img src="two-candles.webp" width="800" height="505" loading="lazy" alt=""></div><div><b><span aria-hidden="true">🕯️</span><span data-p="table.n">Two Candles</span></b><p data-p="table.l">A table for two, however far apart.</p></div></a>
+    </div>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="h-shift">
+    <div class="sh rv"><h2 id="h-shift" data-k="shiftH">One question, two shifts</h2><span class="opt">FREE//BUILDER × Nearby</span></div>
+    <div class="shift">
+      <div class="card rv">
+        <span class="k" data-k="dayK">By day</span>
+        <h3><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect class="last" x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg></span>FREE//BUILDER</h3>
+        <p data-k="dayP">Short, playful practice for the human skills AI can't replace. It ends in a real conversation.</p>
+        <a class="lnk" href="/" data-k="dayGo">See the practice →</a>
+      </div>
+      <div class="mid rv"><p data-k="q">Can a screen send us back to each other?</p></div>
+      <div class="card night rv">
+        <div class="stars" aria-hidden="true" id="stars"></div>
+        <span class="k" data-k="nightK">After hours</span>
+        <h3><span aria-hidden="true">🏘️</span><span data-k="town">Nearby</span></h3>
+        <p data-k="nightP">The same idea after work: a sealed postcard, a table for two, a bartender who listens.</p>
+        <a class="px pri" href="/nearby/" style="align-self:flex-start"><span data-k="walk">Walk in</span><span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap sec" aria-label="Wei">
+    <div class="wei rv">
+      <div class="wei-h"><canvas id="wf" width="32" height="32" aria-hidden="true"></canvas>
+      <div><q data-k="say">*slides a coaster* When you're done here, go and see someone you love.</q><small data-k="weiCap">Wei, the bartender at Next Door</small></div></div>
+      <div class="acts">
+        <a class="px pri" href="/nearby/next-door/"><span aria-hidden="true">🍸</span><span data-k="stool">Pull up a stool</span></a>
+        <a class="px" href="https://www.wei-meng.org/" data-x><span aria-hidden="true">👋</span><span data-k="irl">Meet Wei IRL</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="fbf">
+  <div class="wrap">
+    <span>© <span id="yr">2026</span> <a href="/">FREE//BUILDER</a> L&amp;D Solutions</span>
+    <nav aria-label="Footer"><a href="/privacy/" data-k="fPriv">Privacy</a><a href="https://www.wei-meng.org/" data-x data-k="fBy">A practice by Wei</a><span id="made">Made with <a class="ai" href="/notes/ai-use/">AI</a> &amp; <a class="h" href="/nearby/" aria-label="Nearby">♥</a></span></nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var LANGS = ["en", "zh", "zh-Hant", "es", "ca"], NAMES = ["English", "简体中文", "繁體中文", "Español", "Català"], SHORT = ["EN", "简中", "繁中", "ES", "CA"];
+  var T = {
+    title: ["Why Nearby · FREE//BUILDER", "为什么有近邻 · FREE//BUILDER", "為什麼有近鄰 · FREE//BUILDER", "Por qué Cerca · FREE//BUILDER", "Per què A Prop · FREE//BUILDER"],
+    town: ["Nearby", "近邻", "近鄰", "Cerca", "A Prop"],
+    kick: ["Why Nearby", "为什么有近邻", "為什麼有近鄰", "Por qué Cerca", "Per què A Prop"],
+    h1: ["People are the end.<br><em>AI and screens are tools.</em>", "人是目的。<br><em>AI 和屏幕只是工具。</em>", "人是目的。<br><em>AI 和螢幕只是工具。</em>", "Las personas son el fin.<br><em>La IA y las pantallas, herramientas.</em>", "Les persones són el fi.<br><em>La IA i les pantalles, eines.</em>"],
+    sub: ["So I built a small town that sends you back to your people.", "所以我造了一座小镇，把你送回身边的人那里。", "所以我造了一座小鎮，把你送回身邊的人那裡。", "Así que construí un pueblito que te devuelve a tu gente.", "Així que vaig construir un poblet que et torna a la teva gent."],
+    walk: ["Walk in", "走进去", "走進去", "Entra", "Entra"],
+    stool: ["Pull up a stool", "拉张凳子坐", "拉張凳子坐", "Siéntate en la barra", "Seu a la barra"],
+    mapAlt: ["Nearby at night: a bar, a bookshop, a post office, a cabin on the hill, a lake, a station.", "夜里的近邻：一间酒吧、一家书店、一个邮局、山坡上的小屋、一片湖、一座车站。", "夜裡的近鄰：一間酒吧、一家書店、一個郵局、山坡上的小屋、一片湖、一座車站。", "Cerca de noche: un bar, una librería, una oficina de correos, una cabaña en la colina, un lago, una estación.", "A Prop de nit: un bar, una llibreria, una oficina de correus, una cabana al turó, un llac, una estació."],
+    rulesH: ["House rules", "镇规", "鎮規", "Normas de la casa", "Normes de la casa"],
+    r1t: ["Bring someone.", "带个人来。", "帶個人來。", "Trae a alguien.", "Porta algú."],
+    r1: ["Every place works alone or with a friend far away. One link.", "每个地方都能一个人逛，也能和远方的朋友一起。一个链接就行。", "每個地方都能一個人逛，也能和遠方的朋友一起。一個連結就行。", "Cada sitio funciona solo o con un amigo lejos. Un enlace.", "Cada lloc funciona sol o amb un amic lluny. Un enllaç."],
+    r2t: ["Then go outside.", "然后出门去。", "然後出門去。", "Luego, sal fuera.", "Després, surt."],
+    r2: ["Leaving a place ends with something to do off the screen.", "离开每个地方时，都会给你一件屏幕外的事。", "離開每個地方時，都會給你一件螢幕外的事。", "Al salir de cada sitio te espera algo que hacer fuera de la pantalla.", "En sortir de cada lloc t'espera alguna cosa per fer fora de la pantalla."],
+    r3t: ["Doing nothing counts.", "什么都不做也算数。", "什麼都不做也算數。", "No hacer nada cuenta.", "No fer res compta."],
+    r3: ["A cabin, a hill, the stars. Nothing to win.", "一间小屋，一片山坡，满天星星。没有输赢。", "一間小屋，一片山坡，滿天星星。沒有輸贏。", "Una cabaña, una colina, las estrellas. Nada que ganar.", "Una cabana, un turó, les estrelles. Res a guanyar."],
+    r4t: ["No scores.", "不计分。", "不計分。", "Sin puntos.", "Sense punts."],
+    r4: ["No streaks, no badges, no leaderboards.", "没有连续打卡，没有徽章，没有排行榜。", "沒有連續打卡，沒有徽章，沒有排行榜。", "Sin rachas, sin insignias, sin clasificaciones.", "Sense ratxes, sense insígnies, sense classificacions."],
+    r5t: ["Wei is a guide.", "Wei 只是向导。", "Wei 只是嚮導。", "Wei es un guía.", "En Wei és un guia."],
+    r5: ["The bartender points you somewhere, then lets you go.", "这位酒保给你指个地方，然后放你走。", "這位酒保給你指個地方，然後放你走。", "El barman te indica un sitio y te deja ir.", "El cambrer t'indica un lloc i et deixa anar."],
+    r6t: ["Yours stays yours.", "你的就是你的。", "你的就是你的。", "Lo tuyo es tuyo.", "El que és teu és teu."],
+    r6: ["Nothing leaves your device unless you say so. No tracking.", "除非你同意，什么都不会离开你的设备。不追踪。", "除非你同意，什麼都不會離開你的裝置。不追蹤。", "Nada sale de tu dispositivo sin tu permiso. Sin rastreo.", "Res surt del teu dispositiu sense el teu permís. Sense rastreig."],
+    lookH: ["Look around", "四处看看", "四處看看", "Echa un vistazo", "Fes un cop d'ull"],
+    shiftH: ["One question, two shifts", "一个问题，两个班次", "一個問題，兩個班次", "Una pregunta, dos turnos", "Una pregunta, dos torns"],
+    dayK: ["By day", "白天", "白天", "De día", "De dia"],
+    dayP: ["Short, playful practice for the human skills AI can't replace. It ends in a real conversation.", "短小、好玩的练习，练那些 AI 取代不了的人的能力。最后落在一场真实的对话里。", "短小、好玩的練習，練那些 AI 取代不了的人的能力。最後落在一場真實的對話裡。", "Práctica breve y lúdica de las habilidades humanas que la IA no puede sustituir. Termina en una conversación de verdad.", "Pràctica breu i lúdica de les habilitats humanes que la IA no pot substituir. Acaba en una conversa de veritat."],
+    dayGo: ["See the practice →", "看看这些练习 →", "看看這些練習 →", "Ver las prácticas →", "Veure les pràctiques →"],
+    q: ["Can a screen send us back to each other?", "屏幕能不能把我们送回彼此身边？", "螢幕能不能把我們送回彼此身邊？", "¿Puede una pantalla devolvernos los unos a los otros?", "Pot una pantalla tornar-nos els uns als altres?"],
+    nightK: ["After hours", "下班以后", "下班以後", "Fuera de horario", "Fora d'horari"],
+    nightP: ["The same idea after work: a sealed postcard, a table for two, a bartender who listens.", "下班后的同一个想法：一张封存的明信片、一张双人桌、一个会倾听的酒保。", "下班後的同一個想法：一張封存的明信片、一張雙人桌、一個會傾聽的酒保。", "La misma idea después del trabajo: una postal sellada, una mesa para dos, un barman que escucha.", "La mateixa idea després de la feina: una postal segellada, una taula per a dos, un cambrer que escolta."],
+    say: ["*slides a coaster* When you're done here, go and see someone you love.", "*推过来一张杯垫* 待够了，就去见你爱的人吧。", "*推過來一張杯墊* 待夠了，就去見你愛的人吧。", "*desliza un posavasos* Cuando acabes aquí, ve a ver a alguien que quieras.", "*fa lliscar un sotagot* Quan acabis aquí, ves a veure algú que estimis."],
+    weiCap: ["Wei, the bartender at Next Door", "Wei，“隔壁”的调酒师", "Wei，「隔壁」的調酒師", "Wei, el barman de Al Lado", "En Wei, el cambrer d'Al Costat"],
+    irl: ["Meet Wei IRL", "见见 Wei", "見見 Wei", "Conoce a Wei", "Coneix en Wei"],
+    fPriv: ["Privacy", "隐私", "隱私", "Privacidad", "Privacitat"],
+    fBy: ["A practice by Wei", "Wei的独立工作室", "Wei的獨立工作室", "Una práctica de Wei", "Una pràctica de Wei"],
+    made: [["Made with ", " & "], ["用 ", " 与 ", " 制作"], ["用 ", " 與 ", " 製作"], ["Hecho con ", " y "], ["Fet amb ", " i "]],
+    ai: ["AI", "AI", "AI", "IA", "IA"]
+  };
+  /* the places' own names and lines: the same words as the town's list (FBWorld.PLACES in build/fbl.js) */
+  var P = {
+    cloud: [["Lie Back Park", "看云坡", "看雲坡", "Parque Panza Arriba", "Parc Panxa Enlaire"], ["Lie on the grass and watch the clouds. That's it.", "躺在草地上看云，就这样。", "躺在草地上看雲，就這樣。", "Túmbate en la hierba y mira las nubes. Nada más.", "Estira't a l'herba i mira els núvols. Res més."]],
+    cabin: [["No Hurry", "不急", "不急", "Sin Prisa", "Sense Pressa"], ["A cabin with a view. Nothing to do here.", "一间能看风景的小屋，这里什么都不用做。", "一間能看風景的小屋，這裡什麼都不用做。", "Una cabaña con vistas. Aquí no hay nada que hacer.", "Una cabana amb vistes. Aquí no cal fer res."]],
+    postcard: [["Say Hello", "问个好", "問個好", "Di Hola", "Digues Hola"], ["Send a postcard that opens on the day you choose.", "寄一张明信片，到你选的那天才打开。", "寄一張明信片，到你選的那天才打開。", "Envía una postal que se abre el día que elijas.", "Envia una postal que s'obre el dia que triïs."]],
+    table: [["Two Candles", "双烛小馆", "雙燭小館", "Dos Velas", "Dues Espelmes"], ["A table for two, however far apart.", "无论相隔多远，都有一张双人桌。", "無論相隔多遠，都有一張雙人桌。", "Una mesa para dos, por lejos que estéis.", "Una taula per a dos, per lluny que sigueu."]]
+  };
+
+  /* one language preference for both sites (the same keys as the kit): ?fbl= first, then what was chosen before, then the browser */
+  var KEYS = ["wm_preferred_lang", "wm_cases_lang"];
+  function norm(x) { x = String(x || "").toLowerCase(); if (!x) return null; if (x === "zh-hant" || /^zh-(tw|hk|mo)/.test(x) || x === "tw" || x === "yue") return "zh-Hant"; if (x.indexOf("zh") === 0) return "zh"; if (x.indexOf("ca") === 0) return "ca"; if (x.indexOf("es") === 0) return "es"; if (x.indexOf("en") === 0) return "en"; return null; }
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  var lang = null;
+  try { var u = new URL(location.href), q = norm(u.searchParams.get("fbl")); if (q) { lang = q; KEYS.forEach(function (k) { ls(k, q); }); u.searchParams.delete("fbl"); history.replaceState(null, "", u.pathname + u.search + u.hash); } } catch (e) {}
+  if (!lang) for (var i = 0; i < KEYS.length && !lang; i++) lang = norm(ls(KEYS[i]));
+  if (!lang) { var nl = navigator.languages || [navigator.language || "en"]; for (var j = 0; j < nl.length && !lang; j++) lang = norm(nl[j]); }
+  lang = lang || "en";
+
+  function paint() {
+    var n = LANGS.indexOf(lang); if (n < 0) n = 0;
+    document.documentElement.lang = lang === "zh" ? "zh-Hans" : lang;
+    document.title = T.title[n];
+    document.querySelectorAll("[data-k]").forEach(function (e) { var v = T[e.getAttribute("data-k")]; if (v) e.textContent = v[n]; });
+    document.querySelectorAll("[data-kh]").forEach(function (e) { var v = T[e.getAttribute("data-kh")]; if (v) e.innerHTML = v[n]; });
+    document.querySelectorAll("[data-ka]").forEach(function (e) { var v = T[e.getAttribute("data-ka")]; if (v) e.alt = v[n]; });
+    document.querySelectorAll("[data-p]").forEach(function (e) { var k = e.getAttribute("data-p").split("."), v = P[k[0]]; if (v) e.textContent = v[k[1] === "n" ? 0 : 1][n]; });
+    var m = T.made[n], md = document.getElementById("made"), a = md.querySelector(".ai"), h = md.querySelector(".h");
+    a.textContent = T.ai[n]; md.textContent = ""; md.appendChild(document.createTextNode(m[0])); md.appendChild(a); md.appendChild(document.createTextNode(m[1])); md.appendChild(h); if (m[2]) md.appendChild(document.createTextNode(m[2]));
+    document.getElementById("ll").textContent = SHORT[n];
+    document.getElementById("lb").setAttribute("aria-label", "Language: " + NAMES[n]);
+  }
+
+  /* the language menu */
+  var lb = document.getElementById("lb"), lm = document.getElementById("lm");
+  function closeM(f) { lm.hidden = true; lb.setAttribute("aria-expanded", "false"); if (f) lb.focus(); }
+  lb.addEventListener("click", function (e) {
+    e.stopPropagation(); if (!lm.hidden) return closeM();
+    lm.innerHTML = ""; LANGS.forEach(function (c, i) {
+      var b = document.createElement("button"); b.type = "button"; b.setAttribute("role", "menuitemradio"); b.setAttribute("aria-checked", String(c === lang)); b.lang = c;
+      b.innerHTML = "<span></span><small></small>"; b.firstChild.textContent = NAMES[i]; b.lastChild.textContent = SHORT[i] + (c === lang ? " ✓" : "");
+      b.onclick = function () { lang = c; KEYS.forEach(function (k) { ls(k, c); }); paint(); closeM(true); };
+      lm.appendChild(b);
+    });
+    lm.hidden = false; lb.setAttribute("aria-expanded", "true"); (lm.querySelector('[aria-checked="true"]') || lm.firstChild).focus();
+  });
+  document.addEventListener("click", function (e) { if (!lm.hidden && !lm.contains(e.target)) closeM(); });
+  document.addEventListener("keydown", function (e) {
+    if (lm.hidden) return; var it = [].slice.call(lm.querySelectorAll("button")), k = it.indexOf(document.activeElement);
+    if (e.key === "Escape") closeM(true); else if (e.key === "ArrowDown") { e.preventDefault(); it[(k + 1) % it.length].focus(); } else if (e.key === "ArrowUp") { e.preventDefault(); it[(k - 1 + it.length) % it.length].focus(); }
+  });
+  /* links to wei-meng.org carry the language (each site keeps its own storage) */
+  document.querySelectorAll("a[data-x]").forEach(function (a) { a.addEventListener("click", function () { try { var t = new URL(a.href); t.searchParams.set("fbl", lang); a.href = t.toString(); } catch (e) {} }); });
+
+  /* Wei: the same pixels as everywhere in town (WEI in build/fbg.js) */
+  var WEI = [[9,3,14,4,"#1c1917"],[7,5,4,5,"#1c1917"],[21,5,4,5,"#1c1917"],[11,2,10,2,"#292524"],[9,7,14,12,"#f5d49a"],[8,10,1,4,"#e9be78"],[23,10,1,4,"#e9be78"],
+    [10,10,4,4,"rgba(125,178,168,.3)"],[10,9,4,1,"#e0a043"],[10,14,4,1,"#e0a043"],[9,10,1,4,"#e0a043"],[14,10,1,4,"#e0a043"],[11,10,1,1,"rgba(255,255,255,.8)"],[12,12,1,2,"#1b0f07"],[15,11,2,1,"#e0a043"],
+    [18,10,4,4,"rgba(125,178,168,.3)"],[18,9,4,1,"#e0a043"],[18,14,4,1,"#e0a043"],[17,10,1,4,"#e0a043"],[22,10,1,4,"#e0a043"],[19,10,1,1,"rgba(255,255,255,.8)"],[20,12,1,2,"#1b0f07"],
+    [7,10,2,1,"#b9772c"],[23,10,2,1,"#b9772c"],[14,16,4,1,"#a0521d"],[13,19,6,2,"#f5d49a"],
+    [11,21,10,2,"#f3ead8"],[15,22,2,2,"#6b3a1b"],[8,23,16,11,"#1c1410"],[12,23,8,10,"#4a2410"],[14,24,4,7,"#f3ead8"],[15,27,2,1,"#e0a043"],[15,30,2,1,"#e0a043"]];
+  var cv = document.getElementById("wf"), g = cv.getContext("2d");
+  function face(blink) { g.fillStyle = "#3a2414"; g.fillRect(0, 0, 32, 32); WEI.forEach(function (r) { if (blink && r[4] === "#1b0f07") return; g.fillStyle = r[4]; g.fillRect(r[0], r[1] - 1, r[2], r[3]); }); if (blink) { g.fillStyle = "#1b0f07"; g.fillRect(11, 12, 3, 1); g.fillRect(19, 12, 3, 1); } }
+  face(false);
+  var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!still) setInterval(function () { face(true); setTimeout(function () { face(false); }, 160); }, 4200);
+
+  /* a few stars over After hours */
+  var st = document.getElementById("stars");
+  for (var s = 0; s < 26; s++) { var d = document.createElement("i"); d.style.left = (Math.random() * 100).toFixed(1) + "%"; d.style.top = (Math.random() * 100).toFixed(1) + "%"; d.style.animationDelay = (Math.random() * 3).toFixed(2) + "s"; st.appendChild(d); }
+
+  /* the map starts in black and white and the colour comes in when you look at it, as it does in town */
+  var hero = document.getElementById("hero");
+  setTimeout(function () { hero.classList.remove("bw"); }, still ? 0 : 700);
+
+  /* things arrive as you scroll */
+  if ("IntersectionObserver" in window && !still) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { rootMargin: "0px 0px -8% 0px" });
+    document.querySelectorAll(".rv").forEach(function (e) { io.observe(e); });
+  } else document.querySelectorAll(".rv").forEach(function (e) { e.classList.add("in"); });
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+  paint();
+})();
+</script>
+</body>
+</html>
