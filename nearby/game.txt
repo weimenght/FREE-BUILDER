@@ -47,10 +47,18 @@ URL: pine-wood/
 CODE: MEADOW
 ID: WM-25
 TITLE: Wildflower Meadow
-GENRE: Walk Mantou, the sheep go home
+GENRE: Lie in the flowers
 AUTHOR: FREE//BUILDER
-DESC: Mantou follows your finger; a tap is a woof. The sheep drift away from him and flowers open where they walk. When the flock is home in the pen they settle, and later wander out again. At night everyone sleeps. A friend can be the second shepherd.
-URL: wildflower-meadow/
+DESC: Lie down in the wildflowers and watch the sky go by. Tap a flower by your face and breathe it in; sometimes a bee comes to see what you found. Nothing to do but that.
+URL: lie-back/?place=meadow
+
+CODE: PASTURE
+ID: HP-26
+TITLE: High Pasture
+GENRE: The flock goes home
+AUTHOR: FREE//BUILDER
+DESC: Walk the dog; a tap is a woof. The flock drifts away from him toward the pen: four to fourteen sheep, and some days a goat, a cow or an alpaca came up too. When everyone is home they settle, and later wander out again. At night everyone sleeps. A friend can be the second shepherd.
+URL: high-pasture/
 
 CODE: CABIN
 ID: NH-16

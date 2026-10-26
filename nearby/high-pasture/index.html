@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=47027fe08b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=48e2cff6a4" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=724064a71a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=a82894db76" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Wildflower Meadow · Nearby</title>
-<meta name="description" content="Mantou and a small flock on a meadow nobody planted. Walk him around and the sheep drift home to the pen. Alone, or with a friend as the second shepherd.">
+<title>High Pasture · Nearby</title>
+<meta name="description" content="A high pasture above the town. Walk the dog and the flock drifts home to the pen: sheep, and some days a goat, a cow or an alpaca. Alone, or with a friend as the second shepherd.">
 <meta name="theme-color" content="#212b22">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%2374a15e'/%3E%3Crect x='4' y='6' width='7' height='4' fill='%23f2efe9'/%3E%3Crect x='10' y='6' width='2' height='2' fill='%23383230'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%23f5e898'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/fonts/g/fonts.css">
@@ -17,23 +17,24 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
-<h1 class="sr" id="h1">Wildflower Meadow</h1>
-<canvas id="cv" role="img" aria-label="Mantou and a flock of sheep on a meadow"></canvas>
+<h1 class="sr" id="h1">High Pasture</h1>
+<canvas id="cv" role="img" aria-label="A dog and a flock on a high pasture"></canvas>
 <div class="bar">
   <button type="button" class="duo fbb fbb-glass fbb-icon" id="duo" aria-label="With a friend">👥</button>
 </div>
 <script src="/nearby/duo.js"></script>
 <script>
-/* Wildflower Meadow: Mantou follows your finger; a tap is a woof. The sheep drift away from him, and flowers open
-   where they walk. When the whole flock is in the pen they settle with a heart, the gate swings open a while
-   later and they wander out again. No levels, no counting. At night everyone sleeps: sheep in the pen, Mantou
-   by the gate, and the fireflies come to your finger. With a friend: they are the second shepherd. */
+/* High Pasture: the dog follows your finger; a tap is a woof. The flock drifts away from him, and flowers open
+   where they walk. A different flock every visit: four to fourteen sheep, and some days a goat, a cow or an alpaca
+   wandered up too. The animals are drawn at twice the detail of the field, so the dog (the town's own sprite) is a
+   little smaller than a sheep. When everyone is in the pen they settle with a heart; the gate swings open a while
+   later. No levels, no counting. At night everyone sleeps. With a friend: they are the second shepherd. */
 (function () {
   "use strict";
   var WD = window.FBWorld || { phase: function () { return "day"; }, weather: function () { return "clear"; } };
-  var cv = document.getElementById("cv"), ctx = cv.getContext("2d"), PX = 3, GW = 200, GH = 180;
+  var cv = document.getElementById("cv"), ctx = cv.getContext("2d"), PX = 3, S = 3, GW = 200, GH = 180;   /* S fine pixels per field unit: the animals are drawn fine */
   var PAL = {
-    day: { grass: "#74a15e", alt: "#689452", pen: "#8cb86f", fence: "#d6b685", post: "#ad8957", shadow: "rgba(26,46,29,.24)", rock: "#8b9991", rockD: "#69756e", top: "#4e7d46", mid: "#3d6637", trunk: "#6e5039", f1: "#f5e898", f2: "#f09ca2" },
+    day: { grass: "#6f9a5a", alt: "#5f8a4c", pen: "#86b06a", fence: "#d6b685", post: "#ad8957", shadow: "rgba(26,46,29,.24)", rock: "#8b9991", rockD: "#69756e", top: "#4e7d46", mid: "#3d6637", trunk: "#6e5039", f1: "#f4f1e6", f2: "#5a7ad8" },
     dusk: { grass: "#a88c54", alt: "#997c46", pen: "#ba9f66", fence: "#e0b379", post: "#b0824b", shadow: "rgba(48,29,20,.28)", rock: "#948680", rockD: "#70635d", top: "#7a5f42", mid: "#5e462e", trunk: "#523628", f1: "#ffd485", f2: "#e87a7a" },
     night: { grass: "#3b545c", alt: "#32484f", pen: "#47656e", fence: "#949ba1", post: "#687075", shadow: "rgba(13,22,26,.38)", rock: "#596970", rockD: "#414e54", top: "#293e45", mid: "#1f3036", trunk: "#332b29", f1: "#9ce8d9", f2: "#b3a2e6" }
   };
@@ -53,12 +54,12 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   var dog = { x: 30, y: 60, vx: 0, vy: 0, face: 1, step: 0 }, ptr = { x: 30, y: 60, on: false }, mate = null, settleT = 0, gateOpen = false, time = 0;
   function rnd(a, b) { return a + Math.random() * (b - a); }
   function layout() {
-    GW = Math.max(150, Math.floor(innerWidth / PX)); GH = Math.max(150, Math.floor(innerHeight / PX)); cv.width = GW; cv.height = GH; ctx.imageSmoothingEnabled = false;
-    var tall = GH > GW, pw = Math.min(70, Math.round(GW * (tall ? .5 : .24))), ph = Math.min(64, Math.round(GH * (tall ? .22 : .4)));
+    GW = Math.max(150, Math.floor(innerWidth / PX)); GH = Math.max(150, Math.floor(innerHeight / PX)); cv.width = GW * S; cv.height = GH * S; ctx.imageSmoothingEnabled = false;
+    var tall = GH > GW, pw = Math.min(100, Math.round(GW * (tall ? .66 : .3))), ph = Math.min(80, Math.round(GH * (tall ? .25 : .45)));
     pen = tall ? { x: Math.round((GW - pw) / 2), y: 16, w: pw, h: ph, gate: "bottom" } : { x: GW - pw - 16, y: Math.round((GH - ph) / 2), w: pw, h: ph, gate: "left" };
     buildFences();
-    rocks = [{ x: GW * .45, y: GH * .3, r: 8 }, { x: GW * .55, y: GH * .78, r: 10 }];
-    trees = [{ x: 18, y: 20 }, { x: 34, y: 14 }, { x: GW - 20, y: GH - 16 }, { x: 22, y: GH - 18 }];
+    rocks = []; for (var ri = 0; ri < 5; ri++) { var rx = rnd(14, GW - 14), ry = rnd(14, GH - 14); if (!inPen(rx, ry) && Math.hypot(rx - GW / 2, ry - GH / 2) > 20) rocks.push({ x: rx, y: ry, r: 4 + (Math.random() * 6 | 0) }); }   /* a stony alp */
+    trees = [{ x: 16, y: 18 }, { x: GW - 18, y: GH - 16 }];
     tufts = []; for (var i = 0; i < GW * GH / 500; i++) tufts.push({ x: rnd(6, GW - 6) | 0, y: rnd(6, GH - 6) | 0, t: Math.random() > .5 });
     flowers = []; for (i = 0; i < GW * GH / 1100; i++) { var fx = rnd(10, GW - 10) | 0, fy = rnd(10, GH - 10) | 0; if (!inPen(fx, fy)) flowers.push({ x: fx, y: fy, c: Math.random() > .45 ? 1 : 2, open: false }); }
     flies = []; for (i = 0; i < 22; i++) flies.push({ x: Math.random() * GW, y: Math.random() * GH, ph: Math.random() * 6.3, sp: .15 + Math.random() * .2 });
@@ -66,9 +67,13 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     newFlock();
   }
   function newFlock() {
-    sheep = []; var tall = GH > GW, cx = tall ? GW / 2 : GW * .25, cy = tall ? GH * .72 : GH / 2, n = 6 + ((Math.random() * 4) | 0);
-    for (var i = 0; i < n; i++) { var a = Math.random() * 6.3, d = Math.random() * 26; sheep.push({ x: cx + Math.cos(a) * d, y: cy + Math.sin(a) * d, vx: 0, vy: 0, face: 1, hop: 0, wa: Math.random() * 6.3, graze: (Math.random() * 120) | 0, in: false }); }
-    if (night()) sheep.forEach(function (s, i) { s.x = pen.x + 10 + (i % 4) * (pen.w - 20) / 3; s.y = pen.y + 12 + ((i / 4) | 0) * 12; s.in = true; });
+    sheep = []; var tall = GH > GW, cx = tall ? GW / 2 : GW * .25, cy = tall ? GH * .72 : GH / 2, n = 4 + ((Math.random() * 11) | 0);
+    var kinds = []; for (var k = 0; k < n; k++) kinds.push("sheep");
+    if (Math.random() < .3) { kinds[0] = "goat"; if (n > 6 && Math.random() < .5) kinds[1] = "goat"; }   /* some days the flock brought friends */
+    if (Math.random() < .16) kinds[n - 1] = "cow";
+    if (Math.random() < .12 && n > 3) kinds[n - 2] = "alpaca";
+    for (var i = 0; i < n; i++) { var a = Math.random() * 6.3, d = Math.random() * 26; sheep.push({ t: kinds[i], x: cx + Math.cos(a) * d, y: cy + Math.sin(a) * d, vx: 0, vy: 0, face: 1, hop: 0, wa: Math.random() * 6.3, graze: (Math.random() * 120) | 0, in: false }); }
+    if (night()) sheep.forEach(function (s, i) { s.x = pen.x + 10 + (i % 4) * (pen.w - 20) / 3; s.y = pen.y + 18 + ((i / 4) | 0) * 15; s.in = true; });
     dog.x = tall ? GW / 2 : 30; dog.y = tall ? GH - 24 : GH / 2; ptr.x = dog.x; ptr.y = dog.y; gateOpen = false; settleT = 0;
   }
   function buildFences() {
@@ -87,7 +92,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     if (night()) return;   /* everyone is asleep */
     if (mine) { woof(); if (duo && duo.peer()) duo.send("woof", { x: Math.round(x), y: Math.round(y) }); }
     ripples.push({ x: x, y: y, r: 3, a: .9 });
-    if (!duo || !duo.peer() || duo.host()) sheep.forEach(function (s) { var dx = s.x - x, dy = s.y - y, d = Math.hypot(dx, dy); if (d < 62 && d > .1) { var f = (62 - d) / 62 * 1.45; s.vx += dx / d * f; s.vy += dy / d * f; s.graze = 0; if (Math.random() < .35) setTimeout(baa, Math.random() * 140); } });
+    if (!duo || !duo.peer() || duo.host()) sheep.forEach(function (s) { var dx = s.x - x, dy = s.y - y, d = Math.hypot(dx, dy); if (d < 75 && d > .1) { var f = (75 - d) / 75 * 1.45; s.vx += dx / d * f; s.vy += dy / d * f; s.graze = 0; if (Math.random() < .35) setTimeout(baa, Math.random() * 140); } });
   }
 
   /* ---------- with a friend: the host keeps the flock, the friend walks the field as a second shepherd ---------- */
@@ -95,7 +100,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     onMsg: function (ev, p) {
       if (ev === "pos") { if (!mate) mate = { x: p.x, y: p.y }; mate.tx = p.x; mate.ty = p.y; mate.t = Date.now(); }
       if (ev === "woof") { woof(); bark(p.x, p.y, false); }
-      if (ev === "flock" && !duo.host()) { p.s.forEach(function (q, i) { if (!sheep[i]) sheep[i] = { x: q[0], y: q[1], vx: 0, vy: 0, face: 1, hop: 0, graze: 0 }; var s = sheep[i]; s.tx = q[0]; s.ty = q[1]; s.face = q[2]; s.in = !!q[3]; }); sheep.length = p.s.length; if (p.g !== gateOpen) { gateOpen = p.g; buildFences(); } }
+      if (ev === "flock" && !duo.host()) { p.s.forEach(function (q, i) { if (!sheep[i]) sheep[i] = { x: q[0], y: q[1], vx: 0, vy: 0, face: 1, hop: 0, graze: 0 }; var s = sheep[i]; s.tx = q[0]; s.ty = q[1]; s.face = q[2]; s.in = !!q[3]; s.t = q[4] || "sheep"; }); sheep.length = p.s.length; if (p.g !== gateOpen) { gateOpen = p.g; buildFences(); } }
     },
     onPeer: function (here) { if (!here) mate = null; },
     onState: function (s) { document.getElementById("duo").classList.toggle("on", s.peer); }
@@ -104,12 +109,12 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   setInterval(function () {
     if (!duo || !duo.peer()) return;
     duo.send("pos", { x: Math.round(dog.x), y: Math.round(dog.y) });
-    if (duo.host()) duo.send("flock", { s: sheep.map(function (s) { return [Math.round(s.x), Math.round(s.y), s.face, s.in ? 1 : 0]; }), g: gateOpen });
+    if (duo.host()) duo.send("flock", { s: sheep.map(function (s) { return [Math.round(s.x), Math.round(s.y), s.face, s.in ? 1 : 0, s.t]; }), g: gateOpen });
   }, 160);
 
   function seg(px, py, x1, y1, x2, y2) { var l2 = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1); var t = l2 ? Math.max(0, Math.min(1, ((px - x1) * (x2 - x1) + (py - y1) * (y2 - y1)) / l2)) : 0, nx = x1 + t * (x2 - x1), ny = y1 + t * (y2 - y1); return { d: Math.hypot(px - nx, py - ny), nx: nx, ny: ny }; }
   function collide(e, rad) {
-    if (e.x < 8) { e.x = 8; e.vx *= -.5; } if (e.x > GW - 8) { e.x = GW - 8; e.vx *= -.5; } if (e.y < 8) { e.y = 8; e.vy *= -.5; } if (e.y > GH - 8) { e.y = GH - 8; e.vy *= -.5; }
+    if (e.x < 12) { e.x = 12; e.vx *= -.5; } if (e.x > GW - 12) { e.x = GW - 12; e.vx *= -.5; } if (e.y < 14) { e.y = 14; e.vy *= -.5; } if (e.y > GH - 6) { e.y = GH - 6; e.vy *= -.5; }
     fences.forEach(function (f) { var r = seg(e.x, e.y, f.x1, f.y1, f.x2, f.y2); if (r.d < rad && r.d > .001) { var o = rad - r.d, nx = (e.x - r.nx) / r.d, ny = (e.y - r.ny) / r.d; e.x += nx * o; e.y += ny * o; e.vx += nx * .1; e.vy += ny * .1; } });
     rocks.concat(trees.map(function (t) { return { x: t.x, y: t.y, r: 7 }; })).forEach(function (o) { var dx = e.x - o.x, dy = e.y - o.y, d = Math.hypot(dx, dy), m = rad + o.r; if (d < m && d > .001) { e.x += dx / d * (m - d); e.y += dy / d * (m - d); } });
   }
@@ -125,16 +130,16 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
       sheep.forEach(function (s, i) {
         var was = s.in; s.in = inPen(s.x, s.y); if (s.in) { pennedNow++; if (!was) { home(pennedNow); parts.push({ x: s.x, y: s.y - 6, vx: 0, vy: -.35, life: 38, t: "heart" }); } }
         var sx = 0, sy = 0, ax2 = 0, ay = 0, cx = 0, cy = 0, n = 0;
-        sheep.forEach(function (o, j) { if (i === j) return; var ddx = s.x - o.x, ddy = s.y - o.y, dd = Math.hypot(ddx, ddy); if (dd < 10 && dd > .01) { var pu = (10 - dd) / 10; sx += ddx / dd * pu * .22; sy += ddy / dd * pu * .22; } if (dd < 38) { ax2 += o.vx; ay += o.vy; cx += o.x; cy += o.y; n++; } });
-        if (n) { ax2 = ax2 / n * .04; ay = ay / n * .04; cx = (cx / n - s.x) / 38 * .025; cy = (cy / n - s.y) / 38 * .025; }
-        var rx = 0, ry = 0, scare = s.in && !gateOpen ? 24 : 48;
+        sheep.forEach(function (o, j) { if (i === j) return; var ddx = s.x - o.x, ddy = s.y - o.y, dd = Math.hypot(ddx, ddy); if (dd < 17 && dd > .01) { var pu = (17 - dd) / 17; sx += ddx / dd * pu * .22; sy += ddy / dd * pu * .22; } if (dd < 50) { ax2 += o.vx; ay += o.vy; cx += o.x; cy += o.y; n++; } });
+        if (n) { ax2 = ax2 / n * .04; ay = ay / n * .04; cx = (cx / n - s.x) / 50 * .025; cy = (cy / n - s.y) / 50 * .025; }
+        var rx = 0, ry = 0, scare = s.in && !gateOpen ? 26 : 56;
         [dog, mate].forEach(function (sh) { if (!sh) return; var ddx = s.x - sh.x, ddy = s.y - sh.y, dd = Math.hypot(ddx, ddy); if (dd < scare && dd > .1) { var f = Math.pow((scare - dd) / scare, 1.5), mf = s.in && !gateOpen ? .05 : .19; rx += ddx / dd * f * mf; ry += ddy / dd * f * mf; s.graze = 0; } });
         var pcx = 0, pcy = 0; if (s.in && !gateOpen) { pcx = (pen.x + pen.w / 2 - s.x) * .0018; pcy = (pen.y + pen.h / 2 - s.y) * .0018; }
-        var wx = 0, wy = 0; s.graze++; if (s.graze > 90 && s.graze < 160) { s.wa += (Math.random() - .5) * .25; wx = Math.cos(s.wa) * (gateOpen ? .03 : .015); wy = Math.sin(s.wa) * (gateOpen ? .03 : .015); } else if (s.graze >= 160) s.graze = 0;
+        var wx = 0, wy = 0; s.graze += s.t === "goat" ? 2 : 1;   /* goats wander off more */ if (s.graze > 90 && s.graze < 160) { s.wa += (Math.random() - .5) * .25; wx = Math.cos(s.wa) * (gateOpen ? .03 : .015); wy = Math.sin(s.wa) * (gateOpen ? .03 : .015); } else if (s.graze >= 160) s.graze = 0;
         s.vx = (s.vx + sx + ax2 + cx + rx + pcx + wx) * .88; s.vy = (s.vy + sy + ay + cy + ry + pcy + wy) * .88;
-        var spd = Math.hypot(s.vx, s.vy), mx = s.in ? .65 : 1.35; if (spd > mx) { s.vx = s.vx / spd * mx; s.vy = s.vy / spd * mx; }
+        var spd = Math.hypot(s.vx, s.vy), mx = (s.in ? .65 : 1.35) * (s.t === "cow" ? .7 : s.t === "goat" ? 1.15 : 1); if (spd > mx) { s.vx = s.vx / spd * mx; s.vy = s.vy / spd * mx; }
         s.x += s.vx; s.y += s.vy; if (spd > .08) { s.hop += spd * .45; if (Math.abs(s.vx) > .06) s.face = s.vx > 0 ? 1 : -1; } else s.hop = 0;
-        collide(s, 4.2);
+        collide(s, RAD[s.t] || 4.2);
         flowers.forEach(function (f) { if (!f.open && Math.hypot(s.x - f.x, s.y - f.y) < 7) f.open = true; });
       });
       /* all home: they settle; a while later the gate swings open and they wander out for another round */
@@ -149,17 +154,40 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 
   function ell(cx, cy, rx, ry) { for (var dy = -ry; dy <= ry; dy++) { var sp = Math.floor(rx * Math.sqrt(Math.max(0, 1 - dy * dy / (ry * ry + .1)))); ctx.fillRect(cx - sp, cy + dy, sp * 2, 1); } }
   function heart(x, y) { ctx.fillStyle = "#f26b7a"; ctx.fillRect(x - 2, y, 2, 2); ctx.fillRect(x + 1, y, 2, 2); ctx.fillRect(x - 1, y + 1, 3, 2); ctx.fillRect(x, y + 3, 1, 1); }
+  /* the flock, in fine pixels (S per field unit): [x, y, w, h, colour] on a sprite W wide, mirrored when facing left */
+  var RAD = { sheep: 8, goat: 7.5, cow: 11, alpaca: 8 }, Z = 2;   /* animals: every sprite pixel is Z×Z fine pixels; the dog is the town sprite at px Z too */
+  var LOOK = {
+    sheep: { W: 26, H: 18, head: [18, 5], body: function (q, c, legs, low) {
+      q(3, 5, 18, 8, c.w); q(2, 6, 20, 6, c.w); q(4, 3, 4, 2, c.w); q(9, 2, 6, 3, c.w); q(15, 3, 4, 2, c.w); q(1, 7, 2, 2, c.w);
+      q(3, 11, 18, 2, c.ws); q(6, 3, 3, 1, c.wh); q(11, 2, 3, 1, c.wh); q(5, 6, 2, 1, c.ws); q(12, 8, 2, 1, c.ws);
+      legs([6, 9, 15, 18], 13, 5, c.k);
+      q(19, 5 + low, 6, 6, c.k); q(18, 5 + low, 2, 2, "#4a403c"); q(23, 7 + low, 1, 1, "#e8e0d0"); } },
+    goat: { W: 24, H: 18, body: function (q, c, legs, low) {
+      q(4, 6, 14, 6, "#8a7866"); q(3, 5, 2, 2, "#8a7866"); q(6, 11, 10, 1, "#b8a890"); q(6, 6, 10, 1, "#9a8a76");
+      legs([5, 8, 13, 16], 12, 6, "#4a3c30");
+      q(16, 2 + low, 6, 5, "#8a7866"); q(17, 0 + low, 1, 3, "#d8ccb0"); q(20, 0 + low, 1, 3, "#d8ccb0"); q(16, 0 + low, 1, 1, "#d8ccb0"); q(19, 7 + low, 2, 2, "#5a4a3a"); q(20, 3 + low, 1, 1, "#1a1a1a"); q(22, 4 + low, 1, 1, "#5a4a3a"); } },
+    cow: { W: 34, H: 24, body: function (q, c, legs, low) {
+      q(4, 7, 22, 10, "#f6f4ee"); q(8, 8, 6, 5, "#2a2a2a"); q(17, 10, 7, 5, "#2a2a2a"); q(5, 12, 3, 4, "#2a2a2a"); q(14, 16, 4, 2, "#f0b8b0"); q(2, 8, 2, 7, "#f6f4ee"); q(1, 14, 2, 2, "#2a2a2a");
+      legs([6, 10, 19, 23], 17, 7, "#2a2a2a");
+      q(25, 4 + low, 8, 8, "#f6f4ee"); q(27, 4 + low, 4, 3, "#2a2a2a"); q(29, 9 + low, 4, 3, "#f0b8b0"); q(25, 2 + low, 1, 2, "#d8ccb0"); q(31, 2 + low, 1, 2, "#d8ccb0"); q(28, 7 + low, 1, 1, "#1a1a1a"); } },
+    alpaca: { W: 22, H: 30, body: function (q, c, legs, low) {
+      q(3, 14, 14, 8, "#efe2c8"); q(3, 13, 14, 2, "#f8f0de"); q(2, 15, 2, 3, "#efe2c8"); q(5, 20, 10, 2, "#dccdae");
+      legs([4, 7, 12, 15], 22, 8, "#d8c8a8");
+      var nl = Math.round(low * 1.5); q(14, 4 + nl, 5, 12 - nl, "#efe2c8"); q(14, 1 + nl, 7, 5, "#f8f0de"); q(15, 0 + nl, 1, 2, "#d8c8a8"); q(19, 0 + nl, 1, 2, "#d8c8a8"); q(18, 3 + nl, 1, 1, "#1a1a1a"); q(20, 4 + nl, 1, 1, "#8a6a5a"); } }
+  };
   function drawSheep(s, p) {
-    var x = Math.floor(s.x), y = Math.floor(s.y), hop = night() ? 0 : Math.abs(Math.sin(s.hop)) * 2, sy = Math.floor(y - hop);
-    ctx.fillStyle = p.shadow; ctx.fillRect(x - 3, y + 1, 6, 2);
-    if (!night()) { ctx.fillStyle = "#383230"; var lo = hop > .6 ? 1 : 0; ctx.fillRect(x - 2, sy + 1 - lo, 1, 2); ctx.fillRect(x + 1, sy + 1 - lo, 1, 2); }
-    ctx.fillStyle = s.in ? "#fffef2" : "#f2efe9"; ctx.fillRect(x - 3, sy - 3, 6, 4); ctx.fillRect(x - 4, sy - 2, 8, 2); ctx.fillRect(x - 2, sy - 4, 4, 1);
-    ctx.fillStyle = "#d9d2c5"; ctx.fillRect(x - 3, sy, 6, 1);
-    ctx.fillStyle = "#383230"; var hx = s.face > 0 ? x + 2 : x - 4, gy = night() ? sy : (s.graze > 30 && s.graze < 85 && hop < .2 ? sy - 1 : sy - 2); ctx.fillRect(hx, gy, 2, 2);
+    var L = LOOK[s.t] || LOOK.sheep, nt = night(), hop = nt ? 0 : Math.abs(Math.sin(s.hop)) * 2 * S, W0 = L.W, f = s.face || 1;
+    var X = Math.round(s.x * S - W0 * Z / 2), Y = Math.round(s.y * S - L.H * Z - hop + 2 * Z), step = Math.floor(s.hop * 2) % 2;
+    var low = nt ? 3 : (s.graze > 30 && s.graze < 85 && hop < .2 ? 3 : 0);   /* head down: grazing (or asleep) */
+    var c = { w: s.in ? "#fffef4" : "#f4f1ea", ws: "#d9d2c5", wh: "#ffffff", k: "#383230" };
+    function q(x, y, w, h, col) { ctx.fillStyle = col; ctx.fillRect(f > 0 ? X + x * Z : X + (W0 - x - w) * Z, Y + y * Z, w * Z, h * Z); }
+    function legs(xs, y, h, col) { if (nt) { q(xs[0], y, xs[3] - xs[0] + 2, 2, col); return; } xs.forEach(function (lx, i) { var up = (i % 2 === step) && hop > 1 ? 1 : 0; q(lx, y, 2, h - up, col); }); }
+    ctx.fillStyle = p.shadow; ctx.fillRect(Math.round(s.x * S - W0 * Z / 2 + 4), Math.round(s.y * S + 2), W0 * Z - 8, 5);
+    L.body(q, c, legs, low);
   }
   function shepherd(x, y) { x = Math.round(x); y = Math.round(y); ctx.fillStyle = "rgba(5,8,12,.35)"; ctx.fillRect(x - 3, y + 1, 7, 1); ctx.fillStyle = "#151c24"; ctx.fillRect(x - 1, y - 2, 1, 3); ctx.fillRect(x + 1, y - 2, 1, 3); ctx.fillStyle = "#5c3b4e"; ctx.fillRect(x - 2, y - 8, 5, 6); ctx.fillStyle = "#f2d3ab"; ctx.fillRect(x - 1, y - 11, 3, 3); ctx.fillStyle = "#3b4b5c"; ctx.fillRect(x - 3, y - 12, 7, 1); ctx.fillRect(x - 2, y - 13, 5, 1); ctx.fillStyle = "#8c6d53"; ctx.fillRect(x + 3, y - 12, 1, 13); ctx.fillRect(x + 4, y - 13, 1, 2); }
   function render() {
-    var p = P(); ctx.fillStyle = p.grass; ctx.fillRect(0, 0, GW, GH);
+    var p = P(); ctx.setTransform(S, 0, 0, S, 0, 0); ctx.fillStyle = p.grass; ctx.fillRect(0, 0, GW, GH);
     ctx.fillStyle = p.pen; ctx.fillRect(pen.x, pen.y, pen.w, pen.h); ctx.strokeStyle = p.alt; ctx.lineWidth = 1; ctx.strokeRect(pen.x + 2.5, pen.y + 2.5, pen.w - 5, pen.h - 5);
     ctx.fillStyle = p.alt; tufts.forEach(function (t) { ctx.fillRect(t.x, t.y, 1, 2); ctx.fillRect(t.x + 2, t.y + 1, 1, 1); if (t.t) ctx.fillRect(t.x - 1, t.y + 1, 1, 1); });
     flowers.forEach(function (f) { ctx.fillStyle = p.alt; ctx.fillRect(f.x, f.y + 1, 1, 1); ctx.fillStyle = f.c === 1 ? p.f1 : p.f2; ctx.fillRect(f.x, f.y, 1, 1); if (f.open) { ctx.fillRect(f.x - 1, f.y, 1, 1); ctx.fillRect(f.x + 1, f.y, 1, 1); ctx.fillRect(f.x, f.y - 1, 1, 1); } });
@@ -170,8 +198,8 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     sheep.forEach(function (s) { list.push({ y: s.y, s: s }); }); list.push({ y: dog.y, dog: true }); if (mate) list.push({ y: mate.y, mate: true });
     list.sort(function (a, b) { return a.y - b.y; });
     list.forEach(function (it) {
-      if (it.s) drawSheep(it.s, p);
-      else if (it.dog) { if (WD.drawPet) WD.drawPet(ctx, "dog", Math.round(dog.x), Math.round(dog.y) + 2, 1, { flip: dog.face < 0, step: Math.floor(dog.step), asleep: night() }); }
+      if (it.s) { ctx.setTransform(1, 0, 0, 1, 0, 0); drawSheep(it.s, p); ctx.setTransform(S, 0, 0, S, 0, 0); }
+      else if (it.dog) { if (WD.drawPet) { ctx.setTransform(1, 0, 0, 1, 0, 0); WD.drawPet(ctx, "dog", Math.round(dog.x * S), Math.round(dog.y * S) + 4, Z, { flip: dog.face < 0, step: Math.floor(dog.step), asleep: night() }); ctx.setTransform(S, 0, 0, S, 0, 0); } }
       else if (it.mate) shepherd(mate.x, mate.y);
       else if (it.r) { ctx.fillStyle = p.shadow; ell(Math.floor(it.r.x), Math.floor(it.r.y) + 2, it.r.r, Math.floor(it.r.r * .7)); ctx.fillStyle = p.rockD; ell(Math.floor(it.r.x), Math.floor(it.r.y), it.r.r, Math.floor(it.r.r * .75)); ctx.fillStyle = p.rock; ell(Math.floor(it.r.x), Math.floor(it.r.y) - 1, it.r.r - 1, Math.floor(it.r.r * .65)); }
       else if (it.t) { var x = Math.floor(it.t.x), y = Math.floor(it.t.y), sw = Math.floor(Math.sin(time * .03 + x)); ctx.fillStyle = p.shadow; ell(x, y + 2, 10, 5); ctx.fillStyle = p.trunk; ctx.fillRect(x - 2, y - 4, 4, 6); ctx.fillStyle = p.mid; ell(x + sw, y - 9, 10, 8); ctx.fillStyle = p.top; ell(x + sw, y - 12, 8, 6); ell(x - 2 + sw, y - 14, 5, 4); }
@@ -188,7 +216,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   }
   (function loop() { update(); render(); requestAnimationFrame(loop); })();
 
-  var L5 = { cv: ["Mantou and a flock of sheep on a meadow", "馒头和一群羊在草甸上", "饅頭和一群羊在草甸上", "Mantou y un rebaño de ovejas en un prado", "En Mantou i un ramat d'ovelles en un prat"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], lie: ["Lie back in the flowers", "躺在花丛里", "躺在花叢裡", "Túmbate entre las flores", "Estira't entre les flors"] };
+  var L5 = { cv: ["A dog and a flock on a high pasture", "高山牧场上的一只狗和一群羊", "高山牧場上的一隻狗和一群羊", "Un perro y un rebaño en un pasto alto", "Un gos i un ramat en una pastura alta"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], lie: ["Lie back in the flowers", "躺在花丛里", "躺在花叢裡", "Túmbate entre las flores", "Estira't entre les flors"] };
   function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); if (!e) return; e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("meadow") : "Wildflower Meadow"; }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
   words();
