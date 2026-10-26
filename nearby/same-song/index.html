@@ -43,7 +43,8 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
 .cell.ph{outline:2px solid #fff;outline-offset:-1px}
 .cell.on.ph{filter:brightness(1.3)}
 .gap{height:8px}
-.v .grid{grid-template-columns:repeat(8,minmax(0,1fr))}
+.v .grid{grid-template-columns:repeat(8,minmax(0,1fr))}.cell.off{display:none!important}
+#half{gap:4px}#half .hf{display:block;width:10px;height:18px;border:2px solid currentColor;opacity:.45}#half .hf.on{opacity:1;background:var(--a)}#half.other{animation:hfp .5s steps(2) infinite}@keyframes hfp{50%{filter:brightness(1.4)}}
 .pill .dots{display:inline-flex;gap:2px;margin-left:2px}.pill .dots i{width:4px;height:4px;background:currentColor;opacity:.25}.pill .dots i.on{opacity:1}
 .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .play{width:62px;height:62px;border:4px solid #000;cursor:pointer;font:400 18px/1 var(--px);background:var(--a);color:#2a1205;box-shadow:inset -4px -4px 0 rgba(0,0,0,.3),inset 4px 4px 0 rgba(255,255,255,.45),4px 4px 0 #000;padding:0}
@@ -78,7 +79,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1180px;
 @media (prefers-reduced-motion:reduce){.sign,.press .v1{animation:none}}
 /* in town: one screen. Wide: desk and jukebox side by side, each scrolls inside itself. Upright: one at a time (💿 / 🎹), the roll stretches to fill */
 .fit-tab{display:none}
-html.fbsh-in.fbfit main{height:100%;min-height:0;padding:10px 12px 12px!important;overflow:hidden}
+html.fbsh-in.fbfit main{height:100%;min-height:0;width:100%;min-width:0;max-width:100vw;box-sizing:border-box;padding:10px 12px 12px!important;overflow:hidden}
 @media (min-width:900px){html.fbsh-in.fbfit main{align-items:stretch}html.fbsh-in.fbfit .desk{align-self:start;max-height:100%;overflow:auto}html.fbsh-in.fbfit .room{position:static;max-height:100%;overflow:auto;padding-top:48px}}
 @media (max-width:899px){
   html.fbsh-in.fbfit .fit-tab{display:inline-flex;font-size:22px}
@@ -90,7 +91,9 @@ html.fbsh-in.fbfit main{height:100%;min-height:0;padding:10px 12px 12px!importan
   html.fbsh-in.fbfit .cell{aspect-ratio:auto;min-height:0}
   html.fbsh-in.fbfit main.jb .desk{display:none}
   html.fbsh-in.fbfit main:not(.jb) .room{display:none}
-  html.fbsh-in.fbfit .room{flex:1;min-height:0;overflow:auto;padding-top:50px}
+  html.fbsh-in.fbfit .room{flex:1;min-height:0;min-width:0;width:100%;overflow-x:hidden;overflow-y:auto;padding-top:50px}
+  html.fbsh-in.fbfit .room .jbm{width:min(100%,300px,calc((100dvh - 250px) * .62));max-width:100%}
+  html.fbsh-in.fbfit .room .jbs{max-width:100%}
 }
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
@@ -113,6 +116,7 @@ html.fbsh-in.fbfit main{height:100%;min-height:0;padding:10px 12px 12px!importan
       <button class="play" id="play" type="button" aria-label="Play">▶</button>
       <div class="tempo"><span aria-hidden="true">🐢</span><input id="bpm" type="range" min="72" max="132" step="4" value="100" aria-label="Tempo"><span aria-hidden="true">🐇</span></div>
       <button class="pill" id="beat" type="button"><span aria-hidden="true">🥁</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></button>
+      <button class="pill" id="half" type="button" hidden></button>
       <button class="pill" id="dice" type="button" aria-label="Surprise me">🎲</button>
       <button class="pill" id="wipe" type="button" aria-label="Clear">🧽</button>
       <button class="press" id="press" type="button"><span class="v1" aria-hidden="true"></span><span data-t="press">Press it</span></button>
@@ -192,7 +196,7 @@ html.fbsh-in.fbfit main{height:100%;min-height:0;padding:10px 12px 12px!importan
   function audition() { if (!prev.playing()) { JB.unlock(); var top = -1; for (var r = 0; r < 8 && top < 0; r++) for (var c = 0; c < 16; c++) if (song.mel[r][c]) { top = r; break; } JB.note(song.inst, JB.rowNote(song.mood, top < 0 ? 4 : top), 0.7); } }
 
   /* the grid: 8 notes + 3 drums, time left→right (or top→bottom on a phone) */
-  var cells = [], vert = false;
+  var cells = [], vert = false, half = 0;   /* on a phone the tune shows half at a time (8 beats), so every note is big enough for a thumb */
   function build() {
     vert = window.matchMedia("(max-width:640px)").matches;
     var g = $("#grid"); g.innerHTML = ""; cells = [];
@@ -202,13 +206,15 @@ html.fbsh-in.fbfit main{height:100%;min-height:0;padding:10px 12px 12px!importan
       b.className = "cell" + (drum ? " d" : "") + (c % 4 === 0 && c ? " q" : "");
       var rr = drum ? r - 8 : r;
       b.setAttribute("aria-label", (drum ? T.drums[rr][lang()] : "♪" + (8 - r)) + " · " + (c + 1));
-      if (vert) { b.style.gridRow = String(c + 1); b.style.gridColumn = String(drum ? 10 + rr : 8 - r); }
+      if (vert) { b.style.gridRow = String((c % 8) + 1); b.style.gridColumn = String(drum ? 10 + rr : 8 - r); if (Math.floor(c / 8) !== half) b.classList.add("off"); }
       else { b.style.gridColumn = String(c + 1); b.style.gridRow = String(drum ? 10 + rr : r + 1); }
       b.dataset.r = r; b.dataset.c = c;
       g.appendChild(b); cells.push({ el: b, r: r, c: c });
     }
-    paintCells(); paintChips(); paintBeat();
+    paintCells(); paintChips(); paintBeat(); paintHalf();
   }
+  function paintHalf() { var h = $("#half"); if (!h) return; h.hidden = !vert; h.innerHTML = '<i class="hf' + (half ? "" : " on") + '"></i><i class="hf' + (half ? " on" : "") + '"></i>'; h.setAttribute("aria-label", (half ? "9–16" : "1–8") + " / 16"); }
+  function setHalf(v) { half = v; cells.forEach(function (x) { x.el.classList.toggle("off", vert && Math.floor(x.c / 8) !== half); }); paintHalf(); }
   function on(r, c) { return r < 8 ? song.mel[r][c] : song.drum[r - 8][c]; }
   function setCell(r, c, v) { if (r < 8) song.mel[r][c] = v; else song.drum[r - 8][c] = v; }
   function paintCells() { cells.forEach(function (x) { x.el.classList.toggle("on", !!on(x.r, x.c)); x.el.setAttribute("aria-pressed", on(x.r, x.c) ? "true" : "false"); }); }
@@ -238,6 +244,7 @@ html.fbsh-in.fbfit main{height:100%;min-height:0;padding:10px 12px 12px!importan
   function stepLight(st) {
     if (ph >= 0) cells.forEach(function (x) { if (x.c === ph) x.el.classList.remove("ph"); });
     ph = st; cells.forEach(function (x) { if (x.c === st) x.el.classList.add("ph"); });
+    var hb = $("#half"); if (hb && vert) hb.classList.toggle("other", Math.floor(st / 8) !== half);
   }
   function startPreview() {
     JB.unlock(); if (JB.listening()) { resumeJukebox = true; JB.listen(false); JBW.fire(); JBW.paint(); }
@@ -249,6 +256,7 @@ html.fbsh-in.fbfit main{height:100%;min-height:0;padding:10px 12px 12px!importan
   }
   $("#play").onclick = function () { if (prev.playing()) { stopPreview(); if (resumeJukebox) { resumeJukebox = false; JB.listen(true); JBW.fire(); JBW.paint(); } } else startPreview(); };
   $("#bpm").addEventListener("input", function () { song.bpm = +this.value; prev.set(song); if (prev.playing()) { prev.stop(); prev.play(song, { loop: true, onStep: stepLight }); } save(); });
+  $("#half").onclick = function () { setHalf(half ? 0 : 1); };
   $("#dice").onclick = function () { var keepI = song.inst; song = JB.random(); if (Math.random() < .5) song.inst = keepI; paintCells(); paintChips(); paintBeat(); save(); if (prev.playing()) { prev.stop(); prev.play(song, { loop: true, onStep: stepLight }); } else startPreview(); };
   function paintBeat() {
     var g = JB.grooveOf(song.drum), b = $("#beat"); if (!b) return;
