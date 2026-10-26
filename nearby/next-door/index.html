@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=e66142e2d6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ba855f6308" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=e66142e2d6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=dc985baf69" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8443e681ef" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -4280,7 +4280,7 @@
 
     function initClockDragging() {
       const surface = document.getElementById('clock-touch-zone');
-      if (!surface) return;
+      if (!surface || window.FBWorld) return;   /* in town the hour belongs to Slow Clock */
       let isDragging = false;
 
       function onMove(e) {
@@ -7115,7 +7115,7 @@
       if (FBWorld.weather() !== AppState.weather) setWeather(FBWorld.weather(), false);
       if (wasBar !== AppState.isBarOpen && AppState.uiMode !== 'served') { AppState.currentTopic = null; try { evaluateWeiState(); renderCurrentDialogue(); } catch (e) {} }
     }
-    setInterval(followTown, 60000); addEventListener('fbback', followTown);
+    setInterval(followTown, 15000); addEventListener('fbback', followTown);
     try { const tb = document.getElementById('btn-atmo-trigger'); if (tb && window.FBWorld && FBWorld.name) { tb.title = FBWorld.name('tower'); tb.setAttribute('aria-label', tb.title); } } catch (e) {}
 
     function tapLogo() {

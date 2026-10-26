@@ -639,9 +639,15 @@
     if (L2) { ctx.font = "600 " + Math.round(12 * S) + "px " + fam; ctx.fillStyle = sub; fitText(L2, cxx, by + bh * (lk === "jp" ? 0.88 : 0.76), bw - 24 * S); }
     ctx.textAlign = "start"; ctx.textBaseline = "alphabetic";
   }
+  function carClock() {   /* {getHours, getMinutes} on the town's clock (4× real time), moved into the car's part of the day */
+    var h = window.FBWorld && FBWorld.hour ? FBWorld.hour() % 24 : 12, t = state.timeOfDay;
+    var fits = { dawn: h >= 5 && h < 8.5, afternoon: h >= 11 && h < 17, sunset: h >= 17 && h < 20.5, night: h >= 20.5 || h < 5 };
+    if (t && fits[t] === false) h = ({ dawn: 6, afternoon: 15, sunset: 18, night: 2 })[t] + (h % 1);
+    return { getHours: function () { return Math.floor(h); }, getMinutes: function () { return Math.floor((h % 1) * 60); } };
+  }
   function props(look, x0, x1, wid, cx, py, roofY, seed, lit, now) {
-    if (look === "fr") {   /* a round clock on a post, telling the real time */
-      var kx = cx + cw * 0.3, ky = py - 150 * S, d = new Date(); ctx.fillStyle = css(land("#2a2a30", 0.05)); ctx.fillRect(kx - 3 * S, ky, 6 * S, py - ky);
+    if (look === "fr") {   /* a round clock on a post, telling the town's time (or the car's, when 🔀 took you into another hour) */
+      var kx = cx + cw * 0.3, ky = py - 150 * S, d = carClock(); ctx.fillStyle = css(land("#2a2a30", 0.05)); ctx.fillRect(kx - 3 * S, ky, 6 * S, py - ky);
       ctx.fillStyle = "#f7f4ea"; ctx.strokeStyle = "#1c1c22"; ctx.lineWidth = 3 * S; ctx.beginPath(); ctx.arc(kx, ky, 22 * S, 0, TAU); ctx.fill(); ctx.stroke();
       var hA = ((d.getHours() % 12) + d.getMinutes() / 60) / 12 * TAU - Math.PI / 2, mA = d.getMinutes() / 60 * TAU - Math.PI / 2; ctx.lineWidth = 3 * S; ctx.beginPath(); ctx.moveTo(kx, ky); ctx.lineTo(kx + Math.cos(hA) * 11 * S, ky + Math.sin(hA) * 11 * S); ctx.moveTo(kx, ky); ctx.lineTo(kx + Math.cos(mA) * 17 * S, ky + Math.sin(mA) * 17 * S); ctx.stroke();
     } else if (look === "uk" && roofY) {   /* a wooden valance under the canopy, and hanging baskets */
