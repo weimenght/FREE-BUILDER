@@ -92,7 +92,7 @@
   var qs = new URLSearchParams(location.search), invite = (qs.get("with") || qs.get("cabin") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
   function boardCard() {
     var d = document.createElement("div"); d.className = "cb-board";
-    d.innerHTML = '<div class="cb-ticket"><small>Sleeper Car No. 04</small><h1>' + (invite ? "🎟️ " + invite : "Train Window") + '</h1>' +
+    d.innerHTML = '<div class="cb-ticket"><small>Sleeper Car No. ' + String(CAR).padStart(2, "0") + '</small><h1>' + (invite ? "🎟️ " + invite : "Train Window") + '</h1>' +
       '<button class="cb-go" type="button">' + T.board + ' <span aria-hidden="true">→</span></button><button class="cb-q" type="button" data-fb-snd aria-label="' + T.quiet + '" title="' + T.quiet + '">🔇</button></div>';
     document.body.appendChild(d);
     var go = function (sound) {
@@ -142,7 +142,7 @@
     S.boarded = true;
     document.body.classList.add("cb-on");
     try { if (!state.zenMode) { toggleZenMode(); var wt = $("windowToast"); if (wt) wt.style.opacity = "0"; } } catch (e) {}
-    setTimeout(fit, 560); dock(); tip();
+    setTimeout(fit, 560); dock(); tip(); setTimeout(function () { document.documentElement.classList.remove("cb-pre"); }, 640);
     setTimeout(function () { if (Math.random() < 0.6) catWalk(Math.random() < 0.5 ? "Yuzu" : "Miso", 1, true); }, 20000 + Math.random() * 20000);
     if (invite) join(invite, false); else director.start();
   }
@@ -479,8 +479,36 @@
   (function keys() { var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; cfg.rt = c.realtimeUrl || ""; cfg.done = true; }; document.head.appendChild(sc); })();
 
   window.FBCabin = { T: T, state: S, director: director, join: join, leave: leave };
+  setTimeout(function () { document.documentElement.classList.remove("cb-pre"); }, 6000);   /* never leave the car dark */
+  /* every boarding finds a different car and seat: a small brass plate on the frame */
+  var CAR = window.FB_CAR = 1 + Math.floor(Math.random() * 12), SEAT = 1 + Math.floor(Math.random() * 40);
+  function plate() {
+    var l = (window.FBL && FBL.get && FBL.get()) || "en", t = { en: "CAR {c} · SEAT {s}", zh: "{c} 号车厢 · {s} 座", "zh-Hant": "{c} 號車廂 · {s} 座", es: "COCHE {c} · ASIENTO {s}", ca: "COTXE {c} · SEIENT {s}" }[l] || "CAR {c} · SEAT {s}";
+    var el = $("cbPlate"), bz = document.querySelector(".window-bezel"); if (!bz) return;
+    if (!el) { el = document.createElement("div"); el.id = "cbPlate"; el.setAttribute("aria-hidden", "true"); el.setAttribute("data-fbt-skip", ""); bz.appendChild(el); }
+    el.textContent = t.replace("{c}", CAR).replace("{s}", SEAT);
+    var hud = $("hudLineCode"); if (hud && state && state.station) hud.textContent = "CAR " + String(CAR).padStart(2, "0") + " • " + state.station.code;
+  }
+  var pcss = document.createElement("style"); pcss.textContent = "#cbPlate{position:absolute;z-index:45;top:14px;left:22px;padding:2px 7px;border-radius:3px;background:linear-gradient(#d9b46a,#a9802f);color:#2a1a08;font:700 10px/1.3 ui-monospace,'SF Mono',Menlo,monospace;letter-spacing:.12em;box-shadow:0 1px 0 rgba(255,240,200,.5) inset,0 2px 4px rgba(0,0,0,.5);opacity:.88;pointer-events:none}@media (max-width:640px){#cbPlate{top:12px;left:16px;font-size:9px}}"; document.head.appendChild(pcss);
+  /* the coach you board matches where the line starts: a city commuter, a mountain railway in pine, a seaside tram, or the old wooden sleeper */
+  var COACH = { metropolis: "commuter", alpine: "mountain", coastal: "tram" };
+  function coach() { try { var k = COACH[state.station && state.station.biome] || "sleeper"; document.body.classList.add("cb-coach-" + k); } catch (e) {} }
+  var ccss = document.createElement("style"); ccss.textContent =
+    "body.cb-coach-commuter.wood-wall{background-color:#1b2026;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 46px),linear-gradient(#232a31,#14181d)!important}" +
+    "body.cb-coach-commuter .window-bezel{background:linear-gradient(145deg,#59626b,#363d44 50%,#22272c)!important;border-color:#6b747d!important;border-top-color:#8a939b!important;border-bottom-color:#1c2024!important;box-shadow:inset 0 6px 18px rgba(0,0,0,.8),inset 0 0 0 2px #9aa3ab,0 18px 48px rgba(0,0,0,.9)!important}" +
+    "body.cb-coach-commuter .windowsill-ledge{background:linear-gradient(#4a535b,#2b3136)!important;border-top-color:#7d868e!important}body.cb-coach-commuter .window-recess{border-color:#1e2328!important;border-radius:10px!important}body.cb-coach-commuter #cbPlate{background:linear-gradient(#e9edf0,#b9c1c7);color:#1d2329}" +
+    "body.cb-coach-mountain.wood-wall{background-color:#2a1a0c;background-image:repeating-linear-gradient(90deg,rgba(255,220,160,.05) 0 3px,transparent 3px 30px),radial-gradient(circle at 30% 40%,rgba(255,190,110,.12),transparent 60%),linear-gradient(#3a2512,#22150a)!important}" +
+    "body.cb-coach-mountain .window-bezel{background:linear-gradient(145deg,#a0703c,#7a5128 50%,#543617)!important;border-color:#b78550!important;border-top-color:#cf9c62!important;border-bottom-color:#3c250f!important}" +
+    "body.cb-coach-mountain .windowsill-ledge{background:repeating-linear-gradient(90deg,rgba(255,230,180,.06) 0 3px,transparent 3px 26px),linear-gradient(#9a6a36,#6a4520)!important;border-top-color:#c99358!important}" +
+    "body.cb-coach-tram.wood-wall{background-color:#1d3a30;background-image:linear-gradient(#24493c 0 62%,#e6dcc1 62% 64%,#1b342b 64%)!important}" +
+    "body.cb-coach-tram .window-bezel{background:linear-gradient(145deg,#efe5cb,#d6c9a6 50%,#b7a77f)!important;border-color:#2f5d4a!important;border-top-color:#3d7560!important;border-bottom-color:#1d3a2f!important;box-shadow:inset 0 6px 18px rgba(0,0,0,.55),inset 0 0 0 2px #2f5d4a,0 18px 48px rgba(0,0,0,.85)!important}" +
+    "body.cb-coach-tram .windowsill-ledge{background:linear-gradient(#2f5d4a,#1d3a2f)!important;border-top-color:#4c8a72!important}body.cb-coach-tram .window-recess{border-color:#1d3a2f!important;border-radius:26px!important}body.cb-coach-tram #cbPlate{background:linear-gradient(#2f5d4a,#1f4033);color:#efe5cb}";
+  document.head.appendChild(ccss);
+  addEventListener("load", plate); setInterval(function () { if (plate.l !== ((window.FBL && FBL.get && FBL.get()) || "en")) { plate.l = (window.FBL && FBL.get && FBL.get()) || "en"; plate(); } }, 800);
+  /* phones: dragging the shade or drawing on the mist must not pull the page down to refresh */
+  ["windowViewport", "shadeDragHandle"].forEach(function (id) { var el = $(id); if (el) el.addEventListener("touchmove", function (e) { if (e.cancelable) e.preventDefault(); }, { passive: false }); });
   addEventListener("load", function () {
-    if (!invite) shuffle();
+    if (!invite) shuffle(); coach();
     glass();
     /* in town the shell's first tap already woke the sound: no ticket, you are simply on the train */
     if (inTown()) { boarded(); (window.FB_SOUND_ON = window.FB_SOUND_ON || []).push(function () { unlockAudio(); try { if (!isAudioPlaying) toggleAudioEngine(); if (typeof audioCtx !== "undefined" && audioCtx && audioCtx.resume) audioCtx.resume(); } catch (e) {} paintDock(); }); }
