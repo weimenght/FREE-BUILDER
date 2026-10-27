@@ -32,7 +32,8 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   "use strict";
   var W = window.FBWorld || { phase: function () { return "day"; }, weather: function () { return "clear"; } };
   var cv = document.getElementById("cv"), ctx = cv.getContext("2d", { alpha: false }), PX = 3, gw = 140, gh = 180;
-  function resize() { gw = Math.max(120, Math.floor(innerWidth / PX)); gh = Math.max(160, Math.floor(innerHeight / PX)); cv.width = gw; cv.height = gh; ctx.imageSmoothingEnabled = false; }
+  function resize() { gw = Math.max(120, Math.floor(innerWidth / PX)); gh = Math.max(160, Math.floor(innerHeight / PX)); cv.width = gw * 2; cv.height = gh * 2; ctx.imageSmoothingEnabled = false; }
+  function petAt(k, x, y, o) { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); W.drawPet(ctx, k, Math.round(x * 2), Math.round(y * 2), 1, o); ctx.restore(); }
   addEventListener("resize", resize); resize();
 
   var PAL = {
@@ -137,6 +138,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     ctx.fillStyle = rgb(C.treeD); ctx.fillRect(x - 1 + Math.round(sh * .4), yy - 6, 3, 2); ctx.fillStyle = rgb(scarf); ctx.fillRect(x - 1 + Math.round(sh * .4), yy - 7, 3, 1);
   }
   function draw() {
+    ctx.setTransform(2, 0, 0, 2, 0, 0);   /* the scene at 2×; the town's animals at the canvas's own pixels (petAt), so they keep their size next to people */
     ctx.fillStyle = rgb(C.snow); ctx.fillRect(0, 0, gw, gh);
     var sy = Math.floor(gh * .28), ox = Math.floor(gw / 2) - me.x;
     function Y(d) { return sy + (d - me.d); }
@@ -150,7 +152,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     list.forEach(function (it) {
       if (it.me) skier(gw / 2, sy, me.a, me.z, me.fall > 0, C.me, C.scarf, me.scarf);
       else if (it.mate) { if (it.y > -20 && it.y < gh + 20) skier(it.x, it.y, mate.a, mate.z, mate.f, C.mate, C.mateScarf, null); }
-      else if (it.dog) { if (W.drawPet) W.drawPet(ctx, "dog", it.x, it.y, 1, { flip: me.a < -.2, step: (performance.now() / 150) | 0 }); }
+      else if (it.dog) { if (W.drawPet) petAt("dog", it.x, it.y, { flip: me.a < -.2, step: (performance.now() / 150) | 0 }); }
       else { if (it.x < -25 || it.x > gw + 25 || it.y < -30 || it.y > gh + 10) return; var t = it.ob.type; if (t === "pine") pine(it.x, it.y, false); else if (t === "tall") pine(it.x, it.y, true); else if (t === "rock") rock(it.x, it.y); else ramp(it.x, it.y); }
     });
     powder.forEach(function (p) { ctx.fillStyle = p.life % 2 ? rgb(C.shadow) : rgb(C.snow); ctx.fillRect(Math.round(p.x + ox), Math.round(Y(p.d)), 2, 2); });

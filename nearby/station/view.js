@@ -567,7 +567,7 @@
     for (var bi = 0; bi < 3; bi++) { var bxx = x0 + wid * (0.18 + bi * 0.3); ctx.fillStyle = css(land("#5a3e2a", 0.05)); ctx.fillRect(bxx, py - 22 * S, 60 * S, 6 * S); ctx.fillRect(bxx, py - 36 * S, 60 * S, 4 * S); ctx.fillRect(bxx + 4 * S, py - 16 * S, 4 * S, 16 * S); ctx.fillRect(bxx + 52 * S, py - 16 * S, 4 * S, 16 * S); }
     var n = 2 + (hash(seed, 2) * 5 | 0), umb = WX.rain > 0.4 && !roofY;
     for (var k = 0; k < n; k++) person(st.name === "Gulou Hutong" ? x0 + wid * (hash(k, seed) < 0.5 ? 0.06 + hash(k, seed) * 0.4 : 0.54 + hash(k, seed) * 0.4) : x0 + wid * (0.1 + hash(k, seed) * 0.8), py, 0.85 + hash(k, seed + 1) * 0.3, k + seed, umb, now);
-    if (hash(seed, 9) < 0.5 && window.FBWorld && FBWorld.drawPet) { var catX = x0 + wid * (0.3 + hash(seed, 10) * 0.4); FBWorld.drawPet(ctx, hash(seed, 11) < 0.5 ? "yuzu" : "miso", catX, py, Math.max(1, 1.6 * S), { flip: hash(seed, 12) < 0.5, asleep: FBWorld.phase && FBWorld.phase() === "night" }); }   /* one of the cats, the same pixels as everywhere in town */
+    if (hash(seed, 9) < 0.5 && window.FBWorld && FBWorld.drawPet) { var catX = x0 + wid * (0.3 + hash(seed, 10) * 0.4); FBWorld.drawPet(ctx, hash(seed, 11) < 0.5 ? "yuzu" : "miso", catX, py, Math.max(1, 1.2 * S), { flip: hash(seed, 12) < 0.5, asleep: FBWorld.phase && FBWorld.phase() === "night" }); }   /* one of the cats, the same pixels as everywhere in town */
   }
   /* ---------- a station looks like its country ---------- */
   function swin(x, y, w, h, arch, lit, frame) {

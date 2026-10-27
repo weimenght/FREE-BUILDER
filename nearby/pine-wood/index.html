@@ -31,7 +31,9 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   "use strict";
   var WD = window.FBWorld || { phase: function () { return "night"; }, weather: function () { return "clear"; }, cats: function () { return {}; }, dog: function () { return ""; } };
   var cv = document.getElementById("cv"), ctx = cv.getContext("2d"), PX = 3, W = 200, H = 180, GY = 148;
-  function resize() { W = Math.max(150, Math.floor(innerWidth / PX)); H = Math.max(150, Math.floor(innerHeight / PX)); GY = Math.round(H * .82); cv.width = W; cv.height = H; ctx.imageSmoothingEnabled = false; }
+  function resize() { W = Math.max(150, Math.floor(innerWidth / PX)); H = Math.max(150, Math.floor(innerHeight / PX)); GY = Math.round(H * .82); cv.width = W * 2; cv.height = H * 2; ctx.imageSmoothingEnabled = false; }
+  /* the scene is drawn at 2× (every block doubles, still crisp); the town's animals are drawn at the canvas's own pixels, so a dog stands about knee-high to the walker, a cat a little lower */
+  function pet(k, x, y, o) { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); WD.drawPet(ctx, k, Math.round(x * 2), Math.round(y * 2), 1, o); ctx.restore(); }
   addEventListener("resize", resize); resize();
 
   var PAL = {
@@ -93,7 +95,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     waves.forEach(function (w) { w.t -= dt; }); waves = waves.filter(function (w) { return w.t > 0; });
   }
   function drawMeet(asleep) {
-    met.forEach(function (m) { if (m.joined) return; var sx = Math.round(W / 2 + (m.wx - camX)); if (sx > -20 && sx < W + 20 && WD.drawPet) WD.drawPet(ctx, m.spec, sx, GY, 1, { flip: m.wx > camX, asleep: asleep }); });
+    met.forEach(function (m) { if (m.joined) return; var sx = Math.round(W / 2 + (m.wx - camX)); if (sx > -20 && sx < W + 20 && WD.drawPet) pet(m.spec, sx, GY, { flip: m.wx > camX, asleep: asleep }); });
     passers.forEach(function (q) { var sx = Math.round(W / 2 + (q.wx - camX)); if (sx > -10 && sx < W + 10) walker(sx, GY, q.v > 0 ? 1 : -1, true, q.f, q.c[0], q.c[1], q.c[2], q.c[3]); });
     waves.forEach(function (w) { var x = Math.round(w.x), y = GY - 26 - Math.round((1.8 - w.t) * 3); if (w.heart) { ctx.fillStyle = "#f26b7a"; ctx.fillRect(x - 2, y, 2, 2); ctx.fillRect(x + 1, y, 2, 2); ctx.fillRect(x - 1, y + 1, 3, 2); ctx.fillRect(x, y + 3, 1, 1); } else { ctx.fillStyle = "#f2d3ab"; ctx.fillRect(x - 1, y, 3, 3); ctx.fillRect(x - 1, y - 2, 1, 2); ctx.fillRect(x + 1, y - 2, 1, 2); ctx.fillRect(x, y - 3, 1, 3); } });
   }
@@ -106,7 +108,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     if (A && Math.random() < dt * .12) note();
     parts.forEach(function (p) { if (p.fly) { p.x += Math.sin(time * 1.2 + p.ph) * 6 * dt - dir * me.sp * .85 * dt; p.y += Math.cos(time * 1.5 + p.ph) * 4 * dt; } else { p.x += p.vx * dt - dir * me.sp * .9 * dt; p.y += p.vy * dt + Math.sin(time * 2 + p.ph) * 1.5 * dt; } if (p.x < -10) p.x += W + 20; if (p.x > W + 10) p.x -= W + 20; if (p.y > GY - 2) p.y = 30; if (p.y < 25) p.y = GY - 10; });
     /* the animals keep a few steps behind you, and sit when you stop */
-    pals.forEach(function (a, i) { var want = -me.face * (16 + i * 12); a.x += (want - a.x) * Math.min(1, dt * 2.2); if (me.moving) a.step += dt * 8; });
+    pals.forEach(function (a, i) { var want = -me.face * (10 + i * 9); a.x += (want - a.x) * Math.min(1, dt * 2.2); if (me.moving) a.step += dt * 8; });
     if (mate) { mate.x += (mate.tx - mate.x) * .2; if (Date.now() - mate.t > 12000) mate = null; }
   }
   function pine(x, gy, h, tiers, fol, trunk, sway) {
@@ -142,6 +144,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     ctx.fillStyle = "#8c6d53"; var sx = x + face * 3, lift = f === 1 ? -1 : 0; ctx.fillRect(sx, y - 11 + bob + lift, 1, 11 - lift);
   }
   function render() {
+    ctx.setTransform(2, 0, 0, 2, 0, 0);
     var P = pal(), bh = Math.ceil(GY / P.sky.length);
     P.sky.forEach(function (c, i) { ctx.fillStyle = c; ctx.fillRect(0, i * bh, W, bh + 1); });
     if (P.stars) stars.forEach(function (s) { var tw = Math.sin(time * s.sp + s.ph); if (tw > -.2) { ctx.fillStyle = tw > .6 ? "#fff" : "#8aa6ba"; ctx.fillRect(Math.floor((((s.x * W) - camX * .01) % W + W) % W), Math.floor(s.y * GY * .6), 1, 1); } });
@@ -158,7 +161,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     if (mate) { var mxs = Math.round(W / 2 + (mate.x - camX)); if (mxs > -10 && mxs < W + 10) walker(mxs, GY, mate.f, mate.m, time * 6.5, "#5c3b4e", "#47293b", "#f0c34a", "#3b4b5c"); else { ctx.fillStyle = "#f0c34a"; var ex = mxs < 0 ? 3 : W - 5; ctx.fillRect(ex, GY + 6, 2, 2); } }
     var asleep = WD.phase() === "night";
     drawMeet(asleep);
-    pals.forEach(function (a) { if (WD.drawPet) WD.drawPet(ctx, a.k, Math.round(W / 2 + a.x), GY, 1, { flip: me.face < 0, step: me.moving ? Math.floor(a.step) : 0, asleep: asleep && !me.moving }); });
+    pals.forEach(function (a) { if (WD.drawPet) pet(a.k, Math.round(W / 2 + a.x), GY, { flip: me.face < 0, step: me.moving ? Math.floor(a.step) : 0, asleep: asleep && !me.moving }); });
     walker(Math.floor(W / 2), GY, me.face, me.moving, me.frame, "#3b4e5c", "#2c3b47", "#d95b43", "#5c4b3b");
     parts.forEach(function (p) { if (p.fly) { if (!P.flies) return; var gl = Math.sin(time * 3 + p.ph); if (gl > -.1) { ctx.fillStyle = gl > .5 ? "#e8f59d" : "#9ab865"; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); } } else { ctx.fillStyle = P.tuft; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); } });
     layer(1.35, 135, 135, 175, P.fg, 14, .42);
