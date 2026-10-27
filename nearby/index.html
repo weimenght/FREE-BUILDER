@@ -239,17 +239,20 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     g.restore();
     wilds(f, sky, ph, wx, night, lit);
     // a train comes through every so often, right across the country
-    var cyc = f % 600; if (cyc < 260) { var tx0 = WW + 10 - cyc * 2.2; for (var car = 0; car < 4; car++) { var x0 = tx0 + car * 34; R(x0, 286, 32, 13, car ? "#2c4a86" : "#b3261e"); R(x0, 286, 32, 2, "#fbeedd"); for (var cw = 0; cw < 4; cw++) R(x0 + 3 + cw * 7, 290, 5, 4, lit ? "#f6c84a" : "#9ac0d8"); } }
+    var cyc = f % 600; TC = []; if (cyc < 260) { var tx0 = WW + 10 - cyc * 2.2; for (var car = 0; car < 4; car++) { var x0 = tx0 + car * 34; TC.push(x0); R(x0, 286, 32, 13, car ? "#2c4a86" : "#b3261e"); R(x0, 286, 32, 2, "#fbeedd"); for (var cw = 0; cw < 4; cw++) R(x0 + 3 + cw * 7, 290, 5, 4, lit ? "#f6c84a" : "#9ac0d8"); } }
     // weather on top
     if (wx === "rain" || wx === "storm") { for (var rd = 0; rd < 140; rd++) { var rx2 = (hash("rd" + rd) * WW + f * 1.5) % WW, ry2 = (hash("rr" + rd) * H + f * 6) % H; R(rx2, ry2, 1, 3, "rgba(170,200,255,.55)"); } if (wx === "storm" && f % 240 < 3) R(0, 0, WW, H, "rgba(255,255,255,.5)"); }
     if (wx === "snow") for (var sn = 0; sn < 120; sn++) { var snx = (hash("sn" + sn) * WW + Math.sin((f + sn * 9) / 18) * 4) % WW, sny = (hash("sy" + sn) * H + f * .8) % H; R(snx, sny, 1, 1, "#ffffff"); }
     if (wx === "fog") { g.fillStyle = "rgba(220,224,232,.22)"; g.fillRect(0, 0, WW, H); for (var fg = 0; fg < 7; fg++) R(((f * .2 + fg * 70) % 440) - 60, 70 + (fg % 4) * 60, 90, 6, "rgba(230,234,240,.25)"); }
     mono();
+    /* depth: anything on the platform or the lane is behind a passing train, so the coaches are put back over the animals */
+    var keepTrain = TC.map(function (x) { var x0 = Math.max(0, Math.floor(x)), x1 = Math.min(WW, Math.ceil(x + 32)); return x1 > x0 ? [x0, g.getImageData(x0, 286, x1 - x0, 13)] : null; }).filter(Boolean);
     drawAnimals(f);
+    keepTrain.forEach(function (t) { g.putImageData(t[1], t[0], 286); });
     if (night) { g.fillStyle = "rgba(10,10,40,.18)"; g.fillRect(0, 0, WW, H); }
     ["miso", "yuzu", "dog"].forEach(function (k) { var b = kit[k], p = catPos[k]; if (b && p) { b.style.left = ((p[0] + 3) / WW * 100) + "%"; b.style.top = ((p[1] + 2) / H * 100) + "%"; } });
   }
-  var kit = {};
+  var kit = {}, TC = [], AROUND = { nest: 1, bar: 1, kintsugi: 1, books: 1, postcard: 1, jukebox: 1, dj: 1, brewery: 1, restaurant: 1 };
   /* the town starts in black and white; every place you have been to keeps its colour. Places you know well lose their name tags (hover or focus to see them). */
   var MASK = null, LIT = {}, GLOW = {}, KNOW = 3;
   function litNow() {
@@ -362,6 +365,8 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     mine.forEach(function (p, i) {
       var pl = World.petAt(p.id), path = PATH[pl] || DOGPATH[pl]; if (!path) return;
       var P = World.petSpec(p).P, dog = p.kind === "dog", a = f * .019 + i * 2.3 + (p.id % 7), u = .5 + .5 * Math.sin(a), dir = Math.cos(a) >= 0 ? 1 : -1, st = (f >> 1) % 2;
+      /* at a building they walk all the way round it: along the front, out of sight round the corner, along the back, and out again at the other side */
+      if (AROUND[pl] && !night) { var T = (f * .0016 + i * .37 + (p.id % 7) * .13) % 1; if (T >= .62) return; u = T / .62; dir = 1; }
       var x = OX + Math.round(path[0] + (path[1] - path[0]) * (night ? .3 + i * .1 : u)), y = path[2] - (dog ? 5 : 4);
       if (dog) {
         var D2 = function (dx, dy, w, h, col) { R(dir > 0 ? x + dx : x + 9 - dx - w, y + dy, w, h, col); };
