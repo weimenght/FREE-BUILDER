@@ -1,0 +1,11 @@
+{
+  "name": "Vocab",
+  "short_name": "Vocab",
+  "description": "Words to practise in Catalan, Spanish, Cantonese, Welsh and Chinese idioms, kept on your own device.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#FAF7F2",
+  "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

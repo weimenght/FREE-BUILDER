@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=6ac245d712"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=edd9b87ede" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=d4451add0d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8636653ddf" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Two Candles · Nearby</title>
 <meta name="description" content="A candlelit table for two people who live apart. Sit down together from anywhere, cook the same dinner step by step, raise a glass, and talk until the candles go out.">
@@ -79,12 +79,6 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   <div class="fit-panel">
   <!-- the door: find your table -->
   <section id="lobby">
-    <div class="panel" id="handoffBox">
-      <h2>🕰️ <span data-t="hoTitle">HANDOFF COUPLES</span></h2>
-      <p id="hoText"></p>
-      <button class="big" type="button" id="hoSit" hidden></button>
-      <a class="big alt" id="hoOpen" href="/nearby/handoff/" hidden></a>
-    </div>
     <div class="panel">
       <h2>🕯️ <span data-t="resTitle">RESERVE A TABLE</span></h2>
       <p data-t="resText">For someone far away. Send the link, stay on the call.</p>
@@ -161,12 +155,6 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
   var W = {
     title: ["TWO CANDLES", "双烛小馆", "雙燭小館", "DOS VELAS", "DUES ESPELMES"],
-    hoTitle: ["HANDOFF COUPLES", "HANDOFF 情侣", "HANDOFF 情侶", "PAREJAS DE HANDOFF", "PARELLES DE HANDOFF"],
-    hoPaired: ["Your table with {p} is always kept. Sit down and their candle lights up when they do too.", "你和{p}的桌子一直为你们留着。坐下吧，对方坐下时，他的蜡烛也会亮起来。", "你和{p}的桌子一直為你們留著。坐下吧，對方坐下時，他的蠟燭也會亮起來。", "Vuestra mesa con {p} está siempre reservada. Siéntate: su vela se enciende cuando se siente.", "La vostra taula amb {p} sempre està reservada. Seu: la seva espelma s'encén quan s'assegui."],
-    hoSit: ["🕯️ Sit at our table", "🕯️ 坐到我们的桌边", "🕯️ 坐到我們的桌邊", "🕯️ Sentarme a nuestra mesa", "🕯️ Seure a la nostra taula"],
-    hoNone: ["Your table is kept here. Sign in to Handoff first.", "你们的桌子留在这里。先登录 Handoff。", "你們的桌子留在這裡。先登入 Handoff。", "Vuestra mesa os espera aquí. Entra antes en Handoff.", "La vostra taula us espera aquí. Entra abans a Handoff."],
-    hoUnpaired: ["You're signed in to Handoff but not paired yet. Pair with your partner there, then your table appears here.", "你已登录 Handoff，但还没配对。先在那里和伴侣配对，你们的桌子就会出现在这里。", "你已登入 Handoff，但還沒配對。先在那裡和伴侶配對，你們的桌子就會出現在這裡。", "Has entrado en Handoff pero aún no estás emparejado. Empareja allí y vuestra mesa aparecerá aquí.", "Has entrat a Handoff però encara no tens parella. Aparella't allà i la vostra taula apareixerà aquí."],
-    hoOpen: ["🕰️ Open Handoff", "🕰️ 打开 Handoff", "🕰️ 打開 Handoff", "🕰️ Abrir Handoff", "🕰️ Obrir Handoff"],
     resTitle: ["RESERVE A TABLE", "订一张桌子", "訂一張桌子", "RESERVA UNA MESA", "RESERVA UNA TAULA"],
     resText: ["For someone far away. Send the link, stay on the call.", "给远方的那个人。发个链接，通话别挂。", "給遠方的那個人。傳個連結，通話別掛。", "Para alguien lejos. Mándale el enlace y seguid en la llamada.", "Per a algú lluny. Envia-li l'enllaç i seguiu a la trucada."],
     yourName: ["Your name", "你的名字", "你的名字", "Tu nombre", "El teu nom"],
@@ -253,21 +241,9 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   var S = { v: "harbour", m: 0, d: "", s: 0, sa: 0, k: -1, r: 0 };   // view, music, dish, step, step started at, card, revision
   var them = null, net = null, code = "", hand = null, doneMe = -1, doneThem = -1, blowMe = 0, blowThem = 0, started = 0, stats = { clinks: 0, cards: 0, notes: 0 }, clinkAt = 0, slideAt = 0, flameOut = 0;
 
-  /* ---------- Handoff: the same sign-in, on the same site ---------- */
+  /* ---------- the keys for the line between two tables (no sign-in: the link is the table) ---------- */
   var cfg = { url: "", key: "", rt: "" };
   function ready() { return new Promise(function (res) { if (cfg.url) return res(); var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; cfg.rt = c.realtimeUrl || ""; res(); }; document.head.appendChild(sc); }); }
-  function session() { if (!cfg.url) return null; try { var ref = new URL(cfg.url).hostname.split(".")[0], s = JSON.parse(localStorage.getItem("sb-" + ref + "-auth-token") || "null"); if (s && s.currentSession) s = s.currentSession; if (s && s.access_token && s.user && (!s.expires_at || s.expires_at * 1000 > Date.now() + 60000)) return s; } catch (e) {} return null; }
-  function acct(tok, id) { return fetch(cfg.url + "/rest/v1/accounts?select=id,name,city,tz,partner_id&id=eq." + encodeURIComponent(id), { headers: { apikey: cfg.key, Authorization: "Bearer " + tok } }).then(function (r) { return r.ok ? r.json() : []; }).then(function (a) { return a[0] || null; }); }
-  function sha(s) { return crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)).then(function (b) { return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, "0"); }).join(""); }); }
-  function handoff() {
-    return ready().then(function () {
-      var s = session(); if (!s) return { state: "none" };
-      return acct(s.access_token, s.user.id).then(function (me) {
-        if (!me) return { state: "none" }; if (!me.partner_id) return { state: "unpaired", me: me };
-        return acct(s.access_token, me.partner_id).then(function (p) { if (!p) return { state: "unpaired", me: me }; return sha("fb-two-candles:" + [me.id, p.id].sort().join(":")).then(function (h) { return { state: "paired", me: me, partner: p, code: "h" + h.slice(0, 20) }; }); });
-      });
-    }).catch(function () { return { state: "none" }; });
-  }
 
   /* ---------- the line between two tables: Supabase Realtime broadcast (same relay as the Sleeper Car) ---------- */
   function transport(code, onMsg, onStatus) {
@@ -483,15 +459,6 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   /* ---------- the door ---------- */
   function lobby() {
     $("myName").placeholder = t("yourName");
-    handoff().then(function (h) {
-      if (inv) return;
-      hand = h.state === "paired" ? h : null;
-      if (h.me) { ME.name = h.me.name || ME.name; ME.city = h.me.city || ""; if (h.me.tz) ME.tz = h.me.tz; }
-      $("hoSit").hidden = h.state !== "paired"; $("hoOpen").hidden = h.state === "paired";
-      $("hoText").textContent = h.state === "paired" ? t("hoPaired").replace("{p}", h.partner.name || "♥") : h.state === "unpaired" ? t("hoUnpaired") : t("hoNone");
-      $("hoSit").textContent = t("hoSit"); $("hoOpen").textContent = t("hoOpen");
-      $("hoSit").onclick = function () { sit(h.code); };
-    });
     var past = []; try { past = JSON.parse(ls("fb_table_evenings") || "[]"); } catch (e) {}
     $("pastBox").hidden = !past.length || !!inv; $("past").innerHTML = ""; past.slice(0, 5).forEach(function (r) { var d = document.createElement("div"); d.className = "receipt"; d.textContent = receipt(r); $("past").appendChild(d); });
   }
@@ -511,9 +478,9 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   ME.name = (ls("fb_nick") || "").slice(0, 20); $("myName").value = ME.name;
   var inv = (/[?&]t=([a-z0-9]{6,24})/.exec(location.search) || [])[1];
   words(); requestAnimationFrame(draw);
-  if (inv) { handoff().then(function (h) { hand = h.state === "paired" && h.code === inv ? h : null; if (h.me) { ME.name = h.me.name || ME.name; ME.city = h.me.city || ""; } if (ME.name) return sit(inv);
+  if (inv) { ready().then(function () { if (ME.name) return sit(inv);
     /* invited, no name yet: just ask for one, then sit down */
-    $("handoffBox").hidden = true; $("pastBox").hidden = true; $("reserve").lastElementChild.setAttribute("data-t", "sitDown"); $("reserve").lastElementChild.textContent = t("sitDown");
+    $("pastBox").hidden = true; $("reserve").lastElementChild.setAttribute("data-t", "sitDown"); $("reserve").lastElementChild.textContent = t("sitDown");
     $("reserve").onclick = function () { ME.name = $("myName").value.trim().slice(0, 20); if (!ME.name) { $("myName").focus(); return; } ls("fb_nick", ME.name); sit(inv); }; }); }
 })();
 </script>
