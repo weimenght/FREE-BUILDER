@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=f8ba183eec"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=bee945fb96" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=e42e3de20b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=3f97d204a1" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -3728,6 +3728,12 @@
        ===================================================================== */
     const lxa = rows => rows.map(lx);
 
+    const WEI_WORK = lxa([   /* what he's doing when you walk in: small acts, no words */
+      ["*wipes the counter*", "*擦着吧台*", "", "*抹緊吧枱*", "*limpia la barra*", "*neteja la barra*"],
+      ["*dries a glass, holds it to the light*", "*擦干一只杯子，对着灯看了看*", "", "*抹乾隻杯，對住燈睇吓*", "*seca un vaso y lo mira a contraluz*", "*eixuga un got i el mira a contrallum*"],
+      ["*slices a lemon, very slowly*", "*慢慢地切着柠檬*", "", "*慢慢切緊檸檬*", "*corta un limón, muy despacio*", "*talla una llimona, molt a poc a poc*"],
+      ["*sets a coaster down on the counter*", "*在吧台上放下一张杯垫*", "", "*喺吧枱放低張杯墊*", "*deja un posavasos en la barra*", "*deixa un sotagot a la barra*"]
+    ]);
     // Name-aware greetings replace the old anonymous ones
     WeiText.greet = {
       first: lxa([
@@ -5059,6 +5065,10 @@
         return;
       }
 
+      if (AppState.greetLater) {   /* the first word is yours: now he looks up and says hello */
+        const g = AppState.greetLater; AppState.greetLater = null;
+        showBubble(g, 3400); setExpression('grin', 1800); animateWei('wei-hop'); return;
+      }
       SoundEngine.playBlip(1.3);
       setTimeout(() => SoundEngine.playBlip(1.6), 70);
       animateWei('wei-wiggle');
@@ -7088,11 +7098,9 @@
       if (AppState.weiState === 'awake') {
         const lv = Bond.level();
         const greetPool = Bond.visits <= 1 ? WeiText.greet.first : (lv >= 3 ? WeiText.greet.friend : WeiText.greet.back);
-        setTimeout(() => {
-          showBubble(L(pick(greetPool)), 3400);
-          setExpression('grin', 1800);
-          animateWei('wei-hop');
-        }, 500);
+        /* Wei doesn't open with a speech: he goes on with his work, and says hello when you speak to him (tap him) */
+        AppState.greetLater = L(pick(greetPool));
+        setTimeout(() => { if (AppState.greetLater) showBubble(L(pick(WEI_WORK)), 2600); }, 700);
       }
     }
 
@@ -7800,7 +7808,7 @@
     ["dj", S("\"Late Light opens when I close. Ask the DJ for the forbidden riff. Or don't. I didn't tell you.\"", "\"我打烊的时候“夜灯”才开门。问 DJ 要那段禁忌旋律。或者别问。我可没说过。\"", "\"Luz Tardía abre cuando yo cierro. Pide al DJ el riff prohibido. O no. Yo no te he dicho nada.\"", "\"Llum Tardana obre quan jo tanco. Demana al DJ el riff prohibit. O no. Jo no t'he dit res.\"")],
     ["climb", S("\"Someone fell off the wall at Hold On again today. Laughing, though. Chalk's free.\"", "\"今天又有人在“抓稳”从岩壁上掉下来了，不过是笑着的。镁粉免费。\"", "\"Hoy alguien se ha vuelto a caer de la pared de Agárrate. Riéndose, eso sí. La magnesia es gratis.\"", "\"Avui algú ha tornat a caure de la paret d'Agafa't. Rient, això sí. El magnesi és gratis.\"")],
     ["cloud", S("\"Up in Lie Back Park you can ride a cloud anywhere the wind goes. The lake at dusk is my favourite.\"", "\"在“看云坡”可以乘着云去风去的任何地方。我最喜欢黄昏的湖。\"", "\"En el Parque Panza Arriba puedes montar en una nube adonde vaya el viento. El lago al atardecer es mi favorito.\"", "\"Al Parc Panxa Enlaire pots pujar en un núvol allà on vagi el vent. El llac al capvespre és el meu preferit.\"")],
-    ["cabin", S("\"When it all gets loud, No Hurry is a cabin up on the pasture with a big window. Nothing to do there. That's the point.\"", "\"太吵的时候，牧场上有间小屋叫“不急”，有扇大窗。那里什么都不用做，这正是意义所在。\"", "\"Cuando todo hace ruido, Sin Prisa es una cabaña en el prado con una ventana grande. Allí no hay nada que hacer. Ahí está la gracia.\"", "\"Quan tot fa soroll, Sense Pressa és una cabana a la pastura amb una finestra gran. Allà no hi ha res a fer. Aquesta és la gràcia.\"")],
+    ["cabin", S("\"When it all gets loud, No Hurry is a cabin up on the pasture with a big window. The kettle's always on. I leave a candle.\"", "\"太吵的时候，牧场上有间小屋叫“不急”，有扇大窗。水壶一直烧着，我留了一支蜡烛。\"", "\"Cuando todo hace ruido, Sin Prisa es una cabaña en el prado con una ventana grande. La tetera siempre está al fuego. Yo dejo una vela.\"", "\"Quan tot fa soroll, Sense Pressa és una cabana a la pastura amb una finestra gran. La tetera sempre és al foc. Jo hi deixo una espelma.\"")],
     ["lang", S("\"Small Talk has a new Welsh class. Bore da. That's all I've got.\"", "\"“聊两句”新开了威尔士语课。Bore da（早上好）。我就会这一句。\"", "\"De Charla tiene clase nueva de galés. Bore da. Es todo lo que sé.\"", "\"De Xerrada té classe nova de gal·lès. Bore da. És tot el que sé.\"")]
   ];
   let news = null;
