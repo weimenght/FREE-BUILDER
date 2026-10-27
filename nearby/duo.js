@@ -129,7 +129,7 @@
       var inp = sheet.querySelector("input"); inp.oninput = function () { inp.value = clean(inp.value); };
       var doJoin = function () { if (inp.value.length === 4 && inp.value !== D.code) join(inp.value, false); else { inp.focus(); inp.animate && inp.animate([{ transform: "translateX(0)" }, { transform: "translateX(-5px)" }, { transform: "translateX(5px)" }, { transform: "translateX(0)" }], { duration: 240 }); } };
       sheet.querySelector(".fbduo-join").onclick = doJoin; inp.onkeydown = function (e) { if (e.key === "Enter") doJoin(); };
-      sheet.querySelector(".fbduo-send").onclick = function () { var u = link(), b = this; if (navigator.share) navigator.share({ title: document.title, url: u }).catch(function () {}); else if (navigator.clipboard) navigator.clipboard.writeText(u).then(function () { b.textContent = "✓ " + t("copied"); }); };
+      sheet.querySelector(".fbduo-send").onclick = function () { var u = link(), b = this, why = o.invite || (window.FBG && FBG.invite ? FBG.invite() : ""); if (navigator.share) navigator.share({ title: document.title, text: why, url: u }).catch(function () {}); else if (navigator.clipboard) navigator.clipboard.writeText((why ? why + " " : "") + u).then(function () { b.textContent = "✓ " + t("copied"); }); };
       sheet.querySelector(".fbduo-go").onclick = function () { if (D.host && peer() && o.onStart) { close(); o.onStart(); } };
       sheet.querySelector(".fbduo-alone").onclick = function () { leave(); close(); };
       paint();
