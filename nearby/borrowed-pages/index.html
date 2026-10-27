@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dd2c14133b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=ac5b6ba913" defer></script>
+<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dd2c14133b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=77ddb7ca8a" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Borrowed Pages · Nearby</title>
 <meta name="description" content="A four-room book house next door to the bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one, and pass it on by hand.">
@@ -608,10 +608,13 @@ details{margin-top:16px}summary{cursor:pointer;font:600 13px var(--sans);color:#
 
   /* my shelf */
   var KEYSVG = '<svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="10" cy="17" r="7" fill="none" stroke="#a07a2a" stroke-width="3"/><path d="M17 17h14M26 17v5M30 17v4" stroke="#a07a2a" stroke-width="3" stroke-linecap="round"/></svg>';
+  /* in town the key travels in the one town keychain (Wei → More → 🗝️), which carries this shelf's key too */
+  function townKeys() { try { var P = window.parent; return P !== window && P.FBShell && P.FBShell.keychain ? function () { P.FBShell.keychain(); } : null; } catch (e) { return null; } }
   function haveKey() {
+    if (townKeys()) return '<p class="note"><button class="btn sm" type="button" id="pkt">🗝️</button> ' + esc(t("haveKey")) + "</p>";
     return '<details><summary>' + KEYSVG.replace('viewBox', 'style="width:18px;height:18px;vertical-align:-4px" viewBox') + " " + esc(t("haveKey")) + '</summary><div class="row f" style="padding:0"><input id="pk" style="flex:1" autocomplete="off"><button class="btn sm" type="button" id="pkb">' + esc(t("open")) + "</button></div></details>";
   }
-  function bindKey(s) { var b = $("#pkb", s); if (b) b.onclick = function () { var v = $("#pk", s).value.trim().replace(/^.*key=/, ""); if (/^[A-Za-z0-9_-]{32,128}$/.test(v)) { ls("dogeared_key", v); toast(t("keyHere")); refreshMine().then(ledger); } else bad($("#pk", s)); }; }
+  function bindKey(s) { var tk = $("#pkt", s); if (tk) tk.onclick = function () { var f = townKeys(); if (f) f(); }; var b = $("#pkb", s); if (b) b.onclick = function () { var v = $("#pk", s).value.trim().replace(/^.*key=/, ""); if (/^[A-Za-z0-9_-]{32,128}$/.test(v)) { ls("dogeared_key", v); toast(t("keyHere")); refreshMine().then(ledger); } else bad($("#pk", s)); }; }
   function ledger() {
     touched = true; var k = key(false);
     if (!k) {
@@ -633,12 +636,12 @@ details{margin-top:16px}summary{cursor:pointer;font:600 13px var(--sans);color:#
       h += "<h4>🎀 " + esc(t("askedFor")) + "</h4>" + (m.asks.length ? m.asks.map(function (q) {
         return '<div class="item"><div><b>' + esc(q.title) + '</b> <span class="chip">' + esc(t("st_" + q.status)) + "</span>" + (q.status === "open" ? ' <button class="btn sm" type="button" data-cancel="' + q.id + '">' + esc(t("withdraw")) + "</button>" : "") + "</div></div>";
       }).join("") : '<p class="note">—</p>');
-      var link = location.origin + location.pathname + "#key=" + k;
-      h += "<h4>" + esc(t("key")) + '</h4><div class="keybox">' + KEYSVG + '<code id="kl" tabindex="0">' + esc(link) + '</code><button class="btn sm" type="button" id="kc">' + esc(t("copy")) + '</button></div><p class="note">' + esc(t("keyHint")) + "</p>";
+      var link = location.origin + location.pathname + "#key=" + k, town = townKeys();
+      h += "<h4>" + esc(t("key")) + '</h4><div class="keybox">' + KEYSVG + (town ? '<span style="flex:1">' + esc(t("keyHint")) + '</span><button class="btn sm" type="button" id="kc">🗝️</button></div>' : '<code id="kl" tabindex="0">' + esc(link) + '</code><button class="btn sm" type="button" id="kc">' + esc(t("copy")) + '</button></div><p class="note">' + esc(t("keyHint")) + "</p>");
       h += '<div class="row" style="margin-top:26px"><button class="btn sm warn" type="button" id="fg">' + esc(t("forget")) + "</button></div>";
       L.innerHTML = h;
-      $("#kl", s).onclick = function () { this.classList.toggle("show"); };
-      $("#kc", s).onclick = function () { var b = this; if (navigator.clipboard) navigator.clipboard.writeText(link).then(function () { b.textContent = t("copied"); }); };
+      if ($("#kl", s)) $("#kl", s).onclick = function () { this.classList.toggle("show"); };
+      $("#kc", s).onclick = function () { var b = this; if (town) { close(); town(); return; } if (navigator.clipboard) navigator.clipboard.writeText(link).then(function () { b.textContent = t("copied"); }); };
       $("#fg", s).onclick = function () { if (!confirmTwice(this)) return; rpc("book_forget", { p_secret: k }).then(function () { ls("dogeared_key", null); mine = null; paintMine(); close(); toast(t("forgot")); load(); }).catch(function (x) { toast(friendly(x)); }); };
       var bb = $("[data-bring]", s); if (bb) bb.onclick = function () { tuckForm(); };
       L.onclick = function (e) {
