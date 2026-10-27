@@ -24,6 +24,7 @@
     for (var i = 0; i < n; i++) fl.push({ k: KINDS[(i * 3 + (Math.random() * 5 | 0)) % KINDS.length], x: (i + .5 + (Math.random() - .5) * .5) / n, h: .14 + Math.random() * .16, r: 3 + (Math.random() * 2 | 0), ph: Math.random() * 6.3, nod: 0 });
   }
   size(); addEventListener("resize", size);
+  function wetSky() { try { var w = FBWorld.weather(); return w !== "clear"; } catch (e) { return false; } }   /* bees only come out in the sun */
   function night() { var h = window.FBWorld ? FBWorld.hour() : new Date().getHours(); h = ((h % 24) + 24) % 24; return h < 5.5 || h >= 20; }
   function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
   function head(f) { var gw = cv.width, gh = cv.height, sway = Math.sin(t / 40 + f.ph) * 1.5 + f.nod * 3; return { x: f.x * gw + sway, y: gh - f.h * gh }; }
@@ -71,7 +72,7 @@
     var f = fl[i], hd = head(f), rgb = f.k.p === "#ffffff" ? "255,250,235" : parseInt(f.k.p.slice(1, 3), 16) + "," + parseInt(f.k.p.slice(3, 5), 16) + "," + parseInt(f.k.p.slice(5, 7), 16);
     f.nod = 1; sniffSound(i);
     for (var k = 0; k < (reduce ? 8 : 26); k++) puffs.push({ x: hd.x + (Math.random() - .5) * 4, y: hd.y - Math.random() * 3, vx: (Math.random() - .5) * .15, a: .5 + Math.random() * .5, s: Math.random() * 60, c: rgb });
-    if (!bee && !night() && Math.random() < .45) bee = { x: -10, y: cv.height * .5, a: 0, f: f, life: 260 };
+    if (!bee && !night() && !wetSky() && Math.random() < .45) bee = { x: -10, y: cv.height * .5, a: 0, f: f, life: 260 };
     try { if (navigator.vibrate) navigator.vibrate(8); } catch (x) {}
   }, true);
 })();

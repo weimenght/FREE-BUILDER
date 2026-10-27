@@ -184,7 +184,9 @@
   var KIND = { meadow: "geese", mountain: "eagle", sea: "gulls", lake: "herons", forest: "leaves", dunes: "hawk", snow: "flakes" }[SCENE] || "geese";
   function bird(x, y, s, flap, col) { var w = Math.sin(flap) * 0.6 * s; g.strokeStyle = col; g.lineWidth = Math.max(1.2, s * 0.18); g.lineCap = "round"; g.beginPath(); g.moveTo(x - s, y - w); g.quadraticCurveTo(x - s * 0.4, y - s * 0.2 - w * 0.4, x, y); g.quadraticCurveTo(x + s * 0.4, y - s * 0.2 - w * 0.4, x + s, y - w); g.stroke(); }
   function visitor(t) {
-    if (!vis) { if (Math.random() > 0.004) return; var dir = Math.random() < 0.5 ? 1 : -1; vis = { t0: t, dir: dir, y: H * (0.12 + Math.random() * 0.2), n: 5 + Math.floor(Math.random() * 6), seed: Math.random() * 100, p: [] }; }
+    if (!vis) { if (Math.random() > 0.004) return;
+      var birdy = KIND !== "leaves" && KIND !== "flakes", ph0 = "day", w0 = "clear"; try { ph0 = FBWorld.phase(); w0 = FBWorld.weather(); } catch (e) {}
+      if (birdy && (ph0 === "night" || w0 === "rain" || w0 === "storm" || w0 === "snow")) return;   /* birds roost at night and sit out the rain */ var dir = Math.random() < 0.5 ? 1 : -1; vis = { t0: t, dir: dir, y: H * (0.12 + Math.random() * 0.2), n: 5 + Math.floor(Math.random() * 6), seed: Math.random() * 100, p: [] }; }
     var k = t - vis.t0, dir = vis.dir, ink = sky === "dusk" ? "rgba(40,30,40,.75)" : "rgba(40,48,60,.6)";
     g.save();
     if (KIND === "geese" || KIND === "herons" || KIND === "gulls") {

@@ -330,8 +330,13 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   function placeOf(k) { return k === "dog" ? dogAt : where[k]; }
   function pathOf(k) { var pl = placeOf(k); return PATH[pl] || DOGPATH[pl] || PATH.bar; }
   var SCENES = ["chase", "play", "fight", "nap", "chase", "play"];
+  /* animals keep real habits: asleep at night, cats tuck in against a wall when it rains or snows (the dog doesn't mind) */
+  function sky() { var ph = World.phase ? World.phase() : "day", w = World.weather ? World.weather() : "clear"; return { night: ph === "night", wet: w === "rain" || w === "storm" || w === "snow" }; }
   function motion(k, f) {
-    var pl = placeOf(k), grp = ["miso", "yuzu", "dog"].filter(function (o) { return placeOf(o) === pl; }), i = grp.indexOf(k);
+    var S0 = sky(), pl = placeOf(k);
+    if (S0.night) return { u: k === "dog" ? .5 : k === "miso" ? .18 : .82, dir: k === "yuzu" ? -1 : 1, pose: "sleep" };
+    if (S0.wet && k !== "dog") return { u: k === "miso" ? .04 : .96, dir: k === "miso" ? 1 : -1, pose: "sit" };
+    var grp = ["miso", "yuzu", "dog"].filter(function (o) { return placeOf(o) === pl; }), i = grp.indexOf(k);
     var base = { miso: [.021, 0], yuzu: [.017, 2.1], dog: [.03, 1] }[k];
     if (grp.length < 2) { var u0 = .5 + .5 * Math.sin(f * base[0] + base[1]); return { u: u0, dir: Math.cos(f * base[0] + base[1]) >= 0 ? 1 : -1, pose: Math.abs(Math.cos(f * base[0] + base[1])) < .12 ? "sit" : "walk" }; }
     var sc = SCENES[(Math.floor(f / 160) + Math.floor(hash(pl) * 6)) % SCENES.length];
@@ -364,6 +369,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     var mine = (World.myPets && World.myPets()) || [], night = World.phase && World.phase() === "night";
     mine.forEach(function (p, i) {
       var pl = World.petAt(p.id), path = PATH[pl] || DOGPATH[pl]; if (!path) return;
+      if (p.kind !== "dog" && !night && sky().wet) return;   /* cats wait out the rain indoors */
       var P = World.petSpec(p).P, dog = p.kind === "dog", a = f * .019 + i * 2.3 + (p.id % 7), u = .5 + .5 * Math.sin(a), dir = Math.cos(a) >= 0 ? 1 : -1, st = (f >> 1) % 2;
       /* at a building they walk all the way round it: along the front, out of sight round the corner, along the back, and out again at the other side */
       if (AROUND[pl] && !night) { var T = (f * .0016 + i * .37 + (p.id % 7) * .13) % 1; if (T >= .62) return; u = T / .62; dir = 1; }
@@ -410,7 +416,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     var wf = 74; R(wf, 40, 4, 46, night ? "#6a8aba" : "#cfe6f6"); for (var wd = 0; wd < 6; wd++) R(wf + (wd % 2), 40 + ((f * 2 + wd * 8) % 46), 2, 3, "#ffffff"); R(wf - 3, 84, 10, 3, "rgba(255,255,255,.6)");
     for (var tr = 0; tr < 26; tr++) { var tx = 2 + (tr * 13) % 84, ty = 118 + Math.floor(tr / 7) * 11 + (hash("t" + tr) * 4); R(tx + 3, ty + 8, 2, 3, "#4a2e1a"); R(tx + 2, ty, 4, 3, D); R(tx + 1, ty + 3, 6, 3, D); R(tx, ty + 6, 8, 3, night ? "#163020" : "#346a32"); }
     for (var fl = 0; fl < 60; fl++) { var fx = 3 + hash("fl" + fl) * 84, fy = 178 + hash("fy" + fl) * 62; R(fx, fy, 1, 2, D); R(fx, fy - 1, 1, 1, ["#ffffff", "#f6d84a", "#f4a0b8", "#c9a6ff", "#ff7a5a"][fl % 5]); }
-    R(10, 196, 8, 8, "#c8a050"); R(11, 195, 6, 1, "#a87a30"); R(12, 199, 2, 2, "#3a2a1c"); for (var bz = 0; bz < 3; bz++) R(12 + Math.sin((f + bz * 13) / 6) * 6, 189 + Math.cos((f + bz * 7) / 5) * 4, 1, 1, "#f6d84a");   // beehive and bees
+    R(10, 196, 8, 8, "#c8a050"); R(11, 195, 6, 1, "#a87a30"); R(12, 199, 2, 2, "#3a2a1c"); if (!night && wx === "clear") for (var bz = 0; bz < 3; bz++) R(12 + Math.sin((f + bz * 13) / 6) * 6, 189 + Math.cos((f + bz * 7) / 5) * 4, 1, 1, "#f6d84a");   // beehive and bees: out only in the sun
     // the animal sanctuary: a red barn, two kennels and a fenced yard (Mantou's home)
     R(56, 216, 26, 18, "#9c2418"); for (var bb = 218; bb < 234; bb += 3) R(56, bb, 26, 1, "#7c1a10"); for (var br = 0; br < 7; br++) R(69 - br * 2.2, 208 + br, br * 4.4 + 1, 1, "#3a2a20");
     R(65, 224, 8, 10, "#2a1a14"); R(66, 225, 3, 9, "#c8a050"); R(69, 225, 3, 9, "#c8a050"); R(66, 218, 6, 4, lit ? "#f6c84a" : "#fbf3e2");
