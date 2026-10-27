@@ -280,6 +280,37 @@
     document.body.appendChild(w);
     w.addEventListener("click", function (e) { if (e.target === w || e.target.closest('[data-a="stay"]')) { w.remove(); director.next.depart = Date.now() + 3000; } });
   }
+  /* ---------- the line passes the town's wild places: pull the cord and step off there ---------- */
+  var WILDSTOP = { lake: "lake", snow: "peaks", alpine: "pasture", coastal: "sea", forest: "forest", countryside: "meadow" }, cordFor = null;
+  var CW = { cord: ["Pull the cord", "拉一下停车绳", "拉一下停車繩", "Tira de la cuerda", "Estira la corda"], off: ["Step off at {p}", "在{p}下车", "在{p}下車", "Bájate en {p}", "Baixa a {p}"], stay: ["Stay aboard", "继续坐车", "繼續坐車", "Quédate a bordo", "Queda't a bord"], stop: ["Request stop · Nearby", "请求停车 · 近邻", "請求停車 · 近鄰", "Parada solicitada · Cerca", "Parada sol·licitada · A Prop"] };
+  function cw5(k, p) { var i = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; return (CW[k][i] || CW[k][0]).replace("{p}", p || ""); }
+  function wildHere() { var k = WILDSTOP[state.biome]; return k && window.FBWorld && FBWorld.PLACES && FBWorld.PLACES[k] && !state.inTunnel ? k : null; }
+  function wildName(k) { try { return FBWorld.name(k); } catch (e) { return k; } }
+  function cord() {
+    var k = wildHere(), el = $("cbCord"), bz = document.querySelector(".window-bezel"); if (!bz) return;
+    if (!el) { el = document.createElement("button"); el.type = "button"; el.id = "cbCord"; el.setAttribute("data-fbt-skip", ""); el.innerHTML = '<i aria-hidden="true"></i><b aria-hidden="true"></b><span></span>'; bz.appendChild(el);
+      el.addEventListener("click", function () { var kk = wildHere(); if (!kk) return; el.classList.add("pull"); setTimeout(function () { el.classList.remove("pull"); }, 600); bell(); cordFor = kk;
+        if (state.trainState === "STOPPED") wildCard(kk); else if (state.trainState === "CRUISING") { triggerStationStopOrDepart(); director.next.depart = Date.now() + 60e3; } }); }
+    el.hidden = !k || !S.boarded; if (k) { var lab = cw5("cord") + " · " + wildName(k); el.querySelector("span").textContent = lab; el.setAttribute("aria-label", lab); el.title = lab; }
+    if (cordFor && state.trainState === "STOPPED" && !document.querySelector(".cb-off")) wildCard(cordFor);
+  }
+  function bell() { try { kctx = kctx || new (window.AudioContext || window.webkitAudioContext)(); var t0 = kctx.currentTime; [1320, 1760].forEach(function (f, i) { var o = kctx.createOscillator(), g = kctx.createGain(); o.type = "sine"; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t0 + i * 0.12); g.gain.exponentialRampToValueAtTime(0.18, t0 + i * 0.12 + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + i * 0.12 + 0.9); o.connect(g); g.connect(kctx.destination); o.start(t0 + i * 0.12); o.stop(t0 + i * 0.12 + 1); }); } catch (e) {} }
+  function wildCard(k) {
+    cordFor = null; director.next.depart = Date.now() + 60e3;
+    var w = document.createElement("div"), ic = (FBWorld.icon && FBWorld.icon(k)) || "🌿"; w.className = "cb-sheet cb-off";
+    w.innerHTML = '<div class="cb-card" role="dialog" aria-modal="true"><small class="cb-stn"></small><div class="cb-doors" style="grid-template-columns:1fr"><a class="cb-door on"><b aria-hidden="true"></b><span></span><small></small></a></div><div class="row"><button type="button" data-a="stay"></button></div></div>';
+    w.querySelector(".cb-stn").textContent = cw5("stop"); w.querySelector(".cb-door").href = FBWorld.url(k); w.querySelector(".cb-door b").textContent = ic; w.querySelector(".cb-door span").textContent = wildName(k);
+    w.querySelector(".cb-door small").textContent = cw5("off", wildName(k)) + " →"; w.querySelector('[data-a="stay"]').textContent = cw5("stay");
+    document.body.appendChild(w);
+    w.addEventListener("click", function (e) { if (e.target === w || e.target.closest('[data-a="stay"]')) { w.remove(); director.next.depart = Date.now() + 3000; } });
+  }
+  var cordCss = document.createElement("style"); cordCss.textContent = "#cbCord{position:absolute;z-index:46;top:6px;right:22px;display:flex;flex-direction:column;align-items:flex-end;gap:0;padding:0 4px 4px;border:0;background:none;cursor:pointer;color:#f6e7c8;font:600 10px/1.2 ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}" +
+    "#cbCord i{display:block;width:2px;height:34px;margin-right:5px;background:linear-gradient(#5a3b20,#c99a56)}#cbCord b{display:block;width:12px;height:22px;border-radius:5px;background:linear-gradient(#b9772c,#6b3a1b);box-shadow:inset 0 2px 0 rgba(255,230,180,.45),0 2px 4px rgba(0,0,0,.5)}" +
+    "#cbCord span{max-width:0;overflow:hidden;white-space:nowrap;margin-top:4px;padding:2px 0;border-radius:3px;background:rgba(20,12,8,.7);transition:max-width .4s,padding .4s}#cbCord:hover span,#cbCord:focus-visible span{max-width:220px;padding:2px 6px}" +
+    "#cbCord.pull i{animation:cbPull .6s ease}@keyframes cbPull{40%{height:50px}}#cbCord[hidden]{display:none}#cbCord:focus-visible{outline:2px solid #f6b73c;outline-offset:2px}@media (hover:none){#cbCord span{max-width:180px;padding:2px 6px;opacity:.85}}";
+  document.head.appendChild(cordCss);
+  setInterval(cord, 1000);
+
   /* writing on the glass is wiping the mist with a fingertip; friends in the cabin see the same strokes */
   var pen = null;
   function finger(a, b, w) {
