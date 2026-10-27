@@ -42,6 +42,10 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     night: { snow: [26, 36, 59], shadow: [17, 24, 43], treeD: [11, 16, 29], treeL: [22, 33, 56], rock: [45, 58, 86], trail: [20, 29, 50], me: [255, 110, 110], scarf: [255, 224, 130], mate: [110, 170, 230], mateScarf: [255, 240, 170] }
   };
   function key() { var p = W.phase(); return p === "night" ? "night" : p === "dusk" || p === "dawn" ? "dusk" : "day"; }
+  /* a different jacket and scarf every time you come up the mountain, lit by the hour like everything else */
+  (function dress() { var J = [[229, 75, 75], [60, 120, 200], [60, 160, 90], [240, 180, 40], [150, 80, 180], [40, 40, 52], [240, 120, 160]], S = [[247, 178, 103], [250, 240, 230], [120, 200, 230], [250, 210, 80], [220, 90, 120]], p = function (a) { return a[(Math.random() * a.length) | 0]; }, j = p(J), sc = p(S);
+    var tint = function (c, k) { var m = k === "dusk" ? [255, 140, 90] : [120, 140, 210], a = k === "day" ? 0 : k === "dusk" ? .15 : .3; return c.map(function (v, i) { return Math.round(v * (1 - a) + m[i] * a); }); };
+    for (var k in PAL) { PAL[k].me = tint(j, k); PAL[k].scarf = tint(sc, k); } })();
   var C = JSON.parse(JSON.stringify(PAL[key()]));
   function ease() { var T = PAL[key()]; for (var k in T) for (var i = 0; i < 3; i++) C[k][i] += (T[k][i] - C[k][i]) * .02; }
   function rgb(c) { return "rgb(" + (c[0] | 0) + "," + (c[1] | 0) + "," + (c[2] | 0) + ")"; }
