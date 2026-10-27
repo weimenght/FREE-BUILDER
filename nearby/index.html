@@ -265,7 +265,20 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     PLACES.forEach(function (p) { if (LIT[p.k]) paint(p, 1); });
     document.querySelectorAll(".spot[data-k]").forEach(function (a) { a.classList.toggle("known", (LIT[a.dataset.k] || 0) >= KNOW); });
   }
+  /* outdoor places colour in as a soft oval over their whole piece of country (the mountain, the hill, the wood), not as a box
+     around the name, so no hard edges cut through the landscape; buildings keep their neat rectangle */
+  var LAND = { peaks: [0, 0, 92, 90], climb: [86, 0, 172, 90], cloud: [178, 22, 274, 92], tower: [164, 34, 194, 96], pasture: [266, 12, 360, 92],
+    forest: [0, 108, 92, 170], meadow: [0, 164, 92, 210], lake: [268, 94, 360, 176], sea: [266, 204, 360, 298], cabin: [300, 28, 350, 66] };
   function paint(p, a) {
+    var L = LAND[p.k];
+    if (L) {   /* full height up into the sky, soft sides (18 px) and a soft foot (10 px) */
+      var FX = 18, FY = 10, sm = function (t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
+      for (var yy = 0; yy < Math.min(H, L[3] + FY); yy++) for (var xx = Math.max(0, L[0] - FX); xx < Math.min(WW, L[2] + FX); xx++) {
+        var hx = xx < L[0] ? 1 - (L[0] - xx) / FX : xx > L[2] ? 1 - (xx - L[2]) / FX : 1, hy = yy > L[3] ? 1 - (yy - L[3]) / FY : 1, mm = sm(hx) * sm(hy) * a, ii = yy * WW + xx;
+        if (mm > MASK[ii]) MASK[ii] = mm;
+      }
+      return;
+    }
     var x0 = Math.round(px(p)) - 4, y0 = Math.round(p.y) - 6, x1 = x0 + p.w + 8, y1 = y0 + p.h + 10, F = 7;
     for (var y = Math.max(0, y0 - F); y < Math.min(H, y1 + F); y++) for (var x = Math.max(0, x0 - F); x < Math.min(WW, x1 + F); x++) {
       var dx = x < x0 ? x0 - x : x > x1 ? x - x1 : 0, dy = y < y0 ? y0 - y : y > y1 ? y - y1 : 0, d = Math.sqrt(dx * dx + dy * dy), m = Math.max(0, 1 - d / F) * a, i = y * WW + x;
@@ -287,7 +300,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
       d[i] = l + (r - l) * m; d[i + 1] = l + (gg - l) * m; d[i + 2] = l + (b - l) * m;
     }
     if (blooming.length) {   /* re-grey the blooming places in proportion, so they fade in instead of switching */
-      PLACES.forEach(function (p) { if (blooming.indexOf(p.k) < 0) return; var a = 1 - (p.__g || 0), x0 = Math.max(0, Math.round(px(p)) - 11), y0 = Math.max(0, Math.round(p.y) - 13), x1 = Math.min(WW, x0 + p.w + 22), y1 = Math.min(H, y0 + p.h + 24);
+      PLACES.forEach(function (p) { if (blooming.indexOf(p.k) < 0) return; var a = 1 - (p.__g || 0), LB = LAND[p.k], x0 = LB ? Math.max(0, LB[0] - 10) : Math.max(0, Math.round(px(p)) - 11), y0 = LB ? Math.max(0, LB[1] - 10) : Math.max(0, Math.round(p.y) - 13), x1 = LB ? Math.min(WW, LB[2] + 10) : Math.min(WW, x0 + p.w + 22), y1 = LB ? Math.min(H, LB[3] + 10) : Math.min(H, y0 + p.h + 24);
         for (var y = y0; y < y1; y++) for (var x = x0; x < x1; x++) { var k = (y * WW + x) * 4, l2 = d[k] * .3 + d[k + 1] * .59 + d[k + 2] * .11; d[k] += (l2 - d[k]) * a; d[k + 1] += (l2 - d[k + 1]) * a; d[k + 2] += (l2 - d[k + 2]) * a; } });
     }
     g.putImageData(img, 0, 0);
