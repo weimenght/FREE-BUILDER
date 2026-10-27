@@ -96,7 +96,23 @@
       flakes.forEach(function (f) { f.p += 0.01; f.y += f.v; f.x += Math.sin(f.p) * 0.4 - 0.15 * ((typeof state !== "undefined" && state.breezeSpeed) || 1); if (f.y > H) { f.y = -5; f.x = Math.random() * W; } if (f.x < -5) f.x = W + 5; g.fillStyle = "rgba(255,255,255," + (0.5 + f.r * 0.18) + ")"; g.beginPath(); g.arc(f.x, f.y, f.r, 0, TAU); g.fill(); });
     }
     else { ridges.forEach(function (rd, i) { ridge(rd, P, i ? [70, 120, 70] : [100, 140, 100], t); }); }   /* meadow: soft rolling hills */
+    neighbour(t, P);
     requestAnimationFrame(frame);
+  }
+  /* someone else is lying out here right now (anonymous presence from the shell): a far-off figure on the grass,
+     knees up, and at night a small warm lantern beside them. No name, nothing to tap. */
+  var nb = { a: 0, x: 0.62 + Math.random() * 0.22, seen: 0 };
+  function others() { try { var P = window.parent; if (P === window || !P.FBShell || !P.FBShell.others) return 0; return P.FBShell.others(window.FBWorld && FBWorld.here ? FBWorld.here(location.pathname) : "cloud"); } catch (e) { return 0; } }
+  function neighbour(t, P) {
+    if (t - nb.seen > 3) { nb.seen = t; nb.on = others() > 0; }
+    nb.a += ((nb.on ? 1 : 0) - nb.a) * 0.01; if (nb.a < 0.01) return;
+    var x = nb.x * W, y = SCENE === "sea" ? H - 14 : SCENE === "lake" ? H * 0.8 - 2 : H * 0.86, s = Math.max(0.7, Math.min(1.3, W / 900)), c = lit([24, 22, 26], P, 0.25);
+    g.save(); g.globalAlpha = nb.a * 0.9; g.fillStyle = rgb(c);
+    g.beginPath(); g.ellipse(x, y - 3 * s, 15 * s, 3.2 * s, 0, 0, TAU); g.fill();                 /* lying down */
+    g.beginPath(); g.arc(x - 15 * s, y - 5 * s, 3.6 * s, 0, TAU); g.fill();                         /* head */
+    g.beginPath(); g.moveTo(x + 4 * s, y - 4 * s); g.lineTo(x + 9 * s, y - 11 * s + Math.sin(t * 0.4) * 0.6 * s); g.lineTo(x + 14 * s, y - 4 * s); g.fill();   /* knees up */
+    if (P.night) { var gl = g.createRadialGradient(x + 24 * s, y - 5 * s, 0, x + 24 * s, y - 5 * s, 14 * s); gl.addColorStop(0, "rgba(255,196,110," + (0.55 + Math.sin(t * 2.3) * 0.08) + ")"); gl.addColorStop(1, "rgba(255,160,60,0)"); g.fillStyle = gl; g.beginPath(); g.arc(x + 24 * s, y - 5 * s, 14 * s, 0, TAU); g.fill(); }
+    g.restore();
   }
   requestAnimationFrame(frame);
 

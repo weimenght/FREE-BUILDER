@@ -504,6 +504,19 @@
     "body.cb-coach-tram .window-bezel{background:linear-gradient(145deg,#efe5cb,#d6c9a6 50%,#b7a77f)!important;border-color:#2f5d4a!important;border-top-color:#3d7560!important;border-bottom-color:#1d3a2f!important;box-shadow:inset 0 6px 18px rgba(0,0,0,.55),inset 0 0 0 2px #2f5d4a,0 18px 48px rgba(0,0,0,.85)!important}" +
     "body.cb-coach-tram .windowsill-ledge{background:linear-gradient(#2f5d4a,#1d3a2f)!important;border-top-color:#4c8a72!important}body.cb-coach-tram .window-recess{border-color:#1d3a2f!important;border-radius:26px!important}body.cb-coach-tram #cbPlate{background:linear-gradient(#2f5d4a,#1f4033);color:#efe5cb}";
   document.head.appendChild(ccss);
+  /* someone else is on the train right now (anonymous presence from the shell): their reflection in the glass, across the
+     aisle, a cup of tea steaming in front of them. No name, nothing to tap; it fades in and out with them. */
+  function aboard() { try { var P = window.parent; return P !== window && P.FBShell && P.FBShell.others ? P.FBShell.others("train") : 0; } catch (e) { return 0; } }
+  function across() {
+    var vpEl = vp(); if (!vpEl) return; var r = $("cbAcross");
+    if (!r) { r = document.createElement("div"); r.id = "cbAcross"; r.setAttribute("aria-hidden", "true");
+      r.innerHTML = '<svg viewBox="0 0 120 140" width="100%" height="100%"><g fill="#ffe2b8"><circle cx="64" cy="38" r="17"/><path d="M30 140c0-38 14-62 34-62s36 24 36 62z"/><path d="M58 30c4-12 22-14 26 2-8-6-18-6-26-2z" opacity=".6"/></g><g fill="#fff3dc"><rect x="22" y="104" width="22" height="18" rx="3"/><path d="M44 108h5a5 5 0 0 1 0 10h-5" fill="none" stroke="#fff3dc" stroke-width="2.5"/></g><g fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" class="st"><path d="M28 98c-4-6 4-8 0-14"/><path d="M37 98c-4-6 4-8 0-14"/></g></svg>';
+      vpEl.appendChild(r); }
+    r.classList.toggle("on", aboard() > 0);
+  }
+  var acss = document.createElement("style"); acss.textContent = "#cbAcross{position:absolute;z-index:4;right:7%;bottom:6%;width:min(22%,150px);aspect-ratio:120/140;pointer-events:none;opacity:0;transition:opacity 6s ease;mix-blend-mode:screen;filter:blur(1.2px)}#cbAcross.on{opacity:.16}#cbAcross .st{animation:cbSt 3.2s ease-in-out infinite;opacity:.7}@keyframes cbSt{50%{transform:translateY(-4px);opacity:.25}}@media (prefers-reduced-motion:reduce){#cbAcross .st{animation:none}}";
+  document.head.appendChild(acss);
+  addEventListener("load", function () { across(); setInterval(across, 5000); });
   addEventListener("load", plate); setInterval(function () { if (plate.l !== ((window.FBL && FBL.get && FBL.get()) || "en")) { plate.l = (window.FBL && FBL.get && FBL.get()) || "en"; plate(); } }, 800);
   /* phones: dragging the shade or drawing on the mist must not pull the page down to refresh */
   ["windowViewport", "shadeDragHandle"].forEach(function (id) { var el = $(id); if (el) el.addEventListener("touchmove", function (e) { if (e.cancelable) e.preventDefault(); }, { passive: false }); });
