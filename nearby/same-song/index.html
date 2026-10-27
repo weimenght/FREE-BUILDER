@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dd2c14133b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=3a51f09abe" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dd2c14133b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0d2cb3b46b" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Same Song · Nearby</title>
 <meta name="description" content="Light up a little tune, press it into a record, and drop it in the jukebox that plays in Next Door and Borrowed Pages at the same time.">
@@ -294,7 +294,7 @@ html.fbsh-in.fbfit main{height:100%;min-height:0;width:100%;min-width:0;max-widt
       var name = who.value.trim(), title = ttl.value.trim() || t("untitled");
       if (!name) { who.focus(); who.parentNode.classList.remove("err"); void who.offsetWidth; who.parentNode.classList.add("err"); return; }
       go.disabled = true; ls("jb_title", "");
-      JB.press(name, title, code).then(function (id) {
+      JB.press(name, title, code).then(function (id) { if (window.FBG && FBG.made) setTimeout(function () { FBG.made("jukebox", title); }, 3000);
         $(".vinyl", sc).classList.add("away");
         stopPreview(); resumeJukebox = false;
         var queued = JB.spin(id, "studio").then(function () { return true; }, function () { return false; });

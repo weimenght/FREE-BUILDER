@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dd2c14133b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=3a51f09abe" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dd2c14133b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0d2cb3b46b" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Plant a Friend · Nearby</title>
 <meta name="description" content="One endless garden that everyone plants together. Pick a seed, plant it next to someone else's, water what you pass, and come back to see it bloom.">
@@ -236,7 +236,7 @@ button{font:inherit;color:inherit}
     if (!canPlant(tl)) { toast(t("near")); return; }
     if (!askedName && !nick() && !once()) { askName(function () { tap(tl); }); return; }   /* a name is asked once in the whole town, never again */
     var tmp = [0, tl.x, tl.y, sel, 0, 0, nick() || null]; put(tmp); chime(523);
-    api("garden_plant_named", { p_secret: key(), p_x: tl.x, p_y: tl.y, p_kind: sel, p_name: nick() }).then(function (id) { var q = plants[tl.x + "," + tl.y]; if (q) q[0] = id; total++; paintCount(); toast(t("planted")); })
+    api("garden_plant_named", { p_secret: key(), p_x: tl.x, p_y: tl.y, p_kind: sel, p_name: nick() }).then(function (id) { var q = plants[tl.x + "," + tl.y]; if (q) q[0] = id; total++; paintCount(); toast(t("planted")); if (window.FBG && FBG.made) setTimeout(function () { FBG.made("garden"); }, 1800); })
       .catch(function (e) { delete plants[tl.x + "," + tl.y]; var m = String(e && e.message || e); toast(/near/.test(m) ? t("near") : /taken/.test(m) ? t("taken") : /rest/.test(m) ? t("rest") : /fast/.test(m) ? t("fast") : /privacy/i.test(m) ? t("privacy") : t("offline")); load(true); });
   }
   function ago(sec) { var m = Math.floor(sec / 60), h = Math.floor(sec / 3600), d = Math.floor(sec / 86400); return t("ago").replace("{n}", d ? t("day").replace("{n}", d) : h ? t("hr").replace("{n}", h) : t("min").replace("{n}", Math.max(1, m))); }

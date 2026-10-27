@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit fit-col">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dd2c14133b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=3a51f09abe" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dd2c14133b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0d2cb3b46b" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Neighbours' Brew · Nearby</title>
 <meta name="description" content="Brew your own beer: pick the malt, hops, yeast and a twist, design the can, and ship it to Next Door and Late Light for everyone to try.">
@@ -242,7 +242,7 @@ window.BeerArt = (function () {
     setTimeout(function () {
       api("beer_brew", { p_secret: key(), p_beer: body }).then(function () {
         clink(); var v = [body.bar && t("bar"), body.club && t("club")].filter(Boolean);
-        toast("🍺 " + (v.length ? t("shipped").replace("{v}", v.join(t("and"))) : t("shippedNone"))); $("name").value = ""; sort = "new"; paint(); load();
+        toast("🍺 " + (v.length ? t("shipped").replace("{v}", v.join(t("and"))) : t("shippedNone"))); $("name").value = ""; sort = "new"; paint(); load(); if (window.FBG && FBG.made) setTimeout(function () { FBG.made("brewery", body.name); }, 1800);
       }).catch(function (e) { var m = String(e && e.message || e); toast(/rest|fast/.test(m) ? t("rest") : /privacy/i.test(m) ? t("privacy") : t("offline")); })
         .then(function () { btn.disabled = false; brewing = 0; });
     }, 1600);

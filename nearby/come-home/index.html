@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dd2c14133b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=3a51f09abe" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dd2c14133b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0d2cb3b46b" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Come Home · Nearby</title>
 <meta name="description" content="Mantou the dog's home by the meadow: play fetch with him, follow his story, and help real animals find a home. Post an animal that needs one, or ask to adopt.">
@@ -407,7 +407,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
       if (P.kind === "dog") { P.look.w = P.look.w || P.look.belly || ""; delete P.look.s; } else delete P.look.c;
       var go = this; go.disabled = true;
       api("pet_add", { p_secret: key(), p_kind: P.kind, p_name: n, p_look: P.look, p_line: s.querySelector("#pL").value, p_owner: s.querySelector("#pO").value })
-        .then(function () { s.remove(); try { sessionStorage.removeItem("fb_pets_v"); } catch (e) {} petsMine(); })
+        .then(function () { s.remove(); try { sessionStorage.removeItem("fb_pets_v"); } catch (e) {} petsMine(); if (window.FBG && FBG.made) FBG.made("sanctuary", n); })
         .catch(function (e) { go.disabled = false; toast(/3 animals/.test(String(e && e.message)) ? t("petFull") : t("fail")); });
     };
   };
