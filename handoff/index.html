@@ -4,7 +4,7 @@
     <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script>
     <!-- Pinch-zoom stays allowed (accessibility). interactive-widget lets Android shrink the layout when the keyboard opens. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
-    <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="dark light">
     <meta name="format-detection" content="telephone=no">
     <title>Handoff</title>
 
@@ -309,6 +309,48 @@
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { transition: none !important; animation: none !important; }
         }
+        /* ------------------------------------------------------------------
+           LIGHT: follows the device. Same layout; paper glass on a pale sky,
+           ink text; the partner's sky still colours the background (lighter).
+           ------------------------------------------------------------------ */
+        @media (prefers-color-scheme: light) {
+            :root { color-scheme: light; }
+            html { background: #eef2f8; }
+            html body#app-body { background-color: #eef2f8; color: #1b2333; }
+            html body .text-white { color: #1b2333; }
+            html body .bg-white { background-color: #1b2333; }
+            html body .bg-white.text-black, html body .bg-white .text-black, html body .bg-white { color: #fff; }
+            html body .bg-amber-400 { background-color: #b45309; color: #fff; }
+            html body .bg-white\/5 { background-color: rgba(27,35,51,.06); }
+            html body .bg-white\/15 { background-color: rgba(27,35,51,.1); }
+            html body .bg-white\/20 { background-color: rgba(27,35,51,.18); }
+            html body .bg-white\/30 { background-color: rgba(27,35,51,.28); }
+            html body .bg-white\/\[0\.07\] { background-color: rgba(255,255,255,.7); }
+            html body .hover\:bg-white\/10:hover, html body .focus\:bg-white\/10:focus { background-color: rgba(27,35,51,.07); }
+            html body .hover\:bg-white\/5:hover { background-color: rgba(27,35,51,.05); }
+            html body .border-white\/10 { border-color: rgba(27,35,51,.12); }
+            html body .border-white\/20 { border-color: rgba(27,35,51,.2); }
+            html body .focus\:border-white\/40:focus { border-color: rgba(27,35,51,.4); }
+            html body .text-amber-200, html body .text-amber-300, html body .text-amber-200\/90,
+            html body .peer:checked ~ .peer-checked\:text-amber-200 { color: #9a4a06; }
+            html body .text-rose-300, html body .text-rose-300\/90 { color: #be123c; }
+            html body .bg-amber-300 { background-color: #f59e0b; }
+            html body .bg-sky-300\/50 { background-color: rgba(2,132,199,.4); }
+            html body .bg-amber-300\/20, html body .peer:checked ~ .peer-checked\:bg-amber-300\/20 { background-color: rgba(245,158,11,.18); }
+            html body .ring-amber-300\/80 { --tw-ring-color: rgba(180,83,9,.7); }
+            html body .decoration-amber-300\/60 { text-decoration-color: rgba(180,83,9,.55); }
+            .glass {
+                background: rgba(255, 255, 255, 0.62);
+                border-color: rgba(27, 35, 51, 0.1);
+                box-shadow: 0 8px 28px 0 rgba(27, 35, 51, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+            }
+            .glass-subtle { background: rgba(255, 255, 255, 0.5); border-color: rgba(27, 35, 51, 0.1); }
+            .solid-panel { background: rgba(255, 255, 255, 0.98); border-color: rgba(27,35,51,.12); box-shadow: 0 16px 40px rgba(27,35,51,.18); }
+            .sheet-backdrop { background: rgba(27, 35, 51, 0.28); }
+            #app-body input::placeholder, #app-body textarea::placeholder { color: rgba(27,35,51,.45); opacity: 1; }
+            :focus-visible { outline-color: #b45309; }
+            ::selection { background: #fcd34d; color: #000; }
+        }
     </style>
 </head>
 <body id="app-body" class="bg-[#090d16] text-white antialiased selection:bg-amber-300 selection:text-black">
@@ -337,9 +379,6 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></svg>
             </button>
             <div id="nav-user-controls" class="hidden flex items-center gap-1.5">
-                <a href="/nearby/two-candles/" class="icon-btn glass-subtle opacity-80 hover:opacity-100" data-i18n-aria="dateNight" data-i18n-title="dateNight">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 11v9M16 11v9M6 20h12"/><path d="M8 4.5c1 1.3 1 2.6 0 3.8-1-1.2-1-2.5 0-3.8zM16 4.5c1 1.3 1 2.6 0 3.8-1-1.2-1-2.5 0-3.8z"/></svg>
-                </a>
                 <button type="button" onclick="openTimeline()" class="icon-btn glass-subtle opacity-80 hover:opacity-100" data-i18n-aria="timeline" data-i18n-title="timeline">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
                 </button>
@@ -616,9 +655,9 @@
                 <div>
                     <span class="opacity-60 block mb-1" data-i18n="sleepHoursLabel">Sleep hours</span>
                     <div class="flex items-center gap-2">
-                        <select id="modal-sleep-start" aria-label="Sleep start" class="flex-1 min-w-0 glass-subtle rounded-xl px-3 py-2 focus:outline-none bg-transparent"></select>
+                        <select id="modal-sleep-start" data-i18n-aria="sleepStartAria" aria-label="Bedtime" class="flex-1 min-w-0 glass-subtle rounded-xl px-3 py-2 focus:outline-none bg-transparent"></select>
                         <span class="opacity-60 shrink-0" data-i18n="sleepTo">to</span>
-                        <select id="modal-sleep-end" aria-label="Wake up" class="flex-1 min-w-0 glass-subtle rounded-xl px-3 py-2 focus:outline-none bg-transparent"></select>
+                        <select id="modal-sleep-end" data-i18n-aria="wakeAria" aria-label="Wake-up time" class="flex-1 min-w-0 glass-subtle rounded-xl px-3 py-2 focus:outline-none bg-transparent"></select>
                     </div>
                 </div>
                 <div class="flex items-center justify-between gap-2 pt-1">
@@ -687,6 +726,7 @@
         // 1. CONFIG: ./supabase.txt (URL, anon key, optional VAPID public key)
         // ============================================================================
         let supabaseClient = null;
+        let syncState = '';
         let realtimeChannel = null;
         let vapidPublicKey = '';
         let usernameDomain = '';   // optional: lets people sign in with a plain username (see SETUP.md)
@@ -738,7 +778,7 @@
 
             if (url && key && isSecretKey(key)) {
                 show('supabase-config-banner', true);
-                setText('sync-indicator', 'Unsafe key');
+                syncState = 'syncUnsafe'; setText('sync-indicator', t(syncState));
                 showMsg('login-error', t('errSecretKey'));
                 return false;
             }
@@ -746,11 +786,11 @@
             if (url && key) {
                 supabaseClient = window.supabase.createClient(url, key);
                 show('supabase-config-banner', false);
-                setText('sync-indicator', 'Live');
+                syncState = 'syncLive'; setText('sync-indicator', t(syncState));
                 return true;
             }
             show('supabase-config-banner', true);
-            setText('sync-indicator', 'Config Needed');
+            syncState = 'syncConfig'; setText('sync-indicator', t(syncState));
             return false;
         }
 
@@ -763,7 +803,7 @@
             lsSet('handoff_sb_key', key);
             supabaseClient = window.supabase.createClient(url, key);
             show('supabase-config-banner', false);
-            setText('sync-indicator', 'Live');
+            syncState = 'syncLive'; setText('sync-indicator', t(syncState));
             await restoreSupabaseSession();
         }
 
@@ -896,6 +936,7 @@
                 errPassShort: 'New password must be at least 6 characters.',
                 errSendFailed: 'Couldn’t send — your message is kept. Try again.',
                 errGeneric: 'Something went wrong. Please try again.',
+                syncLive: "Live", syncConfig: "Setup needed", syncUnsafe: "Unsafe key", sleepStartAria: "Bedtime", wakeAria: "Wake-up time", errAccountExists: "There’s already an account with this email. Sign in instead.", errTooMany: "Too many tries. Wait a minute, then try again.", errOffline: "No connection. Check your internet and try again.",
                 weatherClear: 'Clear', weatherCloudy: 'Cloudy', weatherMist: 'Mist', weatherRain: 'Rain', weatherSnow: 'Snow', weatherStorm: 'Storm'
             },
             'zh-CN': {
@@ -994,6 +1035,7 @@
                 errPassShort: '新密码至少需要 6 位。',
                 errSendFailed: '投递失败 — 内容已保留，请重试。',
                 errGeneric: '出了点问题，请重试。',
+                syncLive: "在线", syncConfig: "需要设置", syncUnsafe: "密钥不安全", sleepStartAria: "入睡时间", wakeAria: "起床时间", errAccountExists: "这个邮箱已经注册过了，请直接登录。", errTooMany: "尝试次数太多，请等一分钟再试。", errOffline: "没有网络连接，请检查网络后再试。",
                 weatherClear: '晴朗', weatherCloudy: '多云', weatherMist: '薄雾', weatherRain: '降雨', weatherSnow: '降雪', weatherStorm: '雷雨'
             },
             'zh-TW': {
@@ -1092,6 +1134,7 @@
                 errPassShort: '新密碼至少需要 6 位。',
                 errSendFailed: '投遞失敗 — 內容已保留，請重試。',
                 errGeneric: '發生錯誤，請重試。',
+                syncLive: "線上", syncConfig: "需要設定", syncUnsafe: "金鑰不安全", sleepStartAria: "入睡時間", wakeAria: "起床時間", errAccountExists: "這個信箱已經註冊過了，請直接登入。", errTooMany: "嘗試次數太多，請等一分鐘再試。", errOffline: "沒有網路連線，請檢查網路後再試。",
                 weatherClear: '晴朗', weatherCloudy: '多雲', weatherMist: '薄霧', weatherRain: '降雨', weatherSnow: '降雪', weatherStorm: '雷雨'
             },
             'es': {
@@ -1190,6 +1233,7 @@
                 errPassShort: 'La nueva contraseña necesita al menos 6 caracteres.',
                 errSendFailed: 'No se pudo enviar — tu mensaje se conserva. Inténtalo de nuevo.',
                 errGeneric: 'Algo salió mal. Inténtalo de nuevo.',
+                syncLive: "En directo", syncConfig: "Falta configurar", syncUnsafe: "Clave insegura", sleepStartAria: "Hora de dormir", wakeAria: "Hora de despertar", errAccountExists: "Ya hay una cuenta con este correo. Entra directamente.", errTooMany: "Demasiados intentos. Espera un minuto y vuelve a probar.", errOffline: "Sin conexión. Revisa internet y vuelve a probar.",
                 weatherClear: 'Despejado', weatherCloudy: 'Nublado', weatherMist: 'Niebla', weatherRain: 'Lluvia', weatherSnow: 'Nieve', weatherStorm: 'Tormenta'
             },
             'ca': {
@@ -1288,6 +1332,7 @@
                 errPassShort: 'La nova contrasenya necessita almenys 6 caràcters.',
                 errSendFailed: 'No s’ha pogut enviar — el missatge es conserva. Torna-ho a provar.',
                 errGeneric: 'Alguna cosa ha fallat. Torna-ho a provar.',
+                syncLive: "En directe", syncConfig: "Cal configurar", syncUnsafe: "Clau insegura", sleepStartAria: "Hora d’anar a dormir", wakeAria: "Hora de llevar-se", errAccountExists: "Ja hi ha un compte amb aquest correu. Entra directament.", errTooMany: "Massa intents. Espera un minut i torna-ho a provar.", errOffline: "Sense connexió. Revisa internet i torna-ho a provar.",
                 weatherClear: 'Serè', weatherCloudy: 'Ennuvolat', weatherMist: 'Boira', weatherRain: 'Pluja', weatherSnow: 'Neu', weatherStorm: 'Tempesta'
             }
         };
@@ -1339,6 +1384,7 @@
             $('login-submit-btn').textContent = authMode === 'signup' ? t('signupBtn') : t('loginBtn');
             updateMicLabel();
             if (!sending) setSendLabel('sendBtn');
+            if (syncState) setText('sync-indicator', t(syncState));
 
             if (currentUser) {
                 // Re-render only — no weather refetch. Localized city labels load lazily and are cached.
@@ -1680,6 +1726,16 @@
             }
         }
 
+        // Supabase's own messages are English and technical: say it in the visitor's language.
+        function authError(error) {
+            const m = ((error && (error.code || '')) + ' ' + ((error && error.message) || '')).toLowerCase();
+            if (/already|exists|registered/.test(m)) return t('errAccountExists');
+            if (/not.?confirmed/.test(m)) return t('checkEmail');
+            if (/rate|too many|429|security purposes/.test(m)) return t('errTooMany');
+            if (/network|fetch|failed to/.test(m)) return t('errOffline');
+            return t('errInvalidCreds');
+        }
+
         async function doSignUp(email, password, rawIdentifier) {
             const displayName = $('signup-name').value.trim() || rawIdentifier.split('@')[0];
             const place = await resolveCity(signupCityPicker, $('signup-city').value.trim());
@@ -1694,7 +1750,7 @@
                     emailRedirectTo: location.origin + location.pathname
                 }
             });
-            if (error || !data.user) { showMsg('login-error', error ? error.message : t('errInvalidCreds')); return; }
+            if (error || !data.user) { showMsg('login-error', authError(error)); return; }
 
             if (!data.session) {
                 // Email confirmation is on: they confirm, then sign in.
@@ -1708,7 +1764,7 @@
 
         async function doSignIn(email, password) {
             const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (error || !data.user) { showMsg('login-error', error ? error.message : t('errInvalidCreds')); return; }
+            if (error || !data.user) { showMsg('login-error', authError(error)); return; }
             currentUser = await loadOwnProfile(data.user);
             if (currentUser) await enterApp();
             else showMsg('login-error', t('errGeneric'));
@@ -1803,10 +1859,10 @@
                     const { error: verifyErr } = await supabaseClient.auth.signInWithPassword({ email: currentUser.email, password: currPass });
                     if (verifyErr) { showMsg('modal-msg', t('errInvalidCreds')); return; }
                     const { error: passErr } = await supabaseClient.auth.updateUser({ password: newPass });
-                    if (passErr) { showMsg('modal-msg', passErr.message); return; }
+                    if (passErr) { showMsg('modal-msg', t('errGeneric')); return; }
                 }
                 const { data: updated, error } = await supabaseClient.from('accounts').update(patch).eq('id', currentUser.id).select().single();
-                if (error || !updated) { showMsg('modal-msg', error ? error.message : t('errGeneric')); return; }
+                if (error || !updated) { showMsg('modal-msg', t('errGeneric')); return; }
                 currentUser = updated;
                 closeEditModal();
                 renderEnvironment();
@@ -1830,7 +1886,7 @@
             show('nav-user-controls', false);
             show('login-screen', true);
             $('app-body').style.background = '';
-            $('meta-theme-color').setAttribute('content', '#090d16');
+            $('meta-theme-color').setAttribute('content', LIGHT_MQ.matches ? '#eef2f8' : '#090d16');
             setText('sky-desc', '');
         }
 
@@ -1916,16 +1972,21 @@
         // ============================================================================
         // 7. RENDERING: horizons, sky, overlap, vibe
         // ============================================================================
+        // Light or dark follows the device; the sky is redrawn when it changes.
+        const LIGHT_MQ = window.matchMedia('(prefers-color-scheme: light)');
+        const onScheme = () => { if (currentUser) renderEnvironment(); else $('meta-theme-color').setAttribute('content', LIGHT_MQ.matches ? '#eef2f8' : '#090d16'); };
+        if (LIGHT_MQ.addEventListener) LIGHT_MQ.addEventListener('change', onScheme); else if (LIGHT_MQ.addListener) LIGHT_MQ.addListener(onScheme);
+
         const VIBE_PALETTE = {
-            radiant:     { color: '#b45309', dot: 'bg-amber-300',   i18n: 'vibeRadiant' },
-            warm:        { color: '#7c2d12', dot: 'bg-orange-400',  i18n: 'vibeWarm' },
-            playful:     { color: '#831843', dot: 'bg-pink-400',    i18n: 'vibePlayful' },
-            calm:        { color: '#0f172a', dot: 'bg-sky-400',     i18n: 'vibeCalm' },
-            focus:       { color: '#111827', dot: 'bg-emerald-400', i18n: 'vibeFocus' },
-            drifting:    { color: '#1e1b4b', dot: 'bg-indigo-300',  i18n: 'vibeDrifting' },
-            drained:     { color: '#27272a', dot: 'bg-stone-400',   i18n: 'vibeDrained' },
-            overwhelmed: { color: '#172554', dot: 'bg-blue-500',    i18n: 'vibeOverwhelmed' },
-            missing:     { color: '#3b0764', dot: 'bg-purple-400',  i18n: 'vibeMissing' }
+            radiant:     { color: '#b45309', light: '#fde68a', dot: 'bg-amber-300',   i18n: 'vibeRadiant' },
+            warm:        { color: '#7c2d12', light: '#fed7aa', dot: 'bg-orange-400',  i18n: 'vibeWarm' },
+            playful:     { color: '#831843', light: '#fbcfe8', dot: 'bg-pink-400',    i18n: 'vibePlayful' },
+            calm:        { color: '#0f172a', light: '#dbeafe', dot: 'bg-sky-400',     i18n: 'vibeCalm' },
+            focus:       { color: '#111827', light: '#d1fae5', dot: 'bg-emerald-400', i18n: 'vibeFocus' },
+            drifting:    { color: '#1e1b4b', light: '#e0e7ff', dot: 'bg-indigo-300',  i18n: 'vibeDrifting' },
+            drained:     { color: '#27272a', light: '#e7e5e4', dot: 'bg-stone-400',   i18n: 'vibeDrained' },
+            overwhelmed: { color: '#172554', light: '#c7d2fe', dot: 'bg-blue-500',    i18n: 'vibeOverwhelmed' },
+            missing:     { color: '#3b0764', light: '#e9d5ff', dot: 'bg-purple-400',  i18n: 'vibeMissing' }
         };
 
         function renderEnvironment() {
@@ -1962,13 +2023,14 @@
                 const isDawnDusk = (pH >= 7 && pH < 10) || (pH >= 18 && pH < 23);
                 const daylight = pW && pW.isDay !== null ? pW.isDay === 1 : (pH >= 7 && pH < 19);
 
-                let topSky = '#090d16';
+                const lt = LIGHT_MQ.matches;
+                let topSky = lt ? '#c7d2fe' : '#090d16';
                 if (daylight && !asleep) {
-                    topSky = (pW && (pW.key === 'weatherRain' || pW.key === 'weatherMist' || pW.key === 'weatherStorm')) ? '#334155' : '#0369a1';
+                    topSky = (pW && (pW.key === 'weatherRain' || pW.key === 'weatherMist' || pW.key === 'weatherStorm')) ? (lt ? '#cbd5e1' : '#334155') : (lt ? '#bae6fd' : '#0369a1');
                 } else if (isDawnDusk) {
-                    topSky = '#431407';
+                    topSky = lt ? '#fed7aa' : '#431407';
                 }
-                $('app-body').style.background = `linear-gradient(165deg, ${topSky} 0%, ${mood.color} 100%)`;
+                $('app-body').style.background = `linear-gradient(165deg, ${topSky} 0%, ${lt ? mood.light : mood.color} 100%)`;
                 $('meta-theme-color').setAttribute('content', topSky);
 
                 const diff = formatTzDiff(tzOffsetMin(pTz) - tzOffsetMin(tzOf(currentUser)));
@@ -2659,6 +2721,7 @@
             modalCityPicker = createCityPicker('modal-new-city', 'modal-city-list');
             switchAuthTab('signin');
             setLang(currentLang);
+            onScheme();
             registerServiceWorker();
             const ready = await loadSupabaseConfig();
             if (ready) await restoreSupabaseSession();
