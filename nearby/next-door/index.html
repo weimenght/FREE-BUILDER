@@ -3819,6 +3819,43 @@
         { id: 'coffee', check: p => p.has.some(h => ['espresso', 'coldbrew', 'coffee_liq'].includes(h)) && p.abv > 0 && p.score >= 55,
           ask: lx(["Coffee and booze, one glass, no regrets.", "咖啡加酒，一个杯子，不后悔。", "", "咖啡加酒，一隻杯，唔後悔。", "Café y alcohol, un solo vaso, sin arrepentimientos.", "Cafè i alcohol, un sol got, sense penediments."]) }
       ],
+      // today's challenge: a real holiday first, then the day of the week (the visitor's own calendar)
+      fizz: { id: 'fizz', check: p => p.has.some(h => ['soda', 'tonic', 'ginger_beer'].includes(h)) && p.abv > 0 && p.score >= 55,
+        ask: lx(["Something with bubbles to start the weekend.", "来杯带气泡的，迎接周末。", "來杯帶氣泡的，迎接週末。", "嚟杯有氣嘅，迎接週末。", "Algo con burbujas para empezar el fin de semana.", "Alguna cosa amb bombolles per començar el cap de setmana."]) },
+      week: ['zero', 'bitter', 'coffee', 'sour', 'low', 'fizz', 'baijiu'],   // Sunday … Saturday
+      dayName: [
+        lx(["Sunday", "周日", "週日", "星期日", "Domingo", "Diumenge"]), lx(["Monday", "周一", "週一", "星期一", "Lunes", "Dilluns"]), lx(["Tuesday", "周二", "週二", "星期二", "Martes", "Dimarts"]),
+        lx(["Wednesday", "周三", "週三", "星期三", "Miércoles", "Dimecres"]), lx(["Thursday", "周四", "週四", "星期四", "Jueves", "Dijous"]), lx(["Friday", "周五", "週五", "星期五", "Viernes", "Divendres"]), lx(["Saturday", "周六", "週六", "星期六", "Sábado", "Dissabte"])
+      ],
+      todayIs: lx(["*taps the chalkboard* {d}'s challenge:", "*敲敲小黑板* {d}的挑战：", "*敲敲小黑板* {d}的挑戰：", "*敲敲黑板* {d}嘅挑戰：", "*golpea la pizarra* El reto del {d}:", "*pica la pissarra* El repte de {d}:"]),
+      // fixed dates (MM-DD) and the lunar ones for the next years
+      holidays: [
+        { on: ['01-01'], id: 'h_newyear', check: p => p.abv === 0 && p.volume >= 90 && p.score >= 55,
+          ask: lx(["First day of the year. Go gentle: zero proof, full flavour.", "新年第一天。温柔一点：无酒精，但要有滋味。", "新年第一天。溫柔一點：無酒精，但要有滋味。", "新年第一日，溫柔啲：冇酒精，但要有味道。", "Primer día del año. Con calma: sin alcohol, con sabor.", "Primer dia de l'any. Amb calma: sense alcohol, amb gust."]) },
+        { on: ['2026-02-17', '2027-02-06', '2028-01-26'], id: 'h_spring', check: p => p.has.includes('hawthorn') && p.score >= 55,
+          ask: lx(["Spring Festival! Something red for luck. Hawthorn, please.", "过年啦！来点红色的讨个好彩头。用山楂。", "過年啦！來點紅色的討個好彩頭。用山楂。", "過年喇！嚟啲紅色嘅好意頭。用山楂。", "¡Año Nuevo chino! Algo rojo para la suerte. Con espino.", "Any Nou xinès! Alguna cosa vermella per a la sort. Amb arç."]) },
+        { on: ['04-23'], id: 'h_jordi', check: p => p.has.some(h => ['hawthorn', 'peychauds', 'campari'].includes(h)) && p.score >= 55,
+          ask: lx(["Sant Jordi: a rose for the one you love. Make it rosy red.", "圣乔治节：送一朵玫瑰给你爱的人。调一杯玫瑰红的。", "聖喬治節：送一朵玫瑰給你愛的人。調一杯玫瑰紅的。", "聖佐治節：送朵玫瑰俾你愛嘅人。整杯玫瑰紅嘅。", "Sant Jordi: una rosa para quien quieres. Que sea rojo rosa.", "Sant Jordi: una rosa per a qui estimes. Que sigui vermell rosa."]) },
+        { on: ['2026-06-19', '2027-06-09', '2028-05-28'], id: 'h_boat', check: p => p.has.some(h => ['lime', 'chartreuse', 'jasmine_tea'].includes(h)) && p.score >= 55,
+          ask: lx(["Dragon Boat day. Something green and fresh, like the reeds.", "端午节。来杯绿色清爽的，像粽叶一样。", "端午節。來杯綠色清爽的，像粽葉一樣。", "端午節。嚟杯綠色清爽嘅，好似粽葉咁。", "Fiesta del Bote del Dragón. Algo verde y fresco, como los juncos.", "Festa del Vaixell del Drac. Alguna cosa verda i fresca, com els joncs."]) },
+        { on: ['06-23'], id: 'h_joan', check: p => p.has.some(h => ['soda', 'tonic', 'ginger_beer'].includes(h)) && p.score >= 55,
+          ask: lx(["Sant Joan: bonfires and fireworks. Give me sparks in a glass.", "圣胡安之夜：篝火和烟花。给我一杯冒火花的。", "聖胡安之夜：篝火和煙火。給我一杯冒火花的。", "聖胡安之夜：篝火同煙花。俾杯冒火花嘅我。", "Sant Joan: hogueras y petardos. Dame chispas en un vaso.", "Sant Joan: fogueres i petards. Dona'm guspires en un got."]) },
+        { on: ['2026-09-25', '2027-09-15', '2028-10-03'], id: 'h_moon', check: p => p.has.some(h => ['osmanthus_liq', 'osmanthus_syr'].includes(h)) && p.score >= 55,
+          ask: lx(["Mid-Autumn. The moon's full; make it smell of osmanthus.", "中秋了。月亮圆了，来杯桂花香的。", "中秋了。月亮圓了，來杯桂花香的。", "中秋喇。月光光，整杯桂花香嘅。", "Medio Otoño. Luna llena: que huela a osmanto.", "Mig Tardor. Lluna plena: que faci olor d'osmant."]) },
+        { on: ['10-31'], id: 'h_dark', check: p => p.has.some(h => ['coffee_liq', 'espresso', 'coldbrew', 'demerara'].includes(h)) && p.score >= 55,
+          ask: lx(["Halloween. Something dark enough to hide in.", "万圣夜。来杯黑得能藏进去的。", "萬聖夜。來杯黑得能藏進去的。", "萬聖節。整杯黑到可以匿埋嘅。", "Halloween. Algo tan oscuro que te puedas esconder.", "Halloween. Alguna cosa tan fosca que t'hi puguis amagar."]) },
+        { on: ['12-24', '12-25'], id: 'h_xmas', check: p => p.has.some(h => ['honey_ginger', 'demerara'].includes(h)) && p.score >= 55,
+          ask: lx(["Christmas. Warm and spiced, something to hold with both hands.", "圣诞节。温暖带点香料，能用双手捧着的那种。", "聖誕節。溫暖帶點香料，能用雙手捧著的那種。", "聖誕節。暖暖哋帶啲香料，可以用雙手捧住嗰種。", "Navidad. Algo cálido y especiado, para sujetar con las dos manos.", "Nadal. Alguna cosa càlida i especiada, per agafar amb les dues mans."]) },
+        { on: ['12-31'], id: 'h_nye', check: p => p.has.some(h => ['soda', 'tonic', 'ginger_beer'].includes(h)) && p.abv > 0 && p.score >= 55,
+          ask: lx(["Last night of the year. Bubbles. Who are you toasting?", "一年的最后一晚。要气泡。你想敬谁？", "一年的最後一晚。要氣泡。你想敬誰？", "一年最後一晚。要有氣。你想敬邊個？", "Última noche del año. Burbujas. ¿Por quién brindas?", "Última nit de l'any. Bombolles. Per qui brindes?"]) }
+      ],
+      today() {
+        const d = new Date(), md = String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'), ymd = d.getFullYear() + '-' + md;
+        const h = this.holidays.find(x => x.on.includes(md) || x.on.includes(ymd));
+        if (h) return { ch: h, intro: null };
+        const id = this.week[d.getDay()], ch = id === 'fizz' ? this.fizz : this.challenges.find(c => c.id === id);
+        return { ch, intro: L(this.todayIs).replace('{d}', L(this.dayName[d.getDay()])) };
+      },
       challengeDone: lx(["\"You actually did it. I'm writing this one down.\"", "\"你还真做到了。我记下来了。\"", "", "\"你真係整到喎。我要記低。\"", "\"Lo has conseguido. Esto me lo apunto.\"", "\"Ho has aconseguit. Això m'ho apunto.\""]),
       challengeGiven: lx(["\"Deal. Go to the Lab — I'll be watching from here.\"", "\"一言为定。去调酒台吧——我在这儿看着。\"", "", "\"一言為定。去調酒枱啦——我喺度睇住你。\"", "\"Trato hecho. Ve al laboratorio, te miro desde aquí.\"", "\"Tracte fet. Ves al laboratori, et miro des d'aquí.\""]),
 
@@ -6279,7 +6316,7 @@
       loadChallenge() {
         try {
           const id = localStorage.getItem('weis-challenge:' + Patron.name);
-          this.challenge = WeiPlus.challenges.find(c => c.id === id) || null;
+          this.challenge = WeiPlus.challenges.concat([WeiPlus.fizz], WeiPlus.holidays).find(c => c.id === id) || null;
         } catch (e) { this.challenge = null; }
         this.renderChallenge();
       },
@@ -7319,11 +7356,14 @@
     }
 
     function chatChallenge() {
-      const ch = pick(WeiPlus.challenges);
+      /* the first ask of the day gets today's challenge (a holiday, or the day of the week); asking again, any other */
+      const day = new Date().toDateString(), T0 = WeiPlus.today();
+      let first = false; try { first = localStorage.getItem('fb_lab_day') !== day; localStorage.setItem('fb_lab_day', day); } catch (e) {}
+      const ch = first ? T0.ch : pick(WeiPlus.challenges.filter(c => c.id !== T0.ch.id));
       Lab.setChallenge(ch);
       setExpression('grin', 2000);
       DB.log('challenge_given', { id: ch.id });
-      renderWei(`"${L(ch.ask)}" ${L(WeiPlus.challengeGiven)}`, [
+      renderWei(`${first && T0.intro ? T0.intro + ' ' : ''}"${L(ch.ask)}" ${L(WeiPlus.challengeGiven)}`, [
         { label: '🧪 ' + T('dock.lab'), onClick: () => go('lab') },
         { label: L(WeiText.ui.back), onClick: openChat }
       ], "grid grid-cols-2 gap-1.5 mt-2", 'chat');
