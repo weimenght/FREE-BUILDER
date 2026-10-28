@@ -337,6 +337,7 @@
     @media (orientation:landscape) and (max-height:520px) { .scene { height:240px; } .term { font-size:30px; } :root { --tab-h:54px; } .tab span { display:none; } }
     @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
   </style>
+<link rel="stylesheet" href="../vk.css?v=1">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -387,14 +388,14 @@
 
   <header class="top">
     <div class="top-row">
-      <div class="brand">
+      <a class="brand" href="../" aria-label="Vocab"><svg class="vk-back" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
         <div class="logo" aria-hidden="true"></div>
         <span class="brand-title">Català <i>a punt</i></span>
-      </div>
+      </a>
       <button class="lvl-pill" data-act="openSettings" aria-label="Nivell"><svg class="ic sm"><use href="#i-graduation-cap"/></svg><span id="lvlPill">A1</span></button>
       <button class="icon-btn" data-act="openSettings" aria-label="Configuració i sincronització" title="Configuració"><svg class="ic"><use href="#i-sliders-horizontal"/></svg><span class="dot" id="syncDot"></span></button>
       <button class="icon-btn" data-act="toggleSound" aria-label="So" title="So"><svg class="ic"><use href="#i-volume-2" id="sfxUse"/></svg></button>
-      <button class="icon-btn" data-act="toggleTheme" aria-label="Tema clar / fosc" title="Dia / nit"><svg class="ic"><use href="#i-moon" id="themeUse"/></svg></button>
+      <button class="icon-btn vk-lang" data-vk="lang" type="button" aria-label="Interface language"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5S9.4 5.2 12 2.5z"/></svg></button>
     </div>
     <nav class="subnav" id="subnav" aria-label="Seccions"></nav>
   </header>
@@ -1259,7 +1260,7 @@ const Audio = {
 };
 
 /* ==============================================================
-   REGISTRES: XP, ratxes, sessions, precisió
+   REGISTRES: sessions, precisió
    ============================================================== */
 const Rec = {
   cur: null,
@@ -1277,9 +1278,6 @@ const Rec = {
     if (meta && meta.tense) bump(S.tenses, meta.tense);
     if (meta && meta.verb) bump(S.verbs, meta.verb);
     const st = this.streak(); if (st > (S.best || 0)) S.best = st;
-    if (before < S.settings.goal && d.xp >= S.settings.goal && S.goalHit !== k) {
-      S.goalHit = k; setTimeout(() => { Audio.beep('win'); toast(`🎉 Objectiu diari assolit! (${S.settings.goal} XP)`); }, 350);
-    }
     save();
     if (App.tab === 'stats') renderStats();
   },
@@ -1835,7 +1833,7 @@ const Drill = {
     $('drillStreak').textContent = this.streak;
     const xp = r === 'ok' ? (this.hints ? 1 : 3) : r === 'lenient' ? 2 : 0;
     Rec.hit('drill', ok, xp, { tense: c.tk, verb: c.verb.inf });
-    if (r === 'ok') { inp.classList.add('ok'); fb.className = 'fb ok pop'; fb.innerHTML = `✓ Correcte!${this.streak >= 5 && this.streak % 5 === 0 ? ` 🔥 ${this.streak} seguides` : ''}`; Audio.beep('ok'); resolveMistake(c); }
+    if (r === 'ok') { inp.classList.add('ok'); fb.className = 'fb ok pop'; fb.innerHTML = `✓ Correcte!`; Audio.beep('ok'); resolveMistake(c); }
     else if (r === 'lenient') { inp.classList.add('warn'); fb.className = 'fb warn'; fb.innerHTML = `Correcte, però compte amb l'accent:<span class="big">${esc(main)}</span>`; Audio.beep('good'); resolveMistake(c); }
     else if (r === 'accent') { inp.classList.add('warn'); fb.className = 'fb warn'; fb.innerHTML = `Gairebé: hi falta o sobra un accent<span class="big">${esc(main)}</span>`; Audio.beep('near'); logMistake(c, val); }
     else { inp.classList.add('bad'); fb.className = 'fb bad'; fb.innerHTML = `La forma correcta és:<span class="big">${esc(main)}</span>`; Audio.beep('bad'); logMistake(c, val); }
@@ -2111,9 +2109,9 @@ function renderStats() {
   const end = new Date(); const start = new Date(end); start.setDate(end.getDate() - ((end.getDay() + 6) % 7) - 16 * 7);
   const cells = [];
   for (let d = new Date(start); cells.length < 17 * 7; d.setDate(d.getDate() + 1)) {
-    const k = dayKey(d), x = (S.days[k] || {}).xp || 0, fut = d > end;
-    const l = fut ? 'fut' : !x ? '' : x < goal * 0.25 ? 'l1' : x < goal * 0.5 ? 'l2' : x < goal ? 'l3' : 'l4';
-    cells.push(`<i class="${l}${k === dayKey() ? ' today' : ''}" title="${d.toLocaleDateString('ca-ES', { weekday: 'short', day: 'numeric', month: 'short' })}: ${x} XP" data-act="${fut ? '' : 'cellInfo'}" data-arg="${k}"></i>`);
+    const k = dayKey(d), x = (S.days[k] || {}).n || 0, fut = d > end;
+    const l = fut ? 'fut' : !x ? '' : x < 10 ? 'l1' : x < 25 ? 'l2' : x < 50 ? 'l3' : 'l4';
+    cells.push(`<i class="${l}${k === dayKey() ? ' today' : ''}" title="${d.toLocaleDateString('ca-ES', { weekday: 'short', day: 'numeric', month: 'short' })}: ${x} respostes" data-act="${fut ? '' : 'cellInfo'}" data-arg="${k}"></i>`);
   }
   // Darrers 7 dies
   const last7 = []; for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); last7.push({ d, k: dayKey(d), v: (S.days[dayKey(d)] || {}).xp || 0 }); }
@@ -2138,36 +2136,20 @@ function renderStats() {
   const sess = allSess.slice(0, 15).map(s => {
     const d = new Date(s.t);
     return `<div class="sess"><span><b>${MODE_LABEL[s.mode] || s.mode}</b>${s.live ? ' <span class="tag accent">ara</span>' : ''}<br><span class="muted">${d.toLocaleDateString('ca-ES', { day: 'numeric', month: 'short' })} · ${pad2(d.getHours())}:${pad2(d.getMinutes())} · ${Math.max(1, Math.round(s.ms / 60000))} min</span></span>
-      <span class="tag ${pct(s.ok, s.n) >= 80 ? 'ok' : pct(s.ok, s.n) >= 50 ? 'warn' : 'bad'}">${s.ok}/${s.n}</span><span class="muted" style="font-size:12px;min-width:44px;text-align:right">+${s.xp} XP</span></div>`;
+      <span class="tag ${pct(s.ok, s.n) >= 80 ? 'ok' : pct(s.ok, s.n) >= 50 ? 'warn' : 'bad'}">${s.ok}/${s.n}</span></div>`;
   }).join('');
 
   el.innerHTML = `
-    <div class="card hero">
-      <div class="ring" aria-label="Objectiu diari: ${today.xp} de ${goal} XP">
-        <svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="40" fill="none" stroke="var(--surface)" stroke-width="9"/>
-        <circle cx="46" cy="46" r="40" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - gp)}"/></svg>
-        <div class="c"><b>${today.xp}</b><small>/ ${goal} XP</small></div>
-      </div>
-      <div class="stack" style="gap:2px">
-        <div style="font-size:28px;font-weight:800;line-height:1">🔥 ${streak} <span style="font-size:15px;font-weight:600">${streak === 1 ? 'dia' : 'dies'} de ratxa</span></div>
-        <div class="meta">Millor ratxa: ${Math.max(S.best || 0, streak)} ${Math.max(S.best || 0, streak) === 1 ? 'dia' : 'dies'} · Avui: ${today.n} respostes, ${pct(today.ok, today.n)} % d'encerts</div>
-        <div class="meta">${gp >= 1 ? '✓ Objectiu diari assolit' : `Et falten ${goal - today.xp} XP per a l'objectiu`}</div>
-      </div>
-    </div>
     <div class="kpis">
       <div class="card kpi"><div class="v">${tot.n.toLocaleString('ca-ES')}</div><div class="l">Respostes totals</div></div>
-      <div class="card kpi"><div class="v">${pct(tot.ok, tot.n)} %</div><div class="l">Precisió global</div></div>
+      <div class="card kpi"><div class="v">${Object.keys(S.days).filter(k => S.days[k].n).length}</div><div class="l">Dies de pràctica</div></div>
       <div class="card kpi"><div class="v">${mastered}</div><div class="l">Paraules apreses</div></div>
       <div class="card kpi"><div class="v">${fmtMin(tot.ms)}</div><div class="l">Temps d'estudi</div></div>
     </div>
     <div class="card pad stack">
       <div class="row between"><span class="label">Activitat · 17 setmanes</span>
-        <span class="legend">Menys <i style="background:var(--h0)"></i><i style="background:var(--h1)"></i><i style="background:var(--h2)"></i><i style="background:var(--h3)"></i><i style="background:var(--h4)"></i> Objectiu</span></div>
+        <span class="legend">Menys <i style="background:var(--h0)"></i><i style="background:var(--h1)"></i><i style="background:var(--h2)"></i><i style="background:var(--h3)"></i><i style="background:var(--h4)"></i> Més</span></div>
       <div class="heat-wrap"><div class="heat">${cells.join('')}</div></div>
-    </div>
-    <div class="card pad">
-      <span class="label">XP · darrers 7 dies</span>
-      <div class="bars7">${last7.map(x => `<div class="b7 ${x.k === dayKey() ? 'today' : ''}"><span class="val">${x.v || ''}</span><div class="bar ${x.v ? '' : 'zero'}" style="height:${Math.max(2, x.v / max7 * 100)}%" title="${x.v} XP"></div><span class="d">${['dg', 'dl', 'dt', 'dc', 'dj', 'dv', 'ds'][x.d.getDay()]}</span></div>`).join('')}</div>
     </div>
     <div class="card pad"><span class="label">Vocabulari per nivell</span>
       <div style="margin-top:6px">${corpusRow}${lvRows}</div>
@@ -2182,7 +2164,7 @@ function renderStats() {
     <div><div class="row between" style="margin:4px 2px 8px"><span class="label">Historial de sessions</span><span class="meta">${S.sessions.length} desades</span></div>
       <div class="list">${sess || '<div class="empty">Les teves sessions apareixeran aquí.</div>'}</div></div>
     <div class="card pad stack"><span class="label">Còpia de seguretat</span>
-      <p class="meta" style="margin:0">El teu progrés (XP, ratxes, repàs espaiat, notes${Api.enabled ? '' : ' i el teu corpus'}) es desa en aquest navegador. Exporta'l per passar-lo a un altre dispositiu.</p>
+      <p class="meta" style="margin:0">El teu progrés (repàs espaiat, notes${Api.enabled ? '' : ' i el teu corpus'}) es desa en aquest navegador. Exporta'l per passar-lo a un altre dispositiu.</p>
       <div class="row wrap"><button class="btn sm" data-act="exportJson">${ico('download', 'sm')}Exporta</button>
         <input type="file" id="jsonFile" accept=".json,application/json" hidden>
         <button class="btn sm" data-act="importJson">${ico('upload', 'sm')}Importa</button>
@@ -2212,7 +2194,7 @@ function importJson(e) {
   r.readAsText(f); e.target.value = '';
 }
 function resetStats() {
-  if (!confirm('Vols esborrar XP, ratxes, sessions i precisió? (Les paraules i els errors no es toquen)')) return;
+  if (!confirm('Vols esborrar sessions i precisió? (Les paraules i els errors no es toquen)')) return;
   Rec.cur = null; Object.assign(S, { days: {}, modes: {}, tenses: {}, verbs: {}, sessions: [], best: 0, goalHit: '' });
   save(true); renderStats(); toast('Estadístiques reiniciades');
 }
@@ -2238,8 +2220,6 @@ function openSettings() {
         <select class="select" data-setting="voice" style="width:auto;max-width:170px;padding:8px 32px 8px 10px"><option value="">Automàtica</option>${vs.map(v => `<option value="${esc(v.voiceURI)}" ${st.voice === v.voiceURI ? 'selected' : ''}>${esc(v.name)}</option>`).join('')}</select></div>
       <div class="setting"><div><div class="t">Velocitat de la veu</div><div class="d" id="rateVal">${st.rate.toFixed(2)}×</div></div>
         <input type="range" min="0.6" max="1.2" step="0.05" value="${st.rate}" data-setting="rate" style="width:140px;accent-color:var(--accent)"></div>
-      <div class="setting"><div><div class="t">Objectiu diari</div><div class="d">XP per dia per mantenir la ratxa</div></div>
-        <select class="select" data-setting="goal" style="width:auto;padding:8px 32px 8px 10px">${[20, 40, 60, 100, 150, 250].map(g => `<option value="${g}" ${st.goal === g ? 'selected' : ''}>${g} XP</option>`).join('')}</select></div>
       <div class="setting"><div><div class="t">Verbs per practicar</div></div>
         <select class="select" data-setting="verbPool" style="width:auto;padding:8px 32px 8px 10px">
           <option value="level" ${st.verbPool === 'level' ? 'selected' : ''}>Fins al meu nivell</option>
@@ -2317,7 +2297,7 @@ function currentTheme() {
 function applyTheme(t) {
   if (t) document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme');
   const eff = currentTheme();
-  $('themeUse').setAttribute('href', eff === 'dark' ? '#i-sun' : '#i-moon');
+  ($('themeUse')||{setAttribute(){}}).setAttribute('href', eff === 'dark' ? '#i-sun' : '#i-moon');
   $('metaTheme').setAttribute('content', eff === 'dark' ? '#13110F' : '#FBF6EA');
 }
 function toggleTheme() {
@@ -2369,7 +2349,7 @@ const ACTIONS = {
   playNumber: a => Num.play(a),
   recallGiveUp: () => Recall.check(null, true),
   openVerb: a => { if (lvIdx(VERB[a].lv) > lvIdx(S.settings.level)) S.settings.tableScope = 'all'; go('verbs', 'table'); fillTableSelect(); $('tableVerb').value = a; renderTable(); },
-  cellInfo: a => { const d = S.days[a] || { xp: 0, n: 0, ok: 0 }; toast(`${new Date(a + 'T12:00').toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long' })}: ${d.xp} XP · ${d.n} respostes`); },
+  cellInfo: a => { const d = S.days[a] || { xp: 0, n: 0, ok: 0 }; toast(`${new Date(a + 'T12:00').toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long' })}: ${d.n} respostes`); },
   exportJson, importJson: () => $('jsonFile').click(), resetStats,
   tensesAuto: () => { S.settings.tenses = null; save(); Drill.cur = Choice.cur = null; openSettingsKeepScroll(); },
   resync: async () => { toast('Sincronitzant…'); await fullSync(); openSettingsKeepScroll(); toast(Api.status === 'ok' ? 'Sincronitzat ✓' : 'Sense connexió amb D1'); }
@@ -2453,7 +2433,7 @@ async function fullSync() {
    ============================================================== */
 function init() {
   loadStore();
-  let theme = null; try { theme = localStorage.getItem('cat_theme'); } catch (e) {}
+  let theme = null;
   applyTheme(theme);
   // Dades en memòria cau per arrencar a l'instant (i sense connexió)
   corpus = (S.corpusCache || []).map(mapCorpusRow);
@@ -2473,5 +2453,6 @@ function init() {
 document.addEventListener('DOMContentLoaded', init);
 
 </script>
+<script src="../vk.js?v=1"></script>
 </body>
 </html>

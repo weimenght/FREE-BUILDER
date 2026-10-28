@@ -372,6 +372,7 @@
     .choice.long { font-size:15px; font-weight:600; text-align:left; }
     .choices.one { grid-template-columns:1fr; }
   </style>
+<link rel="stylesheet" href="../vk.css?v=1">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -422,13 +423,13 @@
   <div class="flagbar" aria-hidden="true"></div>
   <header class="top">
     <div class="top-row">
-      <div class="brand">
+      <a class="brand" href="../" aria-label="Vocab"><svg class="vk-back" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
         <div class="logo" aria-hidden="true">成</div>
         <span class="brand-title" data-u>成语<i>一点通</i></span>
-      </div>
+      </a>
       <button class="script-btn" data-act="toggleScript" id="scriptBtn" aria-label="简体 / 繁体">繁</button>
       <button class="icon-btn" data-act="togglePy" aria-label="拼音" title="拼音"><svg class="ic"><use href="#i-languages"/></svg></button>
-      <button class="icon-btn" data-act="toggleTheme" aria-label="日 / 夜"><svg class="ic"><use href="#i-moon" id="themeUse"/></svg></button>
+      <button class="icon-btn vk-lang" data-vk="lang" type="button" aria-label="Interface language"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5S9.4 5.2 12 2.5z"/></svg></button>
     </div>
     <nav class="subnav" id="subnav" aria-label="分类"></nav>
   </header>
@@ -665,7 +666,7 @@ L3: `
 `
 };
 
-const U_T = {"这一周": "這一週", "练习": "練習", "这台设备没有普通话语音": "這臺設備沒有普通話語音", "简": "簡", "题": "題", "答对": "答對", "复习中": "複習中", "搜成语、拼音或意思": "搜成語、拼音或意思", "差一点": "差一點", "成语一点通": "成語一點通", "听故事": "聽故事", "记住了": "記住了", "下一题": "下一題", "烂熟于心": "爛熟於心", "学成语": "學成語", "释义": "釋義", "这个成语是什么意思？": "這個成語是什麼意思？", "哪个成语最接近？": "哪個成語最接近？", "分钟": "分鐘", "成语库": "成語庫", "连续天数": "連續天數", "没有找到。": "沒有找到。", "进阶": "進階", "点一下看故事 · 左右滑换一张": "點一下看故事 · 左右滑換一張", "进度": "進度", "这一组全都烂熟于心了！换一组吧。": "這一組全都爛熟於心了！換一組吧。", "成语": "成語", "成语<i>一点通</i>": "成語<i>一點通</i>", "这个故事说的是哪个成语？": "這個故事說的是哪個成語？", "答对了！": "答對了！", "补上缺的字": "補上缺的字", "隐藏拼音": "隱藏拼音", "显示拼音": "顯示拼音"};
+const U_T = {"练习天数": "練習天數", "这一周": "這一週", "练习": "練習", "这台设备没有普通话语音": "這臺設備沒有普通話語音", "简": "簡", "题": "題", "答对": "答對", "复习中": "複習中", "搜成语、拼音或意思": "搜成語、拼音或意思", "差一点": "差一點", "成语一点通": "成語一點通", "听故事": "聽故事", "记住了": "記住了", "下一题": "下一題", "烂熟于心": "爛熟於心", "学成语": "學成語", "释义": "釋義", "这个成语是什么意思？": "這個成語是什麼意思？", "哪个成语最接近？": "哪個成語最接近？", "分钟": "分鐘", "成语库": "成語庫", "连续天数": "連續天數", "没有找到。": "沒有找到。", "进阶": "進階", "点一下看故事 · 左右滑换一张": "點一下看故事 · 左右滑換一張", "进度": "進度", "这一组全都烂熟于心了！换一组吧。": "這一組全都爛熟於心了！換一組吧。", "成语": "成語", "成语<i>一点通</i>": "成語<i>一點通</i>", "这个故事说的是哪个成语？": "這個故事說的是哪個成語？", "答对了！": "答對了！", "补上缺的字": "補上缺的字", "隐藏拼音": "隱藏拼音", "显示拼音": "顯示拼音"};
 /* ==============================================================
    成语一点通 · app — Simplified or Traditional, all kept in this browser
    ============================================================== */
@@ -816,14 +817,14 @@ function renderStats() {
   const week = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - 6 + i); const x = S.days[dayKey(d)] || { n: 0 }; return { d: wd[d.getDay()], n: x.n, today: i === 6 }; });
   const max = Math.max(1, ...week.map(w => w.n)), mins = Object.values(S.days).reduce((a, x) => a + (x.ms || 0), 0);
   const pct = k => { const s = S.scores[k]; return s && s[1] ? Math.round(s[0] / s[1] * 100) : 0; };
-  $('v-stats').innerHTML = `<div class="kpis"><div class="card kpi"><div class="v">${mastered}</div><div class="l">${u('烂熟于心')}</div></div><div class="card kpi"><div class="v">${review}</div><div class="l">${u('复习中')}</div></div><div class="card kpi"><div class="v">🔥 ${streak}</div><div class="l">${u('连续天数')}</div></div><div class="card kpi"><div class="v">${Math.round(mins / 60000)}</div><div class="l">${u('分钟')}</div></div></div>
+  $('v-stats').innerHTML = `<div class="kpis"><div class="card kpi"><div class="v">${mastered}</div><div class="l">${u('烂熟于心')}</div></div><div class="card kpi"><div class="v">${review}</div><div class="l">${u('复习中')}</div></div><div class="card kpi"><div class="v">${Object.keys(S.days).filter(k => S.days[k] && S.days[k].n).length}</div><div class="l">${u('练习天数')}</div></div><div class="card kpi"><div class="v">${Math.round(mins / 60000)}</div><div class="l">${u('分钟')}</div></div></div>
     <div class="card pad"><div class="label">${u('这一周')}</div><div class="bars7">${week.map(w => `<div class="b7 ${w.today ? 'today' : ''}"><span class="val">${w.n || ''}</span><div class="bar ${w.n ? '' : 'zero'}" style="height:${w.n / max * 100}%"></div><span class="d">${w.d}</span></div>`).join('')}</div></div>
     <div class="card pad stack">${LEVELS.map(l => { const a = all.filter(x => x.lv === l), m = a.filter(x => peek(x.key).status === 'mastered').length, r = a.filter(x => peek(x.key).status === 'review').length; return `<div><div class="row between"><b>${u(LV_NAME[l])}</b><span class="meta">${m} / ${a.length}</span></div><div class="stackbar"><i class="st-m" style="width:${m / a.length * 100}%"></i><i class="st-r" style="width:${r / a.length * 100}%"></i></div></div>`; }).join('')}</div>
     <div class="card pad">${[['fill', '填空'], ['mean', '释义'], ['story', '听故事'], ['en', '英文']].map(([k, l]) => `<div class="hbar"><span>${u(l)}</span><div class="track"><i style="width:${pct(k)}%"></i></div><span class="pct">${pct(k)}%<small>${(S.scores[k] || [0, 0])[1]} ${u('题')}</small></span></div>`).join('')}</div>`;
 }
 
 function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2200); }
-function applyTheme() { const t = S.theme; if (t) document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme'); const dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; $('themeUse').setAttribute('href', dark ? '#i-sun' : '#i-moon'); }
+function applyTheme() { const t = null; if (t) document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme'); const dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; ($('themeUse')||{setAttribute(){}}).setAttribute('href', dark ? '#i-sun' : '#i-moon'); }
 
 const ACT = {
   tab: a => go(a), sub: a => go(App.tab, a), flip: () => { if (!$('scene').dataset.swiped) flip(); }, next: () => step(1), prev: () => step(-1), rate,
@@ -844,5 +845,6 @@ window.FBL_SET = l => { S.script = l === 'zh-Hant' ? 't' : 's'; save(); words();
 setupSwipe(); applyTheme(); words(); go('cards');
 
 </script>
+<script src="../vk.js?v=1"></script>
 </body>
 </html>

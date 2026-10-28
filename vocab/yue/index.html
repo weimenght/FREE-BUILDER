@@ -364,6 +364,7 @@
     .noVoice { display:none; }
     body.mute-voice .noVoice { display:block; }
   </style>
+<link rel="stylesheet" href="../vk.css?v=1">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -415,14 +416,14 @@
 
   <header class="top">
     <div class="top-row">
-      <div class="brand">
+      <a class="brand" href="../" aria-label="Vocab"><svg class="vk-back" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
         <div class="logo" aria-hidden="true">粵</div>
         <span class="brand-title">粵講<i>粵啱</i></span>
-      </div>
+      </a>
       <button class="lvl-pill" data-act="openSettings" aria-label="程度"><svg class="ic sm"><use href="#i-graduation-cap"/></svg><span id="lvlPill">A1</span></button>
       <button class="icon-btn" data-act="toggleJp" aria-label="粵拼" title="粵拼"><svg class="ic"><use href="#i-languages"/></svg></button>
       <button class="icon-btn" data-act="openSettings" aria-label="設定" title="設定"><svg class="ic"><use href="#i-sliders-horizontal"/></svg></button>
-      <button class="icon-btn" data-act="toggleTheme" aria-label="日 / 夜" title="日 / 夜"><svg class="ic"><use href="#i-moon" id="themeUse"/></svg></button>
+      <button class="icon-btn vk-lang" data-vk="lang" type="button" aria-label="Interface language"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5S9.4 5.2 12 2.5z"/></svg></button>
     </div>
     <nav class="subnav" id="subnav" aria-label="分類"></nav>
   </header>
@@ -1056,7 +1057,7 @@ function renderStats() {
   $('v-stats').innerHTML = `<div class="kpis">
       <div class="card kpi"><div class="v">${mastered}</div><div class="l">熟晒嘅字</div></div>
       <div class="card kpi"><div class="v">${review}</div><div class="l">溫緊</div></div>
-      <div class="card kpi"><div class="v">🔥 ${streak}</div><div class="l">連續日數</div></div>
+      <div class="card kpi"><div class="v">${Object.keys(S.days).filter(k => S.days[k] && S.days[k].n).length}</div><div class="l">練習日數</div></div>
       <div class="card kpi"><div class="v">${Math.round(mins / 60000)}</div><div class="l">分鐘</div></div></div>
     <div class="card pad"><div class="label">呢個星期</div><div class="bars7">${week.map(w => `<div class="b7 ${w.today ? 'today' : ''}"><span class="val">${w.n || ''}</span><div class="bar ${w.n ? '' : 'zero'}" style="height:${w.n / max * 100}%"></div><span class="d">${w.d}</span></div>`).join('')}</div></div>
     <div class="card pad stack"><div class="label">程度</div>${LEVELS.map(l => { const a = BUILTIN[l], m = a.filter(i => peek(i.key).status === 'mastered').length, r = a.filter(i => peek(i.key).status === 'review').length;
@@ -1081,8 +1082,8 @@ function openSettings() {
 function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2200); }
 
 /* ---------- theme ---------- */
-function applyTheme() { const t = S.theme; if (t) document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme');
-  const dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; $('themeUse').setAttribute('href', dark ? '#i-sun' : '#i-moon');
+function applyTheme() { const t = null; if (t) document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme');
+  const dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; ($('themeUse')||{setAttribute(){}}).setAttribute('href', dark ? '#i-sun' : '#i-moon');
   document.querySelector('meta[name=theme-color]').content = dark ? '#0E0D10' : '#FBF8F3'; }
 
 /* ---------- actions ---------- */
@@ -1119,5 +1120,6 @@ matchMedia('(prefers-color-scheme: dark)').addEventListener && matchMedia('(pref
 go('cards');
 
 </script>
+<script src="../vk.js?v=1"></script>
 </body>
 </html>

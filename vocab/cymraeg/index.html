@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cy">
+<html lang="en">
 <head>
 <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -19,13 +19,13 @@
   --carthen:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke-width='1.4'%3E%3Cpath d='M30 6L54 30L30 54L6 30Z' stroke='%23FF5A6E' stroke-opacity='.06'/%3E%3Cpath d='M30 18L42 30L30 42L18 30Z' stroke='%233DD68C' stroke-opacity='.06'/%3E%3Cpath d='M30 26v8M26 30h8' stroke='%23FF5A6E' stroke-opacity='.08'/%3E%3C/g%3E%3C/svg%3E");color-scheme:dark}}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.5 var(--font);-webkit-tap-highlight-color:transparent}
-body{min-height:100vh;background-image:var(--carthen);background-size:60px 60px;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
+body{min-height:100vh;background-image:var(--carthen);background-size:60px 60px;padding-bottom:calc(var(--tab-h) + 16px + env(safe-area-inset-bottom))}
 button{font:inherit;color:inherit;cursor:pointer}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:640px;margin:0 auto;padding:max(16px,env(safe-area-inset-top)) 18px 6px}
-.brand{display:flex;align-items:center;gap:10px}
-.flag{width:40px;height:40px;border-radius:12px 12px 12px 3px;background:linear-gradient(#fff 0 66%,var(--green) 66%);border:1px solid var(--border);display:grid;place-items:start center;padding-top:7px;font:700 15px/1 var(--serif);color:#C8102E}
-.brand b{display:block;font:700 22px/1.05 var(--serif)}.brand small{color:var(--muted);font-size:13px}
-.streak{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--card);border:1px solid var(--border);font-weight:700;font-size:14px}
+
+
+
+
+
 main{max-width:640px;margin:0 auto;padding:8px 18px}
 .view{display:none}.view.on{display:block;animation:in .25s ease}
 @keyframes in{from{opacity:0;transform:translateY(6px)}}
@@ -40,7 +40,7 @@ main{max-width:640px;margin:0 auto;padding:8px 18px}
 .side.b{transform:rotateY(180deg)}
 .side::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;border-radius:22px 22px 0 0;background:linear-gradient(90deg,var(--red),var(--red) 40%,var(--green) 40%)}
 .lv{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.w{margin:auto 0;font:700 clamp(34px,9vw,52px)/1.1 var(--serif);text-align:center;word-break:break-word}
+.w{margin:auto 0;font:700 clamp(28px,8.4vw,52px)/1.1 var(--serif);text-align:center;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto}
 .say{text-align:center;color:var(--muted);font-size:15px;font-family:ui-monospace,Menlo,monospace}
 .en{font:700 26px/1.2 var(--serif);margin-top:10px}
 .ex{margin-top:16px;padding:14px;border-radius:14px;background:var(--surface)}
@@ -74,21 +74,41 @@ details{margin-top:14px}summary{cursor:pointer;color:var(--muted);font-weight:60
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .stat{padding:16px 10px;text-align:center;border-radius:18px;background:var(--card);border:1px solid var(--border)}
 .stat b{display:block;font:700 28px/1 var(--serif)}.stat small{color:var(--muted);font-size:12px}
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;gap:2px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--border)}
-nav.tabs button{flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border:0;background:none;border-radius:12px;font-size:12px;font-weight:600;color:var(--muted)}
-nav.tabs button span{font-size:20px;line-height:1.1}
-nav.tabs button[aria-current=page]{color:var(--red);background:var(--card)}
-.toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(10px);opacity:0;transition:.25s;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;pointer-events:none;z-index:30}
+
+.toast{position:fixed;left:50%;bottom:calc(var(--tab-h) + 14px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(10px);opacity:0;transition:.25s;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;pointer-events:none;z-index:30}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+:root{--accent:var(--red);--accent-soft:rgba(200,16,46,.08);--tab-h:60px}
+.top{position:sticky;top:0;z-index:40;padding-top:env(safe-area-inset-top,0px);background:var(--bg);background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--border)}
+.top::before{content:"";display:block;height:5px;background:linear-gradient(90deg,#fff 0 30%,var(--red) 30% 60%,var(--green) 60%)}
+.top-row{max-width:920px;margin:0 auto;padding:0 12px;height:52px;display:flex;align-items:center;gap:8px}
+.brand{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+.flag{width:30px;height:30px;flex:none;border-radius:9px 9px 9px 2px;background:linear-gradient(#fff 0 64%,var(--green) 64%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);display:grid;place-items:start center;padding-top:4px;font:700 12px/1 var(--serif);color:#C8102E}
+.brand-title{font-family:var(--serif);font-weight:700;font-size:19px;white-space:nowrap;letter-spacing:-.01em;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.brand-title i{font-style:italic;font-weight:600;color:var(--accent)}
+.icon-btn{width:40px;height:40px;flex:none;border:0;background:none;border-radius:12px;display:grid;place-items:center;color:var(--muted)}
+.icon-btn:hover{color:var(--text);background:var(--surface)}
+@media (max-width:400px){.top-row{gap:4px;padding:0 8px}.brand-title{font-size:17px}.flag{width:24px;height:24px;font-size:10px;padding-top:3px}}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--card);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.tabs .tabbar-in{max-width:560px;margin:0 auto;height:var(--tab-h);display:grid;grid-template-columns:repeat(4,1fr)}
+nav.tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:none;font-size:11px;font-weight:600;color:var(--muted);position:relative}
+nav.tabs button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+nav.tabs button[aria-current=page]{color:var(--accent)}
+nav.tabs button[aria-current=page]::before{content:"";position:absolute;top:0;width:30px;height:4px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,var(--red) 0 50%,var(--green) 50%)}
+@media (max-height:480px) and (orientation:landscape){:root{--tab-h:48px}nav.tabs button span{display:none}}
+@media (prefers-color-scheme:dark){.btn.good{color:#06210F}}
 </style>
+<link rel="stylesheet" href="../vk.css?v=1">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
-<header>
-  <div class="brand"><span class="flag" aria-hidden="true">Cy</span><div><b>Cymraeg bob dydd</b><small>Ychydig o Gymraeg, bob dydd · A little Welsh, every day</small></div></div>
-  <span class="streak" id="streak" title="Diwrnodau yn olynol · days in a row">🔥 0</span>
+<header class="top">
+  <div class="top-row">
+    <a class="brand" href="../" aria-label="Vocab"><svg class="vk-back" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="flag" aria-hidden="true">Cy</span><span class="brand-title">Cymraeg <i>bob dydd</i></span></a>
+    <button class="icon-btn vk-lang" data-vk="lang" type="button" aria-label="Interface language"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5S9.4 5.2 12 2.5z"/></svg></button>
+  </div>
 </header>
 
 <main>
@@ -98,7 +118,7 @@ nav.tabs button[aria-current=page]{color:var(--red);background:var(--card)}
   <section class="view on" id="v-cards" aria-label="Cardiau">
     <div class="seg" id="lvSeg" role="group"></div>
     <div class="card"><div class="flip" id="flip" role="button" tabindex="0" aria-label="Troi'r cerdyn · flip the card">
-      <div class="side a"><span class="lv" id="cLv"></span><button class="spk" id="spk" type="button" aria-label="Gwrando · listen" hidden>🔊</button><div class="w" id="cW"></div><div class="say" id="cSay"></div><div class="hint">Tapia i droi · tap to flip</div></div>
+      <div class="side a"><span class="lv" id="cLv"></span><button class="spk" id="spk" type="button" aria-label="Gwrando · listen" hidden>🔊</button><div class="w" id="cW" lang="cy"></div><div class="say" id="cSay"></div><div class="hint">Tapia i droi · tap to flip</div></div>
       <div class="side b"><span class="lv">Saesneg · English</span><div class="en" id="cEn"></div><div class="ex"><b id="cEx"></b><span id="cExEn"></span></div><div class="hint" id="cBox"></div></div>
     </div></div>
     <div class="grade"><button class="btn again" id="again" type="button">↺ Eto <small>· again</small></button><button class="btn good" id="good" type="button">✓ Iawn <small>· got it</small></button></div>
@@ -140,12 +160,12 @@ nav.tabs button[aria-current=page]{color:var(--red);background:var(--card)}
   </section>
 </main>
 
-<nav class="tabs" aria-label="Adrannau · sections">
-  <button type="button" data-v="cards" aria-current="page"><span>🃏</span>Cardiau</button>
-  <button type="button" data-v="mut"><span>🔄</span>Treiglo</button>
-  <button type="button" data-v="num"><span>🔢</span>Rhifau</button>
-  <button type="button" data-v="snd"><span>🗣️</span>Seiniau</button>
-</nav>
+<nav class="tabs" aria-label="Adrannau · sections"><div class="tabbar-in">
+  <button type="button" class="tab" data-v="cards" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.8 2.2a2 2 0 0 0-1.6 0L2.6 6.1a1 1 0 0 0 0 1.8l8.6 3.9a2 2 0 0 0 1.6 0l8.6-3.9a1 1 0 0 0 0-1.8z"/><path d="M22 17.6l-9.2 4.2a2 2 0 0 1-1.6 0L2 17.6"/><path d="M22 12.6l-9.2 4.2a2 2 0 0 1-1.6 0L2 12.6"/></svg><span>Cardiau</span></button>
+  <button type="button" class="tab" data-v="mut"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg><span>Treiglo</span></button>
+  <button type="button" class="tab" data-v="num"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18"/></svg><span>Rhifau</span></button>
+  <button type="button" class="tab" data-v="snd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 10v3M6 6v11M10 3v18M14 8v7M18 5v13M22 10v3"/></svg><span>Seiniau</span></button>
+</div></nav>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -234,7 +254,7 @@ Twp|daft, silly|toop|Paid â bod yn dwp!|Don't be daft!`]
   function day(d) { d = d || new Date(); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
   function practised() { S.days[day()] = 1; save(); paintStreak(); }
   function streak() { var n = 0, d = new Date(); if (!S.days[day(d)]) d.setDate(d.getDate() - 1); while (S.days[day(d)]) { n++; d.setDate(d.getDate() - 1); } return n; }
-  function paintStreak() { $("streak").textContent = "🔥 " + streak(); }
+  function paintStreak() {}
   function toast(t) { var e = $("toast"); e.textContent = t; e.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(function () { e.classList.remove("on"); }, 1800); }
 
   /* ---------- a Welsh voice, if this device has one ---------- */
@@ -349,5 +369,6 @@ Twp|daft, silly|toop|Paid â bod yn dwp!|Don't be daft!`]
   var h = (location.hash || "").slice(1); if (["mut", "num", "snd"].indexOf(h) >= 0) show(h);
 })();
 </script>
+<script src="../vk.js?v=1"></script>
 </body>
 </html>
