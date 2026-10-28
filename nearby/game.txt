@@ -145,7 +145,7 @@ ID: KS-07
 TITLE: Mended
 GENRE: Golden joinery, slow craft
 AUTHOR: FREE//BUILDER
-DESC: Pick a broken bowl and mend it the old way. Fit the shards, seal the cracks with lacquer, then dust the seams with gold. Sign the finished piece into a book every visitor can leaf through.
+DESC: A different broken piece waits on the bench each visit. Fit the shards, trace the cracks with lacquer, and the gold fills them. Sign the finished piece into a book every visitor can leaf through.
 URL: mended/
 
 CODE: CANDLES
