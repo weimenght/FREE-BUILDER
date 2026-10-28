@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=c2f731df83"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=fec1b8ccb4" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7aab640d42"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=b54490f99f" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Miso & Yuzu's · Nearby</title>
 <meta name="description" content="The little room where Miso and Yuzu live. Pet them, feed them a treat, wave a feather, and leaf through their album.">
@@ -27,6 +27,7 @@ main{max-width:640px;margin:0 auto;padding:4px 16px 100px}
 .tool{width:56px;height:56px;border:3px solid #000;background:#3a2214;font-size:26px;cursor:pointer;display:grid;place-items:center;box-shadow:inset -3px -3px 0 rgba(0,0,0,.45),inset 3px 3px 0 rgba(255,220,170,.15),3px 3px 0 #000}
 .tool:active{transform:translate(2px,2px)}
 .tool[aria-pressed="true"]{background:var(--a);box-shadow:inset -3px -3px 0 rgba(0,0,0,.3),inset 3px 3px 0 rgba(255,255,255,.4),0 0 0 3px #fff}
+.away{text-align:center;margin:0 0 4px;font-size:19px;color:#e8d6b4}.away button{border:0;background:none;padding:2px 4px;color:var(--a);text-decoration:underline;cursor:pointer;font:inherit}
 .mood{text-align:center;color:var(--dim);min-height:24px;font-size:19px}
 h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:.06em}
 .cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -73,6 +74,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   <div class="fit-panel">
   <div class="tools" id="tools" role="toolbar"></div>
   <p class="mood" id="mood" aria-live="polite"></p>
+  <p class="away" id="away" hidden></p>
 
   <h2 data-t="boardH">THE BOARD</h2>
   <div class="board" id="board" aria-live="polite"></div>
@@ -95,8 +97,13 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   function t(a) { return a[L()] || a[0]; }
   function toast(m) { var e = $("toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 2200); }
   var W = { title: ["MISO & YUZU'S", "味噌和柚子家", "味噌和柚子家", "CASA DE MISO Y YUZU", "CAL MISO I LA YUZU"], meet: ["MEET THEM", "认识它们", "認識牠們", "CONÓCELOS", "CONEIX-LOS"], albumH: ["THE ALBUM", "相册", "相簿", "EL ÁLBUM", "L'ÀLBUM"],
-    tools: { pet: ["Pet", "摸摸", "摸摸", "Acariciar", "Acaronar"], treat: ["Treat", "零食", "零食", "Premio", "Premi"], toy: ["Feather", "逗猫棒", "逗貓棒", "Pluma", "Ploma"], brush: ["Brush", "梳毛", "梳毛", "Cepillar", "Raspallar"], lamp: ["Lamp", "台灯", "檯燈", "Lámpara", "Llum"], cam: ["Take a photo", "拍张照", "拍張照", "Hacer una foto", "Fer una foto"] },
+    tools: { pet: ["Pet", "摸摸", "摸摸", "Acariciar", "Acaronar"], treat: ["Treat", "零食", "零食", "Premio", "Premi"], toy: ["Feather", "逗猫棒", "逗貓棒", "Pluma", "Ploma"], brush: ["Brush", "梳毛", "梳毛", "Cepillar", "Raspallar"], lamp: ["Lamp", "台灯", "檯燈", "Lámpara", "Llum"], box: ["A box", "纸箱", "紙箱", "Una caja", "Una capsa"], cam: ["Take a photo", "拍张照", "拍張照", "Hacer una foto", "Fer una foto"] },
     mood: { purr: ["{n} is purring.", "{n} 在打呼噜。", "{n} 在打呼嚕。", "{n} ronronea.", "{n} ronca de gust."], eat: ["Crunch, crunch.", "咔嚓咔嚓。", "咔嚓咔嚓。", "Cronch, cronch.", "Cruix, cruix."], pounce: ["{n} pounces!", "{n} 扑过去了！", "{n} 撲過去了！", "¡{n} salta!", "{n} salta!"], sleep: ["Shh. They're asleep.", "嘘，它们睡着了。", "噓，牠們睡著了。", "Shh. Están dormidos.", "Xst. Dormen."], fluff: ["So fluffy.", "毛蓬蓬的。", "毛蓬蓬的。", "Qué esponjoso.", "Que esponjós."], full: ["They've had enough treats for now.", "今天的零食够啦。", "今天的零食夠啦。", "Ya han comido bastantes premios.", "Ja han menjat prou premis."], photo: ["Saved to the album.", "已放进相册。", "已放進相簿。", "Guardada en el álbum.", "Desada a l'àlbum."], unlock: ["A new memory in the album!", "相册里多了一段回忆！", "相簿裡多了一段回憶！", "¡Un recuerdo nuevo en el álbum!", "Un record nou a l'àlbum!"] },
+    out: ["{n} is out: {p}", "{n} 出门了：在{p}", "{n} 出門了：在{p}", "{n} ha salido: {p}", "{n} ha sortit: {p}"],
+    bothOut: ["Both out. The cushion's still warm. Miso: {a} · Yuzu: {b}", "都出门了，垫子还是热的。味噌：{a} · 柚子：{b}", "都出門了，墊子還是熱的。味噌：{a} · 柚子：{b}", "Las dos han salido. El cojín sigue tibio. Miso: {a} · Yuzu: {b}", "Han sortit totes dues. El coixí encara és tebi. Miso: {a} · Yuzu: {b}"],
+    box: ["A box", "纸箱", "紙箱", "Una caja", "Una capsa"],
+    visit: ["{n} dropped by.", "{n} 来串门了。", "{n} 來串門了。", "{n} ha venido de visita.", "{n} ha vingut de visita."],
+    window: ["{n} is at the window.", "{n} 在窗外张望。", "{n} 在窗外張望。", "{n} mira por la ventana.", "{n} mira per la finestra."],
     boardH: ["THE BOARD", "照片墙", "照片牆", "EL TABLÓN", "EL TAULER"],
     pin: ["📌 Pin it", "📌 钉上墙", "📌 釘上牆", "📌 Clávala", "📌 Clava-la"], pinned: ["📌 On the board", "📌 已上墙", "📌 已上牆", "📌 En el tablón", "📌 Al tauler"],
     unpin: ["Take it down", "取下来", "取下來", "Quitarla", "Treure-la"], report: ["⚑ Report", "⚑ 举报", "⚑ 檢舉", "⚑ Denunciar", "⚑ Denunciar"], thanks: ["Thanks. Wei will look.", "谢谢，Wei 会看看。", "謝謝，Wei 會看看。", "Gracias. Wei lo mirará.", "Gràcies. En Wei ho mirarà."],
@@ -145,6 +152,13 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     var C = CATS[k], P = function (dx, dy, w, h, col) { R(dir > 0 ? x + dx : x + 18 - dx - w, y - 14 + dy, w, h, col, ctx); };
     var eyes = function (ex, ey, closed) { if (closed) { P(ex, ey + 1, 1, 1, "#000"); P(ex + 2, ey + 1, 1, 1, "#000"); } else { P(ex, ey, 1, 1, C.e); P(ex + 2, ey, 1, 1, C.e); } };
     var bell = extra && extra.bell, closed = extra && extra.closed;
+    if (pose === "box") {   /* in the box: only the ears and eyes over the edge */
+      P(10, 6, 6, 4, C.b); P(10, 4, 2, 2, C.b); P(14, 4, 2, 2, C.b); P(11, 5, 1, 1, "#f4a0b8"); P(15, 5, 1, 1, "#f4a0b8");
+      if ((f >> 4) % 23 === 0) { P(11, 8, 1, 1, "#000"); P(14, 8, 1, 1, "#000"); } else { P(11, 7, 1, 2, C.e); P(14, 7, 1, 2, C.e); }
+      if (C.stripe) P(12, 6, 2, 1, C.stripe);
+      if (bell) P(12, 10, 2, 1, "#f6c84a");
+      return;
+    }
     if (pose === "sleep") {
       P(3, 9, 13, 5, C.b); P(2, 10, 1, 3, C.b); P(16, 10, 1, 3, C.b); P(11, 7, 6, 5, C.b); P(11, 6, 1, 1, C.b); P(15, 6, 1, 1, C.b); eyes(12, 8, true); P(1, 12, 7, 2, C.b);
       if (C.stripe) { P(6, 9, 1, 4, C.stripe); P(9, 9, 1, 4, C.stripe); }
@@ -204,10 +218,50 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     miso: { x: 40, dir: 1, pose: "sit", tx: 40, until: 0, p: 0, pet: 0, puff: 0 },
     yuzu: { x: 100, dir: -1, pose: "sit", tx: 100, until: 0, p: 0, pet: 0, puff: 0 }
   };
+  /* the cats come and go: most visits they're home, now and then one is out in town (the same place the map shows) */
+  var HOME = { miso: true, yuzu: true }, AWAY = {};
+  (function () {
+    var FW = window.FBWorld; if (!FW || !FW.cats) return;
+    var st = FW.story ? FW.story() : {}, c = FW.cats(), sl = Math.floor(Date.now() / 18e5), onStory = st.ch >= 1 && !st.done;
+    ["miso", "yuzu"].forEach(function (k) { var out = onStory || (c[k] && c[k] !== "nest" && hash(k + ":" + sl) < .3); if (out && c[k] && c[k] !== "nest") { HOME[k] = false; AWAY[k] = c[k]; } else if (FW.catHome) FW.catHome(k); });
+  })();
+  function homeCats() { return ["miso", "yuzu"].filter(function (k) { return HOME[k]; }); }
+  function goTo(k) { var u = window.FBWorld ? FBWorld.url(k) : "/nearby/"; try { if (parent !== window && parent.FBShell && parent.FBShell.open) { parent.FBShell.open(u); return; } } catch (e) {} location.href = u; }
+  function paintAway() {
+    var el = $("away"), out = ["miso", "yuzu"].filter(function (k) { return !HOME[k]; }); el.hidden = !out.length; if (!out.length) return; el.innerHTML = "";
+    var nm = function (k) { return window.FBWorld && FBWorld.name ? FBWorld.name(k) : k; }, link = function (k) { var b = document.createElement("button"); b.type = "button"; b.textContent = (FBWorld.icon ? FBWorld.icon(AWAY[k]) + " " : "") + nm(AWAY[k]) + " ›"; b.onclick = function () { goTo(AWAY[k]); }; return b; };
+    var tpl = out.length === 2 ? t(W.bothOut) : t(W.out).replace("{n}", t(CATS[out[0]].n)), parts = tpl.split(/(\{[pab]\})/);
+    parts.forEach(function (x) { if (x === "{p}") el.appendChild(link(out[0])); else if (x === "{a}") el.appendChild(link("miso")); else if (x === "{b}") el.appendChild(link("yuzu")); else if (x) el.appendChild(document.createTextNode(x)); });
+  }
+  /* a cardboard box (put it down anywhere on the floor): the nearest cat gets in, the other sulks next to it */
+  var box = null;
+  /* the sunbeam from the window on a clear day: a cat with nothing to do goes and lies in it */
+  function sunny() { return World.phase() === "day" && World.weather() === "clear" && lamp !== null; }
+  var SUN = { x: 44, w: 26 };
+  /* neighbours' animals whose walk passes here: cats come in, dogs look in at the window; a sparrow on the sill by day */
+  var guests = [], bird = { on: false, until: 0 };
+  function loadGuests() {
+    try { if (!window.FBG || !FBG.pets || !FBWorld.petAt) return; } catch (e) { return; }
+    FBG.pets().then(function (l) {
+      var mine = (FBWorld.myPets() || []).map(function (p) { return p.id; });
+      guests = (l || []).filter(function (p) { return FBWorld.petAt(p.id) === "nest"; }).sort(function (a, b) { return (mine.indexOf(b.id) >= 0) - (mine.indexOf(a.id) >= 0); }).slice(0, 2)
+        .map(function (p, i) { return { p: p, spec: FBWorld.petSpec(p), dog: p.kind === "dog", x: 20 + i * 70, tx: 20 + i * 70, dir: i ? -1 : 1, until: 0, step: 0 }; });
+      var c = guests.filter(function (g2) { return !g2.dog; })[0], d = guests.filter(function (g2) { return g2.dog; })[0];
+      if (c) setTimeout(function () { mood(t(W.visit).replace("{n}", c.p.name)); }, 1800); else if (d) setTimeout(function () { mood(t(W.window).replace("{n}", d.p.name)); }, 1800);
+    }).catch(function () {});
+  }
+  setTimeout(loadGuests, 1200); addEventListener("fbback", loadGuests);
   var tool = "pet", toy = null, treatsInBowl = 0, hearts = [], fur = [], ptr = null, f = 0, lastPounce = 0;
   function think(k, now) {
     var c = cats[k], other = cats[k === "miso" ? "yuzu" : "miso"];
+    if (!HOME[k]) return;
     if (c.pet > now) { c.pose = "purr"; return; }
+    if (box && lamp && !toy && !(treatsInBowl > 0)) {
+      if (box.cat === k) { c.tx = box.x - CW / 2 + 2; if (Math.abs(c.x - c.tx) < 2) { c.x = c.tx; c.pose = "box"; return; } }
+      else if (!box.cat && (!HOME[k === "miso" ? "yuzu" : "miso"] || Math.abs(c.x + CW / 2 - box.x) <= Math.abs(other.x + CW / 2 - box.x))) { box.cat = k; meow(k); }
+      else if (box.cat && box.cat !== k && now > c.until) { c.tx = Math.max(0, Math.min(WD - CW, box.x + (c.x < box.x ? -CW - 8 : 10))); c.until = now + 3000; if (Math.abs(c.x - c.tx) < 2) { c.pose = "sit"; c.dir = c.x < box.x ? 1 : -1; } }
+    }
+    else if (c.pose === "box") c.pose = "sit";
     if (!lamp) { if (c.pose !== "sleep") { c.tx = k === "miso" ? BED - 8 : BED + 12; c.pose = Math.abs(c.x - c.tx) < 2 ? "sleep" : "walk"; } else return; }
     else if (treatsInBowl > 0 && (c.pose !== "eat" || c.until > now)) {
       var spot = k === "miso" ? BOWL - CW - 2 : BOWL + 4; c.tx = spot;
@@ -220,12 +274,13 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     }
     else if (now > c.until) {
       var r = Math.random(); c.until = now + 2000 + Math.random() * 4000;
-      if (r < .45) c.tx = 4 + Math.random() * (WD - CW - 8); else { c.tx = c.x; c.pose = r < .8 ? "sit" : (Math.random() < .5 ? "stand" : "sit"); }
+      if (sunny() && r < .25 && !(other.sun && HOME[other === cats.miso ? "miso" : "yuzu"])) { c.tx = SUN.x + 2 - CW / 2 + (k === "miso" ? 0 : 6); c.sun = true; c.until = now + 9000 + Math.random() * 9000; }
+      else { c.sun = false; if (r < .55) c.tx = 4 + Math.random() * (WD - CW - 8); else { c.tx = c.x; c.pose = r < .85 ? "sit" : (Math.random() < .5 ? "stand" : "sit"); } }
       if (Math.abs(c.x - other.x) < CW && Math.random() < .5) c.tx = c.x + (c.x < other.x ? -CW - 6 : CW + 6);
     }
     var dx = c.tx - c.x;
     if (Math.abs(dx) > 1.2) { c.pose = "walk"; c.dir = dx > 0 ? 1 : -1; c.x += c.dir * (toy ? .9 : .45); }
-    else if (c.pose === "walk") c.pose = (!lamp ? "sleep" : "sit");
+    else if (c.pose === "walk") c.pose = (!lamp || (c.sun && sunny()) ? "sleep" : "sit");
     c.x = Math.max(0, Math.min(WD - CW, c.x));
   }
   function mood(m) { $("mood").textContent = m; clearTimeout(mood.t); mood.t = setTimeout(function () { $("mood").textContent = ""; }, 3000); }
@@ -233,18 +288,34 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     var now = performance.now(); f++;
     ["miso", "yuzu"].forEach(function (k) { think(k, now); });
     room(f);
+    if (sunny() && lamp) { g.fillStyle = "rgba(255,236,170,.16)"; g.beginPath(); g.moveTo(18, 50); g.lineTo(58, 50); g.lineTo(SUN.x + SUN.w + 6, FLOOR + 12); g.lineTo(SUN.x - 6, FLOOR + 12); g.closePath(); g.fill(); g.fillStyle = "rgba(255,236,170,.22)"; g.fillRect(SUN.x - 6, FLOOR, SUN.w + 12, 12); }
     var bell = bellDone();
-    ["miso", "yuzu"].sort(function (a, b) { return cats[a].x - cats[b].x; }).forEach(function (k) { var c = cats[k]; g.save(); g.translate(Math.round(c.x), FLOOR + (k === "yuzu" ? 3 : 1)); g.scale(SC, SC); drawCat(g, k, 0, 0, c.pose, c.dir, f, { p: c.p, bell: k === "yuzu" && bell }); g.restore(); });
+    /* a sparrow on the outside sill now and then: by day, not in rain or snow */
+    var wxx = World.weather(), dayish = World.phase() !== "night" && wxx !== "rain" && wxx !== "storm" && wxx !== "snow";
+    if (now > bird.until) { bird.on = dayish && !bird.on && Math.random() < .5; bird.until = now + (bird.on ? 6000 + Math.random() * 6000 : 15000 + Math.random() * 20000); }
+    if (bird.on && dayish) { var bx = 48, by = 49, hop = (f >> 3) % 9 === 0 ? 1 : 0; R(bx, by - 3 - hop, 4, 3, "#8a6a4a"); R(bx + 3, by - 4 - hop, 2, 2, "#6a4a32"); R(bx + 5, by - 3 - hop, 1, 1, "#e0a040"); R(bx - 1, by - 2 - hop, 1, 1, "#6a4a32"); R(bx + 1, by - 1, 1, 1, "#c86a5a"); R(bx + 3, by - 1, 1, 1, "#c86a5a"); }
+    /* a neighbour's dog at the window, nose to the glass */
+    guests.forEach(function (q) { if (q.dog && window.FBWorld && FBWorld.drawPet) { g.save(); g.beginPath(); g.rect(18, 14, 40, 36); g.clip(); FBWorld.drawPet(g, q.spec, 30 + Math.sin(f / 40) * 3, 57, 1, { flip: false }); g.restore(); R(13, 50, 50, 3, "#8a5a33"); R(20, 44, 6, 6, "#a8582a"); R(19, 38, 3, 6, "#4a8a44"); R(23, 36, 3, 8, "#3f7a3a"); R(26, 40, 2, 4, "#4a8a44"); } });
+    if (box) { var bxx = Math.round(box.x - 12); R(bxx, FLOOR - 10, 24, 12, "#b8864a"); R(bxx, FLOOR - 10, 24, 2, "#8a5a2a"); R(bxx - 3, FLOOR - 13, 6, 4, "#c89a5a"); R(bxx + 21, FLOOR - 13, 6, 4, "#c89a5a"); R(bxx + 6, FLOOR - 5, 12, 1, "#8a5a2a"); }
+    homeCats().sort(function (a, b) { return cats[a].x - cats[b].x; }).forEach(function (k) { var c = cats[k]; g.save(); g.translate(Math.round(c.x), FLOOR + (k === "yuzu" ? 3 : 1)); g.scale(SC, SC); drawCat(g, k, 0, 0, c.pose, c.dir, f, { p: c.p, bell: k === "yuzu" && bell }); g.restore(); if (c.pose === "box" && box) { var bf = Math.round(box.x - 12); R(bf, FLOOR - 4, 24, 6, "#b8864a"); R(bf, FLOOR - 4, 24, 1, "#8a5a2a"); } });
+    guests.forEach(function (q) {
+      if (q.dog || !window.FBWorld || !FBWorld.drawPet) return;
+      var now2 = performance.now(); if (now2 > q.until) { q.until = now2 + 3000 + Math.random() * 5000; q.tx = Math.random() < .5 ? q.x : 6 + Math.random() * (WD - 30); }
+      var dx = q.tx - q.x, asleep = !lamp; if (!asleep && Math.abs(dx) > 1) { q.dir = dx > 0 ? 1 : -1; q.x += q.dir * .35; q.step = (f >> 3) % 2; } else q.step = 0;
+      FBWorld.drawPet(g, q.spec, q.x + 9, FLOOR + 2, 1.5, { flip: q.dir < 0, asleep: asleep, step: q.step });
+    });
     if (toy) { var sx = toy.x + Math.sin(f / 5) * 2; for (var i = 0; i < 10; i++) R(toy.x - (toy.x - 80) * i / 10, toy.y - 60 * (1 - i / 10) * (toy.y / HT), 1, 1, "rgba(255,255,255,.5)"); R(sx - 1, toy.y - 2, 3, 6, "#f6b73c"); R(sx, toy.y + 3, 1, 3, "#c8402a"); }
     hearts = hearts.filter(function (h) { h.y -= .5; h.a -= .02; if (h.a <= 0) return false; g.globalAlpha = h.a; R(h.x, h.y, 2, 2, "#ff8fa0"); R(h.x + 2, h.y, 2, 2, "#ff8fa0"); R(h.x + 1, h.y + 2, 2, 1, "#ff8fa0"); g.globalAlpha = 1; return true; });
     fur = fur.filter(function (p) { p.x += p.vx; p.y += p.vy; p.vy += .03; p.a -= .02; if (p.a <= 0) return false; g.globalAlpha = p.a; R(p.x, p.y, 1, 1, p.c); g.globalAlpha = 1; return true; });
-    if (!lamp) { g.fillStyle = "rgba(8,6,20,.55)"; g.fillRect(0, 0, WD, HT); for (var z = 0; z < 2; z++) { var cc = cats[z ? "yuzu" : "miso"]; if (cc.pose === "sleep") { var zz = ((f / 20 + z) % 3); g.fillStyle = "rgba(255,243,192," + (1 - zz / 3) + ")"; g.font = "8px monospace"; g.fillText("z", cc.x + CW - 6, FLOOR - 16 - zz * 5); } } }
+    if (false) {}
+    for (var z2 = 0; z2 < 2; z2++) { var c2 = cats[z2 ? "yuzu" : "miso"]; if (lamp && HOME[z2 ? "yuzu" : "miso"] && c2.pose === "sleep") { var z3 = ((f / 20 + z2) % 3); g.fillStyle = "rgba(255,243,192," + (1 - z3 / 3) * .8 + ")"; g.font = "8px monospace"; g.fillText("z", c2.x + CW - 6, FLOOR - 12 - z3 * 5); } }
+    if (!lamp) { g.fillStyle = "rgba(8,6,20,.55)"; g.fillRect(0, 0, WD, HT); for (var z = 0; z < 2; z++) { var cc = cats[z ? "yuzu" : "miso"]; if (HOME[z ? "yuzu" : "miso"] && cc.pose === "sleep") { var zz = ((f / 20 + z) % 3); g.fillStyle = "rgba(255,243,192," + (1 - zz / 3) + ")"; g.font = "8px monospace"; g.fillText("z", cc.x + CW - 6, FLOOR - 16 - zz * 5); } } }
     requestAnimationFrame(frame);
   }
 
   /* ---------- your hands ---------- */
   function at(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * WD, y: (e.clientY - r.top) / r.height * HT }; }
-  function catAt(p) { var best = null; ["miso", "yuzu"].forEach(function (k) { var c = cats[k]; if (p.x > c.x - 3 && p.x < c.x + CW + 3 && p.y > FLOOR - 16 * SC - 4 && p.y < FLOOR + 6) best = k; }); return best; }
+  function catAt(p) { var best = null; homeCats().forEach(function (k) { var c = cats[k]; if (p.x > c.x - 3 && p.x < c.x + CW + 3 && p.y > FLOOR - 16 * SC - 4 && p.y < FLOOR + 6) best = k; }); return best; }
   var petT = 0;
   function onMove(e) {
     var p = at(e); ptr = p;
@@ -260,19 +331,22 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     down = true; try { cv.setPointerCapture(e.pointerId); } catch (x) {}
     var p = at(e);
     if (tool === "treat") { var day = new Date().toDateString(); if (S.treats.d !== day) S.treats = { d: day, n: 0 }; if (S.treats.n >= 6) { mood(t(W.mood.full)); return; } S.treats.n += 2; save(); treatsInBowl = Math.min(4, treatsInBowl + 2); meow("yuzu"); setTimeout(function () { meow("miso"); }, 300); return; }
+    if (tool === "box") { box = { x: Math.max(14, Math.min(WD - 14, p.x)), cat: null }; ["miso", "yuzu"].forEach(function (k2) { cats[k2].until = 0; }); return; }
     var k = catAt(p); if (k && (tool === "pet" || tool === "brush")) { if (Math.random() < .3) meow(k); }
     onMove(e);
   });
   cv.addEventListener("pointermove", onMove);
   ["pointerup", "pointercancel", "pointerleave"].forEach(function (ev) { cv.addEventListener(ev, function () { down = false; purr(false); if (tool !== "toy") ptr = null; }); });
 
-  var TOOLS = [["pet", "✋"], ["treat", "🐟"], ["toy", "🪶"], ["brush", "🪮"], ["lamp", "💡"], ["cam", "📷"]];
+  var TOOLS = [["pet", "✋"], ["treat", "🐟"], ["toy", "🪶"], ["brush", "🪮"], ["box", "📦"], ["lamp", "💡"], ["cam", "📷"]];
   TOOLS.forEach(function (x) {
     var b = document.createElement("button"); b.type = "button"; b.className = "tool"; b.textContent = x[1]; b.dataset.k = x[0];
     b.onclick = function () {
       if (x[0] === "lamp") { lamp = !lamp; b.setAttribute("aria-pressed", !lamp); if (!lamp) { toy = null; mood(t(W.mood.sleep)); } return; }
       if (x[0] === "cam") { snap(); return; }
+      if (x[0] === "box" && tool === "box" && box) { box = null; tool = "pet"; [].forEach.call($("tools").children, function (o) { if (o.dataset.k !== "lamp" && o.dataset.k !== "cam") o.setAttribute("aria-pressed", o.dataset.k === "pet"); }); return; }
       tool = x[0]; if (tool !== "toy") toy = null; else toy = { x: 80, y: 60 };
+      if (tool === "box" && !box) { box = { x: 80 + (Math.random() - .5) * 60, cat: null }; ["miso", "yuzu"].forEach(function (k2) { cats[k2].until = 0; }); }
       [].forEach.call($("tools").children, function (o) { if (o.dataset.k !== "lamp" && o.dataset.k !== "cam") o.setAttribute("aria-pressed", o.dataset.k === tool); });
       cv.style.cursor = tool === "toy" ? "none" : tool === "treat" ? "pointer" : "grab";
     };
@@ -346,7 +420,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   var mine = [];
   function paintBoard() {
     var bd = $("board");
-    Promise.all([api("nest_wall", { p_limit: 24 }, true), api("nest_mine", { p_secret: key() }).catch(function () { return []; })]).then(function (r) {
+    Promise.all([api("nest_wall", { p_limit: 24 }, true), (S.pinnedAny || S.photos.some(function (q) { return q.pinned; }) ? api("nest_mine", { p_secret: key() }) : Promise.resolve([])).catch(function () { return []; })]).then(function (r) {
       var list = r[0] || []; mine = (r[1] || []).map(String); bd.innerHTML = "";
       if (!list.length) { var e = document.createElement("p"); e.className = "empty"; e.textContent = t(W.empty); bd.appendChild(e); return; }
       list.forEach(function (ph) {
@@ -364,7 +438,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   function pin(ph, btn) {
     btn.disabled = true;
     api("nest_pin", { p_secret: key(), p_img: ph.u }).then(function (id) {
-      ph.pinned = id; save(); btn.textContent = t(W.pinned); shutter(); paintBoard();
+      ph.pinned = id; S.pinnedAny = 1; save(); btn.textContent = t(W.pinned); shutter(); paintBoard();
       setTimeout(function () { var bd = $("board"); if (bd.scrollIntoView) bd.scrollIntoView({ behavior: "smooth", block: "center" }); }, 400);
     }).catch(function (e) { btn.disabled = false; toast(/rest|too fast|a day/i.test(String(e && e.message)) ? t(W.rest) : t(W.off)); });
   }
@@ -382,7 +456,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     document.title = (window.FBWorld && FBWorld.name) ? FBWorld.name("nest") + " · " + FBWorld.name("map") : document.title;
     [].forEach.call($("tools").children, function (b) { var n = t(W.tools[b.dataset.k]); b.setAttribute("aria-label", n); b.title = n; if (b.dataset.k === "pet") b.setAttribute("aria-pressed", tool === "pet"); });
     $("room").setAttribute("aria-label", t(W.title)); var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
-    paintCats(); paintAlbum();
+    paintCats(); paintAlbum(); paintAway();
   }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
   window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
