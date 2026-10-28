@@ -1,6 +1,6 @@
 // Twilight Handoff service worker: offline shell + Web Push.
-const CACHE = 'handoff-shell-v4';
-const SHELL = ['./', './index.html', './manifest.json', './icon.svg', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
+const CACHE = 'handoff-shell-v5';
+const SHELL = ['./', './index.html', './manifest.json', './tw.css', './icon.svg', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', (event) => {
     event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -15,7 +15,7 @@ self.addEventListener('activate', (event) => {
 });
 
 // Network-first for page loads (so updates arrive), cache fallback when offline.
-// Everything else (Supabase, Open-Meteo, CDNs, supabase.txt) goes straight to the network.
+// Everything else (Supabase, Open-Meteo, supabase.txt) goes straight to the network.
 self.addEventListener('fetch', (event) => {
     const req = event.request;
     if (req.method !== 'GET' || req.mode !== 'navigate') return;
