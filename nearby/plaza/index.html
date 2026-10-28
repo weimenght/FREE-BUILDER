@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" class="fbt">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=c2f731df83"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=621aada001" data-fbb><script data-fbg src="/fbkit/fbg.js?v=fec1b8ccb4" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>The Plaza · Nearby</title>
+<meta name="description" content="The square in the middle of Nearby: a fountain, benches, pigeons. Toss a coin and make a wish; keep it to yourself or let it float for the town to read.">
+<meta name="theme-color" content="#1d130d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='1' y='10' width='14' height='4' fill='%23a8a094'/%3E%3Crect x='3' y='9' width='10' height='2' fill='%233a7ab8'/%3E%3Crect x='7' y='4' width='2' height='6' fill='%23a8a094'/%3E%3Crect x='5' y='3' width='6' height='2' fill='%23a8a094'/%3E%3Crect x='7' y='1' width='2' height='2' fill='%2386c2ee'/%3E%3Crect x='10' y='11' width='2' height='1' fill='%23f6c84a'/%3E%3C/svg%3E">
+<style>
+:root{color-scheme:dark;--vt:'VT323',ui-monospace,'PingFang SC','Microsoft YaHei',monospace}
+html,body{margin:0;height:100%;background:#1d130d;overflow:hidden;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:pixelated;touch-action:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.dock{white-space:nowrap;position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:5}
+.dock[hidden]{display:none}
+.sheet{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:6;width:min(92vw,460px);box-sizing:border-box;padding:14px 14px 12px;background:#2a1a10;border:3px solid #000;box-shadow:6px 6px 0 #000;color:#fbeedd;font:400 21px/1.25 var(--vt)}
+.sheet[hidden]{display:none}
+.sheet .x{position:absolute;top:6px;right:6px;width:36px;height:36px;border:2px solid #000;background:#1d130d;color:#fbeedd;font:inherit;cursor:pointer}
+.sheet textarea{display:block;width:100%;box-sizing:border-box;min-height:74px;margin:2px 0 10px;padding:8px 10px;border:3px solid #000;background:#fbeedd;color:#1d130d;font:400 22px/1.2 var(--vt);resize:none}
+.sheet .row{display:flex;gap:8px;flex-wrap:wrap}
+.sheet .row .fbb{flex:1 1 0;min-width:0;font-size:20px;line-height:1.1}
+.sheet .q{margin:0 40px 8px 0;font-size:24px;color:#f6c84a}
+.sheet .wish{margin:0 40px 6px 0;font-size:25px;line-height:1.2;overflow-wrap:anywhere}
+.sheet .at{margin:0 0 10px;font-size:17px;opacity:.65}
+.sheet .rep{margin-top:8px;background:none;border:0;padding:4px 0;color:inherit;opacity:.6;font:400 17px var(--vt);cursor:pointer;text-decoration:underline}
+.sheet .lim{font-size:17px;opacity:.6;text-align:right;margin:-6px 0 8px}
+@media (prefers-color-scheme:light){:root:not([data-theme=dark]) .sheet{background:#f6ecd2;color:#2a1a10}:root:not([data-theme=dark]) .sheet .x{background:#e8d6b0;color:#2a1a10}:root:not([data-theme=dark]) .sheet .q{color:#8a4a10}}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<body>
+<h1 class="sr" id="h1">The Plaza</h1>
+<canvas id="cv" role="img" aria-label="The town square: a stone fountain, benches, lamps and pigeons"></canvas>
+<div class="dock" id="dock"><button class="fbb fbb-pri fbb-lg" id="wishBtn" type="button"><span aria-hidden="true">🪙</span> <span id="wishL">Make a wish</span></button></div>
+
+<section class="sheet" id="ask" hidden role="dialog" aria-labelledby="askQ">
+  <button class="x" type="button" data-close aria-label="Close">✕</button>
+  <p class="q" id="askQ">I wish…</p>
+  <textarea id="wishIn" maxlength="80" rows="2" autocomplete="off"></textarea>
+  <div class="lim" id="lim"></div>
+  <div class="row">
+    <button class="fbb" type="button" id="keepBtn"><span aria-hidden="true">🤫</span> <span id="keepL">Keep it to myself</span></button>
+    <button class="fbb fbb-pri" type="button" id="floatBtn"><span aria-hidden="true">🌊</span> <span id="floatL">Let it float</span></button>
+  </div>
+</section>
+
+<section class="sheet" id="coin" hidden role="dialog" aria-labelledby="coinW">
+  <button class="x" type="button" data-close aria-label="Close">✕</button>
+  <p class="wish" id="coinW"></p>
+  <p class="at" id="coinAt"></p>
+  <div class="row"><button class="fbb fbb-pri" type="button" id="hopeBtn"></button></div>
+  <button class="rep" type="button" id="repBtn"></button>
+</section>
+
+<script>
+(function () {
+  "use strict";
+  var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 };
+  function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
+  var T = {
+    h1: ["The Plaza", "广场", "廣場", "La Plaza", "La Plaça"],
+    wish: ["Make a wish", "许个愿", "許個願", "Pide un deseo", "Demana un desig"],
+    q: ["I wish…", "我希望……", "我希望……", "Ojalá…", "Tant de bo…"],
+    keep: ["Keep it to myself", "留在心里", "留在心裡", "Me lo guardo", "Me'l guardo"],
+    float: ["Let it float", "让它漂着", "讓它漂著", "Que flote", "Que suri"],
+    hope: ["Hope with them", "一起盼着", "一起盼著", "Desearlo con él", "Desitjar-ho amb ell"],
+    hoped: ["You hoped with them", "你和他一起盼着", "你和他一起盼著", "Lo deseas con él", "Ho desitges amb ell"],
+    back: ["Take it back", "收回来", "收回來", "Retíralo", "Retira'l"],
+    rep: ["This shouldn't be here", "这不该在这里", "這不該在這裡", "Esto no debería estar aquí", "Això no hauria de ser aquí"],
+    repd: ["Thanks. Wei will look.", "谢谢，Wei 会看看。", "謝謝，Wei 會看看。", "Gracias. Wei lo mirará.", "Gràcies. En Wei ho mirarà."],
+    yours: ["Your coin", "你的硬币", "你的硬幣", "Tu moneda", "La teva moneda"],
+    news: ["Someone at the fountain hoped with you.", "喷泉边有人和你一起盼着。", "噴泉邊有人和你一起盼著。", "Alguien en la fuente lo deseó contigo.", "Algú a la font ho va desitjar amb tu."],
+    rest: ["Three wishes a day is plenty. The fountain will be here tomorrow.", "一天三个愿望就够了。喷泉明天还在。", "一天三個願望就夠了。噴泉明天還在。", "Tres deseos al día bastan. La fuente seguirá aquí mañana.", "Tres desitjos al dia ja n'hi ha prou. La font serà aquí demà."],
+    away: ["The coin sank, but the wish couldn't float just now. It stays with you.", "硬币沉下去了，但愿望这会儿漂不起来。它留在你心里。", "硬幣沉下去了，但願望這會兒漂不起來。它留在你心裡。", "La moneda se hundió, pero el deseo no pudo flotar ahora. Se queda contigo.", "La moneda s'ha enfonsat, però el desig no ha pogut surar ara. Es queda amb tu."],
+    close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"]
+  };
+  function t(k) { return T[k][L()] || T[k][0]; }
+  function $(id) { return document.getElementById(id); }
+  function words() {
+    $("h1").textContent = t("h1"); $("wishL").textContent = t("wish"); $("askQ").textContent = t("q");
+    $("keepL").textContent = t("keep"); $("floatL").textContent = t("float");
+    [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.setAttribute("aria-label", t("close")); });
+  }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
+  window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+  words();
+
+  /* ---------- the square ---------- */
+  var W = window.FBWorld || { hour: function () { var d = new Date(); return d.getHours() + d.getMinutes() / 60; }, phase: function () { return "day"; }, weather: function () { return "clear"; } };
+  var cv = $("cv"), g = cv.getContext("2d"), PW = 0, PH = 0, S = 2, G = {};
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  function hash(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+  function rgbOf(x) { if (x.charAt(0) === "#") { var n = parseInt(x.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; } return x.match(/\d+/g).map(Number); }
+  function mix(a, b, k) { var A = rgbOf(a), B = rgbOf(b); return "rgb(" + [0, 1, 2].map(function (i) { return Math.round(A[i] * (1 - k) + B[i] * k); }).join(",") + ")"; }
+  function size() {
+    S = Math.max(2, Math.round(Math.min(innerWidth, innerHeight) / 170)); PW = Math.ceil(innerWidth / S); PH = Math.ceil(innerHeight / S); cv.width = PW; cv.height = PH; g.imageSmoothingEnabled = false;
+    var wide = PW / PH > 1.1;
+    G.hy = Math.round(PH * (wide ? .2 : .2)); G.py = Math.round(PH * (wide ? .42 : .4));
+    G.cx = Math.round(PW / 2); G.cy = Math.round(PH * (wide ? .62 : .66));
+    G.rx = Math.round(Math.min(PW * (wide ? .26 : .42), PH * (wide ? .3 : .36))); G.ry = Math.round(G.rx * .36);
+    G.col = Math.round(G.rx * .55);   /* column height */
+  }
+  addEventListener("resize", function () { size(); draw(); }); size();
+  var SKY = { night: ["#0a1030", "#24305a"], dawn: ["#5a6aa8", "#f0a888"], day: ["#4a8ad0", "#bfe0f6"], dusk: ["#3a3a7a", "#f08a5a"] };
+  var f = 0, drops = [], jets = [], splash = [], rings = [], toss = null, birds = [], flakes = [];
+  for (var bi = 0; bi < 5; bi++) birds.push({ x: hash(bi + 1), y: hash(bi + 7), d: hash(bi + 3) > .5 ? 1 : -1, peck: 0, fly: 0, vx: 0, vy: 0, gone: 0 });
+
+  /* coins: wishes others let float (tap to read), and the ones you kept to yourself (only on this device) */
+  var shared = [], mine = load("fb_plaza_mine"), kept = load("fb_plaza_kept"), hoped = load("fb_plaza_hoped");
+  function load(k) { try { return JSON.parse(localStorage.getItem(k) || "[]") || []; } catch (e) { return []; } }
+  function keep(k, v) { try { localStorage.setItem(k, JSON.stringify(v.slice(-40))); } catch (e) {} }
+  function spot(seed) { var a = hash(seed) * Math.PI * 2, r = Math.sqrt(hash(seed + .5)) * .78; return { x: G.cx + Math.cos(a) * r * (G.rx - 5), y: G.cy + Math.sin(a) * r * (G.ry - 3) }; }
+  function coinsAll() { return shared.map(function (w) { var p = spot(w.id); return { id: w.id, x: p.x, y: p.y, w: w, mine: mine.indexOf(w.id) >= 0 }; }).concat(kept.map(function (s) { var p = spot(s + 1e5); return { x: p.x, y: p.y, kept: 1 }; })); }
+
+  function draw() {
+    var ph = W.phase(), wx = W.weather(), night = ph === "night", lit = night || ph === "dusk", sk = SKY[ph] || SKY.day;
+    var grey = wx === "rain" || wx === "storm" || wx === "fog" ? .45 : wx === "snow" ? .3 : 0, snow = wx === "snow", wet = wx === "rain" || wx === "storm";
+    for (var y = 0; y < G.py; y++) R(0, y, PW, 1, mix(mix(sk[0], sk[1], y / G.py), "#7a8090", grey));
+    if (night && wx === "clear") for (var s = 0; s < PW * G.hy / 60; s++) if ((f / 40 + s) % 13 > 1) R(hash(s) * PW, hash(s + 50) * G.hy, 1, 1, "#fbf6ea");
+    var hr = W.hour();
+    if (wx === "clear" || wx === "cloudy") { var bx = PW * ((hr % 12) / 12), by = G.hy * (.3 + Math.abs(((hr % 12) - 6) / 6) * .5), r = Math.max(3, PW / 40); g.fillStyle = night ? "#e8e8f0" : "#fff3c0"; g.beginPath(); g.arc(bx, by, r, 0, 6.3); g.fill(); if (night) { g.fillStyle = sk[0]; g.beginPath(); g.arc(bx + r * .45, by - r * .2, r * .85, 0, 6.3); g.fill(); } }
+    for (var c = 0; c < 4; c++) { var cx = ((hash(c + 40) * (PW + 60) + f * (.03 + c * .01)) % (PW + 60)) - 30, cy = G.hy * (.15 + hash(c + 7) * .5), cw = 16 + hash(c) * 22, cc = night ? "rgba(120,130,170,.3)" : "rgba(255,255,255," + (.7 - grey * .3) + ")"; R(cx, cy, cw, 3, cc); R(cx + 4, cy - 2, cw * .5, 2, cc); }
+    /* the houses round the square: hutong roofs, shutters, warm windows in the evening */
+    var hw = Math.max(26, Math.round(PW / 7)), top = G.hy;
+    for (var hx = -((hw / 3) | 0), i = 0; hx < PW; hx += hw, i++) {
+      var hh = Math.round((G.py - top) * (.7 + hash(i + 20) * .3)), y0 = G.py - hh, wall = ["#a8846a", "#8a6a54", "#b89a7a", "#7a5a48", "#9a7a62"][i % 5];
+      R(hx, y0, hw - 1, hh, mix(wall, "#20202e", night ? .6 : ph === "dusk" ? .25 : 0));
+      R(hx - 2, y0 - 3, hw + 3, 3, "#2a2a30"); R(hx - 1, y0 - 5, hw + 1, 2, "#3a3a40");
+      for (var wi = 0; wi < 3; wi++) { var wxp = hx + 4 + wi * ((hw - 8) / 3), wy = y0 + 5, on = lit && hash(i * 7 + wi + ((f / 400) | 0)) > .3; R(wxp, wy, 4, 5, on ? (hash(i + wi) > .5 ? "#f6c84a" : "#ffd68a") : night ? "#2a3048" : "#3a4a6a"); R(wxp, wy + 5, 4, 1, "#2a1a10"); }
+      if (hh > 18) R(hx + hw / 2 - 3, G.py - 9, 6, 9, ["#7c2513", "#2f5a3a", "#1e3a5f"][i % 3]);
+    }
+    for (var ls = 2; ls < PW; ls += 9) { var ly = G.hy + 6 + Math.sin(ls / 9) * 2; R(ls, ly, 2, 3, lit ? "#ff6a3a" : "#b3261e"); if (lit) R(ls - 1, ly - 1, 4, 5, "rgba(255,140,80,.18)"); }
+    /* cobbles */
+    var cob = snow ? "#e6ecf2" : night ? "#3a3640" : wet ? "#6a6670" : "#a8a49c", cob2 = snow ? "#d4dce6" : night ? "#2e2a34" : wet ? "#5a5660" : "#96928a";
+    R(0, G.py, PW, PH - G.py, cob);
+    for (var ry = G.py + 2, row = 0; ry < PH; ry += 3 + Math.round((ry - G.py) / 30), row++) { var step = 6 + Math.round((ry - G.py) / 12); for (var rx = (row % 2) * (step / 2); rx < PW; rx += step) R(rx, ry, step - 2, 1, cob2); }
+    if (wet) for (var pd = 0; pd < 6; pd++) R(hash(pd + 70) * PW, G.py + 6 + hash(pd + 71) * (PH - G.py - 8), 10 + hash(pd) * 14, 1, "rgba(200,220,255,.25)");
+    /* benches and lamps */
+    [[.12, .86], [.88, .86]].forEach(function (b) { var x = PW * b[0] - 10, y = PH * b[1] - (PW / PH > 1.1 ? 0 : 6); R(x, y, 20, 2, "#6a4426"); R(x, y - 4, 20, 2, "#7a5432"); R(x + 2, y + 2, 2, 4, "#2a1a10"); R(x + 16, y + 2, 2, 4, "#2a1a10"); if (snow) R(x, y - 5, 20, 1, "#fbfbff"); });
+    [[.2, .5], [.8, .5]].forEach(function (l) { var x = Math.round(PW * l[0]), y = Math.round(G.py + (PH - G.py) * .12); R(x, y - 26, 2, 26, "#1e1e24"); R(x - 2, y - 30, 6, 4, "#1e1e24"); R(x - 1, y - 29, 4, 2, lit ? "#ffd68a" : "#8a8a7a"); if (lit) { g.fillStyle = "rgba(255,200,120,.16)"; g.beginPath(); g.arc(x + 1, y - 28, 9, 0, 6.3); g.fill(); g.fillStyle = "rgba(255,200,120,.08)"; g.beginPath(); g.ellipse(x + 1, y + 1, 12, 3, 0, 0, 6.3); g.fill(); } });
+    /* the fountain */
+    var cx0 = G.cx, cy0 = G.cy, rx0 = G.rx, ry0 = G.ry, stone = night ? "#6a6470" : "#c8c0b0", stoneD = night ? "#4a4450" : "#9a9284";
+    g.fillStyle = stoneD; g.beginPath(); g.ellipse(cx0, cy0 + 3, rx0 + 3, ry0 + 3, 0, 0, 6.3); g.fill();
+    g.fillStyle = stone; g.beginPath(); g.ellipse(cx0, cy0, rx0 + 3, ry0 + 2, 0, 0, 6.3); g.fill();
+    R(cx0 - rx0 - 3, cy0, rx0 * 2 + 6, 4, stoneD);
+    var water = night ? (lit ? "#1e4a6a" : "#14304a") : wet ? "#4a6a8a" : "#3a7ab8";
+    g.fillStyle = water; g.beginPath(); g.ellipse(cx0, cy0, rx0, ry0, 0, 0, 6.3); g.fill();
+    g.save(); g.beginPath(); g.ellipse(cx0, cy0, rx0, ry0, 0, 0, 6.3); g.clip();
+    if (night) { g.fillStyle = "rgba(120,220,220,.16)"; g.beginPath(); g.ellipse(cx0, cy0 + 1, rx0 * .55, ry0 * .5, 0, 0, 6.3); g.fill(); }
+    for (var sh = 0; sh < 10; sh++) { var sx = cx0 + (hash(sh + 90) - .5) * rx0 * 1.7, sy = cy0 + (hash(sh + 91) - .5) * ry0 * 1.5; R(sx + Math.sin(f / 30 + sh) * 2, sy, 4, 1, night ? "rgba(255,230,160,.2)" : "rgba(255,255,255,.35)"); }
+    coinsAll().forEach(function (k, n) { var tw = (f / 6 + n * 5) % 40 < 3; R(k.x - 1, k.y, 3, 2, k.kept ? "#c8a050" : "#f6c84a"); R(k.x, k.y - 1, 1, 1, k.kept ? "#a8803a" : "#ffe08a"); if (tw && !reduce) R(k.x, k.y - 2, 1, 1, "#fffbe0"); if (k.mine) R(k.x + 2, k.y - 1, 1, 1, "#ff9fb2"); });
+    rings.forEach(function (r) { g.strokeStyle = "rgba(255,255,255," + (r.a * .6) + ")"; g.lineWidth = 1; g.beginPath(); g.ellipse(r.x, r.y, r.r, r.r * .38, 0, 0, 6.3); g.stroke(); });
+    g.restore();
+    /* column, bowl and the water falling from it */
+    var colTop = cy0 - G.col, bw = Math.round(rx0 * .38);
+    R(cx0 - 3, colTop, 6, G.col, stone); R(cx0 + 1, colTop, 2, G.col, stoneD);
+    g.fillStyle = stoneD; g.beginPath(); g.ellipse(cx0, colTop + 2, bw, 3, 0, 0, 6.3); g.fill(); g.fillStyle = stone; g.beginPath(); g.ellipse(cx0, colTop, bw, 3, 0, 0, 6.3); g.fill();
+    g.fillStyle = water; g.beginPath(); g.ellipse(cx0, colTop - .5, bw - 2, 1.6, 0, 0, 6.3); g.fill();
+    R(cx0 - 1, colTop - 8, 2, 8, stone); R(cx0 - 2, colTop - 9, 4, 2, stone);
+    jets.forEach(function (p) { R(p.x, p.y, 1, p.big ? 2 : 1, night ? "rgba(180,230,240,.8)" : "rgba(230,245,255,.9)"); });
+    splash.forEach(function (p) { R(p.x, p.y, 1, 1, "rgba(255,255,255," + p.a + ")"); });
+    /* pigeons: by day, never in rain or snow; at night they've gone to roost */
+    if (!night && !wet && !snow) birds.forEach(function (b) {
+      if (b.gone > 0) return;
+      var x = b.fx != null ? b.fx : PW * (.08 + b.x * .84), y = b.fy != null ? b.fy : G.py + 10 + b.y * (PH - G.py - 22);
+      if (Math.abs(x - G.cx) < G.rx + 6 && Math.abs(y - G.cy) < G.ry + 8 && b.fly === 0) y = G.cy + G.ry + 10;
+      b.px = x; b.py = y;
+      var pk = b.peck > 0 ? 1 : 0, d = b.d;
+      R(x - 3, y - 3, 6, 3, "#8a8a96"); R(x + (d > 0 ? 2 : -4), y - 5 + pk * 2, 2, 2, "#6a6a7a"); R(x + (d > 0 ? 4 : -5), y - 4 + pk * 2, 1, 1, "#e0a040");
+      R(x - 2, y - 3, 3, 1, "#7a9a8a"); if (b.fly) { R(x - 5, y - 5 - (f % 6 < 3 ? 2 : 0), 3, 1, "#9a9aa6"); R(x + 2, y - 5 - (f % 6 < 3 ? 2 : 0), 3, 1, "#9a9aa6"); } else { R(x - 1, y, 1, 1, "#c86a5a"); R(x + 1, y, 1, 1, "#c86a5a"); }
+    });
+    /* the coin you're tossing */
+    if (toss) { var p = toss.p; R(p.x - 1, p.y - 1, 3, 3, "#f6c84a"); R(p.x, p.y - 1, 1, 1, "#fffbe0"); }
+    /* weather */
+    if (wet) drops.forEach(function (d) { R(d.x, d.y, 1, 3, "rgba(200,220,255,.55)"); });
+    if (snow) flakes.forEach(function (d) { R(d.x, d.y, 1, 1, "#ffffff"); });
+    if (wx === "fog") { g.fillStyle = "rgba(220,224,230,.28)"; g.fillRect(0, 0, PW, PH); }
+    if (lit) { g.fillStyle = night ? "rgba(10,10,40,.28)" : "rgba(60,30,60,.12)"; g.fillRect(0, 0, PW, PH); }
+  }
+
+  function step() {
+    var wx = W.weather(), cx0 = G.cx, colTop = G.cy - G.col;
+    var bw = Math.round(G.rx * .38), T0 = 2 * 1 / .06;
+    if (!reduce || f % 3 === 0) for (var j = 0; j < 3; j++) { var a = (hash(f + j * 13) - .5) * 2; jets.push({ x: cx0, y: colTop - 9, vx: a * bw / T0, vy: -.8 - hash(f + j) * .25, big: j === 0 }); }
+    jets = jets.filter(function (p) {
+      p.x += p.vx; p.y += p.vy; p.vy += p.drip ? .04 : .06;
+      if (!p.drip && p.vy > 0 && p.y >= colTop - 1) { if (Math.abs(p.x - cx0) > bw * .55 || hash(p.x * 7 + f) < .4) { p.drip = 1; p.x = cx0 + (p.x < cx0 ? -1 : 1) * (bw - 1 - hash(f + p.y) * 2); p.y = colTop + 1; p.vx = (p.x < cx0 ? -1 : 1) * .12; p.vy = .2; } else return false; }
+      if (p.drip && p.y > G.cy - 1) { if (hash(f + p.x) < .15) splash.push({ x: p.x, y: p.y - 1, a: .8 }); return false; }
+      return p.y < PH;
+    });
+    splash = splash.filter(function (s) { s.y -= .2; s.a -= .08; return s.a > 0; });
+    rings = rings.filter(function (r) { r.r += .35; r.a -= .02; return r.a > 0; });
+    if (f % 40 === 0 && !reduce) rings.push({ x: cx0 + (hash(f) - .5) * G.rx * .9, y: G.cy + (hash(f + 1) - .5) * G.ry * .8, r: 1, a: .5 });
+    if (wx === "rain" || wx === "storm") { for (var d = 0; d < (wx === "storm" ? 4 : 2); d++) drops.push({ x: Math.random() * PW, y: -3 }); drops = drops.filter(function (q) { q.y += 4; q.x -= .4; if (q.y > G.cy - G.ry && q.y < G.cy + G.ry && Math.abs(q.x - G.cx) < G.rx * .9 && Math.random() < .03) rings.push({ x: q.x, y: q.y, r: 1, a: .35 }); return q.y < PH; }); } else drops = [];
+    if (wx === "snow") { if (Math.random() < .5) flakes.push({ x: Math.random() * PW, y: -2, s: Math.random() }); flakes = flakes.filter(function (q) { q.y += .4 + q.s * .4; q.x += Math.sin((f + q.s * 99) / 20) * .3; return q.y < PH; }); } else flakes = [];
+    birds.forEach(function (b) {
+      if (b.gone > 0) { b.gone--; if (!b.gone) { b.fx = b.fy = null; b.fly = 0; b.x = hash(f + 3); b.y = hash(f + 4); } return; }
+      if (b.fly) { b.fx += b.vx; b.fy += b.vy; b.vy -= .02; if (b.fy < -10 || b.fx < -10 || b.fx > PW + 10) { b.gone = 600 + (hash(f) * 900 | 0); } return; }
+      if (b.peck > 0) b.peck--; else if (Math.random() < .015) b.peck = 10;
+      if (Math.random() < .01) { b.x = Math.max(0, Math.min(1, b.x + (Math.random() - .5) * .06)); b.d = Math.random() < .5 ? -1 : 1; }
+    });
+    if (toss) {
+      var k = toss, t = Math.min(1, (Date.now() - k.t0) / k.dur), e = t; k.p = { x: k.a.x + (k.b.x - k.a.x) * e, y: k.a.y + (k.b.y - k.a.y) * e - Math.sin(e * Math.PI) * k.h };
+      if (t >= 1) { toss = null; for (var s = 0; s < 14; s++) splash.push({ x: k.b.x + (Math.random() - .5) * 6, y: k.b.y - Math.random() * 6, a: 1 }); rings.push({ x: k.b.x, y: k.b.y, r: 1, a: 1 }); rings.push({ x: k.b.x, y: k.b.y, r: 3, a: .7 }); plink(); if (k.done) k.done(); }
+    }
+  }
+  function loop(ts) { if (!document.hidden) { if (!loop.l || ts - loop.l > 33) { loop.l = ts; f++; step(); draw(); } } requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+
+  /* a small synthesised plink and splash when the coin lands */
+  var AC = null;
+  function plink() {
+    try {
+      AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume();
+      var t0 = AC.currentTime, o = AC.createOscillator(), gg = AC.createGain(); o.type = "sine"; o.frequency.setValueAtTime(1900, t0); o.frequency.exponentialRampToValueAtTime(1300, t0 + .25);
+      gg.gain.setValueAtTime(.0001, t0); gg.gain.exponentialRampToValueAtTime(.12, t0 + .005); gg.gain.exponentialRampToValueAtTime(.0001, t0 + .5); o.connect(gg); gg.connect(AC.destination); o.start(t0); o.stop(t0 + .55);
+      var n = AC.createBufferSource(), b = AC.createBuffer(1, AC.sampleRate * .4, AC.sampleRate), d = b.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 3);
+      var bp = AC.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 2400; bp.Q.value = .7; var ng = AC.createGain(); ng.gain.value = .09; n.buffer = b; n.connect(bp); bp.connect(ng); ng.connect(AC.destination); n.start(t0 + .02);
+    } catch (e) {}
+  }
+
+  function at(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * PW, y: (e.clientY - r.top) / r.height * PH }; }
+  function pickCoin(p) { var best = null, bd = 64; coinsAll().forEach(function (k) { if (k.kept) return; var d = (k.x - p.x) * (k.x - p.x) + (k.y - p.y) * (k.y - p.y) * 2; if (d < bd) { bd = d; best = k; } }); return best; }
+  cv.addEventListener("pointerdown", function (e) {
+    var p = at(e), k = pickCoin(p); if (k) { openCoin(k); return; }
+    birds.forEach(function (b) { if (!b.fly && !b.gone && b.px != null && Math.abs(b.px - p.x) < 24 && Math.abs(b.py - p.y) < 18) { b.fly = 1; b.fx = b.px; b.fy = b.py; b.vx = (b.px < p.x ? -1 : 1) * (.8 + Math.random() * .6); b.vy = -1.2; } });
+    if (Math.abs(p.x - G.cx) < G.rx && Math.abs(p.y - G.cy) < G.ry) rings.push({ x: p.x, y: p.y, r: 1, a: .8 });
+  });
+  cv.addEventListener("pointermove", function (e) { cv.style.cursor = pickCoin(at(e)) ? "pointer" : ""; });
+
+  /* ---------- the wish ---------- */
+  function sb() { return new Promise(function (res) { if (window.FB_SUPABASE && FB_SUPABASE.url) return res(FB_SUPABASE); var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { res(window.FB_SUPABASE || {}); }; document.head.appendChild(sc); }); }
+  function rpc(fn, body) { return sb().then(function (c) { if (!c.url) throw new Error("offline"); return fetch(c.url + "/rest/v1/rpc/" + fn, { method: "POST", headers: { apikey: c.anonKey, Authorization: "Bearer " + c.anonKey, "Content-Type": "application/json" }, body: JSON.stringify(body || {}) }).then(function (r) { return r.text().then(function (x) { var j = null; try { j = x ? JSON.parse(x) : null; } catch (e) {} if (!r.ok) throw new Error((j && j.message) || "error"); return j; }); }); }); }
+  /* the town's device key, hashed with this place: a wish can't be linked to what this device made anywhere else */
+  var secretP = null;
+  function secret() {
+    if (secretP) return secretP;
+    var k = null; try { k = localStorage.getItem("fb_device_key"); } catch (e) {}
+    if (!k) { var a = new Uint8Array(32); crypto.getRandomValues(a); k = btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); try { localStorage.setItem("fb_device_key", k); } catch (e) {} }
+    secretP = crypto.subtle.digest("SHA-256", new TextEncoder().encode("plaza:" + k)).then(function (b) { return Array.prototype.map.call(new Uint8Array(b), function (x) { return ("0" + x.toString(16)).slice(-2); }).join(""); });
+    return secretP;
+  }
+  function note(text, icon) { try { if (window.FBG && FBG.note) { FBG.note({ icon: icon || "⛲", text: text }); return; } } catch (e) {} }
+  function refresh() { return rpc("wish_list", { p_limit: 40 }).then(function (l) { shared = Array.isArray(l) ? l : []; }).catch(function () {}); }
+  setTimeout(refresh, 600); addEventListener("fbback", refresh);
+  /* once a visit: if someone hoped with one of your wishes, you hear it once */
+  if (mine.length) setTimeout(function () {
+    try { if (sessionStorage.getItem("fb_plaza_news")) return; sessionStorage.setItem("fb_plaza_news", "1"); } catch (e) {}
+    secret().then(function (s) { return rpc("wish_mine", { p_secret: s }); }).then(function (l) {
+      if (!Array.isArray(l)) return; mine = l.map(function (w) { return w.id; }); keep("fb_plaza_mine", mine);
+      if (l.some(function (w) { return w.news; })) note(t("news"), "🤞");
+    }).catch(function () {});
+  }, 2500);
+
+  var sheetFor = null;
+  function show(id) { ["ask", "coin"].forEach(function (s) { $(s).hidden = s !== id; }); $("dock").hidden = !!id; sheetFor = id; }
+  [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.onclick = function () { show(null); }; });
+  addEventListener("keydown", function (e) { if (e.key === "Escape" && sheetFor) show(null); });
+  var inp = $("wishIn");
+  function lim() { $("lim").textContent = inp.value.length > 60 ? (80 - inp.value.length) : ""; }
+  inp.addEventListener("input", lim);
+  $("wishBtn").onclick = function () { inp.value = ""; lim(); show("ask"); setTimeout(function () { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 60); };
+  function throwCoin(target, done) {
+    var r = cv.getBoundingClientRect(), b = $("wishBtn").getBoundingClientRect();
+    var a = { x: (b.left + b.width / 2 - r.left) / r.width * PW, y: (b.top - r.top) / r.height * PH };
+    toss = { a: a, b: target, h: G.col * 1.1 + 20, t0: Date.now(), dur: reduce ? 300 : 900, p: a, done: done };
+  }
+  $("keepBtn").onclick = function () {
+    show(null); var seed = Date.now() % 1e6; kept.push(seed); kept = kept.slice(-30);
+    throwCoin(spot(seed + 1e5), function () { keep("fb_plaza_kept", kept); });
+  };
+  $("floatBtn").onclick = function () {
+    var w = inp.value.replace(/\s+/g, " ").trim().slice(0, 80);
+    if (!w) { inp.classList.remove("fbhop"); void inp.offsetWidth; inp.animate && inp.animate([{ transform: "translateX(0)" }, { transform: "translateX(-6px)" }, { transform: "translateX(6px)" }, { transform: "translateX(0)" }], { duration: 260 }); inp.focus(); return; }
+    show(null);
+    var land = spot(Date.now() % 1e6 + 2e5), sent = secret().then(function (s) { return rpc("wish_add", { p_secret: s, p_wish: w }); });
+    throwCoin(land, function () {
+      sent.then(function (id) { if (id == null) throw new Error("x"); mine.push(id); keep("fb_plaza_mine", mine); shared.unshift({ id: id, wish: w, at: new Date().toISOString().slice(0, 10) }); })
+        .catch(function (e) { var seed = Date.now() % 1e6; kept.push(seed); keep("fb_plaza_kept", kept); note(/rest/.test(e && e.message) ? t("rest") : t("away"), "🪙"); });
+    });
+  };
+  var cur = null;
+  function openCoin(k) {
+    cur = k; var w = k.w; $("coinW").textContent = "“" + w.wish + "”"; $("coinAt").textContent = (k.mine ? t("yours") + " · " : "") + (w.at || "");
+    var hb = $("hopeBtn"), did = hoped.indexOf(w.id) >= 0;
+    hb.innerHTML = ""; var ic = document.createElement("span"); ic.setAttribute("aria-hidden", "true"); ic.textContent = k.mine ? "↩ " : "🤞 "; hb.appendChild(ic); hb.appendChild(document.createTextNode(k.mine ? t("back") : did ? t("hoped") : t("hope")));
+    hb.disabled = !k.mine && did; hb.className = "fbb" + (k.mine ? "" : " fbb-pri");
+    $("repBtn").hidden = !!k.mine; $("repBtn").textContent = t("rep"); $("repBtn").disabled = false;
+    show("coin");
+  }
+  $("hopeBtn").onclick = function () {
+    var k = cur; if (!k) return; var id = k.w.id;
+    if (k.mine) { secret().then(function (s) { return rpc("wish_forget", { p_secret: s, p_id: id }); }).then(function () { shared = shared.filter(function (w) { return w.id !== id; }); mine = mine.filter(function (x) { return x !== id; }); keep("fb_plaza_mine", mine); }).catch(function () {}); show(null); return; }
+    hoped.push(id); keep("fb_plaza_hoped", hoped); rings.push({ x: k.x, y: k.y, r: 1, a: 1 }); rings.push({ x: k.x, y: k.y, r: 4, a: .6 });
+    secret().then(function (s) { return rpc("wish_hope", { p_secret: s, p_id: id }); }).catch(function () {});
+    show(null);
+  };
+  $("repBtn").onclick = function () {
+    var k = cur; if (!k) return; var id = k.w.id; this.disabled = true; this.textContent = t("repd");
+    secret().then(function (s) { return rpc("wish_report", { p_secret: s, p_id: id }); }).catch(function () {});
+    setTimeout(function () { show(null); }, 1200);
+  };
+})();
+</script>
+</body>
+</html>

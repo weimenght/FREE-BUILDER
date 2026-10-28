@@ -68,6 +68,14 @@ AUTHOR: FREE//BUILDER
 DESC: A small cabin on the high pasture with one big window. Clouds drift, cows wander, the weather does what it does. There is nothing to win and nothing to finish. Stay as long as you like.
 URL: no-hurry/
 
+CODE: WISH
+ID: PZ-25
+TITLE: The Plaza
+GENRE: A fountain, a coin, a wish
+AUTHOR: FREE//BUILDER
+DESC: The square in the middle of town: a fountain, benches, lamps and pigeons. Toss a coin and make a wish. Keep it to yourself, or let it float: it lies in the basin for a month, without a name, and anyone can read it and hope with you.
+URL: plaza/
+
 CODE: GARDEN
 ID: GD-13
 TITLE: Plant a Friend
