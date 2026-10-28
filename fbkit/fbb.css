@@ -143,6 +143,7 @@ html.fbsh-in.fbfit .fit-panel > :first-child { margin-top: 0 !important; }
   html .fbo li b { background: rgba(110, 62, 24, .12); }
   html .fbw-opts .fbw-ghost { color: var(--fbl-ink); border-color: rgba(0, 0, 0, .3); }
   html .fbw-set button, html .fbw-tags button, html .fbw-x, html .fbc-town .fbc-b button { background: var(--fbb-wood); color: var(--fbb-ink); }
+  html .fbw-set .fbw-heart { color: #a3122a; text-shadow: 0 1px 0 rgba(255, 240, 220, .6); font-size: 24px; }
   html .fbc-town .fbc-b button:last-child { background: var(--fbb-amber); color: #1d130d; }
   html .fbc-town .fbc-b button:hover, html .fbc-town .fbc-b button:focus-visible { background: var(--fbb-wood-hi); color: var(--fbb-ink); }
   html .fbc-town .fbc-ps li { color: #3a2a1a; }

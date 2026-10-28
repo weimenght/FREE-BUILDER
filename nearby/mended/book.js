@@ -77,7 +77,7 @@
     try { metal = METAL_PALETTES[state.metalType].name; } catch (e) {}
     shrink(generateKeepsakeCardDataURL()).then(function (img) {
       return rpc("kintsugi_add", { p_secret: key(true), p_name: name, p_title: title, p_vessel: vessel, p_metal: metal, p_img: img });
-    }).then(function (id) { mine[id] = 1; pages = []; done = false; btn.disabled = false; btn.lastChild.textContent = "In the book ✓"; setTimeout(function () { btn.lastChild.textContent = "Add to the book"; }, 4000); open(0); })
+    }).then(function (id) { try { window.dispatchEvent(new Event("ksbooked")); } catch (e) {} mine[id] = 1; pages = []; done = false; btn.disabled = false; btn.lastChild.textContent = "In the book ✓"; setTimeout(function () { btn.lastChild.textContent = "Add to the book"; }, 4000); open(0); })
       .catch(function (e) { btn.disabled = false; flash(/kept on this device/.test(String(e.message)) ? "You chose to keep things on this device." : /too many/.test(String(e.message)) ? "That's plenty for this hour." : "The book is out of reach right now."); });
   }
   function flash(m) { try { showToast(m); } catch (e) {} }
