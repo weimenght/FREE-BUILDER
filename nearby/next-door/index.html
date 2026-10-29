@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=65b574d8d3"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=01695bfdfb" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=50db5fe31e"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=49f6d8ff11" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -931,7 +931,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
                       <span class="zzz-particle-3 absolute -top-5 -right-5 text-sm text-[#fff3dc] font-retro">Z</span>
                     </div>
                   </div>
-                  <div class="text-center font-retro text-[14px] text-[var(--amber-2)] leading-none mt-0.5">Wei <span id="poke-hint" class="text-[var(--muted)]"></span></div>
+                  <div class="text-center font-retro text-[14px] text-[var(--amber-2)] leading-none mt-0.5"><span id="host-name">Wei</span> <span id="poke-hint" class="text-[var(--muted)]"></span></div>
                 </div>
 
                 <div id="cat-miso" class="cat" style="left:16%" data-cat="miso"></div>
@@ -3340,7 +3340,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
       const rows = {
         catNap:          ["🐾 Miso & Yuzu are napping together", "🐾 味噌和柚子正挤着打呼噜", "🐾 味噌和柚子正擠著打呼嚕", "🐾 味噌同柚子攬埋一齊瞓緊", "🐾 Miso y Yuzu duermen acurrucados", "🐾 La Miso i la Yuzu dormen arraulides"],
         catFight:        ["⚠️ Miso & Yuzu are in a slap fight!", "⚠️ 味噌和柚子打起喵喵拳了！", "⚠️ 味噌和柚子打起喵喵拳了！", "⚠️ 味噌同柚子打起貓拳！", "⚠️ ¡Pelea de patitas entre Miso y Yuzu!", "⚠️ Baralla de potetes entre la Miso i la Yuzu!"],
-        catPlay:         ["🧶 Yuzu is chasing Miso's tail", "🧶 柚子在扑咬味噌的黑尾巴", "🧶 柚子在撲咬味噌的黑尾巴", "🧶 柚子追住味噌條黑尾", "🧶 Yuzu persigue la cola de Miso", "🧶 La Yuzu persegueix la cua d'la Miso"],
+        catPlay:         ["🧶 Yuzu is chasing Miso's tail", "🧶 柚子在扑咬味噌的黑尾巴", "🧶 柚子在撲咬味噌的黑尾巴", "🧶 柚子追住味噌條黑尾", "🧶 Yuzu persigue la cola de Miso", "🧶 La Yuzu persegueix la cua de la Miso"],
         sleepHeaderBar:  ["LATE NIGHT", "深夜打烊", "深夜打烊", "夜深收工", "MADRUGADA", "MATINADA"],
         sleepStoryBar:   ["*HONK-shoo…* Wei fell asleep on the bar. His round glasses slid to the tip of his nose.", "*呼——呼噜……* Wei 趴在吧台上睡着了，圆框眼镜滑到了鼻尖。", "*呼——呼嚕……* Wei 趴在吧台上睡著了，圓框眼鏡滑到了鼻尖。", "*呼——呼……* Wei 伏喺吧枱度瞓着咗，副圓框眼鏡跌到去鼻尖。", "*Zzz…* Wei se durmió sobre la barra. Las gafas redondas le resbalan por la nariz.", "*Zzz…* En Wei s'ha adormit a la barra. Les ulleres rodones li rellisquen pel nas."],
         sleepHeaderCafe: ["AFTERNOON SIESTA", "午后小憩", "午後小憩", "瞓晏覺時間", "SIESTA", "MIGDIADA"],
@@ -7434,7 +7434,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
         DB.log('cats_serve', { k }); return;
       }
       const D = {
-        sardine: { icon: '🐟', name: ["Miso & Yuzu's Sardine Special", "味噌和柚子的小鱼干特调", "", "味噌同柚子嘅魚乾特調", "Especial de sardinas de Miso y Yuzu", "Especial de sardines d'la Miso i la Yuzu"], sub: ["Fishiness 100% · paw-approved", "鱼味 100% · 肉垫认证", "", "魚味 100% · 貓爪認證", "Sabor a pescado 100% · aprobado por patitas", "Gust de peix 100% · aprovat per potetes"], desc: ["\"Miso nudged the glass across with one paw. Yuzu balanced a dried sardine on the rim.\"", "\"味噌用肉垫把杯子推了过来，柚子在杯沿放了一条小鱼干。\"", "", "\"味噌用肉墊推杯過嚟，柚子喺杯邊放咗條魚乾。\"", "\"Miso empujó el vaso con una pata. Yuzu equilibró una sardina en el borde.\"", "\"La Miso va empènyer el got amb una pota. La Yuzu va equilibrar una sardina a la vora.\""], f: '🐟 · 🌿 · 🥛' },
+        sardine: { icon: '🐟', name: ["Miso & Yuzu's Sardine Special", "味噌和柚子的小鱼干特调", "", "味噌同柚子嘅魚乾特調", "Especial de sardinas de Miso y Yuzu", "Especial de sardines de la Miso i la Yuzu"], sub: ["Fishiness 100% · paw-approved", "鱼味 100% · 肉垫认证", "", "魚味 100% · 貓爪認證", "Sabor a pescado 100% · aprobado por patitas", "Gust de peix 100% · aprovat per potetes"], desc: ["\"Miso nudged the glass across with one paw. Yuzu balanced a dried sardine on the rim.\"", "\"味噌用肉垫把杯子推了过来，柚子在杯沿放了一条小鱼干。\"", "", "\"味噌用肉墊推杯過嚟，柚子喺杯邊放咗條魚乾。\"", "\"Miso empujó el vaso con una pata. Yuzu equilibró una sardina en el borde.\"", "\"La Miso va empènyer el got amb una pota. La Yuzu va equilibrar una sardina a la vora.\""], f: '🐟 · 🌿 · 🥛' },
         milk: { icon: '🥛', name: ["Warm milk & honey", "热牛奶加蜂蜜", "", "熱奶加蜜糖", "Leche tibia con miel", "Llet tèbia amb mel"], sub: ["Two saucers for them, one cup for you", "两碟给它们，一杯给你", "", "兩碟俾佢哋，一杯俾你", "Dos platitos para ellos, una taza para ti", "Dos platets per a ells, una tassa per a tu"], desc: ["\"Yuzu warmed it by sitting next to the kettle. It counts.\"", "\"柚子坐在水壶旁边把它焐热了。算数的。\"", "", "\"柚子坐喺水煲隔籬焗暖咗佢。計數嘅。\"", "\"Yuzu la calentó sentándose junto al hervidor. Cuenta.\"", "\"La Yuzu la va escalfar asseient-se al costat del bullidor. Compta.\""], f: '🥛 · 🍯' },
         tea: { icon: '🍵', name: ["Tea, mostly in the cup", "茶，大部分在杯里", "", "茶，大部分喺杯度", "Té, casi todo en la taza", "Te, gairebé tot a la tassa"], sub: ["Jasmine · a little on the bar", "茉莉 · 吧台上也有一点", "", "茉莉 · 吧枱都有啲", "Jazmín · un poco en la barra", "Gessamí · una mica a la barra"], desc: ["\"Yuzu pushed the cup to the very edge, looked at you, and stopped. Generous.\"", "\"柚子把杯子推到吧台最边上，看了你一眼，停住了。很大方。\"", "", "\"柚子推杯推到吧枱邊，望一望你，停咗手。好大方。\"", "\"Yuzu empujó la taza hasta el borde, te miró y paró. Generosa.\"", "\"La Yuzu va empènyer la tassa fins a la vora, et va mirar i es va aturar. Generosa.\""], f: '🍵 · 🐾' },
         nip: { icon: '🌿', name: AppState.isBarOpen ? ["Catnip tonic", "猫薄荷汤力", "", "貓草湯力", "Tónica de hierba gatera", "Tònica de nepeta"] : ["Catnip lemonade", "猫薄荷柠檬水", "", "貓草檸檬水", "Limonada de hierba gatera", "Llimonada de nepeta"], sub: ["Garnish chosen by Miso, then eaten by Miso", "装饰是味噌选的，然后被味噌吃了", "", "裝飾係味噌揀嘅，跟住俾味噌食咗", "Adorno elegido por Miso y luego comido por Miso", "Guarnició triada per la Miso i després menjada per la Miso"], desc: ["\"There was a sprig on top. There isn't now.\"", "\"上面原本有一小枝。现在没有了。\"", "", "\"上面本來有一枝。而家冇咗。\"", "\"Había una ramita encima. Ya no.\"", "\"Hi havia una branqueta a sobre. Ja no.\""], f: AppState.isBarOpen ? '🍸 · 🌿' : '🍋 · 🌿' },
@@ -8351,5 +8351,76 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   .paint-sheet .paint-x{position:absolute;top:6px;right:6px;min-width:40px;min-height:40px;padding:0;z-index:2}
   .paint-sheet #graf-canvas{width:100%;height:auto;image-rendering:pixelated;touch-action:none;display:block}
 </style>
+
+<script>
+/* Mei behind the counter: Wei's cousin from New York, about sixteen. When Wei is travelling, asleep or out in town and she's up
+   (12:00–02:00 town time, FBWorld.host), she keeps the bar: coffee, tea and things without alcohol (the cocktails wait for
+   Wei), and sometimes she's on her phone and you wait a beat. */
+(function () {
+  var W = window.FBWorld; if (!W || !W.host || !W.drawMei) return;
+  var M = function (en, zh, tw, es, ca) { return lx([en, zh, tw, tw, es, ca]); };
+  var T = {
+    head: M("MEI'S ON", "MEI 值班", "MEI 值班", "MEI DE TURNO", "LA MEI DE TORN"),
+    hi: [M("*one earbud out* Hey. Wei's off. Coffee? Tea? Something without? I don't do cocktails, I'm sixteen.", "*摘下一只耳机* 嘿。Wei 不在。咖啡？茶？无酒精的？鸡尾酒我不调，我才十六。", "*摘下一隻耳機* 嘿。Wei 不在。咖啡？茶？無酒精的？雞尾酒我不調，我才十六。", "*se quita un auricular* Ey. Wei no está. ¿Café? ¿Té? ¿Algo sin alcohol? Cócteles no, tengo dieciséis.", "*es treu un auricular* Ei. En Wei no hi és. Cafè? Te? Alguna cosa sense alcohol? Còctels no, tinc setze anys."),
+      M("*spins on the stool* Mei's on. Lucky you. What can I get you that isn't booze?", "*在高脚凳上转了一圈* Mei 值班。算你走运。除了酒，想喝什么？", "*在高腳凳上轉了一圈* Mei 值班。算你走運。除了酒，想喝什麼？", "*gira en el taburete* Turno de Mei. Qué suerte. ¿Qué te pongo que no lleve alcohol?", "*fa una volta al tamboret* Torn de la Mei. Quina sort. Què et poso que no porti alcohol?"),
+      M("*wipes the counter, badly* Wei says wipe in circles. I say the counter's clean. What'll it be?", "*胡乱擦着吧台* Wei 说要画圈擦。我说吧台已经干净了。喝点什么？", "*胡亂擦著吧台* Wei 說要畫圈擦。我說吧台已經乾淨了。喝點什麼？", "*limpia la barra, fatal* Wei dice que en círculos. Yo digo que ya está limpia. ¿Qué va a ser?", "*neteja la barra, fatal* En Wei diu que en cercles. Jo dic que ja és neta. Què serà?")],
+    scroll: M("*doesn't look up from her phone* …one sec. Literally one.", "*头也不抬地刷着手机* ……等一下。真的就一下。", "*頭也不抬地滑著手機* ……等一下。真的就一下。", "*no levanta la vista del móvil* …un segundo. Literalmente uno.", "*no aixeca la vista del mòbil* …un segon. Literalment un."),
+    sorry: M("*phone face down* Okay. Sorry. I'm here. What do you want?", "*把手机扣下* 好，抱歉，我在。要什么？", "*把手機扣下* 好，抱歉，我在。要什麼？", "*móvil boca abajo* Vale. Perdón. Aquí estoy. ¿Qué quieres?", "*mòbil cap per avall* D'acord. Perdó. Sóc aquí. Què vols?"),
+    ask: M("Ask Mei for something", "找 Mei 要点喝的", "找 Mei 要點喝的", "Pídele algo a Mei", "Demana-li alguna cosa a la Mei"),
+    booze: M("A cocktail", "来杯鸡尾酒", "來杯雞尾酒", "Un cóctel", "Un còctel"),
+    noBooze: M("Wei pours those. I'm sixteen, not stupid. Coffee, tea, or something without?", "那些得 Wei 来调。我十六岁，又不傻。咖啡、茶，还是无酒精的？", "那些得 Wei 來調。我十六歲，又不傻。咖啡、茶，還是無酒精的？", "Eso lo sirve Wei. Tengo dieciséis, no soy tonta. ¿Café, té o algo sin alcohol?", "Això ho serveix en Wei. Tinc setze anys, no sóc tonta. Cafè, te o alguna cosa sense alcohol?"),
+    served: M("*slides it over, already back on her phone* Enjoy. Don't tell Wei I used the good beans.", "*把杯子推过来，又低头看手机* 慢用。别告诉 Wei 我用了好豆子。", "*把杯子推過來，又低頭看手機* 慢用。別告訴 Wei 我用了好豆子。", "*te lo desliza, ya otra vez con el móvil* Disfruta. No le digas a Wei que usé el café bueno.", "*te'l llisca, ja altra vegada amb el mòbil* Que vagi bé. No li diguis a en Wei que he fet servir el cafè bo.")
+  };
+  function on() {
+    var d = W.host(), h = W.hour() % 24, meiUp = !(h >= 2 && h < 12);
+    if (d.who === "mei") return !d.asleep;
+    return meiUp && ((window.WeiAway && WeiAway.on()) || AppState.weiState === "asleep");
+  }
+  var css = document.createElement("style");
+  css.textContent = "#mei-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.mei-on #mei-avatar{display:block}body.mei-on #svg-wei-avatar,body.mei-on #wei-zzz-particles{display:none!important}body.mei-on #wei-anchor{visibility:visible!important}@media (min-width:768px){#mei-avatar{width:92px;height:104px}}";
+  document.head.appendChild(css);
+  var cv = document.createElement("canvas"); cv.id = "mei-avatar"; cv.width = 32; cv.height = 36; cv.setAttribute("role", "img"); cv.setAttribute("aria-label", "Mei");
+  var holder = document.getElementById("sprite-wei-container"); if (holder) holder.appendChild(cv);
+  var phoneUntil = 0;
+  function paint() { var g = cv.getContext("2d"); g.clearRect(0, 0, 32, 36); W.drawMei(g, 0, 3, 1, { phone: Date.now() < phoneUntil }); }
+  function say(t) { try { setText("sleep-story-text", t); } catch (e) {} }
+  function dress() {
+    var x = on(); document.body.classList.toggle("mei-on", x); var hn = document.getElementById("host-name"); if (hn) hn.textContent = x ? "Mei" : "Wei"; if (!x) { var c0 = document.getElementById("sleep-btn-cats"); if (c0 && c0.parentElement.onclick === menu) c0.parentElement.onclick = function () { askCatToBartend(); }; return; }
+    paint();
+    try { setText("sleep-header-title", L(T.head)); setText("sleep-header-badge", ""); var w = document.getElementById("sleep-wake"); if (w) w.style.display = "none";
+      var cb = document.getElementById("sleep-btn-cats"); if (cb) { cb.textContent = L(T.ask); cb.parentElement.onclick = menu; }
+      var pill = document.getElementById("host-mood-pill"); if (pill) pill.textContent = "Mei"; } catch (e) {}
+  }
+  function menu() {
+    var old = document.getElementById("mei-menu"); if (old) old.remove();
+    var m = document.createElement("div"); m.id = "mei-menu"; m.setAttribute("role", "dialog");
+    m.style.cssText = "position:fixed;left:50%;bottom:calc(16px + var(--safe-b, 0px));transform:translateX(-50%);z-index:96;width:min(380px,calc(100vw - 24px));padding:10px;background:#2a1a10;border:3px solid #000;box-shadow:5px 5px 0 #000;display:grid;grid-template-columns:1fr 1fr;gap:6px";
+    Object.keys(DrinkManifest).filter(function (k) { return DrinkManifest[k].type === "cafe"; }).forEach(function (k) {
+      var d = DrinkManifest[k], b = document.createElement("button"); b.type = "button"; b.className = "opt-btn"; b.style.cssText = "min-height:44px;text-align:left;justify-content:flex-start";
+      b.textContent = (d.icon ? d.icon + " " : "") + L(d.name); b.onclick = function () { m.remove(); serveItemByKey(k); setTimeout(function () { say(L(T.served)); }, 900); }; m.appendChild(b);
+    });
+    var bz = document.createElement("button"); bz.type = "button"; bz.className = "opt-btn"; bz.style.gridColumn = "1 / -1"; bz.textContent = L(T.booze); bz.onclick = function () { m.remove(); say(L(T.noBooze)); }; m.appendChild(bz);
+    var x = document.createElement("button"); x.type = "button"; x.className = "opt-btn"; x.style.gridColumn = "1 / -1"; x.textContent = "✕"; x.onclick = function () { m.remove(); }; m.appendChild(x);
+    document.body.appendChild(m);
+  }
+  /* tap her: hello, or (sometimes) she's on her phone and you wait a beat */
+  var tap0 = window.tapBartender;
+  window.tapBartender = function () {
+    if (!on()) return tap0.apply(this, arguments);
+    if (Math.random() < .3) { phoneUntil = Date.now() + 2600; paint(); say(L(T.scroll)); setTimeout(function () { phoneUntil = 0; paint(); say(L(T.sorry)); }, 2600); return; }
+    say(L(T.hi[(Math.random() * T.hi.length) | 0]));
+  };
+  /* Wei travelling (FBWorld.host says Mei's day): behind the counter it's as if he were out, whatever the hour */
+  T.trav = M("WEI'S TRAVELLING", "WEI 出门旅行了", "WEI 出門旅行了", "WEI ESTÁ DE VIAJE", "EN WEI ÉS DE VIATGE");
+  var eval1 = window.evaluateWeiState;
+  window.evaluateWeiState = function () { var r = eval1.apply(this, arguments); try { if (W.weiTravelling() && AppState.weiState !== "asleep") { AppState.weiState = "asleep"; if (window.Cats && Cats.st) Cats.syncSleep(); } } catch (e) {} return r; };
+  try { if (W.weiTravelling()) evaluateWeiState(); } catch (e) {}
+  var render0 = window.renderCurrentDialogue;
+  window.renderCurrentDialogue = function () { var r = render0.apply(this, arguments); if (!on() && W.weiTravelling()) { try { setText("sleep-header-title", L(T.trav)); setText("sleep-header-badge", ""); } catch (e) {} } if (on()) { dress(); say(L(T.hi[(Math.random() * T.hi.length) | 0])); } return r; };
+  /* now and then, between visitors, she checks her phone */
+  setInterval(function () { if (!on() || document.hidden) return; if (Math.random() < .25) { phoneUntil = Date.now() + 5000 + Math.random() * 6000; paint(); setTimeout(paint, phoneUntil - Date.now() + 50); } }, 15000);
+  setInterval(dress, 5000); setTimeout(function () { dress(); try { if (on() && AppState.inSanctuary) renderCurrentDialogue(); } catch (e) {} }, 800);
+})();
+</script>
 </body>
 </html>

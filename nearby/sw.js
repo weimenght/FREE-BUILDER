@@ -2,10 +2,10 @@
    place you've been to still opens on a bad connection. It never touches anything that leaves this site (the database,
    the relay): only the town's own pages, its shared kit, fonts and drawings.
    - versioned kit (/fbkit/…?v=…), fonts, vendor files: kept, served from here (a new version is a new address)
-   - a page of the town: always asked of the network first; the kept copy only when the network doesn't answer
+   - pages of the town: not touched (straight to the network)
    - other files of the town (scripts, pictures without a version): served from here, refreshed in the background
    To retire it, ship a version whose activate step unregisters (see OFF). */
-const V = 'nearby-1';
+const V = 'nearby-2';
 const OFF = false;
 const KIT = V + '-kit', PAGES = V + '-pages', FILES = V + '-files';
 
@@ -28,7 +28,8 @@ self.addEventListener('fetch', (event) => {
   if (u.origin !== self.location.origin) return;                         /* the database, the relay, anything elsewhere: untouched */
   if (u.pathname.indexOf('/handoff/') === 0 || u.pathname.indexOf('/nearby/handoff/') === 0 || /\/sw\.js$/.test(u.pathname) || u.pathname === '/config.js') return;
   const page = req.mode === 'navigate' || (req.headers.get('accept') || '').indexOf('text/html') >= 0;
-  if (page) {
+  if (page) return;   /* pages go straight to the network (fast, always fresh); only the kit, fonts and drawings are kept */
+  if (false) {
     event.respondWith((async () => {
       try {
         const res = await fetch(req);
@@ -48,7 +49,7 @@ self.addEventListener('fetch', (event) => {
       const hit = await caches.match(req);
       if (hit) return hit;
       const res = await fetch(req);
-      if (res.ok && res.type === 'basic') { const c = await caches.open(KIT); c.put(req, res.clone()); trim(KIT, 150); }
+      if (res.ok && res.type === 'basic') { const c = await caches.open(KIT); c.put(req, res.clone()); if (Math.random() < .05) trim(KIT, 150); }
       return res;
     })());
     return;
@@ -56,7 +57,7 @@ self.addEventListener('fetch', (event) => {
   if (u.pathname.indexOf('/nearby/') === 0 && /\.(js|css|png|svg|webp|jpg|json|txt|woff2?)$/.test(u.pathname)) {
     event.respondWith((async () => {
       const c = await caches.open(FILES), hit = await c.match(req);
-      const fresh = fetch(req).then((res) => { if (res.ok && res.type === 'basic') { c.put(req, res.clone()); trim(FILES, 200); } return res; }).catch(() => hit || Response.error());
+      const fresh = fetch(req).then((res) => { if (res.ok && res.type === 'basic') { c.put(req, res.clone()); if (Math.random() < .05) trim(FILES, 200); } return res; }).catch(() => hit || Response.error());
       return hit || fresh;
     })());
   }
