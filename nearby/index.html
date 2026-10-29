@@ -132,6 +132,14 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
   function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967295; }
   var World = window.FBWorld || { hour: function () { var d = new Date(); return d.getHours() + d.getMinutes() / 60; }, phase: function () { return "day"; }, weather: function () { return "clear"; } };
+  /* every clock on the map tells the town's hour (FBWorld.hour, 4x pace): a face at (x, y), s pixels wide, an hour hand and a minute hand */
+  function face(x, y, s) {
+    var h = World.hour(), c = (s - 1) / 2, cx = x + c, cy = y + c;
+    R(x, y, s, s, "#fbeedd");
+    [[(h % 1) * 6.2832, c, "#222"], [((h % 12) / 12) * 6.2832, c * .62, "#b3261e"]].forEach(function (hd) {
+      for (var t = 0; t <= hd[1]; t += .5) R(cx + Math.sin(hd[0]) * t, cy - Math.cos(hd[0]) * t, 1, 1, hd[2]);
+    });
+  }
   var SKY = { dawn: ["#3b3a6e", "#7a5a8a", "#e8996a", "#f6c88a"], day: ["#6fb4ea", "#86c2ee", "#a4d2f2", "#c2e2f6"], dusk: ["#2a2050", "#6a3a6e", "#c85a5a", "#f09a5a"], night: ["#0a0a1e", "#101030", "#18183e", "#20204a"] };
 
   function win(x, y, lit, f) { R(x, y, 3, 3, lit ? (hash(x + "," + y + ((f / 40) | 0)) < .08 ? "#ffd27a" : "#f6c84a") : "#3a4a6a"); if (!lit) R(x, y, 1, 1, "#7a9aca"); }
@@ -143,7 +151,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     /* Town Hall: stone, a pediment with a clock, four columns, steps, a flag; the notice board by the door */
     var st = night ? "#7a7480" : "#d8d0c0", sd = night ? "#5a5460" : "#b0a898", co = night ? "#8a8490" : "#efe8d8";
     for (var i = 0; i < 9; i++) R(32 - i * 3, 324 + i, i * 6 + 1, 1, sd);
-    R(29, 327, 6, 5, "#fbeedd"); var hr = World.hour() % 12; R(32, 328, 1, 2, "#222"); R(32, 330, Math.round(Math.cos(hr / 12 * 6.28 - 1.57) * 2) || 1, 1, "#b3261e");
+    face(29, 326, 7);
     R(32, 314, 1, 10, "#3a3a40"); R(33, 314 + (Math.sin(f / 9) > 0 ? 0 : 1), 5, 3, "#c8303a");
     R(6, 333, 52, 2, sd); R(8, 335, 48, 25, st);
     [12, 22, 40, 50].forEach(function (cx) { R(cx, 336, 3, 22, co); R(cx + 2, 336, 1, 22, sd); });
@@ -194,7 +202,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(0, 84, W, 2, night ? "#2a3a2a" : "#7aa05a"); R(0, 102, W, 6, night ? "#2a3a2a" : "#7aa05a");
     R(74, 90, 32, 4, "#6a4a2a"); R(74, 88, 32, 1, "#8a6a3a"); for (var bp = 76; bp < 106; bp += 5) R(bp, 88, 1, 3, "#8a6a3a");
     R(84, 62, 12, 28, "#a8a094"); R(83, 60, 14, 3, "#5a4a3a"); R(86, 56, 8, 4, "#5a4a3a"); R(89, 53, 2, 3, "#5a4a3a");
-    [[87, 66], [87, 76]].forEach(function (p, i) { R(p[0], p[1], 6, 6, "#fbeedd"); R(p[0] + 2, p[1] + 1, 1, 3, "#222"); var a = (World.hour() + (i ? 7 : 0)) % 12; R(p[0] + 3, p[1] + 2, a < 6 ? 2 : -1, 1, "#b3261e"); });
+    [[87, 66], [87, 76]].forEach(function (p) { face(p[0], p[1], 7); });
     // lane
     R(0, 108, W, 4, night ? "#2a2a30" : "#8a8a84");
     // hutong row
@@ -271,7 +279,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     // station (on the same grass as the rest of the country)
     R(0, 246, W, 38, night ? "#1e2a1e" : "#6a9a4a"); R(84, 246, 12, 8, night ? "#2e2c30" : "#a8a49c");
     R(30, 254, 120, 30, night ? "#4a3a30" : "#b89878"); R(26, 248, 128, 6, "#5a2a1e"); R(78, 238, 24, 16, night ? "#4a3a30" : "#b89878"); R(76, 234, 28, 4, "#5a2a1e");
-    R(85, 241, 10, 10, "#fbeedd"); var hh2 = World.hour(); R(89, 242, 2, 4, "#222"); R(90, 245, Math.round(Math.cos((hh2 % 12) / 12 * 6.28 - 1.57) * 3), 1, "#b3261e");
+    face(85, 241, 11);
     for (var sw = 34; sw < 146; sw += 10) if (sw < 80 || sw > 98) win(sw, 260, lit, f);
     R(82, 266, 16, 18, "#2a1a14"); R(83, 267, 14, 17, lit ? "#f6c84a" : "#5a4a3a");
     R(0, 284, W, 8, "#8a8a84"); R(0, 292, W, 2, "#5a5a54");
