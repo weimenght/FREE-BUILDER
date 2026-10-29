@@ -669,10 +669,15 @@
   function fitText(t, x, y, max) { var s = 1; while (ctx.measureText(t).width > max && s > 0.5) { s -= 0.06; var f = ctx.font.replace(/(\d+)px/, function (m, p) { return Math.round(p * 0.94) + "px"; }); ctx.font = f; } ctx.fillText(t, x, y); }
   function person(x, base, sc, seed, umb, now) {
     var h = 62 * S * sc, col = css(land(["#2a2a34", "#3a2a2a", "#2a3a34", "#3a3428"][(hash(seed, 1) * 4) | 0], 0.03)), sway = Math.sin(now * 0.0015 + seed) * 0.6 * S;
+    var u = S * sc, skirt = hash(seed, 3) < 0.4, hair = hash(seed, 4);   /* people on the platform: some in a dress or a skirt, long hair, a bun */
     ctx.fillStyle = col;
-    ctx.fillRect(x - 5 * S * sc, base - h * 0.45, 4 * S * sc, h * 0.45); ctx.fillRect(x + 1 * S * sc, base - h * 0.45, 4 * S * sc, h * 0.45);
-    ctx.beginPath(); ctx.moveTo(x - 8 * S * sc + sway, base - h * 0.85); ctx.lineTo(x + 8 * S * sc + sway, base - h * 0.85); ctx.lineTo(x + 9 * S * sc, base - h * 0.42); ctx.lineTo(x - 9 * S * sc, base - h * 0.42); ctx.closePath(); ctx.fill();
-    ctx.beginPath(); ctx.arc(x + sway, base - h * 0.93, 6 * S * sc, 0, TAU); ctx.fill();
+    if (skirt) { ctx.fillRect(x - 4 * u, base - h * 0.3, 2.5 * u, h * 0.3); ctx.fillRect(x + 1.5 * u, base - h * 0.3, 2.5 * u, h * 0.3);
+      ctx.beginPath(); ctx.moveTo(x - 7 * u + sway, base - h * 0.85); ctx.lineTo(x + 7 * u + sway, base - h * 0.85); ctx.lineTo(x + 12 * u, base - h * 0.28); ctx.lineTo(x - 12 * u, base - h * 0.28); ctx.closePath(); ctx.fill(); }
+    else { ctx.fillRect(x - 5 * u, base - h * 0.45, 4 * u, h * 0.45); ctx.fillRect(x + 1 * u, base - h * 0.45, 4 * u, h * 0.45);
+      ctx.beginPath(); ctx.moveTo(x - 8 * u + sway, base - h * 0.85); ctx.lineTo(x + 8 * u + sway, base - h * 0.85); ctx.lineTo(x + 9 * u, base - h * 0.42); ctx.lineTo(x - 9 * u, base - h * 0.42); ctx.closePath(); ctx.fill(); }
+    ctx.beginPath(); ctx.arc(x + sway, base - h * 0.93, 6 * u, 0, TAU); ctx.fill();
+    if (hair < 0.3) ctx.fillRect(x + sway - 6.5 * u, base - h * 0.95, 13 * u, h * 0.16);   /* long hair to the shoulders */
+    else if (hair < 0.45) { ctx.beginPath(); ctx.arc(x + sway, base - h * 1.03, 3.5 * u, 0, TAU); ctx.fill(); }   /* a bun */
     var r = hash(seed, 2);
     if (umb) { ctx.fillStyle = css([[180, 50, 60], [40, 70, 120], [30, 30, 36], [200, 160, 60]][(r * 4) | 0], 0.95); ctx.beginPath(); ctx.arc(x + sway, base - h * 1.05, 20 * S * sc, Math.PI, 0); ctx.fill(); ctx.fillRect(x + sway - 0.7, base - h * 1.05, 1.4, h * 0.3); }
     else if (r < 0.3) { ctx.fillRect(x + 10 * S * sc, base - h * 0.28, 14 * S * sc, h * 0.28); }   /* suitcase */

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=46faaa6fd3"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=b42d405b31" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=46faaa6fd3"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=3c4feca886" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>High Pasture · Nearby</title>
 <meta name="description" content="A high pasture above the town. Walk the dog and the flock drifts home to the pen: sheep, and some days a goat, a cow or an alpaca. Alone, or with a friend as the second shepherd.">
@@ -203,7 +203,11 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     ctx.fillStyle = p.shadow; ctx.fillRect(Math.round(s.x * S - W0 * Z / 2 + 2 * Z), Math.round(s.y * S + 2), W0 * Z - 4 * Z, s.baby ? 3 : 5);
     L.body(q, c, legs, low);
   }
-  function shepherd(x, y) { x = Math.round(x); y = Math.round(y); ctx.fillStyle = "rgba(5,8,12,.35)"; ctx.fillRect(x - 3, y + 1, 7, 1); ctx.fillStyle = "#151c24"; ctx.fillRect(x - 1, y - 2, 1, 3); ctx.fillRect(x + 1, y - 2, 1, 3); ctx.fillStyle = "#5c3b4e"; ctx.fillRect(x - 2, y - 8, 5, 6); ctx.fillStyle = "#f2d3ab"; ctx.fillRect(x - 1, y - 11, 3, 3); ctx.fillStyle = "#3b4b5c"; ctx.fillRect(x - 3, y - 12, 7, 1); ctx.fillRect(x - 2, y - 13, 5, 1); ctx.fillStyle = "#8c6d53"; ctx.fillRect(x + 3, y - 12, 1, 13); ctx.fillRect(x + 4, y - 13, 1, 2); }
+  /* you, walking the dog: a different coat each visit, hair (short, long, a plait, a bun), a hat or none, sometimes a skirt */
+  var SH = (function () { var p = function (a) { return a[(Math.random() * a.length) | 0]; }; return { coat: p(["#5c3b4e", "#3b4e5c", "#6b3a2a", "#3f5a3a", "#8a3b4a", "#7a6a4a"]), hat: Math.random() < .55 ? p(["#3b4b5c", "#a03a2a", "#e8e0d0", "#c8a050"]) : null, hs: (Math.random() * 4) | 0, hc: p(["#2a1a10", "#4a2e1a", "#7a4a2a", "#c89a5a", "#1a1a1e", "#8a3a22"]), skirt: Math.random() < .35 ? p(["#c84a6a", "#d8a030", "#2f7a7a", "#6a3a7a"]) : null }; })();
+  function shepherd(x, y) { x = Math.round(x); y = Math.round(y); ctx.fillStyle = "rgba(5,8,12,.35)"; ctx.fillRect(x - 3, y + 1, 7, 1); ctx.fillStyle = SH.skirt ? "#2a1a20" : "#151c24"; ctx.fillRect(x - 1, y - 2, 1, 3); ctx.fillRect(x + 1, y - 2, 1, 3); ctx.fillStyle = SH.coat; ctx.fillRect(x - 2, y - 8, 5, 6); if (SH.skirt) { ctx.fillStyle = SH.skirt; ctx.fillRect(x - 3, y - 4, 7, 2); }
+    ctx.fillStyle = SH.hc; if (SH.hs === 1) ctx.fillRect(x - 2, y - 11, 1, 5); else if (SH.hs === 2) ctx.fillRect(x - 3, y - 10, 1, 4); else if (SH.hs === 3) ctx.fillRect(x - 1, y - 14 + (SH.hat ? 0 : 1), 3, 2);
+    ctx.fillStyle = "#f2d3ab"; ctx.fillRect(x - 1, y - 11, 3, 3); ctx.fillStyle = SH.hat || SH.hc; if (SH.hat) { ctx.fillRect(x - 3, y - 12, 7, 1); ctx.fillRect(x - 2, y - 13, 5, 1); } else ctx.fillRect(x - 1, y - 12, 3, 1); ctx.fillStyle = "#8c6d53"; ctx.fillRect(x + 3, y - 12, 1, 13); ctx.fillRect(x + 4, y - 13, 1, 2); }
   function render() {
     var p = P(); ctx.setTransform(S, 0, 0, S, 0, 0); ctx.fillStyle = p.grass; ctx.fillRect(0, 0, GW, GH);
     patches.forEach(function (q) { ctx.fillStyle = q.k === "dark" ? "rgba(0,0,0,.05)" : "rgba(255,255,220,.05)"; ell(q.x, q.y, q.rx, q.ry); if (q.k === "clover") { ctx.fillStyle = "rgba(255,255,255,.35)"; for (var cl = 0; cl < 4; cl++) ctx.fillRect(q.x + ((cl * 7) % q.rx) - (q.rx >> 1), q.y + ((cl * 5) % q.ry) - (q.ry >> 1), 1, 1); } });

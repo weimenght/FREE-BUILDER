@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=46faaa6fd3"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=b42d405b31" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=46faaa6fd3"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=3c4feca886" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Mirror Lake · Nearby</title>
 <meta name="description" content="A wooden dock on a still lake. Cast, wait, reel in, and let the fish go, give it to a cat, or send it to Next Door's kitchen. Alone, or side by side with a friend.">
@@ -172,11 +172,12 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   function px(x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(Math.round(x), Math.round(y), w, h); }
   function line(x0, y0, x1, y1, c) { ctx.fillStyle = c; x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1); var dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1, e = dx - dy; for (var n = 0; n < 400; n++) { ctx.fillRect(x0, y0, 1, 1); if (x0 === x1 && y0 === y1) break; var e2 = 2 * e; if (e2 > -dy) { e -= dy; x0 += sx; } if (e2 < dx) { e += dx; y0 += sy; } } }
   function curve(x0, y0, x1, y1, sag) { ctx.fillStyle = "rgba(226,232,240,.55)"; for (var i = 0; i <= 26; i++) { var t = i / 26; ctx.fillRect(Math.round(x0 + (x1 - x0) * t), Math.round(y0 + (y1 - y0) * t + Math.sin(t * Math.PI) * sag), 1, 1); } }
-  var LOOK = (function () { var p = function (a) { return a[(Math.random() * a.length) | 0]; }; return [p(["#c85a32", "#3a6a8a", "#4a7a3a", "#8a4a7a", "#6a5a3a", "#b83a3a"]), p(["#eab308", "#e8e0d0", "#2a2a30", "#c84a3a", "#4a8ac8"]), (Math.random() * 3) | 0, p(["#2a1a10", "#4a2e1a", "#7a4a2a", "#c89a5a", "#1a1a1e", "#8a3a22", "#d8d0c8"])]; })();   /* a different coat and hat each visit, and hair: short, long down the back, or a plait */
+  var LOOK = (function () { var p = function (a) { return a[(Math.random() * a.length) | 0]; }; return [p(["#c85a32", "#3a6a8a", "#4a7a3a", "#8a4a7a", "#6a5a3a", "#b83a3a"]), p(["#eab308", "#e8e0d0", "#2a2a30", "#c84a3a", "#4a8ac8"]), (Math.random() * 3) | 0, p(["#2a1a10", "#4a2e1a", "#7a4a2a", "#c89a5a", "#1a1a1e", "#8a3a22", "#d8d0c8"]), Math.random() < .4 ? p([["#c84a6a", "#f4c0d0"], ["#d8a030", "#fbe8b0"], ["#2f7a7a", "#bfe8e0"], ["#6a3a7a", "#e0c0f0"]]) : null]; })();
+  var MLOOK = [(Math.random() * 3) | 0, ["#2a1a10", "#7a4a2a", "#c89a5a", "#1a1a1e"][(Math.random() * 4) | 0], Math.random() < .4 ? [["#c84a6a", "#f4c0d0"], ["#2f7a7a", "#bfe8e0"]][(Math.random() * 2) | 0] : null];   /* your friend on the dock: their own hair, sometimes a dress */   /* a different coat and hat each visit, and hair: short, long down the back, or a plait */
   function angler(x, coat, hat, st, bx, by, pow, hair) {
-    var br = Math.floor(Math.sin(g.time * .05) * .6), skin = "#f3d5b5";
-    px(x + 3, WY - 11, 2, 1, "#334155"); px(x + 4, WY - 10, 2, 1, "#334155"); px(x + 4, WY - 9, 2, 1, "#1e293b");
-    px(x + 2, WY - 16 + br, 4, 1, coat); px(x + 1, WY - 15 + br, 6, 3, coat); px(x + 2, WY - 12 + br, 4, 1, "#334155");
+    var br = Math.floor(Math.sin(g.time * .05) * .6), skin = "#f3d5b5", dr = hair && hair[2], lg = dr ? "#3a2a30" : "#334155";
+    px(x + 3, WY - 11, 2, 1, lg); px(x + 4, WY - 10, 2, 1, lg); px(x + 4, WY - 9, 2, 1, dr ? "#2a1a20" : "#1e293b");
+    px(x + 2, WY - 16 + br, 4, 1, coat); px(x + 1, WY - 15 + br, 6, 3, coat); px(x + 2, WY - 12 + br, 4, 1, "#334155"); if (dr) { px(x + 1, WY - 12 + br, 7, 2, dr[0]); px(x + 3, WY - 12 + br, 1, 1, dr[1]); px(x + 6, WY - 11 + br, 1, 1, dr[1]); }   /* a dress over the knees, a small print */
     var hs = hair ? hair[0] : 0, hc = hair ? hair[1] : "#2a1a10";
     if (hs === 1) px(x + 1, WY - 19 + br, 1, 6, hc); else if (hs === 2) { px(x + 1, WY - 19 + br, 1, 4, hc); px(x, WY - 15 + br, 1, 3, hc); px(x, WY - 12 + br, 1, 1, "#c84a3a"); }
     px(x + 2, WY - 19 + br, 4, 3, skin); px(x + 3, WY - 18 + br, 2, 1, "#1e293b");
@@ -229,9 +230,9 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     /* a cat on the dock, when one of them came to the lake today: the town's own pixels */
     var c = catHere(); if (c && W.drawPet) petAt(c, A0 - 9, WY - 10, { flip: true, asleep: W.phase() === "night" || (g.st === "idle" && catFed === 0 && Math.sin(g.time / 400) > .3) });
     if (catFed > 0 && c) { ctx.fillStyle = "#f26b7a"; var hy = WY - 26 - (180 - catFed) / 12; ctx.fillRect(A0 - 15, hy, 2, 2); ctx.fillRect(A0 - 12, hy, 2, 2); ctx.fillRect(A0 - 14, hy + 1, 3, 2); ctx.fillRect(A0 - 13, hy + 3, 1, 1); }
-    if (mate) { var mx = A0 + 16; angler(mx, "#2f6f8f", "#d6c9a8", mate.st || "idle", mx + (mate.bx || 20), WY + (mate.by || 0), mate.pow || 0); if (mate.jump) { var jt = mate.jump.t; drawFish(ctx, mate.jump.f, mx + 30, WY - 10 - Math.sin(jt / 90 * Math.PI) * 18); } }
+    if (mate) { var mx = A0 + 16; angler(mx, "#2f6f8f", "#d6c9a8", mate.st || "idle", mx + (mate.bx || 20), WY + (mate.by || 0), mate.pow || 0, MLOOK); if (mate.jump) { var jt = mate.jump.t; drawFish(ctx, mate.jump.f, mx + 30, WY - 10 - Math.sin(jt / 90 * Math.PI) * 18); } }
     var bob = Math.sin(g.time * .09) * 1.1, by = g.st === "cast" ? g.b.y : WY + bob + g.b.sink;
-    angler(A0, LOOK[0], LOOK[1], g.st, g.b.x, by, g.pow, [LOOK[2], LOOK[3]]);
+    angler(A0, LOOK[0], LOOK[1], g.st, g.b.x, by, g.pow, [LOOK[2], LOOK[3], LOOK[4]]);
     if (T.flies) flies.forEach(function (f) { var gl = .5 + Math.sin(g.time * .08 + f.ph) * .5; if (gl > .25) { ctx.fillStyle = "rgba(253,224,71," + gl * .85 + ")"; ctx.fillRect(Math.round(f.x), Math.round(f.y), 1, 1); } });
     ctx.fillStyle = T.shim; drops.forEach(function (d) { ctx.fillRect(Math.round(d.x), Math.round(d.y), 1, 1); });
     if (g.st === "charge") { px(A0 - 7, WY - 41, 30, 6, "rgba(9,10,16,.85)"); px(A0 - 6, WY - 40, Math.round(28 * g.pow), 4, g.pow > .85 ? "#fbbf24" : "#38bdf8"); }
