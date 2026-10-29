@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7aab640d42"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=01695bfdfb" defer></script>
+<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=65b574d8d3"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=01695bfdfb" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Borrowed Pages · Nearby</title>
 <meta name="description" content="A four-room book house next door to the bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one, and pass it on by hand.">
@@ -268,6 +268,11 @@ details{margin-top:16px}summary{cursor:pointer;font:600 13px var(--sans);color:#
 .toast.on{opacity:1}
 @media (max-width:560px){:root{--row:160px;--k:.8}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style id="one-nav">/* in town the top bar names the place: no second title here */
+html.fbsh-in header.sign { position: absolute; top: 8px; right: 10px; left: auto; z-index: 30; padding: 0; margin: 0; border: 0; background: none; box-shadow: none; min-height: 0; }
+html.fbsh-in header.sign .board { display: none !important; }
+html.fbsh-in.bp-one body > header.sign { position: fixed; }
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
