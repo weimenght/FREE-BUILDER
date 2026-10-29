@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=2c96e6a14d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=99297acc00" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=fd140b4ed6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=c84f501b91" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -20,7 +20,7 @@
       theme: {
         extend: {
           fontFamily: {
-            pixel: ['"Pixelify Sans"', '"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'],
+            pixel: ['"VT323"', '"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'],
             retro: ['"VT323"', '"PingFang SC"', '"Microsoft YaHei"', 'monospace'],
             hand: ['"Caveat"', '"Kaiti SC"', '"STKaiti"', '"KaiTi"', 'cursive']
           }
@@ -65,7 +65,7 @@
       overscroll-behavior: none;
     }
     body {
-      font-family: "Pixelify Sans", "PingFang SC", "PingFang TC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft JhengHei", system-ui, sans-serif;
+      font-family: "VT323", "PingFang SC", "PingFang TC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft JhengHei", ui-monospace, monospace;   /* the town's type: VT323 for text, Press Start 2P for signs */
       height: 100dvh;
       touch-action: manipulation;
       transition: background 0.8s ease;
@@ -311,8 +311,8 @@
       position: relative;
     }
     .neon {
-      font-family: "Pixelify Sans", sans-serif;
-      font-weight: 700;
+      font-family: "Press Start 2P", ui-monospace, monospace;
+      font-weight: 400;
       letter-spacing: .08em;
       color: #ffe2b0;
       text-shadow: 0 0 6px rgba(242,165,65,.9), 0 0 18px rgba(242,165,65,.55), 0 0 40px rgba(242,165,65,.35);
@@ -727,6 +727,11 @@
       *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
     }
   </style>
+<style id="type">
+/* the town's type (Oct 31): text in VT323, signs in Press Start 2P. VT323 runs small, so the old system-font sizes go up a step */
+.text-\[11px\]:not(.font-retro){font-size:15px!important}.text-\[12px\]:not(.font-retro){font-size:16px!important}.text-\[13px\]:not(.font-retro){font-size:17px!important}
+.text-\[14px\]:not(.font-retro){font-size:18px!important}.text-\[15px\]:not(.font-retro){font-size:19px!important}.text-\[16px\]:not(.font-retro){font-size:20px!important}
+</style>
 <style id="one-nav">/* in town the top bar names the place: no second title here */
 html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !important; }
 /* in town there is no second bar at all: the town's top bar is the only one (the name chip moves into the room, see below) */
@@ -4786,6 +4791,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const chips = [
         { id: 'topic', label: WeiText.ui.order, fn: () => { AppState.currentTopic = null; renderCurrentDialogue(); } },
         { id: 'picks', label: { en: "📍 Neighbours' picks", zh: '📍 邻居的心头好', es: '📍 Lo que eligen los vecinos', ca: '📍 El que trien els veïns' }, fn: () => window.BarPicks && BarPicks.open() },
+        { id: 'recipes', label: lx(["📖 Popo's recipe box", "📖 婆婆的食谱盒", "📖 婆婆的食譜盒", "📖 婆婆嘅食譜盒", "📖 La caja de recetas de Popo", "📖 La capsa de receptes de la Popo"]), fn: () => window.PopoRecipes && PopoRecipes.open() },
         { id: 'chat', label: WeiText.ui.chat, fn: openChat },
         { id: 'riddle', label: WeiText.ui.riddle, fn: startRiddle },
         { id: 'gift', label: WeiText.ui.gift, fn: openGifts },
@@ -8297,6 +8303,109 @@ document.addEventListener("DOMContentLoaded", function () {
   window.BarPicks = { open };
 })();
 </script>
+<script>
+/* Popo's recipe box: a family recipe (the dish, whose it is, who you cook it for, how) that Popo cooks for the next person who asks
+   (town_bar_recipes via recipe_add/list/get/report/forget). Its key is sha256("recipe:" + fb_device_key), made on the device.
+   Public until the writer takes it back; 3 a day; hidden after 3 reports. Served as a plate (another plate, not another glass). */
+(function () {
+  const X = a => L(lx(a));
+  const T = {
+    title: ["Popo's recipe box", "婆婆的食谱盒", "婆婆的食譜盒", "婆婆嘅食譜盒", "La caja de recetas de Popo", "La capsa de receptes de la Popo"],
+    q: ["Look for a dish", "找一道菜", "找一道菜", "搵一味菜", "Busca un plato", "Busca un plat"],
+    add: ["＋ Leave a family recipe", "＋ 留下一道家传菜", "＋ 留下一道家傳菜", "＋ 留低一味家傳菜", "＋ Deja una receta de familia", "＋ Deixa una recepta de família"],
+    none: ["The box is empty. Be the first: whose recipe do you keep?", "盒子还是空的。你先来：你留着谁的食谱？", "盒子還是空的。你先來：你留著誰的食譜？", "個盒仲係空嘅。你嚟頭一個：你留住邊個嘅食譜？", "La caja está vacía. Sé el primero: ¿de quién es la receta que guardas?", "La capsa és buida. Sigues el primer: de qui és la recepta que guardes?"],
+    dish: ["The dish", "菜名", "菜名", "菜名", "El plato", "El plat"],
+    whose: ["Whose recipe? (my grandmother's, my dad's…)", "谁的食谱？（我外婆的、我爸的……）", "誰的食譜？（我外婆的、我爸的……）", "邊個嘅食譜？（我婆婆嘅、我阿爸嘅……）", "¿De quién es? (de mi abuela, de mi padre…)", "De qui és? (de la meva àvia, del meu pare…)"],
+    forwho: ["Who do you cook it for? (optional)", "做给谁吃？（可不填）", "做給誰吃？（可不填）", "煮俾邊個食？（可以唔填）", "¿Para quién la cocinas? (opcional)", "Per a qui la cuines? (opcional)"],
+    body: ["How to make it", "怎么做", "怎麼做", "點樣煮", "Cómo se hace", "Com es fa"],
+    sign: ["Sign it (optional)", "署名（可不填）", "署名（可不填）", "署名（可以唔填）", "Fírmala (opcional)", "Signa-la (opcional)"],
+    send: ["✓ Put it in the box", "✓ 放进盒子", "✓ 放進盒子", "✓ 放入盒", "✓ Ponla en la caja", "✓ Posa-la a la capsa"],
+    cook: ["🍲 Cook it for me", "🍲 做给我吃", "🍲 做給我吃", "🍲 煮俾我食", "🍲 Cocínamela", "🍲 Cuina-me-la"],
+    mineX: ["Take it back", "收回", "收回", "攞返", "Retirarla", "Retirar-la"],
+    report: ["Not right", "不妥", "不妥", "唔妥", "No está bien", "No està bé"],
+    rest: ["Three today. Tomorrow more.", "今天三道了，明天再来。", "今天三道了，明天再來。", "今日三味喇，聽日再嚟。", "Tres hoy. Mañana más.", "Tres avui. Demà més."],
+    off: ["The box is stuck. Try in a bit.", "盒子打不开，等一会儿再试。", "盒子打不開，等一會兒再試。", "個盒打唔開，等陣再試。", "La caja se ha atascado. Prueba en un rato.", "La capsa s'ha encallat. Prova-ho d'aquí a una estona."],
+    empty: ["Nobody has left a recipe yet. Leave yours?", "还没人留下食谱。留下你的？", "還沒人留下食譜。留下你的？", "仲未有人留低食譜。留低你嘅？", "Aún nadie ha dejado una receta. ¿Dejas la tuya?", "Encara ningú no hi ha deixat cap recepta. Hi deixes la teva?"],
+    by: ["from {n}", "来自 {n}", "來自 {n}", "{n} 留低嘅", "de {n}", "de {n}"],
+    forX: ["for {f}", "做给{f}", "做給{f}", "煮俾{f}", "para {f}", "per a {f}"],
+    thanks: ["*Popo puts it in the tin box with the others, very carefully* Good. Somebody eat this tomorrow.", "*婆婆小心翼翼地把它放进铁盒，和别的放在一起* 好。明天有人吃这个。", "*婆婆小心翼翼地把它放進鐵盒，和別的放在一起* 好。明天有人吃這個。", "*婆婆好小心咁放入鐵盒，同其他嗰啲擺埋一齊* 好。聽日有人食呢個。", "*Popo la guarda en la caja de lata con las otras, con mucho cuidado* Bien. Mañana alguien come esto.", "*La Popo la desa a la capsa de llauna amb les altres, amb molta cura* Molt bé. Demà algú es menjarà això."],
+    served: { popo: ["*reads it twice, rolls up her sleeves* Somebody's family make this. I make it like them. Eat slow.", "*看了两遍，卷起袖子* 别人家里做这个。我照他们那样做。慢慢吃。", "*看了兩遍，捲起袖子* 別人家裡做這個。我照他們那樣做。慢慢吃。", "*睇咗兩次，捋起衫袖* 人哋屋企煮嘅嘢。我照佢哋咁煮。慢慢食。", "*la lee dos veces, se arremanga* La familia de alguien hace esto. Yo hago como ellos. Come despacio.", "*la llegeix dues vegades i s'arremanga* Això ho fa la família d'algú. Ho faig com ells. Menja a poc a poc."],
+      wei: ["*follows the card to the letter, then tastes it* Someone's family recipe. I hope I did it justice.", "*照着卡片一步不差地做，然后尝了一口* 别人家的家传菜。希望我没做砸。", "*照著卡片一步不差地做，然後嚐了一口* 別人家的家傳菜。希望我沒做砸。", "*照住張卡一步一步咁煮，再試咗一啖* 人哋屋企嘅家傳菜。希望冇煮衰佢。", "*sigue la tarjeta al pie de la letra y lo prueba* La receta de familia de alguien. Espero haberle hecho justicia.", "*segueix la targeta al peu de la lletra i ho tasta* La recepta de família d'algú. Espero haver-li fet justícia."],
+      mei: ["*reads it off the card, burns one bit* It's… mostly right? Someone's grandma would fix it.", "*照着卡片念，烧焦了一点* 大概……差不多对？人家外婆会帮我修好的。", "*照著卡片念，燒焦了一點* 大概……差不多對？人家外婆會幫我修好的。", "*照住張卡讀，燶咗少少* 大概……差唔多啱？人哋婆婆會幫我執返好。", "*lo lee de la tarjeta y quema un trozo* ¿Está… casi bien? La abuela de alguien lo arreglaría.", "*ho llegeix de la targeta i en crema un tros* Està… gairebé bé? L'àvia d'algú ho arreglaria."],
+      cats: ["*Miso pushes the recipe card across the counter to you. Someone will have to cook this at home.* Meow.", "*味噌把食谱卡推到你面前。得有人回家做这个了。* 喵。", "*味噌把食譜卡推到你面前。得有人回家做這個了。* 喵。", "*味噌將張食譜卡推埋你面前。要有人返屋企煮呢個喇。* 喵。", "*Miso te empuja la tarjeta por la barra. Alguien tendrá que cocinarlo en casa.* Miau.", "*La Miso t'empeny la targeta per la barra. Algú ho haurà de cuinar a casa.* Mèu."] }
+  };
+  function el(tag, cls, txt) { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  let sec = null;
+  function secret() {
+    if (sec) return sec;
+    let k = null; try { k = localStorage.getItem('fb_device_key'); } catch (e) {}
+    if (!k) { const a = new Uint8Array(32); crypto.getRandomValues(a); k = btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); try { localStorage.setItem('fb_device_key', k); } catch (e) {} }
+    return (sec = crypto.subtle.digest('SHA-256', new TextEncoder().encode('recipe:' + k)).then(b => Array.prototype.map.call(new Uint8Array(b), x => ('0' + x.toString(16)).slice(-2)).join('')));
+  }
+  function rpc(fn, args) { if (!DB.sb) return Promise.reject(new Error('offline')); return DB.sb.rpc(fn, args).then(r => { if (r.error) throw r.error; return r.data; }); }
+  const LANG = () => ({ en: 'en', zh: 'zh', tw: 'zh-Hant', yue: 'zh-Hant', es: 'es', ca: 'ca' }[AppState.lang] || 'en');
+  let sheetEl = null, q = '', timer = null;
+  function close() { if (sheetEl) sheetEl.remove(); sheetEl = null; }
+  function top(title, back) { const t = el('div', 'ps-top'); t.appendChild(el('b', '', '📖 ' + title)); const x = el('button', 'btn ps-x', '✕'); x.type = 'button'; x.setAttribute('aria-label', '✕'); x.onclick = back || close; t.appendChild(x); return t; }
+  function open() {
+    close(); sheetEl = el('div', ''); sheetEl.id = 'picks-sheet'; sheetEl.setAttribute('role', 'dialog');
+    const s = el('input', 'field ps-q'); s.placeholder = X(T.q); s.value = q; s.setAttribute('aria-label', X(T.q)); s.oninput = () => { q = s.value; clearTimeout(timer); timer = setTimeout(fill, 350); };
+    const list = el('div', 'ps-list'); list.setAttribute('aria-live', 'polite');
+    const add = el('button', 'btn btn-amber ps-add', X(T.add)); add.type = 'button'; add.onclick = write;
+    [top(X(T.title)), s, list, add].forEach(n => sheetEl.appendChild(n));
+    document.body.appendChild(sheetEl); fill();
+    function fill() {
+      list.textContent = '…';
+      secret().then(k => rpc('recipe_list', { p_secret: k, p_q: q.trim() || null })).then(rows => {
+        list.innerHTML = '';
+        if (!rows || !rows.length) { list.appendChild(el('p', 'ps-none', X(T.none))); return; }
+        rows.forEach(r => { const b = el('button', 'opt-btn ps-item'); b.type = 'button'; const t = el('span', 'ps-t'); t.appendChild(el('b', '', r.dish)); t.appendChild(el('small', '', [r.whose, r.forwho ? X(T.forX).replace('{f}', r.forwho) : ''].filter(Boolean).join(' · '))); b.appendChild(t); b.onclick = () => card(r); list.appendChild(b); });
+      }).catch(() => { list.textContent = X(T.off); });
+    }
+  }
+  function card(r) {
+    close(); sheetEl = el('div', ''); sheetEl.id = 'picks-sheet'; sheetEl.setAttribute('role', 'dialog');
+    sheetEl.appendChild(top(r.dish, open));
+    const meta = [r.whose, r.forwho ? X(T.forX).replace('{f}', r.forwho) : '', r.nick ? X(T.by).replace('{n}', r.nick) : ''].filter(Boolean).join(' · ');
+    if (meta) sheetEl.appendChild(el('p', 'ps-none', meta));
+    const body = el('p', ''); body.style.cssText = 'white-space:pre-wrap;margin:8px 2px 12px;font-size:17px;line-height:1.35'; body.textContent = r.body; sheetEl.appendChild(body);
+    const row = el('div', 'flex gap-1.5 flex-wrap');
+    const c = el('button', 'btn btn-amber', X(T.cook)); c.type = 'button'; c.onclick = () => { close(); serve(r); }; row.appendChild(c);
+    if (r.mine) { const f = el('button', 'btn btn-sm', X(T.mineX)); f.type = 'button'; f.onclick = () => { f.disabled = true; secret().then(k => rpc('recipe_forget', { p_secret: k, p_id: r.id })).then(open).catch(() => { f.disabled = false; }); }; row.appendChild(f); }
+    else { const rp = el('button', 'btn btn-sm', '⚑'); rp.type = 'button'; rp.title = X(T.report); rp.setAttribute('aria-label', rp.title); rp.onclick = () => { rp.disabled = true; secret().then(k => rpc('recipe_report', { p_secret: k, p_id: r.id })).then(() => { rp.textContent = '✓'; }).catch(() => { rp.disabled = false; }); }; row.appendChild(rp); }
+    sheetEl.appendChild(row); document.body.appendChild(sheetEl);
+  }
+  function write() {
+    close(); sheetEl = el('form', ''); sheetEl.id = 'picks-sheet'; sheetEl.setAttribute('role', 'dialog');
+    sheetEl.appendChild(top(X(T.add).replace('＋ ', ''), open));
+    const fld = (label, max, req, area, val) => { const l = el('label', 'label ps-f'); l.appendChild(el('span', '', label)); const i = el(area ? 'textarea' : 'input', 'field'); i.maxLength = max; if (req) i.required = true; if (area) { i.rows = 6; i.style.resize = 'vertical'; } if (val) i.value = val; i.autocomplete = 'off'; l.appendChild(i); sheetEl.appendChild(l); return i; };
+    const d = fld(X(T.dish), 40, true), w = fld(X(T.whose), 40), f = fld(X(T.forwho), 80), b = fld(X(T.body), 800, true, true);
+    const by = fld(X(T.sign), 24, false, false, (function () { try { return localStorage.getItem('fb_nick') || ''; } catch (e) { return ''; } })()); by.setAttribute('data-fb-nick', '');
+    const go = el('button', 'btn btn-amber ps-add', X(T.send)); go.type = 'submit'; sheetEl.appendChild(go);
+    const st = el('p', 'ps-none'); st.setAttribute('aria-live', 'polite'); sheetEl.appendChild(st);
+    sheetEl.onsubmit = e => {
+      e.preventDefault(); go.disabled = true; st.textContent = '…';
+      secret().then(k => rpc('recipe_add', { p_secret: k, p_dish: d.value, p_whose: w.value, p_for: f.value, p_body: b.value, p_nick: by.value, p_lang: LANG() }))
+        .then(() => { try { SoundEngine.playClick(); } catch (e) {} close(); try { showBubble(X(T.thanks), 4200); } catch (e) {} try { if (window.FBG && FBG.made) FBG.made('bar', d.value); } catch (e) {} })
+        .catch(err => { go.disabled = false; st.textContent = /rest/.test(String(err && err.message)) ? X(T.rest) : X(T.off); });
+    };
+    document.body.appendChild(sheetEl); setTimeout(() => d.focus(), 30);
+  }
+  function serve(r) {
+    const who = (window.FBWorld && FBWorld.host) ? FBWorld.host().who : 'wei';
+    const sub = [r.whose, r.forwho ? X(T.forX).replace('{f}', r.forwho) : ''].filter(Boolean).join(' · ');
+    try { showServed({ icon: '', name: r.dish, sub: sub, desc: r.body.length > 220 ? r.body.slice(0, 220) + '…' : r.body, formula: r.nick ? X(T.by).replace('{n}', r.nick) : '', reactable: false, food: true }); } catch (e) { return; }
+    const ic = window.FBWorld && FBWorld.pix ? FBWorld.pix('bowl') : ''; ['res-icon', 'served-item-plate'].forEach(id => { const e = document.getElementById(id); if (e) e.innerHTML = ic; });
+    try { SoundEngine.playClink(); } catch (e) {}
+    setTimeout(() => { try { showBubble(X(T.served[who] || T.served.wei), 4200); } catch (e) {} }, 800);
+  }
+  function cook() {
+    secret().then(k => rpc('recipe_get', { p_secret: k, p_lang: LANG() })).then(r => { if (r) serve(r); else { try { showBubble(X(T.empty), 3600); } catch (e) {} write(); } })
+      .catch(() => { try { showBubble(X(T.off), 3000); } catch (e) {} });
+  }
+  window.PopoRecipes = { open, write, cook };
+})();
+</script>
 <style>
   #picks-sheet{position:fixed;left:50%;bottom:calc(12px + var(--safe-b, 0px));transform:translateX(-50%);z-index:96;width:min(420px,calc(100vw - 20px));max-height:min(78vh,640px);overflow:auto;padding:12px;background:#2a1a10;border:3px solid #000;box-shadow:5px 5px 0 #000,inset 0 0 0 2px #5a3a22;display:grid;gap:8px}
   #picks-sheet .ps-top{display:flex;align-items:center;gap:8px;color:var(--amber-2);font-size:15px}#picks-sheet .ps-top b{flex:1}
@@ -8557,6 +8666,8 @@ document.addEventListener("DOMContentLoaded", function () {
     m.style.cssText = "position:fixed;left:50%;bottom:calc(16px + var(--safe-b, 0px));transform:translateX(-50%);z-index:96;width:min(400px,calc(100vw - 24px));max-height:calc(100% - 32px);overflow:auto;padding:10px;background:#2a1a10;border:3px solid #000;box-shadow:5px 5px 0 #000;display:grid;grid-template-columns:1fr 1fr;gap:6px";
     function add(html, label, fn, wide) { var b = document.createElement("button"); b.type = "button"; b.className = "opt-btn"; b.style.cssText = "min-height:44px;text-align:left;justify-content:flex-start;display:flex;align-items:center;gap:6px" + (wide ? ";grid-column:1 / -1" : ""); b.innerHTML = html; var sp = document.createElement("span"); sp.textContent = label; b.appendChild(sp); b.onclick = function () { m.remove(); fn(); }; m.appendChild(b); }
     DISH.forEach(function (d) { add(W.pix ? W.pix(d.ic) : "", L(d.name), function () { serve(d); }); });
+    add(W.pix ? W.pix("books") : "", L(lx(["Cook me someone's family recipe", "做一道别人家的家传菜给我", "做一道別人家的家傳菜給我", "煮一味人哋屋企嘅家傳菜俾我", "Cocíname la receta de familia de alguien", "Cuina'm la recepta de família d'algú"])), function () { window.PopoRecipes && PopoRecipes.cook(); });
+    add(W.pix ? W.pix("pencil") : "", L(lx(["Leave a family recipe", "留下一道家传菜", "留下一道家傳菜", "留低一味家傳菜", "Deja una receta de familia", "Deixa una recepta de família"])), function () { window.PopoRecipes && PopoRecipes.write(); });
     add("", L(P.coffee), function () { say(L(P.coffeeNo)); });
     add("", L(P.booze), function () { say(L(P.boozeNo)); });
     add("", "✕", function () {}, true);

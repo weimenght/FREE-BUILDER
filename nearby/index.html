@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2c96e6a14d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=99297acc00" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=fd140b4ed6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=c84f501b91" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Nearby — FREE//BUILDER</title>
 <meta name="description" content="Nearby: a small pixel town for finding your people, in real life. Wander alone or with a friend, leave something you made for the neighbours, borrow a real book, play with someone far away. Wei, the bartender, will show you around.">
@@ -220,6 +220,9 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     // hutong row
     R(0, 150, W, 16, night ? "#2e2c30" : "#a8a49c"); for (var cb = 0; cb < W; cb += 6) R(cb + ((cb / 6) % 2) * 3, 156, 3, 1, night ? "#3a383c" : "#9a968e");
     // lantern string over the lane
+    if (SEA() === "winter" || (World.festival && World.festival() === "christmas")) for (var wl = 0; wl < W; wl++) {   /* winter: fairy lights strung across the lanes */
+      [108, 148].forEach(function (y0, k) { var yy = y0 + Math.round(Math.sin(((wl + k * 7) % 30) / 30 * Math.PI) * 2); P0(wl, yy, 1, 1, "#2a2a30");
+        if ((wl + k * 3) % 5 === 0) P0(wl, yy + 1, 1, 1, lit ? (((wl / 5 | 0) + (f >> 2)) % 7 === 0 ? "#ffffff" : ["#ffd06a", "#ff8a6a", "#a8e0ff", "#b8f0a0"][(wl / 5 | 0) % 4]) : "#8a8070"); }); }
     for (var ls = 4; ls < W; ls += 12) { var ly = 152 + Math.sin(ls / 12) * 1.5; R(ls, ly, 2, 3, lit ? (hash("l" + ls + ((f / 10) | 0)) < .1 ? "#ff8a5a" : "#ff5a3a") : "#b3261e"); }
     // kintsugi studio
     R(4, 124, 40, 26, night ? "#3a2a20" : "#6a4a32"); R(2, 118, 44, 6, "#2a2a30"); R(6, 116, 36, 2, "#3a3a40");

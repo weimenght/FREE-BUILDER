@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2c96e6a14d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=99297acc00" defer></script>
+<meta charset="utf-8"><script data-fbl data-mode="full" src="/fbkit/fb.js?v=fd140b4ed6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=c84f501b91" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Borrowed Pages · Nearby</title>
 <meta name="description" content="A four-room book house next door to the bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one, and pass it on by hand.">
@@ -274,7 +274,7 @@ html.fbsh-in header.sign { position: absolute; top: 8px; right: 10px; left: auto
 html.fbsh-in header.sign .board { display: none !important; }
 html.fbsh-in.bp-one body > header.sign { position: fixed; }
 </style>
-<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<link rel="stylesheet" href="/fonts/g/fonts.css"><link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
 <header class="sign">
   <div class="board">
@@ -834,6 +834,20 @@ html.bp-one .room.cur.up { animation-name: bpUp; }
   house.addEventListener("wheel", function (e) { var r = document.getElementById(cur); if (!r || Math.abs(e.deltaY) < 30 || wheelT > Date.now()) return; var i = ORDER.indexOf(cur); if (e.deltaY > 0 && r.scrollTop + r.clientHeight >= r.scrollHeight - 2 && i < 3) { wheelT = Date.now() + 700; show(ORDER[i + 1]); } else if (e.deltaY < 0 && r.scrollTop <= 0 && i > 0) { wheelT = Date.now() + 700; show(ORDER[i - 1]); } }, { passive: true });
   var wheelT = 0;
   var h = (location.hash || "").replace("#", ""); show(ORDER.indexOf(h) >= 0 ? h : "attic");
+})();
+</script>
+<script>
+/* Sant Jordi (23 April, by the visitor's own calendar): roses and books. A garland of roses along the top of the house, and one
+   quiet note: the day you give someone a rose, and they give you a book. */
+(function () {
+  var W = window.FBWorld; if (!W || !W.festival || W.festival() !== "santjordi" || !W.pix) return;
+  var g = document.createElement("div"); g.setAttribute("aria-hidden", "true");
+  g.style.cssText = "position:fixed;left:0;right:0;top:0;z-index:30;height:26px;display:flex;justify-content:space-around;align-items:flex-start;pointer-events:none;background:linear-gradient(#2a6a3a 0 3px,transparent 3px)";
+  for (var i = 0; i < 14; i++) { var s = document.createElement("span"); s.style.cssText = "width:20px;height:20px;display:block;margin-top:" + (i % 2 ? 6 : 1) + "px"; s.innerHTML = W.pix(i % 4 === 3 ? "books" : "blossom"); var sv = s.firstChild; if (sv) { sv.style.width = "20px"; sv.style.height = "20px"; } g.appendChild(s); }
+  document.body.appendChild(g);
+  var said = false; try { said = sessionStorage.getItem("fb_jordi_said") === "1"; sessionStorage.setItem("fb_jordi_said", "1"); } catch (e) {}
+  if (!said) setTimeout(function () { var L = ["Sant Jordi: give someone a rose, and they'll give you a book.", "圣乔治节：送一个人一朵玫瑰，换回一本书。", "聖佐治節：送一個人一朵玫瑰，換回一本書。", "Sant Jordi: regala una rosa y te regalarán un libro.", "Sant Jordi: regala una rosa i et regalaran un llibre."], li = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }[(window.FBL && FBL.get && FBL.get()) || "en"] || 0;
+    try { if (window.FBG && FBG.note) FBG.note({ icon: "🌹", text: L[li] }); } catch (e) {} }, 2500);
 })();
 </script>
 </body>

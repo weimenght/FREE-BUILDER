@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2c96e6a14d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=99297acc00" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=fd140b4ed6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=c84f501b91" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Mirror Lake · Nearby</title>
 <meta name="description" content="A wooden dock on a still lake. Cast, wait, reel in, and let the fish go, give it to a cat, or send it to Next Door's kitchen. Alone, or side by side with a friend.">
@@ -194,7 +194,10 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     T.sky.forEach(function (c, i) { px(0, i * band, GW, band + 1, c); });
     if (W.phase() !== "day") stars.forEach(function (s) { var tw = Math.sin(g.time * s.sp + s.ph); if (tw > -.2) { ctx.fillStyle = "rgba(255,255,255," + ((T.night ? .9 : .35) * (.5 + tw * .5)) + ")"; ctx.fillRect(s.x, s.y, 1, 1); } });
     var sx = Math.round(GW * .76), sy = Math.round(WY * T.sunY); ctx.fillStyle = T.sun;
-    for (var dy = -9; dy <= 9; dy++) for (var dx = -9; dx <= 9; dx++) if (dx * dx + dy * dy <= 81 && !(T.night && (dx - 3) * (dx - 3) + (dy - 2) * (dy - 2) <= 52)) ctx.fillRect(sx + dx, sy + dy, 1, 1);
+    var FEST = W.festival ? W.festival() : null, MOONY = FEST === "midautumn" && W.phase() !== "day";   /* Mid-Autumn: a full, round moon, and lanterns on the water */
+    if (MOONY) { var mg = ctx.createRadialGradient(sx, sy, 4, sx, sy, 30); mg.addColorStop(0, "rgba(255,236,170,.35)"); mg.addColorStop(1, "rgba(255,236,170,0)"); ctx.fillStyle = mg; ctx.fillRect(sx - 30, sy - 30, 60, 60); ctx.fillStyle = "#fff1c0"; }
+    for (var dy = -9; dy <= 9; dy++) for (var dx = -9; dx <= 9; dx++) if (dx * dx + dy * dy <= 81 && (MOONY || !(T.night && (dx - 3) * (dx - 3) + (dy - 2) * (dy - 2) <= 52))) ctx.fillRect(sx + dx, sy + dy, 1, 1);
+    if (MOONY) { ctx.fillStyle = "rgba(220,200,150,.5)"; ctx.fillRect(sx - 3, sy - 2, 2, 2); ctx.fillRect(sx + 2, sy + 3, 3, 2); ctx.fillRect(sx - 5, sy + 4, 2, 1); }
     ctx.fillStyle = T.night ? "rgba(148,163,184,.12)" : "rgba(255,255,255,.22)"; clouds.forEach(function (c) { var x = Math.floor(c.x); ctx.fillRect(x, c.y, c.w, 3); ctx.fillRect(x + 4, c.y - 2, c.w - 8, 2); });
     for (var x = 0; x < GW; x++) { var m = ridge[x]; px(x, WY - m.far, 1, m.far, T.far); px(x, WY - m.mid, 1, m.mid, T.mid); if (x > GW * .3 && x % 4 === 0) { var th = 5 + ((x * 7) % 6); px(x, WY - th, 1, th, T.trees); px(x - 1, WY - th + 2, 3, th - 2, T.trees); } }
     var wh = GH - WY, wb = Math.ceil(wh / T.water.length); T.water.forEach(function (c, i) { px(0, WY + i * wb, GW, wb + 1, c); });
@@ -220,6 +223,14 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     ctx.fillStyle = T.shim; for (var y = WY + 2; y < GH - 6; y += 3) { var dep = (y - WY) / wh, sw = Math.sin(g.time * .05 + y * .35) * (2 + dep * 5), w = Math.max(2, Math.floor((1 - dep * .7) * 14)); ctx.globalAlpha = .45 * (1 - dep * .65); ctx.fillRect(Math.round(sx + sw - w / 2), y, w, 1); } ctx.globalAlpha = 1;
     shadows.forEach(function (s) { ctx.fillStyle = "rgba(6,10,20,.32)"; ctx.fillRect(Math.round(s.x), Math.round(s.y), s.s, 2); ctx.fillRect(s.dir === 1 ? Math.round(s.x) - 2 : Math.round(s.x) + s.s, Math.round(s.y) - 1, 2, 4); });
     ripples.forEach(function (r) { ctx.fillStyle = T.shim; ctx.globalAlpha = Math.max(0, r.a * .6); ctx.fillRect(Math.round(r.x - r.r), WY, Math.round(r.r * 2), 1); if (r.r > 4) ctx.fillRect(Math.round(r.x - r.r * .6), WY + 2, Math.round(r.r * 1.2), 1); }); ctx.globalAlpha = 1;
+    /* Mid-Autumn on the lake: the moon's road on the water and paper lanterns drifting past, each with its own light below it */
+    if (MOONY) {
+      ctx.fillStyle = "rgba(255,236,170,.35)"; for (var my = WY + 2; my < GH - 4; my += 2) { var mw = 3 + ((my - WY) / wh) * 10 + Math.sin(g.time * .07 + my) * 2; ctx.fillRect(Math.round(sx - mw / 2 + Math.sin(g.time * .05 + my * .3) * 2), my, Math.round(mw), 1); }
+      for (var ln = 0; ln < 9; ln++) { var lxp = ((ln * 37.3 + g.time * (.05 + (ln % 3) * .02)) % (GW + 30)) - 15, lyp = WY + 6 + ((ln * 13) % Math.max(10, wh - 18)), bob = Math.round(Math.sin(g.time * .05 + ln) * .6);
+        var lgr = ctx.createRadialGradient(lxp + 2, lyp + 1, 1, lxp + 2, lyp + 1, 9); lgr.addColorStop(0, "rgba(255,170,90,.4)"); lgr.addColorStop(1, "rgba(255,170,90,0)"); ctx.fillStyle = lgr; ctx.fillRect(lxp - 8, lyp - 8, 20, 20);
+        ctx.globalAlpha = .45; px(Math.round(lxp), lyp + 4, 4, 3, "#ff9a5a"); ctx.globalAlpha = 1;   /* its light on the water */
+        px(Math.round(lxp), lyp - 1 + bob, 4, 1, "#7a2a1a"); px(Math.round(lxp), lyp + bob, 4, 3, ln % 3 ? "#e8483a" : "#f6c84a"); px(Math.round(lxp) + 1, lyp + bob, 2, 3, "#ffd88a"); px(Math.round(lxp), lyp + 3 + bob, 4, 1, "#7a2a1a"); }
+    }
     /* the reeds, the dock, the lantern on its post */
     var A0 = ax(), dockEnd = A0 + 14 + (mate ? 16 : 0);
     [8, 12, 17, 21].forEach(function (rx, i) { var s2 = Math.round(Math.sin(g.time * .03 + i)), h = 14 + (i % 3) * 4; px(rx + s2, WY - h, 1, h + 3, "#1e293b"); if (i % 2 === 0) px(rx + s2, WY - h + 2, 1, 4, "#475569"); });

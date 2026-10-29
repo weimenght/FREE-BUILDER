@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2c96e6a14d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=99297acc00" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=fd140b4ed6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=c84f501b91" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Plaza · Nearby</title>
 <meta name="description" content="The square in the middle of Nearby: a fountain, benches, pigeons. Toss a coin and make a wish; keep it to yourself or let it float for the town to read.">
@@ -42,7 +42,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
 @media (max-width:360px){.stems{grid-template-columns:repeat(3,44px)}.bqrow canvas{width:84px;height:112px}}
 @media (prefers-color-scheme:light){:root:not([data-theme=dark]) .sheet{background:#f6ecd2;color:#2a1a10}:root:not([data-theme=dark]) .sheet .x{background:#e8d6b0;color:#2a1a10}:root:not([data-theme=dark]) .sheet .q{color:#8a4a10}}
 </style>
-<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<link rel="stylesheet" href="/fonts/g/fonts.css"><link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
 <h1 class="sr" id="h1">The Plaza</h1>
 <canvas id="cv" role="img" aria-label="The town square: a stone fountain, benches, lamps and pigeons"></canvas>
@@ -163,6 +163,36 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
   function spot(seed) { var a = hash(seed) * Math.PI * 2, r = Math.sqrt(hash(seed + .5)) * .78; return { x: G.cx + Math.cos(a) * r * (G.rx - 5), y: G.cy + Math.sin(a) * r * (G.ry - 3) }; }
   function coinsAll() { return shared.map(function (w) { var p = spot(w.id); return { id: w.id, x: p.x, y: p.y, w: w, mine: mine.indexOf(w.id) >= 0 }; }).concat(kept.map(function (s) { var p = spot(s + 1e5); return { x: p.x, y: p.y, kept: 1 }; })); }
 
+  /* the season on the square: two plane trees at the back corners that blossom, green, turn and go bare; conkers and leaves on the
+     cobbles in autumn, petals in spring, and in winter a string of lights from house to house across the square */
+  function season(night, lit, snow) {
+    var se = W.season ? W.season() : "summer", base = G.py + 2, th = Math.max(16, Math.round((G.py - G.hy) * .55));
+    [Math.round(PW * .05), Math.round(PW * .95)].forEach(function (tx, k) {
+      R(tx - 1, base - th, 3, th, night ? "#2a1e18" : "#6a4a32"); R(tx, base - th, 1, th, night ? "#3a2a20" : "#8a6a4a");
+      var cw = Math.round(th * .9), ch = Math.round(th * .55), cy = base - th - ch + 4;
+      if (se === "winter") {   /* bare branches, snow on them when it snows */
+        var br = night ? "#2a1e18" : "#5a3e28";
+        for (var b = 0; b < 5; b++) { var bx = tx - cw / 2 + 2 + b * (cw - 4) / 4, by = cy + 2 + (b % 2) * 3; R(Math.min(bx, tx), by + ch / 2, Math.abs(bx - tx) + 1, 1, br); R(bx, by, 1, ch / 2, br); if (snow) R(bx - 1, by, 3, 1, "#f6f9fc"); }
+      } else {
+        var C = se === "spring" ? ["#f4b4c8", "#ffd6e2", "#8ac46a"] : se === "autumn" ? ["#d8762a", "#e8a838", "#b8402a"] : ["#3f7a3a", "#5a9a4a", "#2e5a2e"];
+        if (night) C = C.map(function (c) { return mix(c, "#101020", .55); });
+        for (var q = 0; q < 26; q++) { var a = hash(q + k * 40) * 6.3, r = Math.sqrt(hash(q + k * 40 + .3)); R(tx + Math.cos(a) * r * cw / 2 - 2, cy + ch / 2 + Math.sin(a) * r * ch / 2 - 2, 5, 4, C[q % 3]); }
+      }
+    });
+    var lower = G.py + 4, span = PH - lower - 4;
+    if (se === "autumn" && !snow) for (var l = 0; l < 40; l++) {   /* fallen leaves, most under the trees, and conkers */
+      var nearT = l % 3 !== 0, lx = nearT ? (l % 2 ? PW * .05 : PW * .95) + (hash(l + 500) - .5) * 30 : hash(l + 501) * PW, ly = lower + (nearT ? hash(l + 502) * span * .35 : hash(l + 503) * span);
+      if (Math.abs(lx - G.cx) < G.rx + 4 && Math.abs(ly - G.cy) < G.ry + 5) continue;
+      if (l % 5 === 0) { R(lx, ly, 2, 2, night ? "#3a2014" : "#7a3a1a"); R(lx, ly, 1, 1, night ? "#5a3a2a" : "#c87a4a"); }
+      else R(lx, ly, 2, 1, night ? "#5a3018" : ["#d8762a", "#e8a838", "#b8402a"][l % 3]);
+    }
+    if (se === "spring" && !snow) for (var pt = 0; pt < 24; pt++) { var px = hash(pt + 600) * PW, py = lower + hash(pt + 601) * span; if (Math.abs(px - G.cx) < G.rx + 4 && Math.abs(py - G.cy) < G.ry + 5) continue; R(px, py, 1, 1, night ? "#6a4a5a" : "#f8c8d8"); }
+    if (se === "winter") {   /* lights across the square, from eave to eave */
+      var y0 = G.hy + Math.round((G.py - G.hy) * .45);
+      for (var x = 0; x < PW; x++) { var u = (x % (PW / 2)) / (PW / 2), y = y0 + Math.round(Math.sin(u * Math.PI) * 7); R(x, y, 1, 1, "#2a2a30");
+        if (x % 6 === 3) { var on = lit || night, col = ["#ffd06a", "#ff8a6a", "#a8e0ff", "#b8f0a0"][(x / 6 | 0) % 4], tw = on && (f / 8 + x) % 23 < 1.5; R(x - 1, y + 1, 2, 2, on ? (tw ? "#ffffff" : col) : mix(col, "#606070", .5)); if (on) R(x - 2, y, 4, 4, "rgba(255,210,140,.18)"); } }
+    }
+  }
   /* the flower stall at the back of the square: a striped awning, buckets of flowers by day, a cloth over them at night */
   var STALL = {};
   function stall(night, lit, snow, wet) {
@@ -197,6 +227,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     R(0, G.py, PW, PH - G.py, cob);
     for (var ry = G.py + 2, row = 0; ry < PH; ry += 3 + Math.round((ry - G.py) / 30), row++) { var step = 6 + Math.round((ry - G.py) / 12); for (var rx = (row % 2) * (step / 2); rx < PW; rx += step) R(rx, ry, step - 2, 1, cob2); }
     if (wet) for (var pd = 0; pd < 6; pd++) R(hash(pd + 70) * PW, G.py + 6 + hash(pd + 71) * (PH - G.py - 8), 10 + hash(pd) * 14, 1, "rgba(200,220,255,.25)");
+    season(night, lit, snow);
     stall(night, lit, snow, wet);
     /* benches and lamps */
     [[.12, .86], [.88, .86]].forEach(function (b) { var x = PW * b[0] - 10, y = PH * b[1] - (PW / PH > 1.1 ? 0 : 6); R(x, y, 20, 2, "#6a4426"); R(x, y - 4, 20, 2, "#7a5432"); R(x + 2, y + 2, 2, 4, "#2a1a10"); R(x + 16, y + 2, 2, 4, "#2a1a10"); if (snow) R(x, y - 5, 20, 1, "#fbfbff"); });

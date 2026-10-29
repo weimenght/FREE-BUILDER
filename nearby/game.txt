@@ -81,7 +81,7 @@ ID: TH-27
 TITLE: Town Hall
 GENRE: A notice board for the town
 AUTHOR: FREE//BUILDER
-DESC: Pin an idea for the town, your own news, or a word about a place you love here, and answer each other. No votes. Notices stay two months.
+DESC: Pin an idea for the town, your own news, or a word about a place you love here, and answer each other. Inside, stitch one square into the town quilt; it only grows. No votes, no counts.
 URL: town-hall/
 
 CODE: PARTY
