@@ -29,3 +29,22 @@ a.brand:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
 @keyframes vkIn { from { opacity:0; } }
 @keyframes vkUp { from { transform:translateY(24px); opacity:0; } }
 @media (prefers-reduced-motion: reduce) { .vk-dim, .vk-sheet { animation:none; } }
+
+/* bring your own words */
+.vk-imp { max-width:520px; }
+.vk-imp .vk-how { margin:0 6px 10px; font-size:14px; color:var(--muted, #6B6155); }
+.vk-imp textarea { width:100%; min-height:132px; resize:vertical; padding:12px; border-radius:14px; border:1px solid var(--border, #E6DCC6); background:var(--surface, #F3ECDD); color:inherit; font:500 15px/1.45 var(--mono, ui-monospace, Menlo, monospace); }
+.vk-imp textarea:focus { outline:2px solid var(--accent); outline-offset:1px; }
+.vk-imp .vk-row { display:flex; align-items:center; gap:10px; margin-top:10px; }
+.vk-imp .vk-file span { display:inline-flex; align-items:center; min-height:40px; padding:0 14px; border-radius:12px; border:1px solid var(--border, #E6DCC6); font-weight:600; font-size:14px; cursor:pointer; white-space:nowrap; }
+.vk-imp .vk-file:focus-within span { outline:2px solid var(--accent); outline-offset:1px; }
+.vk-imp .vk-found { font-size:13px; color:var(--muted, #6B6155); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.vk-imp .vk-local { margin:10px 6px 0; font-size:12px; color:var(--muted, #6B6155); }
+.vk-imp .vk-btns { justify-content:flex-end; }
+.vk-imp .vk-btns button { width:auto; margin:0; min-height:44px; padding:0 18px; }
+.vk-imp .vk-go { background:var(--accent); border-color:var(--accent); color:var(--accent-ink, #fff); }
+.vk-imp .vk-go:disabled { opacity:.45; cursor:default; }
+.vk-note { position:fixed; left:50%; bottom:calc(var(--tab-h, 60px) + env(safe-area-inset-bottom, 0px) + 16px); z-index:210; transform:translate(-50%, 8px); opacity:0; pointer-events:none;
+  max-width:calc(100% - 32px); padding:10px 16px; border-radius:999px; background:var(--text, #1C1917); color:var(--bg, #fff); font:600 14px/1.3 var(--font); transition:opacity .2s, transform .2s; }
+.vk-note.on { opacity:1; transform:translate(-50%, 0); }
+.vk-imp-btn { display:inline-flex; align-items:center; gap:6px; }

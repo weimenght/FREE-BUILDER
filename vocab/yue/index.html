@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script><script src="../vk.js?v=3"></script><script src="./ui.js?v=1"></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script><script src="../vk.js?v=4"></script><script src="./ui.js?v=2"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FBF8F3">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -364,7 +364,7 @@
     .noVoice { display:none; }
     body.mute-voice .noVoice { display:block; }
   </style>
-<link rel="stylesheet" href="../vk.css?v=2">
+<link rel="stylesheet" href="../vk.css?v=3">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -485,6 +485,7 @@
         <label class="field"><span class="label">例句（可以唔寫）</span><input class="input han" id="nEx" autocomplete="off"></label>
         <button class="btn primary block" data-act="addWord"><svg class="ic"><use href="#i-plus"/></svg>加入</button>
       </div>
+      <button class="btn block vk-imp-btn" data-act="importMine"><svg class="ic"><use href="#i-upload"/></svg>匯入詞表</button>
       <div class="list" id="mineList"></div>
     </section>
 
@@ -1104,6 +1105,19 @@ const ACT = {
   reset: () => { if (!confirm('清除所有進度？')) return; const keep = { theme: S.theme, mine: S.mine }; S = Object.assign(DEFAULT_STORE(), keep); save(); App.deck = []; ACT.closeSheet(); go(App.tab); },
   addWord: () => { const w = $('nWord').value.trim(), m = $('nMean').value.trim(); if (!w || !m) { toast('寫低個字同意思先'); return; }
     S.mine.unshift({ id: Date.now().toString(36), word: w, jp: $('nJp').value.trim(), en: m, ex: $('nEx').value.trim() }); save(); ['nWord', 'nJp', 'nMean', 'nEx'].forEach(i => $(i).value = ''); renderMine(); toast('加咗 ✓'); },
+  importMine: () => VK.importList({
+    cols: [['Cantonese', '粤语', '粵語', 'Cantonés', 'Cantonès'], ['Jyutping', '粤拼', '粵拼', 'Jyutping', 'Jyutping'], ['meaning', '意思', '意思', 'significado', 'significat'], ['example', '例句', '例句', 'ejemplo', 'exemple']],
+    add: rows => {
+      const have = new Set(S.mine.map(m => m.word)), JP = /^[a-z]+[1-6](\s*[a-z]+[1-6])*[?.!]?$/i, HAN = /[\u3400-\u9fff]/; let added = 0, dup = 0;
+      rows.forEach((c, i) => {
+        const w = c[0]; if (have.has(w)) { dup++; return; }
+        const it = { id: Date.now().toString(36) + i, word: w, jp: '', en: '', ex: '' };
+        c.slice(1).filter(Boolean).forEach(x => { if (!it.jp && JP.test(x)) it.jp = x.toLowerCase(); else if (HAN.test(x) && !it.ex) it.ex = x; else if (!it.en) it.en = x; else if (!it.ex) it.ex = x; });
+        S.mine.push(it); have.add(w); added++;
+      });
+      save(); renderMine(); return { added, dup };
+    }
+  }),
   delMine: id => { S.mine = S.mine.filter(m => m.id !== id); delete S.meta['m:' + id]; save(); renderMine(); }
 };
 document.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (!b) return; const f = ACT[b.dataset.act]; if (f) { e.stopPropagation(); f(b.dataset.arg); } });

@@ -10,7 +10,20 @@
   var W = {
     title: ["Interface language", "界面语言", "介面語言", "Idioma de la interfaz", "Llengua de la interfície"],
     close: ["Close", "关闭", "關閉", "Cerrar", "Tanca"],
-    lang: ["Interface language", "界面语言", "介面語言", "Idioma", "Llengua"]
+    lang: ["Interface language", "界面语言", "介面語言", "Idioma", "Llengua"],
+    impTitle: ["Bring your own words", "导入你自己的词", "匯入你自己的詞", "Trae tus propias palabras", "Porta les teves paraules"],
+    impHow: ["One per line: {cols}. Tabs, commas or | between them.", "每行一个：{cols}。用 Tab、逗号或 | 分开。", "每行一個：{cols}。用 Tab、逗號或 | 分開。", "Una por línea: {cols}. Separadas por tabulador, coma o |.", "Una per línia: {cols}. Separades per tabulador, coma o |."],
+    impPaste: ["Paste your list here…", "把你的词表粘贴到这里…", "把你的詞表貼到這裡…", "Pega tu lista aquí…", "Enganxa la teva llista aquí…"],
+    impFile: ["Choose a file", "选择文件", "選擇檔案", "Elegir un archivo", "Tria un fitxer"],
+    impNone: ["Nothing to add yet", "还没有可以添加的词", "還沒有可以加入的詞", "Aún no hay nada que añadir", "Encara no hi ha res per afegir"],
+    impFound: ["{n} found, e.g. {ex}", "找到 {n} 个，例如 {ex}", "找到 {n} 個，例如 {ex}", "{n} encontradas, p. ej. {ex}", "{n} trobades, p. ex. {ex}"],
+    impAdd: ["Add {n}", "添加 {n} 个", "加入 {n} 個", "Añadir {n}", "Afegeix-ne {n}"],
+    impCancel: ["Cancel", "取消", "取消", "Cancelar", "Cancel·la"],
+    impLocal: ["Stays on this device. Nothing is sent.", "只留在这台设备上，不会发送到任何地方。", "只留在這台裝置上，不會傳送到任何地方。", "Se queda en este dispositivo. No se envía nada.", "Es queda en aquest dispositiu. No s'envia res."],
+    impDone: ["{n} added", "已添加 {n} 个", "已加入 {n} 個", "{n} añadidas", "{n} afegides"],
+    impDup: ["{n} added ({d} already there)", "已添加 {n} 个（{d} 个已经有了）", "已加入 {n} 個（{d} 個已經有了）", "{n} añadidas ({d} ya estaban)", "{n} afegides ({d} ja hi eren)"],
+    impBad: ["That file can't be read as text", "这个文件读不出文字", "這個檔案讀不出文字", "Ese archivo no se puede leer como texto", "Aquest fitxer no es pot llegir com a text"],
+    imp: ["Import a list", "导入词表", "匯入詞表", "Importar una lista", "Importa una llista"]
   };
   function code() { var l = null; try { l = window.FBL && FBL.get(); } catch (e) {} return LANGS.indexOf(l) >= 0 ? l : "en"; }
   function idx() { return LANGS.indexOf(code()); }
@@ -49,7 +62,7 @@
     return out == null ? str : m[1] + out + m[3];
   }
   var ATTR = ["placeholder", "aria-label", "title"];
-  function skip(el) { return !el || el.closest("script,style,textarea,.fbc,.fbc-intro,[data-vk-keep]" + (CFG.skip ? "," + CFG.skip : "")); }
+  function skip(el) { return !el || el.closest("script,style,textarea,.fbc,.fbc-intro,.brand-title,[data-vk-keep]" + (CFG.skip ? "," + CFG.skip : "")); }
   function text(n) { if (done.get(n) === n.nodeValue || skip(n.parentElement)) return; var v = tr(n.nodeValue); if (v !== n.nodeValue) { n.nodeValue = v; } done.set(n, n.nodeValue); }
   function attrs(el) { if (!el || (el.tagName !== "TEXTAREA" && skip(el)) || (el.tagName === "TEXTAREA" && el.parentElement && skip(el.parentElement))) return; for (var i = 0; i < ATTR.length; i++) { var v = el.getAttribute(ATTR[i]); if (v) { var w = tr(v); if (w !== v) el.setAttribute(ATTR[i], w); } } }
   function walk(root) {
@@ -84,10 +97,74 @@
   var LOC = ["en-GB", "zh-CN", "zh-TW", "es-ES", "ca-ES"];
   function locale(def) { return on ? LOC[idx()] : def; }
 
+  /* ---------- bring your own words: paste or a file (CSV, TSV, plain lines); parsed here, kept by the room on this device ----------
+     VK.importList({ cols: [[en, zh, zh-Hant, es, ca], …], add: function (rows) { return { added: n, dup: d }; } })
+     rows: arrays of trimmed cells in the order of cols; a row needs its first cell and one more. */
+  function fmt(k, o) { return t(k).replace(/\{(\w+)\}/g, function (m, x) { return o[x] != null ? o[x] : m; }); }
+  function cells(line) {
+    if (line.indexOf("\t") >= 0) return line.split("\t");
+    if (line.indexOf("|") >= 0) return line.split("|");
+    if (line.indexOf(";") >= 0 && line.indexOf(",") < 0) return line.split(";");
+    var out = [], cur = "", q = false;
+    for (var i = 0; i < line.length; i++) { var c = line[i];
+      if (q) { if (c === '"' && line[i + 1] === '"') { cur += '"'; i++; } else if (c === '"') q = false; else cur += c; }
+      else if (c === '"') q = true; else if (c === "," || c === "，") { out.push(cur); cur = ""; } else cur += c; }
+    out.push(cur); return out;
+  }
+  function parseList(txt, n) {
+    var rows = [], heads = {};
+    String(txt || "").replace(/^﻿/, "").split(/\r?\n/).forEach(function (line, i) {
+      if (!line.trim() || /^\s*#/.test(line)) return;
+      var c = cells(line).map(function (x) { return x.trim(); }).slice(0, n);
+      while (c.length < n) c.push("");
+      if (!c[0] || (n > 1 && !c.slice(1).some(Boolean))) return;
+      if (rows.length === 0 && /^(word|term|palabra|paraula|词|詞|字|front|cy|welsh|chinese|idiom|成语|成語)$/i.test(c[0])) return;   /* a header row */
+      rows.push(c);
+    });
+    return rows;
+  }
+  var toastT;
+  function note(msg) {
+    var el = document.querySelector(".vk-note"); if (!el) { el = document.createElement("div"); el.className = "vk-note"; el.setAttribute("role", "status"); document.body.appendChild(el); }
+    el.textContent = msg; el.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(function () { el.classList.remove("on"); }, 2600);
+  }
+  function importList(o) {
+    if (document.querySelector(".vk-dim")) return;
+    var opener = document.activeElement, li = idx(), n = o.cols.length;
+    var dim = document.createElement("div"); dim.className = "vk-dim"; dim.setAttribute("data-vk-keep", "");
+    var s = document.createElement("div"); s.className = "vk-sheet vk-imp"; s.setAttribute("role", "dialog"); s.setAttribute("aria-modal", "true"); s.setAttribute("aria-label", t("impTitle"));
+    var colNames = o.cols.map(function (c) { return c[li] || c[0]; }).join(" | ");
+    s.innerHTML = '<h2></h2><p class="vk-how"></p><textarea rows="6" spellcheck="false" autocapitalize="off"></textarea>' +
+      '<div class="vk-row"><label class="vk-file"><input type="file" accept=".csv,.tsv,.txt,text/plain,text/csv,text/tab-separated-values" hidden><span></span></label><span class="vk-found" aria-live="polite"></span></div>' +
+      '<p class="vk-local"></p><div class="vk-row vk-btns"><button type="button" class="vk-x"></button><button type="button" class="vk-go" disabled></button></div>';
+    var q = function (x) { return s.querySelector(x); }, ta = q("textarea"), go = q(".vk-go"), found = q(".vk-found");
+    q("h2").textContent = t("impTitle"); q(".vk-how").textContent = fmt("impHow", { cols: colNames }); ta.placeholder = t("impPaste");
+    q(".vk-file span").textContent = t("impFile"); q(".vk-local").textContent = "🔒 " + t("impLocal"); q(".vk-x").textContent = t("impCancel");
+    var rows = [];
+    function look() {
+      rows = parseList(ta.value, n);
+      go.disabled = !rows.length; go.textContent = fmt("impAdd", { n: rows.length || "" }).trim();
+      found.textContent = rows.length ? fmt("impFound", { n: rows.length, ex: rows[0].filter(Boolean).slice(0, 2).join(" · ") }) : (ta.value.trim() ? t("impNone") : "");
+    }
+    ta.addEventListener("input", look); look();
+    q("input[type=file]").addEventListener("change", function (e) {
+      var f = e.target.files && e.target.files[0]; if (!f) return;
+      var r = new FileReader(); r.onload = function () { var v = String(r.result || ""); if (/\u0000/.test(v.slice(0, 2000))) { note(t("impBad")); return; } ta.value = v; look(); };
+      r.onerror = function () { note(t("impBad")); }; r.readAsText(f);
+    });
+    function close() { dim.remove(); document.removeEventListener("keydown", key, true); if (opener && opener.focus) opener.focus(); }
+    function key(e) { if (e.key === "Escape") { e.preventDefault(); close(); } }
+    q(".vk-x").onclick = close;
+    go.onclick = function () { if (!rows.length) return; var r = o.add(rows) || {}; close(); note(r.dup ? fmt("impDup", { n: r.added || 0, d: r.dup }) : fmt("impDone", { n: r.added || 0 })); };
+    dim.addEventListener("click", function (e) { if (e.target === dim) close(); });
+    document.addEventListener("keydown", key, true);
+    dim.appendChild(s); document.body.appendChild(dim); ta.focus();
+  }
+
   function sheet() {
     if (document.querySelector(".vk-dim")) return;
     var opener = document.activeElement;
-    var dim = document.createElement("div"); dim.className = "vk-dim";
+    var dim = document.createElement("div"); dim.className = "vk-dim"; dim.setAttribute("data-vk-keep", "");
     var s = document.createElement("div"); s.className = "vk-sheet"; s.setAttribute("role", "dialog"); s.setAttribute("aria-modal", "true"); s.setAttribute("aria-label", t("title"));
     var h = document.createElement("h2"); h.textContent = t("title"); s.appendChild(h);
     var cur = code();
@@ -116,6 +193,6 @@
     e.preventDefault(); e.stopPropagation(); sheet();
   }, true);
 
-  window.VK = { room: room, LANGS: LANGS, code: code, idx: idx, t: t, W: W, sheet: sheet, ui: ui, tr: tr, locale: locale };
+  window.VK = { importList: importList, parseList: parseList, note: note, room: room, LANGS: LANGS, code: code, idx: idx, t: t, W: W, sheet: sheet, ui: ui, tr: tr, locale: locale };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", paintButtons); else paintButtons();
 })();

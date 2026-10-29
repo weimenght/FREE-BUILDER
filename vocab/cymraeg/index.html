@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script><script src="../vk.js?v=3"></script><script src="./ui.js?v=1"></script>
+<meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script><script src="../vk.js?v=4"></script><script src="./ui.js?v=2"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FBF8F3">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -99,8 +99,10 @@ nav.tabs button[aria-current=page]{color:var(--accent)}
 nav.tabs button[aria-current=page]::before{content:"";position:absolute;top:0;width:30px;height:4px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,var(--red) 0 50%,var(--green) 50%)}
 @media (max-height:480px) and (orientation:landscape){:root{--tab-h:48px}nav.tabs button span{display:none}}
 @media (prefers-color-scheme:dark){.btn.good{color:#06210F}}
+.mine-empty{padding:28px 20px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--border);border-radius:22px}.mine-empty p{margin:0}.imp-row{text-align:center;margin:12px 0 0}.btn.imp{display:inline-flex;min-height:44px;font-size:15px;box-shadow:none}
+[hidden]{display:none!important}
 </style>
-<link rel="stylesheet" href="../vk.css?v=2">
+<link rel="stylesheet" href="../vk.css?v=3">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -123,6 +125,8 @@ nav.tabs button[aria-current=page]::before{content:"";position:absolute;top:0;wi
     </div></div>
     <div class="grade"><button class="btn again" id="again" type="button">↺ Eto <small>· again</small></button><button class="btn good" id="good" type="button">✓ Iawn <small>· got it</small></button></div>
     <p class="count" id="cCount"></p>
+    <div class="mine-empty" id="cMine" hidden><p>Dewch â'ch geiriau eich hun · bring your own words: paste them or choose a file.</p></div>
+    <p class="imp-row" id="cImpRow" hidden><button class="btn imp" id="cImp" type="button">⬆ Mewnforio · import a list</button></p>
   </section>
 
   <!-- TREIGLO -->
@@ -248,7 +252,7 @@ Twp|daft, silly|toop|Paid â bod yn dwp!|Don't be daft!`]
   Object.keys(LEVELS).forEach(function (lv) { LEVELS[lv][1].trim().split("\n").forEach(function (l) { var f = l.split("|"); WORDS.push({ k: lv + ":" + f[0], lv: lv, cy: f[0], en: f[1], say: f[2], ex: f[3], exEn: f[4] }); }); });
 
   /* ---------- this phone's progress ---------- */
-  var KEY = "cymraeg_v1", S = { box: {}, days: {}, mut: [0, 0], lv: "Cyfarch" };
+  var KEY = "cymraeg_v1", S = { box: {}, days: {}, mut: [0, 0], lv: "Cyfarch", mine: [] };
   try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) S = Object.assign(S, saved); } catch (e) {}
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
   function day(d) { d = d || new Date(); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
@@ -265,14 +269,21 @@ Twp|daft, silly|toop|Paid â bod yn dwp!|Don't be daft!`]
 
   /* ---------- cards: a simple Leitner box; words you miss come back sooner ---------- */
   var deck = [], idx = 0, flipped = false;
+  var MINE = "Fy ngeiriau";
+  LEVELS[MINE] = ["My words", ""];
+  function mineWords() { WORDS = WORDS.filter(function (w) { return w.lv !== MINE; }).concat((S.mine || []).map(function (m) { return { k: MINE + ":" + m.cy, lv: MINE, cy: m.cy, en: m.en || "", say: m.say || "", ex: m.ex || "", exEn: m.exEn || "" }; })); }
+  mineWords();
   function buildDeck() {
     var list = WORDS.filter(function (w) { return w.lv === S.lv; });
+    var none = !list.length, isMine = S.lv === MINE;
+    document.querySelector("#v-cards .card").hidden = none; document.querySelector("#v-cards .grade").hidden = none; $("cCount").hidden = none;
+    $("cMine").hidden = !(none && isMine); $("cImpRow").hidden = !isMine;
     list.sort(function (a, b) { return (S.box[a.k] || 0) - (S.box[b.k] || 0) || Math.random() - .5; });
     deck = list; idx = 0; paintCard();
   }
   function paintCard() {
-    var w = deck[idx]; if (!w) return; flipped = false; $("flip").classList.remove("on");
-    $("cLv").textContent = w.lv + " · " + LEVELS[w.lv][0]; $("cW").textContent = w.cy; $("cSay").textContent = "/ " + w.say + " /";
+    var w = deck[idx]; if (!w) return; flipped = false; $("cSay").hidden = !w.say; $("flip").classList.remove("on");
+    $("cLv").textContent = w.lv + " · " + LEVELS[w.lv][0]; $("cW").textContent = w.cy; $("cSay").textContent = w.say ? "/ " + w.say + " /" : "";
     $("cEn").textContent = w.en; $("cEx").textContent = w.ex; $("cExEn").textContent = w.exEn;
     var b = S.box[w.k] || 0; $("cBox").textContent = b >= 3 ? "⭐ Rwyt ti'n gwybod hwn · you know this one" : b ? "Bocs " + b + " / 3" : "Newydd · new";
     var known = deck.filter(function (x) { return (S.box[x.k] || 0) >= 3; }).length;
@@ -288,6 +299,12 @@ Twp|daft, silly|toop|Paid â bod yn dwp!|Don't be daft!`]
   $("spk").onclick = function (e) { e.stopPropagation(); say(deck[idx].cy.replace("…", "")); };
   $("again").onclick = function () { grade(false); }; $("good").onclick = function () { grade(true); };
   Object.keys(LEVELS).forEach(function (lv) { var b = document.createElement("button"); b.type = "button"; b.textContent = lv + " · " + LEVELS[lv][0]; b.onclick = function () { S.lv = lv; save(); paintSeg(); buildDeck(); }; b.dataset.lv = lv; $("lvSeg").appendChild(b); });
+  $("cImp").onclick = function () {
+    VK.importList({ cols: [["Welsh", "威尔士语", "威爾斯語", "galés", "gal·lès"], ["English", "英语", "英語", "inglés", "anglès"], ["how to say it", "读法", "讀法", "pronunciación", "pronúncia"], ["example", "例句", "例句", "ejemplo", "exemple"], ["example in English", "例句英文", "例句英文", "ejemplo en inglés", "exemple en anglès"]],
+      add: function (rows) { S.mine = S.mine || []; var have = {}, added = 0, dup = 0; S.mine.forEach(function (m) { have[m.cy] = 1; });
+        rows.forEach(function (c) { if (have[c[0]]) { dup++; return; } S.mine.push({ cy: c[0], en: c[1], say: c[2], ex: c[3], exEn: c[4] }); have[c[0]] = 1; added++; });
+        save(); mineWords(); buildDeck(); return { added: added, dup: dup }; } });
+  };
   function paintSeg() { [].forEach.call($("lvSeg").children, function (b) { b.setAttribute("aria-pressed", b.dataset.lv === S.lv); }); }
   (function swipe() { var x0 = null; $("flip").addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true }); $("flip").addEventListener("touchend", function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 70) { e.preventDefault(); grade(dx > 0); } }); })();
 
@@ -363,7 +380,7 @@ Twp|daft, silly|toop|Paid â bod yn dwp!|Don't be daft!`]
   }
   function stats() { $("sKnown").textContent = Object.keys(S.box).filter(function (k) { return S.box[k] >= 3; }).length; $("sDays").textContent = Object.keys(S.days).length; $("sMut").textContent = S.mut[1] ? Math.round(S.mut[0] / S.mut[1] * 100) + "%" : "—"; }
   document.querySelectorAll("nav.tabs button").forEach(function (b) { b.onclick = function () { show(b.dataset.v); }; });
-  $("reset").onclick = function () { if (!confirm("Dechrau eto? · Start over? Your progress on this phone will be cleared.")) return; S = { box: {}, days: {}, mut: [0, 0], lv: "Cyfarch" }; save(); paintSeg(); buildDeck(); stats(); paintStreak(); };
+  $("reset").onclick = function () { if (!confirm("Dechrau eto? · Start over? Your progress on this phone will be cleared.")) return; S = { box: {}, days: {}, mut: [0, 0], lv: "Cyfarch", mine: S.mine || [] }; save(); paintSeg(); buildDeck(); stats(); paintStreak(); };
 
   paintSeg(); buildDeck(); paintStreak();
   var h = (location.hash || "").slice(1); if (["mut", "num", "snd"].indexOf(h) >= 0) show(h);

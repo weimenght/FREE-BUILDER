@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script><script src="../vk.js?v=3"></script><script src="./ui.js?v=1"></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script><script src="../vk.js?v=4"></script><script src="./ui.js?v=2"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FBF8F3">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -372,7 +372,7 @@
     .choice.long { font-size:15px; font-weight:600; text-align:left; }
     .choices.one { grid-template-columns:1fr; }
   </style>
-<link rel="stylesheet" href="../vk.css?v=2">
+<link rel="stylesheet" href="../vk.css?v=3">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -466,7 +466,7 @@
     </section>
 
     <section class="view" id="v-cards-list" hidden>
-      <div class="search"><svg class="ic"><use href="#i-search"/></svg><input class="input" id="listQ" autocomplete="off"></div>
+      <div class="row" style="gap:8px"><div class="search grow"><svg class="ic"><use href="#i-search"/></svg><input class="input" id="listQ" autocomplete="off"></div><button class="btn vk-imp-btn" data-act="importMine" data-u>导入成语</button></div>
       <div class="list" id="wordList"></div>
     </section>
 
@@ -666,7 +666,7 @@ L3: `
 `
 };
 
-const U_T = {"练习天数": "練習天數", "这一周": "這一週", "练习": "練習", "这台设备没有普通话语音": "這臺設備沒有普通話語音", "简": "簡", "题": "題", "答对": "答對", "复习中": "複習中", "搜成语、拼音或意思": "搜成語、拼音或意思", "差一点": "差一點", "成语一点通": "成語一點通", "听故事": "聽故事", "记住了": "記住了", "下一题": "下一題", "烂熟于心": "爛熟於心", "学成语": "學成語", "释义": "釋義", "这个成语是什么意思？": "這個成語是什麼意思？", "哪个成语最接近？": "哪個成語最接近？", "分钟": "分鐘", "成语库": "成語庫", "连续天数": "連續天數", "没有找到。": "沒有找到。", "进阶": "進階", "点一下看故事 · 左右滑换一张": "點一下看故事 · 左右滑換一張", "进度": "進度", "这一组全都烂熟于心了！换一组吧。": "這一組全都爛熟於心了！換一組吧。", "成语": "成語", "成语<i>一点通</i>": "成語<i>一點通</i>", "这个故事说的是哪个成语？": "這個故事說的是哪個成語？", "答对了！": "答對了！", "补上缺的字": "補上缺的字", "隐藏拼音": "隱藏拼音", "显示拼音": "顯示拼音"};
+const U_T = {"我的": "我的", "导入成语": "匯入成語", "把你自己的成语带来：粘贴或选一个文件。": "把你自己的成語帶來：貼上或選一個檔案。", "练习天数": "練習天數", "这一周": "這一週", "练习": "練習", "这台设备没有普通话语音": "這臺設備沒有普通話語音", "简": "簡", "题": "題", "答对": "答對", "复习中": "複習中", "搜成语、拼音或意思": "搜成語、拼音或意思", "差一点": "差一點", "成语一点通": "成語一點通", "听故事": "聽故事", "记住了": "記住了", "下一题": "下一題", "烂熟于心": "爛熟於心", "学成语": "學成語", "释义": "釋義", "这个成语是什么意思？": "這個成語是什麼意思？", "哪个成语最接近？": "哪個成語最接近？", "分钟": "分鐘", "成语库": "成語庫", "连续天数": "連續天數", "没有找到。": "沒有找到。", "进阶": "進階", "点一下看故事 · 左右滑换一张": "點一下看故事 · 左右滑換一張", "进度": "進度", "这一组全都烂熟于心了！换一组吧。": "這一組全都爛熟於心了！換一組吧。", "成语": "成語", "成语<i>一点通</i>": "成語<i>一點通</i>", "这个故事说的是哪个成语？": "這個故事說的是哪個成語？", "答对了！": "答對了！", "补上缺的字": "補上缺的字", "隐藏拼音": "隱藏拼音", "显示拼音": "顯示拼音"};
 /* ==============================================================
    成语一点通 · app — Simplified or Traditional, all kept in this browser
    ============================================================== */
@@ -678,12 +678,12 @@ const pad2 = n => String(n).padStart(2, '0');
 const dayKey = (d = new Date()) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
 const ico = n => `<svg class="ic"><use href="#i-${n}"/></svg>`;
 const LEVELS = ['L1', 'L2', 'L3'];
-const LV_NAME = { L1: '常用', L2: '有故事', L3: '进阶' };
+const LV_NAME = { L1: '常用', L2: '有故事', L3: '进阶', M: '我的' };
 const SRS_DAYS = [0, 1, 3, 7, 16, 35, 80], DAY = 86400000;
 
 /* ---------- store ---------- */
 const STORE_KEY = 'chengyu_v1';
-const DEF = () => ({ script: null, py: true, lv: 'L1', meta: {}, days: {}, scores: {} });
+const DEF = () => ({ script: null, py: true, lv: 'L1', meta: {}, days: {}, scores: {}, mine: [] });
 let S = DEF();
 try { const r = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); if (r) S = Object.assign(DEF(), r); } catch (e) {}
 if (!S.script) { let l = ''; try { l = (window.FBL && FBL.get()) || ''; } catch (e) {} S.script = l === 'zh-Hant' || /^zh-(TW|HK|MO)/i.test(navigator.language || '') ? 't' : 's'; }
@@ -694,7 +694,8 @@ const u = s => T() ? (U_T[s] || s) : s;
 /* ---------- idioms: the same list in both scripts, keyed by position ---------- */
 function parse(src) { const out = []; LEVELS.forEach(lv => src[lv].trim().split('\n').forEach((line, i) => { const p = line.split('|'); out.push({ key: lv + ':' + i, lv, w: p[0], py: p[1], mean: p[2], en: p[3], story: p[4] || '', ex: p[5] || '' }); })); return out; }
 const LIST_S = parse(IDIOMS), LIST_T = parse(IDIOMS_T);
-const list = () => T() ? LIST_T : LIST_S;
+const mineList = () => (S.mine || []).map(m => ({ key: 'M:' + m.id, lv: 'M', w: m.w, py: m.py || '', mean: m.mean || '', en: m.en || '', story: '', ex: m.ex || '' }));
+const list = () => (T() ? LIST_T : LIST_S).concat(mineList());
 const byKey = k => list().find(x => x.key === k);
 const meta = k => S.meta[k] || (S.meta[k] = { box: 0, due: 0 });
 const peek = k => S.meta[k] || {};
@@ -741,14 +742,14 @@ function buildDeck() {
 }
 function lvTag(it) { return u(LV_NAME[it.lv]); }
 function renderCard() {
-  $('lvSeg').innerHTML = LEVELS.map(l => `<button class="${S.lv === l ? 'on' : ''}" data-act="setLv" data-arg="${l}">${u(LV_NAME[l])}</button>`).join('');
+  $('lvSeg').innerHTML = LEVELS.concat('M').map(l => `<button class="${S.lv === l ? 'on' : ''}" data-act="setLv" data-arg="${l}">${u(LV_NAME[l])}</button>`).join('');
   if (!App.deck.length) buildDeck();
   const src = deckSource(), mastered = src.filter(x => peek(x.key).status === 'mastered').length;
   $('deckStats').innerHTML = `<b style="color:var(--ok)">${mastered}</b> / ${src.length}`; $('deckBar').style.width = (src.length ? mastered / src.length * 100 : 0) + '%';
   $('flip').classList.remove('on'); App.flipped = false;
   const it = byKey(App.deck[App.idx]), empty = !it;
   $('scene').hidden = empty; document.querySelector('.rate').hidden = empty; $('fcEmpty').hidden = !empty;
-  if (empty) { $('fcEmpty').textContent = u('这一组全都烂熟于心了！换一组吧。'); $('deckMeta').textContent = ''; return; }
+  if (empty) { if (S.lv === 'M' && !(S.mine || []).length) { $('fcEmpty').innerHTML = `<p style="margin:0 0 12px">${u('把你自己的成语带来：粘贴或选一个文件。')}</p><button class="btn primary vk-imp-btn" data-act="importMine">${ico('upload')}${u('导入成语')}</button>`; $('deckMeta').textContent = ''; return; } $('fcEmpty').textContent = u('这一组全都烂熟于心了！换一组吧。'); $('deckMeta').textContent = ''; return; }
   $('deckMeta').textContent = `${App.idx + 1} / ${App.deck.length}`; $('fcTag').textContent = lvTag(it); $('fcTag2').textContent = lvTag(it);
   $('fcStar').style.color = peek(it.key).saved ? '#F59E0B' : '';
   $('fcFront').innerHTML = `<p class="term idiom">${esc(it.w)}</p>${S.py ? `<div class="py">${esc(it.py)}</div>` : ''}`;
@@ -789,7 +790,7 @@ function mcAns(a) {
   if (ok) setTimeout(() => { if (MC && MC.done && !$(MC.viewId).hidden) mcNext(); }, 1800);
 }
 function mcNext() { ({ 'v-prac-fill': fillNew, 'v-prac-mean': meanNew, 'v-prac-story': storyNew, 'v-prac-en': enNew })[MC.viewId](); }
-const pool = () => list().filter(x => LEVELS.indexOf(x.lv) <= LEVELS.indexOf(S.lv) || true);
+const pool = () => list().filter(x => x.lv !== 'M' || (x.mean && x.en));
 const after = it => `<span class="idiom" style="font-size:22px">${esc(it.w)}</span><br><small class="py">${esc(it.py)}</small><br><small>${esc(it.mean)}</small>`;
 function fillNew() {
   const it = pick(pool()), chars = [...it.w], i = Math.floor(Math.random() * chars.length), ans = chars[i];
@@ -828,6 +829,19 @@ function applyTheme() { const t = null; if (t) document.documentElement.setAttri
 
 const ACT = {
   tab: a => go(a), sub: a => go(App.tab, a), flip: () => { if (!$('scene').dataset.swiped) flip(); }, next: () => step(1), prev: () => step(-1), rate,
+  importMine: () => VK.importList({
+    cols: [['idiom', '成语', '成語', 'chengyu', 'chengyu'], ['pinyin', '拼音', '拼音', 'pinyin', 'pinyin'], ['meaning', '意思', '意思', 'significado', 'significat'], ['English', '英文', '英文', 'inglés', 'anglès'], ['example', '例句', '例句', 'ejemplo', 'exemple']],
+    add: rows => {
+      S.mine = S.mine || []; const have = new Set(list().map(x => x.w)), HAN = /[\u3400-\u9fff]/, PY = /[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]|^[a-z]+[1-5]?( [a-z]+[1-5]?)+$/i; let added = 0, dup = 0;
+      rows.forEach((c, i) => {
+        const w = c[0]; if (have.has(w)) { dup++; return; }
+        const it = { id: Date.now().toString(36) + i, w, py: '', mean: '', en: '', ex: '' };
+        c.slice(1).filter(Boolean).forEach(x => { if (HAN.test(x)) { if (!it.mean) it.mean = x; else if (!it.ex) it.ex = x; } else if (!it.py && PY.test(x)) it.py = x; else if (!it.en) it.en = x; });
+        S.mine.push(it); have.add(w); added++;
+      });
+      save(); if (added) { S.lv = 'M'; App.deck = []; } go(App.tab); return { added, dup };
+    }
+  }),
   setLv: a => { S.lv = a; save(); App.deck = []; renderCard(); }, shuffle: () => { App.deck = shuffle(App.deck); App.idx = 0; renderCard(); },
   star: () => { const k = App.deck[App.idx]; if (!k) return; const m = meta(k); m.saved = !m.saved; save(); $('fcStar').style.color = m.saved ? '#F59E0B' : ''; },
   starKey: k => { const m = meta(k); m.saved = !m.saved; save(); renderList(); },
