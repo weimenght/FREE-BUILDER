@@ -70,7 +70,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
 </header>
 <main class="fit-main">
   <h1 class="sr" data-t="title">Miso & Yuzu's</h1>
-  <div class="room fit-hero" id="room" style="--fit-ar:1.4545;--fit-h:44vh"><canvas id="cv" width="160" height="110"></canvas><div class="flash" id="flash"></div></div>
+  <div class="room fit-hero" id="room" style="--fit-ar:1.4545;--fit-h:44vh"><canvas id="cv" width="640" height="440"></canvas><div class="flash" id="flash"></div></div>
   <div class="fit-panel">
   <div class="tools" id="tools" role="toolbar"></div>
   <p class="mood" id="mood" aria-live="polite"></p>
@@ -285,8 +285,38 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     c.x = Math.max(0, Math.min(WD - CW, c.x));
   }
   function mood(m) { $("mood").textContent = m; clearTimeout(mood.t); mood.t = setTimeout(function () { $("mood").textContent = ""; }, 3000); }
+  /* the cats here are big, so they get twice the detail: the town's own drawing at 2×, then fur light along the top,
+     shade underneath, a soft speckle in the coat, eyes with a pupil and a glint, and whiskers. The room stays as it is. */
+  var HD = document.createElement("canvas"); HD.width = 44; HD.height = 64; var hd = HD.getContext("2d");
+  var NOISE = []; for (var ni = 0; ni < 44 * 64; ni++) NOISE.push(hash("n" + ni));
+  function hex(c) { var n = parseInt(c.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; }
+  function catHD(k, pose, dir, f, extra) {
+    var C = CATS[k]; hd.setTransform(1, 0, 0, 1, 0, 0); hd.clearRect(0, 0, 44, 64); hd.setTransform(2, 0, 0, 2, 4, 60);
+    drawCat(hd, k, 0, 0, pose, dir, f, extra); hd.setTransform(1, 0, 0, 1, 0, 0);
+    var im = hd.getImageData(0, 0, 44, 64), d = im.data, W2 = 44, H2 = 64, E = hex(C.e), N = hex(C.nose), B = hex(C.b);
+    var at = function (x, y) { return (y * W2 + x) * 4; }, on = function (x, y) { return x >= 0 && y >= 0 && x < W2 && y < H2 && d[at(x, y) + 3] > 0; };
+    var is = function (x, y, c) { var i = at(x, y); return on(x, y) && d[i] === c[0] && d[i + 1] === c[1] && d[i + 2] === c[2]; };
+    var set = function (x, y, c, a) { if (x < 0 || y < 0 || x >= W2 || y >= H2) return; var i = at(x, y), t = a == null ? 1 : a; d[i] = d[i] * (1 - t) + c[0] * t; d[i + 1] = d[i + 1] * (1 - t) + c[1] * t; d[i + 2] = d[i + 2] * (1 - t) + c[2] * t; d[i + 3] = Math.max(d[i + 3], 255 * t); };
+    var light = k === "miso" ? [92, 96, 122] : [255, 196, 120], dark = k === "miso" ? [10, 8, 8] : [150, 72, 22];
+    var eyes = [], nose = null, x, y;
+    for (y = 0; y < H2; y++) for (x = 0; x < W2; x++) {
+      if (!on(x, y)) continue;
+      if (is(x, y, E)) { if (!is(x - 1, y, E) && !is(x, y - 1, E)) eyes.push([x, y]); continue; }
+      if (is(x, y, N)) { if (!nose) nose = [x, y]; continue; }
+      var body = is(x, y, B) || (C.stripe && is(x, y, hex(C.stripe))) || (C.belly && is(x, y, hex(C.belly))) || (C.d && is(x, y, hex(C.d)));
+      if (!body) continue;
+      if (!on(x, y - 1)) set(x, y, light, .55);                       /* light along the top of the fur */
+      else if (!on(x, y + 1) || !on(x, y + 2)) set(x, y, dark, .35);  /* shade underneath */
+      else if (NOISE[(y * W2 + x + (k === "miso" ? 0 : 7)) % NOISE.length] < .07) set(x, y, k === "miso" ? light : dark, .14);   /* a soft speckle in the coat */
+    }
+    eyes.forEach(function (e) { set(e[0] + 1, e[1], [16, 12, 10]); set(e[0] + 1, e[1] + 1, [16, 12, 10]); set(e[0], e[1], [255, 255, 255], .45); });
+    if (nose && pose !== "sleep" && pose !== "box") { var wx = nose[0], wy = nose[1] + 1, wc = k === "miso" ? [220, 214, 200] : [255, 244, 224];
+      for (var w = -4; w <= 5; w++) { if (w === 0 || w === 1) continue; set(wx + w, wy, wc, .55); set(wx + w, wy + 2 + (Math.abs(w) > 3 ? 1 : 0), wc, .4); } }
+    hd.putImageData(im, 0, 0); return HD;
+  }
   function frame() {
     var now = performance.now(); f++;
+    g.setTransform(cv.width / WD, 0, 0, cv.height / HT, 0, 0); g.imageSmoothingEnabled = false;
     ["miso", "yuzu"].forEach(function (k) { think(k, now); });
     room(f);
     if (sunny() && lamp) { g.fillStyle = "rgba(255,236,170,.16)"; g.beginPath(); g.moveTo(18, 50); g.lineTo(58, 50); g.lineTo(SUN.x + SUN.w + 6, FLOOR + 12); g.lineTo(SUN.x - 6, FLOOR + 12); g.closePath(); g.fill(); g.fillStyle = "rgba(255,236,170,.22)"; g.fillRect(SUN.x - 6, FLOOR, SUN.w + 12, 12); }
@@ -298,7 +328,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     /* a neighbour's dog at the window, nose to the glass */
     guests.forEach(function (q) { if (q.dog && window.FBWorld && FBWorld.drawPet) { g.save(); g.beginPath(); g.rect(18, 14, 40, 36); g.clip(); FBWorld.drawPet(g, q.spec, 30 + Math.sin(f / 40) * 3, 57, 1, { flip: false }); g.restore(); R(13, 50, 50, 3, "#8a5a33"); R(20, 44, 6, 6, "#a8582a"); R(19, 38, 3, 6, "#4a8a44"); R(23, 36, 3, 8, "#3f7a3a"); R(26, 40, 2, 4, "#4a8a44"); } });
     if (box) { var bxx = Math.round(box.x - 12); R(bxx, FLOOR - 10, 24, 12, "#b8864a"); R(bxx, FLOOR - 10, 24, 2, "#8a5a2a"); R(bxx - 3, FLOOR - 13, 6, 4, "#c89a5a"); R(bxx + 21, FLOOR - 13, 6, 4, "#c89a5a"); R(bxx + 6, FLOOR - 5, 12, 1, "#8a5a2a"); }
-    homeCats().sort(function (a, b) { return cats[a].x - cats[b].x; }).forEach(function (k) { var c = cats[k]; g.save(); g.translate(Math.round(c.x), FLOOR + (k === "yuzu" ? 3 : 1)); g.scale(SC, SC); drawCat(g, k, 0, 0, c.pose, c.dir, f, { p: c.p, bell: k === "yuzu" && bell }); g.restore(); if (c.pose === "box" && box) { var bf = Math.round(box.x - 12); R(bf, FLOOR - 4, 24, 6, "#b8864a"); R(bf, FLOOR - 4, 24, 1, "#8a5a2a"); } });
+    homeCats().sort(function (a, b) { return cats[a].x - cats[b].x; }).forEach(function (k) { var c = cats[k]; var img = catHD(k, c.pose, c.dir, f, { p: c.p, bell: k === "yuzu" && bell }), sc = SC / 2; g.drawImage(img, Math.round(c.x) - 4 * sc, FLOOR + (k === "yuzu" ? 3 : 1) - 60 * sc, 44 * sc, 64 * sc); if (c.pose === "box" && box) { var bf = Math.round(box.x - 12); R(bf, FLOOR - 4, 24, 6, "#b8864a"); R(bf, FLOOR - 4, 24, 1, "#8a5a2a"); } });
     guests.forEach(function (q) {
       if (q.dog || !window.FBWorld || !FBWorld.drawPet) return;
       var now2 = performance.now(); if (now2 > q.until) { q.until = now2 + 3000 + Math.random() * 5000; q.tx = Math.random() < .5 ? q.x : 6 + Math.random() * (WD - 30); }
@@ -357,7 +387,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   /* ---------- photos and the album ---------- */
   function snap() {
     shutter(); $("flash").classList.remove("on"); void $("flash").offsetWidth; $("flash").classList.add("on");
-    try { var url = cv.toDataURL("image/png"); S.photos.unshift({ u: url, d: Date.now() }); S.photos = S.photos.slice(0, 9); save(); paintAlbum(); mood("📷 " + t(W.mood.photo)); } catch (e) {}
+    try { var sm = document.createElement("canvas"); sm.width = WD; sm.height = HT; var sx2 = sm.getContext("2d"); sx2.imageSmoothingEnabled = false; sx2.drawImage(cv, 0, 0, WD, HT); var url = sm.toDataURL("image/png"); S.photos.unshift({ u: url, d: Date.now() }); S.photos = S.photos.slice(0, 9); save(); paintAlbum(); mood("📷 " + t(W.mood.photo)); } catch (e) {}
   }
   var MEM = [
     { k: "storm", need: 0, cap: ["The storm night", "雷雨之夜", "雷雨之夜", "La noche de tormenta", "La nit de tempesta"], txt: ["Miso walked in during a thunderstorm and simply never left.", "味噌在一个雷雨夜走了进来，就再也没走。", "味噌在一個雷雨夜走了進來，就再也沒走。", "Miso entró en una noche de tormenta y ya no se fue.", "Miso va entrar una nit de tempesta i ja no se'n va anar."] },
