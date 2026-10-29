@@ -17,6 +17,17 @@
   function t(k) { var w = W[k]; return w ? w[idx()] || w[0] : k; }
 
 
+  /* ---------- the language you're learning: the last room you opened, opened straight away next time ---------- */
+  var ROOMS = ["cat", "es", "yue", "chengyu", "cymraeg"];
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  var path = location.pathname, m = /\/vocab\/([a-z]+)\/(index\.html)?$/.exec(path), here = m && ROOMS.indexOf(m[1]) >= 0 ? m[1] : null;
+  if (here) ls("vk_room", here);
+  else if (/\/vocab\/(index\.html)?$/.test(path)) {
+    var mine = ls("vk_room");
+    if (mine && ROOMS.indexOf(mine) >= 0 && !location.hash && !/[?&]all\b/.test(location.search)) { location.replace(path.replace(/index\.html$/, "") + mine + "/"); }
+  }
+  function room() { var r = ls("vk_room"); return ROOMS.indexOf(r) >= 0 ? r : null; }
+
   /* ---------- the rooms' own words in the interface language ----------
      VK.ui({ src: "ca", skip: ".term,.meaning", d: { "Targetes": ["Cards", "卡片", "卡片", "Tarjetas", "Targetes"], ... } })
      A key may hold # (any number or a level code like A1, kept as it is) and * (any text);
@@ -105,6 +116,6 @@
     e.preventDefault(); e.stopPropagation(); sheet();
   }, true);
 
-  window.VK = { LANGS: LANGS, code: code, idx: idx, t: t, W: W, sheet: sheet, ui: ui, tr: tr, locale: locale };
+  window.VK = { room: room, LANGS: LANGS, code: code, idx: idx, t: t, W: W, sheet: sheet, ui: ui, tr: tr, locale: locale };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", paintButtons); else paintButtons();
 })();

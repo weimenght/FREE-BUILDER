@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script><script src="./vk.js?v=2"></script>
+<meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script><script src="./vk.js?v=3"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Vocab</title>
 <meta name="description" content="Pick a language to practise: Catalan, Spanish, Cantonese or Chinese idioms. Flashcards, sound and little drills, all kept on your own device.">
@@ -57,6 +57,19 @@
   .note { margin-top:26px; color:var(--muted); font-size:13px; text-align:center; }
   @media (prefers-color-scheme: dark) { .lang .go { color:#111; } .ca, .es { --ink:#FFC94A; } .yue { --ink:#FF5C7A; } }
   @media (prefers-reduced-motion: reduce) { .lang, .lang .go { transition:none; } }
+  .sub.ask { color:var(--text); font:600 clamp(18px, 4.6vw, 22px)/1.3 "Figtree", system-ui, sans-serif; margin:4px 0 22px; }
+  .lang.mine { order:-1; }
+  @media (max-width:600px) {
+    .grid { gap:12px; }
+    .lang { min-height:0; padding:18px 16px 14px; border-radius:18px; }
+    .lang .logo { width:36px; height:36px; font-size:15px; }
+    .lang .name { font-size:21px; }
+    .lang .word { margin:12px 56px 2px 0; font-size:28px; }
+    .lang .go { width:40px; height:40px; right:14px; bottom:14px; font-size:18px; }
+    .hello { font-size:clamp(26px, 8vw, 40px); }
+  }
+  .lang.mine { box-shadow:0 0 0 2px var(--ink), 0 10px 30px -18px rgba(0,0,0,.35); }
+  .mine-tag { position:absolute; right:16px; top:20px; font:800 11px/1 "Figtree", sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); padding:6px 9px; border-radius:999px; background:var(--card); border:1px solid currentColor; }
   .vk-top { display:flex; align-items:center; justify-content:space-between; margin:-8px -6px 18px; }
   .vk-mark { display:inline-flex; align-items:center; gap:8px; font:700 18px/1 "Fraunces", Georgia, serif; letter-spacing:-.01em; }
   .vk-mark img { border-radius:8px; }
@@ -71,7 +84,7 @@
 <main>
   <header class="vk-top"><span class="vk-mark"><img src="./icon.svg" alt="" width="28" height="28">Vocab</span><button class="icon-btn vk-lang" data-vk="lang" type="button" aria-label="Interface language"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5S9.4 5.2 12 2.5z"/></svg></button></header>
   <h1 class="hello" aria-label="Bon dia · Hola · 你好 · Shwmae"><span>Bon dia!</span><span>¡Hola!</span><span>你好！</span><span>Shwmae!</span></h1>
-  <p class="sub" data-t="sub">Pick a language. Flashcards with sound, little drills, and your progress kept on your own phone.</p>
+  <p class="sub ask" data-t="ask">Which language would you like to learn?</p>
   <div class="grid">
     <a class="lang ca" href="./cat/" lang="ca">
       <span class="bar"></span>
@@ -109,7 +122,8 @@
 <script>
 (function () {
   var W = {
-    sub: ["Pick a language. Flashcards with sound, little drills, and your progress kept on your own phone.", "选一种语言。有读音的字卡、小练习，进度只留在你自己的手机上。", "選一種語言。有讀音的字卡、小練習，進度只留在你自己的手機上。", "Elige un idioma. Tarjetas con sonido, ejercicios cortos y tu progreso guardado en tu propio móvil.", "Tria una llengua. Targetes amb so, exercicis curts i el teu progrés desat al teu propi mòbil."],
+    ask: ["Which language would you like to learn?", "你想学哪种语言？", "你想學哪種語言？", "¿Qué idioma quieres aprender?", "Quina llengua vols aprendre?"],
+    mine: ["Yours", "在学", "在學", "El tuyo", "La teva"],
     ca: ["Catalan · words & verbs", "加泰罗尼亚语 · 单词和动词", "加泰隆尼亞語 · 單字和動詞", "Catalán · palabras y verbos", "Català · paraules i verbs"],
     caG: ["breakfast", "早餐", "早餐", "el desayuno", "el primer àpat del dia"],
     es: ["Spanish · words & verbs", "西班牙语 · 单词和动词", "西班牙語 · 單字和動詞", "Español · palabras y verbos", "Castellà · paraules i verbs"],
@@ -125,6 +139,8 @@
   var L = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }[(window.FBL && FBL.get()) || "en"] || 0;
   document.querySelectorAll("[data-t]").forEach(function (e) { var w = W[e.getAttribute("data-t")]; if (w && w[L]) e.textContent = w[L]; });
   document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][L];
+  var mine = window.VK && VK.room(), card = mine && document.querySelector('.lang[href="./' + mine + '/"]');
+  if (card) { card.classList.add("mine"); var tg = document.createElement("span"); tg.className = "mine-tag"; tg.textContent = W.mine[L]; card.appendChild(tg); }
   if (L === 2) { var w = document.querySelector(".cyw"); if (w) w.textContent = "畫龍點睛"; var n = document.querySelector(".cy .name"); if (n) n.innerHTML = "成語<i>一點通</i>"; }
 })();
 </script>
