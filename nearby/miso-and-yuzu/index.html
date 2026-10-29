@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7aab640d42"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=e3a8748dc8" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7aab640d42"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=01695bfdfb" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Miso & Yuzu's · Nearby</title>
 <meta name="description" content="The little room where Miso and Yuzu live. Pet them, feed them a treat, wave a feather, and leaf through their album.">
@@ -100,6 +100,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     tools: { pet: ["Pet", "摸摸", "摸摸", "Acariciar", "Acaronar"], treat: ["Treat", "零食", "零食", "Premio", "Premi"], toy: ["Feather", "逗猫棒", "逗貓棒", "Pluma", "Ploma"], brush: ["Brush", "梳毛", "梳毛", "Cepillar", "Raspallar"], lamp: ["Lamp", "台灯", "檯燈", "Lámpara", "Llum"], box: ["A box", "纸箱", "紙箱", "Una caja", "Una capsa"], cam: ["Take a photo", "拍张照", "拍張照", "Hacer una foto", "Fer una foto"] },
     mood: { purr: ["{n} is purring.", "{n} 在打呼噜。", "{n} 在打呼嚕。", "{n} ronronea.", "{n} ronca de gust."], eat: ["Crunch, crunch.", "咔嚓咔嚓。", "咔嚓咔嚓。", "Cronch, cronch.", "Cruix, cruix."], pounce: ["{n} pounces!", "{n} 扑过去了！", "{n} 撲過去了！", "¡{n} salta!", "{n} salta!"], sleep: ["Shh. They're asleep.", "嘘，它们睡着了。", "噓，牠們睡著了。", "Shh. Están dormidos.", "Xst. Dormen."], fluff: ["So fluffy.", "毛蓬蓬的。", "毛蓬蓬的。", "Qué esponjoso.", "Que esponjós."], full: ["They've had enough treats for now.", "今天的零食够啦。", "今天的零食夠啦。", "Ya han comido bastantes premios.", "Ja han menjat prou premis."], photo: ["Saved to the album.", "已放进相册。", "已放進相簿。", "Guardada en el álbum.", "Desada a l'àlbum."], unlock: ["A new memory in the album!", "相册里多了一段回忆！", "相簿裡多了一段回憶！", "¡Un recuerdo nuevo en el álbum!", "Un record nou a l'àlbum!"] },
     out: ["{n} is out: {p}", "{n} 出门了：在{p}", "{n} 出門了：在{p}", "{n} ha salido: {p}", "{n} ha sortit: {p}"],
+    together: ["Miso and Yuzu went out together. The cushion's still warm. They're at {p}", "味噌和柚子一起出门了，垫子还是热的。她们在{p}", "味噌和柚子一起出門了，墊子還是熱的。她們在{p}", "Miso y Yuzu han salido juntas. El cojín sigue tibio. Están en {p}", "La Miso i la Yuzu han sortit juntes. El coixí encara és tebi. Són a {p}"],
     bothOut: ["Both out. The cushion's still warm. Miso: {a} · Yuzu: {b}", "都出门了，垫子还是热的。味噌：{a} · 柚子：{b}", "都出門了，墊子還是熱的。味噌：{a} · 柚子：{b}", "Las dos han salido. El cojín sigue tibio. Miso: {a} · Yuzu: {b}", "Han sortit totes dues. El coixí encara és tebi. Miso: {a} · Yuzu: {b}"],
     box: ["A box", "纸箱", "紙箱", "Una caja", "Una capsa"],
     visit: ["{n} dropped by.", "{n} 来串门了。", "{n} 來串門了。", "{n} ha venido de visita.", "{n} ha vingut de visita."],
@@ -230,7 +231,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
   function paintAway() {
     var el = $("away"), out = ["miso", "yuzu"].filter(function (k) { return !HOME[k]; }); el.hidden = !out.length; if (!out.length) return; el.innerHTML = "";
     var nm = function (k) { return window.FBWorld && FBWorld.name ? FBWorld.name(k) : k; }, link = function (k) { var b = document.createElement("button"); b.type = "button"; b.textContent = (FBWorld.icon ? FBWorld.icon(AWAY[k]) + " " : "") + nm(AWAY[k]) + " ›"; b.onclick = function () { goTo(AWAY[k]); }; return b; };
-    var tpl = out.length === 2 ? t(W.bothOut) : t(W.out).replace("{n}", t(CATS[out[0]].n)), parts = tpl.split(/(\{[pab]\})/);
+    var same = out.length === 2 && AWAY.miso === AWAY.yuzu, tpl = same ? t(W.together) : out.length === 2 ? t(W.bothOut) : t(W.out).replace("{n}", t(CATS[out[0]].n)), parts = tpl.split(/(\{[pab]\})/);
     parts.forEach(function (x) { if (x === "{p}") el.appendChild(link(out[0])); else if (x === "{a}") el.appendChild(link("miso")); else if (x === "{b}") el.appendChild(link("yuzu")); else if (x) el.appendChild(document.createTextNode(x)); });
   }
   /* a cardboard box (put it down anywhere on the floor): the nearest cat gets in, the other sulks next to it */
