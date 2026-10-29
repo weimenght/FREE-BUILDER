@@ -25,7 +25,7 @@
   }
   size(); addEventListener("resize", size);
   function wetSky() { try { var w = FBWorld.weather(); return w !== "clear"; } catch (e) { return false; } }   /* bees only come out in the sun */
-  function night() { var h = window.FBWorld ? FBWorld.hour() : new Date().getHours(); h = ((h % 24) + 24) % 24; return h < 5.5 || h >= 20; }
+  function night() { var h = window.FBWorld ? (FBWorld.solar ? FBWorld.solar() : FBWorld.hour()) : new Date().getHours(); h = ((h % 24) + 24) % 24; return h < 5.5 || h >= 20; }
   function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
   function head(f) { var gw = cv.width, gh = cv.height, sway = Math.sin(t / 40 + f.ph) * 1.5 + f.nod * 3; return { x: f.x * gw + sway, y: gh - f.h * gh }; }
   function draw() {

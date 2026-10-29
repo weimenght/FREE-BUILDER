@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=be4bdf0f3a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=99297acc00" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2c96e6a14d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=99297acc00" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Plaza · Nearby</title>
 <meta name="description" content="The square in the middle of Nearby: a fountain, benches, pigeons. Toss a coin and make a wish; keep it to yourself or let it float for the town to read.">
@@ -179,7 +179,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     var grey = wx === "rain" || wx === "storm" || wx === "fog" ? .45 : wx === "snow" ? .3 : 0, snow = wx === "snow", wet = wx === "rain" || wx === "storm";
     for (var y = 0; y < G.py; y++) R(0, y, PW, 1, mix(mix(sk[0], sk[1], y / G.py), "#7a8090", grey));
     if (night && wx === "clear") for (var s = 0; s < PW * G.hy / 60; s++) if ((f / 40 + s) % 13 > 1) R(hash(s) * PW, hash(s + 50) * G.hy, 1, 1, "#fbf6ea");
-    var hr = W.hour();
+    var hr = W.solar ? W.solar() : W.hour();   /* where the sun is, by the season */
     if (wx === "clear" || wx === "cloudy") { var bx = PW * ((hr % 12) / 12), by = G.hy * (.3 + Math.abs(((hr % 12) - 6) / 6) * .5), r = Math.max(3, PW / 40); g.fillStyle = night ? "#e8e8f0" : "#fff3c0"; g.beginPath(); g.arc(bx, by, r, 0, 6.3); g.fill(); if (night) { g.fillStyle = sk[0]; g.beginPath(); g.arc(bx + r * .45, by - r * .2, r * .85, 0, 6.3); g.fill(); } }
     for (var c = 0; c < 4; c++) { var cx = ((hash(c + 40) * (PW + 60) + f * (.03 + c * .01)) % (PW + 60)) - 30, cy = G.hy * (.15 + hash(c + 7) * .5), cw = 16 + hash(c) * 22, cc = night ? "rgba(120,130,170,.3)" : "rgba(255,255,255," + (.7 - grey * .3) + ")"; R(cx, cy, cw, 3, cc); R(cx + 4, cy - 2, cw * .5, 2, cc); }
     /* the houses round the square: hutong roofs, shutters, warm windows in the evening */

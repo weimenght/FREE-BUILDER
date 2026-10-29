@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=be4bdf0f3a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=99297acc00" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2c96e6a14d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=99297acc00" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>No Hurry · Nearby</title>
 <meta name="description" content="A cabin on the high pasture with a big window. Clouds, cows, weather. Nothing to do here, and that's the point.">
@@ -49,7 +49,7 @@ canvas#cv{touch-action:none}
     var ph = W.phase(), wx = W.weather(), sk = SKY[ph] || SKY.day, grey = wx === "rain" || wx === "storm" || wx === "fog" ? .45 : wx === "snow" ? .3 : 0;
     for (var y = 0; y < h; y++) R(x0, y0 + y, w, 1, mix(mix(sk[0], sk[1], y / h), "#7a8090", grey));
     if (ph === "night" && wx === "clear") { for (var s = 0; s < w * h / 90; s++) if ((f / 30 + s) % 11 > 1) R(x0 + hash(s) * w, y0 + hash(s + 99) * h * .55, 1, 1, "#fbf6ea"); if (f - star < 30) R(x0 + w * .8 - (f - star) * 2, y0 + 6 + (f - star), 3, 1, "#fff"); else if (Math.random() < .002) star = f; }
-    var hr = W.hour(), up = ph !== "night", bx = x0 + w * ((hr % 12) / 12), by = y0 + h * (.15 + Math.abs(((hr % 12) - 6) / 6) * .3);
+    var hr = W.solar ? W.solar() : W.hour(), up = ph !== "night", bx = x0 + w * ((hr % 12) / 12), by = y0 + h * (.15 + Math.abs(((hr % 12) - 6) / 6) * .3);
     if (wx === "clear" || wx === "cloudy") { var r = Math.max(3, w / 28); g.fillStyle = up ? "#fff3c0" : "#e8e8f0"; g.beginPath(); g.arc(bx, by, r, 0, 6.3); g.fill(); if (!up) { g.fillStyle = mix(sk[0], sk[1], .2); g.beginPath(); g.arc(bx + r * .4, by - r * .2, r * .85, 0, 6.3); g.fill(); } }
     // far peaks
     for (var x = 0; x < w; x++) { var p = Math.sin(x / w * 9 + 1) * .06 + Math.sin(x / w * 23) * .025, ht = h * (.42 + p); R(x0 + x, y0 + ht, 1, h * .2, ph === "night" ? "#2a3048" : "#7a88a8"); if (p > .04) R(x0 + x, y0 + ht, 1, 2, "#f6f6fa"); }

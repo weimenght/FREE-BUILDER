@@ -641,7 +641,8 @@
   }
   function carClock() {   /* {getHours, getMinutes} on the town's clock (4× real time), moved into the car's part of the day */
     var h = window.FBWorld && FBWorld.hour ? FBWorld.hour() % 24 : 12, t = state.timeOfDay;
-    var fits = { dawn: h >= 5 && h < 8.5, afternoon: h >= 11 && h < 17, sunset: h >= 17 && h < 20.5, night: h >= 20.5 || h < 5 };
+    var sh = window.FBWorld && FBWorld.solar ? FBWorld.solar(h) : h;
+    var fits = { dawn: sh >= 5 && sh < 8.5, afternoon: sh >= 11 && sh < 17, sunset: sh >= 17 && sh < 20.5, night: sh >= 20.5 || sh < 5 };
     if (t && fits[t] === false) h = ({ dawn: 6, afternoon: 15, sunset: 18, night: 2 })[t] + (h % 1);
     return { getHours: function () { return Math.floor(h); }, getMinutes: function () { return Math.floor((h % 1) * 60); } };
   }
