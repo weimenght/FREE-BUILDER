@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=84a41646c6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=afca426a87" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=b5f2069614"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=5485171843" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -7752,6 +7752,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
       + '#wei-note::before{content:"";position:absolute;top:-7px;left:50%;width:22px;height:10px;margin-left:-11px;background:rgba(242,165,65,.75);border:1px solid #000}'
       + '#wei-note b{display:block;font:15px/1 VT323,"PingFang SC",monospace;letter-spacing:.05em;color:#b4472c;margin-bottom:4px}#wei-note span{display:block;text-decoration:underline;text-decoration-style:dotted}#wei-note i{display:block;text-align:right;font-style:normal;opacity:.7}'
       + '#wei-note:hover,#wei-note:focus-visible{transform:translateX(-50%) rotate(0) scale(1.05)}'
+      + 'body.mei-on #wei-note,body.popo-on #wei-note{left:23%;bottom:66px;width:100px;padding:6px 7px 5px;transform:translateX(-50%) rotate(-5deg)}body.mei-on #wei-note b,body.popo-on #wei-note b{font-size:13px}'   /* someone else is behind the counter: the note is pinned to the wall beside them, not over them */
       + 'body.wei-away #wei-note{display:block;animation:noteIn .5s steps(4)}@keyframes noteIn{0%{transform:translateX(-50%) translateY(-30px) rotate(-14deg);opacity:0}}'
       + 'body.wei-away #wei-anchor,body.wei-away #wei-zzz-particles{visibility:hidden}';
     document.head.appendChild(css);
@@ -8376,8 +8377,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   };
   function on() {
     var d = W.host(), h = W.hour() % 24, meiUp = !(h >= 2 && h < 12);
-    if (d.who === "mei") return !d.asleep;
-    return meiUp && ((window.WeiAway && WeiAway.on()) || AppState.weiState === "asleep");
+    return d.who === "mei" && !d.asleep;   /* she's here only on her visits (FBWorld.host: one host per visit) */
   }
   /* Wei's travelling and it's Mei's night (02:00–12:00): the top bar shows her asleep, so the bar does too: head on the counter */
   function napping() { try { var d = W.host(); return d.who === "mei" && d.asleep; } catch (e) { return false; } }
@@ -8395,19 +8395,29 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
     if (z) { document.body.classList.add("mei-on"); paint(); var hn0 = document.getElementById("host-name"); if (hn0) hn0.textContent = "Mei";
       try { setText("sleep-header-title", L(T.napHead)); setText("sleep-header-badge", ""); var w0 = document.getElementById("sleep-wake"); if (w0) w0.style.display = "none"; var p0 = document.getElementById("host-mood-pill"); if (p0) p0.textContent = "Mei"; if (napT < 0) napT = (Math.random() * T.nap.length) | 0; say(L(T.nap[napT])); var c1 = document.getElementById("sleep-btn-cats"); if (c1 && c1.parentElement.onclick === menu) c1.parentElement.onclick = function () { askCatToBartend(); }; } catch (e) {}
       return; }
-    var x = on(); document.body.classList.toggle("mei-on", x); var hn = document.getElementById("host-name"); if (hn) hn.textContent = x ? "Mei" : "Wei"; if (!x) { var c0 = document.getElementById("sleep-btn-cats"); if (c0 && c0.parentElement.onclick === menu) c0.parentElement.onclick = function () { askCatToBartend(); }; return; }
+    var x = on(); document.body.classList.toggle("mei-on", x); var hn = document.getElementById("host-name"); if (hn && (x || W.host().who === "wei")) hn.textContent = x ? "Mei" : "Wei"; if (!x) { var c0 = document.getElementById("sleep-btn-cats"); if (c0 && c0.parentElement.onclick === menu) c0.parentElement.onclick = function () { askCatToBartend(); }; return; }
     paint();
     try { setText("sleep-header-title", L(T.head)); setText("sleep-header-badge", ""); var w = document.getElementById("sleep-wake"); if (w) w.style.display = "none";
       var cb = document.getElementById("sleep-btn-cats"); if (cb) { cb.textContent = L(T.ask); cb.parentElement.onclick = menu; }
       var pill = document.getElementById("host-mood-pill"); if (pill) pill.textContent = "Mei"; } catch (e) {}
   }
+  /* Mei makes the coffee herself, and her coffee is very bad: the card says what actually arrived */
+  T.tried = M("Mei's attempt: ", "Mei 尝试的", "Mei 嘗試的", "Intento de Mei: ", "Intent de la Mei: ");
+  T.bad = [M("\"It's lukewarm, somehow also burnt, and there's a pink hair tie in the saucer.\"", "\"温吞吞的，却又有股焦味，碟子里还躺着一根粉色发圈。\"", "\"溫吞吞的，卻又有股焦味，碟子裡還躺著一根粉紅色髮圈。\"", "\"Está tibio, de algún modo también quemado, y hay una goma de pelo rosa en el platito.\"", "\"És tebi, i d'alguna manera també cremat, i hi ha una goma de cabell rosa al platet.\""),
+    M("\"The foam was supposed to be a heart. It is a potato.\"", "\"奶泡本来要拉成一颗心。结果是个土豆。\"", "\"奶泡本來要拉成一顆心。結果是個馬鈴薯。\"", "\"La espuma debía ser un corazón. Es una patata.\"", "\"L'escuma havia de ser un cor. És una patata.\""),
+    M("\"Three sugars. You didn't ask for sugar.\"", "\"放了三块糖。你没要糖。\"", "\"放了三顆糖。你沒要糖。\"", "\"Tres azúcares. No pediste azúcar.\"", "\"Tres sucres. No n'has demanat.\""),
+    M("\"It tastes like the bottom of the machine. Mei is watching your face.\"", "\"喝起来像咖啡机的底。Mei 正盯着你的表情。\"", "\"喝起來像咖啡機的底。Mei 正盯著你的表情。\"", "\"Sabe al fondo de la máquina. Mei te mira la cara.\"", "\"Té gust del fons de la màquina. La Mei t'observa la cara.\""),
+    M("\"Mostly ice. She says that's how they do it in New York.\"", "\"大部分是冰。她说纽约都是这么做的。\"", "\"大部分是冰。她說紐約都是這樣做的。\"", "\"Casi todo hielo. Dice que así se hace en Nueva York.\"", "\"Gairebé tot gel. Diu que a Nova York es fa així.\""),
+    M("\"The tea bag is still in. So is the label. So is, briefly, her phone.\"", "\"茶包还在里面。标签也在。她的手机也短暂地掉进去过。\"", "\"茶包還在裡面。標籤也在。她的手機也短暫地掉進去過。\"", "\"La bolsita sigue dentro. La etiqueta también. Su móvil, por un momento, también.\"", "\"La bossa de te encara hi és. L'etiqueta també. El seu mòbil, per un moment, també.\"")];
+  T.served = M("*slides it over and watches you* …Well? Be nice. Wei makes it look easy.", "*把杯子推过来，盯着你* ……怎样？说点好听的。Wei 做起来看着很简单。", "*把杯子推過來，盯著你* ……怎樣？說點好聽的。Wei 做起來看著很簡單。", "*te lo desliza y te mira* …¿Y bien? Sé amable. Wei hace que parezca fácil.", "*te'l llisca i et mira* …I bé? Sigues amable. En Wei fa que sembli fàcil.");
+  function badCoffee() { try { var n = document.getElementById("res-name"), d = document.getElementById("res-description"); if (n && n.textContent.indexOf(L(T.tried)) !== 0) n.textContent = L(T.tried) + n.textContent; if (d) d.textContent = L(T.bad[(Math.random() * T.bad.length) | 0]); } catch (e) {} }
   function menu() {
     var old = document.getElementById("mei-menu"); if (old) old.remove();
     var m = document.createElement("div"); m.id = "mei-menu"; m.setAttribute("role", "dialog");
     m.style.cssText = "position:fixed;left:50%;bottom:calc(16px + var(--safe-b, 0px));transform:translateX(-50%);z-index:96;width:min(380px,calc(100vw - 24px));padding:10px;background:#2a1a10;border:3px solid #000;box-shadow:5px 5px 0 #000;display:grid;grid-template-columns:1fr 1fr;gap:6px";
     Object.keys(DrinkManifest).filter(function (k) { return DrinkManifest[k].type === "cafe"; }).forEach(function (k) {
       var d = DrinkManifest[k], b = document.createElement("button"); b.type = "button"; b.className = "opt-btn"; b.style.cssText = "min-height:44px;text-align:left;justify-content:flex-start";
-      b.textContent = (d.icon ? d.icon + " " : "") + L(d.name); b.onclick = function () { m.remove(); serveItemByKey(k); setTimeout(function () { say(L(T.served)); }, 900); }; m.appendChild(b);
+      b.textContent = (d.icon ? d.icon + " " : "") + L(d.name); b.onclick = function () { m.remove(); serveItemByKey(k); badCoffee(); setTimeout(function () { say(L(T.served)); }, 900); }; m.appendChild(b);
     });
     var bz = document.createElement("button"); bz.type = "button"; bz.className = "opt-btn"; bz.style.gridColumn = "1 / -1"; bz.textContent = L(T.booze); bz.onclick = function () { m.remove(); say(L(T.noBooze)); }; m.appendChild(bz);
     var x = document.createElement("button"); x.type = "button"; x.className = "opt-btn"; x.style.gridColumn = "1 / -1"; x.textContent = "✕"; x.onclick = function () { m.remove(); }; m.appendChild(x);
@@ -8431,6 +8441,137 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   /* now and then, between visitors, she checks her phone */
   setInterval(function () { if (!on() || document.hidden) return; if (Math.random() < .25) { phoneUntil = Date.now() + 5000 + Math.random() * 6000; paint(); setTimeout(paint, phoneUntil - Date.now() + 50); } }, 15000);
   setInterval(dress, 5000); setTimeout(function () { dress(); try { if (on() && AppState.inSanctuary) renderCurrentDialogue(); } catch (e) {} }, 800);
+})();
+</script>
+<script>
+/* Popo and the cats behind the counter. Each visit meets one host (FBWorld.host): on Popo's visits Wei's grandmother keeps
+   the bar. She knows nothing about coffee or cocktails, she cooks (Cantonese and Catalan home food, her own two languages;
+   her English, Spanish and Mandarin are broken on purpose). On the cats' visits nobody stands behind the bar: Miso and Yuzu
+   run it and only say meow. Both keep their hours: Popo sleeps 21:00–05:00 in the armchair by the stove, the cats at night. */
+(function () {
+  var W = window.FBWorld; if (!W || !W.host || !W.drawPopo) return;
+  var M = function (en, zh, yue, es, ca) { return lx([en, zh, yue, yue, es, ca]); };
+  var who = function () { try { return W.host(); } catch (e) { return { who: "wei" }; } };
+  var P = {
+    head: M("POPO'S IN THE KITCHEN", "婆婆在厨房", "婆婆喺廚房", "POPO EN LA COCINA", "LA POPO ÉS A LA CUINA"),
+    napHead: M("POPO'S ASLEEP", "婆婆睡着了", "婆婆瞓著咗", "POPO DUERME", "LA POPO DORM"),
+    hi: [M("*stirring a pot* Ah, you come! Sit. Wei is travelling. Coffee I don't know, but I have soup.", "*搅着锅* 啊，你来啦！坐。阿Wei去旅行了。咖啡我不懂，汤就有。", "*攪緊煲嘢* 啊，你嚟啦！坐低。阿Wei去咗旅行。咖啡我唔識，湯就有。", "*remueve la olla* ¡Ah, tú vienes! Siéntate. Wei de viaje. Café no sé, pero tengo sopa.", "*remena l'olla* Ah, ja ets aquí! Seu. En Wei és de viatge. De cafè no en sé, però tinc sopa."),
+      M("*wipes the counter with a tea towel* Sit, sit. You look hungry. Popo cooks.", "*用茶巾擦吧台* 坐，坐。你看起来饿了。婆婆煮给你吃。", "*用條毛巾抹吧枱* 坐啦坐啦。你個樣好肚餓喎。婆婆煮俾你食。", "*limpia la barra con un trapo* Siéntate, siéntate. Pareces hambre. Popo cocina.", "*eixuga la barra amb un drap* Seu, seu. Fas cara de gana. La Popo cuina."),
+      M("*tastes from a wooden spoon, nods* Good timing. Everything is hot now.", "*用木勺尝了一口，点点头* 来得正好。现在什么都是热的。", "*用木羹試咗啖，點點頭* 嚟得啱。而家樣樣都熱辣辣。", "*prueba de la cuchara, asiente* Buen momento. Todo caliente ahora.", "*tasta de la cullera de fusta i assenteix* Arribes a temps. Ara tot és calent.")],
+    chat: [M("*pinches your cheek* So thin! Eat more.", "*捏捏你的脸* 这么瘦！多吃点。", "*捏吓你塊面* 咁瘦！食多啲啦。", "*te pellizca la mejilla* ¡Muy flaco! Come más.", "*et pessiga la galta* Que prim que estàs! Menja més."),
+      M("*shows you a photo of Wei as a baby* Look, so fat! Now too thin.", "*给你看阿Wei小时候的照片* 你看，好胖！现在太瘦了。", "*俾你睇阿Wei細個張相* 你睇，好肥！而家太瘦喇。", "*te enseña una foto de Wei bebé* Mira, ¡muy gordito! Ahora muy flaco.", "*t'ensenya una foto d'en Wei de nadó* Mira, que grassonet! Ara està massa prim."),
+      M("This machine, Wei's coffee machine, I don't touch. It hisses at me.", "这个机器，阿Wei的咖啡机，我不碰的。它对我嘶嘶叫。", "呢部機，阿Wei部咖啡機，我唔掂㗎。佢對住我嘶嘶聲。", "Esta máquina, de café de Wei, yo no toco. Me hace shhh.", "Aquesta màquina, la cafetera d'en Wei, no la toco. Em xiula."),
+      M("*hums a Cantonese opera tune, then a Catalan song* Both good for cooking.", "*哼了一段粤曲，又哼了一首加泰罗尼亚歌* 两个都适合煮饭。", "*哼咗段粵曲，又哼咗首加泰隆尼亞歌* 兩樣都啱煮飯聽。", "*tararea ópera cantonesa, luego canción catalana* Las dos buenas para cocinar.", "*taral·leja una òpera cantonesa i després una cançó catalana* Totes dues van bé per cuinar."),
+      M("You call your mother this week? Call her.", "这个星期你打电话给妈妈了没有？打给她。", "今個禮拜有冇打俾阿媽？打俾佢啦。", "¿Tú llamas a tu madre esta semana? Llámala.", "Aquesta setmana has trucat a ta mare? Truca-li.")],
+    ask: M("Ask Popo what's cooking", "问婆婆煮了什么", "問婆婆煮咗乜", "Pregunta a Popo qué hay", "Pregunta-li a la Popo què hi ha"),
+    coffee: M("A coffee", "来杯咖啡", "嚟杯咖啡", "Un café", "Un cafè"),
+    coffeeNo: M("Coffee? Aiya, too strong, bad for the heart. Have soup.", "咖啡？哎呀，太浓了，伤心脏。喝汤吧。", "咖啡？哎呀，太濃喇，傷心㗎。飲碗湯啦。", "¿Café? Ay, muy fuerte, malo para corazón. Toma sopa.", "Cafè? Ai, massa fort, no va bé per al cor. Pren sopa."),
+    booze: M("A cocktail", "来杯鸡尾酒", "嚟杯雞尾酒", "Un cóctel", "Un còctel"),
+    boozeNo: M("Cocktail? I don't know these things. Wei comes back, you ask him. Now: eat.", "鸡尾酒？这些我不懂的。等阿Wei回来你问他。现在：吃饭。", "雞尾酒？呢啲嘢我唔識㗎。等阿Wei返嚟你問佢。而家：食飯。", "¿Cóctel? Yo no sabe de esto. Wei vuelve, tú preguntas. Ahora: comer.", "Un còctel? D'això no en sé res. Quan torni en Wei, li ho demanes. Ara: a menjar."),
+    served: M("*watches you take the first spoon* Good? Good. Eat slowly.", "*看着你吃第一口* 好吃吗？好。慢慢吃。", "*望住你食第一啖* 好唔好食？好。慢慢食。", "*te mira comer la primera cucharada* ¿Bueno? Bueno. Come despacio.", "*et mira menjar la primera cullerada* Bo? Bé. Menja a poc a poc."),
+    nap: [M("*Popo asleep in the armchair by the stove, a blanket on her knees, the radio playing Cantonese opera very quietly. A pot is keeping warm.*", "*婆婆在炉边的扶手椅上睡着了，膝上盖着毯子，收音机小声放着粤曲。锅里的汤还温着。*", "*婆婆喺爐邊張梳化椅度瞓著咗，膝頭冚住張氈，收音機細細聲播緊粵曲。煲湯仲溫住。*", "*Popo duerme en el sillón junto a la cocina, con una manta en las rodillas y la radio con ópera cantonesa muy bajita. Una olla se mantiene caliente.*", "*La Popo dorm a la butaca vora els fogons, amb una manta als genolls i la ràdio amb òpera cantonesa molt fluixet. Una olla es manté calenta.*"),
+      M("*Popo dozes with her glasses on her head. A note on the counter, in three languages: 'SOUP ON THE STOVE. TAKE.'*", "*婆婆眼镜架在头上打瞌睡。吧台上有张三种语言写的纸条：“炉上有汤。自己拿。”*", "*婆婆副眼鏡擺咗喺頭頂，瞌緊眼瞓。吧枱有張三種文字嘅紙仔：「爐頭有湯。自己攞。」*", "*Popo dormita con las gafas en la cabeza. Una nota en la barra, en tres idiomas: 'SOPA EN EL FUEGO. COGE.'*", "*La Popo fa una becaina amb les ulleres al cap. Una nota a la barra, en tres llengües: 'HI HA SOPA AL FOC. AGAFA'N.'*")]
+  };
+  var DISH = [
+    { k: "congee", ic: "bowl", name: M("Congee with ginger & scallion", "姜葱白粥", "薑蔥白粥", "Congee de jengibre y cebolleta", "Congee amb gingebre i ceba tendra"), sub: M("Rice, slowly, since six this morning", "大米，从早上六点慢慢熬", "由朝早六點慢慢煲", "Arroz, a fuego lento desde las seis", "Arròs a foc lent des de les sis del matí"), desc: M("\"Hot, hot. Blow first. Good for the stomach.\"", "\"烫，烫。先吹吹。对胃好。\"", "\"熱㗎，熱㗎。吹吓先。對個胃好。\"", "\"Caliente, caliente. Primero soplar. Bueno para estómago.\"", "\"Crema, crema. Bufa primer. Va bé per a l'estómac.\"") },
+    { k: "wonton", ic: "bowl", name: M("Wonton noodle soup", "云吞面", "雲吞麵", "Sopa de wonton con fideos", "Sopa de wonton amb fideus"), sub: M("Shrimp wontons, thin egg noodles", "鲜虾云吞，细蛋面", "鮮蝦雲吞，幼蛋麵", "Wontons de gamba, fideos finos de huevo", "Wontons de gamba, fideus fins d'ou"), desc: M("\"Noodles under, wontons on top, so noodles don't get soft. My mother's way.\"", "\"面在下面，云吞在上面，面才不会烂。我妈妈的做法。\"", "\"麵喺底，雲吞喺面，啲麵先唔會腍。我阿媽嘅做法。\"", "\"Fideos abajo, wontons arriba, así fideos no blandos. Manera de mi madre.\"", "\"Els fideus a sota i els wontons a sobre, perquè no s'estovin. Com ho feia ma mare.\"") },
+    { k: "pa", ic: "bread", name: M("Pa amb tomàquet", "番茄面包", "番茄麵包", "Pan con tomate", "Pa amb tomàquet"), sub: M("Toasted bread, ripe tomato, olive oil, salt", "烤面包，熟番茄，橄榄油，盐", "烘麵包，熟番茄，橄欖油，鹽", "Pan tostado, tomate maduro, aceite, sal", "Pa torrat, tomàquet madur, oli i sal"), desc: M("\"Rub the tomato hard. Oil, a lot. In Barcelona, everybody knows.\"", "\"番茄要用力擦。油，多一点。在巴塞罗那，大家都知道。\"", "\"番茄要大力擦。油，多啲。喺巴塞隆拿，個個都識。\"", "\"Frota el tomate fuerte. Aceite, mucho. En Barcelona, todos saben.\"", "\"Frega bé el tomàquet. Oli, que no en falti. A Barcelona ho sap tothom.\"") },
+    { k: "escudella", ic: "bowl", name: M("Escudella", "加泰罗尼亚杂烩汤", "加泰隆尼亞雜燴湯", "Escudella", "Escudella"), sub: M("Catalan winter stew, pasta shells in the broth", "加泰罗尼亚冬天的炖汤，汤里有贝壳面", "加泰隆尼亞冬天嘅燉湯，湯入面有貝殼粉", "Cocido catalán de invierno, con galets", "Escudella i carn d'olla, amb galets"), desc: M("\"Two days I cook this. Two days! You finish it.\"", "\"这个我煮了两天。两天呀！你要吃完。\"", "\"呢個我煲咗兩日。兩日呀！你要食晒。\"", "\"Dos días cocino esto. ¡Dos días! Tú terminas.\"", "\"Dos dies que la cuino. Dos dies! Te l'acabes.\"") },
+    { k: "tart", ic: "tart", name: M("Egg tart", "蛋挞", "蛋撻", "Tartaleta de huevo", "Pastisset d'ou"), sub: M("Flaky pastry, still warm", "酥皮的，还是热的", "酥皮嘅，仲係熱嘅", "Hojaldre, todavía caliente", "Full, encara calent"), desc: M("\"Take two. One for now, one for later. Nobody counts.\"", "\"拿两个。一个现在吃，一个等下吃。没人数的。\"", "\"攞兩個。一個而家食，一個陣間食。冇人數㗎。\"", "\"Coge dos. Uno ahora, uno después. Nadie cuenta.\"", "\"Agafa'n dos. Un ara i un per després. Ningú no els compta.\"") },
+    { k: "dumplings", ic: "dumpling", name: M("Dumplings, folded this morning", "今早包的饺子", "今朝包嘅餃子", "Dumplings de esta mañana", "Dumplings plegats aquest matí"), sub: M("Pork and cabbage, with black vinegar", "猪肉白菜，配黑醋", "豬肉白菜，點黑醋", "Cerdo y col, con vinagre negro", "Porc i col, amb vinagre negre"), desc: M("\"Next time you come early, you fold with me. I teach you.\"", "\"下次早点来，跟我一起包。我教你。\"", "\"下次早啲嚟，同我一齊包。我教你。\"", "\"Próxima vez tú vienes pronto, doblas conmigo. Yo enseño.\"", "\"La propera vegada vine d'hora i en pleguem junts. T'ensenyo.\"") },
+    { k: "water", ic: "cup", name: M("Hot water", "热水", "滾水", "Agua caliente", "Aigua calenta"), sub: M("Good for you", "对身体好", "對身體好", "Buena para ti", "Et fa bé"), desc: M("\"Cold drinks, no. Hot water. Trust Popo.\"", "\"冷饮不要。喝热水。相信婆婆。\"", "\"凍嘢唔好飲。飲滾水。信婆婆啦。\"", "\"Bebida fría, no. Agua caliente. Confía en Popo.\"", "\"Res de fred. Aigua calenta. Fes cas de la Popo.\"") }
+  ];
+  var C = {
+    head: M("MISO & YUZU ARE ON", "味噌和柚子值班", "味噌同柚子當值", "MISO Y YUZU DE TURNO", "LA MISO I LA YUZU DE TORN"),
+    napHead: M("MISO & YUZU ARE ASLEEP", "味噌和柚子睡着了", "味噌同柚子瞓著咗", "MISO Y YUZU DUERMEN", "LA MISO I LA YUZU DORMEN"),
+    hi: [M("*Miso is sitting on the till. Yuzu pushes a coaster toward you with one paw.* Meow.", "*味噌坐在收银机上。柚子用一只爪子把杯垫推向你。* 喵。", "*味噌坐咗喺收銀機度。柚子用一隻爪將個杯墊推埋嚟。* 喵。", "*Miso está sentada en la caja. Yuzu te empuja un posavasos con la pata.* Miau.", "*La Miso seu damunt la caixa. La Yuzu t'empeny un sotagot amb la pota.* Mèu."),
+      M("*Yuzu walks the length of the bar, knocking nothing over. Yet.* Mrrp.", "*柚子沿着吧台走了一趟，什么都没碰倒。暂时。* 咕噜。", "*柚子沿住吧枱行咗一轉，乜都冇撞跌。暫時。* 咕嚕。", "*Yuzu recorre la barra sin tirar nada. De momento.* Mrrp.", "*La Yuzu recorre la barra sense tirar res. De moment.* Mrrp."),
+      M("*Both cats look at you, then at the menu, then at you.* Meow?", "*两只猫看看你，看看菜单，又看看你。* 喵？", "*兩隻貓望吓你，望吓個餐牌，又望吓你。* 喵？", "*Las dos te miran, miran la carta, te miran otra vez.* ¿Miau?", "*Les dues et miren, miren la carta i et tornen a mirar.* Mèu?")],
+    nap: [M("*Miso and Yuzu asleep in one heap on the bar mat, purring in their sleep.* Prrr…", "*味噌和柚子在吧台垫上睡成一团，睡梦里还打着呼噜。* 呼噜……", "*味噌同柚子喺吧枱墊度瞓成一嚿，瞓著都仲呼嚕呼嚕。* 呼嚕……", "*Miso y Yuzu duermen hechas un ovillo sobre la alfombrilla de la barra, ronroneando.* Prrr…", "*La Miso i la Yuzu dormen fetes un cabdell damunt l'estora de la barra, roncant.* Prrr…")],
+    ask: M("Ask Miso & Yuzu", "问味噌和柚子", "問味噌同柚子", "Pregunta a Miso y Yuzu", "Pregunta-ho a la Miso i la Yuzu"),
+    name: M("Miso & Yuzu", "味噌和柚子", "味噌同柚子", "Miso y Yuzu", "Miso i Yuzu")
+  };
+  var css = document.createElement("style");
+  css.textContent = "#popo-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.popo-on #popo-avatar{display:block}body.popo-on #svg-wei-avatar,body.popo-on #mei-avatar,body.popo-on:not(.popo-nap) #wei-zzz-particles,body.cats-on #svg-wei-avatar,body.cats-on #mei-avatar,body.cats-on #wei-zzz-particles{display:none!important}body.popo-on #wei-anchor{visibility:visible!important}body.cats-on #wei-anchor{visibility:hidden!important}@media (min-width:768px){#popo-avatar{width:92px;height:104px}}";
+  document.head.appendChild(css);
+  var cv = document.createElement("canvas"); cv.id = "popo-avatar"; cv.width = 32; cv.height = 36; cv.setAttribute("role", "img"); cv.setAttribute("aria-label", "Popo");
+  var holder = document.getElementById("sprite-wei-container"); if (holder) holder.appendChild(cv);
+  function paint(asleep) { var g = cv.getContext("2d"); g.clearRect(0, 0, 32, 36); W.drawPopo(g, 0, 3, 1, { asleep: asleep }); }
+  function say(t) { try { setText("sleep-story-text", t); } catch (e) {} }
+  function pick(a) { return a[(Math.random() * a.length) | 0]; }
+  var line = { popo: -1, cats: -1 }, said = "";
+  function btn(fn, label) { var cb = document.getElementById("sleep-btn-cats"); if (!cb) return; cb.textContent = label; cb.parentElement.onclick = fn; }
+  function dress() {
+    var h = who(), b = document.body, P0 = h.who === "popo", C0 = h.who === "cats";
+    b.classList.toggle("popo-on", P0); b.classList.toggle("popo-nap", P0 && h.asleep); b.classList.toggle("cats-on", C0);
+    if (!P0 && !C0) return;
+    b.classList.remove("mei-on", "mei-nap");
+    var hn = document.getElementById("host-name"), pill = document.getElementById("host-mood-pill"), w = document.getElementById("sleep-wake");
+    if (w) w.style.display = "none";
+    try { setText("sleep-header-badge", ""); } catch (e) {}
+    if (P0) {
+      paint(h.asleep); if (hn) hn.textContent = L(M("Popo", "婆婆", "婆婆", "Popo", "Popo")); if (pill) pill.textContent = hn ? hn.textContent : "Popo";
+      try { setText("sleep-header-title", L(h.asleep ? P.napHead : P.head)); } catch (e) {}
+      var key = h.asleep ? "nap" : "hi"; if (said !== "popo-" + key) { said = "popo-" + key; say(L(pick(P[key]))); }
+      if (h.asleep) btn(function () { askCatToBartend(); }, L(lx(["Let the cats serve", "让猫来招呼", "", "等啲貓招呼你", "Que sirvan las gatas", "Que serveixin les gates"]))); else btn(menu, L(P.ask));
+    } else {
+      if (pill) pill.textContent = L(C.name);
+      try { setText("sleep-header-title", L(h.asleep ? C.napHead : C.head)); } catch (e) {}
+      var k2 = h.asleep ? "nap" : "hi"; if (said !== "cats-" + k2) { said = "cats-" + k2; say(L(pick(C[k2]))); }
+      btn(function () { askCatToBartend(); }, L(C.ask));
+    }
+  }
+  function menu() {
+    var old = document.getElementById("popo-menu"); if (old) old.remove();
+    var m = document.createElement("div"); m.id = "popo-menu"; m.setAttribute("role", "dialog");
+    m.style.cssText = "position:fixed;left:50%;bottom:calc(16px + var(--safe-b, 0px));transform:translateX(-50%);z-index:96;width:min(400px,calc(100vw - 24px));max-height:calc(100% - 32px);overflow:auto;padding:10px;background:#2a1a10;border:3px solid #000;box-shadow:5px 5px 0 #000;display:grid;grid-template-columns:1fr 1fr;gap:6px";
+    function add(html, label, fn, wide) { var b = document.createElement("button"); b.type = "button"; b.className = "opt-btn"; b.style.cssText = "min-height:44px;text-align:left;justify-content:flex-start;display:flex;align-items:center;gap:6px" + (wide ? ";grid-column:1 / -1" : ""); b.innerHTML = html; var sp = document.createElement("span"); sp.textContent = label; b.appendChild(sp); b.onclick = function () { m.remove(); fn(); }; m.appendChild(b); }
+    DISH.forEach(function (d) { add(W.pix ? W.pix(d.ic) : "", L(d.name), function () { serve(d); }); });
+    add("", L(P.coffee), function () { say(L(P.coffeeNo)); });
+    add("", L(P.booze), function () { say(L(P.boozeNo)); });
+    add("", "✕", function () {}, true);
+    document.body.appendChild(m);
+  }
+  function serve(d) {
+    try { showServed({ icon: "", name: L(d.name), sub: L(d.sub), desc: L(d.desc), formula: "", reactable: false }); } catch (e) { say(L(d.desc)); return; }
+    var ic = W.pix ? W.pix(d.ic) : ""; ["res-icon", "served-item-plate"].forEach(function (id) { var el = document.getElementById(id); if (el) el.innerHTML = ic; });
+    try { SoundEngine.playClink(); } catch (e) {}
+    setTimeout(function () { try { showBubble(L(P.served), 3200); } catch (e) {} }, 900);
+    try { DB.log("popo_serve", { k: d.k }); } catch (e) {}
+  }
+  /* the cats curl up when Wei sleeps; on someone else's visit they follow that host instead (their own hours when they're on) */
+  try { var ss0 = Cats.syncSleep; Cats.syncSleep = function () { var h = who(); if (h.who === "wei") return ss0.apply(this, arguments); var asleep = h.who === "cats" && h.asleep, self = this;
+    ["miso", "yuzu"].forEach(function (id) { var st = self.st[id]; if (asleep && st.pose !== "loaf") self.setPose(id, "loaf"); if (!asleep && st.pose === "loaf" && st.sleepUntil < Date.now()) self.setPose(id, "sit"); }); }; setTimeout(function () { try { Cats.syncSleep(); } catch (e) {} }, 1200); } catch (e) {}
+  /* behind the counter, each host's own things: Mei's shelf is all glitter (nail polish, lip gloss, an iced coffee, polaroids,
+     a disco ball), Popo's is a pantry (pickle jars, a bamboo steamer, a thermos, oranges, a mooncake tin, her radio), and on the
+     cats' visits the shelves are theirs (a box, yarn, a fish, a feather). Wei's shelves stay as he keeps them. */
+  var SHELF = {
+    mei: { sign: M("DON'T TOUCH", "别碰", "別碰", "NO TOCAR", "NO TOCAR"), r: [["polish", "gloss", "compact", "iced"], ["polaroid", "disco", "polish", "scrunchie"], ["gloss", "polaroid", "scrunchie"], ["iced", "compact", "polish"]] },
+    popo: { sign: M("PANTRY", "婆婆的架子", "婆婆嘅架", "DESPENSA", "REBOST"), r: [["jar", "jar", "steamer", "orange"], ["tin", "thermos", "orange", "cup"], ["radio", "jar", "garden"], ["steamer", "restaurant", "tin"]] },
+    cats: { sign: M("MEOW", "喵", "喵", "MIAU", "MÈU"), r: [["box", "yarn"], ["feather", "fish", "yarn"], ["fish"], ["box"]] }
+  };
+  var shelf0 = null;
+  function shelves(w) {
+    var sh = document.querySelectorAll(".shelf"); if (sh.length < 2) return;
+    var spans = [sh[0].querySelector("#shelf-icon-left"), sh[0].querySelector("#shelf-icon-right"), sh[1].children[0], sh[1].children[1]], sign = document.getElementById("cellar-banner-text");
+    if (!shelf0) shelf0 = spans.map(function (e) { return e ? e.innerHTML : ""; });
+    var S = SHELF[w];
+    if (!S) { if (document.body.dataset.shelf) { spans.forEach(function (e, i) { if (e) e.innerHTML = shelf0[i]; }); delete document.body.dataset.shelf; try { if (window.updateCellarBanner) updateCellarBanner(); } catch (e) {} } return; }
+    if (document.body.dataset.shelf !== w) { document.body.dataset.shelf = w; spans.forEach(function (e, i) { if (e) e.innerHTML = S.r[i].map(function (k) { return '<span class="hshelf">' + W.pix(k) + "</span>"; }).join(""); }); }
+    if (sign && sign.textContent !== L(S.sign)) sign.textContent = L(S.sign);
+  }
+  var css2 = document.createElement("style"); css2.textContent = ".hshelf{display:inline-block;width:20px;height:20px;margin:0 1px;vertical-align:bottom}.hshelf .fbpx{width:20px;height:20px}@media (min-width:768px){.hshelf,.hshelf .fbpx{width:26px;height:26px}}"; document.head.appendChild(css2);
+  setInterval(function () { shelves(who().who); }, 2000); setTimeout(function () { shelves(who().who); }, 600);
+  var tap0 = window.tapBartender;
+  window.tapBartender = function () {
+    var h = who();
+    if (h.who === "popo") { say(L(h.asleep ? pick(P.nap) : pick(P.chat))); return; }
+    if (h.who === "cats") return;
+    return tap0.apply(this, arguments);
+  };
+  var render0 = window.renderCurrentDialogue;
+  window.renderCurrentDialogue = function () { var r = render0.apply(this, arguments); said = ""; dress(); return r; };
+  setInterval(dress, 5000); setTimeout(function () { dress(); try { var h = who(); if ((h.who === "popo" || h.who === "cats") && AppState.inSanctuary) renderCurrentDialogue(); } catch (e) {} }, 900);
 })();
 </script>
 </body>
