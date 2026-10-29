@@ -785,5 +785,51 @@ details{margin-top:16px}summary{cursor:pointer;font:600 13px var(--sans);color:#
 </script>
 
 <script>(function () { var p = document.getElementById("parlor"); if (!p || !window.JBW) return; p.style.position = "relative"; JBW.corner({ dock: p, pos: { right: "10px", top: "4px" } }); })();</script>
+<style id="bp-one">
+/* in town: one room at a time, the whole screen; the floor dial (or a swipe) goes up and down the house */
+html.bp-one, html.bp-one body { height: 100%; overflow: hidden; }
+html.bp-one body { display: flex; flex-direction: column; min-height: 0 !important; }
+html.bp-one body > header { flex: none; }
+html.bp-one .house { flex: 1; min-height: 0; display: block !important; width: 100%; max-width: 820px; box-sizing: border-box; padding: 8px 12px 0 !important; overflow: hidden; touch-action: pan-y; }
+html.bp-one .room { display: none; height: 100%; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; margin: 0 !important; scrollbar-width: thin; }
+html.bp-one .room.cur { display: block; animation: bpIn .38s ease-out; }
+html.bp-one .room.cur.up { animation-name: bpUp; }
+@keyframes bpIn { from { opacity: 0; transform: translateY(18px); } }
+@keyframes bpUp { from { opacity: 0; transform: translateY(-18px); } }
+@media (max-width: 760px) { html.bp-one .room { padding-bottom: 84px; } }
+@media (min-width: 761px) { html.bp-one .house { padding-right: 76px !important; } }
+@media (prefers-reduced-motion: reduce) { html.bp-one .room.cur { animation: none; } }
+</style>
+<script>
+(function () {
+  var inTown = document.documentElement.classList.contains("fbsh-in") || (function () { try { return window.parent !== window && !!window.parent.FBShell; } catch (e) { return false; } })();
+  if (!inTown) return;
+  document.documentElement.classList.add("bp-one");
+  var ORDER = ["attic", "parlor", "garden", "basement"], cur = null;
+  function show(id, from) {
+    var el = document.getElementById(id); if (!el || id === cur) return;
+    var up = cur && ORDER.indexOf(id) < ORDER.indexOf(cur);
+    ORDER.forEach(function (k) { var r = document.getElementById(k); if (r) r.classList.remove("cur", "up"); });
+    el.classList.add("cur"); if (up) el.classList.add("up"); el.scrollTop = 0; cur = id;
+    [].forEach.call(document.querySelectorAll(".floors a"), function (a) { a.classList.toggle("on", a.dataset.r === id); a.setAttribute("aria-current", a.dataset.r === id ? "true" : "false"); });
+  }
+  [].forEach.call(document.querySelectorAll(".floors a"), function (a) { a.addEventListener("click", function (e) { e.preventDefault(); e.stopImmediatePropagation(); show(a.dataset.r); }, true); });
+  /* a book is shown somewhere in the house: go to its room first */
+  var siv = Element.prototype.scrollIntoView;
+  Element.prototype.scrollIntoView = function () { var r = this.closest && this.closest(".room"); if (r && r.id && r.id !== cur) show(r.id); return siv.apply(this, arguments); };
+  /* a swipe up or down at the edge of a room goes to the next floor */
+  var house = document.getElementById("house"), y0 = null, x0 = 0, st = 0;
+  house.addEventListener("touchstart", function (e) { var r = document.getElementById(cur); y0 = e.touches[0].clientY; x0 = e.touches[0].clientX; st = r ? r.scrollTop : 0; }, { passive: true });
+  house.addEventListener("touchend", function (e) {
+    if (y0 == null) return; var t = e.changedTouches[0], dy = t.clientY - y0, dx = t.clientX - x0, r = document.getElementById(cur); y0 = null;
+    if (!r || Math.abs(dy) < 70 || Math.abs(dx) > Math.abs(dy)) return; var i = ORDER.indexOf(cur);
+    if (dy < 0 && st + r.clientHeight >= r.scrollHeight - 4 && i < ORDER.length - 1) show(ORDER[i + 1]);
+    else if (dy > 0 && st <= 2 && i > 0) show(ORDER[i - 1]);
+  }, { passive: true });
+  house.addEventListener("wheel", function (e) { var r = document.getElementById(cur); if (!r || Math.abs(e.deltaY) < 30 || wheelT > Date.now()) return; var i = ORDER.indexOf(cur); if (e.deltaY > 0 && r.scrollTop + r.clientHeight >= r.scrollHeight - 2 && i < 3) { wheelT = Date.now() + 700; show(ORDER[i + 1]); } else if (e.deltaY < 0 && r.scrollTop <= 0 && i > 0) { wheelT = Date.now() + 700; show(ORDER[i - 1]); } }, { passive: true });
+  var wheelT = 0;
+  var h = (location.hash || "").replace("#", ""); show(ORDER.indexOf(h) >= 0 ? h : "attic");
+})();
+</script>
 </body>
 </html>
