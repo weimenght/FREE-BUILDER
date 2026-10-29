@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7d34ab51e5"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=be25260283" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2159d68fa1"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=78a8d6c13f" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Plaza · Nearby</title>
 <meta name="description" content="The square in the middle of Nearby: a fountain, benches, pigeons. Toss a coin and make a wish; keep it to yourself or let it float for the town to read.">
@@ -137,7 +137,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
 
   /* ---------- the square ---------- */
   var W = window.FBWorld || { hour: function () { var d = new Date(); return d.getHours() + d.getMinutes() / 60; }, phase: function () { return "day"; }, weather: function () { return "clear"; } };
-  var cv = $("cv"), g = cv.getContext("2d"), PW = 0, PH = 0, S = 2, G = {};
+  var cv = $("cv"), g = (window.FBWorld && FBWorld.seasonCanvas ? FBWorld.seasonCanvas(cv.getContext("2d")) : cv.getContext("2d")), PW = 0, PH = 0, S = 2, G = {};
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
   function hash(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
@@ -249,6 +249,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     if (snow) flakes.forEach(function (d) { R(d.x, d.y, 1, 1, "#ffffff"); });
     if (wx === "fog") { g.fillStyle = "rgba(220,224,230,.28)"; g.fillRect(0, 0, PW, PH); }
     if (lit) { g.fillStyle = night ? "rgba(10,10,40,.28)" : "rgba(60,30,60,.12)"; g.fillRect(0, 0, PW, PH); }
+    if (W.drift && wx !== "storm") W.drift(g, PW, PH, performance.now(), 1, 14);   /* blossom in spring, leaves in autumn */
   }
 
   function step() {

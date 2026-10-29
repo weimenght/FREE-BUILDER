@@ -8,7 +8,7 @@
   var cv = document.createElement("canvas"); cv.id = "skyLand"; cv.setAttribute("aria-hidden", "true");
   cv.style.cssText = "position:fixed;inset:0;width:100%;height:100%;z-index:5;pointer-events:none";
   document.body.appendChild(cv);
-  var g = cv.getContext("2d"), W = 0, H = 0, DPR = 1;
+  var g = (window.FBWorld && FBWorld.seasonCanvas ? FBWorld.seasonCanvas(cv.getContext("2d")) : cv.getContext("2d")), W = 0, H = 0, DPR = 1;
   function size() { DPR = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W * DPR; cv.height = H * DPR; g.setTransform(DPR, 0, 0, DPR, 0, 0); build(); }
   function rnd(seed) { var x = seed >>> 0 || 7; return function () { x ^= x << 13; x >>>= 0; x ^= x >> 17; x ^= x << 5; x >>>= 0; return x / 4294967296; }; }
   var R = rnd((Math.random() * 1e9) | 0), seed = (R() * 1e9) | 0;

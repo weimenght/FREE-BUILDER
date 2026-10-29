@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7d34ab51e5"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=be25260283" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2159d68fa1"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=78a8d6c13f" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Pine Wood · Nearby</title>
 <meta name="description" content="A slow walk under the pines. Stone lanterns, mist, fireflies, and sometimes a cat on the path. Alone, or with a friend somewhere else on the same path.">
@@ -213,7 +213,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     layer(.75, 34, 76, 118, P.t3, 0, .72);
     lanterns(P);
     ctx.fillStyle = P.ground; ctx.fillRect(0, GY, W, H - GY); ctx.fillStyle = P.rim; ctx.fillRect(0, GY, W, 1);
-    floor(P);
+    floor(P); season(P);
     for (var c = Math.floor((camX - 20) / 6); c <= Math.floor((camX + W + 20) / 6); c++) { var r = hash(c * 43.1), gx = Math.round(c * 6 - camX); if (r < .45) { ctx.fillStyle = P.tuft; ctx.fillRect(gx, GY - 1, 2, 1); if (r < .2) ctx.fillRect(gx + 1, GY - 2, 1, 1); } }
     if (mate) { var mxs = Math.round(W / 2 + (mate.x - camX)); if (mxs > -10 && mxs < W + 10) walker(mxs, GY, mate.f, mate.m, time * 6.5, MATE_LOOK[0], MATE_LOOK[1], MATE_LOOK[2], MATE_LOOK[3], MATE_LOOK[4], MATE_LOOK); else { ctx.fillStyle = "#f0c34a"; var ex = mxs < 0 ? 3 : W - 5; ctx.fillRect(ex, GY + 6, 2, 2); } }
     var asleep = WD.phase() === "night";
@@ -226,6 +226,13 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     if (prompt > .01) { ctx.fillStyle = "rgba(210,225,230," + prompt * .55 + ")"; var cx = Math.floor(W / 2), cy = Math.min(H - 6, GY + 16); ctx.fillRect(cx - 14, cy, 1, 1); ctx.fillRect(cx - 13, cy - 1, 1, 3); ctx.fillRect(cx - 12, cy - 2, 1, 5); ctx.fillRect(cx + 14, cy, 1, 1); ctx.fillRect(cx + 13, cy - 1, 1, 3); ctx.fillRect(cx + 12, cy - 2, 1, 5); }
     var wx3 = WD.weather(); if (wx3 === "rain" || wx3 === "storm") { ctx.fillStyle = "rgba(190,210,230,.35)"; for (var q = 0; q < W * H / 170; q++) ctx.fillRect(Math.round((q * 37 + time * 30) % W), Math.round((q * 53 + time * 140) % H), 1, 2); }
     if (wx3 === "fog") { ctx.fillStyle = "rgba(200,215,220,.25)"; ctx.fillRect(0, 0, W, H); }
+    if (WD.drift && wx3 !== "storm") WD.drift(ctx, W, H, performance.now(), 1, 14);
+  }
+  /* the season on the path: pines stay green; autumn leaves from the birches on the ground and in the air, winter frost, spring blossom drifting */
+  function season(P) {
+    var se = WD.season ? WD.season() : "summer";
+    if (se === "autumn") for (var c = Math.floor((camX - 20) / 3); c <= Math.floor((camX + W + 20) / 3); c++) { var r = hash(c * 17.7); if (r < .35) { ctx.fillStyle = ["#c8642a", "#d89a2a", "#a83a22", "#b8862a"][(r * 40 | 0) % 4]; ctx.fillRect(Math.round(c * 3 - camX), GY + 2 + Math.floor(hash(c * 3.1) * (H - GY - 4)), r < .1 ? 2 : 1, 1); } }
+    if (se === "winter") { ctx.fillStyle = "rgba(235,240,250,.55)"; for (var c2 = Math.floor((camX - 20) / 2); c2 <= Math.floor((camX + W + 20) / 2); c2++) { var r2 = hash(c2 * 9.3); if (r2 < .4) ctx.fillRect(Math.round(c2 * 2 - camX), GY + Math.floor(hash(c2 * 5.7) * (H - GY)), 1, 1); } ctx.fillRect(0, GY, W, 1); }
   }
   function mist(P, y, h, a, sp) { ctx.fillStyle = "rgba(" + P.mist + "," + (WD.weather() === "fog" ? a * 2.5 : a) + ")"; for (var x = 0; x < W; x += 2) ctx.fillRect(x, Math.round(y + Math.sin((x + camX * sp + time * 8) * .04) * 2), 2, h); }
   var last = performance.now();

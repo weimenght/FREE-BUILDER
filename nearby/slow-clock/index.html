@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7d34ab51e5"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=be25260283" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2159d68fa1"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=78a8d6c13f" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Slow Clock · Nearby</title>
 <meta name="description" content="Climb the clock tower and set Nearby's hour and weather: every game you visit next follows it.">
@@ -49,16 +49,16 @@ main{max-width:560px;margin:0 auto;padding:6px 16px 100px}
 html.fbsh-in body{min-height:0}
 html.fbsh-in .top{display:none}
 html.fbsh-in main{padding:8px 14px 12px}
-html.fbsh-in .face{width:min(80vw,280px,calc(100vh - 400px));width:min(80vw,280px,calc(100dvh - 400px));min-width:150px;margin:8px auto 4px}
+html.fbsh-in .face{width:min(80vw,280px,calc(100vh - 464px));width:min(80vw,280px,calc(100dvh - 464px));min-width:150px;margin:8px auto 4px}
 @media (max-height:720px) and (max-aspect-ratio:5/4){
   html.fbsh-in .lbl{display:none}
   html.fbsh-in .sky canvas{height:max(52px,11dvh);width:100%}
-  html.fbsh-in .face{width:max(130px,min(70vw,calc(100dvh - 440px)));min-width:0;margin:4px auto 0}
+  html.fbsh-in .face{width:max(130px,min(70vw,calc(100dvh - 500px)));min-width:0;margin:4px auto 0}
   html.fbsh-in main{padding:6px 12px 8px}
 }
 @media (min-aspect-ratio:5/4) and (min-width:640px){
   html.fbsh-in main{max-width:1000px;min-height:100vh;min-height:100dvh;box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,1fr);gap:6px 28px;align-content:center;align-items:center}
-  html.fbsh-in .tower{grid-row:1 / span 4}
+  html.fbsh-in .tower{grid-row:1 / span 5}
   html.fbsh-in .face{width:min(36vw,calc(100dvh - 160px),340px)}
 }
 </style>
@@ -80,6 +80,7 @@ html.fbsh-in .face{width:min(80vw,280px,calc(100vh - 400px));width:min(80vw,280p
   <div class="row" id="times" role="group"></div>
   <div class="lbl" data-t="sky">The sky</div>
   <div class="row" id="wx" role="group"></div>
+  <div class="row" id="sea" role="group"></div>
   <div class="go">
     <button class="big alt" type="button" id="dice" aria-label="Surprise me">🎲</button>
     <a class="big" href="/nearby/?from=tower" id="back">🔔 <span data-t="back">Ring the bell, back to town</span></a>
@@ -97,6 +98,7 @@ html.fbsh-in .face{width:min(80vw,280px,calc(100vh - 400px));width:min(80vw,280p
     dice: ["Surprise me", "随便来", "隨便來", "Sorpréndeme", "Sorprèn-me"],
     clock: ["Drag the hand to set the hour", "拖动指针调时间", "拖動指針調時間", "Arrastra la aguja para cambiar la hora", "Arrossega l'agulla per canviar l'hora"],
     phase: { dawn: ["Dawn", "黎明", "黎明", "Amanecer", "Alba"], day: ["Day", "白天", "白天", "Día", "Dia"], dusk: ["Dusk", "黄昏", "黃昏", "Atardecer", "Capvespre"], night: ["Night", "夜晚", "夜晚", "Noche", "Nit"] },
+    sea: { spring: ["Spring", "春", "春", "Primavera", "Primavera"], summer: ["Summer", "夏", "夏", "Verano", "Estiu"], autumn: ["Autumn", "秋", "秋", "Otoño", "Tardor"], winter: ["Winter", "冬", "冬", "Invierno", "Hivern"] },
     wx: { clear: ["Clear", "晴", "晴", "Despejado", "Serè"], rain: ["Rain", "雨", "雨", "Lluvia", "Pluja"], storm: ["Storm", "雷雨", "雷雨", "Tormenta", "Tempesta"], fog: ["Fog", "雾", "霧", "Niebla", "Boira"], snow: ["Snow", "雪", "雪", "Nieve", "Neu"] }
   };
   var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 };
@@ -123,6 +125,9 @@ html.fbsh-in .face{width:min(80vw,280px,calc(100vh - 400px));width:min(80vw,280p
   var TIMES = [["🌅", 6], ["☀️", 12], ["🌇", 18.5], ["🌙", 0]], WX = [["clear", "☀️"], ["rain", "🌧️"], ["storm", "⛈️"], ["fog", "🌫️"], ["snow", "❄️"]];
   TIMES.forEach(function (x) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = x[0]; b.dataset.h = x[1]; b.onclick = function () { setH(x[1], true); bell(330, .06); }; $("times").appendChild(b); });
   WX.forEach(function (x) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = x[1]; b.dataset.w = x[0]; b.onclick = function () { World.set(x[0]); bell(440, .05); paint(); }; $("wx").appendChild(b); });
+  /* the season: the visitor's own by default; turning it here lasts this visit, like the hour */
+  var SEA = [["spring", "🌸"], ["summer", "☀️"], ["autumn", "🍂"], ["winter", "❄️"]];
+  if (World.setSeason) SEA.forEach(function (x) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = x[1]; b.dataset.s = x[0]; b.onclick = function () { World.setSeason(x[0]); bell(523, .05); paint(); }; $("sea").appendChild(b); });
   $("dice").onclick = function () { setH(Math.round(Math.random() * 96) / 4, true); World.set(WX[(Math.random() * WX.length) | 0][0]); bell(392, .08); var tw = $("tower"); tw.classList.remove("ring"); void tw.offsetWidth; tw.classList.add("ring"); };
   $("back").onclick = function (e) { if (e.metaKey || e.ctrlKey) return; e.preventDefault(); bell(262, .16); var tw = $("tower"); tw.classList.add("ring"); setTimeout(function () { location.href = $("back").href; }, 650); };
 
@@ -142,14 +147,16 @@ html.fbsh-in .face{width:min(80vw,280px,calc(100vh - 400px));width:min(80vw,280p
     if (w === "rain" || w === "storm") for (var r = 0; r < 26; r++) R((hash("r" + r) * 120 + f * 1.4) % 120, (hash("q" + r) * 40 + f * 3) % 40, 1, 3, "rgba(170,200,255,.6)");
     if (w === "storm" && f % 70 < 2) R(0, 0, 120, 40, "rgba(255,255,255,.55)");
     if (w === "snow") for (var n = 0; n < 24; n++) R((hash("n" + n) * 120 + Math.sin((f + n * 7) / 9) * 3) % 120, (hash("m" + n) * 40 + f * .5) % 40, 1, 1, "#fff");
-    R(0, 34, 120, 6, ph === "night" ? "#1e2a1e" : "#6a9a4a"); for (var x = 4; x < 120; x += 14) { R(x, 28, 8, 6, ph === "night" ? "#2a2a30" : "#8a8580"); R(x + 2, 30, 2, 2, ph === "night" || ph === "dusk" ? "#f6c84a" : "#3a4a6a"); }
+    var GR = ph === "night" ? "#1e2a1e" : "#6a9a4a"; R(0, 34, 120, 6, World.tint ? World.tint(GR) : GR); if (World.drift) World.drift(g, 120, 40, f * 120, 1, 8); for (var x = 4; x < 120; x += 14) { R(x, 28, 8, 6, ph === "night" ? "#2a2a30" : "#8a8580"); R(x + 2, 30, 2, 2, ph === "night" || ph === "dusk" ? "#f6c84a" : "#3a4a6a"); }
   }
   function paint() {
     var h = World.hour(), hh = Math.floor(h), mm = Math.round((h - hh) * 60); if (mm === 60) { hh = (hh + 1) % 24; mm = 0; }
     $("hand").style.transform = "rotate(" + (h / 24 * 360) + "deg)";
     var ph = World.phase(h), w = World.weather();
     $("read").innerHTML = String(hh).padStart(2, "0") + ":" + String(mm).padStart(2, "0") + "<small></small>";
-    $("read").lastChild.textContent = t(T.phase[ph]) + " · " + t(T.wx[w] || T.wx.clear);
+    var se = World.season ? World.season() : "";
+    $("read").lastChild.textContent = t(T.phase[ph]) + " · " + t(T.wx[w] || T.wx.clear) + (se ? " · " + t(T.sea[se]) : "");
+    [].forEach.call($("sea").children, function (b) { b.setAttribute("aria-pressed", b.dataset.s === se); b.setAttribute("aria-label", t(T.sea[b.dataset.s])); b.title = b.getAttribute("aria-label"); });
     face.setAttribute("aria-valuenow", h.toFixed(2)); face.setAttribute("aria-valuetext", $("read").textContent); face.setAttribute("aria-label", t(T.clock));
     [].forEach.call($("wx").children, function (b) { b.setAttribute("aria-pressed", b.dataset.w === w); b.setAttribute("aria-label", t(T.wx[b.dataset.w])); b.title = b.getAttribute("aria-label"); });
     [].forEach.call($("times").children, function (b) { b.setAttribute("aria-pressed", Math.abs(+b.dataset.h - h) < .2); });

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7d34ab51e5"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=be25260283" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2159d68fa1"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=78a8d6c13f" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>High Pasture · Nearby</title>
 <meta name="description" content="A high pasture above the town. Walk the dog and the flock drifts home to the pen: sheep, and some days a goat, a cow or an alpaca. Alone, or with a friend as the second shepherd.">
@@ -32,7 +32,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 (function () {
   "use strict";
   var WD = window.FBWorld || { phase: function () { return "day"; }, weather: function () { return "clear"; } };
-  var cv = document.getElementById("cv"), ctx = cv.getContext("2d"), PX = 3, S = 3, GW = 200, GH = 180;   /* S fine pixels per field unit: the animals are drawn fine */
+  var cv = document.getElementById("cv"), ctx = (window.FBWorld && FBWorld.seasonCanvas ? FBWorld.seasonCanvas(cv.getContext("2d")) : cv.getContext("2d")), PX = 3, S = 3, GW = 200, GH = 180;   /* S fine pixels per field unit: the animals are drawn fine */
   var PAL = {
     day: { grass: "#6f9a5a", alt: "#5f8a4c", pen: "#86b06a", fence: "#d6b685", post: "#ad8957", shadow: "rgba(26,46,29,.24)", rock: "#8b9991", rockD: "#69756e", top: "#4e7d46", mid: "#3d6637", trunk: "#6e5039", f1: "#f4f1e6", f2: "#5a7ad8" },
     dusk: { grass: "#a88c54", alt: "#997c46", pen: "#ba9f66", fence: "#e0b379", post: "#b0824b", shadow: "rgba(48,29,20,.28)", rock: "#948680", rockD: "#70635d", top: "#7a5f42", mid: "#5e462e", trunk: "#523628", f1: "#ffd485", f2: "#e87a7a" },
@@ -243,6 +243,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     if (night()) { ctx.fillStyle = "rgba(8,12,30,.25)"; ctx.fillRect(0, 0, GW, GH); }
     var wx = WD.weather(); if (wx === "rain" || wx === "storm") { ctx.fillStyle = "rgba(200,220,255,.35)"; for (var q = 0; q < GW * GH / 160; q++) ctx.fillRect(Math.round((q * 37 + time * 1.2) % GW), Math.round((q * 53 + time * 4) % GH), 1, 2); }
     if (wx === "fog") { ctx.fillStyle = "rgba(225,230,225,.28)"; ctx.fillRect(0, 0, GW, GH); }
+    if (WD.drift && wx !== "storm") WD.drift(ctx, GW, GH, performance.now(), 1, 16);   /* blossom in spring, leaves in autumn */
   }
   (function loop() { update(); render(); requestAnimationFrame(loop); })();
 

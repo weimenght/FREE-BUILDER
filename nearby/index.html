@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7d34ab51e5"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=be25260283" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=2159d68fa1"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=78a8d6c13f" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Nearby — FREE//BUILDER</title>
 <meta name="description" content="Nearby: a small pixel town for finding your people, in real life. Wander alone or with a friend, leave something you made for the neighbours, borrow a real book, play with someone far away. Wei, the bartender, will show you around.">
@@ -129,7 +129,19 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   from = { love: "postcard", memex: "arcade" }[from] || from;
 
   /* ---------- pixels ---------- */
-  function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  function R(x, y, w, h, c) { g.fillStyle = TINT(c); g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  /* the season (FBWorld.season): greens turn with it (FBWorld.tint), pines stay green (P0 draws without the tint) */
+  var TINT = function (c) { return World.tint ? World.tint(c) : c; };
+  function P0(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  function SEA() { return World.season ? World.season() : "summer"; }
+  /* a deciduous crown at (x, y), w×h, in the season's colours; bare twigs in winter (snow on them when it snows) */
+  function crown(x, y, w, h, base, night, k, wx) {
+    var se = SEA();
+    if (se === "winter") { var tw = night ? "#3a2a20" : "#5a3e28"; P0(x + w / 2 - .5, y + 1, 1, h, tw); P0(x + 1, y + 2, 1, 2, tw); P0(x + w - 2, y + 1, 1, 2, tw); P0(x + 1, y + 2, w - 2, 1, tw); if (wx === "snow") P0(x + 1, y + 1, w - 2, 1, "#f4f6fa"); return; }
+    if (se === "autumn") { var AU = night ? ["#5a3018", "#6a4a1a", "#4a2018"] : ["#d8762a", "#e8a838", "#b8402a", "#c89a30"]; P0(x, y, w, h, AU[(k * 7) % AU.length]); P0(x + 1, y, Math.max(1, w - 3), 1, AU[(k * 7 + 1) % AU.length]); return; }
+    P0(x, y, w, h, base);
+    if (se === "spring") { var pk = night ? "#6a4a5a" : "#f8c8d8"; P0(x + 1, y + 1, 1, 1, pk); P0(x + w - 2, y + 2, 1, 1, pk); P0(x + 2, y + h - 1, 1, 1, pk); }
+  }
   function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967295; }
   var World = window.FBWorld || { hour: function () { var d = new Date(); return d.getHours() + d.getMinutes() / 60; }, phase: function () { return "day"; }, weather: function () { return "clear"; } };
   /* every clock on the map tells the town's hour (FBWorld.hour, 4x pace): a face at (x, y), s pixels wide, an hour hand and a minute hand */
@@ -289,12 +301,25 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     street(f, night, lit, wx);
     g.restore();
     wilds(f, sky, ph, wx, night, lit);
+    /* the level crossing beside the station: how you walk over the railway to Town Hall, Front Row and Come Over */
+    var XX = 248, XW = 14;
+    R(XX, 292, XW, 22, night ? "#3a3a40" : "#8a8a84"); R(XX, 296, XW, 13, night ? "#4a4036" : "#8a7458"); for (var xp = 297; xp < 309; xp += 2) R(XX, xp, XW, 1, night ? "#3a3028" : "#6a5840");
+    R(XX, 300, XW, 1, "#c8c8c8"); R(XX, 305, XW, 1, "#c8c8c8");
+    for (var zs = 0; zs < 3; zs++) { R(XX + 2 + zs * 4, 293, 2, 2, "#e8e4da"); R(XX + 2 + zs * 4, 310, 2, 3, "#e8e4da"); }
     // a train comes through every so often, right across the country
     var cyc = f % 600; TC = []; if (cyc < 260) { var tx0 = WW + 10 - cyc * 2.2; for (var car = 0; car < 4; car++) { var x0 = tx0 + car * 34; TC.push(x0); R(x0, 286, 32, 13, car ? "#2c4a86" : "#b3261e"); R(x0, 286, 32, 2, "#fbeedd"); for (var cw = 0; cw < 4; cw++) R(x0 + 3 + cw * 7, 290, 5, 4, lit ? "#f6c84a" : "#9ac0d8"); } }
+    /* the crossing's gates come down and the lights blink while a train is near */
+    var near = TC.some(function (x) { return x < XX + XW + 46 && x + 32 > XX - 46; }), blink = near && (f % 6 < 3);
+    [[XX - 3, 287, 1], [XX + XW + 2, 309, -1]].forEach(function (gp) { var gx = gp[0], gy = gp[1];
+      R(gx, gy, 1, 8, "#2a2a30"); R(gx - 1, gy - 2, 3, 2, "#1a1a1e"); R(gx - 1, gy - 2, 1, 1, blink ? "#ff3a2a" : "#5a1a1a"); R(gx + 1, gy - 2, 1, 1, !blink && near ? "#ff3a2a" : "#5a1a1a");
+      if (near && night) R(gx - 3, gy - 4, 7, 6, "rgba(255,60,40,.18)");
+      if (near) for (var ga = 0; ga < XW + 1; ga++) R(gx + gp[2] * (ga + 1), gy + 3, 1, 1, (ga >> 1) % 2 ? "#ffffff" : "#d0302a");
+      else for (var gb = 0; gb < 7; gb++) R(gx + gp[2], gy + 2 - gb, 1, 1, (gb >> 1) % 2 ? "#ffffff" : "#d0302a"); });
     // weather on top
     if (wx === "rain" || wx === "storm") { for (var rd = 0; rd < 140; rd++) { var rx2 = (hash("rd" + rd) * WW + f * 1.5) % WW, ry2 = (hash("rr" + rd) * H + f * 6) % H; R(rx2, ry2, 1, 3, "rgba(170,200,255,.55)"); } if (wx === "storm" && f % 240 < 3) R(0, 0, WW, H, "rgba(255,255,255,.5)"); }
     if (wx === "snow") for (var sn = 0; sn < 120; sn++) { var snx = (hash("sn" + sn) * WW + Math.sin((f + sn * 9) / 18) * 4) % WW, sny = (hash("sy" + sn) * H + f * .8) % H; R(snx, sny, 1, 1, "#ffffff"); }
     if (wx === "fog") { g.fillStyle = "rgba(220,224,232,.22)"; g.fillRect(0, 0, WW, H); for (var fg = 0; fg < 7; fg++) R(((f * .2 + fg * 70) % 440) - 60, 70 + (fg % 4) * 60, 90, 6, "rgba(230,234,240,.25)"); }
+    if (World.drift && wx !== "storm") World.drift(g, WW, H, f * 110, 1, 26);   /* blossom in spring, leaves in autumn */
     mono();
     /* depth: anything on the platform or the lane is behind a passing train, so the coaches are put back over the animals */
     var keepTrain = TC.map(function (x) { var x0 = Math.max(0, Math.floor(x)), x1 = Math.min(WW, Math.ceil(x + 32)); return x1 > x0 ? [x0, g.getImageData(x0, 286, x1 - x0, 13)] : null; }).filter(Boolean);
@@ -461,14 +486,14 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
       R(x0, 112, 90, 172, G); R(x0, 284, 90, 8, "#8a8a84"); R(x0, 292, 90, 2, "#5a5a54");
       R(x0, 298, 90, 10, "#5a4a3a"); for (var sl = x0; sl < x0 + 90; sl += 5) R(sl, 298, 2, 10, "#3a2a1e"); R(x0, 300, 90, 1, "#c8c8c8"); R(x0, 305, 90, 1, "#c8c8c8"); R(x0, 308, 90, 60, G);
       R(x0, 314, 90, 4, night ? "#2a2a30" : "#8a8a84");   /* the new street carries on into the country */
-      for (var st = 0; st < 7; st++) { var sx0 = x0 + 6 + st * 12 + (hash("st" + x0 + st) * 4 | 0), sy0 = 334 + (hash("sy" + x0 + st) * 18 | 0); R(sx0 + 2, sy0 + 5, 2, 4, "#4a2e1a"); R(sx0, sy0, 6, 6, D); R(sx0 + 1, sy0 - 2, 4, 2, D); }
+      for (var st = 0; st < 7; st++) { var sx0 = x0 + 6 + st * 12 + (hash("st" + x0 + st) * 4 | 0), sy0 = 334 + (hash("sy" + x0 + st) * 18 | 0); R(sx0 + 2, sy0 + 5, 2, 4, "#4a2e1a"); crown(sx0, sy0 - 2, 6, 8, D, night, st + x0, wx); }
     });
     /* WEST: snow peaks with a waterfall, a pine wood, a wildflower meadow, terraced fields */
     for (var x = 0; x < 90; x++) { var top = 8 + Math.abs(((x + 14) % 46) - 23) * 1.6 + (hash("pk" + x) - .5) * 3; R(x, top, 1, 86 - top, night ? "#2e3442" : "#7a8494"); if (top < 30) R(x, top, 1, Math.max(2, 30 - top), night ? "#c8ccd8" : "#f4f6fa"); }
     for (var x2 = 0; x2 < 90; x2++) { var h2 = 54 + Math.sin(x2 / 9) * 4; R(x2, h2, 1, 32, night ? "#232a36" : "#5a6680"); }
     var wf = 74; R(wf, 40, 4, 46, night ? "#6a8aba" : "#cfe6f6"); for (var wd = 0; wd < 6; wd++) R(wf + (wd % 2), 40 + ((f * 2 + wd * 8) % 46), 2, 3, "#ffffff"); R(wf - 3, 84, 10, 3, "rgba(255,255,255,.6)");
-    for (var tr = 0; tr < 26; tr++) { var tx = 2 + (tr * 13) % 84, ty = 118 + Math.floor(tr / 7) * 11 + (hash("t" + tr) * 4); R(tx + 3, ty + 8, 2, 3, "#4a2e1a"); R(tx + 2, ty, 4, 3, D); R(tx + 1, ty + 3, 6, 3, D); R(tx, ty + 6, 8, 3, night ? "#163020" : "#346a32"); }
-    for (var fl = 0; fl < 60; fl++) { var fx = 3 + hash("fl" + fl) * 84, fy = 178 + hash("fy" + fl) * 62; R(fx, fy, 1, 2, D); R(fx, fy - 1, 1, 1, ["#ffffff", "#f6d84a", "#f4a0b8", "#c9a6ff", "#ff7a5a"][fl % 5]); }
+    for (var tr = 0; tr < 26; tr++) { var tx = 2 + (tr * 13) % 84, ty = 118 + Math.floor(tr / 7) * 11 + (hash("t" + tr) * 4); var PD = night ? "#14281a" : "#3f7a3a"; R(tx + 3, ty + 8, 2, 3, "#4a2e1a"); P0(tx + 2, ty, 4, 3, PD); P0(tx + 1, ty + 3, 6, 3, PD); P0(tx, ty + 6, 8, 3, night ? "#163020" : "#346a32"); if (SEA() === "winter" || wx === "snow") { P0(tx + 2, ty, 4, 1, "#f4f6fa"); P0(tx + 1, ty + 3, 2, 1, "#f4f6fa"); P0(tx + 5, ty + 6, 2, 1, "#e8ecf4"); } }
+    for (var fl = 0, fln = { winter: 0, autumn: 20, spring: 80 }[SEA()], fln = fln == null ? 60 : fln; fl < fln; fl++) { var fx = 3 + hash("fl" + fl) * 84, fy = 178 + hash("fy" + fl) * 62; R(fx, fy, 1, 2, D); R(fx, fy - 1, 1, 1, ["#ffffff", "#f6d84a", "#f4a0b8", "#c9a6ff", "#ff7a5a"][fl % 5]); }
     R(10, 196, 8, 8, "#c8a050"); R(11, 195, 6, 1, "#a87a30"); R(12, 199, 2, 2, "#3a2a1c"); if (!night && wx === "clear") for (var bz = 0; bz < 3; bz++) R(12 + Math.sin((f + bz * 13) / 6) * 6, 189 + Math.cos((f + bz * 7) / 5) * 4, 1, 1, "#f6d84a");   // beehive and bees: out only in the sun
     // the animal sanctuary: a red barn, two kennels and a fenced yard (Mantou's home)
     R(56, 216, 26, 18, "#9c2418"); for (var bb = 218; bb < 234; bb += 3) R(56, bb, 26, 1, "#7c1a10"); for (var br = 0; br < 7; br++) R(69 - br * 2.2, 208 + br, br * 4.4 + 1, 1, "#3a2a20");
@@ -479,7 +504,9 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(0, 250, 90, 34, night ? "#1e3a24" : "#6aa44a");
     for (var gb = 0; gb < 4; gb++) for (var gc = 0; gc < 6; gc++) { var gx = 4 + gc * 14, gy = 254 + gb * 7, gk = (gb * 6 + gc) % 7; R(gx, gy, 10, 4, night ? "#3a2a1c" : "#7a5a3a");
       for (var fl2 = 0; fl2 < 4; fl2++) R(gx + 1 + fl2 * 2.4, gy + (fl2 % 2), 1, 1, night ? "#5a4a6a" : ["#f4b4c8", "#f6c84a", "#9a7ad8", "#e83a2a", "#fbfbf6", "#e870a8", "#e0402a"][gk]); }
-    [[8, 246], [40, 247], [74, 246]].forEach(function (tr2) { R(tr2[0] + 2, tr2[1] - 2, 2, 6, "#6a4a2a"); R(tr2[0], tr2[1] - 7, 6, 5, night ? "#4a2a3a" : "#f4b4c8"); R(tr2[0] + 1, tr2[1] - 8, 4, 1, night ? "#4a2a3a" : "#ffd6e2"); });
+    [[8, 246], [40, 247], [74, 246]].forEach(function (tr2, ti) { R(tr2[0] + 2, tr2[1] - 2, 2, 6, "#6a4a2a"); var se = SEA();
+      if (se === "spring") { P0(tr2[0], tr2[1] - 7, 6, 5, night ? "#4a2a3a" : "#f4b4c8"); P0(tr2[0] + 1, tr2[1] - 8, 4, 1, night ? "#4a2a3a" : "#ffd6e2"); }   /* cherry blossom */
+      else crown(tr2[0], tr2[1] - 8, 6, 6, night ? "#1e3a24" : "#4a8a44", night, ti + 3, wx); });
     R(58, 276, 12, 6, night ? "#16305a" : "#4a8ac8"); R(60, 278, 3, 1, "rgba(255,255,255,.5)");
     R(86, 260, 4, 16, "#8a5a33"); R(86, 260, 4, 1, "#c8a050");   // the gate onto the lane
     R(0, 108, 4, 4, night ? "#2a2a30" : "#8a8a84");

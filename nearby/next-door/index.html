@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7d34ab51e5"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=be25260283" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=2159d68fa1"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=78a8d6c13f" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -729,7 +729,21 @@
   </style>
 <style id="one-nav">/* in town the top bar names the place: no second title here */
 html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !important; }
+/* in town there is no second bar at all: the town's top bar is the only one (the name chip moves into the room, see below) */
+html.fbsh-in { --head-h: 0px !important; --safe-t: 0px !important; }
+html.fbsh-in #app-head { display: none !important; }
+html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr calc(var(--dock-h) + var(--safe-b)); }
+@media (min-width: 1024px) { html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; } }
+html.fbsh-in #patron-chip.in-room { display: inline-flex !important; max-width: 140px; }
 </style>
+<script>
+/* in town the name chip ("tap your name to change what Wei calls you") sits in the room's top row instead of the header */
+document.addEventListener("DOMContentLoaded", function () {
+  if (!document.documentElement.classList.contains("fbsh-in")) return;
+  var c = document.getElementById("patron-chip"), pill = document.getElementById("host-mood-pill");
+  if (c && pill && pill.parentNode) { c.classList.add("in-room"); pill.parentNode.insertBefore(c, pill); }
+});
+</script>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body class="grain no-select">
 
@@ -4071,14 +4085,12 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
 
       log(kind, detail = {}) {
         if (!Patron.name) return;
+        /* what you do at the bar stays on this device: nothing is sent just for walking in or tapping around
+           (the town never asks before it has to; only what you choose to leave — a drawing, a cocktail, a gift — goes to the server) */
         const row = { patron: Patron.name, kind, detail, lang: AppState.lang };
-        if (this.sb) {
-          this.sb.from(DB_T('interactions')).insert(row).then(({ error }) => { if (error) this.fail(error); });
-        } else {
-          const rows = this.local('interactions');
-          rows.push(Object.assign(row, { created_at: new Date().toISOString() }));
-          this.saveLocal('interactions', rows);
-        }
+        const rows = this.local('interactions');
+        rows.push(Object.assign(row, { created_at: new Date().toISOString() }));
+        this.saveLocal('interactions', rows);
       }
     };
 
@@ -4103,7 +4115,8 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
         try { localStorage.setItem('weis-name', name); } catch (e) {}
 
         let remote = null;
-        if (DB.sb) {
+        /* your name at the bar stays on this device: no visit counts or regulars' records on the server */
+        if (false && DB.sb) {
           try {
             const now = new Date().toISOString();
             const { data } = await DB.sb.from(DB_T('patrons')).select('*').eq('name', name).maybeSingle();
@@ -4125,7 +4138,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
 
       syncTimer: null,
       syncBond(pts) {
-        if (!DB.sb || !this.name) return;
+        return;   /* kept on this device (Bond.save), never sent */
         clearTimeout(this.syncTimer);
         this.syncTimer = setTimeout(() => {
           DB.sb.from(DB_T('patrons')).update({ bond: pts, last_seen: new Date().toISOString() }).eq('name', this.name)
@@ -4856,6 +4869,10 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
       setText('res-subtitle', o.sub);
       setText('res-description', o.desc);
       setText('res-formula', o.formula);
+      /* food (Popo's kitchen, a neighbour's pick that's something to eat) asks for another plate, not another glass */
+      AppState.lastFood = !!o.food;
+      const rb = document.getElementById('res-btn-reorder');
+      if (rb) rb.textContent = L(lx(o.food ? ["Another plate ↺", "再来一份 ↺", "再來一份 ↺", "再嚟一份 ↺", "Otro plato ↺", "Un altre plat ↺"] : ["Another ↺", "再来一杯 ↺", "再來一杯 ↺", "再嚟一杯 ↺", "Otra ↺", "Una altra ↺"]));
 
       const plate = document.getElementById('served-item-plate');
       plate.textContent = o.icon;
@@ -7509,7 +7526,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
       const _poke = tapBartender;
       tapBartender = function () { DB.log('poke', { asleep: AppState.weiState === 'asleep' }); const r = _poke(); setTimeout(() => Cats.syncSleep(), 50); return r; };
       const _wake = wakeUpBartender;
-      wakeUpBartender = function (g) { const r = _wake(g); Cats.syncSleep(); return r; };
+      wakeUpBartender = function (g) { const r = _wake(g); try { if (window.FBWorld && FBWorld.wake) FBWorld.wake(); } catch (e) {} Cats.syncSleep(); return r; };
       const _topic = chooseTopicOption;
       chooseTopicOption = function (opt) { DB.log('topic', { id: AppState.currentTopic && AppState.currentTopic.id }); return _topic(opt); };
       const _eval = evaluateWeiState;
@@ -7905,8 +7922,9 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   const pn = k => (W.name ? W.name(k, { en: 'en', zh: 'zh', tw: 'zh-Hant', yue: 'zh-Hant', es: 'es', ca: 'ca' }[AppState.lang] || 'en') : k);
   const go = (k, q) => { const u = (W.url ? W.url(k) : '/nearby/') + (q || ''); try { if (window.parent && window.parent.FBShell) return window.parent.FBShell.open(u); } catch (e) {} location.href = u; };
   const round = S("🍸 Another round", "🍸 再来一杯", "🍸 Otra ronda", "🍸 Una altra ronda");
+  const roundFood = lx(["🍲 Another plate", "🍲 再来一份", "🍲 再來一份", "🍲 再嚟一份", "🍲 Otro plato", "🍲 Un altre plat"]);
   const B = (label, fn) => ({ label: L(label), onClick: fn });
-  const again = () => B(round, backToOrder);
+  const again = () => B(AppState.lastFood ? roundFood : round, backToOrder);
   const say = (line, btns) => { try { setExpression('grin', 1600); } catch (e) {} renderWei(L(line), btns, COMPACT_GRID, 'follow'); };
   const DRINKS = () => Object.keys(DrinkManifest).filter(k => DrinkManifest[k].type === (AppState.isBarOpen ? 'bar' : 'cafe'));
   const BITS = [
@@ -8257,7 +8275,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   }
   function serve(r) {
     SoundEngine.playClink();
-    showServed({ icon: r.icon || icon(r.kind), name: r.name, sub: '📍 ' + r.shop + ' · ' + r.area, desc: r.find ? '"' + r.find + '"' : '', formula: r.by ? X(T.by).replace('{n}', r.by) : '', reactable: false, pick: r });
+    showServed({ icon: r.icon || icon(r.kind), name: r.name, sub: '📍 ' + r.shop + ' · ' + r.area, desc: r.find ? '"' + r.find + '"' : '', formula: r.by ? X(T.by).replace('{n}', r.by) : '', reactable: false, pick: r, food: r.kind === 'food' || r.kind === 'sweet' });
     if (awake()) { showBubble(X(T.serve).replace('{a}', r.area), 3600); animateWei('wei-wiggle'); }
     else ['miso', 'yuzu'].forEach(id => Cats.say(id, '📍', 1400));
   }
@@ -8374,6 +8392,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
     hi: [M("*one earbud out* Hey. Wei's off. Coffee? Tea? Something without? I don't do cocktails, I'm sixteen.", "*摘下一只耳机* 嘿。Wei 不在。咖啡？茶？无酒精的？鸡尾酒我不调，我才十六。", "*摘下一隻耳機* 嘿。Wei 不在。咖啡？茶？無酒精的？雞尾酒我不調，我才十六。", "*se quita un auricular* Ey. Wei no está. ¿Café? ¿Té? ¿Algo sin alcohol? Cócteles no, tengo dieciséis.", "*es treu un auricular* Ei. En Wei no hi és. Cafè? Te? Alguna cosa sense alcohol? Còctels no, tinc setze anys."),
       M("*spins on the stool* Mei's on. Lucky you. What can I get you that isn't booze?", "*在高脚凳上转了一圈* Mei 值班。算你走运。除了酒，想喝什么？", "*在高腳凳上轉了一圈* Mei 值班。算你走運。除了酒，想喝什麼？", "*gira en el taburete* Turno de Mei. Qué suerte. ¿Qué te pongo que no lleve alcohol?", "*fa una volta al tamboret* Torn de la Mei. Quina sort. Què et poso que no porti alcohol?"),
       M("*wipes the counter, badly* Wei says wipe in circles. I say the counter's clean. What'll it be?", "*胡乱擦着吧台* Wei 说要画圈擦。我说吧台已经干净了。喝点什么？", "*胡亂擦著吧台* Wei 說要畫圈擦。我說吧台已經乾淨了。喝點什麼？", "*limpia la barra, fatal* Wei dice que en círculos. Yo digo que ya está limpia. ¿Qué va a ser?", "*neteja la barra, fatal* En Wei diu que en cercles. Jo dic que ja és neta. Què serà?")],
+    woke: M("*lifts her head, an earbud falls out* …ugh. Fine. I'm up. What do you want?", "*抬起头，一只耳机掉了出来* ……烦。行吧，我醒了。要什么？", "*抬起頭，一隻耳機掉了出來* ……煩。好啦，我醒了。要什麼？", "*levanta la cabeza, se le cae un auricular* …uf. Vale. Ya estoy. ¿Qué quieres?", "*aixeca el cap, li cau un auricular* …uf. Vale. Ja estic. Què vols?"),
     scroll: M("*doesn't look up from her phone* …one sec. Literally one.", "*头也不抬地刷着手机* ……等一下。真的就一下。", "*頭也不抬地滑著手機* ……等一下。真的就一下。", "*no levanta la vista del móvil* …un segundo. Literalmente uno.", "*no aixeca la vista del mòbil* …un segon. Literalment un."),
     sorry: M("*phone face down* Okay. Sorry. I'm here. What do you want?", "*把手机扣下* 好，抱歉，我在。要什么？", "*把手機扣下* 好，抱歉，我在。要什麼？", "*móvil boca abajo* Vale. Perdón. Aquí estoy. ¿Qué quieres?", "*mòbil cap per avall* D'acord. Perdó. Sóc aquí. Què vols?"),
     ask: M("Ask Mei for something", "找 Mei 要点喝的", "找 Mei 要點喝的", "Pídele algo a Mei", "Demana-li alguna cosa a la Mei"),
@@ -8435,7 +8454,9 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   /* tap her: hello, or (sometimes) she's on her phone and you wait a beat */
   var tap0 = window.tapBartender;
   window.tapBartender = function () {
-    if (napping() && !on()) { say(L(T.nap[(napT = (napT + 1) % T.nap.length)])); return; }
+    if (napping() && !on()) {   /* the second tap wakes her (grumpily); she stays up a while, like Wei */
+      if (napT >= 0 && W.wake && W.wake()) { dress(); try { renderCurrentDialogue(); } catch (e) {} say(L(T.woke)); return; }
+      say(L(T.nap[(napT = (napT + 1) % T.nap.length)])); return; }
     if (!on()) return tap0.apply(this, arguments);
     if (Math.random() < .3) { phoneUntil = Date.now() + 2600; paint(); say(L(T.scroll)); setTimeout(function () { phoneUntil = 0; paint(); say(L(T.sorry)); }, 2600); return; }
     say(L(T.hi[(Math.random() * T.hi.length) | 0]));
@@ -8542,7 +8563,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
     document.body.appendChild(m);
   }
   function serve(d) {
-    try { showServed({ icon: "", name: L(d.name), sub: L(d.sub), desc: L(d.desc), formula: "", reactable: false }); } catch (e) { say(L(d.desc)); return; }
+    try { showServed({ icon: "", name: L(d.name), sub: L(d.sub), desc: L(d.desc), formula: "", reactable: false, food: d.ic !== "cup" }); } catch (e) { say(L(d.desc)); return; }
     var ic = W.pix ? W.pix(d.ic) : ""; ["res-icon", "served-item-plate"].forEach(function (id) { var el = document.getElementById(id); if (el) el.innerHTML = ic; });
     try { SoundEngine.playClink(); } catch (e) {}
     setTimeout(function () { try { showBubble(L(P.served), 3200); } catch (e) {} }, 900);
@@ -8575,7 +8596,9 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   window.tapBartender = function () {
     var h = who();
     if (h.who === "popo" && !(window.WeiAway && WeiAway.on())) { say(L(h.asleep ? pick(P.nap) : pick(P.chat))); return; }
-    if (h.who === "cats") return;
+    if (h.who === "cats") {   /* a tap wakes the cats; Popo is the only one nobody wakes */
+      if (h.asleep && W.wake && W.wake()) { said = ""; dress(); try { renderCurrentDialogue(); } catch (e) {} say(L(lx(["*Yuzu opens one eye, stretches the whole length of the bar and sits up. Miso yawns.* Mrrp?", "*柚子睁开一只眼，沿着吧台伸了个长长的懒腰，坐了起来。味噌打了个哈欠。* 咪噜？", "*柚子睜開一隻眼，沿著吧台伸了個長長的懶腰，坐了起來。味噌打了個哈欠。* 咪嚕？", "*柚子擘開一隻眼，沿住吧枱伸咗個長長嘅懶腰，坐返起身。味噌打咗個喊露。* 咪嚕？", "*Yuzu abre un ojo, se estira a lo largo de la barra y se sienta. Miso bosteza.* ¿Mrrp?", "*La Yuzu obre un ull, s'estira tot al llarg de la barra i s'asseu. La Miso badalla.* Mrrp?"]))); try { Cats.syncSleep(); } catch (e) {} }
+      return; }
     return tap0.apply(this, arguments);
   };
   var render0 = window.renderCurrentDialogue;

@@ -21,7 +21,7 @@
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
   var fx = document.createElement("canvas"); fx.id = "skyFx"; fx.setAttribute("aria-hidden", "true"); document.body.appendChild(fx);
-  var g = fx.getContext("2d"), W = 0, H = 0, DPR = 1;
+  var g = (window.FBWorld && FBWorld.seasonCanvas ? FBWorld.seasonCanvas(fx.getContext("2d")) : fx.getContext("2d")), W = 0, H = 0, DPR = 1;
   function size() { DPR = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight; fx.width = W * DPR; fx.height = H * DPR; g.setTransform(DPR, 0, 0, DPR, 0, 0); }
   size(); addEventListener("resize", size);
 
@@ -237,6 +237,7 @@
       if (shoot) { shoot.x -= 9; shoot.y += 3; shoot.l -= 0.025; var sg = g.createLinearGradient(shoot.x, shoot.y, shoot.x + 70, shoot.y - 23); sg.addColorStop(0, "rgba(255,250,225," + shoot.l + ")"); sg.addColorStop(1, "rgba(255,250,225,0)"); g.strokeStyle = sg; g.lineWidth = 2; g.beginPath(); g.moveTo(shoot.x, shoot.y); g.lineTo(shoot.x + 70, shoot.y - 23); g.stroke(); if (shoot.l <= 0) shoot = null; } }
     /* fireflies over the grass */
     if (X.flies && (night() || sky === "dusk")) flies.forEach(function (f) { f.p += 0.02 * f.v; var x = ((f.x * W + Math.sin(f.p) * 30 + t * 6 * f.v) % W + W) % W, y = f.y * H + Math.cos(f.p * 1.3) * 12, a = 0.5 + 0.5 * Math.sin(f.p * 3); var fg = g.createRadialGradient(x, y, 0, x, y, 10); fg.addColorStop(0, "rgba(230,255,140," + 0.8 * a + ")"); fg.addColorStop(1, "rgba(230,255,140,0)"); g.fillStyle = fg; g.fillRect(x - 10, y - 10, 20, 20); });
+    if (window.FBWorld && FBWorld.drift && FBWorld.weather() !== "storm") FBWorld.drift(g, W, H, now, 3, 22);   /* blossom in spring, leaves in autumn */
     grass(t); vignette();
     /* the trail fades when you hold still */
     for (var m = 0; m < trail.length; m++) trail[m].a = Math.max(0.15, trail[m].a - 0.002);

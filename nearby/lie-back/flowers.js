@@ -8,7 +8,7 @@
   var cv = document.createElement("canvas"); cv.id = "skyFlowers"; cv.setAttribute("aria-hidden", "true");
   cv.style.cssText = "position:fixed;inset:0;width:100%;height:100%;z-index:7;pointer-events:none;image-rendering:pixelated";
   document.body.appendChild(cv);
-  var g = cv.getContext("2d"), W = 0, H = 0, U = 3, t = 0;
+  var g = (window.FBWorld && FBWorld.seasonCanvas ? FBWorld.seasonCanvas(cv.getContext("2d")) : cv.getContext("2d")), W = 0, H = 0, U = 3, t = 0;
   var KINDS = [
     { p: "#ffffff", c: "#f2c230", n: 8 },   /* daisy */
     { p: "#e0473a", c: "#2a1a14", n: 5 },   /* poppy */
