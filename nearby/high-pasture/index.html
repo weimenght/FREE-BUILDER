@@ -53,6 +53,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   var pen = null, fences = [], rocks = [], trees = [], tufts = [], flowers = [], sheep = [], ripples = [], parts = [], flies = [], clouds = [];
   var dog = { x: 30, y: 60, vx: 0, vy: 0, face: 1, step: 0 }, ptr = { x: 30, y: 60, on: false }, mate = null, settleT = 0, gateOpen = false, time = 0;
   function rnd(a, b) { return a + Math.random() * (b - a); }
+  var patches = [], paths = [], trough = { x: 0, y: 0 }, hay = { x: 0, y: 0 }, butter = [];
   function layout() {
     GW = Math.max(150, Math.floor(innerWidth / PX)); GH = Math.max(150, Math.floor(innerHeight / PX)); cv.width = GW * S; cv.height = GH * S; ctx.imageSmoothingEnabled = false;
     var tall = GH > GW, pw = Math.min(100, Math.round(GW * (tall ? .66 : .3))), ph = Math.min(80, Math.round(GH * (tall ? .25 : .45)));
@@ -60,6 +61,12 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     buildFences();
     rocks = []; for (var ri = 0; ri < 5; ri++) { var rx = rnd(14, GW - 14), ry = rnd(14, GH - 14); if (!inPen(rx, ry) && Math.hypot(rx - GW / 2, ry - GH / 2) > 20) rocks.push({ x: rx, y: ry, r: 4 + (Math.random() * 6 | 0) }); }   /* a stony alp */
     trees = [{ x: 16, y: 18 }, { x: GW - 18, y: GH - 16 }];
+    [[.08, .62], [.92, .1], [.5, .96], [.04, .9]].forEach(function (q) { var tx = Math.round(GW * q[0]), ty = Math.round(GH * q[1]); if (!inPen(tx, ty) && !inPen(tx + 12, ty) && !inPen(tx - 12, ty) && Math.hypot(tx - GW / 2, ty - GH / 2) > 30) trees.push({ x: tx, y: ty }); });
+    /* the grass is not one green: clover, darker hollows, worn sheep paths; inside the pen a trough and a hay bale */
+    patches = []; for (i = 0; i < GW * GH / 2600; i++) patches.push({ x: rnd(0, GW) | 0, y: rnd(0, GH) | 0, rx: 8 + (Math.random() * 18 | 0), ry: 5 + (Math.random() * 10 | 0), k: Math.random() < .55 ? "dark" : "clover" });
+    paths = []; for (i = 0; i < 3; i++) { var a0 = Math.random() * 6.283, cx0 = pen.x + pen.w / 2, cy0 = pen.y + pen.h / 2, pts = []; for (var t2 = 0; t2 < 1; t2 += .02) pts.push({ x: cx0 + Math.cos(a0) * t2 * GW * .7 + Math.sin(t2 * 9 + i) * 6, y: cy0 + Math.sin(a0) * t2 * GH * .7 + Math.cos(t2 * 7 + i) * 6 }); paths.push(pts); }
+    var tall2 = pen.gate === "bottom"; trough = { x: pen.x + (tall2 ? 12 : pen.w - 26), y: pen.y + (tall2 ? pen.h - 14 : 10) }; hay = { x: pen.x + pen.w - 16, y: pen.y + pen.h - 14 };
+    butter = []; for (i = 0; i < 3; i++) butter.push({ x: Math.random() * GW, y: Math.random() * GH, ph: Math.random() * 6.3, c: ["#f6e05a", "#fbfbf6", "#f4a6c0"][i] });
     tufts = []; for (var i = 0; i < GW * GH / 500; i++) tufts.push({ x: rnd(6, GW - 6) | 0, y: rnd(6, GH - 6) | 0, t: Math.random() > .5 });
     flowers = []; for (i = 0; i < GW * GH / 1100; i++) { var fx = rnd(10, GW - 10) | 0, fy = rnd(10, GH - 10) | 0; if (!inPen(fx, fy)) flowers.push({ x: fx, y: fy, c: Math.random() > .45 ? 1 : 2, open: false }); }
     flies = []; for (i = 0; i < 22; i++) flies.push({ x: Math.random() * GW, y: Math.random() * GH, ph: Math.random() * 6.3, sp: .15 + Math.random() * .2 });
@@ -199,7 +206,14 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   function shepherd(x, y) { x = Math.round(x); y = Math.round(y); ctx.fillStyle = "rgba(5,8,12,.35)"; ctx.fillRect(x - 3, y + 1, 7, 1); ctx.fillStyle = "#151c24"; ctx.fillRect(x - 1, y - 2, 1, 3); ctx.fillRect(x + 1, y - 2, 1, 3); ctx.fillStyle = "#5c3b4e"; ctx.fillRect(x - 2, y - 8, 5, 6); ctx.fillStyle = "#f2d3ab"; ctx.fillRect(x - 1, y - 11, 3, 3); ctx.fillStyle = "#3b4b5c"; ctx.fillRect(x - 3, y - 12, 7, 1); ctx.fillRect(x - 2, y - 13, 5, 1); ctx.fillStyle = "#8c6d53"; ctx.fillRect(x + 3, y - 12, 1, 13); ctx.fillRect(x + 4, y - 13, 1, 2); }
   function render() {
     var p = P(); ctx.setTransform(S, 0, 0, S, 0, 0); ctx.fillStyle = p.grass; ctx.fillRect(0, 0, GW, GH);
-    ctx.fillStyle = p.pen; ctx.fillRect(pen.x, pen.y, pen.w, pen.h); ctx.strokeStyle = p.alt; ctx.lineWidth = 1; ctx.strokeRect(pen.x + 2.5, pen.y + 2.5, pen.w - 5, pen.h - 5);
+    patches.forEach(function (q) { ctx.fillStyle = q.k === "dark" ? "rgba(0,0,0,.05)" : "rgba(255,255,220,.05)"; ell(q.x, q.y, q.rx, q.ry); if (q.k === "clover") { ctx.fillStyle = "rgba(255,255,255,.35)"; for (var cl = 0; cl < 4; cl++) ctx.fillRect(q.x + ((cl * 7) % q.rx) - (q.rx >> 1), q.y + ((cl * 5) % q.ry) - (q.ry >> 1), 1, 1); } });
+    ctx.fillStyle = "rgba(120,100,60,.12)"; paths.forEach(function (pts) { pts.forEach(function (pt) { if (!inPen(pt.x, pt.y)) ctx.fillRect(Math.round(pt.x), Math.round(pt.y), 2, 2); }); });
+    /* the wind running over the grass */
+    if (!night()) { ctx.fillStyle = "rgba(255,255,230,.06)"; for (var wv = 0; wv < 5; wv++) { var wxp = ((time * .25 + wv * GW / 5) % (GW + 60)) - 30, wyp = (wv * 53 % GH); for (var k2 = 0; k2 < 24; k2++) ctx.fillRect(Math.round(wxp + k2 * 2), Math.round(wyp + Math.sin((wxp + k2 * 2) * .08) * 4 + k2 * .6), 2, 1); } }
+    ctx.fillStyle = p.pen; ctx.fillRect(pen.x, pen.y, pen.w, pen.h);
+    /* the trough (it catches the sky) and a hay bale */
+    var tr0 = trough; ctx.fillStyle = p.shadow; ctx.fillRect(tr0.x, tr0.y + 4, 15, 2); ctx.fillStyle = p.post; ctx.fillRect(tr0.x, tr0.y, 14, 4); ctx.fillStyle = night() ? "#2a3a5a" : "#7ab0d0"; ctx.fillRect(tr0.x + 1, tr0.y + 1, 12, 2); if (!night()) { ctx.fillStyle = "#e8f4fb"; ctx.fillRect(tr0.x + 3 + Math.round(Math.sin(time * .02) * 2), tr0.y + 1, 2, 1); }
+    var hb = hay; ctx.fillStyle = p.shadow; ctx.fillRect(hb.x - 1, hb.y + 6, 12, 2); ctx.fillStyle = night() ? "#7a6a3a" : "#d8b858"; ctx.fillRect(hb.x, hb.y, 10, 7); ctx.fillStyle = night() ? "#5a4a2a" : "#b8963a"; ctx.fillRect(hb.x, hb.y + 2, 10, 1); ctx.fillRect(hb.x, hb.y + 5, 10, 1); ctx.fillStyle = night() ? "#8a7a4a" : "#f0d878"; ctx.fillRect(hb.x + 1, hb.y, 3, 1); ctx.strokeStyle = p.alt; ctx.lineWidth = 1; ctx.strokeRect(pen.x + 2.5, pen.y + 2.5, pen.w - 5, pen.h - 5);
     ctx.fillStyle = p.alt; tufts.forEach(function (t) { ctx.fillRect(t.x, t.y, 1, 2); ctx.fillRect(t.x + 2, t.y + 1, 1, 1); if (t.t) ctx.fillRect(t.x - 1, t.y + 1, 1, 1); });
     flowers.forEach(function (f) { ctx.fillStyle = p.alt; ctx.fillRect(f.x, f.y + 1, 1, 1); ctx.fillStyle = f.c === 1 ? p.f1 : p.f2; ctx.fillRect(f.x, f.y, 1, 1); if (f.open) { ctx.fillRect(f.x - 1, f.y, 1, 1); ctx.fillRect(f.x + 1, f.y, 1, 1); ctx.fillRect(f.x, f.y - 1, 1, 1); } });
     ripples.forEach(function (r) { ctx.strokeStyle = "rgba(255,255,240," + r.a + ")"; ctx.beginPath(); ctx.arc(Math.floor(r.x), Math.floor(r.y), Math.floor(r.r), 0, 6.283); ctx.stroke(); });
@@ -220,6 +234,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     parts.forEach(function (q) { if (q.t === "dust") { ctx.fillStyle = "rgba(235,230,210,.55)"; ctx.fillRect(Math.floor(q.x), Math.floor(q.y), 2, 1); } else heart(Math.floor(q.x), Math.floor(q.y)); });
     if (night()) { for (var z = 0; z < 3; z++) { var zt = (time / 60 + z / 3) % 1; ctx.fillStyle = "rgba(220,230,255," + (1 - zt) * .7 + ")"; ctx.fillRect(Math.round(pen.x + pen.w / 2 + zt * 8), Math.round(pen.y + 6 - zt * 12), 2, 1); } }
     ctx.fillStyle = "rgba(20,32,22,.08)"; clouds.forEach(function (c) { ell(Math.floor(c.x), Math.floor(c.y), Math.floor(c.rx), Math.floor(c.ry)); });
+    if (WD.phase() === "day" && WD.weather() === "clear") butter.forEach(function (b) { b.ph += .05; b.x += Math.cos(b.ph * .3) * .35 + .1; b.y += Math.sin(b.ph * .7) * .3; if (b.x > GW + 4) b.x = -4; if (b.y < 0) b.y = GH; if (b.y > GH) b.y = 0; var fl = Math.sin(b.ph * 4) > 0; ctx.fillStyle = b.c; ctx.fillRect(Math.round(b.x) - (fl ? 1 : 0), Math.round(b.y), fl ? 3 : 1, 1); ctx.fillStyle = "#3a2a1a"; ctx.fillRect(Math.round(b.x), Math.round(b.y) + 1, 1, 1); });
     if (WD.phase() !== "day") flies.forEach(function (f) { var gl = (Math.sin(f.ph) + 1) / 2; if (gl > .3) { ctx.fillStyle = "rgba(245,240,150," + gl * .9 + ")"; ctx.fillRect(Math.floor(f.x), Math.floor(f.y), 1, 1); } });
     if (night()) { ctx.fillStyle = "rgba(8,12,30,.25)"; ctx.fillRect(0, 0, GW, GH); }
     var wx = WD.weather(); if (wx === "rain" || wx === "storm") { ctx.fillStyle = "rgba(200,220,255,.35)"; for (var q = 0; q < GW * GH / 160; q++) ctx.fillRect(Math.round((q * 37 + time * 1.2) % GW), Math.round((q * 53 + time * 4) % GH), 1, 2); }
