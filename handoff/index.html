@@ -268,6 +268,9 @@
             .glass-subtle { background: rgba(255, 255, 255, 0.09); }
         }
         .solid-panel { background: rgba(15, 20, 32, 0.97); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+        .priv summary::-webkit-details-marker { display: none; }
+        .priv[open] .priv-more { display: none; }
+        .priv-list li { display: flex; gap: .5rem; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         select option { color: #000; }
@@ -439,6 +442,11 @@
 
                     <button id="login-submit-btn" type="submit" class="w-full py-3.5 rounded-full bg-white text-black text-sm font-semibold tracking-wide hover:opacity-95 active:scale-[0.98] transition disabled:opacity-50">Enter</button>
                 </form>
+
+                <details class="priv text-[11px] leading-relaxed">
+                    <summary class="flex items-center justify-center gap-1.5 cursor-pointer select-none opacity-60 hover:opacity-100 list-none"><span aria-hidden="true">🔒</span><span data-i18n="privLine">Only you and your partner see what you send.</span><span class="priv-more underline underline-offset-2" data-i18n="privMore">What’s kept?</span></summary>
+                    <ul class="priv-list mt-2 space-y-1.5 text-left opacity-75"></ul>
+                </details>
             </div>
         </div>
     </section>
@@ -673,6 +681,11 @@
                         <span id="notif-status" class="text-[11px] opacity-80 block">--</span>
                     </div>
                     <button id="notif-btn" type="button" onclick="togglePush()" class="hidden shrink-0 px-3.5 py-1.5 rounded-full glass-subtle text-[11px] active:scale-95 transition disabled:opacity-50">--</button>
+                </div>
+                <div class="pt-3 border-t border-white/10 space-y-2">
+                    <span class="text-[11px] uppercase tracking-wider opacity-55 block" data-i18n="privTitle">Your data</span>
+                    <ul class="priv-list space-y-1.5 text-[11px] leading-relaxed opacity-75"></ul>
+                    <button id="delete-btn" type="button" onclick="deleteAccount()" class="hidden w-full py-2 rounded-full border border-white/10 text-[11px] text-rose-300/90 hover:bg-white/5 transition" data-i18n="deleteBtn">Delete my account</button>
                 </div>
                 <div class="pt-2 border-t border-white/10 space-y-3">
                     <span class="opacity-60 block" data-i18n="passwordSection">Change password (optional)</span>
@@ -937,6 +950,7 @@
                 errSendFailed: 'Couldn’t send — your message is kept. Try again.',
                 errGeneric: 'Something went wrong. Please try again.',
                 syncLive: "Live", syncConfig: "Setup needed", syncUnsafe: "Unsafe key", sleepStartAria: "Bedtime", wakeAria: "Wake-up time", errAccountExists: "There’s already an account with this email. Sign in instead.", errTooMany: "Too many tries. Wait a minute, then try again.", errOffline: "No connection. Check your internet and try again.",
+                privLine: "Only you and your partner see what you send.", privMore: "What’s kept?", privTitle: "Your data", privWhat: "Kept: your email and password (to sign in), name, city, sleep hours and vibe, and the capsules and voice notes you send.", privWhere: "Where: Handoff’s server, a database in Ireland (EU). Your city also goes to Open-Meteo, for the weather.", privWho: "Who sees it: only you and your partner. They see your name, city, hours, vibe and email, and the end of each thought until they unlock it.", privDelete: "Account → Delete my account removes all of it: your sign-in, profile, everything you sent and your guesses.", deleteBtn: "Delete my account", deleteConfirm: "Delete your account and everything you sent? This can’t be undone.", deleted: "Your account and everything you sent are gone.", onlyFor: "Only {name} can read it",
                 weatherClear: 'Clear', weatherCloudy: 'Cloudy', weatherMist: 'Mist', weatherRain: 'Rain', weatherSnow: 'Snow', weatherStorm: 'Storm'
             },
             'zh-CN': {
@@ -1036,6 +1050,7 @@
                 errSendFailed: '投递失败 — 内容已保留，请重试。',
                 errGeneric: '出了点问题，请重试。',
                 syncLive: "在线", syncConfig: "需要设置", syncUnsafe: "密钥不安全", sleepStartAria: "入睡时间", wakeAria: "起床时间", errAccountExists: "这个邮箱已经注册过了，请直接登录。", errTooMany: "尝试次数太多，请等一分钟再试。", errOffline: "没有网络连接，请检查网络后再试。",
+                privLine: "只有你和你的伴侣能看到你发送的内容。", privMore: "会保存什么？", privTitle: "你的数据", privWhat: "保存：你的邮箱和密码（用于登录）、名字、城市、睡眠时间和心情，以及你发送的胶囊和语音。", privWhere: "存放在：Handoff 的服务器，一个位于爱尔兰（欧盟）的数据库。你的城市还会发送给 Open-Meteo，用来显示天气。", privWho: "谁能看到：只有你和你的伴侣。对方能看到你的名字、城市、作息、心情和邮箱，以及每句话的结尾，解锁后才看到全文。", privDelete: "“账户 → 删除我的账号”会删除全部：你的登录、资料、你发出的一切和你的猜测。", deleteBtn: "删除我的账号", deleteConfirm: "删除你的账号和你发出的一切？此操作无法撤销。", deleted: "你的账号和你发出的一切都已删除。", onlyFor: "只有 {name} 能读到",
                 weatherClear: '晴朗', weatherCloudy: '多云', weatherMist: '薄雾', weatherRain: '降雨', weatherSnow: '降雪', weatherStorm: '雷雨'
             },
             'zh-TW': {
@@ -1135,6 +1150,7 @@
                 errSendFailed: '投遞失敗 — 內容已保留，請重試。',
                 errGeneric: '發生錯誤，請重試。',
                 syncLive: "線上", syncConfig: "需要設定", syncUnsafe: "金鑰不安全", sleepStartAria: "入睡時間", wakeAria: "起床時間", errAccountExists: "這個信箱已經註冊過了，請直接登入。", errTooMany: "嘗試次數太多，請等一分鐘再試。", errOffline: "沒有網路連線，請檢查網路後再試。",
+                privLine: "只有你和你的伴侶能看到你傳送的內容。", privMore: "會保存什麼？", privTitle: "你的資料", privWhat: "保存：你的信箱和密碼（用於登入）、名字、城市、睡眠時間和心情，以及你傳送的膠囊和語音。", privWhere: "存放在：Handoff 的伺服器，一個位於愛爾蘭（歐盟）的資料庫。你的城市也會傳送給 Open-Meteo，用來顯示天氣。", privWho: "誰能看到：只有你和你的伴侶。對方能看到你的名字、城市、作息、心情和信箱，以及每句話的結尾，解鎖後才看到全文。", privDelete: "「帳戶 → 刪除我的帳號」會刪除全部：你的登入、資料、你送出的一切和你的猜測。", deleteBtn: "刪除我的帳號", deleteConfirm: "刪除你的帳號和你送出的一切？此操作無法復原。", deleted: "你的帳號和你送出的一切都已刪除。", onlyFor: "只有 {name} 能讀到",
                 weatherClear: '晴朗', weatherCloudy: '多雲', weatherMist: '薄霧', weatherRain: '降雨', weatherSnow: '降雪', weatherStorm: '雷雨'
             },
             'es': {
@@ -1234,6 +1250,7 @@
                 errSendFailed: 'No se pudo enviar — tu mensaje se conserva. Inténtalo de nuevo.',
                 errGeneric: 'Algo salió mal. Inténtalo de nuevo.',
                 syncLive: "En directo", syncConfig: "Falta configurar", syncUnsafe: "Clave insegura", sleepStartAria: "Hora de dormir", wakeAria: "Hora de despertar", errAccountExists: "Ya hay una cuenta con este correo. Entra directamente.", errTooMany: "Demasiados intentos. Espera un minuto y vuelve a probar.", errOffline: "Sin conexión. Revisa internet y vuelve a probar.",
+                privLine: "Solo tú y tu pareja veis lo que envías.", privMore: "¿Qué se guarda?", privTitle: "Tus datos", privWhat: "Se guarda: tu correo y contraseña (para entrar), nombre, ciudad, horas de sueño y estado, y las cápsulas y notas de voz que envías.", privWhere: "Dónde: el servidor de Handoff, una base de datos en Irlanda (UE). Tu ciudad también va a Open-Meteo, para el tiempo.", privWho: "Quién lo ve: solo tú y tu pareja. Ve tu nombre, ciudad, horario, estado y correo, y el final de cada pensamiento hasta que lo abre.", privDelete: "Cuenta → Borrar mi cuenta lo elimina todo: tu acceso, tu perfil, todo lo que enviaste y tus suposiciones.", deleteBtn: "Borrar mi cuenta", deleteConfirm: "¿Borrar tu cuenta y todo lo que enviaste? No se puede deshacer.", deleted: "Tu cuenta y todo lo que enviaste se han borrado.", onlyFor: "Solo {name} puede leerlo",
                 weatherClear: 'Despejado', weatherCloudy: 'Nublado', weatherMist: 'Niebla', weatherRain: 'Lluvia', weatherSnow: 'Nieve', weatherStorm: 'Tormenta'
             },
             'ca': {
@@ -1333,6 +1350,7 @@
                 errSendFailed: 'No s’ha pogut enviar — el missatge es conserva. Torna-ho a provar.',
                 errGeneric: 'Alguna cosa ha fallat. Torna-ho a provar.',
                 syncLive: "En directe", syncConfig: "Cal configurar", syncUnsafe: "Clau insegura", sleepStartAria: "Hora d’anar a dormir", wakeAria: "Hora de llevar-se", errAccountExists: "Ja hi ha un compte amb aquest correu. Entra directament.", errTooMany: "Massa intents. Espera un minut i torna-ho a provar.", errOffline: "Sense connexió. Revisa internet i torna-ho a provar.",
+                privLine: "Només tu i la teva parella veieu el que envies.", privMore: "Què es desa?", privTitle: "Les teves dades", privWhat: "Es desa: el teu correu i contrasenya (per entrar), nom, ciutat, hores de son i estat, i les càpsules i notes de veu que envies.", privWhere: "On: el servidor de Handoff, una base de dades a Irlanda (UE). La teva ciutat també va a Open-Meteo, per al temps.", privWho: "Qui ho veu: només tu i la teva parella. Veu el teu nom, ciutat, horari, estat i correu, i el final de cada pensament fins que l’obre.", privDelete: "Compte → Esborrar el meu compte ho elimina tot: el teu accés, el perfil, tot el que has enviat i les teves suposicions.", deleteBtn: "Esborrar el meu compte", deleteConfirm: "Vols esborrar el teu compte i tot el que has enviat? No es pot desfer.", deleted: "El teu compte i tot el que has enviat s’han esborrat.", onlyFor: "Només {name} ho pot llegir",
                 weatherClear: 'Serè', weatherCloudy: 'Ennuvolat', weatherMist: 'Boira', weatherRain: 'Pluja', weatherSnow: 'Neu', weatherStorm: 'Tempesta'
             }
         };
@@ -1385,6 +1403,7 @@
             updateMicLabel();
             if (!sending) setSendLabel('sendBtn');
             if (syncState) setText('sync-indicator', t(syncState));
+            renderPrivacy();
 
             if (currentUser) {
                 // Re-render only — no weather refetch. Localized city labels load lazily and are cached.
@@ -1822,6 +1841,7 @@
             setText('partner-status', partnerUser ? `${partnerUser.name} · ${placeLabel(partnerUser)}` : t('notPaired'));
             show('unpair-btn', !!partnerUser);
             hideMsg('modal-msg');
+            renderPrivacy();
             show('edit-modal', true);
             refreshPushStatus();
             setTimeout(() => $('modal-new-name').focus(), 50);
@@ -1969,6 +1989,48 @@
             await Promise.all([refreshWeather(false), loadCapsules()]);
         }
 
+
+        // ============================================================================
+        // 6b. PRIVACY IN PLAIN WORDS (sign-in card and Account) + delete everything
+        // ============================================================================
+        const DELETE_READY = false;   // true once delete_my_account() is on the server (build/server/handoff/delete_account.sql)
+        function renderPrivacy() {
+            const rows = [['📝', 'privWhat'], ['🗄️', 'privWhere'], ['👀', 'privWho']];
+            if (DELETE_READY) rows.push(['🗑️', 'privDelete']);
+            document.querySelectorAll('.priv-list').forEach(ul => {
+                ul.replaceChildren(...rows.map(([icon, key]) => {
+                    const li = document.createElement('li');
+                    const i = document.createElement('span'); i.setAttribute('aria-hidden', 'true'); i.textContent = icon;
+                    const tx = document.createElement('span'); tx.textContent = t(key);
+                    li.append(i, tx); return li;
+                }));
+            });
+            show('delete-btn', DELETE_READY && !!currentUser);
+        }
+
+        async function deleteAccount() {
+            if (!DELETE_READY || !currentUser || !supabaseClient) return;
+            if (!confirm(t('deleteConfirm'))) return;
+            const btn = $('delete-btn');
+            btn.disabled = true;
+            try {
+                // Your voice clips first (only you can remove files in your own folder).
+                const folder = currentUser.id;
+                const { data: files } = await supabaseClient.storage.from('soundbites').list(folder, { limit: 1000 });
+                if (files && files.length) await supabaseClient.storage.from('soundbites').remove(files.map(f => `${folder}/${f.name}`));
+                const sub = await getPushSub();
+                if (sub) { try { await sub.unsubscribe(); } catch (e) {} }
+                const { error } = await supabaseClient.rpc('delete_my_account');
+                if (error) { showMsg('modal-msg', t('errGeneric')); return; }
+                closeEditModal();
+                try { await supabaseClient.auth.signOut({ scope: 'local' }); } catch (e) {}
+                resetToLogin();
+                toast(t('deleted'), 5000);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
         // ============================================================================
         // 7. RENDERING: horizons, sky, overlap, vibe
         // ============================================================================
@@ -2038,7 +2100,8 @@
                 $('tz-diff').setAttribute('aria-label', `${partnerUser.name} ${diff}`);
                 $('tz-diff').title = `${partnerUser.name} ${diff}`;
                 setText('partner-sleep-badge', asleep ? t('sleeping') : t('awake'));
-                setText('composer-prompt', `${asleep ? t('promptSleep') : t('promptAwake')} ${partnerUser.name}`);
+                setText('composer-prompt', `🔒 ${asleep ? t('promptSleep') : t('promptAwake')} ${partnerUser.name}`);
+                $('composer-prompt').title = t('onlyFor', { name: partnerUser.name });
 
                 // Scheduled delivery option while they sleep
                 const wake = asleep ? nextWakeUp(pTz, sleepEnd(partnerUser)) : null;
