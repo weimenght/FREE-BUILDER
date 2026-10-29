@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" class="fbt">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7d34ab51e5"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=be25260283" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Front Row · Nearby</title>
+<meta name="description" content="The town's little cinema club: nominate a film with a line on why, say which ones you'd watch, and the one most people want plays this week. Then watch it with someone.">
+<meta name="theme-color" content="#1d130d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='1' y='3' width='14' height='9' fill='%231a1410'/%3E%3Crect x='2' y='4' width='12' height='7' fill='%23e8e0d0'/%3E%3Crect x='2' y='13' width='3' height='2' fill='%23c8303a'/%3E%3Crect x='6' y='13' width='3' height='2' fill='%23c8303a'/%3E%3Crect x='10' y='13' width='3' height='2' fill='%23c8303a'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/nearby/townkit.css">
+<style>
+.screenT{position:absolute;left:14%;right:14%;top:9%;height:40%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none;color:#1d130d;font:400 22px/1.1 var(--vt);padding:0 6px;overflow:hidden}
+.screenT b{display:block;font-size:13px;letter-spacing:.14em;color:#8a2a2a;margin-bottom:4px}
+.screenT span{overflow-wrap:anywhere}
+.screenT.dark{color:#6a6a7a}
+@media (min-aspect-ratio:6/5){.screenT{font-size:26px}}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<body>
+<h1 class="sr" id="h1">Front Row</h1>
+<div class="tk">
+  <div class="tk-scene"><canvas id="cv" aria-hidden="true"></canvas><div class="screenT" id="screenT"></div></div>
+  <main class="tk-panel" id="panel" aria-live="polite"></main>
+</div>
+<div class="tk-dock" id="dock"><button class="fbb fbb-pri" type="button" id="nomBtn"><span aria-hidden="true">🎬</span> <span id="nomL">Nominate a film</span></button></div>
+
+<section class="sheet" id="nom" hidden role="dialog" aria-labelledby="nomQ">
+  <button class="x" type="button" data-close aria-label="Close">✕</button>
+  <p class="q" id="nomQ">A film for the town</p>
+  <label for="fTitle" id="lTitle">Title</label><input id="fTitle" maxlength="80" autocomplete="off" />
+  <label for="fYear" id="lYear">Year</label><input id="fYear" inputmode="numeric" maxlength="4" autocomplete="off" />
+  <label for="fWhy" id="lWhy">Why we should watch it</label><textarea id="fWhy" maxlength="140" rows="2"></textarea>
+  <div class="row"><button class="fbb fbb-pri" type="button" id="fGo"></button></div>
+</section>
+
+<script src="/nearby/townkit.js"></script>
+<script>
+(function () {
+  "use strict";
+  var K = window.FBTown, t = K.t, el = K.el;
+  var T = {
+    h1: ["Front Row", "前排", "前排", "Primera Fila", "Primera Fila"],
+    nom: ["Nominate a film", "提名一部电影", "提名一部電影", "Propón una película", "Proposa una pel·lícula"],
+    nomQ: ["A film for the town", "给小镇提名一部电影", "給小鎮提名一部電影", "Una película para el pueblo", "Una pel·lícula per al poble"],
+    title: ["Title", "片名", "片名", "Título", "Títol"],
+    year: ["Year (if you know it)", "年份（知道的话）", "年份（知道的話）", "Año (si lo sabes)", "Any (si el saps)"],
+    why: ["Why we should watch it", "为什么值得一起看", "為什麼值得一起看", "Por qué deberíamos verla", "Per què l'hauríem de veure"],
+    go: ["Put it up", "贴上去", "貼上去", "Ponla en cartel", "Posa-la al cartell"],
+    on: ["ON THIS WEEK", "本周放映", "本週放映", "ESTA SEMANA", "AQUESTA SETMANA"],
+    dark: ["The screen is dark. Nominate the first film.", "银幕还暗着。来提名第一部电影吧。", "銀幕還暗著。來提名第一部電影吧。", "La pantalla está a oscuras. Propón la primera película.", "La pantalla és fosca. Proposa la primera pel·lícula."],
+    darkS: ["no film yet", "还没有电影", "還沒有電影", "aún sin película", "encara sense pel·lícula"],
+    by: ["— {n}", "—— {n}", "—— {n}", "— {n}", "— {n}"],
+    watchWith: ["Watch it with someone", "约个人一起看", "約個人一起看", "Mírala con alguien", "Mira-la amb algú"],
+    shareT: ["{f} is on at Front Row this week. Watch it with me? Your sofa or mine.", "这周“前排”放《{f}》。和我一起看吗？去你家或来我家。", "這週「前排」放《{f}》。和我一起看嗎？去你家或來我家。", "Esta semana ponen {f} en Primera Fila. ¿La vemos juntas? En tu sofá o en el mío.", "Aquesta setmana fan {f} a Primera Fila. La mirem juntes? Al teu sofà o al meu."],
+    near: ["A real cinema near you", "附近的真电影院", "附近的真電影院", "Un cine de verdad cerca", "Un cinema de debò a prop"],
+    cinemaQ: ["cinema", "电影院", "電影院", "cine", "cinema"],
+    list: ["NOMINATED", "已提名", "已提名", "PROPUESTAS", "PROPOSTES"],
+    want: ["I'd watch it", "我想看", "我想看", "La vería", "La veuria"],
+    wanted: ["You'd watch it", "你想看", "你想看", "La verías", "La veuries"],
+    mine: ["Your pick", "你提名的", "你提名的", "Tu propuesta", "La teva proposta"],
+    down: ["Take it down", "撤下", "撤下", "Quitarla", "Treure-la"],
+    rep: ["This shouldn't be here", "这不该在这里", "這不該在這裡", "Esto no debería estar aquí", "Això no hauria de ser aquí"],
+    repd: ["Thanks. Wei will look.", "谢谢，Wei 会看看。", "謝謝，Wei 會看看。", "Gracias. Wei lo mirará.", "Gràcies. En Wei ho mirarà."],
+    rest: ["Three films a day is plenty. The screen will be here tomorrow.", "一天提名三部就够啦。银幕明天还在。", "一天提名三部就夠啦。銀幕明天還在。", "Tres películas al día bastan. La pantalla seguirá aquí mañana.", "Tres pel·lícules al dia ja n'hi ha prou. La pantalla serà aquí demà."],
+    off: ["The projector is warming up. Try again in a moment.", "放映机还在预热，稍后再试。", "放映機還在預熱，稍後再試。", "El proyector se está calentando. Prueba en un momento.", "El projector s'està escalfant. Torna-ho a provar d'aquí a un moment."],
+    close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"]
+  };
+  function $(id) { return document.getElementById(id); }
+  function words() {
+    $("h1").textContent = t(T.h1); $("nomL").textContent = t(T.nom); $("nomQ").textContent = t(T.nomQ);
+    $("lTitle").textContent = t(T.title); $("lYear").textContent = t(T.year); $("lWhy").textContent = t(T.why); $("fGo").textContent = t(T.go);
+    [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.setAttribute("aria-label", t(T.close)); });
+  }
+  window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); paint(); };
+  words();
+
+  /* ---------- the little cinema: a screen, a red curtain, rows of seats, the projector's beam ---------- */
+  var cv = $("cv"), g = cv.getContext("2d"), PW = 160, PH = 100, f = 0, data = null;
+  function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  function size() { var r = cv.getBoundingClientRect(), S = Math.max(2, Math.round(Math.min(r.width, r.height * 1.6) / 170)); PW = Math.max(80, Math.ceil(r.width / S)); PH = Math.max(50, Math.ceil(r.height / S)); cv.width = PW; cv.height = PH; g.imageSmoothingEnabled = false; }
+  addEventListener("resize", size); size();
+  function others() { try { return parent !== window && parent.FBShell && parent.FBShell.others ? parent.FBShell.others("cinema") : 0; } catch (e) { return 0; } }
+  function scene() {
+    var on = !!(data && data.showing);
+    R(0, 0, PW, PH, "#1a0e10");
+    var sx = Math.round(PW * .14), sw = PW - sx * 2, sy = Math.round(PH * .08), sh = Math.round(PH * .42);
+    for (var c = 0; c < 6; c++) { R(0, 0, sx - 2 - c, PH * .62, c % 2 ? "#7a1a22" : "#8a2028"); R(PW - sx + 2 + c, 0, sx - 2 - c, PH * .62, c % 2 ? "#7a1a22" : "#8a2028"); }
+    R(sx - 2, sy - 2, sw + 4, sh + 4, "#000");
+    R(sx, sy, sw, sh, on ? (f % 90 < 2 ? "#fbf3e2" : "#efe6d0") : "#2a2a34");
+    if (on) { g.fillStyle = "rgba(255,248,220," + (0.07 + Math.sin(f / 7) * .02) + ")"; g.beginPath(); g.moveTo(PW / 2 - 2, PH - 2); g.lineTo(sx, sy + sh); g.lineTo(sx + sw, sy + sh); g.closePath(); g.fill(); }
+    R(0, sy + sh + 3, PW, 2, "#3a1a1a");
+    var rows = 4, top = sy + sh + 8;
+    for (var r = 0; r < rows; r++) {
+      var y = top + r * ((PH - top) / rows), seat = Math.max(6, Math.round(PW / 16)), n = Math.floor((PW - 8) / (seat + 2));
+      for (var i = 0; i < n; i++) { var x = 4 + i * (seat + 2) + (r % 2) * 2; R(x, y, seat, 5, "#9a2a30"); R(x, y, seat, 1, "#c84048"); R(x, y + 5, seat, 2, "#5a1a1e"); }
+    }
+    if (others() > 0) { var hx = Math.round(PW * .62), hy = top + (PH - top) * .25; R(hx + 1, hy - 7, 4, 4, "#0a0608"); R(hx, hy - 3, 6, 3, "#0a0608"); }   /* someone else is here: a head in the second row */
+    R(PW / 2 - 3, PH - 3, 6, 3, "#3a3a40"); if (on) R(PW / 2 - 1, PH - 3, 2, 1, "#fff6c0");
+  }
+  function loop() { if (!document.hidden) { f++; scene(); } setTimeout(function () { requestAnimationFrame(loop); }, 60); }
+  loop();
+
+  /* ---------- the films ---------- */
+  var panel = $("panel");
+  function load() {
+    return K.secret("cinema").then(function (s) { return K.rpc("film_list", { p_secret: s }); })
+      .then(function (d) { data = d && d.films ? d : { films: [], showing: null }; paint(); })
+      .catch(function () { data = data || null; paint(true); });
+  }
+  function showing() { return data && data.showing ? data.films.filter(function (x) { return x.id === data.showing; })[0] : null; }
+  function paint(off) {
+    var on = showing(), st = $("screenT");
+    st.className = "screenT" + (on ? "" : " dark"); st.innerHTML = "";
+    if (on) { st.appendChild(el("b", "", t(T.on))); st.appendChild(el("span", "", on.title + (on.year ? " (" + on.year + ")" : ""))); }
+    else st.appendChild(el("span", "", t(T.darkS)));
+    panel.innerHTML = "";
+    if (off && !data) { panel.appendChild(el("div", "tk-card tk-empty", t(T.off))); return; }
+    if (on) {
+      var c = el("div", "tk-card hi"); c.appendChild(el("p", "tk-k", t(T.on)));
+      c.appendChild(el("h2", "tk-h", on.title + (on.year ? " (" + on.year + ")" : "")));
+      if (on.pitch) c.appendChild(el("p", "tk-p", "“" + on.pitch + "”"));
+      if (on.nick) c.appendChild(el("p", "tk-dim", t(T.by, { n: on.nick })));
+      var row = el("div", "tk-row"), b1 = el("button", "fbb fbb-pri", "↗ " + t(T.watchWith)); b1.type = "button";
+      b1.onclick = function () { K.share(t(T.h1), t(T.shareT, { f: on.title }), location.origin + "/nearby/front-row/"); };
+      var a2 = el("a", "fbb", t(T.near)); a2.href = K.mapsUrl(t(T.cinemaQ)); a2.target = "_blank"; a2.rel = "noopener";
+      row.appendChild(b1); row.appendChild(a2); c.appendChild(row); panel.appendChild(c);
+    } else panel.appendChild(el("div", "tk-card tk-empty", t(T.dark)));
+    var list = (data && data.films) || [];
+    if (list.length) panel.appendChild(el("p", "tk-k", t(T.list)));
+    list.forEach(function (x) {
+      var c = el("div", "tk-card");
+      c.appendChild(el("h3", "tk-h", x.title + (x.year ? " (" + x.year + ")" : "")));
+      if (x.pitch) c.appendChild(el("p", "tk-p", "“" + x.pitch + "”"));
+      c.appendChild(el("p", "tk-dim", (x.nick ? t(T.by, { n: x.nick }) + " · " : "") + x.at));
+      var row = el("div", "tk-row");
+      if (x.mine) { row.appendChild(el("span", "tk-tag", t(T.mine))); var d = el("button", "tk-link", t(T.down)); d.type = "button"; d.onclick = function () { K.secret("cinema").then(function (s) { return K.rpc("film_forget", { p_secret: s, p_id: x.id }); }).then(load).catch(function () {}); }; row.appendChild(d); }
+      else {
+        var w = el("button", "fbb" + (x.want ? " fbb-pri" : ""), (x.want ? "✓ " : "") + t(x.want ? T.wanted : T.want)); w.type = "button"; w.setAttribute("aria-pressed", x.want ? "true" : "false");
+        w.onclick = function () { w.disabled = true; K.secret("cinema").then(function (s) { return K.rpc("film_want", { p_secret: s, p_id: x.id }); }).then(load).catch(function () { w.disabled = false; }); };
+        var r = el("button", "tk-link", "⚑"); r.type = "button"; r.setAttribute("aria-label", t(T.rep)); r.title = t(T.rep);
+        r.onclick = function () { r.disabled = true; r.textContent = t(T.repd); K.secret("cinema").then(function (s) { return K.rpc("film_report", { p_secret: s, p_id: x.id }); }).catch(function () {}); };
+        row.appendChild(w); row.appendChild(r);
+      }
+      c.appendChild(row); panel.appendChild(c);
+    });
+  }
+
+  /* ---------- nominate ---------- */
+  function show(id) { ["nom"].forEach(function (s) { $(s).hidden = s !== id; }); $("dock").hidden = !!id; }
+  [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.onclick = function () { show(null); }; });
+  addEventListener("keydown", function (e) { if (e.key === "Escape") show(null); });
+  $("nomBtn").onclick = function () { $("fTitle").value = ""; $("fYear").value = ""; $("fWhy").value = ""; show("nom"); setTimeout(function () { try { $("fTitle").focus({ preventScroll: true }); } catch (e) {} }, 60); };
+  $("fGo").onclick = function () {
+    var ti = $("fTitle").value.trim(); if (!ti) { $("fTitle").classList.remove("hop"); void $("fTitle").offsetWidth; $("fTitle").classList.add("hop"); return; }
+    var yr = parseInt($("fYear").value, 10), btn = this; btn.disabled = true;
+    K.secret("cinema").then(function (s) { return K.rpc("film_add", { p_secret: s, p_title: ti, p_year: isNaN(yr) ? null : yr, p_pitch: $("fWhy").value.trim(), p_nick: K.nick() }); })
+      .then(function () { show(null); btn.disabled = false; try { if (window.FBG && FBG.made) FBG.made("cinema", ti); } catch (e) {} return load(); })
+      .catch(function (e) { btn.disabled = false; show(null); K.note(t(e && e.rest ? T.rest : T.off), "🎬"); });
+  };
+  load(); setInterval(function () { if (!document.hidden) load(); }, 60000);
+})();
+</script>
+</body>
+</html>

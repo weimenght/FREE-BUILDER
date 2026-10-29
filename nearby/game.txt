@@ -68,6 +68,30 @@ AUTHOR: FREE//BUILDER
 DESC: A small cabin on the high pasture with one big window. Clouds drift, cows wander, the weather does what it does. There is nothing to win and nothing to finish. Stay as long as you like.
 URL: no-hurry/
 
+CODE: SCREEN
+ID: FR-26
+TITLE: Front Row
+GENRE: The town's little cinema club
+AUTHOR: FREE//BUILDER
+DESC: Nominate a film with a line on why, and say which of the others you'd watch. The one most people want is on this week. No counts, no rankings: just a screen, red seats, and someone to watch it with.
+URL: front-row/
+
+CODE: BOARD
+ID: TH-27
+TITLE: Town Hall
+GENRE: A notice board for the town
+AUTHOR: FREE//BUILDER
+DESC: Pin an idea for the town, your own news, or a word about a place you love here, and answer each other. No votes. Notices stay two months.
+URL: town-hall/
+
+CODE: PARTY
+ID: CO-28
+TITLE: Come Over
+GENRE: Invitations to real get-togethers
+AUTHOR: FREE//BUILDER
+DESC: Plan an evening with real people: what, when, where, and things people could bring. Send the link; see who's coming and what they'll bring. Only people with the link can see it, and it's gone a week after the day.
+URL: come-over/
+
 CODE: WISH
 ID: PZ-25
 TITLE: The Plaza

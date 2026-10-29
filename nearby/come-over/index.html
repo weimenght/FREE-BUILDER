@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" class="fbt">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7d34ab51e5"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=be25260283" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Come Over · Nearby</title>
+<meta name="description" content="Plan a real get-together: write the invitation, send the link, and see who's coming and what they'll bring. Only people with the link can see it.">
+<meta name="theme-color" content="#1d130d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='3' y='7' width='10' height='8' fill='%23e8b8a0'/%3E%3Crect x='2' y='5' width='12' height='2' fill='%235a2a1e'/%3E%3Crect x='4' y='3' width='8' height='2' fill='%235a2a1e'/%3E%3Crect x='5' y='9' width='2' height='2' fill='%23f6c84a'/%3E%3Crect x='9' y='9' width='2' height='2' fill='%23f6c84a'/%3E%3Crect x='7' y='12' width='2' height='3' fill='%232f5a3a'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/nearby/townkit.css">
+<style>
+.inv{background:#fbf3e2;color:#2a1a10;border:3px solid #000;box-shadow:4px 4px 0 #000;padding:14px 16px;margin:0 0 12px;position:relative}
+.inv .tk-k{color:#8a5a3a}.inv .tk-h{color:#a8302a;font-size:26px}.inv .tk-dim{color:#6a4a30}
+.inv dl{margin:8px 0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px}.inv dt{color:#8a5a3a}.inv dd{margin:0;overflow-wrap:anywhere}
+.guest{margin:0 0 8px;overflow-wrap:anywhere}.guest b{color:var(--a);font-weight:400}.guest i{font-style:normal;color:var(--dim)}
+.add{display:flex;gap:6px}.add input{flex:1;margin:0}.add .fbb{min-height:44px}
+.yn{display:flex;gap:8px;margin:0 0 10px}.yn .fbb{flex:1;min-height:46px}.yn .fbb[aria-pressed=true]{background:var(--fbb-amber,#f6b73c);color:#1d130d}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<body>
+<h1 class="sr" id="h1">Come Over</h1>
+<div class="tk">
+  <div class="tk-scene"><canvas id="cv" aria-hidden="true"></canvas></div>
+  <main class="tk-panel" id="panel" aria-live="polite"></main>
+</div>
+<div class="tk-dock" id="dock"><button class="fbb fbb-pri" type="button" id="planBtn"><span aria-hidden="true">🎈</span> <span id="planL">Plan a get-together</span></button></div>
+
+<section class="sheet" id="plan" hidden role="dialog" aria-labelledby="planQ">
+  <button class="x" type="button" data-close aria-label="Close">✕</button>
+  <p class="q" id="planQ">Your invitation</p>
+  <label for="eTitle" id="lTitle"></label><input id="eTitle" maxlength="80" autocomplete="off" />
+  <label for="eHosts" id="lHosts"></label><input id="eHosts" maxlength="60" autocomplete="off" />
+  <label for="eAbout" id="lAbout"></label><textarea id="eAbout" maxlength="280" rows="2"></textarea>
+  <label for="eDate" id="lDate"></label><input id="eDate" type="date" />
+  <label for="eTime" id="lTime"></label><input id="eTime" maxlength="20" autocomplete="off" placeholder="19:30" />
+  <label for="ePlace" id="lPlace"></label><input id="ePlace" maxlength="120" autocomplete="off" />
+  <label id="lItems"></label><div class="choice" id="eItems"></div>
+  <div class="add"><input id="eNew" maxlength="30" autocomplete="off" /><button class="fbb" type="button" id="eAdd">+</button></div>
+  <div class="row"><button class="fbb fbb-pri" type="button" id="eGo"></button></div>
+</section>
+
+<script src="/nearby/townkit.js"></script>
+<script>
+(function () {
+  "use strict";
+  var K = window.FBTown, t = K.t, el = K.el;
+  var T = {
+    h1: ["Come Over", "来我家", "來我家", "Ven a Casa", "Vine a Casa"],
+    plan: ["Plan a get-together", "办一次聚会", "辦一次聚會", "Organiza un encuentro", "Organitza una trobada"],
+    planQ: ["Your invitation", "你的邀请", "你的邀請", "Tu invitación", "La teva invitació"],
+    title: ["What is it? (Sunday soup, a picnic, games night)", "什么聚会？（周日喝汤、野餐、桌游夜）", "什麼聚會？（週日喝湯、野餐、桌遊夜）", "¿Qué es? (sopa del domingo, un pícnic, noche de juegos)", "Què és? (sopa de diumenge, un pícnic, nit de jocs)"],
+    hosts: ["Hosted by", "主人", "主人", "Organizan", "Organitzen"],
+    about: ["A line about it", "说一句", "說一句", "Una línea sobre el plan", "Una línia sobre el pla"],
+    date: ["Day", "日期", "日期", "Día", "Dia"],
+    time: ["Time", "时间", "時間", "Hora", "Hora"],
+    place: ["Where (only people with the link see it)", "在哪里（只有拿到链接的人看得到）", "在哪裡（只有拿到連結的人看得到）", "Dónde (solo lo ve quien tenga el enlace)", "On (només ho veu qui tingui l'enllaç)"],
+    items: ["Things people could bring", "大家可以带点什么", "大家可以帶點什麼", "Cosas que la gente puede traer", "Coses que la gent pot portar"],
+    newItem: ["Something else…", "别的……", "別的……", "Otra cosa…", "Una altra cosa…"],
+    create: ["Make the invitation", "写好邀请", "寫好邀請", "Crear la invitación", "Fer la invitació"],
+    save: ["Save the changes", "保存修改", "儲存修改", "Guardar los cambios", "Desar els canvis"],
+    PRESET: [["Something to drink", "喝的", "喝的", "Algo de beber", "Alguna cosa per beure"], ["Snacks", "零食", "零食", "Algo para picar", "Alguna cosa per picar"], ["Fruit", "水果", "水果", "Fruta", "Fruita"], ["Something sweet", "甜点", "甜點", "Algo dulce", "Alguna cosa dolça"], ["Music", "音乐", "音樂", "Música", "Música"], ["Flowers", "花", "花", "Flores", "Flors"], ["A game", "一个游戏", "一個遊戲", "Un juego", "Un joc"], ["Just yourself", "人来就好", "人來就好", "Solo tú", "Només tu"]],
+    home: ["Plan a real evening with real people. Write the invitation, send the link, and see who's coming and what they'll bring.", "约真实的人，过一个真实的晚上。写好邀请，发出链接，看看谁会来、带什么。", "約真實的人，過一個真實的晚上。寫好邀請，傳出連結，看看誰會來、帶什麼。", "Planea una tarde de verdad con gente de verdad. Escribe la invitación, envía el enlace y mira quién viene y qué trae.", "Planeja un vespre de debò amb gent de debò. Escriu la invitació, envia l'enllaç i mira qui ve i què porta."],
+    yours: ["YOUR GATHERINGS", "你的聚会", "你的聚會", "TUS ENCUENTROS", "LES TEVES TROBADES"],
+    hosting: ["you're hosting", "你是主人", "你是主人", "organizas tú", "organitzes tu"],
+    invited: ["you're invited", "你被邀请了", "你被邀請了", "estás invitado", "estàs convidat"],
+    when: ["When", "时间", "時間", "Cuándo", "Quan"], where: ["Where", "地点", "地點", "Dónde", "On"], by: ["Hosted by {n}", "{n} 邀请", "{n} 邀請", "Organiza {n}", "Organitza {n}"],
+    send: ["Send the invitation", "发出邀请", "傳出邀請", "Enviar la invitación", "Envia la invitació"],
+    shareT: ["You're invited: {t}. Say if you can come and what you'll bring:", "邀请你：{t}。告诉我你能不能来、带什么：", "邀請你：{t}。告訴我你能不能來、帶什麼：", "Estás invitada: {t}. Dime si vienes y qué traes:", "Estàs convidada: {t}. Digues-me si vens i què portes:"],
+    edit: ["Change it", "修改", "修改", "Cambiarla", "Canviar-la"],
+    del: ["Call it off", "取消聚会", "取消聚會", "Cancelarla", "Cancel·lar-la"],
+    delSure: ["Call it off? Everyone's answers go too.", "确定取消吗？大家的回复也会一起删除。", "確定取消嗎？大家的回覆也會一起刪除。", "¿Cancelarla? Las respuestas también se borran.", "Cancel·lar-la? Les respostes també s'esborren."],
+    cal: ["Add to my calendar", "加到我的日历", "加到我的行事曆", "Añadir a mi calendario", "Afegir al meu calendari"],
+    coming: ["Can you come?", "你能来吗？", "你能來嗎？", "¿Puedes venir?", "Pots venir?"],
+    name: ["Your name", "你的称呼", "你的稱呼", "Tu nombre", "El teu nom"],
+    yes: ["I'll be there", "我会来", "我會來", "Allí estaré", "Hi seré"], no: ["Can't make it", "来不了", "來不了", "No puedo", "No puc"],
+    bring: ["I'll bring", "我带", "我帶", "Llevo", "Porto"],
+    note: ["A note for the host", "给主人留句话", "給主人留句話", "Una nota para quien organiza", "Una nota per a qui organitza"],
+    answer: ["Send my answer", "发送回复", "傳送回覆", "Enviar mi respuesta", "Envia la meva resposta"],
+    change: ["Change my answer", "修改回复", "修改回覆", "Cambiar mi respuesta", "Canviar la meva resposta"],
+    who: ["WHO'S COMING", "谁会来", "誰會來", "QUIÉN VIENE", "QUI VE"],
+    going: ["coming", "会来", "會來", "viene", "ve"], notGoing: ["can't make it", "来不了", "來不了", "no puede", "no pot"],
+    nobody: ["No answers yet. Send the link to the people you'd like there.", "还没有人回复。把链接发给你想请的人吧。", "還沒有人回覆。把連結傳給你想請的人吧。", "Aún no hay respuestas. Envía el enlace a quien quieras ver allí.", "Encara no hi ha respostes. Envia l'enllaç a qui vulguis veure-hi."],
+    still: ["Still nobody bringing: {i}", "还没人带：{i}", "還沒人帶：{i}", "Aún nadie trae: {i}", "Encara ningú porta: {i}"],
+    gone: ["This invitation has ended or was called off.", "这个邀请已经结束或取消了。", "這個邀請已經結束或取消了。", "Esta invitación ya pasó o se canceló.", "Aquesta invitació ja ha passat o s'ha cancel·lat."],
+    rest: ["Five invitations a day is plenty.", "一天发五个邀请就够啦。", "一天發五個邀請就夠啦。", "Cinco invitaciones al día bastan.", "Cinc invitacions al dia ja n'hi ha prou."],
+    off: ["The invitation can't be reached just now. Try again in a moment.", "暂时打不开邀请，稍后再试。", "暫時打不開邀請，稍後再試。", "Ahora no se puede abrir la invitación. Prueba en un momento.", "Ara no es pot obrir la invitació. Torna-ho a provar d'aquí a un moment."],
+    close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"]
+  };
+  function $(id) { return document.getElementById(id); }
+  var code = (/[#&]p=([A-Za-z0-9]{6,16})/.exec(location.hash) || [])[1] || null, ev = null, editing = false, picked = [], extra = [], ans = { going: true, items: [] };
+  function mineList() { try { return JSON.parse(localStorage.getItem("fb_party") || "[]") || []; } catch (e) { return []; } }
+  function remember(c, title, host) { var l = mineList().filter(function (x) { return x.c !== c; }); l.unshift({ c: c, t: title, h: !!host }); try { localStorage.setItem("fb_party", JSON.stringify(l.slice(0, 20))); } catch (e) {} }
+  function forgetLocal(c) { try { localStorage.setItem("fb_party", JSON.stringify(mineList().filter(function (x) { return x.c !== c; }))); } catch (e) {} }
+  function words() {
+    $("h1").textContent = t(T.h1); $("planL").textContent = t(T.plan); $("planQ").textContent = t(T.planQ);
+    $("lTitle").textContent = t(T.title); $("lHosts").textContent = t(T.hosts); $("lAbout").textContent = t(T.about); $("lDate").textContent = t(T.date); $("lTime").textContent = t(T.time); $("lPlace").textContent = t(T.place); $("lItems").textContent = t(T.items);
+    $("eNew").placeholder = t(T.newItem); $("eGo").textContent = t(editing ? T.save : T.create);
+    [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.setAttribute("aria-label", t(T.close)); });
+    chips();
+  }
+  function chips() {
+    var box = $("eItems"); box.innerHTML = "";
+    T.PRESET.map(function (p) { return t(p); }).concat(extra).forEach(function (name) { var b = el("button", "fbb", name); b.type = "button"; b.setAttribute("aria-pressed", picked.indexOf(name) >= 0 ? "true" : "false"); b.onclick = function () { var i = picked.indexOf(name); if (i >= 0) picked.splice(i, 1); else if (picked.length < 12) picked.push(name); chips(); }; box.appendChild(b); });
+  }
+  window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); paint(); };
+
+  /* ---------- the house: warm windows, a string of lights along the balcony, balloons by the door ---------- */
+  var cv = $("cv"), g = cv.getContext("2d"), PW = 160, PH = 100, f = 0;
+  var W = window.FBWorld || { phase: function () { return "dusk"; }, weather: function () { return "clear"; } };
+  function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  function size() { var r = cv.getBoundingClientRect(), S = Math.max(2, Math.round(Math.min(r.width, r.height * 1.6) / 170)); PW = Math.max(80, Math.ceil(r.width / S)); PH = Math.max(50, Math.ceil(r.height / S)); cv.width = PW; cv.height = PH; g.imageSmoothingEnabled = false; }
+  addEventListener("resize", size); size();
+  var SKY = { night: ["#0a1030", "#24305a"], dawn: ["#5a6aa8", "#f0a888"], day: ["#4a8ad0", "#bfe0f6"], dusk: ["#3a3a7a", "#f08a5a"] };
+  function lerp(a, b, k) { var A = parseInt(a.slice(1), 16), B = parseInt(b.slice(1), 16); return "rgb(" + [16, 8, 0].map(function (s) { return Math.round(((A >> s) & 255) * (1 - k) + ((B >> s) & 255) * k); }).join(",") + ")"; }
+  function scene() {
+    var ph = W.phase(), night = ph === "night", lit = night || ph === "dusk", sk = SKY[ph] || SKY.day, gy = Math.round(PH * .88);
+    for (var y = 0; y < gy; y++) R(0, y, PW, 1, lerp(sk[0], sk[1], y / gy));
+    if (night) for (var s = 0; s < 20; s++) R((s * 47) % PW, (s * 13) % (gy / 2), 1, 1, "#fff6c0");
+    R(0, gy, PW, PH - gy, night ? "#1e2a1e" : "#6a9a4a");
+    var hw = Math.min(PW * .6, PH * 1.05), hx = Math.round((PW - hw) / 2), hy = Math.round(PH * .34), rf = Math.round(hw * .22);
+    for (var i = 0; i < rf; i++) R(hx + hw / 2 - (i / rf) * (hw / 2 + 4), hy - rf + i, (i / rf) * (hw + 8), 1, "#5a2a1e");
+    R(hx, hy, hw, gy - hy, night ? "#7a5a50" : "#e8b8a0"); R(hx, hy, hw, 2, "#c8907a");
+    var ww = Math.round(hw * .16), wh = Math.round((gy - hy) * .22);
+    [[.12, .12], [.72, .12], [.12, .56], [.72, .56]].forEach(function (p, i) { var x = hx + hw * p[0], y = hy + (gy - hy) * p[1], on = lit || i < 2 && ph !== "day"; R(x - 1, y - 1, ww + 2, wh + 2, "#3a2414"); R(x, y, ww, wh, on ? (i % 2 ? "#ffd68a" : "#f6c84a") : "#8ab0d0"); R(x + ww / 2, y, 1, wh, "#3a2414"); });
+    var dw = Math.round(hw * .14); R(hx + hw / 2 - dw / 2, gy - (gy - hy) * .4, dw, (gy - hy) * .4, "#2f5a3a"); R(hx + hw / 2 + dw / 2 - 2, gy - (gy - hy) * .2, 1, 1, "#f6c84a");
+    var ly = hy + (gy - hy) * .44; for (var x2 = hx - 2; x2 < hx + hw + 2; x2 += 3) { var on2 = lit ? ((x2 + (f >> 3)) % 4 !== 0) : true, sag = Math.sin((x2 - hx) / hw * Math.PI) * 2; R(x2, ly + sag, 1, 1, on2 ? ["#f6c84a", "#f48fb8", "#7ac8d8", "#a0e08a"][(x2 / 3 | 0) % 4] : "#5a4a3a"); }
+    var bx = hx + hw / 2 + dw / 2 + 4, bob = Math.sin(f / 15);
+    [["#e0405a", 0], ["#f6c84a", 4], ["#7ac8d8", 2]].forEach(function (b, i) { var x = bx + i * 4, y = gy - (gy - hy) * .62 - b[1] + bob * (i % 2 ? 1 : -1); R(x, y, 3, 4, b[0]); R(x + 1, y + 4, 1, gy - (gy - hy) * .4 - y - 4 + (gy - hy) * .02, "rgba(255,255,255,.5)"); });
+    var wx = W.weather(); if (wx === "rain" || wx === "storm") for (var d = 0; d < 30; d++) R((d * 37 + f * 2) % PW, (d * 53 + f * 5) % PH, 1, 3, "rgba(200,220,255,.5)");
+    if (wx === "snow") for (var sn = 0; sn < 30; sn++) R((sn * 41) % PW, (sn * 29 + f * .6) % PH, 1, 1, "#fff");
+  }
+  function loop() { if (!document.hidden) { f++; scene(); } setTimeout(function () { requestAnimationFrame(loop); }, 80); }
+  loop();
+
+  /* ---------- the invitation ---------- */
+  var panel = $("panel");
+  function fmtDate(d) { if (!d) return ""; try { return new Date(d + "T12:00:00").toLocaleDateString(K.lang(), { weekday: "long", day: "numeric", month: "long" }); } catch (e) { return d; } }
+  function load() {
+    if (!code) { paint(); return Promise.resolve(); }
+    return K.secret("party").then(function (s) { return K.rpc("party_get", { p_secret: s, p_code: code }); })
+      .then(function (d) { ev = d || false; if (d) { remember(code, d.title, d.host); var me = (d.guests || []).filter(function (g2) { return g2.mine; })[0]; if (me) ans = { going: me.going, items: me.items || [], note: me.note || "", name: me.name, had: 1 }; } else forgetLocal(code); paint(); })
+      .catch(function () { ev = null; paint(true); });
+  }
+  function paint(off) {
+    panel.innerHTML = ""; $("dock").hidden = !!code || !$("plan").hidden;
+    if (!code) {
+      panel.appendChild(el("div", "tk-card", t(T.home)));
+      var mine = mineList(); if (mine.length) { panel.appendChild(el("p", "tk-k", t(T.yours))); mine.forEach(function (m) { var a = el("a", "tk-card"); a.style.display = "block"; a.style.color = "inherit"; a.style.textDecoration = "none"; a.href = "#p=" + m.c; a.appendChild(el("h3", "tk-h", m.t)); a.appendChild(el("p", "tk-dim", t(m.h ? T.hosting : T.invited))); panel.appendChild(a); }); }
+      return;
+    }
+    if (off) { panel.appendChild(el("div", "tk-card tk-empty", t(T.off))); return; }
+    if (ev === false) { panel.appendChild(el("div", "tk-card tk-empty", t(T.gone))); return; }
+    if (!ev) return;
+    var c = el("div", "inv"); if (ev.hosts) c.appendChild(el("p", "tk-k", t(T.by, { n: ev.hosts })));
+    c.appendChild(el("h2", "tk-h", ev.title)); if (ev.about) c.appendChild(el("p", "tk-p", ev.about));
+    var dl = el("dl"); if (ev.date || ev.time) { dl.appendChild(el("dt", "", t(T.when))); dl.appendChild(el("dd", "", [fmtDate(ev.date), ev.time].filter(Boolean).join(" · "))); }
+    if (ev.place) { dl.appendChild(el("dt", "", t(T.where))); var dd = el("dd"), a = el("a", "", ev.place); a.href = K.mapsUrl(ev.place); a.target = "_blank"; a.rel = "noopener"; a.style.color = "#a8302a"; dd.appendChild(a); dl.appendChild(dd); }
+    c.appendChild(dl);
+    var row = el("div", "tk-row");
+    if (ev.host) { var s1 = el("button", "fbb fbb-pri", "↗ " + t(T.send)); s1.type = "button"; s1.onclick = function () { K.share(ev.title, t(T.shareT, { t: ev.title }), location.origin + "/nearby/come-over/#p=" + code); }; row.appendChild(s1);
+      var e1 = el("button", "fbb", "✎ " + t(T.edit)); e1.type = "button"; e1.onclick = function () { openForm(true); }; row.appendChild(e1); }
+    if (ev.date) { var cb = el("button", "fbb", t(T.cal)); cb.type = "button"; cb.onclick = ics; row.appendChild(cb); }
+    c.appendChild(row);
+    if (ev.host) { var dx = el("button", "tk-link", t(T.del)); dx.type = "button"; dx.style.color = "#8a5a3a"; dx.onclick = function () { if (!confirm(t(T.delSure))) return; K.secret("party").then(function (s) { return K.rpc("party_forget", { p_secret: s, p_code: code }); }).then(function () { forgetLocal(code); location.hash = ""; code = null; ev = null; paint(); }).catch(function () {}); }; c.appendChild(dx); }
+    panel.appendChild(c);
+    if (!ev.host) rsvpCard();
+    /* who's coming, and what nobody has said they'll bring yet */
+    panel.appendChild(el("p", "tk-k", t(T.who)));
+    var gs = ev.guests || [];
+    if (!gs.length) panel.appendChild(el("div", "tk-card tk-empty", t(T.nobody)));
+    else { var gc = el("div", "tk-card"); gs.forEach(function (x) { var p = el("p", "guest"); p.appendChild(el("b", "", x.name)); p.appendChild(document.createTextNode(" · " + t(x.going ? T.going : T.notGoing) + (x.items && x.items.length ? " · " + x.items.join(", ") : ""))); if (x.note) { p.appendChild(document.createElement("br")); p.appendChild(el("i", "", "“" + x.note + "”")); } gc.appendChild(p); }); panel.appendChild(gc); }
+    var claimed = {}; gs.forEach(function (x) { if (x.going) (x.items || []).forEach(function (i) { claimed[i] = 1; }); });
+    var still = (ev.items || []).filter(function (i) { return !claimed[i]; }); if (still.length && ev.items.length) panel.appendChild(el("p", "tk-dim", t(T.still, { i: still.join(", ") })));
+  }
+  function rsvpCard() {
+    var c = el("div", "tk-card"); c.appendChild(el("h3", "tk-h", t(T.coming)));
+    var nm = el("input"); nm.maxLength = 24; nm.placeholder = t(T.name); nm.setAttribute("aria-label", t(T.name)); nm.value = ans.name || K.nick(); nm.autocomplete = "nickname"; c.appendChild(nm);
+    var yn = el("div", "yn"); [[true, T.yes], [false, T.no]].forEach(function (o) { var b = el("button", "fbb", t(o[1])); b.type = "button"; b.setAttribute("aria-pressed", ans.going === o[0] ? "true" : "false"); b.onclick = function () { ans.going = o[0]; ans.name = nm.value; ans.note = nt.value; paint(); }; yn.appendChild(b); }); c.appendChild(yn);
+    if (ans.going && ev.items && ev.items.length) { c.appendChild(el("p", "tk-dim", t(T.bring))); var ch = el("div", "choice"); ev.items.forEach(function (i) { var b = el("button", "fbb", i); b.type = "button"; b.setAttribute("aria-pressed", ans.items.indexOf(i) >= 0 ? "true" : "false"); b.onclick = function () { var k = ans.items.indexOf(i); if (k >= 0) ans.items.splice(k, 1); else ans.items.push(i); b.setAttribute("aria-pressed", k >= 0 ? "false" : "true"); }; ch.appendChild(b); }); c.appendChild(ch); }
+    var nt = el("textarea"); nt.maxLength = 140; nt.rows = 2; nt.placeholder = t(T.note); nt.setAttribute("aria-label", t(T.note)); nt.value = ans.note || ""; c.appendChild(nt);
+    var go = el("button", "fbb fbb-pri", t(ans.had ? T.change : T.answer)); go.type = "button";
+    go.onclick = function () { var n = nm.value.trim(); if (!n) { nm.classList.remove("hop"); void nm.offsetWidth; nm.classList.add("hop"); return; } go.disabled = true; K.setNick(n);
+      K.secret("party").then(function (s) { return K.rpc("party_rsvp", { p_secret: s, p_code: code, p_name: n, p_going: ans.going, p_items: ans.going ? ans.items : [], p_note: nt.value.trim() }); }).then(load).catch(function () { go.disabled = false; K.note(t(T.off), "🎈"); }); };
+    c.appendChild(go); panel.appendChild(c);
+  }
+  function ics() {
+    var d = (ev.date || "").replace(/-/g, ""), m = /^(\d{1,2})[:.h](\d{2})/.exec(ev.time || ""), start = m ? d + "T" + ("0" + m[1]).slice(-2) + m[2] + "00" : d;
+    var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Nearby//Come Over//EN", "BEGIN:VEVENT", "UID:" + code + "@nearby", "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, ""),
+      (m ? "DTSTART:" : "DTSTART;VALUE=DATE:") + start, "SUMMARY:" + ev.title.replace(/[,;\n]/g, " "), ev.place ? "LOCATION:" + ev.place.replace(/[,;\n]/g, " ") : "", "URL:" + location.origin + "/nearby/come-over/#p=" + code, "END:VEVENT", "END:VCALENDAR"].filter(Boolean);
+    var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([lines.join("\r\n")], { type: "text/calendar" })); a.download = "come-over.ics"; document.body.appendChild(a); a.click(); setTimeout(function () { a.remove(); }, 500);
+  }
+
+  /* ---------- plan or change one ---------- */
+  function show(id) { $("plan").hidden = id !== "plan"; $("dock").hidden = !!id || !!code; }
+  [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.onclick = function () { show(null); }; });
+  addEventListener("keydown", function (e) { if (e.key === "Escape") show(null); });
+  function openForm(edit) {
+    editing = !!edit; var e = edit && ev ? ev : {}; $("eTitle").value = e.title || ""; $("eHosts").value = e.hosts || K.nick(); $("eAbout").value = e.about || ""; $("eDate").value = e.date || ""; $("eTime").value = e.time || ""; $("ePlace").value = e.place || "";
+    picked = (e.items || []).slice(); var pre = T.PRESET.map(function (p) { return t(p); }); extra = picked.filter(function (i) { return pre.indexOf(i) < 0; }); $("eNew").value = "";
+    words(); show("plan");
+  }
+  $("planBtn").onclick = function () { openForm(false); };
+  $("eAdd").onclick = function () { var v = $("eNew").value.trim().slice(0, 30); if (!v) return; if (extra.indexOf(v) < 0) extra.push(v); if (picked.indexOf(v) < 0 && picked.length < 12) picked.push(v); $("eNew").value = ""; chips(); };
+  $("eNew").addEventListener("keydown", function (e) { if (e.key === "Enter") $("eAdd").click(); });
+  $("eGo").onclick = function () {
+    var ti = $("eTitle").value.trim(); if (!ti) { $("eTitle").classList.remove("hop"); void $("eTitle").offsetWidth; $("eTitle").classList.add("hop"); return; }
+    var btn = this; btn.disabled = true;
+    var body = { p_hosts: $("eHosts").value.trim(), p_title: ti, p_about: $("eAbout").value.trim(), p_date: $("eDate").value || null, p_time: $("eTime").value.trim(), p_place: $("ePlace").value.trim(), p_items: picked };
+    K.secret("party").then(function (s) { body.p_secret = s; if (editing && code) { body.p_code = code; return K.rpc("party_edit", body).then(function () { return code; }); } return K.rpc("party_create", body); })
+      .then(function (c) { btn.disabled = false; show(null); if (!editing) { code = c; remember(c, ti, true); history.replaceState(null, "", location.pathname + location.search + "#p=" + c); } return load(); })
+      .catch(function (e) { btn.disabled = false; show(null); K.note(t(e && e.rest ? T.rest : T.off), "🎈"); });
+  };
+  addEventListener("hashchange", function () { code = (/[#&]p=([A-Za-z0-9]{6,16})/.exec(location.hash) || [])[1] || null; ev = null; ans = { going: true, items: [] }; load(); });
+  words(); paint(); load();
+})();
+</script>
+</body>
+</html>

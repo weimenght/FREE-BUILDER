@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" class="fbt">
+<head>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7d34ab51e5"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=be25260283" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Town Hall · Nearby</title>
+<meta name="description" content="The town's notice board: pin an idea for the town, your own news, or a word about a place, and answer each other. No votes, no names unless you give one.">
+<meta name="theme-color" content="#1d130d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='2' y='3' width='12' height='3' fill='%23c8c0b0'/%3E%3Crect x='3' y='6' width='2' height='7' fill='%23e8e0d0'/%3E%3Crect x='7' y='6' width='2' height='7' fill='%23e8e0d0'/%3E%3Crect x='11' y='6' width='2' height='7' fill='%23e8e0d0'/%3E%3Crect x='1' y='13' width='14' height='2' fill='%23a8a094'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/nearby/townkit.css">
+<style>
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.filters .fbb{min-height:40px;font-size:17px;padding:0 10px}
+.filters .fbb[aria-pressed=true]{background:var(--fbb-amber,#f6b73c);color:#1d130d}
+.rep{margin:8px 0 0;padding:8px 0 0;border-top:1px dashed rgba(255,255,255,.18)}
+.rep p{margin:0 0 6px;font-size:17px;overflow-wrap:anywhere}
+.rep p i{font-style:normal;color:var(--dim)}
+.place{background:none;border:0;padding:0;color:var(--a);font:inherit;text-decoration:underline;cursor:pointer}
+.ans{display:flex;gap:6px;margin-top:8px}.ans input{flex:1;margin:0}.ans .fbb{min-height:44px;padding:0 12px}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<body>
+<h1 class="sr" id="h1">Town Hall</h1>
+<div class="tk">
+  <div class="tk-scene"><canvas id="cv" aria-hidden="true"></canvas></div>
+  <main class="tk-panel"><div class="filters" id="filters"></div><div id="list" aria-live="polite"></div></main>
+</div>
+<div class="tk-dock" id="dock"><button class="fbb fbb-pri" type="button" id="pinBtn"><span aria-hidden="true">📌</span> <span id="pinL">Pin a notice</span></button></div>
+
+<section class="sheet" id="pin" hidden role="dialog" aria-labelledby="pinQ">
+  <button class="x" type="button" data-close aria-label="Close">✕</button>
+  <p class="q" id="pinQ">A notice for the board</p>
+  <div class="choice" id="kinds"></div>
+  <div id="placeBox" hidden><label for="pPlace" id="lPlace">Which place?</label><select id="pPlace"></select></div>
+  <label for="pHead" id="lHead">In a few words</label><input id="pHead" maxlength="60" autocomplete="off" />
+  <label for="pBody" id="lBody">More, if you like</label><textarea id="pBody" maxlength="280" rows="3"></textarea>
+  <div class="row"><button class="fbb fbb-pri" type="button" id="pGo"></button></div>
+</section>
+
+<script src="/nearby/townkit.js"></script>
+<script>
+(function () {
+  "use strict";
+  var K = window.FBTown, t = K.t, el = K.el;
+  var T = {
+    h1: ["Town Hall", "镇公所", "鎮公所", "Ayuntamiento", "Ajuntament"],
+    pin: ["Pin a notice", "钉一张告示", "釘一張告示", "Clava un aviso", "Clava un avís"],
+    pinQ: ["A notice for the board", "给告示板写一张", "給告示板寫一張", "Un aviso para el tablón", "Un avís per al tauler"],
+    all: ["Everything", "全部", "全部", "Todo", "Tot"],
+    idea: ["An idea for the town", "给小镇的点子", "給小鎮的點子", "Una idea para el pueblo", "Una idea per al poble"],
+    news: ["My news", "我的消息", "我的消息", "Mis noticias", "Les meves notícies"],
+    place: ["About a place", "说说一个地方", "說說一個地方", "Sobre un lugar", "Sobre un lloc"],
+    ideaS: ["IDEA", "点子", "點子", "IDEA", "IDEA"], newsS: ["NEWS", "消息", "消息", "NOTICIAS", "NOTÍCIES"], placeS: ["A PLACE", "地方", "地方", "UN LUGAR", "UN LLOC"],
+    which: ["Which place?", "哪个地方？", "哪個地方？", "¿Qué lugar?", "Quin lloc?"],
+    head: ["In a few words", "几个字说清楚", "幾個字說清楚", "En pocas palabras", "En poques paraules"],
+    body: ["More, if you like", "想多说点也行", "想多說點也行", "Más, si quieres", "Més, si vols"],
+    go: ["Pin it up", "钉上去", "釘上去", "Clávalo", "Clava'l"],
+    empty: ["The board is bare. Pin the first notice: an idea, your news, a word about a place.", "告示板空空的。钉上第一张吧：一个点子、你的消息、或者说说一个地方。", "告示板空空的。釘上第一張吧：一個點子、你的消息、或者說說一個地方。", "El tablón está vacío. Clava el primer aviso: una idea, tus noticias, unas palabras sobre un lugar.", "El tauler és buit. Clava el primer avís: una idea, les teves notícies, unes paraules sobre un lloc."],
+    by: ["— {n}", "—— {n}", "—— {n}", "— {n}", "— {n}"],
+    answer: ["Answer", "回一句", "回一句", "Responde", "Respon"],
+    send: ["Send", "发送", "傳送", "Enviar", "Envia"],
+    mine: ["Yours", "你的", "你的", "Tuyo", "Teu"],
+    down: ["Take it down", "撤下", "撤下", "Quitarlo", "Treure'l"],
+    rep: ["This shouldn't be here", "这不该在这里", "這不該在這裡", "Esto no debería estar aquí", "Això no hauria de ser aquí"],
+    repd: ["Thanks. Wei will look.", "谢谢，Wei 会看看。", "謝謝，Wei 會看看。", "Gracias. Wei lo mirará.", "Gràcies. En Wei ho mirarà."],
+    rest: ["That's plenty for today. The board will be here tomorrow.", "今天写够啦。告示板明天还在。", "今天寫夠啦。告示板明天還在。", "Por hoy ya está bien. El tablón seguirá aquí mañana.", "Per avui ja n'hi ha prou. El tauler serà aquí demà."],
+    off: ["The board can't be reached just now. Try again in a moment.", "暂时够不着告示板，稍后再试。", "暫時夠不著告示板，稍後再試。", "Ahora no se llega al tablón. Prueba en un momento.", "Ara no s'arriba al tauler. Torna-ho a provar d'aquí a un moment."],
+    close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"]
+  };
+  var KINDS = ["idea", "news", "place"], kind = "idea", filter = "all", data = null, opened = {};
+  function $(id) { return document.getElementById(id); }
+  function words() {
+    $("h1").textContent = t(T.h1); $("pinL").textContent = t(T.pin); $("pinQ").textContent = t(T.pinQ);
+    $("lPlace").textContent = t(T.which); $("lHead").textContent = t(T.head); $("lBody").textContent = t(T.body); $("pGo").textContent = t(T.go);
+    [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.setAttribute("aria-label", t(T.close)); });
+    var sel = $("pPlace"), cur = sel.value; sel.innerHTML = "";
+    Object.keys((window.FBWorld && FBWorld.PLACES) || {}).forEach(function (k) { if (k === "arcade") return; var o = el("option", "", K.placeName(k)); o.value = k; sel.appendChild(o); });
+    if (cur) sel.value = cur;
+    var ks = $("kinds"); ks.innerHTML = ""; KINDS.forEach(function (k) { var b = el("button", "fbb", t(T[k])); b.type = "button"; b.setAttribute("aria-pressed", k === kind ? "true" : "false"); b.onclick = function () { kind = k; words(); }; ks.appendChild(b); });
+    $("placeBox").hidden = kind !== "place";
+    var fs = $("filters"); fs.innerHTML = ""; ["all"].concat(KINDS).forEach(function (k) { var b = el("button", "fbb", t(k === "all" ? T.all : T[k + "S"])); b.type = "button"; b.setAttribute("aria-pressed", k === filter ? "true" : "false"); b.onclick = function () { filter = k; words(); paint(); }; fs.appendChild(b); });
+  }
+  window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); paint(); };
+  words();
+
+  /* ---------- the hall: stone steps, columns, a clock in the gable, a flag, and the board by the door with real notices on it ---------- */
+  var cv = $("cv"), g = cv.getContext("2d"), PW = 160, PH = 100, f = 0;
+  var W = window.FBWorld || { phase: function () { return "day"; }, weather: function () { return "clear"; }, hour: function () { return 12; } };
+  function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+  function size() { var r = cv.getBoundingClientRect(), S = Math.max(2, Math.round(Math.min(r.width, r.height * 1.6) / 170)); PW = Math.max(80, Math.ceil(r.width / S)); PH = Math.max(50, Math.ceil(r.height / S)); cv.width = PW; cv.height = PH; g.imageSmoothingEnabled = false; }
+  addEventListener("resize", size); size();
+  var SKY = { night: ["#0a1030", "#1e2a50"], dawn: ["#5a6aa8", "#f0a888"], day: ["#4a8ad0", "#bfe0f6"], dusk: ["#3a3a7a", "#f08a5a"] };
+  function lerp(a, b, k) { var A = parseInt(a.slice(1), 16), B = parseInt(b.slice(1), 16); return "rgb(" + [16, 8, 0].map(function (s) { return Math.round(((A >> s) & 255) * (1 - k) + ((B >> s) & 255) * k); }).join(",") + ")"; }
+  function scene() {
+    var ph = W.phase(), night = ph === "night", lit = night || ph === "dusk", sk = SKY[ph] || SKY.day, wx = W.weather();
+    var gy = Math.round(PH * .86);
+    for (var y = 0; y < gy; y++) R(0, y, PW, 1, lerp(sk[0], sk[1], y / gy));
+    R(0, gy, PW, PH - gy, night ? "#3a3640" : "#a8a49c");
+    var bw = Math.min(PW * .78, PH * 1.3), bx = Math.round((PW - bw) / 2), by = Math.round(PH * .32), stone = night ? "#7a7480" : "#d8d0c0", stoneD = night ? "#5a5460" : "#b0a898";
+    var ped = Math.round(bw * .16);
+    for (var i = 0; i < ped; i++) R(bx + bw / 2 - (i / ped) * (bw / 2 + 3), by - ped + i, (i / ped) * (bw + 6), 1, stoneD);
+    R(bx + bw / 2 - 4, by - ped * .6, 8, 8, "#fbeedd"); var hr = W.hour() % 12; R(bx + bw / 2, by - ped * .6 + 2, 1, 3, "#222"); R(bx + bw / 2, by - ped * .6 + 4, Math.round(Math.cos(hr / 12 * 6.28 - 1.57) * 3), 1, "#b3261e");
+    R(bx + bw / 2, by - ped - 12, 1, 12, "#3a3a40"); var fl = Math.round(Math.sin(f / 8) * 1); R(bx + bw / 2 + 1, by - ped - 12 + fl, 7, 4, "#c8303a");
+    R(bx - 3, by, bw + 6, 3, stoneD); R(bx, by + 3, bw, gy - by - 6, stone);
+    var cols = 5, cw = Math.max(3, Math.round(bw / 16));
+    for (var c = 0; c < cols; c++) { var cx = bx + 4 + c * ((bw - 8 - cw) / (cols - 1)); R(cx, by + 4, cw, gy - by - 9, night ? "#8a8490" : "#efe8d8"); R(cx + cw - 1, by + 4, 1, gy - by - 9, stoneD); }
+    var dw = Math.round(bw * .14), dx = Math.round(bx + bw / 2 - dw / 2); R(dx, by + (gy - by) * .4, dw, (gy - by) * .6 - 5, "#3a2414"); if (lit) R(dx + 2, by + (gy - by) * .4 + 2, dw - 4, 4, "#f6c84a");
+    for (var s = 0; s < 3; s++) R(bx - 6 + s * 2, gy - 5 + s * 2, bw + 12 - s * 4, 2, s % 2 ? stoneD : stone);
+    /* the board, left of the door, with as many papers as there are notices (up to a dozen) */
+    var bdx = Math.round(bx - Math.max(4, PW * .02) - bw * .2), bdw = Math.round(bw * .2), bdy = Math.round(by + (gy - by) * .35), bdh = Math.round((gy - by) * .4);
+    if (bdx < 2) { bdx = bx + 6; }
+    R(bdx - 1, bdy - 1, bdw + 2, bdh + 2, "#3a2414"); R(bdx, bdy, bdw, bdh, "#b8864a"); R(bdx + 2, bdy + bdh + 1, 1, gy - bdy - bdh - 1, "#3a2414"); R(bdx + bdw - 3, bdy + bdh + 1, 1, gy - bdy - bdh - 1, "#3a2414");
+    var n = Math.min(12, (data || []).length), cols2 = 3;
+    for (var p = 0; p < n; p++) { var px = bdx + 2 + (p % cols2) * ((bdw - 4) / cols2), py = bdy + 2 + Math.floor(p / cols2) * 5, kd = data[p].kind; R(px, py, (bdw - 4) / cols2 - 1, 4, kd === "idea" ? "#fbf3e2" : kd === "news" ? "#f4d04a" : "#f4c0d0"); R(px + 1, py, 1, 1, "#c8303a"); }
+    if (wx === "rain" || wx === "storm") for (var d = 0; d < 30; d++) R((d * 37 + f * 2) % PW, (d * 53 + f * 5) % PH, 1, 3, "rgba(200,220,255,.5)");
+    if (wx === "snow") { R(bx - 3, by - 1, bw + 6, 1, "#fff"); for (var sn = 0; sn < 30; sn++) R((sn * 41 + Math.sin(f / 20 + sn) * 3) % PW, (sn * 29 + f * .6) % PH, 1, 1, "#fff"); }
+  }
+  function loop() { if (!document.hidden) { f++; scene(); } setTimeout(function () { requestAnimationFrame(loop); }, 80); }
+  loop();
+
+  /* ---------- the notices ---------- */
+  var list = $("list");
+  function load() { return K.secret("hall").then(function (s) { return K.rpc("hall_list", { p_secret: s }); }).then(function (d) { data = Array.isArray(d) ? d : []; paint(); }).catch(function () { paint(true); }); }
+  function paint(off) {
+    list.innerHTML = "";
+    if (off && !data) { list.appendChild(el("div", "tk-card tk-empty", t(T.off))); return; }
+    var rows = (data || []).filter(function (n) { return filter === "all" || n.kind === filter; });
+    if (!rows.length) { list.appendChild(el("div", "tk-card tk-empty", t(T.empty))); return; }
+    rows.forEach(function (n) {
+      var c = el("div", "tk-card"), top = el("p", "tk-k");
+      top.appendChild(el("span", "tk-tag", t(T[n.kind + "S"])));
+      if (n.kind === "place" && n.place && window.FBWorld && FBWorld.PLACES && FBWorld.PLACES[n.place]) { var pb = el("button", "place", K.placeName(n.place)); pb.type = "button"; pb.onclick = function () { K.goPlace(n.place); }; top.appendChild(pb); }
+      c.appendChild(top); c.appendChild(el("h3", "tk-h", n.head)); if (n.body) c.appendChild(el("p", "tk-p", n.body));
+      c.appendChild(el("p", "tk-dim", (n.nick ? t(T.by, { n: n.nick }) + " · " : "") + n.at));
+      if (n.replies && n.replies.length) { var rp = el("div", "rep"); n.replies.forEach(function (r) { var p = el("p"); p.appendChild(document.createTextNode(r.body + " ")); if (r.nick) p.appendChild(el("i", "", t(T.by, { n: r.nick })));
+        if (r.mine) { var x = el("button", "tk-link", t(T.down)); x.type = "button"; x.onclick = function () { K.secret("hall").then(function (s) { return K.rpc("hall_forget", { p_secret: s, p_what: "reply", p_id: r.id }); }).then(load).catch(function () {}); }; p.appendChild(x); }
+        else { var rr = el("button", "tk-link", "⚑"); rr.type = "button"; rr.title = t(T.rep); rr.setAttribute("aria-label", t(T.rep)); rr.onclick = function () { rr.disabled = true; rr.textContent = t(T.repd); K.secret("hall").then(function (s) { return K.rpc("hall_report", { p_secret: s, p_what: "reply", p_id: r.id }); }).catch(function () {}); }; p.appendChild(rr); }
+        rp.appendChild(p); }); c.appendChild(rp); }
+      var row = el("div", "tk-row");
+      if (opened[n.id]) {
+        var ans = el("div", "ans"), inp = el("input"); inp.maxLength = 140; inp.setAttribute("aria-label", t(T.answer)); var go = el("button", "fbb fbb-pri", t(T.send)); go.type = "button";
+        go.onclick = function () { var v = inp.value.trim(); if (!v) return; go.disabled = true; K.secret("hall").then(function (s) { return K.rpc("hall_reply", { p_secret: s, p_id: n.id, p_body: v, p_nick: K.nick() }); }).then(function () { opened[n.id] = 0; return load(); }).catch(function (e) { go.disabled = false; K.note(t(e && e.rest ? T.rest : T.off), "📌"); }); };
+        inp.addEventListener("keydown", function (e) { if (e.key === "Enter") go.click(); });
+        ans.appendChild(inp); ans.appendChild(go); c.appendChild(ans); setTimeout(function () { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 30);
+      } else { var ab = el("button", "fbb", t(T.answer)); ab.type = "button"; ab.onclick = function () { opened = {}; opened[n.id] = 1; paint(); }; row.appendChild(ab); }
+      if (n.mine) { row.appendChild(el("span", "tk-tag", t(T.mine))); var d = el("button", "tk-link", t(T.down)); d.type = "button"; d.onclick = function () { K.secret("hall").then(function (s) { return K.rpc("hall_forget", { p_secret: s, p_what: "notice", p_id: n.id }); }).then(load).catch(function () {}); }; row.appendChild(d); }
+      else { var rep = el("button", "tk-link", "⚑"); rep.type = "button"; rep.title = t(T.rep); rep.setAttribute("aria-label", t(T.rep)); rep.onclick = function () { rep.disabled = true; rep.textContent = t(T.repd); K.secret("hall").then(function (s) { return K.rpc("hall_report", { p_secret: s, p_what: "notice", p_id: n.id }); }).catch(function () {}); }; row.appendChild(rep); }
+      c.appendChild(row); list.appendChild(c);
+    });
+  }
+
+  /* ---------- pin a notice ---------- */
+  function show(id) { $("pin").hidden = id !== "pin"; $("dock").hidden = !!id; }
+  [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.onclick = function () { show(null); }; });
+  addEventListener("keydown", function (e) { if (e.key === "Escape") show(null); });
+  $("pinBtn").onclick = function () { $("pHead").value = ""; $("pBody").value = ""; words(); show("pin"); };
+  $("pGo").onclick = function () {
+    var h = $("pHead").value.trim(); if (!h) { $("pHead").classList.remove("hop"); void $("pHead").offsetWidth; $("pHead").classList.add("hop"); return; }
+    var btn = this; btn.disabled = true;
+    K.secret("hall").then(function (s) { return K.rpc("hall_add", { p_secret: s, p_kind: kind, p_place: kind === "place" ? $("pPlace").value : null, p_head: h, p_body: $("pBody").value.trim(), p_nick: K.nick() }); })
+      .then(function () { btn.disabled = false; show(null); filter = "all"; words(); return load(); })
+      .catch(function (e) { btn.disabled = false; show(null); K.note(t(e && e.rest ? T.rest : T.off), "📌"); });
+  };
+  load(); setInterval(function () { if (!document.hidden && !document.activeElement.matches("input,textarea")) load(); }, 60000);
+})();
+</script>
+</body>
+</html>

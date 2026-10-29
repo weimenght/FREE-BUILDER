@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=46faaa6fd3"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=3c4feca886" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=7d34ab51e5"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=be25260283" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Nearby — FREE//BUILDER</title>
 <meta name="description" content="Nearby: a small pixel town for finding your people, in real life. Wander alone or with a friend, leave something you made for the neighbours, borrow a real book, play with someone far away. Wei, the bartender, will show you around.">
@@ -20,18 +20,18 @@ body{min-height:100vh;overflow-x:hidden;background:repeating-conic-gradient(rgba
 .pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 10px;border:3px solid #000;background:#2a2238;box-shadow:inset -3px -3px 0 rgba(0,0,0,.45),inset 3px 3px 0 rgba(255,255,255,.12),3px 3px 0 #000;cursor:pointer;font:400 18px/1 var(--vt);color:var(--ink);text-decoration:none}
 .clock{font-size:20px;color:var(--a);white-space:nowrap}
 @media (max-width:440px){.sign{font-size:9px;letter-spacing:0;padding:6px 6px}.clock{font-size:17px}.tools{gap:5px}.tools .pill{padding:0 7px;min-width:40px;height:40px}.top{gap:6px;padding-left:12px;padding-right:12px}}
-/* the world is 360×320: the town in the middle, wild country either side.
+/* the world is 360×368: the town in the middle, wild country either side.
    Wide screens see all of it. Phones held upright see the town and swipe sideways to the hills, the woods, the lake and the sea.
    Short screens (a phone on its side, a small laptop) get a comfortable width and scroll down. */
 .wrap{position:relative;width:calc(100% - 32px);max-width:1100px;margin:4px auto 0;border:4px solid #000;box-shadow:6px 6px 0 #000;overflow:hidden;background:#000}
-.wrap::before{content:"";display:block;padding-top:88.8889%}
-@supports (aspect-ratio:1){.wrap{aspect-ratio:360/320}.wrap::before{display:none}}
-@media (min-height:601px){.wrap{width:min(calc(100% - 32px),calc((100vh - 130px) * 9 / 8),1100px)}}
-@supports (height:100dvh){@media (min-height:601px){.wrap{width:min(calc(100% - 32px),calc((100dvh - 130px) * 9 / 8),1100px)}}}
+.wrap::before{content:"";display:block;padding-top:102.2222%}
+@supports (aspect-ratio:1){.wrap{aspect-ratio:360/368}.wrap::before{display:none}}
+@media (min-height:601px){.wrap{width:min(calc(100% - 32px),calc((100vh - 130px) * 45 / 46),1100px)}}
+@supports (height:100dvh){@media (min-height:601px){.wrap{width:min(calc(100% - 32px),calc((100dvh - 130px) * 45 / 46),1100px)}}}
 @media (max-height:600px) and (orientation:landscape){.wrap{width:min(calc(100% - 32px),760px)}.top{max-width:none;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}}
 .pan{position:absolute;top:0;right:0;bottom:0;left:0;overflow:hidden}
 @media (max-width:599px) and (orientation:portrait){
-  .wrap{width:calc(100% - 32px)}.wrap::before{padding-top:177.7778%}@supports (aspect-ratio:1){.wrap{aspect-ratio:180/320}}
+  .wrap{width:calc(100% - 32px)}.wrap::before{padding-top:204.4444%}@supports (aspect-ratio:1){.wrap{aspect-ratio:180/368}}
   .pan{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}.pan::-webkit-scrollbar{display:none}
   .zoom.zoom{position:relative;width:200%;height:100%}
   .edge.edge{display:grid}.edge.edge[hidden]{display:none}
@@ -76,13 +76,13 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
   </div>
 </header>
 <h1 class="sr" data-t="title">Nearby</h1>
-<div class="wrap" id="wrap"><div class="pan" id="pan"><div class="zoom" id="zoom"><canvas id="map" width="360" height="320"></canvas><nav id="spots" aria-label="Places"></nav></div></div><button class="edge l" id="edgeL" type="button" aria-label="◀">‹</button><button class="edge r" id="edgeR" type="button" aria-label="▶">›</button></div>
+<div class="wrap" id="wrap"><div class="pan" id="pan"><div class="zoom" id="zoom"><canvas id="map" width="360" height="368"></canvas><nav id="spots" aria-label="Places"></nav></div></div><button class="edge l" id="edgeL" type="button" aria-label="◀">‹</button><button class="edge r" id="edgeR" type="button" aria-label="▶">›</button></div>
 <div class="foot"></div>
 
 <script>
 (function () {
   "use strict";
-  var W = 180, WW = 360, OX = 90, H = 320, cv = document.getElementById("map"), g = cv.getContext("2d"); g.imageSmoothingEnabled = false;
+  var W = 180, WW = 360, OX = 90, H = 368, cv = document.getElementById("map"), g = cv.getContext("2d"); g.imageSmoothingEnabled = false;
   var $ = function (s) { return document.querySelector(s); };
 
   /* ---------- the places (logical pixels on a 180×320 map) ---------- */
@@ -99,6 +99,10 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     { k: "dj", url: "/nearby/late-light/", x: 112, y: 204, w: 62, h: 42, n: ["Late Light", "夜灯", "夜燈", "Luz Tardía", "Llum Tardana"] },
     { k: "brewery", url: "/nearby/neighbours-brew/", x: 106, y: 164, w: 70, h: 36, n: ["Neighbours' Brew", "邻家酿", "鄰家釀", "Cerveza Vecina", "Cervesa Veïna"] },
     { k: "nest", url: "/nearby/miso-and-yuzu/", x: 4, y: 212, w: 40, h: 34, n: ["Miso & Yuzu's", "味噌和柚子家", "味噌和柚子家", "Casa de Miso y Yuzu", "Cal Miso i la Yuzu"] },
+    /* over the tracks: the new street */
+    { k: "hall", url: "/nearby/town-hall/", x: 6, y: 324, w: 52, h: 40, n: ["Town Hall", "镇公所", "鎮公所", "Ayuntamiento", "Ajuntament"] },
+    { k: "cinema", url: "/nearby/front-row/", x: 64, y: 324, w: 54, h: 40, n: ["Front Row", "前排", "前排", "Primera Fila", "Primera Fila"] },
+    { k: "party", url: "/nearby/come-over/", x: 124, y: 322, w: 52, h: 42, n: ["Come Over", "来我家", "來我家", "Ven a Casa", "Vine a Casa"] },
     { k: "train", url: "/nearby/station/", x: 30, y: 246, w: 120, h: 48, n: ["Nearby Station", "近邻站", "近鄰站", "Estación Cerca", "Estació A Prop"] },
     /* the wild country around the town: each opens Lie Back's sky in that landscape */
     { k: "peaks", abs: 1, url: "/nearby/snow-peaks/", x: 4, y: 8, w: 70, h: 62, n: ["Snow Peaks", "雪峰", "雪峰", "Picos Nevados", "Cims Nevats"] },
@@ -132,6 +136,36 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
 
   function win(x, y, lit, f) { R(x, y, 3, 3, lit ? (hash(x + "," + y + ((f / 40) | 0)) < .08 ? "#ffd27a" : "#f6c84a") : "#3a4a6a"); if (!lit) R(x, y, 1, 1, "#7a9aca"); }
   var sheepT = (Date.now() / 110) % 2400;   /* where the flock is in its day */
+  /* over the tracks, the new street: Town Hall, Front Row and Come Over (town coordinates, 308–368) */
+  function street(f, night, lit, wx) {
+    R(0, 314, W, 4, night ? "#2a2a30" : "#8a8a84"); for (var cb = 0; cb < W; cb += 6) R(cb, 316, 3, 1, night ? "#3a383c" : "#9a968e");
+    R(0, 364, W, 4, night ? "#2a2a30" : "#8a8a84");
+    /* Town Hall: stone, a pediment with a clock, four columns, steps, a flag; the notice board by the door */
+    var st = night ? "#7a7480" : "#d8d0c0", sd = night ? "#5a5460" : "#b0a898", co = night ? "#8a8490" : "#efe8d8";
+    for (var i = 0; i < 9; i++) R(32 - i * 3, 324 + i, i * 6 + 1, 1, sd);
+    R(29, 327, 6, 5, "#fbeedd"); var hr = World.hour() % 12; R(32, 328, 1, 2, "#222"); R(32, 330, Math.round(Math.cos(hr / 12 * 6.28 - 1.57) * 2) || 1, 1, "#b3261e");
+    R(32, 314, 1, 10, "#3a3a40"); R(33, 314 + (Math.sin(f / 9) > 0 ? 0 : 1), 5, 3, "#c8303a");
+    R(6, 333, 52, 2, sd); R(8, 335, 48, 25, st);
+    [12, 22, 40, 50].forEach(function (cx) { R(cx, 336, 3, 22, co); R(cx + 2, 336, 1, 22, sd); });
+    R(28, 344, 8, 14, "#3a2414"); if (lit) R(29, 345, 6, 2, "#f6c84a");
+    R(4, 358, 56, 2, sd); R(2, 360, 60, 2, st); R(0, 362, 64, 2, sd);
+    /* Front Row: brick, a marquee of bulbs, two posters, a red door */
+    var br = night ? "#4a2224" : "#7a2a2a"; R(64, 332, 54, 28, br); for (var by = 334; by < 360; by += 3) for (var bx = 64 + ((by / 3) % 2) * 2; bx < 118; bx += 5) R(bx, by, 4, 2, night ? "#56282a" : "#8a3434");
+    R(62, 326, 58, 8, "#2a2a30"); R(66, 328, 50, 4, night || lit ? "#fbf3e2" : "#e8e0d0");
+    for (var lb = 64; lb < 120; lb += 3) R(lb, 326, 1, 1, ((lb / 3 | 0) + (f >> 3)) % 2 ? "#f6c84a" : (lit ? "#ffd68a" : "#a88a4a"));
+    for (var lt = 0; lt < 5; lt++) R(70 + lt * 9, 329, 6, 1, "#8a2a2a");
+    R(68, 338, 10, 14, "#1a1a20"); R(69, 339, 8, 12, ["#3a6a9a", "#c8a050", "#6a3a7a"][(f / 400 | 0) % 3]); R(104, 338, 10, 14, "#1a1a20"); R(105, 339, 8, 12, ["#c84a3a", "#2f7a7a", "#f4c0d0"][(f / 400 | 0) % 3]);
+    R(84, 342, 14, 18, "#5a1a1e"); R(90, 342, 1, 18, "#3a0e10"); if (lit) R(85, 343, 12, 2, "#ffd68a");
+    R(60, 360, 62, 2, "#5a5a54");
+    /* Come Over: a pink house with warm windows, a string of lights and balloons by the door */
+    for (var r2 = 0; r2 < 12; r2++) R(150 - r2 * 2.2, 322 + r2, r2 * 4.4 + 1, 1, "#5a2a1e");
+    R(128, 334, 44, 26, night ? "#7a5a50" : "#e8b8a0"); R(128, 334, 44, 1, "#c8907a");
+    [[132, 338], [160, 338], [132, 350], [160, 350]].forEach(function (p, j) { R(p[0] - 1, p[1] - 1, 8, 7, "#3a2414"); R(p[0], p[1], 6, 5, lit || j < 2 && World.phase() !== "day" ? "#f6c84a" : "#8ab0d0"); R(p[0] + 3, p[1], 1, 5, "#3a2414"); });
+    R(145, 348, 8, 12, "#2f5a3a"); R(151, 354, 1, 1, "#f6c84a");
+    for (var lx = 126; lx < 175; lx += 3) { var sag = Math.sin((lx - 126) / 48 * Math.PI) * 2; R(lx, 345 + sag, 1, 1, lit ? ["#f6c84a", "#f48fb8", "#7ac8d8", "#a0e08a"][((lx / 3 | 0) + (f >> 4)) % 4] : "#8a6a4a"); }
+    var bob = Math.sin(f / 15) > 0 ? 1 : 0; R(155, 340 - bob, 3, 4, "#e0405a"); R(159, 342 + bob, 3, 4, "#f6c84a"); R(156, 344 - bob, 1, 6, "rgba(255,255,255,.6)"); R(160, 346 + bob, 1, 4, "rgba(255,255,255,.6)");
+    if (wx === "snow") { R(6, 332, 52, 1, "#ffffff"); R(62, 325, 58, 1, "#ffffff"); }
+  }
   function draw(f) {
     var ph = World.phase(), wx = World.weather(), night = ph === "night", lit = night || ph === "dusk", sky = SKY[ph];
     if (wx === "rain" || wx === "storm" || wx === "fog") sky = sky.map(function (c) { return mix(c, "#6a6e7a", .45); });
@@ -243,7 +277,8 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     R(0, 284, W, 8, "#8a8a84"); R(0, 292, W, 2, "#5a5a54");
     // tracks
     R(0, 298, W, 10, "#5a4a3a"); for (var sl = 0; sl < W; sl += 5) R(sl, 298, 2, 10, "#3a2a1e"); R(0, 300, W, 1, "#c8c8c8"); R(0, 305, W, 1, "#c8c8c8");
-    R(0, 308, W, 12, night ? "#1e2a1e" : "#6a9a4a");
+    R(0, 308, W, 60, night ? "#1e2a1e" : "#6a9a4a");
+    street(f, night, lit, wx);
     g.restore();
     wilds(f, sky, ph, wx, night, lit);
     // a train comes through every so often, right across the country
@@ -416,7 +451,9 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
       R(x0, 84, 90, 2, G); R(x0, 86, 90, 16, night ? "#14284a" : "#3a7ab8"); R(x0, 102, 90, 6, G);
       R(x0, 108, 90, 4, night ? "#2a2a30" : "#8a8a84");
       R(x0, 112, 90, 172, G); R(x0, 284, 90, 8, "#8a8a84"); R(x0, 292, 90, 2, "#5a5a54");
-      R(x0, 298, 90, 10, "#5a4a3a"); for (var sl = x0; sl < x0 + 90; sl += 5) R(sl, 298, 2, 10, "#3a2a1e"); R(x0, 300, 90, 1, "#c8c8c8"); R(x0, 305, 90, 1, "#c8c8c8"); R(x0, 308, 90, 12, G);
+      R(x0, 298, 90, 10, "#5a4a3a"); for (var sl = x0; sl < x0 + 90; sl += 5) R(sl, 298, 2, 10, "#3a2a1e"); R(x0, 300, 90, 1, "#c8c8c8"); R(x0, 305, 90, 1, "#c8c8c8"); R(x0, 308, 90, 60, G);
+      R(x0, 314, 90, 4, night ? "#2a2a30" : "#8a8a84");   /* the new street carries on into the country */
+      for (var st = 0; st < 7; st++) { var sx0 = x0 + 6 + st * 12 + (hash("st" + x0 + st) * 4 | 0), sy0 = 334 + (hash("sy" + x0 + st) * 18 | 0); R(sx0 + 2, sy0 + 5, 2, 4, "#4a2e1a"); R(sx0, sy0, 6, 6, D); R(sx0 + 1, sy0 - 2, 4, 2, D); }
     });
     /* WEST: snow peaks with a waterfall, a pine wood, a wildflower meadow, terraced fields */
     for (var x = 0; x < 90; x++) { var top = 8 + Math.abs(((x + 14) % 46) - 23) * 1.6 + (hash("pk" + x) - .5) * 3; R(x, top, 1, 86 - top, night ? "#2e3442" : "#7a8494"); if (top < 30) R(x, top, 1, Math.max(2, 30 - top), night ? "#c8ccd8" : "#f4f6fa"); }
