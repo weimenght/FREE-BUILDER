@@ -148,6 +148,22 @@
   }
 
   function inTown() { try { return document.documentElement.classList.contains("fbsh-in") || (window.parent !== window && !!window.parent.FBShell); } catch (e) { return false; } }
+  /* a real city on the line: when you get there, the town keeps that city's own hour (its real local time) and the sky you
+     arrived under. Slow Clock can still change both. Made-up stops keep the town as it was. */
+  var TZ = { fr: "Europe/Paris", de: "Europe/Berlin", ch: "Europe/Zurich", it: "Europe/Rome", es: "Europe/Madrid", ca: "Europe/Madrid", uk: "Europe/London", cy: "Europe/London", cn: "Asia/Shanghai", hk: "Asia/Hong_Kong", jp: "Asia/Tokyo" };
+  var TZ_US = { "Grand Central": "America/New_York", "Flagstaff": "America/Phoenix", "Glacier Park": "America/Denver", "Santa Barbara": "America/Los_Angeles" };
+  var lastCity = null;
+  function tzOf(st) { if (!st || !st.look) return null; if (st.look === "us") return TZ_US[st.name] || null; return TZ[st.tongue] || TZ[st.look] || null; }
+  function cityHour(tz) { try { var p = new Intl.DateTimeFormat("en-GB", { timeZone: tz, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()), h = 0, m = 0; p.forEach(function (x) { if (x.type === "hour") h = +x.value; if (x.type === "minute") m = +x.value; }); return (h % 24) + m / 60; } catch (e) { return null; } }
+  function townTakesCity(st) {
+    var tz = tzOf(st), W = window.FBWorld; if (!tz || !W || !W.setHour || (st && st.name === lastCity)) return;
+    var h = cityHour(tz); if (h == null) return; lastCity = st.name;
+    var w = state.weather || "clear"; if (w === "snow" && !/snow|alpine/.test(st.biome || "")) w = "rain";
+    try { W.setHour(h); W.set(w); } catch (e) {}
+    var tod = h < 5 ? "night" : h < 7.5 ? "dawn" : h < 17 ? "afternoon" : h < 19.5 ? "sunset" : "night"; if (tod !== state.timeOfDay) setTimeOfDay(tod); if (w !== state.weather) setWeather(w);
+    try { var hh = Math.floor(h), mm = Math.floor((h - hh) * 60); toast("🕰 " + st.name + " · " + ("0" + hh).slice(-2) + ":" + ("0" + mm).slice(-2)); } catch (e) {}
+  }
+
   /* 🔀: the window goes dark for a breath and opens somewhere else (in a shared cabin everyone aboard sees the new view) */
   function somewhereElse() {
     var vpEl = vp(); if (vpEl) { vpEl.style.transition = "opacity .5s"; vpEl.style.opacity = "0"; }
@@ -161,6 +177,7 @@
       } catch (e) { shuffle(); }
       if (vpEl) vpEl.style.opacity = "1";
       try { if (state.station) toast("🚉 " + state.station.name); } catch (e) {}
+      setTimeout(function () { townTakesCity(state.station); }, 1800);
       try { if (S.code) sync(); } catch (e) {}
     }, 520);
   }
@@ -375,7 +392,7 @@
       if (document.hidden) { if (S.code) syncIfChanged(); return; }
       var now = Date.now(), n = this.next, changed = false;
       if (state.trainState === "STOPPED" && now > n.depart) { triggerStationStopOrDepart(); n.station = now + 240e3 + Math.random() * 120e3; changed = true; }
-      else if (now > n.station && state.trainState === "CRUISING" && !state.inTunnel) { triggerStationStopOrDepart(); n.depart = now + 22e3; changed = true; }
+      else if (now > n.station && state.trainState === "CRUISING" && !state.inTunnel) { triggerStationStopOrDepart(); n.depart = now + 22e3; changed = true; setTimeout(function () { townTakesCity(state.station); }, 2500); }
       else if (now > n.tunnel && state.trainState === "CRUISING") {
         if (!state.inTunnel) { toggleMountainTunnel(); n.tunnelOut = now + 10e3 + Math.random() * 14e3; n.tunnel = Infinity; }
         changed = true;
@@ -402,7 +419,7 @@
   function syncIfChanged() { if (JSON.stringify(snapshot()) !== S.lastView) sync(); }
   function apply(v) {
     try {
-      if (v.station && (!state.station || state.station.name !== v.station)) { var st = STATION_CATALOG.filter(function (s) { return s.name === v.station; })[0]; if (st) { state.station = st; } }
+      if (v.station && (!state.station || state.station.name !== v.station)) { var st = STATION_CATALOG.filter(function (s) { return s.name === v.station; })[0]; if (st) { state.station = st; setTimeout(function () { townTakesCity(st); }, 2500); } }
       if (v.biome !== state.biome) setBiome(v.biome, false);
       if (v.time !== state.timeOfDay) setTimeOfDay(v.time);
       if (v.weather !== state.weather) setWeather(v.weather);
