@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=46faaa6fd3"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=7d4373ce52" defer></script>
+<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=46faaa6fd3"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=b42d405b31" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Plaza · Nearby</title>
 <meta name="description" content="The square in the middle of Nearby: a fountain, benches, pigeons. Toss a coin and make a wish; keep it to yourself or let it float for the town to read.">
@@ -27,13 +27,26 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
 .sheet .at{margin:0 0 12px;font-size:15px;letter-spacing:.03em;opacity:.6}
 .sheet .rep{display:block;margin:8px auto 0;background:none;border:0;padding:4px 0;color:inherit;opacity:.55;font:400 15px var(--vt);cursor:pointer;text-decoration:underline}
 .sheet .lim{font-size:15px;opacity:.55;text-align:right;margin:-8px 0 6px}
+.dock .fbb+.fbb{margin-left:6px}
+.sheet.bq{max-height:calc(100dvh - 32px);overflow:auto}
+.bqrow{display:flex;gap:12px;align-items:flex-start;margin:0 0 10px}
+.bqrow canvas{flex:none;width:108px;height:144px;image-rendering:pixelated;background:#fbf3e2;border:3px solid #000}
+.stems{display:grid;grid-template-columns:repeat(4,44px);gap:6px}
+.stems button{width:44px;height:44px;padding:0;display:flex;align-items:center;justify-content:center}
+.stems canvas{width:28px;height:28px;image-rendering:pixelated;background:#3a2a1c;border-radius:2px}
+@media (max-width:440px){.dock .wishb.wishb{font-size:18px;padding:0 12px;min-height:46px}.dock .fbb+.fbb{margin-left:4px}}
+.stems.hop{animation:hop .35s steps(3)}@keyframes hop{50%{transform:translateY(-6px)}}
+.sheet input{display:block;width:100%;box-sizing:border-box;margin:0 0 8px;padding:6px 10px;border:3px solid #000;background:#fbf3e2;color:#1d130d;font:400 19px/1.2 var(--vt)}
+.sheet .two{display:flex;gap:8px}.sheet .two .fbb{flex:1}
+.bqrow .card{flex:1;min-width:0}
+@media (max-width:360px){.stems{grid-template-columns:repeat(3,44px)}.bqrow canvas{width:84px;height:112px}}
 @media (prefers-color-scheme:light){:root:not([data-theme=dark]) .sheet{background:#f6ecd2;color:#2a1a10}:root:not([data-theme=dark]) .sheet .x{background:#e8d6b0;color:#2a1a10}:root:not([data-theme=dark]) .sheet .q{color:#8a4a10}}
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
 <h1 class="sr" id="h1">The Plaza</h1>
 <canvas id="cv" role="img" aria-label="The town square: a stone fountain, benches, lamps and pigeons"></canvas>
-<div class="dock" id="dock"><button class="fbb fbb-pri wishb" id="wishBtn" type="button"><span aria-hidden="true">🪙</span> <span id="wishL">Make a wish</span></button></div>
+<div class="dock" id="dock"><button class="fbb fbb-pri wishb" id="wishBtn" type="button"><span aria-hidden="true">🪙</span> <span id="wishL">Make a wish</span></button> <button class="fbb wishb" id="bqBtn" type="button"><span aria-hidden="true">🌼</span> <span id="bqL">Flowers</span></button></div>
 
 <section class="sheet" id="ask" hidden role="dialog" aria-labelledby="askQ">
   <button class="x" type="button" data-close aria-label="Close">✕</button>
@@ -44,6 +57,24 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     <button class="fbb" type="button" id="keepBtn"><span aria-hidden="true">🤫</span> <span id="keepL">Keep it to myself</span></button>
     <button class="fbb fbb-pri" type="button" id="floatBtn"><span aria-hidden="true">🌊</span> <span id="floatL">Let it float</span></button>
   </div>
+</section>
+
+<section class="sheet bq" id="bq" hidden role="dialog" aria-labelledby="bqQ">
+  <button class="x" type="button" data-close aria-label="Close">✕</button>
+  <p class="q" id="bqQ">A bouquet for someone</p>
+  <div class="bqrow"><canvas id="bqCv" width="48" height="64" aria-hidden="true"></canvas><div class="stems" id="stems"></div></div>
+  <input id="bqTo" maxlength="24" autocomplete="off" />
+  <input id="bqMsg" maxlength="80" autocomplete="off" />
+  <div class="row">
+    <button class="fbb fbb-pri" type="button" id="bqSend"><span aria-hidden="true">↗</span> <span id="bqSendL">Send it</span></button>
+    <div class="two"><button class="fbb" type="button" id="bqWrap"></button><button class="fbb" type="button" id="bqClear"></button></div>
+  </div>
+</section>
+<section class="sheet bq" id="bqGot" hidden role="dialog" aria-labelledby="bqGotH">
+  <button class="x" type="button" data-close aria-label="Close">✕</button>
+  <p class="q" id="bqGotH">Flowers for you</p>
+  <div class="bqrow"><canvas id="bqGotCv" width="48" height="64" aria-hidden="true"></canvas><div class="card"><p class="wish" id="bqGotMsg"></p><p class="at" id="bqGotFrom"></p></div></div>
+  <div class="row"><button class="fbb fbb-pri" type="button" id="bqBack"></button></div>
 </section>
 
 <section class="sheet" id="coin" hidden role="dialog" aria-labelledby="coinW">
@@ -74,13 +105,30 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     news: ["Someone at the fountain hoped with you.", "喷泉边有人和你一起盼着。", "噴泉邊有人和你一起盼著。", "Alguien en la fuente lo deseó contigo.", "Algú a la font ho va desitjar amb tu."],
     rest: ["Three wishes a day is plenty. The fountain will be here tomorrow.", "一天三个愿望就够了。喷泉明天还在。", "一天三個願望就夠了。噴泉明天還在。", "Tres deseos al día bastan. La fuente seguirá aquí mañana.", "Tres desitjos al dia ja n'hi ha prou. La font serà aquí demà."],
     away: ["The coin sank, but the wish couldn't float just now. It stays with you.", "硬币沉下去了，但愿望这会儿漂不起来。它留在你心里。", "硬幣沉下去了，但願望這會兒漂不起來。它留在你心裡。", "La moneda se hundió, pero el deseo no pudo flotar ahora. Se queda contigo.", "La moneda s'ha enfonsat, però el desig no ha pogut surar ara. Es queda amb tu."],
-    close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"]
+    close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"],
+    bq: ["Flowers", "鲜花", "鮮花", "Flores", "Flors"],
+    bqQ: ["A bouquet for someone", "给某人扎一束花", "給某人紮一束花", "Un ramo para alguien", "Un ram per a algú"],
+    bqTo: ["For… (your sister, a friend, your grandmother)", "送给……（姐妹、朋友、外婆）", "送給……（姊妹、朋友、外婆）", "Para… (tu hermana, una amiga, tu abuela)", "Per a… (la teva germana, una amiga, la teva àvia)"],
+    bqMsg: ["A line on the card", "卡片上写一句", "卡片上寫一句", "Una línea en la tarjeta", "Una línia a la targeta"],
+    wrap: ["Paper", "换包装纸", "換包裝紙", "Papel", "Paper"],
+    clear: ["Start again", "重新扎", "重新紮", "Empezar de nuevo", "Tornar a començar"],
+    send: ["Send it", "送出去", "送出去", "Envíalo", "Envia-ho"],
+    shareT: ["I made you a bouquet at the Plaza in Nearby. Come and see it:", "我在近邻的广场给你扎了一束花，来看看：", "我在近鄰的廣場給你紮了一束花，來看看：", "Te he hecho un ramo en la Plaza de Cerca. Ven a verlo:", "T'he fet un ram a la Plaça d'A Prop. Vine a veure'l:"],
+    copied: ["Link copied. Send it to them.", "链接已复制，发给 TA 吧。", "連結已複製，傳給 TA 吧。", "Enlace copiado. Envíaselo.", "Enllaç copiat. Envia-l'hi."],
+    real: ["Real ones from the corner shop count double.", "街角花店买的真花，分量加倍。", "街角花店買的真花，份量加倍。", "Unas de verdad de la floristería de la esquina cuentan el doble.", "Unes de debò de la floristeria de la cantonada compten el doble."],
+    gotH: ["Flowers for you", "给你的花", "給你的花", "Flores para ti", "Flors per a tu"],
+    gotFor: ["For {n}", "给 {n}", "給 {n}", "Para {n}", "Per a {n}"],
+    from: ["from {n}", "来自 {n}", "來自 {n}", "de {n}", "de {n}"],
+    back: ["Make one back", "也扎一束送回去", "也紮一束送回去", "Haz uno de vuelta", "Fes-ne un de tornada"],
+    fl: [["Rose", "玫瑰", "玫瑰", "Rosa", "Rosa"], ["Tulip", "郁金香", "鬱金香", "Tulipán", "Tulipa"], ["Daisy", "雏菊", "雛菊", "Margarita", "Margarida"], ["Sunflower", "向日葵", "向日葵", "Girasol", "Gira-sol"], ["Lavender", "薰衣草", "薰衣草", "Lavanda", "Espígol"], ["Peony", "牡丹", "牡丹", "Peonía", "Peònia"], ["Greenery", "绿叶", "綠葉", "Verde", "Verd"]]
   };
   function t(k) { return T[k][L()] || T[k][0]; }
   function $(id) { return document.getElementById(id); }
   function words() {
     $("h1").textContent = t("h1"); $("wishL").textContent = t("wish"); $("askQ").textContent = t("q");
-    $("keepL").textContent = t("keep"); $("floatL").textContent = t("float");
+    $("keepL").textContent = t("keep"); $("floatL").textContent = t("float"); $("bqL").textContent = t("bq"); $("bqQ").textContent = t("bqQ");
+    $("bqTo").placeholder = t("bqTo"); $("bqMsg").placeholder = t("bqMsg"); $("bqSendL").textContent = t("send"); $("bqWrap").textContent = t("wrap"); $("bqClear").textContent = t("clear");
+    $("bqGotH").textContent = t("gotH"); $("bqBack").textContent = t("back");
     [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.setAttribute("aria-label", t("close")); });
   }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
@@ -115,6 +163,17 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
   function spot(seed) { var a = hash(seed) * Math.PI * 2, r = Math.sqrt(hash(seed + .5)) * .78; return { x: G.cx + Math.cos(a) * r * (G.rx - 5), y: G.cy + Math.sin(a) * r * (G.ry - 3) }; }
   function coinsAll() { return shared.map(function (w) { var p = spot(w.id); return { id: w.id, x: p.x, y: p.y, w: w, mine: mine.indexOf(w.id) >= 0 }; }).concat(kept.map(function (s) { var p = spot(s + 1e5); return { x: p.x, y: p.y, kept: 1 }; })); }
 
+  /* the flower stall at the back of the square: a striped awning, buckets of flowers by day, a cloth over them at night */
+  var STALL = {};
+  function stall(night, lit, snow, wet) {
+    var w = 30, x = Math.max(4, Math.round(PW * .2 - w - 6)), y = G.py + 3;   /* just left of the lamp */ STALL = { x: x, y: y - 14, w: w, h: 28 };
+    R(x + 1, y - 14, 2, 22, "#3a2414"); R(x + w - 3, y - 14, 2, 22, "#3a2414");
+    for (var i = 0; i < w; i += 4) R(x + i, y - 16, 4, 5, (i / 4) % 2 ? "#fbf3e2" : "#e06a8a"); R(x, y - 11, w, 1, "#8a2a4a");
+    R(x, y + 2, w, 7, "#7a4e2e"); R(x, y + 2, w, 1, "#9a6a40");
+    if (night) { R(x + 1, y - 2, w - 2, 5, "#5a6a8a"); R(x + 1, y + 2, w - 2, 1, "#4a5a7a"); if (lit) R(x + w / 2 - 1, y - 10, 2, 2, "#ffd68a"); }
+    else for (var b = 0; b < 5; b++) { var bx = x + 2 + b * 6; R(bx, y - 1, 4, 3, "#9aa0a8"); var C = ["#c8303a", "#f48fb8", "#fbf3e2", "#f4d04a", "#8a5ac8"][b]; R(bx, y - 4, 2, 2, C); R(bx + 2, y - 5, 2, 2, C); R(bx + 1, y - 3, 1, 2, "#4a8a44"); }
+    if (snow) R(x - 1, y - 17, w + 2, 1, "#ffffff");
+  }
   function draw() {
     var ph = W.phase(), wx = W.weather(), night = ph === "night", lit = night || ph === "dusk", sk = SKY[ph] || SKY.day;
     var grey = wx === "rain" || wx === "storm" || wx === "fog" ? .45 : wx === "snow" ? .3 : 0, snow = wx === "snow", wet = wx === "rain" || wx === "storm";
@@ -138,6 +197,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     R(0, G.py, PW, PH - G.py, cob);
     for (var ry = G.py + 2, row = 0; ry < PH; ry += 3 + Math.round((ry - G.py) / 30), row++) { var step = 6 + Math.round((ry - G.py) / 12); for (var rx = (row % 2) * (step / 2); rx < PW; rx += step) R(rx, ry, step - 2, 1, cob2); }
     if (wet) for (var pd = 0; pd < 6; pd++) R(hash(pd + 70) * PW, G.py + 6 + hash(pd + 71) * (PH - G.py - 8), 10 + hash(pd) * 14, 1, "rgba(200,220,255,.25)");
+    stall(night, lit, snow, wet);
     /* benches and lamps */
     [[.12, .86], [.88, .86]].forEach(function (b) { var x = PW * b[0] - 10, y = PH * b[1] - (PW / PH > 1.1 ? 0 : 6); R(x, y, 20, 2, "#6a4426"); R(x, y - 4, 20, 2, "#7a5432"); R(x + 2, y + 2, 2, 4, "#2a1a10"); R(x + 16, y + 2, 2, 4, "#2a1a10"); if (snow) R(x, y - 5, 20, 1, "#fbfbff"); });
     [[.2, .5], [.8, .5]].forEach(function (l) { var x = Math.round(PW * l[0]), y = Math.round(G.py + (PH - G.py) * .12); R(x, y - 26, 2, 26, "#1e1e24"); R(x - 2, y - 30, 6, 4, "#1e1e24"); R(x - 1, y - 29, 4, 2, lit ? "#ffd68a" : "#8a8a7a"); if (lit) { g.fillStyle = "rgba(255,200,120,.16)"; g.beginPath(); g.arc(x + 1, y - 28, 9, 0, 6.3); g.fill(); g.fillStyle = "rgba(255,200,120,.08)"; g.beginPath(); g.ellipse(x + 1, y + 1, 12, 3, 0, 0, 6.3); g.fill(); } });
@@ -237,6 +297,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
   function pickCoin(p) { var best = null, bd = 64; coinsAll().forEach(function (k) { if (k.kept) return; var d = (k.x - p.x) * (k.x - p.x) + (k.y - p.y) * (k.y - p.y) * 2; if (d < bd) { bd = d; best = k; } }); return best; }
   cv.addEventListener("pointerdown", function (e) {
     var p = at(e), k = pickCoin(p); if (k) { openCoin(k); return; }
+    if (p.x >= STALL.x - 2 && p.x <= STALL.x + STALL.w + 2 && p.y >= STALL.y - 4 && p.y <= STALL.y + STALL.h) { openBouquet(); return; }
     birds.forEach(function (b) { if (!b.fly && !b.gone && b.px != null && Math.abs(b.px - p.x) < 24 && Math.abs(b.py - p.y) < 18) { b.fly = 1; b.fx = b.px; b.fy = b.py; b.vx = (b.px < p.x ? -1 : 1) * (.8 + Math.random() * .6); b.vy = -1.2; } });
     if (Math.abs(p.x - G.cx) < G.rx && Math.abs(p.y - G.cy) < G.ry) rings.push({ x: p.x, y: p.y, r: 1, a: .8 });
   });
@@ -267,7 +328,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
   }, 2500);
 
   var sheetFor = null;
-  function show(id) { ["ask", "coin"].forEach(function (s) { $(s).hidden = s !== id; }); $("dock").hidden = !!id; sheetFor = id; }
+  function show(id) { ["ask", "coin", "bq", "bqGot"].forEach(function (s) { $(s).hidden = s !== id; }); $("dock").hidden = !!id; sheetFor = id; }
   [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.onclick = function () { show(null); }; });
   addEventListener("keydown", function (e) { if (e.key === "Escape" && sheetFor) show(null); });
   var inp = $("wishIn");
@@ -309,6 +370,68 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     secret().then(function (s) { return rpc("wish_hope", { p_secret: s, p_id: id }); }).catch(function () {});
     show(null);
   };
+  /* ---------- the flower stall: make a bouquet and send it to someone real ----------
+     Nothing is stored anywhere: the bouquet and its card travel inside the link (after #, so not even the web host sees it). */
+  var FLC = [["#c8303a", "#8a1a2a"], ["#f48fb8", "#d0507a"], ["#fbf3e2", "#f4d04a"], ["#f4d04a", "#7a4a1e"], ["#a07ad8", "#6a4aa8"], ["#f6c0d0", "#e890b0"], ["#5aa04a", "#2e6b34"]];
+  var WRAPS = [["#c8a070", "#a07a4a"], ["#f4c0d0", "#d890a8"], ["#f3ead8", "#cfc2a8"], ["#a8c8e0", "#7aa0c0"]];
+  var BQ = { f: [], w: 0 };
+  function head(c, k, x, y) {
+    var A = FLC[k][0], B = FLC[k][1], P = function (dx, dy, w, h, col) { c.fillStyle = col; c.fillRect(x + dx, y + dy, w, h); };
+    if (k === 0) { P(-2, -2, 5, 5, A); P(-1, -1, 3, 3, B); P(0, 0, 1, 1, A); }
+    else if (k === 1) { P(-2, -2, 1, 4, A); P(0, -3, 1, 5, A); P(2, -2, 1, 4, A); P(-1, -1, 3, 3, A); P(-1, 1, 3, 1, B); }
+    else if (k === 2) { P(-2, 0, 5, 1, A); P(0, -2, 1, 5, A); P(-1, -1, 1, 1, A); P(1, 1, 1, 1, A); P(1, -1, 1, 1, A); P(-1, 1, 1, 1, A); P(0, 0, 1, 1, B); }
+    else if (k === 3) { P(-3, -1, 7, 3, A); P(-1, -3, 3, 7, A); P(-2, -2, 5, 5, A); P(-1, -1, 3, 3, B); }
+    else if (k === 4) { for (var i = 0; i < 4; i++) P(i % 2 ? 0 : -1, -3 + i * 2, 2, 1, i % 2 ? A : B); }
+    else if (k === 5) { P(-3, -2, 7, 5, A); P(-2, -3, 5, 7, A); P(-1, -1, 3, 2, B); P(-2, 1, 2, 1, B); }
+    else { P(-2, -2, 2, 2, A); P(1, -3, 2, 2, B); P(0, 0, 2, 2, A); P(-3, 1, 2, 2, B); }
+  }
+  function paintBq(cv2, b) {
+    var c = cv2.getContext("2d"); c.clearRect(0, 0, 48, 64); c.fillStyle = "#fbf3e2"; c.fillRect(0, 0, 48, 64);
+    var n = b.f.length, nx = 24, ny = 44, Wr = WRAPS[b.w % WRAPS.length];
+    var pos = b.f.map(function (k, i) { var a = n === 1 ? 0 : (i / (n - 1) - .5) * 1.7, r = 22 + (i % 2) * 5; return { k: k, x: Math.round(nx + Math.sin(a) * r * .75), y: Math.round(ny - 14 - Math.cos(a) * r * .8) }; });
+    c.fillStyle = "#3f7a3a"; pos.forEach(function (p) { var dx = nx - p.x, dy = ny - p.y, st = Math.max(Math.abs(dx), Math.abs(dy)); for (var s = 0; s < st; s++) c.fillRect(Math.round(p.x + dx * s / st), Math.round(p.y + dy * s / st), 1, 1); });
+    pos.slice().sort(function (a, b2) { return b2.y - a.y; }).forEach(function (p) { head(c, p.k, p.x, p.y); });
+    c.fillStyle = Wr[0]; for (var yy = 38; yy < 62; yy++) { var hw = Math.round(13 - (yy - 38) * .45); c.fillRect(nx - hw, yy, hw * 2, 1); }
+    c.fillStyle = Wr[1]; for (var y2 = 38; y2 < 62; y2 += 3) c.fillRect(nx - 1, y2, 1, 2); c.fillRect(nx - 13, 38, 26, 1);
+    c.fillStyle = "#c8303a"; c.fillRect(nx - 4, 45, 8, 2); c.fillRect(nx - 6, 44, 3, 2); c.fillRect(nx + 3, 44, 3, 2); c.fillRect(nx - 3, 47, 2, 4); c.fillRect(nx + 1, 47, 2, 4);
+  }
+  var stemsBox = $("stems");
+  FLC.forEach(function (fc, k) {
+    var b = document.createElement("button"); b.type = "button"; b.className = "fbb"; var ic = document.createElement("canvas"); ic.width = 12; ic.height = 12; b.appendChild(ic);
+    var c = ic.getContext("2d"); head(c, k, 6, 6); b.onclick = function () { if (BQ.f.length >= 9) { stemsBox.classList.remove("hop"); void stemsBox.offsetWidth; stemsBox.classList.add("hop"); return; } BQ.f.push(k); paintBq($("bqCv"), BQ); };
+    b.dataset.k = k; stemsBox.appendChild(b);
+  });
+  function labelStems() { [].forEach.call(stemsBox.children, function (b) { var n = T.fl[+b.dataset.k]; b.setAttribute("aria-label", n[L()] || n[0]); }); }
+  labelStems();
+  function openBouquet() { BQ = { f: [], w: (Math.random() * WRAPS.length) | 0 }; $("bqTo").value = ""; $("bqMsg").value = ""; paintBq($("bqCv"), BQ); labelStems(); show("bq"); }
+  $("bqBtn").onclick = openBouquet;
+  $("bqWrap").onclick = function () { BQ.w = (BQ.w + 1) % WRAPS.length; paintBq($("bqCv"), BQ); };
+  $("bqClear").onclick = function () { BQ.f = []; paintBq($("bqCv"), BQ); };
+  function b64(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+  function unb64(s2) { try { return JSON.parse(decodeURIComponent(escape(atob(s2.replace(/-/g, "+").replace(/_/g, "/"))))); } catch (e) { return null; } }
+  $("bqSend").onclick = function () {
+    if (!BQ.f.length) { stemsBox.classList.remove("hop"); void stemsBox.offsetWidth; stemsBox.classList.add("hop"); return; }
+    var from = ""; try { from = localStorage.getItem("fb_nick") || ""; } catch (e) {}
+    var o = { f: BQ.f.join(""), w: BQ.w, t: $("bqTo").value.trim().slice(0, 24), m: $("bqMsg").value.trim().slice(0, 80), n: from.slice(0, 24) };
+    var url = location.origin + "/nearby/plaza/#bq=" + b64(o), text = t("shareT");
+    show(null);
+    if (navigator.share) navigator.share({ title: t("h1"), text: text, url: url }).catch(function () {});
+    else if (navigator.clipboard) navigator.clipboard.writeText(text + " " + url).then(function () { note(t("copied"), "↗"); }).catch(function () {});
+    setTimeout(function () { note(t("real"), "🌼"); }, 2500);
+  };
+  /* someone sent you flowers */
+  var got = /[#&]bq=([A-Za-z0-9_-]+)/.exec(location.hash);
+  if (got) { var o = unb64(got[1]); if (o && typeof o.f === "string") {
+    var B2 = { f: o.f.split("").map(Number).filter(function (k) { return k >= 0 && k < FLC.length; }).slice(0, 9), w: (+o.w || 0) % WRAPS.length };
+    if (B2.f.length) setTimeout(function () {
+      paintBq($("bqGotCv"), B2);
+      var to = String(o.t || "").slice(0, 24), m = String(o.m || "").slice(0, 80), n = String(o.n || "").slice(0, 24);
+      $("bqGotH").textContent = to ? t("gotFor").replace("{n}", to) : t("gotH");
+      $("bqGotMsg").textContent = m; $("bqGotFrom").textContent = n ? t("from").replace("{n}", n) : "";
+      show("bqGot");
+    }, 900);
+  } }
+  $("bqBack").onclick = openBouquet;
   $("repBtn").onclick = function () {
     var k = cur; if (!k) return; var id = k.w.id; this.disabled = true; this.textContent = t("repd");
     secret().then(function (s) { return rpc("wish_report", { p_secret: s, p_id: id }); }).catch(function () {});

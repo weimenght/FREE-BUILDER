@@ -73,7 +73,7 @@ ID: PZ-25
 TITLE: The Plaza
 GENRE: A fountain, a coin, a wish
 AUTHOR: FREE//BUILDER
-DESC: The square in the middle of town: a fountain, benches, lamps and pigeons. Toss a coin and make a wish. Keep it to yourself, or let it float: it lies in the basin for a month, without a name, and anyone can read it and hope with you.
+DESC: The square in the middle of town: a fountain, benches, lamps and pigeons. Toss a coin and make a wish. Keep it to yourself, or let it float: it lies in the basin for a month, without a name, and anyone can read it and hope with you. At the flower stall, tie a bouquet and send it to someone you love: it travels inside the link, stored nowhere.
 URL: plaza/
 
 CODE: GARDEN
