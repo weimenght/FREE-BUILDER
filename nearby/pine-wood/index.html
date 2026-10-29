@@ -115,8 +115,45 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     var tw = h > 70 ? 2 : 1, th = Math.max(4, Math.floor(h * .16)); ctx.fillStyle = trunk; ctx.fillRect(Math.round(x - tw / 2), Math.round(gy - th), tw, th);
     ctx.fillStyle = fol; var top = gy - h, fh = h - th + 3;
     for (var t = 0; t < tiers; t++) { var tt = top + t / tiers * fh * .72, tb = top + (t + 1.35) / tiers * fh, ht = tb - tt, mw = 4 + (t + 1) / tiers * (h * .44);
-      for (var py = 0; py < ht; py++) { var y = Math.round(tt + py); if (y >= gy - th + 2) continue; var w = Math.max(1, Math.floor(py / ht * mw / 2) * 2 + 1), hf = Math.max(0, (gy - y) / h); ctx.fillRect(Math.round(x - w / 2) + Math.round(sway * hf * hf), y, w, 1); } }
+      for (var py = 0; py < ht; py++) { var y = Math.round(tt + py); if (y >= gy - th + 2) continue; var w = Math.max(1, Math.floor(py / ht * mw / 2) * 2 + 1), hf = Math.max(0, (gy - y) / h); ctx.fillRect(Math.round(x - w / 2) + Math.round(sway * hf * hf), y, w, 1); if (w > 4 && py > ht * .45) { ctx.fillStyle = shade(fol, .16); ctx.fillRect(Math.round(x - w / 2) + Math.round(sway * hf * hf), y, Math.max(1, w >> 2), 1); ctx.fillStyle = fol; } } }
   }
+  var SH = {};
+  function shade(c, k) { var key = c + k; if (SH[key]) return SH[key]; var n = parseInt(c.slice(1), 16), f = function (v) { return Math.min(255, Math.round(v + (255 - v) * k)); }; return (SH[key] = "rgb(" + f(n >> 16) + "," + f((n >> 8) & 255) + "," + f(n & 255) + ")"); }
+  /* the forest floor: a path of packed earth with pebbles and roots, needles, ferns, mushrooms (a few glow at night), mossy stones,
+     fallen logs, now and then a brook with a plank across; a squirrel by day, a deer on the far hill at dawn and dusk */
+  function floor(P) {
+    var ph = WD.phase(), night = ph === "night", dusk = ph === "dusk" || ph === "dawn", wet = WD.weather() === "rain" || WD.weather() === "storm", snow = WD.weather() === "snow";
+    var dirt = night ? "#1e2228" : dusk ? "#3a2e32" : "#7a6248", dirtD = night ? "#161a1f" : dusk ? "#2c2228" : "#5e4a36", peb = night ? "#3a4248" : dusk ? "#5a4e52" : "#a89a86", depth = H - GY;
+    for (var c = Math.floor((camX - 30) / 3); c <= Math.floor((camX + W + 30) / 3); c++) { var r = hash(c * 12.9898), gx = Math.round(c * 3 - camX); if (r < .5) { ctx.fillStyle = r < .25 ? shade(P.ground, .08) : "rgba(0,0,0,.14)"; ctx.fillRect(gx, GY + 6 + Math.floor(hash(c * 3.7) * (depth - 6)), r < .1 ? 2 : 1, 1); } }
+    ctx.fillStyle = dirt; ctx.fillRect(0, GY, W, 4); ctx.fillStyle = dirtD; ctx.fillRect(0, GY + 4, W, 1);
+    for (c = Math.floor((camX - 10) / 4); c <= Math.floor((camX + W + 10) / 4); c++) { var r2 = hash(c * 7.31 + 2), px = Math.round(c * 4 - camX); if (r2 < .22) { ctx.fillStyle = peb; ctx.fillRect(px, GY + 1 + Math.floor(r2 * 12) % 3, r2 < .06 ? 2 : 1, 1); } else if (r2 > .93) { ctx.fillStyle = dirtD; ctx.fillRect(px, GY + 2, 5, 1); ctx.fillRect(px + 4, GY + 3, 2, 1); } if (wet && r2 > .4 && r2 < .48) { ctx.fillStyle = "rgba(170,200,230,.35)"; ctx.fillRect(px, GY + 2, 4, 1); } }
+    for (c = Math.floor((camX - 60) / 13); c <= Math.floor((camX + W + 60) / 13); c++) {
+      var t = hash(c * 3.17 + 9), x0 = Math.round(c * 13 + hash(c * 5.1) * 10 - camX), y0 = GY + 7 + Math.floor(hash(c * 8.3) * Math.max(1, depth - 12));
+      if (t < .3) { var fc = night ? "#1e3a32" : dusk ? "#2e4a3e" : "#4a8a4a"; ctx.fillStyle = fc; for (var fr = -3; fr <= 3; fr++) { var len = 5 - Math.abs(fr); for (var q = 0; q < len; q++) ctx.fillRect(x0 + fr * q / 2 + Math.round(Math.sin(time + c) * (q > 2 ? .6 : 0)), y0 - q, 1, 1); } }
+      else if (t < .42) { ctx.fillStyle = night ? "#c8c0b0" : "#efe6d4"; ctx.fillRect(x0, y0 - 2, 1, 2); ctx.fillStyle = night ? "#5a2a2a" : "#c8402a"; ctx.fillRect(x0 - 1, y0 - 4, 3, 2); ctx.fillStyle = "#f4e8d8"; ctx.fillRect(x0, y0 - 4, 1, 1); if (hash(c * 2.2) < .5) { ctx.fillStyle = night ? "#c8c0b0" : "#efe6d4"; ctx.fillRect(x0 + 3, y0 - 1, 1, 1); ctx.fillStyle = night ? "#6a5a3a" : "#b8864a"; ctx.fillRect(x0 + 2, y0 - 2, 3, 1); }
+        if (night && hash(c * 4.4) < .5) { var gl = (Math.sin(time * 1.3 + c) + 1) / 2; ctx.fillStyle = "rgba(140,255,200," + (.25 + gl * .4).toFixed(2) + ")"; ctx.fillRect(x0 - 1, y0 - 4, 3, 2); ctx.fillStyle = "rgba(140,255,200," + (.08 + gl * .1).toFixed(2) + ")"; ctx.fillRect(x0 - 3, y0 - 6, 7, 6); } }
+      else if (t < .52) { ctx.fillStyle = night ? "#2a3036" : "#7a7e80"; ctx.fillRect(x0 - 3, y0 - 3, 7, 3); ctx.fillRect(x0 - 2, y0 - 4, 5, 1); ctx.fillStyle = night ? "#22402e" : "#5a8a3a"; ctx.fillRect(x0 - 2, y0 - 4, 4, 1); ctx.fillRect(x0 - 3, y0 - 3, 2, 1); if (snow) { ctx.fillStyle = "#eef2f6"; ctx.fillRect(x0 - 2, y0 - 5, 5, 1); } }
+      else if (t < .58) { var bark = night ? "#2a2420" : dusk ? "#4a3428" : "#6a4a30"; ctx.fillStyle = bark; ctx.fillRect(x0 - 10, y0 - 4, 20, 4); ctx.fillStyle = shade(bark.length === 7 ? bark : "#6a4a30", .25); ctx.fillRect(x0 - 10, y0 - 4, 20, 1); ctx.fillStyle = night ? "#4a3e32" : "#c8a070"; ctx.fillRect(x0 + 9, y0 - 4, 2, 4); ctx.fillStyle = night ? "#22402e" : "#5a8a3a"; ctx.fillRect(x0 - 6, y0 - 5, 6, 1); if (snow) { ctx.fillStyle = "#eef2f6"; ctx.fillRect(x0 - 9, y0 - 5, 18, 1); } }
+      else if (t > .993) { /* a brook comes down through the trees and runs under the path; a plank takes you over */
+        var wc = night ? "#1e3448" : dusk ? "#4a5a7a" : "#5a9ac0", hi = night ? "#3a5a78" : "#cfe8f4";
+        for (var yy = GY; yy < H; yy++) { var bx = x0 + Math.round(Math.sin(yy * .25 + c) * 2) - Math.round((yy - GY) * .3); ctx.fillStyle = wc; ctx.fillRect(bx - 3, yy, 7, 1); if ((yy + ((time * 8) | 0)) % 5 === 0) { ctx.fillStyle = hi; ctx.fillRect(bx - 1, yy, 2, 1); } }
+        ctx.fillStyle = night ? "#3a3028" : "#8a6a44"; ctx.fillRect(x0 - 6, GY - 1, 13, 2); ctx.fillStyle = night ? "#2a221c" : "#5e4a36"; ctx.fillRect(x0 - 6, GY + 1, 13, 1); ctx.fillRect(x0 - 5, GY + 2, 1, 2); ctx.fillRect(x0 + 5, GY + 2, 1, 2); }
+    }
+    /* a squirrel crossing the path, now and then, by day */
+    if (!night && !wet && !snow) { var sq = squirrel; if (!sq.on && Math.random() < .002) { sq.on = 1; sq.x = Math.random() < .5 ? -6 : W + 6; sq.v = sq.x < 0 ? 1 : -1; sq.stop = W * (.2 + Math.random() * .6); sq.wait = 0; }
+      if (sq.on) { if (sq.wait > 0) sq.wait -= .016; else { sq.x += sq.v * 1.4; if (Math.abs(sq.x - sq.stop) < 1.5 && sq.stop) { sq.wait = 1.2 + Math.random(); sq.stop = 0; } } if (sq.x < -10 || sq.x > W + 10) sq.on = 0;
+        var hop = sq.wait > 0 ? 0 : Math.abs(Math.sin(time * 14)) * 2, X = Math.round(sq.x), Y = GY - 1 - Math.round(hop); ctx.fillStyle = "#a8582a"; ctx.fillRect(X - 2, Y - 2, 4, 2); ctx.fillRect(X + (sq.v > 0 ? 1 : -2), Y - 4, 2, 2); ctx.fillRect(X - 1 - sq.v * 3, Y - 5, 2, 4); ctx.fillRect(X - 2 - sq.v * 3, Y - 6, 2, 2); ctx.fillStyle = "#111"; ctx.fillRect(X + (sq.v > 0 ? 2 : -2), Y - 4, 1, 1); } }
+  }
+  var squirrel = { on: 0 };
+  /* a deer on the near hill at dawn and dusk */
+  function deer(P) {
+    var ph = WD.phase(); if (!(ph === "dusk" || ph === "dawn")) return;
+    var c = Math.floor((camX * .08) / 400), dx = Math.round(c * 400 + 220 - camX * .08); if (dx < -10 || dx > W + 10) return;
+    var hy = Math.floor(GY * .73 + Math.sin((dx + camX * .08 + 120) * .025) * 10 + Math.sin((dx + camX * .08 + 120) * .025 * 3.1) * 4), graze = Math.sin(time * .5) > .3;
+    ctx.fillStyle = P.near === "#2e2238" ? "#1e1626" : "#3a2e3a"; ctx.fillRect(dx - 3, hy - 4, 6, 2); ctx.fillRect(dx - 3, hy - 2, 1, 2); ctx.fillRect(dx + 2, hy - 2, 1, 2); if (graze) ctx.fillRect(dx + 3, hy - 3, 2, 2); else { ctx.fillRect(dx + 2, hy - 6, 1, 2); ctx.fillRect(dx + 3, hy - 7, 2, 1); ctx.fillRect(dx + 2, hy - 8, 1, 1); ctx.fillRect(dx + 4, hy - 8, 1, 1); }
+  }
+  /* by day the sun comes through the trees in slanting shafts */
+  function shafts() { if (WD.phase() !== "day" || WD.weather() !== "clear") return; ctx.fillStyle = "rgba(255,248,210,.05)"; for (var i = 0; i < 4; i++) { var bx = ((i * 97 + 40 - camX * .3) % (W + 80) + W + 80) % (W + 80) - 40, wob = Math.sin(time * .2 + i) * 4; ctx.beginPath(); ctx.moveTo(bx + 30 + wob, 0); ctx.lineTo(bx + 42 + wob, 0); ctx.lineTo(bx + 12, GY); ctx.lineTo(bx, GY); ctx.closePath(); ctx.fill(); } }
   function layer(par, cell, mn, mx, cols, off, dens) {
     var L = camX * par - 60, R = camX * par + W + 60;
     for (var c = Math.floor(L / cell); c <= Math.floor(R / cell); c++) { if (hash(c * 19.3 + par * 100) > dens) continue; var wx = c * cell + hash(c * 37.7 + par * 200) * cell * .8, h = Math.floor(mn + hash(c * 73.1 + par * 300) * (mx - mn)); pine(Math.round(wx - camX * par), GY + off, h, Math.max(3, Math.floor(h / 15)), cols[0], cols[1], Math.sin(time * 1.4 + c * .9) * 1.8 * par); }
@@ -162,10 +199,12 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     ctx.fillStyle = P.far; for (var x = 0; x < W; x++) { var wx = (x + camX * .04) * .018, h = Math.floor(GY * .62 + Math.sin(wx) * 14 + Math.cos(wx * 2.3) * 6); ctx.fillRect(x, h, 1, GY - h); }
     ctx.fillStyle = P.near; for (x = 0; x < W; x++) { var wx2 = (x + camX * .08 + 120) * .025, h2 = Math.floor(GY * .73 + Math.sin(wx2) * 10 + Math.sin(wx2 * 3.1) * 4); ctx.fillRect(x, h2, 1, GY - h2); }
     layer(.18, 12, 34, 54, P.t1, 0, .85); mist(P, GY - 14, 10, .05, .22);
+    deer(P);
     layer(.42, 20, 52, 85, P.t2, 0, .78); mist(P, GY - 8, 8, .06, .48);
     layer(.75, 34, 76, 118, P.t3, 0, .72);
     lanterns(P);
     ctx.fillStyle = P.ground; ctx.fillRect(0, GY, W, H - GY); ctx.fillStyle = P.rim; ctx.fillRect(0, GY, W, 1);
+    floor(P);
     for (var c = Math.floor((camX - 20) / 6); c <= Math.floor((camX + W + 20) / 6); c++) { var r = hash(c * 43.1), gx = Math.round(c * 6 - camX); if (r < .45) { ctx.fillStyle = P.tuft; ctx.fillRect(gx, GY - 1, 2, 1); if (r < .2) ctx.fillRect(gx + 1, GY - 2, 1, 1); } }
     if (mate) { var mxs = Math.round(W / 2 + (mate.x - camX)); if (mxs > -10 && mxs < W + 10) walker(mxs, GY, mate.f, mate.m, time * 6.5, MATE_LOOK[0], MATE_LOOK[1], MATE_LOOK[2], MATE_LOOK[3], MATE_LOOK[4]); else { ctx.fillStyle = "#f0c34a"; var ex = mxs < 0 ? 3 : W - 5; ctx.fillRect(ex, GY + 6, 2, 2); } }
     var asleep = WD.phase() === "night";
@@ -174,6 +213,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     walker(Math.floor(W / 2), GY, me.face, me.moving, me.frame, MY_LOOK[0], MY_LOOK[1], MY_LOOK[2], MY_LOOK[3], MY_LOOK[4]);
     parts.forEach(function (p) { if (p.fly) { if (!P.flies) return; var gl = Math.sin(time * 3 + p.ph); if (gl > -.1) { ctx.fillStyle = gl > .5 ? "#e8f59d" : "#9ab865"; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); } } else { ctx.fillStyle = P.tuft; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); } });
     layer(1.35, 135, 135, 175, P.fg, 14, .42);
+    shafts();
     if (prompt > .01) { ctx.fillStyle = "rgba(210,225,230," + prompt * .55 + ")"; var cx = Math.floor(W / 2), cy = Math.min(H - 6, GY + 16); ctx.fillRect(cx - 14, cy, 1, 1); ctx.fillRect(cx - 13, cy - 1, 1, 3); ctx.fillRect(cx - 12, cy - 2, 1, 5); ctx.fillRect(cx + 14, cy, 1, 1); ctx.fillRect(cx + 13, cy - 1, 1, 3); ctx.fillRect(cx + 12, cy - 2, 1, 5); }
     var wx3 = WD.weather(); if (wx3 === "rain" || wx3 === "storm") { ctx.fillStyle = "rgba(190,210,230,.35)"; for (var q = 0; q < W * H / 170; q++) ctx.fillRect(Math.round((q * 37 + time * 30) % W), Math.round((q * 53 + time * 140) % H), 1, 2); }
     if (wx3 === "fog") { ctx.fillStyle = "rgba(200,215,220,.25)"; ctx.fillRect(0, 0, W, H); }
