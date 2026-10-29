@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=50db5fe31e"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=49f6d8ff11" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=84a41646c6"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=49f6d8ff11" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -8369,6 +8369,9 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
     ask: M("Ask Mei for something", "找 Mei 要点喝的", "找 Mei 要點喝的", "Pídele algo a Mei", "Demana-li alguna cosa a la Mei"),
     booze: M("A cocktail", "来杯鸡尾酒", "來杯雞尾酒", "Un cóctel", "Un còctel"),
     noBooze: M("Wei pours those. I'm sixteen, not stupid. Coffee, tea, or something without?", "那些得 Wei 来调。我十六岁，又不傻。咖啡、茶，还是无酒精的？", "那些得 Wei 來調。我十六歲，又不傻。咖啡、茶，還是無酒精的？", "Eso lo sirve Wei. Tengo dieciséis, no soy tonta. ¿Café, té o algo sin alcohol?", "Això ho serveix en Wei. Tinc setze anys, no sóc tonta. Cafè, te o alguna cosa sense alcohol?"),
+    nap: [M("*Mei, asleep on the counter, one earbud still in. Her phone buzzes face down beside her. Miso is asleep on her sleeve.*", "*Mei 趴在吧台上睡着了，一只耳机还戴着。手机扣在旁边嗡嗡震。Miso 枕着她的袖子睡着了。*", "*Mei 趴在吧台上睡著了，一隻耳機還戴著。手機扣在旁邊嗡嗡震。Miso 枕著她的袖子睡著了。*", "*Mei, dormida sobre la barra, con un auricular puesto. El móvil vibra boca abajo a su lado. Miso duerme sobre su manga.*", "*La Mei, adormida damunt la barra, amb un auricular posat. El mòbil vibra cap per avall al seu costat. En Miso dorm damunt la seva màniga.*"),
+      M("*Mei's asleep with her cheek on the bar and a note taped to the till: 'WEI'S AWAY. BACK AT NOON. DON'T.'*", "*Mei 脸贴着吧台睡着了，收银机上贴着纸条：“WEI 出门了。中午回来。别吵。”*", "*Mei 臉貼著吧台睡著了，收銀機上貼著紙條：「WEI 出門了。中午回來。別吵。」*", "*Mei duerme con la mejilla en la barra y una nota en la caja: 'WEI DE VIAJE. VUELVO A MEDIODÍA. NI LO INTENTES.'*", "*La Mei dorm amb la galta a la barra i una nota a la caixa: 'EN WEI ÉS FORA. TORNO A MIGDIA. NI HO PROVIS.'*")],
+    napHead: M("MEI'S ASLEEP", "MEI 睡着了", "MEI 睡著了", "MEI DUERME", "LA MEI DORM"),
     served: M("*slides it over, already back on her phone* Enjoy. Don't tell Wei I used the good beans.", "*把杯子推过来，又低头看手机* 慢用。别告诉 Wei 我用了好豆子。", "*把杯子推過來，又低頭看手機* 慢用。別告訴 Wei 我用了好豆子。", "*te lo desliza, ya otra vez con el móvil* Disfruta. No le digas a Wei que usé el café bueno.", "*te'l llisca, ja altra vegada amb el mòbil* Que vagi bé. No li diguis a en Wei que he fet servir el cafè bo.")
   };
   function on() {
@@ -8376,15 +8379,22 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
     if (d.who === "mei") return !d.asleep;
     return meiUp && ((window.WeiAway && WeiAway.on()) || AppState.weiState === "asleep");
   }
+  /* Wei's travelling and it's Mei's night (02:00–12:00): the top bar shows her asleep, so the bar does too: head on the counter */
+  function napping() { try { var d = W.host(); return d.who === "mei" && d.asleep; } catch (e) { return false; } }
   var css = document.createElement("style");
-  css.textContent = "#mei-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.mei-on #mei-avatar{display:block}body.mei-on #svg-wei-avatar,body.mei-on #wei-zzz-particles{display:none!important}body.mei-on #wei-anchor{visibility:visible!important}@media (min-width:768px){#mei-avatar{width:92px;height:104px}}";
+  css.textContent = "#mei-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.mei-on #mei-avatar{display:block}body.mei-on #svg-wei-avatar,body.mei-on:not(.mei-nap) #wei-zzz-particles{display:none!important}body.mei-on #wei-anchor{visibility:visible!important}@media (min-width:768px){#mei-avatar{width:92px;height:104px}}";
   document.head.appendChild(css);
   var cv = document.createElement("canvas"); cv.id = "mei-avatar"; cv.width = 32; cv.height = 36; cv.setAttribute("role", "img"); cv.setAttribute("aria-label", "Mei");
   var holder = document.getElementById("sprite-wei-container"); if (holder) holder.appendChild(cv);
   var phoneUntil = 0;
-  function paint() { var g = cv.getContext("2d"); g.clearRect(0, 0, 32, 36); W.drawMei(g, 0, 3, 1, { phone: Date.now() < phoneUntil }); }
+  function paint() { var g = cv.getContext("2d"); g.clearRect(0, 0, 32, 36); W.drawMei(g, 0, 3, 1, { phone: Date.now() < phoneUntil, asleep: document.body.classList.contains("mei-nap") }); }
   function say(t) { try { setText("sleep-story-text", t); } catch (e) {} }
+  var napT = -1;
   function dress() {
+    var z = !on() && napping(); document.body.classList.toggle("mei-nap", z);
+    if (z) { document.body.classList.add("mei-on"); paint(); var hn0 = document.getElementById("host-name"); if (hn0) hn0.textContent = "Mei";
+      try { setText("sleep-header-title", L(T.napHead)); setText("sleep-header-badge", ""); var w0 = document.getElementById("sleep-wake"); if (w0) w0.style.display = "none"; var p0 = document.getElementById("host-mood-pill"); if (p0) p0.textContent = "Mei"; if (napT < 0) napT = (Math.random() * T.nap.length) | 0; say(L(T.nap[napT])); var c1 = document.getElementById("sleep-btn-cats"); if (c1 && c1.parentElement.onclick === menu) c1.parentElement.onclick = function () { askCatToBartend(); }; } catch (e) {}
+      return; }
     var x = on(); document.body.classList.toggle("mei-on", x); var hn = document.getElementById("host-name"); if (hn) hn.textContent = x ? "Mei" : "Wei"; if (!x) { var c0 = document.getElementById("sleep-btn-cats"); if (c0 && c0.parentElement.onclick === menu) c0.parentElement.onclick = function () { askCatToBartend(); }; return; }
     paint();
     try { setText("sleep-header-title", L(T.head)); setText("sleep-header-badge", ""); var w = document.getElementById("sleep-wake"); if (w) w.style.display = "none";
@@ -8406,6 +8416,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   /* tap her: hello, or (sometimes) she's on her phone and you wait a beat */
   var tap0 = window.tapBartender;
   window.tapBartender = function () {
+    if (napping() && !on()) { say(L(T.nap[(napT = (napT + 1) % T.nap.length)])); return; }
     if (!on()) return tap0.apply(this, arguments);
     if (Math.random() < .3) { phoneUntil = Date.now() + 2600; paint(); say(L(T.scroll)); setTimeout(function () { phoneUntil = 0; paint(); say(L(T.sorry)); }, 2600); return; }
     say(L(T.hi[(Math.random() * T.hi.length) | 0]));
@@ -8416,7 +8427,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   window.evaluateWeiState = function () { var r = eval1.apply(this, arguments); try { if (W.weiTravelling() && AppState.weiState !== "asleep") { AppState.weiState = "asleep"; if (window.Cats && Cats.st) Cats.syncSleep(); } } catch (e) {} return r; };
   try { if (W.weiTravelling()) evaluateWeiState(); } catch (e) {}
   var render0 = window.renderCurrentDialogue;
-  window.renderCurrentDialogue = function () { var r = render0.apply(this, arguments); if (!on() && W.weiTravelling()) { try { setText("sleep-header-title", L(T.trav)); setText("sleep-header-badge", ""); } catch (e) {} } if (on()) { dress(); say(L(T.hi[(Math.random() * T.hi.length) | 0])); } return r; };
+  window.renderCurrentDialogue = function () { var r = render0.apply(this, arguments); if (!on() && W.weiTravelling()) { try { setText("sleep-header-title", L(T.trav)); setText("sleep-header-badge", ""); } catch (e) {} } if (on()) { dress(); say(L(T.hi[(Math.random() * T.hi.length) | 0])); } else if (napping()) dress(); return r; };
   /* now and then, between visitors, she checks her phone */
   setInterval(function () { if (!on() || document.hidden) return; if (Math.random() < .25) { phoneUntil = Date.now() + 5000 + Math.random() * 6000; paint(); setTimeout(paint, phoneUntil - Date.now() + 50); } }, 15000);
   setInterval(dress, 5000); setTimeout(function () { dress(); try { if (on() && AppState.inSanctuary) renderCurrentDialogue(); } catch (e) {} }, 800);
