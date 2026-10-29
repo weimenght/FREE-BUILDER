@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=673a2f0f79"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=4822239fd6" defer></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=673a2f0f79"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=7d4373ce52" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -7744,7 +7744,14 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
         sessionStorage.setItem(KEY, JSON.stringify(st)); if (!st.p) st = null;
       }
     } catch (e) {}
-    function away() { return !!(st && st.p && Date.now() < st.until); }
+    /* whoever is on steps out (Wei, Mei or Popo; never the cats): the note is theirs, in their words, signed by them */
+    function hw() { try { return window.FBWorld && FBWorld.host ? FBWorld.host().who : "wei"; } catch (e) { return "wei"; } }
+    var HN = { wei: ["Wei", "Wei", "Wei", "Wei", "Wei", "Wei"], mei: ["Mei", "Mei", "Mei", "Mei", "Mei", "Mei"], popo: ["Popo", "婆婆", "婆婆", "婆婆", "Popo", "Popo"] };
+    var CAN = { wei: "en Wei", mei: "la Mei", popo: "la Popo" };
+    var HT = { mei: ["At {p}. Back soon-ish.", "在{p}。差不多快回来。", "在{p}。差不多快回來。", "喺{p}。就快返。", "En {p}. Vuelvo prontito.", "Sóc a {p}. Torno aviat, més o menys."],
+      popo: ["Gone to {p}. Soup on the stove. Eat!", "去{p}了。炉上有汤。吃！", "去{p}了。爐上有湯。吃！", "去咗{p}。爐頭有湯。食啦！", "Fui a {p}. Sopa en fuego. ¡Come!", "He anat a {p}. Hi ha sopa al foc. Menja!"] };
+    function hostTx(t) { var w = hw(); if (w === "wei" || !HN[w]) return t; var n = tx(HN[w]); return String(t).replace(/\ben Wei\b/g, CAN[w]).replace(/\bWei\b/g, n); }
+    function away() { return hw() !== "cats" && !!(st && st.p && Date.now() < st.until); }
     window.WeiAway = { on: away, place: function () { return away() ? st.p : null; } };
 
     var css = document.createElement("style");
@@ -7761,9 +7768,11 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
       var p = PLACES[st.p], n = document.getElementById("wei-note"), g = document.getElementById("away-go");
       n.href = g.href = p.url;
       document.getElementById("wei-note-h").textContent = tx(W.head);
-      document.getElementById("wei-note-t").textContent = tx(p.t);
-      n.setAttribute("aria-label", tx(p.g));
-      document.getElementById("away-go-lbl").textContent = tx(p.g);
+      var w = hw(), pn = window.FBWorld && FBWorld.name ? FBWorld.name(st.p) : "";
+      document.getElementById("wei-note-t").textContent = HT[w] ? tx(HT[w]).replace("{p}", pn) : tx(p.t);
+      var sig = n.querySelector("i"); if (sig) sig.textContent = "— " + (w === "wei" ? "W." : tx(HN[w]));
+      n.setAttribute("aria-label", hostTx(tx(p.g)));
+      document.getElementById("away-go-lbl").textContent = hostTx(tx(p.g));
     }
     function apply() {
       var on = away(); document.body.classList.toggle("wei-away", on);
@@ -7771,7 +7780,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
       document.getElementById("away-go").style.display = on ? "" : "none";
       if (!on) return;
       paintNote();
-      var pill = document.getElementById("host-mood-pill"); if (pill) pill.textContent = "Wei · ✈️";
+      var pill = document.getElementById("host-mood-pill"); if (pill) pill.textContent = (HN[hw()] ? tx(HN[hw()]) : "Wei") + " · ✈️"; var hnm = document.getElementById("host-name"); if (hnm) hnm.textContent = HN[hw()] ? tx(HN[hw()]) : "Wei";
     }
 
     var eval0 = window.evaluateWeiState;
@@ -7800,7 +7809,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
         st = null; try { sessionStorage.setItem(KEY, JSON.stringify({ p: "" })); } catch (e) {}
         evaluateWeiState(); AppState.currentTopic = null;
         if (document.getElementById("sleep-mode-screen") && !document.getElementById("sleep-mode-screen").classList.contains("hidden")) renderCurrentDialogue();
-        if (AppState.weiState === "awake") try { showToast(tx(W.back)); } catch (e) {}
+        if (AppState.weiState === "awake" || hw() === "mei" || hw() === "popo") try { showToast(hostTx(tx(W.back))); } catch (e) {}
       }
     }, 5000);
     if (away()) { try { evaluateWeiState(); if (AppState.inSanctuary) renderCurrentDialogue(); } catch (e) {} }
@@ -8377,12 +8386,12 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   };
   function on() {
     var d = W.host(), h = W.hour() % 24, meiUp = !(h >= 2 && h < 12);
-    return d.who === "mei" && !d.asleep;   /* she's here only on her visits (FBWorld.host: one host per visit) */
+    return d.who === "mei" && !d.asleep && !(window.WeiAway && WeiAway.on());   /* she's here only on her visits (FBWorld.host: one host per visit), and not while she's out */
   }
   /* Wei's travelling and it's Mei's night (02:00–12:00): the top bar shows her asleep, so the bar does too: head on the counter */
-  function napping() { try { var d = W.host(); return d.who === "mei" && d.asleep; } catch (e) { return false; } }
+  function napping() { try { var d = W.host(); return d.who === "mei" && d.asleep && !(window.WeiAway && WeiAway.on()); } catch (e) { return false; } }
   var css = document.createElement("style");
-  css.textContent = "#mei-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.mei-on #mei-avatar{display:block}body.mei-on #svg-wei-avatar,body.mei-on:not(.mei-nap) #wei-zzz-particles{display:none!important}body.mei-on #wei-anchor{visibility:visible!important}@media (min-width:768px){#mei-avatar{width:92px;height:104px}}";
+  css.textContent = "#mei-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.mei-on #mei-avatar{display:block}body.mei-on #svg-wei-avatar,body.mei-on:not(.mei-nap) #wei-zzz-particles{display:none!important}body.mei-on:not(.wei-away) #wei-anchor{visibility:visible!important}@media (min-width:768px){#mei-avatar{width:92px;height:104px}}";
   document.head.appendChild(css);
   var cv = document.createElement("canvas"); cv.id = "mei-avatar"; cv.width = 32; cv.height = 36; cv.setAttribute("role", "img"); cv.setAttribute("aria-label", "Mei");
   var holder = document.getElementById("sprite-wei-container"); if (holder) holder.appendChild(cv);
@@ -8437,7 +8446,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   window.evaluateWeiState = function () { var r = eval1.apply(this, arguments); try { if (W.weiTravelling() && AppState.weiState !== "asleep") { AppState.weiState = "asleep"; if (window.Cats && Cats.st) Cats.syncSleep(); } } catch (e) {} return r; };
   try { if (W.weiTravelling()) evaluateWeiState(); } catch (e) {}
   var render0 = window.renderCurrentDialogue;
-  window.renderCurrentDialogue = function () { var r = render0.apply(this, arguments); if (!on() && W.weiTravelling()) { try { setText("sleep-header-title", L(T.trav)); setText("sleep-header-badge", ""); } catch (e) {} } if (on()) { dress(); say(L(T.hi[(Math.random() * T.hi.length) | 0])); } else if (napping()) dress(); return r; };
+  window.renderCurrentDialogue = function () { var r = render0.apply(this, arguments); if (!on() && W.weiTravelling() && !(window.WeiAway && WeiAway.on())) { try { setText("sleep-header-title", L(T.trav)); setText("sleep-header-badge", ""); } catch (e) {} } if (on()) { dress(); say(L(T.hi[(Math.random() * T.hi.length) | 0])); } else if (napping()) dress(); return r; };
   /* now and then, between visitors, she checks her phone */
   setInterval(function () { if (!on() || document.hidden) return; if (Math.random() < .25) { phoneUntil = Date.now() + 5000 + Math.random() * 6000; paint(); setTimeout(paint, phoneUntil - Date.now() + 50); } }, 15000);
   setInterval(dress, 5000); setTimeout(function () { dress(); try { if (on() && AppState.inSanctuary) renderCurrentDialogue(); } catch (e) {} }, 800);
@@ -8492,7 +8501,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
     name: M("Miso & Yuzu", "味噌和柚子", "味噌同柚子", "Miso y Yuzu", "Miso i Yuzu")
   };
   var css = document.createElement("style");
-  css.textContent = "#popo-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.popo-on #popo-avatar{display:block}body.popo-on #svg-wei-avatar,body.popo-on #mei-avatar,body.popo-on:not(.popo-nap) #wei-zzz-particles,body.cats-on #svg-wei-avatar,body.cats-on #mei-avatar,body.cats-on #wei-zzz-particles{display:none!important}body.popo-on #wei-anchor{visibility:visible!important}body.cats-on #wei-anchor{visibility:hidden!important}@media (min-width:768px){#popo-avatar{width:92px;height:104px}}";
+  css.textContent = "#popo-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.popo-on #popo-avatar{display:block}body.popo-on #svg-wei-avatar,body.popo-on #mei-avatar,body.popo-on:not(.popo-nap) #wei-zzz-particles,body.cats-on #svg-wei-avatar,body.cats-on #mei-avatar,body.cats-on #wei-zzz-particles{display:none!important}body.popo-on:not(.wei-away) #wei-anchor{visibility:visible!important}body.cats-on #wei-anchor{visibility:hidden!important}@media (min-width:768px){#popo-avatar{width:92px;height:104px}}";
   document.head.appendChild(css);
   var cv = document.createElement("canvas"); cv.id = "popo-avatar"; cv.width = 32; cv.height = 36; cv.setAttribute("role", "img"); cv.setAttribute("aria-label", "Popo");
   var holder = document.getElementById("sprite-wei-container"); if (holder) holder.appendChild(cv);
@@ -8502,7 +8511,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   var line = { popo: -1, cats: -1 }, said = "";
   function btn(fn, label) { var cb = document.getElementById("sleep-btn-cats"); if (!cb) return; cb.textContent = label; cb.parentElement.onclick = fn; }
   function dress() {
-    var h = who(), b = document.body, P0 = h.who === "popo", C0 = h.who === "cats";
+    var h = who(), b = document.body, out = window.WeiAway && WeiAway.on(), P0 = h.who === "popo" && !out, C0 = h.who === "cats";
     b.classList.toggle("popo-on", P0); b.classList.toggle("popo-nap", P0 && h.asleep); b.classList.toggle("cats-on", C0);
     if (!P0 && !C0) return;
     b.classList.remove("mei-on", "mei-nap");
@@ -8565,7 +8574,7 @@ html.fbsh-in #nav-brand-title, html.fbsh-in #nav-brand-door { display: none !imp
   var tap0 = window.tapBartender;
   window.tapBartender = function () {
     var h = who();
-    if (h.who === "popo") { say(L(h.asleep ? pick(P.nap) : pick(P.chat))); return; }
+    if (h.who === "popo" && !(window.WeiAway && WeiAway.on())) { say(L(h.asleep ? pick(P.nap) : pick(P.chat))); return; }
     if (h.who === "cats") return;
     return tap0.apply(this, arguments);
   };
