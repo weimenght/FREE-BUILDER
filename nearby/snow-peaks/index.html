@@ -164,7 +164,9 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     if (trail) { ctx.fillStyle = rgb(scarf); trail.forEach(function (p, i) { if (i) ctx.fillRect(Math.round(x + (p.x - me.x)), Math.round(yy - 3 - (me.d - p.d) * .85), 2, 1); }); }
     ctx.fillStyle = rgb(body); ctx.fillRect(x - 2 + Math.round(sh * .3), yy - 4, 4, 4);
     ctx.fillStyle = rgb(C.treeD); ctx.fillRect(x - 1 + Math.round(sh * .4), yy - 6, 3, 2); ctx.fillStyle = rgb(scarf); ctx.fillRect(x - 1 + Math.round(sh * .4), yy - 7, 3, 1);
+    if (body === C.me && MYHAIR[0]) { ctx.fillStyle = MYHAIR[1]; var hw = Math.round(Math.sin(performance.now() / 120) * .6); ctx.fillRect(x + Math.round(sh * .4) + hw, yy - 9, 1, MYHAIR[0] === 2 ? 3 : 2); }   /* a ponytail or a plait streaming out under the hat */
   }
+  var MYHAIR = [(Math.random() * 3) | 0, ["#2a1a10", "#4a2e1a", "#7a4a2a", "#c89a5a", "#1a1a1e", "#8a3a22"][(Math.random() * 6) | 0]];
   function draw() {
     ctx.setTransform(2, 0, 0, 2, 0, 0);   /* the scene at 2×; the town's animals at the canvas's own pixels (petAt), so they keep their size next to people */
     ctx.fillStyle = rgb(C.snow); ctx.fillRect(0, 0, gw, gh);
