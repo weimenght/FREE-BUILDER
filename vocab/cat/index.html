@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script>
+  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=7aab640d42"></script><script src="../vk.js?v=2"></script><script src="./ui.js?v=1"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FBF6EA" id="metaTheme">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -337,7 +337,7 @@
     @media (orientation:landscape) and (max-height:520px) { .scene { height:240px; } .term { font-size:30px; } :root { --tab-h:54px; } .tab span { display:none; } }
     @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
   </style>
-<link rel="stylesheet" href="../vk.css?v=1">
+<link rel="stylesheet" href="../vk.css?v=2">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -652,7 +652,7 @@
   <nav class="tabbar" aria-label="Principal">
     <div class="tabbar-in">
       <button class="tab" data-act="tab" data-arg="cards"><svg class="ic"><use href="#i-layers"/></svg><span>Targetes</span></button>
-      <button class="tab" data-act="tab" data-arg="verbs"><svg class="ic"><use href="#i-flame"/></svg><span>Verbs</span></button>
+      <button class="tab" data-act="tab" data-arg="verbs"><svg class="ic"><use href="#i-pen-line"/></svg><span>Verbs</span></button>
       <button class="tab" data-act="tab" data-arg="prac"><svg class="ic"><use href="#i-target"/></svg><span>Pràctica</span></button>
       <button class="tab" data-act="tab" data-arg="stats"><svg class="ic"><use href="#i-chart-column"/></svg><span>Progrés</span></button>
     </div>
@@ -2111,7 +2111,7 @@ function renderStats() {
   for (let d = new Date(start); cells.length < 17 * 7; d.setDate(d.getDate() + 1)) {
     const k = dayKey(d), x = (S.days[k] || {}).n || 0, fut = d > end;
     const l = fut ? 'fut' : !x ? '' : x < 10 ? 'l1' : x < 25 ? 'l2' : x < 50 ? 'l3' : 'l4';
-    cells.push(`<i class="${l}${k === dayKey() ? ' today' : ''}" title="${d.toLocaleDateString('ca-ES', { weekday: 'short', day: 'numeric', month: 'short' })}: ${x} respostes" data-act="${fut ? '' : 'cellInfo'}" data-arg="${k}"></i>`);
+    cells.push(`<i class="${l}${k === dayKey() ? ' today' : ''}" title="${d.toLocaleDateString(VK.locale('ca-ES'), { weekday: 'short', day: 'numeric', month: 'short' })}: ${x} respostes" data-act="${fut ? '' : 'cellInfo'}" data-arg="${k}"></i>`);
   }
   // Darrers 7 dies
   const last7 = []; for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); last7.push({ d, k: dayKey(d), v: (S.days[dayKey(d)] || {}).xp || 0 }); }
@@ -2135,13 +2135,13 @@ function renderStats() {
   const allSess = (Rec.cur && Rec.cur.n ? [{ t: Rec.cur.start, mode: Rec.cur.mode, n: Rec.cur.n, ok: Rec.cur.ok, xp: Rec.cur.xp, ms: Rec.cur.ms, live: true }] : []).concat(S.sessions);
   const sess = allSess.slice(0, 15).map(s => {
     const d = new Date(s.t);
-    return `<div class="sess"><span><b>${MODE_LABEL[s.mode] || s.mode}</b>${s.live ? ' <span class="tag accent">ara</span>' : ''}<br><span class="muted">${d.toLocaleDateString('ca-ES', { day: 'numeric', month: 'short' })} · ${pad2(d.getHours())}:${pad2(d.getMinutes())} · ${Math.max(1, Math.round(s.ms / 60000))} min</span></span>
+    return `<div class="sess"><span><b>${MODE_LABEL[s.mode] || s.mode}</b>${s.live ? ' <span class="tag accent">ara</span>' : ''}<br><span class="muted">${d.toLocaleDateString(VK.locale('ca-ES'), { day: 'numeric', month: 'short' })} · ${pad2(d.getHours())}:${pad2(d.getMinutes())} · ${Math.max(1, Math.round(s.ms / 60000))} min</span></span>
       <span class="tag ${pct(s.ok, s.n) >= 80 ? 'ok' : pct(s.ok, s.n) >= 50 ? 'warn' : 'bad'}">${s.ok}/${s.n}</span></div>`;
   }).join('');
 
   el.innerHTML = `
     <div class="kpis">
-      <div class="card kpi"><div class="v">${tot.n.toLocaleString('ca-ES')}</div><div class="l">Respostes totals</div></div>
+      <div class="card kpi"><div class="v">${tot.n.toLocaleString(VK.locale('ca-ES'))}</div><div class="l">Respostes totals</div></div>
       <div class="card kpi"><div class="v">${Object.keys(S.days).filter(k => S.days[k].n).length}</div><div class="l">Dies de pràctica</div></div>
       <div class="card kpi"><div class="v">${mastered}</div><div class="l">Paraules apreses</div></div>
       <div class="card kpi"><div class="v">${fmtMin(tot.ms)}</div><div class="l">Temps d'estudi</div></div>
@@ -2349,7 +2349,7 @@ const ACTIONS = {
   playNumber: a => Num.play(a),
   recallGiveUp: () => Recall.check(null, true),
   openVerb: a => { if (lvIdx(VERB[a].lv) > lvIdx(S.settings.level)) S.settings.tableScope = 'all'; go('verbs', 'table'); fillTableSelect(); $('tableVerb').value = a; renderTable(); },
-  cellInfo: a => { const d = S.days[a] || { xp: 0, n: 0, ok: 0 }; toast(`${new Date(a + 'T12:00').toLocaleDateString('ca-ES', { weekday: 'long', day: 'numeric', month: 'long' })}: ${d.n} respostes`); },
+  cellInfo: a => { const d = S.days[a] || { xp: 0, n: 0, ok: 0 }; toast(`${new Date(a + 'T12:00').toLocaleDateString(VK.locale('ca-ES'), { weekday: 'long', day: 'numeric', month: 'long' })}: ${d.n} respostes`); },
   exportJson, importJson: () => $('jsonFile').click(), resetStats,
   tensesAuto: () => { S.settings.tenses = null; save(); Drill.cur = Choice.cur = null; openSettingsKeepScroll(); },
   resync: async () => { toast('Sincronitzant…'); await fullSync(); openSettingsKeepScroll(); toast(Api.status === 'ok' ? 'Sincronitzat ✓' : 'Sense connexió amb D1'); }
@@ -2453,6 +2453,5 @@ function init() {
 document.addEventListener('DOMContentLoaded', init);
 
 </script>
-<script src="../vk.js?v=1"></script>
 </body>
 </html>
