@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><script data-fbl data-mode="full" src="/fbkit/fb.js?v=3044e9f267"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=3b03b6f930" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=a03bd14762"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=76fbea1671" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Plant a Friend · Nearby</title>
 <meta name="description" content="One endless garden that everyone plants together. Pick a seed, plant it next to someone else's, water what you pass, and come back to see it bloom.">
@@ -88,7 +88,7 @@ html.fbsh-in header.top .sign { display: none !important; }
     water: ["Water", "浇水", "澆水", "Regar", "Regar"], watered: ["Watered. It'll grow a little faster.", "浇好了，它会长得快一点。", "澆好了，它會長得快一點。", "Regada. Crecerá un poco más rápido.", "Regada. Creixerà una mica més de pressa."], wateredAlready: ["You've watered this one today.", "你今天已经浇过它了。", "你今天已經澆過它了。", "Ya la has regado hoy.", "Ja l'has regada avui."],
     st: ["seedling", "幼苗", "幼苗", "brote", "brot"], st1: ["young", "小苗", "小苗", "joven", "jove"], st2: ["grown", "长大了", "長大了", "crecida", "crescuda"], st3: ["in full bloom", "盛开", "盛開", "en plena flor", "en plena flor"], st3t: ["fully grown", "长成大树", "長成大樹", "adulto", "adult"],
     ago: ["planted {n} ago", "{n}前种下", "{n}前種下", "plantada hace {n}", "plantada fa {n}"], min: ["{n} min", "{n} 分钟", "{n} 分鐘", "{n} min", "{n} min"], hr: ["{n} h", "{n} 小时", "{n} 小時", "{n} h", "{n} h"], day: ["{n} days", "{n} 天", "{n} 天", "{n} días", "{n} dies"],
-    waters: ["💧 watered {n} times", "💧 浇过 {n} 次", "💧 澆過 {n} 次", "💧 regada {n} veces", "💧 regada {n} vegades"],
+    waters: ["💧 someone has watered it", "💧 有人浇过水", "💧 有人澆過水", "💧 alguien la ha regado", "💧 algú l'ha regada"],
     newest: ["Newest planting", "最新种下的", "最新種下的", "Lo último plantado", "L'últim plantat"], zin: ["Zoom in", "放大", "放大", "Acercar", "Apropa"], zout: ["Zoom out", "缩小", "縮小", "Alejar", "Allunya"], seeds: ["Seeds", "种子", "種子", "Semillas", "Llavors"]
   };
   var KINDS = [
@@ -248,7 +248,7 @@ html.fbsh-in header.top .sign { display: none !important; }
     card = document.createElement("div"); card.className = "card"; card.setAttribute("role", "dialog");
     card.innerHTML = '<b></b><small></small><div class="row"></div><button type="button" class="x" aria-label="✕">✕</button>';
     card.querySelector("b").textContent = k.n[L()] || k.n[0];
-    card.querySelector("small").textContent = (k.fixed ? "" : lab + " · ") + ago(age(p)) + (k.fixed ? "" : " · " + t("waters").replace("{n}", p[5]));
+    card.querySelector("small").textContent = (k.fixed ? "" : lab + " · ") + ago(age(p)) + (k.fixed || !(p[5] > 0) ? "" : " · " + t("waters"));   /* watered or not, never how many times */
     if (p[7]) { var who = document.createElement("div"); who.className = "who"; who.textContent = "🌱 " + t("by").replace("{n}", p[7]); card.insertBefore(who, card.querySelector(".row"));
       if (p[0]) { var rp = document.createElement("button"); rp.type = "button"; rp.className = "rp"; rp.textContent = "⚑"; rp.title = t("report"); rp.setAttribute("aria-label", t("report")); rp.onclick = function () { rp.disabled = true; api("garden_report_name", { p_secret: key(), p_id: p[0] }).then(function () { rp.textContent = "✓"; }).catch(function () {}); }; who.appendChild(rp); } }
     if (!k.fixed && p[0]) { var b = document.createElement("button"); b.type = "button"; b.className = "go"; b.textContent = "💧 " + t("water"); b.onclick = function () { b.disabled = true; api("garden_water", { p_secret: key(), p_id: p[0] }).then(function (n) { if (n < 0) toast(t("wateredAlready")); else { p[5] = n; toast("💧 " + t("watered")); chime(784); } closeCard(); }).catch(function () { b.disabled = false; toast(t("offline")); }); }; card.querySelector(".row").appendChild(b); }

@@ -11,7 +11,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var T = {   /* every word the cabin layer shows */
-    board: "Board", quiet: "board quietly", lead: "A sleeper car through cities, mountains and sea. Nothing to do but look out of the window.",
+    board: "Board", quiet: "board quietly", lead: "A sleeper car through cities, mountains and sea. A window seat, a cup of tea, the world going by.",
     saved: "A friend saved you a seat in cabin", tip: "Drag to wipe the glass · hold to write · double-tap to knock",
     share: "With a friend", shareLead: "Friends who open this link sit in your car and see the same window, live. No names, nothing saved: the cabin disappears when everyone leaves.",
     homeScreen: "Add to Home Screen", getOff: "Get off here", stay: "Stay aboard", bar: "Next Door", books: "Borrowed Pages", copy: "↗ Send the link", copied: "Link copied", joinLbl: "or type their code", join: "Join", badCode: "Four letters, like KTRB", yourCode: "Your cabin", close: "Close", leave: "Go alone", alone: "Just you in this car",

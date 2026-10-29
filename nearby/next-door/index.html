@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><script data-fbl data-mode="game" src="/fbkit/fb.js?v=3044e9f267"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=3b03b6f930" defer></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=a03bd14762"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=76fbea1671" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1114,7 +1114,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <div id="lab-book" class="hidden">
             <div class="flex items-center gap-2 mb-2">
               <button class="chip active" data-booksort="new" onclick="Lab.loadBook('new')" data-t="lab.sortNew">Newest</button>
-              <button class="chip" data-booksort="loved" onclick="Lab.loadBook('loved')" data-t="lab.sortLoved">Most loved</button>
+
               <button class="chip" data-booksort="mine" onclick="Lab.loadBook('mine')" data-t="lab.sortMine">Mine</button>
             </div>
             <div id="lab-book-list" class="grid gap-2" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))"></div>
@@ -4163,7 +4163,7 @@ document.addEventListener("DOMContentLoaded", function () {
       cocktails: [
         { id: 'seed-c1', patron: 'Wei', name: 'Hutong Sour', glass: 'coupe', ice: 'none', method: 'shake', garnish: 'hawthorn',
           pours: [{ id: 'baijiu', ml: 30 }, { id: 'jasmine_gin', ml: 15 }, { id: 'lemon', ml: 20 }, { id: 'hawthorn', ml: 15 }, { id: 'egg_white', ml: 15 }],
-          color: '#e7a5a0', profile: { abv: 17, sweet: 13, sour: 16, bitter: 1, aroma: 35, score: 86 }, likes: 3, note: 'Tanghulu in a glass.', created_at: '2026-10-02T21:00:00Z' }
+          color: '#e7a5a0', profile: { abv: 17, sweet: 13, sour: 16, bitter: 1, aroma: 35, }, note: 'Tanghulu in a glass.', created_at: '2026-10-02T21:00:00Z' }
       ],
       tracks: [],
       graffiti: []
@@ -6197,7 +6197,7 @@ document.addEventListener("DOMContentLoaded", function () {
         this.last = p;
         const res = document.getElementById('lab-result');
         res.classList.remove('hidden');
-        setText('lab-score', p.score + '/100');
+        setText('lab-score', '');   /* no scores in town: the bars and Wei's word say how it tastes */
         const bars = [
           ['strength', Math.min(100, p.abv / 40 * 100), '#e0826a', p.abv + '%'],
           ['sweet', Math.min(100, p.sweet / 35 * 100), '#ffd08a', Math.round(p.sweet)],
@@ -6282,7 +6282,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('[data-booksort]').forEach(b => b.classList.toggle('active', b.dataset.booksort === sort));
         const list = document.getElementById('lab-book-list');
         list.innerHTML = `<p class="label">${esc(T('common.loading'))}</p>`;
-        let rows = await DB.list('cocktails', sort === 'loved' ? { order: 'likes', limit: 60 } : sort === 'mine' ? { eq: { patron: Patron.name }, limit: 60 } : { limit: 60 });
+        let rows = await DB.list('cocktails', sort === 'mine' ? { eq: { patron: Patron.name }, limit: 60 } : { limit: 60 });
         if (!rows.length && sort !== 'mine') rows = SEEDS.cocktails.slice();
         list.innerHTML = '';
         if (!rows.length) { list.innerHTML = `<p class="label">${esc(T('lab.bookEmpty'))}</p>`; return; }
@@ -6301,7 +6301,6 @@ document.addEventListener("DOMContentLoaded", function () {
               <div class="label">${esc(T('lab.by'))} ${esc(rec.patron)} · ${esc(timeAgo(rec.created_at))}</div>
               <div class="font-retro text-[15px] text-[#e8d6b4] mt-0.5">${p.abv ?? '?'}% · ${esc(T('lab.b.sweet'))} ${Math.round(p.sweet || 0)} · ${esc(T('lab.b.sour'))} ${Math.round(p.sour || 0)} · ${esc(T('lab.b.bitter'))} ${Math.round(p.bitter || 0)}</div>
             </div>
-            <span class="font-retro text-[18px] text-[var(--amber-2)]">${p.score ?? ''}</span>
           </div>
           ${rec.note ? `<p class="text-[13px] italic text-[#e8d6b4]">"${esc(rec.note)}"</p>` : ''}
           <p class="text-[12px] text-[var(--muted)] leading-snug">${esc(this.describe(rec))}</p>`;
@@ -6309,12 +6308,12 @@ document.addEventListener("DOMContentLoaded", function () {
         row.className = 'flex gap-1.5 mt-auto';
         const like = document.createElement('button');
         like.className = 'chip';
-        like.innerHTML = `♥ <span>${rec.likes || 0}</span>`;
+        like.innerHTML = '♥';   /* a heart, never a count */
+        try { if (localStorage.getItem('weis-liked:' + rec.id)) like.classList.add('active'); } catch (e) {}
         like.onclick = async () => {
           const k = 'weis-liked:' + rec.id;
           try { if (localStorage.getItem(k)) return; localStorage.setItem(k, '1'); } catch (e) {}
           rec.likes = (rec.likes || 0) + 1;
-          like.innerHTML = `♥ <span>${rec.likes}</span>`;
           like.classList.add('active');
           SoundEngine.playSparkle(false);
           DB.bump('cocktails', rec.id, 'likes');
@@ -7270,7 +7269,7 @@ document.addEventListener("DOMContentLoaded", function () {
     async function loadGuestMenu() {
       const pane = document.getElementById('album-pane-guest');
       pane.innerHTML = `<p class="label">${esc(T('common.loading'))}</p>`;
-      const [mine, loved] = await Promise.all([DB.list('cocktails', { eq: { patron: Patron.name }, limit: 12 }), DB.list('cocktails', { order: 'likes', limit: 30 })]);
+      const [mine, loved] = await Promise.all([DB.list('cocktails', { eq: { patron: Patron.name }, limit: 12 }), DB.list('cocktails', { limit: 30 })]);   /* the newest, never ranked */
       const seen = new Set(); let rows = mine.concat(loved).filter(r => { const k = r.id || r.name + r.patron; if (seen.has(k)) return false; seen.add(k); return true; });
       if (!rows.length) rows = SEEDS.cocktails.slice();
       pane.innerHTML = '';
@@ -7851,7 +7850,7 @@ document.addEventListener("DOMContentLoaded", function () {
     garden: ["Plant a Friend", "种个朋友", "Planta un Amigo", "Planta un Amic", "/nearby/plant-a-friend/"], sanctuary: ["Come Home", "回家吧", "Vuelve a Casa", "Torna a Casa", "/nearby/come-home/"], brewery: ["Neighbours' Brew", "邻家酿", "Cerveza Vecina", "Cervesa Veïna", "/nearby/neighbours-brew/"],
     restaurant: ["Two Candles", "双烛小馆", "Dos Velas", "Dues Espelmes", "/nearby/two-candles/"], cabin: ["No Hurry", "不急", "Sin Prisa", "Sense Pressa", "/nearby/no-hurry/"], meadow: ["Wildflower Meadow", "野花草甸", "Prado de Flores", "Prat de Flors", "/nearby/lie-back/?place=meadow"],
     lake: ["Mirror Lake", "镜湖", "Lago Espejo", "Llac Mirall", "/nearby/lie-back/?place=lake"], sea: ["Sandy Cove", "沙湾", "Cala de Arena", "Cala de Sorra", "/nearby/lie-back/?place=sea"], forest: ["Pine Wood", "松林", "Pinar", "Pineda", "/nearby/lie-back/?place=forest"],
-    pasture: ["High Pasture", "高山牧场", "Pasto Alto", "Pastura Alta", "/nearby/lie-back/?place=mountain"], peaks: ["Snow Peaks", "雪峰", "Picos Nevados", "Cims Nevats", "/nearby/lie-back/?place=snow"], lang: ["Small Talk", "聊两句", "De Charla", "De Xerrada", "/learn/"]
+    pasture: ["High Pasture", "高山牧场", "Pasto Alto", "Pastura Alta", "/nearby/lie-back/?place=mountain"], peaks: ["Snow Peaks", "雪峰", "Picos Nevados", "Cims Nevats", "/nearby/lie-back/?place=snow"]
   };
   const pn = k => (window.FBWorld && FBWorld.name && FBWorld.PLACES[k]) ? FBWorld.name(k, { en: 'en', zh: 'zh', tw: 'zh-Hant', yue: 'zh-Hant', es: 'es', ca: 'ca' }[AppState.lang] || 'en') : L(lx([P[k][0], P[k][1], '', '', P[k][2], P[k][3]]));
   const S = (en, zh, es, ca) => lx([en, zh, '', '', es, ca]);
@@ -7863,13 +7862,12 @@ document.addEventListener("DOMContentLoaded", function () {
     dog: S("\"Mantou's at {a}. Bring a ball. He'll pretend he doesn't want it.\"", "\"馒头在{a}。带个球去，它会假装不想玩。\"", "\"Mantou está en {a}. Llévale una pelota. Fingirá que no la quiere.\"", "\"En Mantou és a {a}. Porta-li una pilota. Farà veure que no la vol.\""),
     beerNew: S("\"{b} just brewed {n}, a fresh {s}. {w}\"", "\"{b} 刚酿了一款叫{n}的{s}。{w}\"", "\"{b} acaba de elaborar {n}, una {s} recién hecha. {w}\"", "\"{b} acaba d'elaborar {n}, una {s} acabada de fer. {w}\""),
     beerHere: S("I've got it on tap.", "我这儿就有。", "La tengo de barril.", "La tinc de barril."), beerClub: S("Late Light has it.", "“夜灯”那边有。", "La tienen en Luz Tardía.", "La tenen a Llum Tardana."), beerNone: S("Nobody's pouring it yet.", "还没地方卖。", "Aún nadie la sirve.", "Encara ningú la serveix."),
-    beerLoved: S("\"Most loved beer in town right now: {n}, by {b}. {c} people raised a glass.\"", "\"现在镇上最受欢迎的啤酒：{b} 酿的{n}，{c} 个人为它干过杯。\"", "\"La cerveza más querida ahora mismo: {n}, de {b}. {c} brindis.\"", "\"La cervesa més estimada ara mateix: {n}, de {b}. {c} brindis.\""),
     noBeer: S("\"The kettles at Neighbours' Brew are cold. Nobody has brewed a beer yet. Be the first; I'll put it on tap.\"", "\"“邻家酿”的锅还是凉的，还没人酿过。你来当第一个吧，我给你上架。\"", "\"Las ollas de Cerveza Vecina están frías. Nadie ha elaborado aún. Sé el primero; la pongo de barril.\"", "\"Les olles de Cervesa Veïna són fredes. Encara ningú n'ha elaborat. Sigues el primer; la poso de barril.\""),
-    garden: S("\"Things growing at Plant a Friend: {n}. Somebody planted near the edge this morning.\"", "\"“种个朋友”里现在长着 {n} 样东西。今早还有人在边上种了新的。\"", "\"Plantas en Planta un Amigo: {n}. Alguien plantó en el borde esta mañana.\"", "\"Plantes a Planta un Amic: {n}. Algú ha plantat a la vora aquest matí.\""),
+    garden: S("\"Things are growing at Plant a Friend. Somebody planted near the edge this morning.\"", "\"“种个朋友”里长着好些东西。今早还有人在边上种了新的。\"", "\"Crecen cosas en Planta un Amigo. Esta mañana alguien plantó cerca del borde.\"", "\"Creixen coses a Planta un Amic. Aquest matí algú ha plantat a prop de la vora.\""),
     gardenNone: S("\"Plant a Friend is still bare soil. One seed and it starts.\"", "\"“种个朋友”还是一片空地。种下一颗种子，它就开始了。\"", "\"Planta un Amigo aún es tierra. Una semilla y empieza.\"", "\"Planta un Amic encara és terra. Una llavor i comença.\""),
     sanctuary: S("\"Animals waiting for a home at Come Home: {n}. Real ones. Have a look.\"", "\"“回家吧”有 {n} 只动物在等一个家，都是真的。去看看吧。\"", "\"Animales esperando hogar en Vuelve a Casa: {n}. De verdad. Echa un vistazo.\"", "\"Animals esperant llar a Torna a Casa: {n}. De debò. Fes-hi un cop d'ull.\""),
     sanctuaryNone: S("\"The adoption board at Come Home is empty today. That's good news, mostly.\"", "\"今天“回家吧”的领养板是空的。多半是好消息。\"", "\"El tablón de adopciones de Vuelve a Casa está vacío hoy. Buena señal, casi siempre.\"", "\"El tauler d'adopcions de Torna a Casa és buit avui. Bon senyal, gairebé sempre.\""),
-    wall: S("\"Postcards on our Wall: {n}. One of them made me laugh.\"", "\"我们墙上挂着 {n} 张明信片，有一张把我逗笑了。\"", "\"Postales en nuestro muro: {n}. Una me hizo reír.\"", "\"Postals al nostre mur: {n}. Una em va fer riure.\""),
+    wall: S("\"There are postcards on our Wall. One of them made me laugh.\"", "\"我们墙上挂着明信片，有一张把我逗笑了。\"", "\"Hay postales en nuestro muro. Una me hizo reír.\"", "\"Hi ha postals al nostre mur. Una m'ha fet riure.\""),
     wallNone: S("\"Our Wall's waiting for its first postcard. Say Hello can seal one until any day you like.\"", "\"墙上还在等第一张明信片。“问个好”可以帮你封存到任何一天。\"", "\"Nuestro muro espera su primera postal. En Di Hola te la sellan hasta el día que quieras.\"", "\"El nostre mur espera la primera postal. A Digues Hola te la segellen fins al dia que vulguis.\""),
     weather: S("\"It's {w} out there tonight. Don't like it? Slow Clock can change the sky.\"", "\"今晚外面{w}。不喜欢？“慢钟”可以换天。\"", "\"Esta noche está {w}. ¿No te gusta? El Reloj Lento cambia el cielo.\"", "\"Aquesta nit fa {w}. No t'agrada? El Rellotge Lent canvia el cel.\"")
   };
@@ -7896,7 +7894,6 @@ document.addEventListener("DOMContentLoaded", function () {
       try { const d = W && W.dog && W.dog(); if (d && P[d]) out.push([() => fill(LINE.dog, { a: pn(d) }), d]); } catch (e) {}
       if (Array.isArray(bn) && bn.length) { const b = bn[0]; out.push([() => fill(LINE.beerNew, { b: b.brewer, n: b.name, s: b.style, w: L(b.bar ? LINE.beerHere : b.club ? LINE.beerClub : LINE.beerNone) }), b.bar ? 'menu' : 'brewery']); }
       else if (bn) out.push([() => L(LINE.noBeer), 'brewery']);
-      if (Array.isArray(bl) && bl.length && bl[0].cheers > 1 && (!bn || !bn[0] || bl[0].id !== bn[0].id)) { const b = bl[0]; out.push([() => fill(LINE.beerLoved, { n: b.name, b: b.brewer, c: b.cheers }), 'brewery']); }
       if (gs && typeof gs.count === 'number') out.push([() => fill(gs.count ? LINE.garden : LINE.gardenNone, { n: gs.count }), 'garden']);
       if (Array.isArray(sl)) out.push([() => fill(sl.length ? LINE.sanctuary : LINE.sanctuaryNone, { n: sl.length }), 'sanctuary']);
       if (Array.isArray(pw)) out.push([() => fill(pw.length ? LINE.wall : LINE.wallNone, { n: pw.length }), pw.length ? 'wall' : 'postcard']);
@@ -7906,12 +7903,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
   let i = 0;
+  const W0 = window.FBWorld || {};
   function say(list) {
     const item = list[i++ % list.length], where = item[1];
     const btns = [];
     if (where === 'menu') btns.push({ label: '🍺 ' + L(lx(["On tap", "生啤", "", "", "De barril", "De barril"])), onClick: () => { toggleCodexModal(true); switchAlbumTab('tap'); } });
     else if (where === 'wall') btns.push({ label: '🧱 ' + L(lx(["The Wall", "留言墙", "", "", "El muro", "El mur"])), onClick: () => go('wall') });
-    else if (P[where] && where !== 'bar') btns.push({ label: L(UI.go).replace('→', '· ' + pn(where) + ' →'), onClick: () => { location.href = P[where][4]; } });
+    else if (P[where] && where !== 'bar' && !(W0.state && W0.state(where) === 'shut')) btns.push({ label: L(UI.go).replace('→', '· ' + pn(where) + ' →'), onClick: () => { const u = W0.url ? W0.url(where) : P[where][4]; try { if (window.parent !== window && window.parent.FBShell) return window.parent.FBShell.open(u); } catch (e) {} location.href = u; } });   /* never to a shut place; through the town */
     btns.push({ label: L(UI.more), onClick: () => say(list) }, { label: L(UI.back), onClick: backToOrder });
     try { setExpression('grin', 1800); } catch (e) {}
     renderWei(item[0](), btns, "grid grid-cols-1 sm:grid-cols-3 gap-1.5 mt-2", 'town');
@@ -7952,7 +7950,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function who() {
       say(S("*leans on the bar, chin in hand* If you could bring one person in here tonight, who'd it be?", "*胳膊撑在吧台上，托着下巴* 如果今晚能带一个人来这儿，你会带谁？", "*se apoya en la barra, barbilla en la mano* Si pudieras traer a alguien esta noche, ¿a quién?", "*recolzat a la barra, amb la barbeta a la mà* Si poguessis portar algú aquesta nit, a qui?"),
         [B(S("Someone far away", "远方的人", "Alguien lejos", "Algú lluny"), () => say(S("*sets two candles on a tray* Then don't wait for a plane. Two Candles keeps a table for two, however far apart.", "*把两支蜡烛放上托盘* 那就别等飞机了。“双烛小馆”留着一张双人桌，隔多远都行。", "*pone dos velas en una bandeja* Entonces no esperes un avión. Dos Velas guarda una mesa para dos, estéis donde estéis.", "*posa dues espelmes en una safata* Doncs no esperis un avió. Dues Espelmes guarda una taula per a dos, siguis on siguis."), [B(S("🕯️ Take me there", "🕯️ 带我去", "🕯️ Llévame", "🕯️ Porta-m'hi"), () => go('restaurant')), again()])),
-         B(S("An old friend", "老朋友", "Un viejo amigo", "Un vell amic"), () => say(S("*hands you a pen* Write to them. Say Hello can seal a card until the day you choose.", "*递给你一支笔* 给他写点什么吧。“问个好”能把明信片封存到你选的那天。", "*te pasa un boli* Escríbele. Di Hola sella una postal hasta el día que elijas.", "*et dona un boli* Escriu-li. Digues Hola segella una postal fins al dia que triïs."), [B(S("✉️ Take me there", "✉️ 带我去", "✉️ Llévame", "✉️ Porta-m'hi"), () => go('postcard')), again()])),
+         B(S("An old friend", "老朋友", "Un viejo amigo", "Un vell amic"), () => say(S("*hands you a pen* Write to them. Say Hello can seal a card until the day you choose.", "*递给你一支笔* 给他写点什么吧。“问个好”能把明信片封存到你选的那天。", "*te pasa un boli* Escríbele. Di Hola sella una postal hasta el día que elijas.", "*et dona un boli* Escriu-li. Digues Hola segella una postal fins al dia que triïs."), [...((W.state && W.state('postcard') === 'shut') ? [] : [B(S("✉️ Take me there", "✉️ 带我去", "✉️ Llévame", "✉️ Porta-m'hi"), () => go('postcard'))]), again()])),
          B(S("Nobody. I like the quiet", "谁也不带，我喜欢安静", "Nadie. Me gusta la calma", "Ningú. M'agrada la calma"), () => say(S("*nods, turns the music down a notch* Then finish that and go lie in the grass for ten minutes.", "*点点头，把音乐调小一格* 那就喝完这杯，去草地上躺十分钟。", "*asiente y baja un poco la música* Pues acaba eso y ve a tumbarte en la hierba diez minutos.", "*assenteix i abaixa una mica la música* Doncs acaba això i ves a estirar-te a l'herba deu minuts."), [B(S("☁️ Take me there", "☁️ 带我去", "☁️ Llévame", "☁️ Porta-m'hi"), () => go('cloud')), again()]))]);
     },
     function cats() {
