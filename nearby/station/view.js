@@ -640,7 +640,7 @@
     if (L2) { ctx.font = "600 " + Math.round(12 * S) + "px " + fam; ctx.fillStyle = sub; fitText(L2, cxx, by + bh * (lk === "jp" ? 0.88 : 0.76), bw - 24 * S); }
     ctx.textAlign = "start"; ctx.textBaseline = "alphabetic";
   }
-  function carClock() {   /* {getHours, getMinutes} on the town's clock (4× real time), moved into the car's part of the day */
+  function carClock() {   /* {getHours, getMinutes} on the town's clock, moved into the car's part of the day */
     var h = window.FBWorld && FBWorld.hour ? FBWorld.hour() % 24 : 12, t = state.timeOfDay;
     var sh = window.FBWorld && FBWorld.solar ? FBWorld.solar(h) : h;
     var fits = { dawn: sh >= 5 && sh < 8.5, afternoon: sh >= 11 && sh < 17, sunset: sh >= 17 && sh < 20.5, night: sh >= 20.5 || sh < 5 };
