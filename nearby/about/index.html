@@ -102,6 +102,10 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
 .shot b{display:block;font:700 15px/1.2 var(--sans)}
 .shot b span{margin-right:4px}
 .shot p{margin:4px 0 0;font-size:13px;line-height:1.4;color:var(--mut)}
+.shot small{display:block;margin-bottom:5px;font:400 8px/1.4 var(--p2);letter-spacing:.04em;text-transform:uppercase;color:var(--acc2)}
+.two{display:grid;gap:14px}@media (min-width:760px){.two{grid-template-columns:1fr 1fr}}
+.two .card.night h3{font-size:28px;line-height:1.05;align-items:flex-start}
+.two canvas{width:32px;height:32px;flex:none;image-rendering:pixelated;margin-top:-2px}
 
 /* by day / after hours */
 .shift{display:grid;gap:14px}.shift>*{min-width:0}
@@ -174,8 +178,8 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
       </div>
     </div>
     <a class="frame bw" id="hero" href="/nearby/">
-      <img src="town.webp" width="1200" height="1066" alt="" data-ka="mapAlt" fetchpriority="high">
-      <span class="hour" aria-hidden="true">☾ 20:00</span>
+      <img src="town.webp" width="1200" height="1226" alt="" data-ka="mapAlt" fetchpriority="high">
+      <span class="hour" aria-hidden="true">☾ 21:20</span>
     </a>
   </section>
 
@@ -186,18 +190,34 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
       <div class="sign"><i aria-hidden="true">🌿</i><div><b data-k="r2t">Then go outside.</b><p data-k="r2">Leaving a place ends with something to do off the screen.</p></div></div>
       <div class="sign"><i aria-hidden="true">🛋️</i><div><b data-k="r3t">A cabin, a candle, the stars.</b><p data-k="r3">Warm grass on the hill. Nothing to win.</p></div></div>
       <div class="sign"><i aria-hidden="true">🚫</i><div><b data-k="r4t">No scores.</b><p data-k="r4">No streaks, no badges, no leaderboards.</p></div></div>
-      <div class="sign"><i aria-hidden="true">🍸</i><div><b data-k="r5t">Wei is a guide.</b><p data-k="r5">The bartender points you somewhere, then lets you go.</p></div></div>
-      <div class="sign"><i aria-hidden="true">🔒</i><div><b data-k="r6t">Yours stays yours.</b><p><a href="/privacy/" data-k="r6">Nothing leaves your device unless you say so. No tracking.</a></p></div></div>
+      <div class="sign"><i aria-hidden="true">🍸</i><div><b data-k="r5t">Someone's behind the counter.</b><p data-k="r5">Wei, his cousin Mei, his grandmother Popo or the cats. They point you somewhere, then let you go.</p></div></div>
+      <div class="sign"><i aria-hidden="true">🔒</i><div><b data-k="r6t">Yours stays yours.</b><p><a href="/privacy/" data-k="r6">Nothing leaves your device unless you say so. No tracking, and it asks before a phone number or email goes public.</a></p></div></div>
     </div>
   </section>
 
   <section class="wrap sec" aria-labelledby="h-look">
     <div class="sh rv"><h2 id="h-look" data-k="lookH">Look around</h2><span>04</span></div>
     <div class="shots">
-      <a class="shot rv" href="/nearby/lie-back/"><div class="im"><img src="lie-back.webp" width="800" height="500" loading="lazy" alt=""></div><div><b><span aria-hidden="true">☁️</span><span data-p="cloud.n">Lie Back Park</span></b><p data-p="cloud.l">Warm grass, slow clouds.</p></div></a>
-      <a class="shot rv" href="/nearby/no-hurry/"><div class="im"><img src="no-hurry.webp" width="800" height="625" loading="lazy" alt=""></div><div><b><span aria-hidden="true">🛖</span><span data-p="cabin.n">No Hurry</span></b><p data-p="cabin.l">A window, a candle, the kettle on.</p></div></a>
-      <a class="shot rv" href="/nearby/say-hello/"><div class="im"><img src="say-hello.webp" width="800" height="496" loading="lazy" alt=""></div><div><b><span aria-hidden="true">📮</span><span data-p="postcard.n">Say Hello</span></b><p data-p="postcard.l">Send a postcard that opens on the day you choose.</p></div></a>
-      <a class="shot rv" href="/nearby/two-candles/"><div class="im"><img src="two-candles.webp" width="800" height="505" loading="lazy" alt=""></div><div><b><span aria-hidden="true">🕯️</span><span data-p="table.n">Two Candles</span></b><p data-p="table.l">A table for two, however far apart.</p></div></a>
+      <a class="shot rv" href="/nearby/lie-back/"><div class="im"><img src="lie-back.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kCalm">Quiet</small><b><span aria-hidden="true">☁️</span><span data-p="cloud.n">Lie Back Park</span></b><p data-p="cloud.l">Warm grass, slow clouds.</p></div></a>
+      <a class="shot rv" href="/nearby/plaza/"><div class="im"><img src="plaza.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kMake">Make something</small><b><span aria-hidden="true">⛲</span><span data-p="plaza.n">The Plaza</span></b><p data-p="plaza.l">A fountain, a coin, a wish.</p></div></a>
+      <a class="shot rv" href="/nearby/two-candles/"><div class="im"><img src="two-candles.webp" width="800" height="505" loading="lazy" alt=""></div><div><small data-k="kFriend">With a friend</small><b><span aria-hidden="true">🕯️</span><span data-p="table.n">Two Candles</span></b><p data-p="table.l">A table for two, however far apart.</p></div></a>
+      <a class="shot rv" href="/nearby/come-over/"><div class="im"><img src="come-over.webp" width="800" height="600" loading="lazy" alt=""></div><div><small data-k="kReal">Something real</small><b><span aria-hidden="true">🎈</span><span data-p="party.n">Come Over</span></b><p data-p="party.l">Plan a real get-together and see who's coming.</p></div></a>
+    </div>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="h-story">
+    <div class="sh rv"><h2 id="h-story" data-k="storyH">Where it comes from</h2><span>02</span></div>
+    <div class="two">
+      <div class="card night rv">
+        <span class="k" data-k="tinK">Popo's tin</span>
+        <h3><canvas id="tin" width="16" height="16" aria-hidden="true"></canvas><span data-k="tinT">Twelve things in a blue biscuit tin.</span></h3>
+        <p data-k="tinP">Popo came from Hong Kong to Barcelona in 1968, at nineteen. The things she kept turn up around town, one at a time, and tell how Nearby began. The last one is a photo with an empty chair. It's for you.</p>
+      </div>
+      <div class="card night rv">
+        <span class="k" data-k="calK">The calendar</span>
+        <h3><span aria-hidden="true" id="seaI">🍂</span><span id="calT">It's autumn here too.</span></h3>
+        <p data-k="calP">The seasons, the length of the day and the weather follow your own calendar. Lanterns float at Mid-Autumn, roses and books come out on Sant Jordi, and lights go up over the lanes in winter.</p>
+      </div>
     </div>
   </section>
 
@@ -215,7 +235,7 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
         <div class="stars" aria-hidden="true" id="stars"></div>
         <span class="k" data-k="nightK">After hours</span>
         <h3><span aria-hidden="true">🏘️</span><span data-k="town">Nearby</span></h3>
-        <p data-k="nightP">The same idea after work: a sealed postcard, a table for two, a bartender who listens.</p>
+        <p data-k="nightP">The same idea after work: a sealed postcard, a table for two, a grandmother who cooks for whoever walks in.</p>
         <a class="px pri" href="/nearby/" style="align-self:flex-start"><span data-k="walk">Walk in</span><span aria-hidden="true">→</span></a>
       </div>
     </div>
@@ -252,7 +272,7 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
     sub: ["A little world that sends you back to yours.", "一个小小的世界，把你送回你自己的世界。", "一個小小的世界，把你送回你自己的世界。", "Un mundo pequeño que te devuelve al tuyo.", "Un món petit que et torna al teu."],
     walk: ["Walk in", "走进去", "走進去", "Entra", "Entra"],
     stool: ["Pull up a stool", "拉张凳子坐", "拉張凳子坐", "Siéntate en la barra", "Seu a la barra"],
-    mapAlt: ["Nearby at night: a bar, a bookshop, a place to send postcards, a cabin on the hill, a lake, a station.", "夜里的近邻：一间酒吧、一家书店、一个寄明信片的地方、山坡上的小屋、一片湖、一座车站。", "夜裡的近鄰：一間酒吧、一家書店、一個寄明信片的地方、山坡上的小屋、一片湖、一座車站。", "Cerca de noche: un bar, una librería, un sitio para mandar postales, una cabaña en la colina, un lago, una estación.", "A Prop de nit: un bar, una llibreria, un lloc per enviar postals, una cabana al turó, un llac, una estació."],
+    mapAlt: ["Nearby at night: a bar, a bookshop, a fountain, a cabin on the hill, a lake, a station, and over the tracks a town hall, a cinema and a house with its lights on.", "夜里的近邻：一间酒吧、一家书店、一座喷泉、山坡上的小屋、一片湖、一座车站；铁轨那边还有镇公所、电影院和一栋亮着灯的房子。", "夜裡的近鄰：一間酒吧、一家書店、一座噴泉、山坡上的小屋、一片湖、一座車站；鐵軌那邊還有鎮公所、電影院和一棟亮著燈的房子。", "Cerca de noche: un bar, una librería, una fuente, una cabaña en la colina, un lago, una estación y, al otro lado de las vías, un ayuntamiento, un cine y una casa con las luces encendidas.", "A Prop de nit: un bar, una llibreria, una font, una cabana al turó, un llac, una estació i, a l'altra banda de les vies, un ajuntament, un cinema i una casa amb els llums encesos."],
     rulesH: ["House rules", "镇规", "鎮規", "Normas de la casa", "Normes de la casa"],
     r1t: ["Bring someone.", "带个人来。", "帶個人來。", "Trae a alguien.", "Porta algú."],
     r1: ["Every place works alone or with a friend far away. One link.", "每个地方都能一个人逛，也能和远方的朋友一起。一个链接就行。", "每個地方都能一個人逛，也能和遠方的朋友一起。一個連結就行。", "Cada sitio funciona solo o con un amigo lejos. Un enlace.", "Cada lloc funciona sol o amb un amic lluny. Un enllaç."],
@@ -262,18 +282,30 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
     r3: ["Warm grass on the hill. Nothing to win.", "山坡上暖暖的草地。没有输赢。", "山坡上暖暖的草地。沒有輸贏。", "Hierba tibia en la colina. Nada que ganar.", "Herba tèbia al turó. Res a guanyar."],
     r4t: ["No scores.", "不计分。", "不計分。", "Sin puntos.", "Sense punts."],
     r4: ["No streaks, no badges, no leaderboards.", "没有连续打卡，没有徽章，没有排行榜。", "沒有連續打卡，沒有徽章，沒有排行榜。", "Sin rachas, sin insignias, sin clasificaciones.", "Sense ratxes, sense insígnies, sense classificacions."],
-    r5t: ["Wei is a guide.", "Wei 只是向导。", "Wei 只是嚮導。", "Wei es un guía.", "En Wei és un guia."],
-    r5: ["The bartender points you somewhere, then lets you go.", "这位酒保给你指个地方，然后放你走。", "這位酒保給你指個地方，然後放你走。", "El barman te indica un sitio y te deja ir.", "El cambrer t'indica un lloc i et deixa anar."],
+    r5t: ["Someone's behind the counter.", "柜台后面总有人。", "櫃檯後面總有人。", "Siempre hay alguien en la barra.", "Sempre hi ha algú a la barra."],
+    r5: ["Wei, his cousin Mei, his grandmother Popo or the cats. They point you somewhere, then let you go.", "Wei、他表妹 Mei、婆婆，或者两只猫。给你指个地方，然后放你走。", "Wei、佢表妹 Mei、婆婆，或者兩隻貓。給你指個地方，然後放你走。", "Wei, su prima Mei, su abuela Popo o los gatos. Te indican un sitio y te dejan ir.", "En Wei, la seva cosina Mei, la seva àvia Popo o els gats. T'indiquen un lloc i et deixen anar."],
     r6t: ["Yours stays yours.", "你的就是你的。", "你的就是你的。", "Lo tuyo es tuyo.", "El que és teu és teu."],
-    r6: ["Nothing leaves your device unless you say so. No tracking.", "除非你同意，什么都不会离开你的设备。不追踪。", "除非你同意，什麼都不會離開你的裝置。不追蹤。", "Nada sale de tu dispositivo sin tu permiso. Sin rastreo.", "Res surt del teu dispositiu sense el teu permís. Sense rastreig."],
+    r6: ["Nothing leaves your device unless you say so. No tracking, and it asks before a phone number or email goes public.", "除非你同意，什么都不会离开你的设备。不追踪；电话号码或邮箱要公开前，会先问你一句。", "除非你同意，什麼都不會離開你的裝置。不追蹤；電話號碼或電郵要公開前，會先問你一句。", "Nada sale de tu dispositivo sin tu permiso. Sin rastreo, y antes de publicar un teléfono o un correo, te pregunta.", "Res surt del teu dispositiu sense el teu permís. Sense rastreig, i abans de publicar un telèfon o un correu, et pregunta."],
     lookH: ["Look around", "四处看看", "四處看看", "Echa un vistazo", "Fes un cop d'ull"],
+    kCalm: ["Quiet", "安静一会", "安靜一會", "Tranquilo", "Tranquil"],
+    kMake: ["Make something", "做点什么", "做點什麼", "Haz algo", "Fes alguna cosa"],
+    kFriend: ["With a friend", "和朋友一起", "和朋友一起", "Con alguien", "Amb algú"],
+    kReal: ["Something real", "来点真的", "來點真的", "Algo de verdad", "Alguna cosa de debò"],
+    storyH: ["Where it comes from", "它从哪里来", "它從哪裡來", "De dónde viene", "D'on ve"],
+    tinK: ["Popo's tin", "婆婆的饼干罐", "婆婆的餅乾罐", "La lata de Popo", "La llauna de la Popo"],
+    tinT: ["Twelve things in a blue biscuit tin.", "一个蓝色饼干罐里的十二样东西。", "一個藍色餅乾罐裡的十二樣東西。", "Doce cosas en una lata azul de galletas.", "Dotze coses en una llauna blava de galetes."],
+    tinP: ["Popo came from Hong Kong to Barcelona in 1968, at nineteen. The things she kept turn up around town, one at a time, and tell how Nearby began. The last one is a photo with an empty chair. It's for you.", "1968年，十九岁的婆婆从香港来到巴塞罗那。她留下的东西会一样一样在镇上出现，讲出近邻是怎么来的。最后一样是一张照片，上面有一把空椅子——是留给你的。", "1968年，十九歲的婆婆從香港來到巴塞隆納。她留下的東西會一樣一樣在鎮上出現，講出近鄰是怎麼來的。最後一樣是一張照片，上面有一把空椅子——是留給你的。", "Popo llegó de Hong Kong a Barcelona en 1968, con diecinueve años. Lo que guardó va apareciendo por el pueblo, una cosa cada vez, y cuenta cómo empezó Cerca. La última es una foto con una silla vacía. Es para ti.", "La Popo va arribar de Hong Kong a Barcelona el 1968, amb dinou anys. El que va guardar va apareixent pel poble, una cosa cada vegada, i explica com va començar A Prop. L'última és una foto amb una cadira buida. És per a tu."],
+    calK: ["The calendar", "日历", "日曆", "El calendario", "El calendari"],
+    calT: ["It's {s} here too.", "这里也是{s}。", "這裡也是{s}。", "Aquí también es {s}.", "Aquí també és {s}."],
+    sea: [["spring", "summer", "autumn", "winter"], ["春天", "夏天", "秋天", "冬天"], ["春天", "夏天", "秋天", "冬天"], ["primavera", "verano", "otoño", "invierno"], ["primavera", "estiu", "tardor", "hivern"]],
+    calP: ["The seasons, the length of the day and the weather follow your own calendar. Lanterns float at Mid-Autumn, roses and books come out on Sant Jordi, and lights go up over the lanes in winter.", "季节、白天的长短和天气，都跟着你自己的日历走。中秋湖上漂着灯笼，圣乔治节摆出玫瑰和书，冬天的小巷挂起彩灯。", "季節、白天的長短和天氣，都跟著你自己的日曆走。中秋湖上漂著燈籠，聖喬治節擺出玫瑰和書，冬天的小巷掛起彩燈。", "Las estaciones, lo que dura el día y el tiempo siguen tu propio calendario. Farolillos en el lago por el Medio Otoño, rosas y libros por Sant Jordi, luces sobre las calles en invierno.", "Les estacions, el que dura el dia i el temps segueixen el teu calendari. Fanalets al llac per la Festa de Mitja Tardor, roses i llibres per Sant Jordi, llums pels carrers a l'hivern."],
     shiftH: ["One question, two shifts", "一个问题，两个班次", "一個問題，兩個班次", "Una pregunta, dos turnos", "Una pregunta, dos torns"],
     dayK: ["By day", "白天", "白天", "De día", "De dia"],
     dayP: ["Better work starts between people: short, playful practice in listening, feedback and trust that ends in a real conversation.", "更好的工作，从人与人之间开始：短小好玩的倾听、反馈与信任练习，以一场真实的对话收尾。", "更好的工作，從人與人之間開始：短小好玩的傾聽、回饋與信任練習，以一場真實的對話收尾。", "El buen trabajo empieza entre personas: práctica breve y lúdica de escucha, feedback y confianza que termina en una conversación real.", "La bona feina comença entre persones: pràctica breu i lúdica d'escolta, feedback i confiança que acaba en una conversa real."],
     dayGo: ["See the practice →", "看看这些练习 →", "看看這些練習 →", "Ver las prácticas →", "Veure les pràctiques →"],
     q: ["Can a screen send us back to each other?", "屏幕能不能把我们送回彼此身边？", "螢幕能不能把我們送回彼此身邊？", "¿Puede una pantalla devolvernos los unos a los otros?", "Pot una pantalla tornar-nos els uns als altres?"],
     nightK: ["After hours", "下班以后", "下班以後", "Fuera de horario", "Fora d'horari"],
-    nightP: ["The same idea after work: a sealed postcard, a table for two, a bartender who listens.", "下班后的同一个想法：一张封存的明信片、一张双人桌、一个会倾听的酒保。", "下班後的同一個想法：一張封存的明信片、一張雙人桌、一個會傾聽的酒保。", "La misma idea después del trabajo: una postal sellada, una mesa para dos, un barman que escucha.", "La mateixa idea després de la feina: una postal segellada, una taula per a dos, un cambrer que escolta."],
+    nightP: ["The same idea after work: a sealed postcard, a table for two, a grandmother who cooks for whoever walks in.", "下班后的同一个想法：一张封存的明信片、一张双人桌、一位给每个进门的人做饭的婆婆。", "下班後的同一個想法：一張封存的明信片、一張雙人桌、一位給每個進門的人煮飯的婆婆。", "La misma idea después del trabajo: una postal sellada, una mesa para dos, una abuela que cocina para quien entre.", "La mateixa idea després de la feina: una postal segellada, una taula per a dos, una àvia que cuina per a qui entri."],
     say: ["*slides a coaster* When you're done here, go and see someone you love.", "*推过来一张杯垫* 待够了，就去见你爱的人吧。", "*推過來一張杯墊* 待夠了，就去見你愛的人吧。", "*desliza un posavasos* Cuando acabes aquí, ve a ver a alguien que quieras.", "*fa lliscar un sotagot* Quan acabis aquí, ves a veure algú que estimis."],
     weiCap: ["Wei, the bartender at Next Door", "Wei，“隔壁”的调酒师", "Wei，「隔壁」的調酒師", "Wei, el barman de Al Lado", "En Wei, el cambrer d'Al Costat"],
     irl: ["Meet Wei IRL", "见见 Wei", "見見 Wei", "Conoce a Wei", "Coneix en Wei"],
@@ -285,8 +317,8 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
   /* the places' own names and lines: the same words as the town's list (FBWorld.PLACES in build/fbl.js) */
   var P = {
     cloud: [["Lie Back Park", "看云坡", "看雲坡", "Parque Panza Arriba", "Parc Panxa Enlaire"], ["Warm grass, slow clouds.", "暖暖的草地，慢慢的云。", "暖暖的草地，慢慢的雲。", "Hierba tibia, nubes lentas.", "Herba tèbia, núvols lents."]],
-    cabin: [["No Hurry", "不急", "不急", "Sin Prisa", "Sense Pressa"], ["A window, a candle, the kettle on.", "一扇窗，一支蜡烛，水壶在烧。", "一扇窗，一支蠟燭，水壺在燒。", "Una ventana, una vela, la tetera al fuego.", "Una finestra, una espelma, la tetera al foc."]],
-    postcard: [["Say Hello", "问个好", "問個好", "Di Hola", "Digues Hola"], ["Send a postcard that opens on the day you choose.", "寄一张明信片，到你选的那天才打开。", "寄一張明信片，到你選的那天才打開。", "Envía una postal que se abre el día que elijas.", "Envia una postal que s'obre el dia que triïs."]],
+    plaza: [["The Plaza", "广场", "廣場", "La Plaza", "La Plaça"], ["A fountain, a coin, a wish.", "一座喷泉，一枚硬币，一个愿望。", "一座噴泉，一枚硬幣，一個願望。", "Una fuente, una moneda, un deseo.", "Una font, una moneda, un desig."]],
+    party: [["Come Over", "来我家", "來我家", "Ven a Casa", "Vine a Casa"], ["Plan a real get-together and see who's coming.", "办一次真实的聚会，看看谁会来。", "辦一次真實的聚會，看看誰會來。", "Organiza un encuentro de verdad y mira quién viene.", "Organitza una trobada de debò i mira qui ve."]],
     table: [["Two Candles", "双烛小馆", "雙燭小館", "Dos Velas", "Dues Espelmes"], ["A table for two, however far apart.", "无论相隔多远，都有一张双人桌。", "無論相隔多遠，都有一張雙人桌。", "Una mesa para dos, por lejos que estéis.", "Una taula per a dos, per lluny que sigueu."]]
   };
 
@@ -300,6 +332,12 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
   if (!lang) { var nl = navigator.languages || [navigator.language || "en"]; for (var j = 0; j < nl.length && !lang; j++) lang = norm(nl[j]); }
   lang = lang || "en";
 
+  /* the visitor's own season, the way the town works it out (FBWorld.season in build/fbl.js): the real month, turned round in the south */
+  function season() {
+    var m = new Date().getMonth(), z = ""; try { z = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+    if (/^(Australia|Antarctica)\/|^Pacific\/(Auckland|Chatham|Fiji|Noumea|Tongatapu|Apia|Efate|Norfolk)|^America\/(Argentina|Santiago|Sao_Paulo|Montevideo|Asuncion|Buenos_Aires|La_Paz|Punta_Arenas|Cordoba)|^Africa\/(Johannesburg|Maputo|Harare|Lusaka|Windhoek|Gaborone|Maseru|Mbabane|Blantyre)|^Indian\/(Mauritius|Reunion|Antananarivo)/.test(z)) m = (m + 6) % 12;
+    return [3, 3, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3][m];
+  }
   function paint() {
     var n = LANGS.indexOf(lang); if (n < 0) n = 0;
     document.documentElement.lang = lang === "zh" ? "zh-Hans" : lang;
@@ -310,6 +348,7 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
     document.querySelectorAll("[data-p]").forEach(function (e) { var k = e.getAttribute("data-p").split("."), v = P[k[0]]; if (v) e.textContent = v[k[1] === "n" ? 0 : 1][n]; });
     var m = T.made[n], md = document.getElementById("made"), a = md.querySelector(".ai"), h = md.querySelector(".h");
     a.textContent = T.ai[n]; md.textContent = ""; md.appendChild(document.createTextNode(m[0])); md.appendChild(a); md.appendChild(document.createTextNode(m[1])); md.appendChild(h); if (m[2]) md.appendChild(document.createTextNode(m[2]));
+    var si = season(); document.getElementById("calT").textContent = T.calT[n].split("{s}").join(T.sea[n][si]); document.getElementById("seaI").textContent = ["🌸", "☀️", "🍂", "❄️"][si];
     document.getElementById("ll").textContent = SHORT[n];
     document.getElementById("lb").setAttribute("aria-label", "Language: " + NAMES[n]);
   }
@@ -350,6 +389,28 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
   /* a few stars over After hours */
   var st = document.getElementById("stars");
   for (var s = 0; s < 26; s++) { var d = document.createElement("i"); d.style.left = (Math.random() * 100).toFixed(1) + "%"; d.style.top = (Math.random() * 100).toFixed(1) + "%"; d.style.animationDelay = (Math.random() * 3).toFixed(2) + "s"; st.appendChild(d); }
+
+  /* Popo's tin: a blue biscuit tin, gold rim, in pixels */
+  var tc = document.getElementById("tin").getContext("2d");
+  [[2,4,12,2,"#c9a34a"],[3,3,10,1,"#e8c46a"],[2,6,12,8,"#2f5fa8"],[2,6,12,1,"#4b7cc4"],[2,13,12,1,"#1d3f74"],[5,8,6,3,"#f3ead8"],[6,9,4,1,"#c2412d"],[2,10,1,1,"#e8c46a"],[13,10,1,1,"#e8c46a"]].forEach(function (r) { tc.fillStyle = r[4]; tc.fillRect(r[0], r[1], r[2], r[3]); });
+
+  /* the town loads before you walk in: once the page is quiet (or as soon as a finger or pointer heads for a link into town),
+     its page and that page's own scripts and styles go into the browser's cache, at low priority; same site only, nothing on Save-Data or 2G */
+  var warmed = {}, cn = navigator.connection || {};
+  var slow = cn.saveData || /(^|-)2g$/.test(cn.effectiveType || "");
+  function warm(href, hi) {
+    if (slow || !window.fetch) return; var u; try { u = new URL(href, location.href); } catch (e) { return; }
+    if (u.origin !== location.origin || !/^\/nearby\//.test(u.pathname)) return;
+    var k = u.pathname; if (warmed[k]) return; warmed[k] = 1;
+    var o = { credentials: "same-origin", priority: hi ? "high" : "low" };
+    fetch(k, o).then(function (r) { return r.ok ? r.text() : ""; }).then(function (h) {
+      var re = /<(?:script[^>]+src|link[^>]+href)="([^"]+\.(?:js|css)(?:\?[^"]*)?)"/g, m;
+      while ((m = re.exec(h))) { var a; try { a = new URL(m[1], location.origin + k); } catch (e) { continue; } if (a.origin === location.origin && !/(^|\/)(sw|config)\.js$/.test(a.pathname)) fetch(a.href, o).catch(function () {}); }
+    }).catch(function () {});
+  }
+  function hint(e) { var a = e.target.closest && e.target.closest('a[href^="/nearby/"]'); if (a) warm(a.getAttribute("href"), e.type !== "pointerover"); }
+  ["pointerover", "pointerdown", "focusin"].forEach(function (t) { document.addEventListener(t, hint, { passive: true }); });
+  addEventListener("load", function () { var go = function () { warm("/nearby/"); }; setTimeout(function () { (window.requestIdleCallback || setTimeout)(go, { timeout: 4000 }); }, 2500); });
 
   /* the map starts in black and white and the colour comes in when you look at it, as it does in town */
   var hero = document.getElementById("hero");
