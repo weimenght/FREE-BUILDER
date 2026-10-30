@@ -154,7 +154,7 @@ html.inshell .sign{visibility:hidden}html.inshell #fTown{display:none}
   function esc(t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
   var q = new URLSearchParams(location.search).get("l"), pref = (g("wm_preferred_lang", "") || navigator.language || "").toLowerCase();
   var lang = ORDER.indexOf(q) >= 0 ? q : g("fb_popo_l", "");
-  if (ORDER.indexOf(lang) < 0) lang = g("fb_yue", "") === "1" || /^(yue|zh-hk)/.test(pref) ? "yue" : /^ca/.test(pref) ? "ca" : /^(zh-hant|zh-tw)/.test(pref) ? "tw" : /^zh/.test(pref) ? "zh" : /^es/.test(pref) ? "es" : /^en/.test(pref) ? "en" : "yue";
+  if (ORDER.indexOf(lang) < 0) lang = g("fb_emo", "") === "1" && /^en/.test(pref) ? "emo" : g("fb_yue", "") === "1" || /^(yue|zh-hk)/.test(pref) ? "yue" : /^ca/.test(pref) ? "ca" : /^(zh-hant|zh-tw)/.test(pref) ? "tw" : /^zh/.test(pref) ? "zh" : /^es/.test(pref) ? "es" : /^en/.test(pref) ? "en" : "yue";
   function paint() {
     var U = function (k) { return D.ui[k] && D.ui[k][lang] != null ? D.ui[k][lang] : ""; }, w = WHO[lang];
     document.documentElement.lang = LG[lang];
