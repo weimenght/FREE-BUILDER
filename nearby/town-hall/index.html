@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=37e4661fd7" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=895d071b7b" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Town Hall · Nearby</title>
 <meta name="description" content="The town's notice board: pin an idea for the town, your own news, or a word about a place, and answer each other. No votes, no names unless you give one.">
@@ -113,6 +113,31 @@
   window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); paint(); };
   words();
 
+  /* ---------- the hosts' own: a square each on the quilt (the first squares) and two notices on the board; kept in the page, never sent, nothing to report or answer ---------- */
+  var HN_ = { wei: ["Wei", "Wei", "Wei", "Wei", "Wei"], mei: ["Mei", "Mei", "Mei", "Mei", "Mei"], popo: ["Popo", "婆婆", "婆婆", "Popo", "Popo"], cats: ["Miso & Yuzu", "味噌和柚子", "味噌和柚子", "Miso y Yuzu", "Miso i Yuzu"], mantou: ["Mantou", "馒头", "饅頭", "Mantou", "Mantou"] };
+  var HQ = [
+    { id: "host-wei", host: "wei", p: "77777777" + "70000007" + "77003077" + "77700777" + "77700777" + "77700777" + "77000077" + "77777777",
+      line: ["for whoever sat at the counter first. You know who you are.", "给第一个坐到吧台前的人。你知道是你。", "給第一個坐到吧台前的人。你知道是你。", "para quien se sentó primero en la barra. Ya sabes quién eres.", "per a qui es va asseure primer a la barra. Ja saps qui ets."] },
+    { id: "host-popo", host: "popo", p: "00333300" + "03343330" + "33333433" + "34333333" + "03333430" + "00066000" + "00066000" + "66666666",
+      line: ["for Josep. The lemon tree still grow, every year more tall than the girls.", "给 Josep。柠檬树还在长，每年比女孩们高多。", "俾 Josep。啲檸檬樹仲係度生，年年都高過啲女。", "para Josep. El limonero todavía crece, cada año más alto que las niñas.", "per al Josep. El llimoner encara creix, cada any més alt que les nenes."] },
+    { id: "host-mei", host: "mei", p: "74777777" + "75577557" + "55555555" + "55545555" + "75555557" + "77555547" + "77755777" + "47777774",
+      line: ["for NYC. and fine, for here too.", "给纽约。好吧，也给这里。", "給紐約。好啦，也給這裡。", "para Nueva York. y vale, para aquí también.", "per a Nova York. i vaja, per a aquí també."] },
+    { id: "host-cats", host: "cats", p: "00000000" + "07700000" + "70070000" + "07700000" + "07700440" + "00004004" + "00000440" + "00000440",
+      line: ["*sat on it the whole time it was being sewn* Meow.", "*缝的时候一直坐在上面* 喵。", "*縫的時候一直坐在上面* 喵。", "*se sentaron encima todo el rato que la cosían* Miau.", "*s'hi van asseure a sobre tota l'estona que la cosien* Mèu."] },
+    { id: "host-mantou", host: "mantou", p: "22222222" + "22222222" + "00222200" + "00000000" + "00222200" + "22222222" + "11141111" + "22222222",
+      line: ["*dropped his ball on it before anyone else could* Woof!", "*抢先把球放在了上面* 汪！", "*搶先把球放在了上面* 汪！", "*dejó su pelota encima antes que nadie* ¡Guau!", "*hi va deixar la pilota abans que ningú* Bup!"] }
+  ];
+  var HB = [
+    { id: "host-popo-n", host: "popo", kind: "place", place: "cabin",
+      head: ["Soup on Sunday, up at the cabin", "星期天，小屋，有汤", "星期日，上山屋，有湯飲", "Sopa el domingo, arriba en la cabaña", "Sopa el diumenge, dalt a la cabana"],
+      body: ["Every Sunday I go up. The pot is big, too big for one old lady. Come. Bring a bowl, bring somebody, or bring only you. Is enough.", "每个星期天我上去。锅很大，一个老太太吃不完。来吧。带碗，带人来，或者就你自己来。够的。", "每個星期日我都上去。個煲好大，我一個老人家飲唔晒。嚟啦。帶個碗，帶個人嚟，或者淨係你自己嚟都得。夠㗎。", "Cada domingo subo. La olla es grande, demasiado para una vieja sola. Ven. Trae un bol, trae alguien, o trae solo tú. Es bastante.", "Cada diumenge hi pujo. L'olla és grossa, massa per a una vella tota sola. Vine. Porta un bol, porta algú, o vine tu sol. Ja n'hi ha prou."] },
+    { id: "host-mei-n", host: "mei", kind: "news",
+      head: ["LOST: one scrunchie", "寻物：发圈一个", "尋物：髮圈一個", "PERDIDO: un coletero", "PERDUDA: una goma de cabell"],
+      body: ["Lilac velvet, very important. Last seen near Same Song, or in Mantou's mouth. If found, do NOT give it back to Mantou.", "淡紫色丝绒的，非常重要。最后一次出现在同一首歌附近，或者馒头嘴里。捡到的话，千万别还给馒头。", "淡紫色絲絨的，非常重要。最後一次出現在同一首歌附近，或者饅頭嘴裡。撿到的話，千萬別還給饅頭。", "Terciopelo lila, muy importante. Visto por última vez cerca de Same Song, o en la boca de Mantou. Si lo encuentras, NO se lo devuelvas a Mantou.", "Vellut lila, molt important. Vista per última vegada a prop de Same Song, o a la boca d'en Mantou. Si la trobes, NO l'hi tornis a en Mantou."] }
+  ];
+  function allNotices() { return (data || []).concat(HB); }
+  function allQuilt() { return HQ.concat(quilt || []); }
+
   /* ---------- the hall: stone steps, columns, a clock in the gable, a flag, and the board by the door with real notices on it ---------- */
   var cv = $("cv"), g = cv.getContext("2d"), PW = 160, PH = 100, f = 0;
   var W = window.FBWorld || { phase: function () { return "day"; }, weather: function () { return "clear"; }, hour: function () { return 12; } };
@@ -141,12 +166,12 @@
     var bdx = Math.round(bx - Math.max(4, PW * .02) - bw * .2), bdw = Math.round(bw * .2), bdy = Math.round(by + (gy - by) * .35), bdh = Math.round((gy - by) * .4);
     if (bdx < 2) { bdx = bx + 6; }
     R(bdx - 1, bdy - 1, bdw + 2, bdh + 2, "#3a2414"); R(bdx, bdy, bdw, bdh, "#b8864a"); R(bdx + 2, bdy + bdh + 1, 1, gy - bdy - bdh - 1, "#3a2414"); R(bdx + bdw - 3, bdy + bdh + 1, 1, gy - bdy - bdh - 1, "#3a2414");
-    var n = Math.min(12, (data || []).length), cols2 = 3;
-    for (var p = 0; p < n; p++) { var px = bdx + 2 + (p % cols2) * ((bdw - 4) / cols2), py = bdy + 2 + Math.floor(p / cols2) * 5, kd = data[p].kind; R(px, py, (bdw - 4) / cols2 - 1, 4, kd === "idea" ? "#fbf3e2" : kd === "news" ? "#f4d04a" : "#f4c0d0"); R(px + 1, py, 1, 1, "#c8303a"); }
+    var all = allNotices(), n = Math.min(12, all.length), cols2 = 3;
+    for (var p = 0; p < n; p++) { var px = bdx + 2 + (p % cols2) * ((bdw - 4) / cols2), py = bdy + 2 + Math.floor(p / cols2) * 5, kd = all[p].kind; R(px, py, (bdw - 4) / cols2 - 1, 4, kd === "idea" ? "#fbf3e2" : kd === "news" ? "#f4d04a" : "#f4c0d0"); R(px + 1, py, 1, 1, "#c8303a"); }
     /* the quilt hanging to the right of the door: the newest squares, small */
-    var qx = Math.round(bx + bw * .62), qw = Math.round(bw * .26), qy = Math.round(by + (gy - by) * .22), qh = Math.round((gy - by) * .5), qs = quilt || [];
+    var qx = Math.round(bx + bw * .62), qw = Math.round(bw * .26), qy = Math.round(by + (gy - by) * .22), qh = Math.round((gy - by) * .5), qs = allQuilt();
     if (qs.length) { R(qx - 2, qy - 2, qw + 4, 1, "#3a2414"); R(qx - 1, qy - 1, qw + 2, qh + 2, "#5a3a24"); var per = Math.max(2, Math.floor(qw / 4)), rows2 = Math.max(1, Math.floor(qh / per)), cols3 = Math.max(1, Math.floor(qw / per)), shown = qs.slice(-cols3 * rows2);
-      shown.forEach(function (q, i) { var cxq = qx + (i % cols3) * per, cyq = qy + Math.floor(i / cols3) * per; for (var yy = 0; yy < per; yy++) for (var xx = 0; xx < per; xx++) R(cxq + xx, cyq + yy, 1, 1, QPAL[+q.p[Math.floor(yy * 8 / per) * 8 + Math.floor(xx * 8 / per)]]); }); }
+      shown.forEach(function (q, i) { if (!q || typeof q.p !== "string") return; var cxq = qx + (i % cols3) * per, cyq = qy + Math.floor(i / cols3) * per; for (var yy = 0; yy < per; yy++) for (var xx = 0; xx < per; xx++) R(cxq + xx, cyq + yy, 1, 1, QPAL[+q.p[Math.floor(yy * 8 / per) * 8 + Math.floor(xx * 8 / per)]]); }); }
     if (wx === "rain" || wx === "storm") for (var d = 0; d < 30; d++) R((d * 37 + f * 2) % PW, (d * 53 + f * 5) % PH, 1, 3, "rgba(200,220,255,.5)");
     if (wx === "snow") { R(bx - 3, by - 1, bw + 6, 1, "#fff"); for (var sn = 0; sn < 30; sn++) R((sn * 41 + Math.sin(f / 20 + sn) * 3) % PW, (sn * 29 + f * .6) % PH, 1, 1, "#fff"); }
   }
@@ -158,13 +183,14 @@
   function load() { return K.secret("hall").then(function (s) { return K.rpc("hall_list", { p_secret: s }); }).then(function (d) { data = Array.isArray(d) ? d : []; paint(); }).catch(function () { paint(true); }); }
   function paint(off) {
     list.innerHTML = "";
-    if (off && !data) { list.appendChild(el("div", "tk-card tk-empty", t(T.off))); return; }
-    var rows = (data || []).filter(function (n) { return filter === "all" || n.kind === filter; });
-    if (!rows.length) { list.appendChild(el("div", "tk-card tk-empty", t(T.empty))); return; }
+    if (off && !data) list.appendChild(el("div", "tk-card tk-empty", t(T.off)));
+    var rows = allNotices().filter(function (n) { return filter === "all" || n.kind === filter; });
+    if (!rows.length) { if (!(off && !data)) list.appendChild(el("div", "tk-card tk-empty", t(T.empty))); return; }
     rows.forEach(function (n) {
       var c = el("div", "tk-card"), top = el("p", "tk-k");
       top.appendChild(el("span", "tk-tag", t(T[n.kind + "S"])));
       if (n.kind === "place" && n.place && window.FBWorld && FBWorld.PLACES && FBWorld.PLACES[n.place]) { var pb = el("button", "place", K.placeName(n.place)); pb.type = "button"; pb.onclick = function () { K.goPlace(n.place); }; top.appendChild(pb); }
+      if (n.host) { c.appendChild(top); c.appendChild(el("h3", "tk-h", t(n.head))); c.appendChild(el("p", "tk-p", t(n.body))); c.appendChild(el("p", "tk-dim", t(T.by, { n: t(HN_[n.host]) }))); list.appendChild(c); return; }   /* a host's notice: nothing to answer or report */
       c.appendChild(top); c.appendChild(el("h3", "tk-h", n.head)); if (n.body) c.appendChild(el("p", "tk-p", n.body));
       c.appendChild(el("p", "tk-dim", (n.nick ? t(T.by, { n: n.nick }) + " · " : "") + n.at));
       if (n.replies && n.replies.length) { var rp = el("div", "rep"); n.replies.forEach(function (r) { var p = el("p"); p.appendChild(document.createTextNode(r.body + " ")); if (r.nick) p.appendChild(el("i", "", t(T.by, { n: r.nick })));
@@ -190,8 +216,8 @@
   function loadQuilt() { return K.secret("quilt").then(function (s) { return K.rpc("quilt_list", { p_secret: s }); }).then(function (d) { quilt = Array.isArray(d) ? d : []; paintQuilt(); }).catch(function () { if (!quilt) paintQuilt(true); }); }
   var QC = 0;   /* squares per row, set when painting */
   function paintQuilt(off) {
-    var cvq = $("qCv"), sel = $("qSel"), qs = quilt || [];
-    if (off || !qs.length) { cvq.style.display = "none"; sel.innerHTML = ""; sel.appendChild(el("p", "tk-empty", t(off ? T.off : T.qEmpty))); return; }
+    var cvq = $("qCv"), sel = $("qSel"), qs = allQuilt();
+    if (!qs.length) { cvq.style.display = "none"; sel.innerHTML = ""; sel.appendChild(el("p", "tk-empty", t(off ? T.off : T.qEmpty))); return; }
     cvq.style.display = ""; var w = cvq.parentNode.clientWidth || 300; QC = Math.max(4, Math.min(12, Math.floor(w / 44)));
     var rows = Math.ceil(qs.length / QC), u = 10, sq = 8 * u + 2; cvq.width = QC * sq + 2; cvq.height = rows * sq + 2;
     var c = cvq.getContext("2d"); c.fillStyle = "#2a1a10"; c.fillRect(0, 0, cvq.width, cvq.height);
@@ -201,11 +227,13 @@
       if (qSel && qSel.id === q.id) { c.strokeStyle = "#f6b73c"; c.lineWidth = 3; c.strokeRect(x0 + 1.5, y0 + 1.5, 8 * u - 1, 8 * u - 1); } });
     cvq.onclick = function (e) { var r = cvq.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * cvq.width, y = (e.clientY - r.top) / r.height * cvq.height, i = Math.floor(y / sq) * QC + Math.floor(x / sq); qSel = qs[i] || null; paintQuilt(); };
     sel.innerHTML = "";
-    if (qSel) { var line = [qSel.note ? t(T.qFor, { f: qSel.note }) : "", qSel.nick ? t(T.by, { n: qSel.nick }) : "", qSel.at].filter(Boolean).join(" · "); sel.appendChild(el("p", "tk-p", line));
+    if (qSel && qSel.host) sel.appendChild(el("p", "tk-p", t(qSel.line) + " · " + t(T.by, { n: t(HN_[qSel.host]) })));   /* a host's square: their line, nothing to report */
+    else if (qSel) { var line = [qSel.note ? t(T.qFor, { f: qSel.note }) : "", qSel.nick ? t(T.by, { n: qSel.nick }) : "", qSel.at].filter(Boolean).join(" · "); sel.appendChild(el("p", "tk-p", line));
       var row = el("div", "tk-row");
       if (qSel.mine) { var u2 = el("button", "tk-link", t(T.unpick)); u2.type = "button"; u2.onclick = function () { K.secret("quilt").then(function (s) { return K.rpc("quilt_forget", { p_secret: s, p_id: qSel.id }); }).then(function () { qSel = null; return loadQuilt(); }).catch(function () {}); }; row.appendChild(u2); }
       else { var rq = el("button", "tk-link", "⚑"); rq.type = "button"; rq.title = t(T.rep); rq.setAttribute("aria-label", t(T.rep)); rq.onclick = function () { rq.disabled = true; rq.textContent = t(T.repd); K.secret("quilt").then(function (s) { return K.rpc("quilt_report", { p_secret: s, p_id: qSel.id }); }).catch(function () {}); }; row.appendChild(rq); }
       sel.appendChild(row); }
+    if (off && !quilt) sel.appendChild(el("p", "tk-empty", t(T.off)));
   }
   addEventListener("resize", function () { if (view === "quilt") paintQuilt(); });
   /* the square you're stitching: tap or drag to stitch with the chosen fabric; a few patterns to start from */

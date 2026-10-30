@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=37e4661fd7" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=895d071b7b" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Front Row · Nearby</title>
 <meta name="description" content="The town's little cinema club: nominate a film with a line on why, say which ones you'd watch, and the one most people want plays this week. Then watch it with someone.">
@@ -55,6 +55,7 @@
     near: ["A real cinema near you", "附近的真电影院", "附近的真電影院", "Un cine de verdad cerca", "Un cinema de debò a prop"],
     cinemaQ: ["cinema", "电影院", "電影院", "cine", "cinema"],
     list: ["NOMINATED", "已提名", "已提名", "PROPUESTAS", "PROPOSTES"],
+    hosts: ["THE HOSTS' PICKS", "主人们的私心片单", "主人們的私心片單", "LO QUE ELIGEN LOS ANFITRIONES", "EL QUE TRIEN ELS AMFITRIONS"],
     want: ["I'd watch it", "我想看", "我想看", "La vería", "La veuria"],
     wanted: ["You'd watch it", "你想看", "你想看", "La verías", "La veuries"],
     mine: ["Your pick", "你提名的", "你提名的", "Tu propuesta", "La teva proposta"],
@@ -143,7 +144,25 @@
       }
       c.appendChild(row); panel.appendChild(c);
     });
+    /* the hosts' own favourites: kept here on the page, never sent, never "on this week" */
+    panel.appendChild(el("p", "tk-k", t(T.hosts)));
+    HOSTF.forEach(function (x) {
+      var c = el("div", "tk-card");
+      c.appendChild(el("h3", "tk-h", x.f));
+      c.appendChild(el("p", "tk-p", t(x.w)));
+      c.appendChild(el("p", "tk-dim", t(T.by, { n: t(x.n) })));
+      var row = el("div", "tk-row"), b = el("button", "fbb", "↗ " + t(T.watchWith)); b.type = "button";
+      b.onclick = function () { K.share(t(T.h1), t(T.shareT, { f: x.f }), location.origin + "/nearby/front-row/"); };
+      row.appendChild(b); c.appendChild(row); panel.appendChild(c);
+    });
   }
+  var HOSTF = [
+    { n: ["Wei", "Wei", "Wei", "Wei", "Wei"], f: "In the Mood for Love (2000)", w: ["The noodle stall, the rain, a clock that won't hurry. I watch it every winter.", "面摊、雨、一只不肯快走的钟。我每年冬天都看一遍。", "麵攤、雨、一隻不肯快走的鐘。我每年冬天都看一遍。", "El puesto de fideos, la lluvia, un reloj que no tiene prisa. La veo cada invierno.", "La parada de fideus, la pluja, un rellotge sense pressa. La miro cada hivern."] },
+    { n: ["Mei", "Mei", "Mei", "Mei", "Mei"], f: "Frances Ha (2012)", w: ["New York in black and white, a girl who keeps running anyway. It's basically a documentary about me.", "黑白的纽约，一个女生怎样都继续往前跑。基本上就是我的纪录片。", "黑白的紐約，一個女生怎樣都繼續往前跑。基本上就是我的紀錄片。", "Nueva York en blanco y negro, una chica que sigue corriendo igual. Es básicamente un documental sobre mí.", "Nova York en blanc i negre, una noia que continua corrent igualment. És bàsicament un documental sobre mi."] },
+    { n: ["Popo", "婆婆", "婆婆", "Popo", "la Popo"], f: "Comrades: Almost a Love Story (1996)", w: ["Hong Kong people, far from home, one song. I cry every time. Bring tissues.", "香港人，离家很远，一首歌。我每次都哭。带纸巾。", "香港人，離鄉別井，一首歌。我次次都喊。帶紙巾嚟。", "Gente de Hong Kong, lejos de casa, una canción. Lloro siempre. Trae pañuelos.", "Gent de Hong Kong, lluny de casa, una cançó. Ploro cada vegada. Porta mocadors."] },
+    { n: ["Miso & Yuzu", "味噌和柚子", "味噌和柚子", "Miso y Yuzu", "la Miso i la Yuzu"], f: "Kiki's Delivery Service (1989)", w: ["*Miso sits on the remote. It is always this one. She watches the black cat the whole way through.*", "*味噌坐在遥控器上。永远是这一部。她从头到尾盯着那只黑猫。*", "*味噌坐在遙控器上。永遠是這一部。她從頭到尾盯著那隻黑貓。*", "*Miso se sienta en el mando. Siempre es esta. Mira al gato negro de principio a fin.*", "*La Miso s'asseu al comandament. Sempre és aquesta. Mira el gat negre de principi a fi.*"] },
+    { n: ["Mantou", "馒头", "饅頭", "Mantou", "en Mantou"], f: "Hachi: A Dog's Tale (2009)", w: ["*At the station scene Mantou gets up and goes to sit by the door. He knows about waiting for trains.*", "*放到车站那一幕，馒头站起来，走到门边坐下。等火车这件事，他懂。*", "*播到車站嗰幕，饅頭企起身，行去門口坐低。等火車呢樣嘢，佢識。*", "*En la escena de la estación Mantou se levanta y va a sentarse junto a la puerta. Él sabe de esperar trenes.*", "*A l'escena de l'estació en Mantou s'aixeca i va a seure a la porta. Ell sap què és esperar trens.*"] }
+  ];
 
   /* ---------- nominate ---------- */
   function show(id) { ["nom"].forEach(function (s) { $(s).hidden = s !== id; }); $("dock").hidden = !!id; }

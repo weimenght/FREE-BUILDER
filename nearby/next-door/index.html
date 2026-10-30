@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=37e4661fd7" defer></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=895d071b7b" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1133,13 +1133,11 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="room-inner">
           <!-- one wall: graffiti and postcards hang together, as far back as anyone has painted -->
           <div class="flex flex-wrap items-center gap-2 mb-3">
-            <button class="btn btn-amber" type="button" onclick="Wall.paint(true)">🎨 <span data-t="wall.paint">Paint</span></button>
             <button class="btn" type="button" id="wall-meet" onclick="NDFriend()">📌 <span id="wall-meet-l">Find a friend</span></button>
             <a class="btn" href="/nearby/say-hello/?to=bar">✍️ <span data-t="wall.writeCard">Write a postcard</span></a>
           </div>
           <div id="wall-one" class="wall-one"></div>
           <div id="wall-more" class="wall-more" aria-hidden="true"></div>
-          <div id="pc-trips" class="mt-4"></div>
           <div id="wall-paint" class="paint-sheet hidden" role="dialog" aria-modal="true">
             <div class="panel p-3 paint-card">
               <button type="button" class="btn ps-x paint-x" onclick="Wall.paint(false)" aria-label="✕">✕</button>
@@ -8394,6 +8392,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   function rpc(fn, args) { if (!DB.sb) return Promise.reject(new Error('offline')); return DB.sb.rpc(fn, args).then(r => { if (r.error) throw r.error; return r.data; }); }
   const LANG = () => ({ en: 'en', zh: 'zh', tw: 'zh-Hant', yue: 'zh-Hant', es: 'es', ca: 'ca' }[AppState.lang] || 'en');
+  /* Popo's own cards, the first in the box: kept on the page, never sent, nothing to report */
+  const POPO_RAW = [
+    { dish: ["Congee for whoever is sick", "给生病的人煮的粥", "煲俾病咗嘅人食嘅粥", "煲俾病咗嘅人食嘅粥", "Congee para quien esté enfermo", "Congee per a qui estigui malalt"],
+      whose: ["Popo's, from her mother in Sham Shui Po", "婆婆的，她妈妈在深水埗教的", "婆婆嘅，佢阿媽喺深水埗教嘅", "婆婆嘅，佢阿媽喺深水埗教嘅", "De Popo, de su madre en Sham Shui Po", "De la Popo, de la seva mare a Sham Shui Po"],
+      forwho: ["anyone in bed with a cold", "躺在床上感冒的人", "瞓喺床感冒嗰個", "瞓喺床感冒嗰個", "quien esté en la cama con un resfriado", "qui sigui al llit amb un refredat"],
+      body: ["One cup rice, wash two times. Ten cups water. A little oil, a little salt on the rice before. Boil, then small fire, one and a half hour. Stir sometimes, not always. Ginger in thin strips, spring onion at the end. White pepper. Sit with them while they eat. That is the medicine part.", "米一杯，洗两次。水十杯。下锅前米拌一点油、一点盐。大火煮开，转小火，一个半钟头。有时候搅一下，不要一直搅。姜切细丝，最后放葱，白胡椒。他们吃的时候陪着坐。这才是药。", "米一杯，洗兩次。水十杯。落鍋之前啲米撈少少油、少少鹽。大火滾起，收細火，一個半鐘。間中攪吓，唔使成日攪。薑切幼絲，最後先落蔥，白胡椒粉。佢食嘅時候坐喺隔籬陪住佢。嗰樣先係藥。", "米一杯，洗兩次。水十杯。落鍋之前啲米撈少少油、少少鹽。大火滾起，收細火，一個半鐘。間中攪吓，唔使成日攪。薑切幼絲，最後先落蔥，白胡椒粉。佢食嘅時候坐喺隔籬陪住佢。嗰樣先係藥。", "Una taza arroz, lavar dos veces. Diez tazas agua. Un poco aceite, un poco sal en el arroz antes. Hervir, luego fuego pequeño, hora y media. Remover a veces, no siempre. Jengibre en tiras finas, cebolleta al final. Pimienta blanca. Siéntate con ellos mientras comen. Esa es la parte medicina.", "Una tassa d'arròs, rentat dues vegades. Deu tasses d'aigua. Abans, una mica d'oli i de sal per sobre l'arròs. Que bulli, després foc baix una hora i mitja. Remena de tant en tant, no tota l'estona. Gingebre a tiretes fines i ceba tendra al final. Pebre blanc. Seu amb ells mentre mengen: aquesta és la part que cura."] },
+    { dish: ["Escudella for a cold Sunday", "冷天星期日的 escudella", "凍嘅禮拜日煲嘅 escudella", "凍嘅禮拜日煲嘅 escudella", "Escudella para un domingo frío", "Escudella per a un diumenge de fred"],
+      whose: ["Josep's mother's, taught to Popo in 1970", "Josep 妈妈的，1970 年教给婆婆", "Josep 阿媽嘅，1970 年教俾婆婆", "Josep 阿媽嘅，1970 年教俾婆婆", "De la madre de Josep, se la enseñó a Popo en 1970", "De la mare d'en Josep, que la va ensenyar a la Popo el 1970"],
+      forwho: ["the whole family round one pot", "围着一锅的全家人", "成家人圍住一煲", "成家人圍住一煲", "toda la familia alrededor de una olla", "tota la família al voltant d'una olla"],
+      body: ["Big pot. Chicken, a bone of ham, beef bone, chickpeas from the night before. Cold water, slow, take the foam. Two hours. Then carrot, potato, cabbage, celery. The pilota: minced meat, egg, garlic, parsley, breadcrumb, one big ball. Thirty minutes more. First the soup with big pasta, galets. Then the meat on a plate. Josep always say his mama put more salt. I never put more salt.", "大锅。鸡、一块火腿骨、牛骨、前一晚泡好的鹰嘴豆。冷水，慢慢煮，撇掉浮沫。两个钟头。再放胡萝卜、土豆、包菜、芹菜。肉丸 pilota：肉碎、鸡蛋、蒜、香芹、面包屑，搓一个大的。再煮三十分钟。先喝汤，汤里放大的贝壳面 galets。肉再装盘。Josep 总说他妈妈放的盐多。我从来不多放。", "大煲。雞、一嚿火腿骨、牛骨、隔晚浸好嘅雞心豆。凍水落，慢慢煲，撇走啲泡。兩個鐘。之後落紅蘿蔔、薯仔、椰菜、西芹。個肉丸 pilota：免治肉、雞蛋、蒜、番荽、麵包糠，搓一個大嘅。再煲三十分鐘。先飲湯，湯入面落大大粒嘅 galets。啲肉再上碟。Josep 成日話佢阿媽落多啲鹽。我從來唔落多。", "大煲。雞、一嚿火腿骨、牛骨、隔晚浸好嘅雞心豆。凍水落，慢慢煲，撇走啲泡。兩個鐘。之後落紅蘿蔔、薯仔、椰菜、西芹。個肉丸 pilota：免治肉、雞蛋、蒜、番荽、麵包糠，搓一個大嘅。再煲三十分鐘。先飲湯，湯入面落大大粒嘅 galets。啲肉再上碟。Josep 成日話佢阿媽落多啲鹽。我從來唔落多。", "Olla grande. Pollo, un hueso de jamón, hueso de ternera, garbanzos de la noche antes. Agua fría, despacio, quitar espuma. Dos horas. Luego zanahoria, patata, col, apio. La pilota: carne picada, huevo, ajo, perejil, pan rallado, una bola grande. Treinta minutos más. Primero la sopa con pasta grande, galets. Luego la carne en plato. Josep siempre decía su mamá ponía más sal. Yo nunca pongo más sal.", "Olla gran. Pollastre, un os de pernil, os de vedella i els cigrons en remull de la nit abans. Aigua freda, a poc a poc, i treu l'escuma. Dues hores. Després pastanaga, patata, col i api. La pilota: carn picada, ou, all, julivert i pa ratllat, una bola grossa. Mitja hora més. Primer la sopa amb galets, després la carn al plat. En Josep sempre deia que sa mare hi posava més sal. Jo no n'hi poso mai més."] }
+  ];
+  const POPO = () => POPO_RAW.map(r => ({ host: true, dish: X(r.dish), whose: X(r.whose), forwho: X(r.forwho), body: X(r.body), nick: L(lx(["Popo", "婆婆", "婆婆", "婆婆", "Popo", "la Popo"])) }));
   let sheetEl = null, q = '', timer = null;
   function close() { if (sheetEl) sheetEl.remove(); sheetEl = null; }
   function top(title, back) { const t = el('div', 'ps-top'); t.appendChild(el('b', '', '📖 ' + title)); const x = el('button', 'btn ps-x', '✕'); x.type = 'button'; x.setAttribute('aria-label', '✕'); x.onclick = back || close; t.appendChild(x); return t; }
@@ -8408,9 +8418,10 @@ document.addEventListener("DOMContentLoaded", function () {
       list.textContent = '…';
       secret().then(k => rpc('recipe_list', { p_secret: k, p_q: q.trim() || null })).then(rows => {
         list.innerHTML = '';
+        const qq = q.trim().toLowerCase(); rows = POPO().filter(r => !qq || (r.dish + ' ' + r.whose + ' ' + r.body).toLowerCase().indexOf(qq) >= 0).concat(rows || []);
         if (!rows || !rows.length) { list.appendChild(el('p', 'ps-none', X(T.none))); return; }
         rows.forEach(r => { const b = el('button', 'opt-btn ps-item'); b.type = 'button'; const t = el('span', 'ps-t'); t.appendChild(el('b', '', r.dish)); t.appendChild(el('small', '', [r.whose, r.forwho ? X(T.forX).replace('{f}', r.forwho) : ''].filter(Boolean).join(' · '))); b.appendChild(t); b.onclick = () => card(r); list.appendChild(b); });
-      }).catch(() => { list.textContent = X(T.off); });
+      }).catch(() => { list.innerHTML = ''; POPO().forEach(r => { const b = el('button', 'opt-btn ps-item'); b.type = 'button'; b.appendChild(el('b', '', r.dish)); b.onclick = () => card(r); list.appendChild(b); }); list.appendChild(el('p', 'ps-none', X(T.off))); });
     }
   }
   function card(r) {
@@ -8421,7 +8432,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const body = el('p', ''); body.style.cssText = 'white-space:pre-wrap;margin:8px 2px 12px;font-size:17px;line-height:1.35'; body.textContent = r.body; sheetEl.appendChild(body);
     const row = el('div', 'flex gap-1.5 flex-wrap');
     const c = el('button', 'btn btn-amber', X(T.cook)); c.type = 'button'; c.onclick = () => { close(); serve(r); }; row.appendChild(c);
-    if (r.mine) { const f = el('button', 'btn btn-sm', X(T.mineX)); f.type = 'button'; f.onclick = () => { f.disabled = true; secret().then(k => rpc('recipe_forget', { p_secret: k, p_id: r.id })).then(open).catch(() => { f.disabled = false; }); }; row.appendChild(f); }
+    if (r.host) {} else if (r.mine) { const f = el('button', 'btn btn-sm', X(T.mineX)); f.type = 'button'; f.onclick = () => { f.disabled = true; secret().then(k => rpc('recipe_forget', { p_secret: k, p_id: r.id })).then(open).catch(() => { f.disabled = false; }); }; row.appendChild(f); }
     else { const rp = el('button', 'btn btn-sm', '⚑'); rp.type = 'button'; rp.title = X(T.report); rp.setAttribute('aria-label', rp.title); rp.onclick = () => { rp.disabled = true; secret().then(k => rpc('recipe_report', { p_secret: k, p_id: r.id })).then(() => { rp.textContent = '✓'; }).catch(() => { rp.disabled = false; }); }; row.appendChild(rp); }
     sheetEl.appendChild(row); document.body.appendChild(sheetEl);
   }
@@ -8474,6 +8485,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const one = () => document.getElementById('wall-one');
   function rotOf(k) { let h = 0; k = String(k); for (let i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) | 0; return ((h % 9) - 4) * .8 + 'deg'; }
   async function grafPage() {
+    gDone = true; return [];   /* the Wall is postcards and finding a friend now; no painting */
     if (gDone) return [];
     let rows = [];
     if (DB.sb) {
@@ -9052,6 +9064,138 @@ document.addEventListener("DOMContentLoaded", function () {
     if (window.FBG && FBG.introduce) FBG.introduce(t => { say.textContent = t; }, opts, btn, close); else close();
   };
   words(); addEventListener('fbl:lang', words); setInterval(words, 4000);
+})();
+</script>
+<script>
+/* ===== The host's own counter: Order opens the host's menu (pick, and it comes back to the counter), and Chat is the host's
+   own talk. Wei keeps his topics, his riddle, his gifts and his usual; Mei, Popo, the cats and Mantou have theirs. ===== */
+(function () {
+  const H = (en, zh, tw, yue, es, ca) => lx([en, zh, tw, yue || tw, es, ca]);
+  const TOPICS = {
+    mei: {
+      intro: [H("*one earbud out* okay, talk. I'm listening. mostly.", "*摘下一只耳机* 好，说吧。我在听。大概。", "*摘下一隻耳機* 好，說吧。我在聽。大概。", "*除低隻耳筒* 好啦，講啦。我有聽。大概啦。", "*se quita un auricular* vale, habla. te escucho. más o menos.", "*es treu un auricular* va, parla. t'escolto. més o menys.")],
+      t: [
+        { l: H("About you", "说说你", "說說你", "講吓你", "Sobre ti", "Sobre tu"), x: [
+          H("sixteen. from Queens. here for the holidays, which turned into longer. I do nails, playlists and coffee. two out of three, I'm great at.", "十六岁。皇后区来的。本来是来过节，结果待久了。我会做指甲、做歌单、做咖啡。三样里有两样我很强。", "十六歲。皇后區來的。本來是來過節，結果待久了。我會做指甲、做歌單、做咖啡。三樣裡有兩樣我很強。", "十六歲。皇后區嚟嘅。本來嚟過節，點知留咗耐咗。我識整指甲、整歌單、沖咖啡。三樣有兩樣我好叻。", "dieciséis. de Queens. vine por las fiestas, que se alargaron. hago uñas, playlists y café. dos de tres, se me dan genial.", "setze. de Queens. vaig venir per les festes, que s'han allargat. faig ungles, playlists i cafè. dues de tres, se'm donen genial."),
+          H("I'm not \"helping out\". I'm running the place. Wei's just letting me.", "我不是在“帮忙”。我在管这家店。Wei只是在让我管。", "我不是在「幫忙」。我在管這家店。Wei只是在讓我管。", "我唔係「幫手」。我係睇住間舖。Wei 只係由得我。", "no estoy \"echando una mano\". estoy llevando el sitio. Wei solo me deja.", "no estic \"donant un cop de mà\". porto el local. en Wei només em deixa.")] },
+        { l: H("New York", "纽约", "紐約", "紐約", "Nueva York", "Nova York"), x: [
+          H("the subway at 2 a.m. smells like pretzels and rain. I miss it so much it's annoying.", "凌晨两点的地铁有椒盐卷饼和雨的味道。我想它想得好烦。", "凌晨兩點的地鐵有蝴蝶餅和雨的味道。我想它想得好煩。", "凌晨兩點嘅地鐵有椒鹽脆餅同落雨嘅味。我掛住到好煩。", "el metro a las 2 de la mañana huele a pretzels y lluvia. lo echo tanto de menos que me molesta.", "el metro a les 2 de la matinada fa olor de pretzels i pluja. el trobo tant a faltar que em molesta."),
+          H("my mom calls every Sunday. I pretend I'm busy. I'm never busy. call yours, by the way.", "我妈每个星期天都打来。我装很忙。我从来不忙。对了，打给你妈。", "我媽每個星期天都打來。我裝很忙。我從來不忙。對了，打給你媽。", "我阿媽逢禮拜日打嚟。我扮好忙。我從來唔忙。係呢，打俾你阿媽啦。", "mi madre llama cada domingo. finjo que estoy ocupada. nunca lo estoy. llama a la tuya, por cierto.", "la meva mare truca cada diumenge. faig veure que estic ocupada. no ho estic mai. truca a la teva, per cert.")] },
+        { l: H("Your nails", "你的指甲", "你的指甲", "你啲指甲", "Tus uñas", "Les teves ungles"), x: [
+          H("*holds them up* glitter, obviously. Popo says they look like fish scales. she means it nicely.", "*举起手* 当然是亮片。婆婆说像鱼鳞。她是夸我。", "*舉起手* 當然是亮片。婆婆說像魚鱗。她是誇我。", "*舉高隻手* 梗係亮片啦。婆婆話好似魚鱗。佢係讚我嘅。", "*las enseña* purpurina, obvio. Popo dice que parecen escamas de pez. lo dice con cariño.", "*les ensenya* purpurina, és clar. la Popo diu que semblen escates de peix. ho diu amb carinyo."),
+          H("I painted Miso's claw once. once. she still hasn't forgiven me.", "我给味噌涂过一次爪子。就一次。她到现在都没原谅我。", "我給味噌塗過一次爪子。就一次。她到現在都沒原諒我。", "我同味噌搽過一次爪。得一次。佢到而家都未原諒我。", "le pinté una uña a Miso una vez. una. todavía no me lo perdona.", "li vaig pintar una ungla a la Miso una vegada. una. encara no m'ho ha perdonat.")] },
+        { l: H("Your songs", "你的歌", "你的歌", "你啲歌", "Tus canciones", "Les teves cançons"), x: [
+          H("two of mine are on the jukebox in Same Song. find them. don't tell me if you like them. okay, tell me.", "我有两首在「同一首歌」的点唱机里。自己找。喜不喜欢别告诉我。好吧，告诉我。", "我有兩首在「同一首歌」的點唱機裡。自己找。喜不喜歡別告訴我。好啦，告訴我。", "我有兩首喺「同一首歌」部點唱機度。自己搵。鍾唔鍾意唔好話我知。好啦，話我知。", "dos mías están en la gramola de La Misma Canción. búscalas. no me digas si te gustan. vale, dímelo.", "dues de meves són a la gramola de La Mateixa Cançó. busca-les. no em diguis si t'agraden. va, digues-m'ho."),
+          H("right now? one song on repeat. it's a bolero. Popo's. don't tell anyone.", "现在？一首歌单曲循环。是首波莱罗。婆婆的。别告诉别人。", "現在？一首歌單曲循環。是首波麗露。婆婆的。別告訴別人。", "而家？一首歌單曲循環。係首波麗露。婆婆嗰首。唔好話俾人知。", "¿ahora? una canción en bucle. es un bolero. el de Popo. no se lo digas a nadie.", "ara? una cançó en bucle. és un bolero. el de la Popo. no ho diguis a ningú.")] },
+        { l: H("Wei", "Wei", "Wei", "Wei", "Wei", "En Wei"), x: [
+          H("he says I'm \"too much\". he puts the tea in alphabetical order. who's too much.", "他说我“太过了”。他把茶按字母排好。到底谁太过。", "他說我「太過了」。他把茶按字母排好。到底誰太過。", "佢話我「太過分」。佢將啲茶按字母排好。邊個先過分。", "dice que soy \"demasiado\". ordena el té alfabéticamente. quién es demasiado.", "diu que sóc \"massa\". ordena el te per ordre alfabètic. qui és massa."),
+          H("don't tell him, but his notebook is kind of sweet. I read one page. okay, three.", "别告诉他，他的笔记本其实挺可爱的。我看了一页。好吧，三页。", "別告訴他，他的筆記本其實挺可愛的。我看了一頁。好啦，三頁。", "唔好話佢知，佢本簿其實幾得意。我睇咗一頁。好啦，三頁。", "no se lo digas, pero su libreta es bastante bonita. leí una página. vale, tres.", "no li diguis, però la seva llibreta és bastant bonica. en vaig llegir una pàgina. va, tres.")] }
+      ]
+    },
+    popo: {
+      intro: [H("*sits down on the stool, slowly* Talk, talk. I listen. You eat also.", "*慢慢坐到高凳上* 讲，讲。我听。你也要吃。", "*慢慢坐上張高凳* 講啦講啦。我聽。你都要食嘢。", "*慢慢坐上張高凳* 講啦講啦。我聽。你都要食嘢。", "*se sienta despacio en el taburete* Habla, habla. Yo escucho. Tú come también.", "*s'asseu a poc a poc al tamboret* Parla, parla. Jo t'escolto. I tu menja.")],
+      t: [
+        { l: H("About you", "说说您", "講吓你", "講吓你", "Sobre ti", "Sobre vostè"), x: [
+          H("Popo. Hong Kong girl. 1968 come Barcelona. Nineteen. One suitcase, one dictionary.", "婆婆。香港女仔。一九六八年来巴塞罗那。十九岁。一个箱子，一本字典。", "婆婆。香港妹。一九六八年嚟巴塞隆拿。十九歲。一個喼，一本字典。", "婆婆。香港妹。一九六八年嚟巴塞隆拿。十九歲。一個喼，一本字典。", "Popo. Chica de Hong Kong. 1968 vengo Barcelona. Diecinueve. Una maleta, un diccionario.", "La Popo. Una noia de Hong Kong. El 1968 vaig arribar a Barcelona, amb dinou anys. Una maleta i un diccionari."),
+          H("Now old lady. Still cook every day. Who else will?", "现在老太婆了。还是天天煮饭。不然谁煮？", "而家老太婆囉。都係日日煮飯。唔係邊個煮？", "而家老太婆囉。都係日日煮飯。唔係邊個煮？", "Ahora señora vieja. Todavía cocino cada día. ¿Quién si no?", "Ara ja soc una vella. Encara cuino cada dia. Qui ho faria, si no?")] },
+        { l: H("Josep", "Josep", "Josep", "Josep", "Josep", "En Josep"), x: [
+          H("Clock man. He fix my watch, I fix his dinner. Fifty years like this.", "修钟的。他修我的表，我管他的饭。五十年都这样。", "整鐘嘅。佢整我隻錶，我煮佢餐飯。五十年都係咁。", "整鐘嘅。佢整我隻錶，我煮佢餐飯。五十年都係咁。", "Hombre del reloj. Él arregla mi reloj, yo arreglo su cena. Cincuenta años así.", "El rellotger. Ell m'arreglava el rellotge i jo li feia el sopar. Cinquanta anys així."),
+          H("He sing very bad. I miss it every night.", "他唱歌很难听。我每天晚上都想念。", "佢唱歌好難聽。我晚晚都掛住。", "佢唱歌好難聽。我晚晚都掛住。", "Él canta muy mal. Lo echo de menos cada noche.", "Cantava molt malament. Ho trobo a faltar cada nit.")] },
+        { l: H("What's cooking?", "煮什么呀？", "煮緊乜呀？", "煮緊乜呀？", "¿Qué cocinas?", "Què cuines?"), x: [
+          H("Congee. Always congee. Rice, water, time. Like people.", "粥。永远是粥。米、水、时间。跟人一样。", "粥。梗係粥。米、水、時間。同人一樣。", "粥。梗係粥。米、水、時間。同人一樣。", "Congee. Siempre congee. Arroz, agua, tiempo. Como la gente.", "Congee. Sempre congee. Arròs, aigua i temps. Com les persones."),
+          H("Today escudella. Josep's mama teach me. My recipe box is there, take one home.", "今天 escudella。Josep 的妈妈教我的。我的食谱盒在那边，拿一张回家。", "今日 escudella。Josep 阿媽教我嘅。我個食譜盒喺嗰度，攞張返屋企。", "今日 escudella。Josep 阿媽教我嘅。我個食譜盒喺嗰度，攞張返屋企。", "Hoy escudella. La mamá de Josep me enseña. Mi caja de recetas está ahí, llévate una.", "Avui escudella. Me la va ensenyar la mare d'en Josep. La capsa de receptes és allà: emporta-te'n una.")] },
+        { l: H("Wei and Mei", "Wei 和 Mei", "阿Wei同阿Mei", "阿Wei同阿Mei", "Wei y Mei", "En Wei i la Mei"), x: [
+          H("Wei too serious, Mei too loud. Together, perfect. Don't tell them.", "阿Wei太认真，阿Mei太吵。放一起，刚刚好。别告诉他们。", "阿Wei太認真，阿Mei太嘈。擺埋一齊，啱啱好。唔好話佢哋知。", "阿Wei太認真，阿Mei太嘈。擺埋一齊，啱啱好。唔好話佢哋知。", "Wei muy serio, Mei muy ruidosa. Juntos, perfecto. No les digas.", "En Wei massa seriós, la Mei massa sorollosa. Junts, perfectes. No els ho diguis."),
+          H("When small, they fight for the last egg tart. Now they fight for the music.", "小时候抢最后一个蛋挞。现在抢放什么歌。", "細個爭最後一個蛋撻。而家爭播咩歌。", "細個爭最後一個蛋撻。而家爭播咩歌。", "De pequeños se pelean por la última tarta de huevo. Ahora por la música.", "De petits es barallaven per l'última tarteta d'ou. Ara, per la música.")] },
+        { l: H("Your songs", "您的歌", "你啲歌", "你啲歌", "Tus canciones", "Les seves cançons"), x: [
+          H("Same Song have my two. One for after closing, Josep and me. One for congee at six. Go listen.", "「同一首歌」有我两首。一首是关门以后，我跟 Josep。一首是六点的粥。去听。", "「同一首歌」有我兩首。一首係收舖之後，我同 Josep。一首係六點鐘嘅粥。去聽吓。", "「同一首歌」有我兩首。一首係收舖之後，我同 Josep。一首係六點鐘嘅粥。去聽吓。", "La Misma Canción tiene dos mías. Una para después de cerrar, Josep y yo. Una para el congee de las seis. Ve a escuchar.", "A La Mateixa Cançó n'hi ha dues de meves. Una de després de tancar, en Josep i jo. I una del congee de les sis. Ves a escoltar-les.")] }
+      ]
+    },
+    cats: {
+      intro: [H("*Miso and Yuzu sit up behind the counter, tails wrapped round their paws* Mrrp.", "*味噌和柚子在吧台后坐直，尾巴绕着爪子* 咪噜。", "*味噌和柚子在吧檯後坐直，尾巴繞著爪子* 咪嚕。", "*味噌同柚子喺吧枱後面坐直，條尾圍住對爪* 咪嚕。", "*Miso y Yuzu se sientan tras la barra, la cola alrededor de las patas* Mrrp.", "*La Miso i la Yuzu seuen darrere la barra, amb la cua al voltant de les potes* Mrrp.")],
+      t: [
+        { l: H("*slow blink at Miso*", "*对味噌慢慢眨眼*", "*對味噌慢慢眨眼*", "*對住味噌慢慢眨眼*", "*parpadear despacio a Miso*", "*parpellejar a poc a poc a la Miso*"), c: 'miso', x: [
+          H("*Miso slow-blinks back. That was a whole conversation.*", "*味噌也慢慢眨了回来。这就是一整场对话了。*", "*味噌也慢慢眨了回來。這就是一整場對話了。*", "*味噌都慢慢眨返你。呢個已經係成場傾偈。*", "*Miso te devuelve el parpadeo lento. Eso ha sido toda una conversación.*", "*La Miso et torna el parpelleig lent. Això ha estat tota una conversa.*")] },
+        { l: H("*wiggle a finger*", "*晃一晃手指*", "*晃一晃手指*", "*郁吓隻手指*", "*mover un dedo*", "*bellugar un dit*"), c: 'yuzu', x: [
+          H("*Yuzu's pupils go huge. She pounces, misses, and washes her shoulder as if she meant to.*", "*柚子的瞳孔一下放大。她扑过来，扑空，然后舔起肩膀，好像本来就是这个意思。*", "*柚子的瞳孔一下放大。她撲過來，撲空，然後舔起肩膀，好像本來就是這個意思。*", "*柚子對眼即刻放大。佢撲過嚟，撲空，跟住舔吓膊頭，扮本來就係咁。*", "*A Yuzu se le dilatan las pupilas. Salta, falla y se lava el hombro como si fuera a propósito.*", "*A la Yuzu se li dilaten les pupil·les. Salta, falla, i es llepa l'espatlla com si ho hagués fet expressament.*")] },
+        { l: H("*ask where they've been*", "*问她们去哪儿了*", "*問她們去哪兒了*", "*問佢哋去咗邊*", "*preguntar dónde han estado*", "*preguntar on han estat*"), x: [
+          H("*Yuzu has sand between her toes. Sandy Cove, then. Miso smells faintly of the lake.*", "*柚子脚趾间有沙子。那就是沙湾了。味噌身上有一点湖水的味道。*", "*柚子腳趾間有沙子。那就是沙灣了。味噌身上有一點湖水的味道。*", "*柚子腳趾罅有沙。噉即係去咗沙灣。味噌身上有少少湖水味。*", "*Yuzu tiene arena entre los dedos. La Cala, entonces. Miso huele un poco a lago.*", "*La Yuzu té sorra entre els dits. La Cala, doncs. La Miso fa una mica d'olor de llac.*")] },
+        { l: H("*hum a tune*", "*哼一段曲子*", "*哼一段曲子*", "*哼段歌*", "*tararear algo*", "*taral·lejar alguna cosa*"), x: [
+          H("*Both ears turn. Yuzu pats the jukebox. Somewhere in Same Song there's a record with her pawprint on it.*", "*两只耳朵都转过来。柚子拍拍点唱机。「同一首歌」里有一张唱片印着她的爪印。*", "*兩隻耳朵都轉過來。柚子拍拍點唱機。「同一首歌」裡有一張唱片印著她的爪印。*", "*兩隻耳仔都轉過嚟。柚子拍吓部點唱機。「同一首歌」入面有張碟印住佢個爪印。*", "*Las dos giran las orejas. Yuzu da una palmadita a la gramola. En La Misma Canción hay un disco con su huella.*", "*Totes dues giren les orelles. La Yuzu dona un copet a la gramola. A La Mateixa Cançó hi ha un disc amb la seva petjada.*")] }
+      ]
+    },
+    mantou: {
+      intro: [H("*Mantou plants his front paws on the bar and looks at you, ears up.* Woof?", "*馒头把前爪搭上吧台，竖着耳朵看你。* 汪？", "*饅頭把前爪搭上吧檯，豎著耳朵看你。* 汪？", "*饅頭將對前爪搭上吧枱，耳仔企企咁望住你。* 汪？", "*Mantou apoya las patas delanteras en la barra y te mira, orejas arriba.* ¿Guau?", "*En Mantou recolza les potes del davant a la barra i et mira, amb les orelles dretes.* Bup?")],
+      t: [
+        { l: H("*say his name*", "*叫他的名字*", "*叫他的名字*", "*叫佢個名*", "*decir su nombre*", "*dir el seu nom*"), x: [
+          H("*Mantou's whole back half wags.* Woof!", "*馒头整个后半身都在摇。* 汪！", "*饅頭整個後半身都在搖。* 汪！", "*饅頭成個後半身都喺度擰。* 汪！", "*A Mantou le menea toda la mitad de atrás.* ¡Guau!", "*A en Mantou li belluga tota la meitat del darrere.* Bup!")] },
+        { l: H("*ask about Josep*", "*问起 Josep*", "*問起 Josep*", "*問起 Josep*", "*preguntar por Josep*", "*preguntar per en Josep*"), x: [
+          H("*Mantou looks at the clock over the door and lies down, chin on his paws. Some mornings he still goes to meet the 7:40.*", "*馒头看了看门上的钟，趴下来，下巴搁在爪子上。有些早上他还是会去等七点四十那班车。*", "*饅頭看了看門上的鐘，趴下來，下巴擱在爪子上。有些早上他還是會去等七點四十那班車。*", "*饅頭望一望門頂個鐘，伏低，下巴擱喺對爪度。有啲朝早佢都仲會去等七點四十嗰班車。*", "*Mantou mira el reloj de encima de la puerta y se tumba, la barbilla en las patas. Algunas mañanas todavía va a esperar el de las 7:40.*", "*En Mantou mira el rellotge de sobre la porta i s'estira, amb la barbeta a les potes. Alguns matins encara va a esperar el de les 7:40.*")] },
+        { l: H("*ask what he's got*", "*问他叼着什么*", "*問他叼著什麼*", "*問佢咬住乜*", "*preguntar qué lleva*", "*preguntar què porta*"), x: [
+          H("*He opens his mouth. A sock. Not yours. Probably Wei's.*", "*他张开嘴。一只袜子。不是你的。大概是 Wei 的。*", "*他張開嘴。一隻襪子。不是你的。大概是 Wei 的。*", "*佢擘大口。一隻襪。唔係你嘅。大概係 Wei 嘅。*", "*Abre la boca. Un calcetín. No es tuyo. Seguramente de Wei.*", "*Obre la boca. Un mitjó. No és teu. Segurament d'en Wei.*")] },
+        { l: H("*hum a tune*", "*哼一段曲子*", "*哼一段曲子*", "*哼段歌*", "*tararear algo*", "*taral·lejar alguna cosa*"), x: [
+          H("*Mantou tips his head back and howls along, one long note. There's a record in Same Song he barks on.*", "*馒头仰起头跟着嚎，一个长音。「同一首歌」里有一张唱片有他的叫声。*", "*饅頭仰起頭跟著嚎，一個長音。「同一首歌」裡有一張唱片有他的叫聲。*", "*饅頭擰起個頭跟住嗥，一個長音。「同一首歌」入面有張碟有佢把聲。*", "*Mantou echa la cabeza atrás y aúlla contigo, una nota larga. En La Misma Canción hay un disco donde ladra él.*", "*En Mantou tira el cap enrere i udola amb tu, una nota llarga. A La Mateixa Cançó hi ha un disc on borda ell.*")] }
+      ]
+    }
+  };
+  const TALK_ME = H("💬 Talk to me", "💬 跟我聊聊", "💬 跟我聊聊", "💬 同我傾吓", "💬 Háblame", "💬 Parla'm");
+  const ORDER = { mei: H("☕ Order", "☕ 点单", "☕ 點單", "☕ 叫嘢飲", "☕ Pedir", "☕ Demanar"), popo: H("🍜 Eat", "🍜 吃饭", "🍜 食飯", "🍜 食飯", "🍜 Comer", "🍜 Menjar"), cats: H("🐾 Order", "🐾 点单", "🐾 點單", "🐾 叫嘢", "🐾 Pedir", "🐾 Demanar"), mantou: H("🦴 Ask Mantou", "🦴 找馒头", "🦴 找饅頭", "🦴 搵饅頭", "🦴 Pedir a Mantou", "🦴 Demanar a en Mantou") };
+  const host = () => { try { return (window.NDChat && NDChat.who()) || null; } catch (e) { return null; } };
+  const used = {};
+  function menu() { try { toggleCodexModal(true); } catch (e) {} }   /* the host's own menu; a pick closes it and comes back to the counter */
+  function hostChat(k) {
+    const P = TOPICS[k]; if (!P) { openChat(); return; }
+    const avail = P.t.filter(tp => !tp.c || typeof Cats === 'undefined' || !Cats.here || Cats.here(tp.c));
+    const btns = () => avail.map(tp => ({ label: L(tp.l), onClick: () => {
+      const i = used[k + L(tp.l)] || 0; used[k + L(tp.l)] = i + 1;
+      try { if (k === 'cats') SoundEngine.playMeow(1); else SoundEngine.playClick(); } catch (e) {}
+      try { if (k !== 'cats') setExpression('grin', 1400); } catch (e) {}
+      renderWei(L(tp.x[i % tp.x.length]), btns(), COMPACT_GRID, 'chat'); } }))
+      .concat([{ label: L(TALK_ME), onClick: () => { if (!(window.NDChat && NDChat.now(true))) backToOrder(); } }, { label: L(WeiText.ui.back), onClick: backToOrder }]);
+    renderWei(L(P.intro[0]), btns(), COMPACT_GRID, 'chat');
+  }
+  window.renderActionRow = function () {
+    const row = document.getElementById('rpg-action-row'); if (!row) return;
+    const k = host(), wei = !k || k === 'wei';
+    if (wei) { row.innerHTML = ''; }
+    const mode = AppState.isBarOpen ? 'bar' : 'cafe';
+    const chips = [
+      { id: 'topic', label: wei ? WeiText.ui.order : ORDER[k], fn: menu },
+      { id: 'picks', label: { en: "📍 Neighbours' picks", zh: '📍 邻居的心头好', es: '📍 Lo que eligen los vecinos', ca: '📍 El que trien els veïns' }, fn: () => window.BarPicks && BarPicks.open() },
+      { id: 'recipes', label: lx(["📖 Popo's recipe box", "📖 婆婆的食谱盒", "📖 婆婆的食譜盒", "📖 婆婆嘅食譜盒", "📖 La caja de recetas de Popo", "📖 La capsa de receptes de la Popo"]), fn: () => window.PopoRecipes && PopoRecipes.open() },
+      { id: 'chat', label: WeiText.ui.chat, fn: () => wei ? openChat() : hostChat(k) }
+    ];
+    if (wei) { chips.push({ id: 'riddle', label: WeiText.ui.riddle, fn: startRiddle }, { id: 'gift', label: WeiText.ui.gift, fn: openGifts }); }
+    chips.push({ id: 'town', label: WeiText.ui.town, fn: () => window.townTalk && townTalk() },
+      { id: 'guide', label: WeiText.ui.guide, fn: () => { try { (window.parent && window.parent.FBShell ? window.parent.FBShell : window.FBG).guide(); } catch (e) {} } });
+    const usualKey = Bond.lastOrder[mode];
+    if (wei && Bond.level() >= 1 && usualKey && DrinkManifest[usualKey]) chips.push({ id: 'usual', label: WeiText.ui.usual, fn: orderUsual });
+    row.innerHTML = '';
+    chips.forEach(c => {
+      const b = document.createElement('button');
+      b.className = 'chip-btn pixel-btn' + (AppState.uiMode === c.id ? ' active' : '');
+      b.textContent = L(c.label);
+      b.onclick = () => { resetIdle(); SoundEngine.playClick(); c.fn(); };
+      row.appendChild(b);
+    });
+  };
+  /* the host's own "Ask … for something" button opens the same menu */
+  document.addEventListener('click', e => {
+    const b = e.target && e.target.closest && e.target.closest('button'); if (!b || !b.querySelector('#sleep-btn-cats') && b.id !== 'sleep-btn-cats') return;
+    const k = host(); if (!k || k === 'wei') return;
+    e.preventDefault(); e.stopImmediatePropagation(); try { SoundEngine.playClick(); } catch (x) {} menu();
+  }, true);
+  /* the row follows the host as they come and go */
+  /* while a host other than Wei keeps the counter, their own panel (the sleep screen underneath) carries the same row */
+  function place() {
+    const row = document.getElementById('rpg-action-row'), dlg = document.getElementById('rpg-dialogue-screen'), sl = document.getElementById('sleep-mode-screen'); if (!row || !dlg || !sl) return;
+    const k = host(), there = k && k !== 'wei' && !sl.classList.contains('hidden');
+    const home = there ? sl : dlg; if (row.parentElement !== home) home.appendChild(row);
+  }
+  const ss0 = window.showScreen; if (ss0) window.showScreen = function () { const r = ss0.apply(this, arguments); try { place(); } catch (e) {} return r; };
+  let lastK = '';
+  setInterval(() => { const k = host() || ''; if (k !== lastK) { lastK = k; try { renderActionRow(); } catch (e) {} } place(); }, 600);
+  setTimeout(() => { try { renderActionRow(); } catch (e) {} }, 900);
 })();
 </script>
 </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=37e4661fd7" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=895d071b7b" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Your Plot · Nearby</title>
 <meta name="description" content="A piece of land below the railway that's yours: build whatever you like, in any shape and colour, and say what it's for. It stays on your device unless you keep a copy.">
@@ -41,6 +41,7 @@
       <button class="fbb" type="button" id="undo" aria-label="Undo">↩</button>
       <button class="fbb" type="button" id="share"><span aria-hidden="true">↗</span> <span id="shareL">Show someone</span></button>
       <button class="fbb" type="button" id="cloud"><span aria-hidden="true">☁️</span> <span id="cloudL">A copy</span></button>
+      <button class="fbb" type="button" id="room" hidden><span aria-hidden="true">🖼️</span> <span id="roomL">Keepsakes</span></button>
       <button class="fbb fbb-glass" type="button" id="clear"><span aria-hidden="true">🧹</span> <span id="clearL">Clear</span></button>
     </div>
     <span class="yp-k" id="kName">NAME YOUR PLACE</span>
@@ -206,13 +207,43 @@
     b2.onclick = function () { T.secret("plot").then(function (k) { return T.rpc("plot_load", { p_secret: k }); }).then(function (r) { var d = r && r.data; if (d && valid({ c: d.c, s: d.s || [] })) { undo.push(plot.c); plot = { v: 1, n: String(d.n || ""), c: d.c, s: d.s || [] }; nameEl.value = plot.n; save(); sheet.hidden = true; } else msg.textContent = t(S.noCopy); }).catch(function () { msg.textContent = t(S.off); }); };
     var row = el("div", "grid"); row.appendChild(b1); row.appendChild(b2); sb.appendChild(row); sb.appendChild(msg); sheet.hidden = false;
   };
+  /* once the place is built (enough blocks and a door), a room in it can keep what you brought back from your travels in town:
+     stamps from the station, pieces mended in gold, climbs from Hold On, finds from Pine Wood's path, today's card from Paw Reading.
+     All of it stays on this device; the room just shows it. */
+  var KS = {
+    build: ["🏠 Build a room for your keepsakes", "🏠 盖一间放纪念品的房间", "🏠 蓋一間放紀念品的房間", "🏠 Construye una habitación para tus recuerdos", "🏠 Construeix una habitació per als teus records"],
+    room: ["Keepsakes", "纪念品", "紀念品", "Recuerdos", "Records"],
+    title: ["YOUR ROOM", "你的房间", "你的房間", "TU HABITACIÓN", "LA TEVA HABITACIÓ"],
+    empty: ["Nothing yet. Ride the train, mend a bowl, climb, walk in Pine Wood: what you bring back ends up here.", "还没有东西。坐坐火车、修一只碗、去攀岩、在松林里走走：你带回来的都会放在这里。", "還沒有東西。坐坐火車、修一隻碗、去攀岩、在松林裡走走：你帶回來的都會放在這裡。", "Nada aún. Sube al tren, repara un cuenco, escala, pasea por el Pinar: lo que traigas acabará aquí.", "Encara res. Puja al tren, adoba un bol, escala, passeja per la Pineda: el que portis acabarà aquí."],
+    train: ["From the train", "火车上带回的", "火車上帶回的", "Del tren", "Del tren"], mended: ["Mended in gold", "金缮修好的", "金繕修好的", "Reparado con oro", "Adobat amb or"], climbs: ["Climbs", "攀过的岩", "攀過的岩", "Escaladas", "Escalades"], pocket: ["From Pine Wood", "松林里捡的", "松林裡撿的", "Del Pinar", "De la Pineda"], card: ["Today's card", "今天的牌", "今天的牌", "La carta de hoy", "La carta d'avui"]
+  };
+  function filled() { return plot.c.replace(/\./g, "").length; }
+  function hasDoor() { for (var i = 0; i < plot.c.length; i++) { var k = AL.indexOf(plot.c.charAt(i)); if (k >= 0 && (k >> 3) === 2) return true; } return false; }
+  function roomBtn() { var b = document.getElementById("room"), ready = !viewing && filled() >= 30 && hasDoor(); b.hidden = !ready && !plot.room; document.getElementById("roomL").textContent = plot.room ? t(KS.room) : t(KS.build).replace(/^🏠 /, ""); }
+  function arr(k) { var v = keep(k); return Array.isArray(v) ? v : []; }
+  function keep(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
+  function openRoom() {
+    if (!plot.room) { plot.room = true; save(); roomBtn(); }
+    sb.innerHTML = ""; sb.appendChild(el("b", "yp-k", t(KS.title))); var any = false;
+    function shelf(label, items) { if (!items.length) return; any = true; sb.appendChild(el("p", "", label)); var g2 = el("div", "grid"); items.forEach(function (it) { var c = el("div", "fbb"); c.style.cssText = "flex-direction:column;align-items:center;cursor:default;text-align:center;gap:4px;padding:6px"; if (it.img) { var im = document.createElement("img"); im.src = it.img; im.alt = ""; im.style.cssText = "width:64px;height:64px;object-fit:contain;image-rendering:pixelated"; c.appendChild(im); } else c.appendChild(el("span", "", it.ic || "")); c.appendChild(el("span", "", it.t || "")); if (it.s) { var sm = el("small", "", it.s); sm.style.opacity = ".7"; c.appendChild(sm); } g2.appendChild(c); }); sb.appendChild(g2); }
+    shelf(t(KS.train), arr("train_window_stamps_v1").slice(0, 12).map(function (x) { return { ic: "🚃", t: String(x.name || ""), s: String(x.date || "") }; }));
+    shelf(t(KS.mended), arr("kintsugi_studio_shelf_v2").slice(0, 12).map(function (x) { return { img: /^data:image\//.test(x.imageDataUrl || "") ? x.imageDataUrl : "", ic: "🍵", t: String(x.title || x.vesselName || "") }; }));
+    shelf(t(KS.climbs), arr("crag_master_authentic_ascents_v6").slice(0, 12).map(function (x) { return { ic: "🏔️", t: String(x.location || ""), s: (x.height || 0) + " m" }; }));
+    var PK = { chestnut: "🌰", mushroom: "🍄", acorn: "🌰", cone: "🌲", holly: "🌿", violet: "🌸", berry: "🍓", bramble: "🫐", feather: "🪶", owl: "🪶" };
+    shelf(t(KS.pocket), arr("fb_pocket").slice(0, 12).map(function (k) { return { ic: PK[k] || "✦", t: "" }; }));
+    var paw = keep("fb_paw"); if (paw && paw.i != null) shelf(t(KS.card), [{ img: "/nearby/paw-reading/cards/" + (paw.i < 10 ? "0" : "") + paw.i + ".png", t: "" }]);
+    if (!any) sb.appendChild(el("p", "", t(KS.empty)));
+    sheet.hidden = false;
+  }
+  document.getElementById("room").onclick = openRoom;
+  setInterval(roomBtn, 1500);
   /* someone's plot from a link: look, then build your own */
   var view = document.getElementById("view");
   document.getElementById("viewMine").onclick = function () { viewing = null; view.hidden = true; try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} draw(); };
   function words() {
     document.getElementById("kBuild").textContent = t(S.build); document.getElementById("kName").textContent = t(S.nameK); nameEl.placeholder = t(S.namePh);
     document.getElementById("signL").textContent = t(S.sign); document.getElementById("shareL").textContent = t(S.share); document.getElementById("cloudL").textContent = t(S.cloud); document.getElementById("clearL").textContent = t(S.clear);
-    cv.setAttribute("aria-label", t(S.sc)); paintTools();
+    cv.setAttribute("aria-label", t(S.sc)); paintTools(); roomBtn();
     if (viewing) { view.hidden = false; document.getElementById("viewT").textContent = t(S.view, { n: viewing.n || "…" }); document.getElementById("viewMine").textContent = t(S.viewMine); }
   }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };

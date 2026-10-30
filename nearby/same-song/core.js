@@ -222,7 +222,13 @@
     {"id": "h15", "title": "Night Bus Home", "name": "Miso", "house": true, "song": "1.112.3.0.0000000000000400a0240a0200880000.808000002222"},
     {"id": "h16", "title": "Kite over the Meadow", "name": "Yuzu", "house": true, "song": "1.78.2.3.00000001018888100000100000000000.808000002222"},
     {"id": "h17", "title": "Pine Wood Drizzle", "name": "Wei", "house": true, "song": "1.112.1.3.00000000000000000000800108080786.88880808ffff"},
-    {"id": "h18", "title": "Last Light on the Sill", "name": "Yuzu", "house": true, "song": "1.96.3.1.00000000000000000000888000080103.808000002222"}];
+    {"id": "h18", "title": "Last Light on the Sill", "name": "Yuzu", "house": true, "song": "1.96.3.1.00000000000000000000888000080103.808000002222"},
+    /* the hosts' own records: Mei's two, Popo's two, and Wei's for Josep */
+    {"id": "h19", "title": "Glitter on the Counter", "name": "Mei", "house": true, "song": "1.120.0.2.02020820208280201408401100808000.888822220808"},
+    {"id": "h20", "title": "Subway Home, 2 a.m.", "name": "Mei", "house": true, "song": "1.104.3.3.00200202080820808008120040428080.822008082aaa"},
+    {"id": "h21", "title": "Bolero After Closing", "name": "Popo", "house": true, "song": "1.84.2.1.00800220080820028000104004048080.828008080000"},
+    {"id": "h22", "title": "Congee at Six", "name": "Popo", "house": true, "song": "1.78.2.0.00000808222280804001141002408080.800000800000"},
+    {"id": "h23", "title": "Josep's Clock", "name": "Wei", "house": true, "song": "1.88.1.0.00000080022008082002800055558080.808008080000"}];
 
   var off = 0, plays = [], online = false, listeners = [], lastErr = "";
   function now() { return Date.now() + off; }
@@ -272,7 +278,8 @@
 
   function records(limit) {
     return rest("town_song_records?select=id,name,title,song,house,spins,created_at&order=created_at.desc&limit=" + (limit || 60))
-      .then(function (r) { return r && r.length ? r : HOUSE.slice(); }).catch(function () { return HOUSE.slice(); });
+      .then(function (r) { if (!r || !r.length) return HOUSE.slice();   /* the hosts' records always hang on the shelf, even before the server has them */
+        var have = {}; r.forEach(function (x) { have[x.title] = 1; }); return r.concat(HOUSE.filter(function (h) { return !have[h.title] && +h.id.slice(1) > 18; })); }).catch(function () { return HOUSE.slice(); });
   }
   function spin(id, venue) {
     if (String(id).charAt(0) === "h" && id.length < 4) return Promise.reject(new Error("offline"));

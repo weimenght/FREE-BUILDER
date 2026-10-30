@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=37e4661fd7" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=895d071b7b" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Plant a Friend · Nearby</title>
 <meta name="description" content="One endless garden that everyone plants together. Pick a seed, plant it next to someone else's, water what you pass, and come back to see it bloom.">
@@ -31,7 +31,7 @@ button{font:inherit;color:inherit}
 .seed span{font-size:13px;line-height:1;max-width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#e8e2cc}
 .seed[aria-pressed="true"]{background:var(--a);box-shadow:0 0 0 3px #fff,3px 3px 0 #000}.seed[aria-pressed="true"] span{color:#1d130d}
 .card{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:4;width:min(320px,calc(100% - 24px));padding:12px 14px;background:#f6f1e2;color:#2a2418;border:3px solid #000;box-shadow:4px 4px 0 #000;font:15px/1.4 var(--ui);animation:up .25s steps(3)}
-.card b{display:block;font:700 16px var(--ui)}.card small{color:#6a6250}
+.card b{display:block;font:700 16px var(--ui)}.card small{color:#6a6250}.card small.hline{display:block;margin-top:4px;font-style:italic;color:#4a4232}
 .card .row{display:flex;gap:8px;margin-top:10px}.card .row input{flex:1;min-width:0;padding:8px;border:2px solid #000;font:16px var(--ui);background:#fff}.card .who{margin-top:4px;font:14px var(--ui);display:flex;align-items:center;gap:6px}.card .rp{margin-left:auto;margin-right:30px;border:0;background:none;color:#9a8f78;cursor:pointer;font-size:13px}
 .card button.go{padding:8px 14px;border:2px solid #000;background:#7ac4e8;font:700 14px var(--ui);cursor:pointer;box-shadow:2px 2px 0 #000;color:#1d130d}
 .card .x{position:absolute;top:8px;right:8px;width:28px;height:28px;padding:0;border:2px solid #000;background:#fff8e8;color:transparent;cursor:pointer;overflow:hidden}
@@ -97,6 +97,18 @@ html.fbsh-in header.top .sign { display: none !important; }
     ["mushroom", ["Mushroom", "蘑菇", "蘑菇", "Seta", "Bolet"]], ["pumpkin", ["Pumpkin", "南瓜", "南瓜", "Calabaza", "Carbassa"]], ["pond", ["Pond", "池塘", "池塘", "Estanque", "Bassa"], 2], ["stone", ["Stepping stone", "踏石", "踏石", "Piedra", "Pedra"], 2], ["lantern", ["Stone lantern", "石灯笼", "石燈籠", "Farol de piedra", "Fanal de pedra"], 2]
   ];
   var KIND = {}; KINDS.forEach(function (k) { KIND[k[0]] = { n: k[1], tree: k[2] === 1, fixed: k[2] === 2 }; });
+  KIND.lemon = { n: ["Lemon tree", "柠檬树", "檸檬樹", "Limonero", "Llimoner"], tree: true };   /* only Popo's; not in the seed tray */
+
+  /* ---------- the hosts' own plants: kept in the page, never sent, never watered or reported through the server ---------- */
+  var HOST_N = { wei: ["Wei", "Wei", "Wei", "Wei", "Wei"], mei: ["Mei", "Mei", "Mei", "Mei", "Mei"], popo: ["Popo", "婆婆", "婆婆", "Popo", "Popo"], cats: ["Miso & Yuzu", "味噌和柚子", "味噌和柚子", "Miso y Yuzu", "Miso i Yuzu"], mantou: ["Mantou", "馒头", "饅頭", "Mantou", "En Mantou"] };
+  var HOSTP = [
+    { h: "popo", x: 0, y: -6, k: "lemon", age: 1.5e9, line: ["From salt lemon seed, I plant. Lines on the bark is my girls, every summer one.", "咸柠檬的籽，我种的。树皮上的线是我两个女儿，一个夏天一条。", "鹹檸檬嘅核，我自己種㗎。樹皮上面啲線係我兩個女，每年夏天劃一條。", "Semilla de limón salado, yo planto. Rayas en corteza es mis niñas, cada verano una.", "D'un pinyol de llimona salada, el vaig plantar jo. Les ratlles de l'escorça són les meves nenes, una cada estiu."] },
+    { h: "wei", x: -2, y: -5, k: "bamboo", age: 9e6, line: ["I cut one stalk for cocktail stirrers. Popo found out. It's growing back.", "我砍过一根做调酒棒。被婆婆发现了。正在长回来。", "我砍過一根做調酒棒。被婆婆發現了。正在長回來。", "Corté un tallo para hacer agitadores. Popo se enteró. Está volviendo a crecer.", "Vaig tallar una canya per fer remenadors. La Popo se'n va assabentar. Ja torna a créixer."] },
+    { h: "mei", x: 2, y: -5, k: "lavender", age: 2.6e6, line: ["Planted it for the aesthetic. It's thriving. Don't ask who's been watering it (Popo).", "种它是为了好看。长得超好。别问是谁在浇水（婆婆）。", "種它是為了好看。長得超好。別問是誰在澆水（婆婆）。", "La planté por la estética. Está divina. No preguntes quién la riega (Popo).", "La vaig plantar per l'estètica. Està divina. No preguntis qui la rega (la Popo)."] },
+    { h: "cats", x: -1, y: -4, k: "daisy", age: 4e6, line: ["*Yuzu flattens the daisies into a bed. Miso gets in first.* Mrrp.", "*柚子把雏菊压成一张床。味噌抢先躺了进去。* 咕噜。", "*柚子把雛菊壓成一張床。味噌搶先躺了進去。* 咕嚕。", "*Yuzu aplasta las margaritas hasta hacer una cama. Miso se tumba primero.* Mrrp.", "*La Yuzu aixafa les margarides fins a fer-ne un llit. La Miso s'hi estira primer.* Mrrp."] },
+    { h: "mantou", x: 1, y: -4, k: "sunflower", age: 5e6, line: ["*Mantou buries his ball under the sunflower, digs it up, buries it again.* Woof!", "*馒头把球埋在向日葵下面，挖出来，又埋回去。* 汪！", "*饅頭把球埋在向日葵下面，挖出來，又埋回去。* 汪！", "*Mantou entierra su pelota bajo el girasol, la desentierra y la vuelve a enterrar.* ¡Guau!", "*En Mantou enterra la pilota sota el gira-sol, la desenterra i la torna a enterrar.* Bup!"] }
+  ];
+  function hostPlants() { HOSTP.forEach(function (o) { plants[o.x + "," + o.y] = [0, o.x, o.y, o.k, o.age, 0, Date.now(), HOST_N[o.h][L()] || HOST_N[o.h][0], o]; }); }   /* [8] = the host's own */
 
   /* ---------- the database ---------- */
   var cfg = { url: "", key: "" };
@@ -113,7 +125,7 @@ html.fbsh-in header.top .sign { display: none !important; }
 
   /* ---------- the garden in memory: "x,y" -> [id, x, y, kind, age seconds at load, waters, loadedAt] ---------- */
   var plants = {}, loaded = null, total = 0;
-  function put(r) { plants[r[1] + "," + r[2]] = [r[0], r[1], r[2], r[3], r[4], r[5], Date.now(), r[6] || null]; }   /* [7] = who planted it */
+  function put(r) { var o = plants[r[1] + "," + r[2]]; if (o && o[8]) return; plants[r[1] + "," + r[2]] = [r[0], r[1], r[2], r[3], r[4], r[5], Date.now(), r[6] || null]; }   /* [7] = who planted it */
   function age(p) { return p[4] + (Date.now() - p[6]) / 1000; }
   function stage(p) { var e = age(p) * (1 + .25 * p[5]); return KIND[p[3]] && KIND[p[3]].fixed ? 3 : e < 600 ? 0 : e < 21600 ? 1 : e < 172800 ? 2 : 3; }
   function view() { var w = cv.clientWidth / T, h = cv.clientHeight / T; return [Math.floor(cx - w / 2) - 2, Math.floor(cy - h / 2) - 3, Math.ceil(cx + w / 2) + 2, Math.ceil(cy + h / 2) + 2]; }
@@ -147,9 +159,10 @@ html.fbsh-in header.top .sign { display: none !important; }
       P(7, top + 4, 2, 15 - top - 4, "#6a4a2a"); if (tall) P(6, 13, 4, 2, "#5a3a20");
       var lx = 8 - cw / 2 + sway, ly = top - (tall ? 2 : 0);
       if (kind === "pine") { for (var l = 0; l < 3 + tall; l++) { var w = cw - l * (cw / (4 + tall)) * 1.1; P(8 - w / 2 + sway * (l / 3), ly + 8 - l * (3 + tall), w, 3 + tall, l % 2 ? "#2f6a3a" : "#24552e"); } return; }
-      var C = { cherry: s === 3 ? ["#f4b4c8", "#ffd6e2", "#e890a8"] : ["#4a8a44", "#5aa04a", "#3f7a3a"], maple: s === 3 ? ["#d8402a", "#f07a3a", "#a82a1e"] : ["#5a9a3a", "#6aaa4a", "#3f7a3a"], ginkgo: s === 3 ? ["#f2c84a", "#ffe07a", "#d8a830"] : ["#6aaa4a", "#8ac45a", "#4a8a3a"] }[kind] || ["#4a8a44", "#5aa04a", "#3f7a3a"];
+      var C = { cherry: s === 3 ? ["#f4b4c8", "#ffd6e2", "#e890a8"] : ["#4a8a44", "#5aa04a", "#3f7a3a"], maple: s === 3 ? ["#d8402a", "#f07a3a", "#a82a1e"] : ["#5a9a3a", "#6aaa4a", "#3f7a3a"], ginkgo: s === 3 ? ["#f2c84a", "#ffe07a", "#d8a830"] : ["#6aaa4a", "#8ac45a", "#4a8a3a"], lemon: ["#3a7a36", "#4f9444", "#2c6a2c"] }[kind] || ["#4a8a44", "#5aa04a", "#3f7a3a"];
       var ch = [5, 8, 11][tall]; P(lx, ly + 2, cw, ch - 2, C[0]); P(lx + 1, ly, cw - 2, 2, C[0]); P(lx + 2, ly + 1, cw * .4, 2, C[1]); P(lx + cw * .55, ly + ch - 3, cw * .35, 2, C[2]);
       for (var d = 0; d < 4 + tall * 2; d++) P(lx + hash(x * 7 + d, y) * (cw - 1), ly + hash(y + d, x * 3) * (ch - 2), 1, 1, C[1]);
+      if (kind === "lemon" && s >= 2) { for (var lm = 0; lm < 5 + tall; lm++) P(lx + 1 + hash(x * 5 + lm, y, 7) * (cw - 3), ly + 1 + hash(y + lm, x, 9) * (ch - 3), 1.5, 1.5, "#f6dc3a"); P(7, 12, 2, .5, "#3a2412"); P(7, 10.5, 2, .5, "#3a2412"); }   /* lemons, and the girls' heights cut in the bark */
       if (s === 3 && (kind === "cherry" || kind === "ginkgo" || kind === "maple")) for (var pt = 0; pt < 2; pt++) { var py = ((f * .3 + hash(x, y, pt) * 40) % 30) - 6, px = lx + hash(y, x, pt) * cw + Math.sin((f + pt * 20) / 9) * 2; P(px, ly + ch + py * .5, 1, 1, C[1]); }
       return;
     }
@@ -248,10 +261,11 @@ html.fbsh-in header.top .sign { display: none !important; }
     card = document.createElement("div"); card.className = "card"; card.setAttribute("role", "dialog");
     card.innerHTML = '<b></b><small></small><div class="row"></div><button type="button" class="x" aria-label="✕">✕</button>';
     card.querySelector("b").textContent = k.n[L()] || k.n[0];
-    card.querySelector("small").textContent = (k.fixed ? "" : lab + " · ") + ago(age(p)) + (k.fixed || !(p[5] > 0) ? "" : " · " + t("waters"));   /* watered or not, never how many times */
+    card.querySelector("small").textContent = p[8] ? lab : (k.fixed ? "" : lab + " · ") + ago(age(p)) + (k.fixed || !(p[5] > 0) ? "" : " · " + t("waters"));   /* watered or not, never how many times */
     if (p[7]) { var who = document.createElement("div"); who.className = "who"; who.textContent = "🌱 " + t("by").replace("{n}", p[7]); card.insertBefore(who, card.querySelector(".row"));
-      if (p[0]) { var rp = document.createElement("button"); rp.type = "button"; rp.className = "rp"; rp.textContent = "⚑"; rp.title = t("report"); rp.setAttribute("aria-label", t("report")); rp.onclick = function () { rp.disabled = true; api("garden_report_name", { p_secret: key(), p_id: p[0] }).then(function () { rp.textContent = "✓"; }).catch(function () {}); }; who.appendChild(rp); } }
-    if (!k.fixed && p[0]) { var b = document.createElement("button"); b.type = "button"; b.className = "go"; b.textContent = "💧 " + t("water"); b.onclick = function () { b.disabled = true; api("garden_water", { p_secret: key(), p_id: p[0] }).then(function (n) { if (n < 0) toast(t("wateredAlready")); else { p[5] = n; toast("💧 " + t("watered")); chime(784); } closeCard(); }).catch(function () { b.disabled = false; toast(t("offline")); }); }; card.querySelector(".row").appendChild(b); }
+      if (p[8]) { var hl = document.createElement("small"); hl.className = "hline"; hl.textContent = "“" + (p[8].line[L()] || p[8].line[0]) + "”"; card.insertBefore(hl, card.querySelector(".row")); }
+      if (p[0] && !p[8]) { var rp = document.createElement("button"); rp.type = "button"; rp.className = "rp"; rp.textContent = "⚑"; rp.title = t("report"); rp.setAttribute("aria-label", t("report")); rp.onclick = function () { rp.disabled = true; api("garden_report_name", { p_secret: key(), p_id: p[0] }).then(function () { rp.textContent = "✓"; }).catch(function () {}); }; who.appendChild(rp); } }
+    if (!k.fixed && p[0] && !p[8]) { var b = document.createElement("button"); b.type = "button"; b.className = "go"; b.textContent = "💧 " + t("water"); b.onclick = function () { b.disabled = true; api("garden_water", { p_secret: key(), p_id: p[0] }).then(function (n) { if (n < 0) toast(t("wateredAlready")); else { p[5] = n; toast("💧 " + t("watered")); chime(784); } closeCard(); }).catch(function () { b.disabled = false; toast(t("offline")); }); }; card.querySelector(".row").appendChild(b); }
     card.querySelector(".x").onclick = closeCard; field.appendChild(card);
   }
 
@@ -267,7 +281,7 @@ html.fbsh-in header.top .sign { display: none !important; }
     document.title = (window.FBWorld && FBWorld.name) ? FBWorld.name("garden") + " · " + FBWorld.name("map") : document.title;
     $("zin").setAttribute("aria-label", t("zin")); $("zout").setAttribute("aria-label", t("zout")); $("newest").setAttribute("aria-label", t("newest")); $("newest").title = t("newest"); $("tray").setAttribute("aria-label", t("seeds"));
     $("field").setAttribute("aria-label", t("pick"));
-    paintMe();
+    paintMe(); hostPlants();
     var lab = document.querySelector("[data-fbl-label]"); if (lab && window.FBL && FBL.SHORT) lab.textContent = FBL.SHORT[FBL.get() || "en"];
     paintTray();
   }
