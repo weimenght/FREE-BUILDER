@@ -8534,14 +8534,18 @@ document.addEventListener("DOMContentLoaded", function () {
   function reload() { gBefore = cBefore = null; gDone = cDone = false; first = true; one().innerHTML = '<p class="label">' + esc(T('common.loading')) + '</p>'; more(); if (window.WallCards) WallCards.trips(); }
   try { new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) more(); }, { rootMargin: '300px' }).observe(document.getElementById('wall-more')); } catch (e) {}
   Wall.tab = function () { reload(); };
-  Wall.onEnter = function () { if (first || !one().children.length) reload(); else if (window.WallCards) WallCards.trips(); };
+  /* the bricks fill the room down to the dock, however few postcards hang on them */
+  function fit() { const el = one(); if (!el || !el.getClientRects().length) return; const d = document.getElementById('app-dock'), r = d && d.getClientRects().length ? d.getBoundingClientRect() : null, dt = r && r.width > r.height && r.top > innerHeight / 2 ? r.top : innerHeight - 16;   /* a dock along the bottom, or a rail at the side */
+    el.style.minHeight = Math.max(200, Math.round(dt - (el.getBoundingClientRect().top + scrollY) - 12)) + 'px'; }
+  addEventListener('resize', fit); addEventListener('orientationchange', () => setTimeout(fit, 300));
+  Wall.onEnter = function () { if (first || !one().children.length) reload(); else if (window.WallCards) WallCards.trips(); requestAnimationFrame(fit); setTimeout(fit, 400); };
   Wall.paint = function (on) { document.getElementById('wall-paint').classList.toggle('hidden', !on); if (on) SoundEngine.playClick(); };
   const save0 = Wall.saveTag.bind(Wall);
   Wall.saveTag = async function () { if (this.isBlank()) return save0(); await save0(); Wall.paint(false); reload(); };
 })();
 </script>
 <style>
-  .wall-one{display:grid;gap:18px 14px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));padding:18px 14px;border:3px solid #000;box-shadow:inset 0 0 0 3px rgba(0,0,0,.25);background-color:#7a3f2a;background-image:linear-gradient(#5a2c1e 2px,transparent 2px),linear-gradient(90deg,#5a2c1e 2px,transparent 2px),linear-gradient(90deg,#5a2c1e 2px,transparent 2px);background-size:56px 28px,56px 56px,56px 56px;background-position:0 0,0 0,28px 28px;min-height:200px}
+  .wall-one{display:grid;align-content:start;align-items:start;gap:18px 14px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));padding:18px 14px;border:3px solid #000;box-shadow:inset 0 0 0 3px rgba(0,0,0,.25);background-color:#7a3f2a;background-image:linear-gradient(#5a2c1e 2px,transparent 2px),linear-gradient(90deg,#5a2c1e 2px,transparent 2px),linear-gradient(90deg,#5a2c1e 2px,transparent 2px);background-size:56px 28px,56px 56px,56px 56px;background-position:0 0,0 0,28px 28px;min-height:200px}
   .wall-one .hang{transform:rotate(var(--r,0deg));box-shadow:3px 4px 0 rgba(0,0,0,.45);position:relative}
   .wall-one .hang::before{content:"";position:absolute;top:-6px;left:50%;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:#c9c2b4;border:1px solid #000;z-index:2}
   .wall-more{height:1px}
