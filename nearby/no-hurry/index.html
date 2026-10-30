@@ -14,9 +14,9 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:-moz
 .cap{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%);margin:0;padding:6px 12px;color:#fbeedd;font:400 21px/1.2 'VT323',ui-monospace,'PingFang SC','Microsoft YaHei',monospace;text-align:center;text-shadow:2px 2px 0 #000;opacity:0;transition:opacity 2.4s;pointer-events:none;white-space:nowrap}
 .cap.on{opacity:.9}
 .alb{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:rgba(10,6,4,.55)}.alb[hidden]{display:none}
-.alb-b{width:min(380px,100%);padding:16px 16px 12px;background:#efe3c8;color:#2a1d14;border:3px solid #000;box-shadow:6px 6px 0 #000,inset 0 0 0 6px #e4d4b0;font:400 21px/1.25 'VT323','PingFang SC','PingFang TC','Microsoft YaHei',monospace}
+.alb-b{width:min(520px,100%);max-height:calc(100dvh - 24px);overflow:auto;padding:16px 16px 12px;background:#efe3c8;color:#2a1d14;border:3px solid #000;box-shadow:6px 6px 0 #000,inset 0 0 0 6px #e4d4b0;font:400 21px/1.25 'VT323','PingFang SC','PingFang TC','Microsoft YaHei',monospace}
 .alb-b h2{margin:0 0 8px;font:400 10px/1.5 'Press Start 2P',monospace;letter-spacing:.06em;color:#8a3a2a;text-transform:uppercase}
-.alb-b canvas{display:block;width:100%;height:auto;image-rendering:pixelated;border:6px solid #fbf6ea;box-shadow:2px 2px 0 rgba(0,0,0,.35);transform:rotate(-1deg);filter:sepia(.45) saturate(.85)}
+.alb-b canvas{display:block;width:100%;height:auto;image-rendering:auto;border:8px solid #fbf6ea;border-bottom-width:14px;box-shadow:2px 2px 0 rgba(0,0,0,.35);transform:rotate(-1deg)}.alb-b canvas.px{image-rendering:pixelated}.alb.box .alb-n span,.alb.box #albPrev,.alb.box #albNext{visibility:hidden}.alb.box .alb-b{background:#e9dcc0}
 .alb-b p{margin:12px 2px 10px;min-height:52px}
 .alb-n{display:flex;gap:8px;align-items:center}.alb-n span{flex:1;text-align:center;opacity:.6}
 .snd{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:calc(14px + env(safe-area-inset-bottom));width:40px;height:40px;border:2px solid rgba(0,0,0,.6);background:rgba(29,19,13,.55);color:#fbeedd;font-size:18px;cursor:pointer;opacity:.5;transition:opacity .3s}
@@ -29,10 +29,11 @@ canvas#cv{touch-action:none}
 <h1 class="sr" id="h1">No Hurry</h1>
 <canvas id="cv" role="img" aria-label="A view from a cabin window over a high pasture"></canvas>
 <div class="alb" id="alb" role="dialog" aria-modal="true" aria-labelledby="albT" hidden>
-  <div class="alb-b"><h2 id="albT"></h2><canvas id="albC" width="72" height="52" aria-hidden="true"></canvas><p id="albP"></p>
+  <div class="alb-b"><h2 id="albT"></h2><canvas id="albC" width="480" height="340" aria-hidden="true"></canvas><p id="albP"></p>
     <div class="alb-n"><button type="button" id="albPrev" class="fbb" aria-label="‹">‹</button><span id="albI"></span><button type="button" id="albNext" class="fbb" aria-label="›">›</button><button type="button" id="albX" class="fbb">✕</button></div></div>
 </div>
 <button class="snd" id="snd" type="button" data-fb-snd aria-pressed="false">🔈</button>
+<script src="album.js" defer></script>
 <script>
 (function () {
   "use strict";
@@ -40,6 +41,8 @@ canvas#cv{touch-action:none}
   function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
   var T = {
     alb: ["Popo's album", "婆婆的相册", "婆婆嘅相簿", "El álbum de Popo", "L'àlbum de la Popo"],
+    box: ["Popo's box", "婆婆的盒子", "婆婆個盒", "La caja de Popo", "La capsa de la Popo"],
+    wed: ["1970. Plaça Sant Jaume. Rice in my hair one whole week. Josep laugh the whole day.", "1970。圣若梅广场。头发里的米一个星期都没弄干净。Josep 笑了一整天。", "1970。聖若梅廣場。啲米喺頭髮度成個禮拜都未清走。Josep 笑足成日。", "1970. Plaça Sant Jaume. Arroz en mi pelo una semana entera. Josep ríe todo el día.", "1970. La plaça de Sant Jaume. Vaig tenir arròs als cabells una setmana sencera. En Josep va riure tot el dia."],
     radio: ["Josep's radio", "Josep 的收音机", "Josep 部收音機", "La radio de Josep", "La ràdio d'en Josep"],
     album: ["Popo's albums", "婆婆的相册", "婆婆嘅相簿", "Los álbumes de Popo", "Els àlbums de la Popo"],
     snd: ["Sound", "声音", "聲音", "Sonido", "So"]
@@ -105,8 +108,8 @@ canvas#cv{touch-action:none}
       var rx = wx0 + ww * .52; R(rx, ky - ms * 5, ms * 7, ms * 5, "#7a4a28"); R(rx + ms * .6, ky - ms * 4.2, ms * 3, ms * 3.2, "#2a1a10"); for (var gr = 0; gr < 3; gr++) R(rx + ms * .9, ky - ms * (3.9 - gr), ms * 2.4, ms * .3, "#5a3a22");
       R(rx + ms * 4.4, ky - ms * 3.6, ms * 1.6, ms * 1.6, radioOn ? "#f6b73c" : "#c8a870"); R(rx + ms * 6.2, ky - ms * 8, ms * .3, ms * 3, "#2a1a10");
       if (radioOn) for (var nt = 0; nt < 2; nt++) { var tt = ((f * .7 + nt * 30) % 60) / 60; R(rx + ms * (3 + nt * 2) + Math.sin(tt * 6) * ms, ky - ms * 6 - tt * ms * 6, ms * .8, ms * .8, "rgba(255,230,160," + (.8 - tt * .8) + ")"); }
-      var bx = wx0 + ww * .78; R(bx, ky - ms * 3, ms * 8, ms * 3, "#a83a3a"); for (var bl = 0; bl < 8; bl += 2) R(bx + bl * ms, ky - ms * 3, ms, ms * 3, "#c8504a");
-      K = { album: [kx - ms, ky - ms * 7, ms * 8, ms * 8], radio: [rx - ms, ky - ms * 9, ms * 9, ms * 10] };
+      var bx = wx0 + ww * .8; keepBox(bx, ky, ms);
+      K = { album: [kx - ms, ky - ms * 7, ms * 8, ms * 8], radio: [rx - ms, ky - ms * 9, ms * 9, ms * 10], box: [bx - ms, ky - ms * 6, ms * 9, ms * 7] };
     } else if (!(land && wx0 > 40)) K = null;
     var cats = W.cats ? W.cats() : {};
     if ((cats.miso === "cabin" || cats.yuzu === "cabin") && W.drawPet) W.drawPet(g, cats.miso === "cabin" ? "miso" : "yuzu", wx0 + ww * .66, sy, Math.max(1, Math.round(ms / 2.6)), { asleep: night || Math.sin(f / 300) > .2 });   /* a cat on the sill, napping more often than not */
@@ -131,15 +134,20 @@ canvas#cv{touch-action:none}
       try { var spec = W.petSpec ? W.petSpec(q.p) : q.p.kind; W.drawPet(g, spec, x0 + q.x * w, y0 + q.y * h, Math.max(1, Math.round(w / 160)), { flip: q.d < 0, step: Math.floor(q.step), asleep: night }); } catch (e) {}
     });
   }
+  function keepBox(x, y, m) {   /* a little wooden box with a brass clasp: Popo's keepsakes */
+    R(x, y - m * 4, m * 7, m * 4, "#6a3a1e"); R(x, y - m * 4.8, m * 7, m * .9, "#8a5230"); R(x + m * .3, y - m * 3.6, m * 6.4, m * .3, "#4a2612");
+    R(x + m * 3, y - m * 4.4, m, m * 1.4, "#d8b04a"); R(x + m * .5, y - m * 1.2, m * 6, m * .3, "#4a2612");
+  }
   function room(x0, y0, w, h, fr, night) {   /* on a wide screen the wall has room for a shelf and a lantern */
     var lx = Math.round(x0 * .45), ly = y0 + h * .2, sh = Math.max(14, Math.round(x0 * .55));
     R(lx - sh / 2, ly + sh * .5, sh, Math.max(2, fr / 2), "#3a2414");
     for (var b = 0; b < 5; b++) R(lx - sh / 2 + 2 + b * (sh / 6), ly + sh * .5 - (6 + (b % 3) * 2) * fr / 3, sh / 7, (6 + (b % 3) * 2) * fr / 3, ["#8a3a2a", "#3a5a7a", "#c8a24a", "#4a6a3a", "#6a3a6a"][b]);   /* Popo's albums */
     K = { album: [lx - sh / 2, ly + sh * .5 - 10 * fr / 3 - 4, sh, 10 * fr / 3 + 8] };
-    var rdx = PW - lx - fr * 4, rdy = y0 + h * .78, m = fr; R(rdx - fr * 2, rdy + m * 5, fr * 12, Math.max(2, fr / 2), "#3a2414");   /* Josep's radio on a little shelf */
+    var rdx = PW - lx - fr * 4, rdy = y0 + h * .78, m = fr; R(rdx - fr * 11, rdy + m * 5, fr * 21, Math.max(2, fr / 2), "#3a2414");   /* Josep's radio and Popo's box on a little shelf */
     R(rdx, rdy, m * 7, m * 5, "#7a4a28"); R(rdx + m * .6, rdy + m * .8, m * 3, m * 3.2, "#2a1a10"); R(rdx + m * 4.4, rdy + m * 1.4, m * 1.6, m * 1.6, radioOn ? "#f6b73c" : "#c8a870"); R(rdx + m * 6.2, rdy - m * 3, m * .3, m * 3, "#2a1a10");
     if (radioOn) for (var nt = 0; nt < 2; nt++) { var tt = ((f * .7 + nt * 30) % 60) / 60; R(rdx + m * (3 + nt * 2) + Math.sin(tt * 6) * m, rdy - m - tt * m * 6, m * .8, m * .8, "rgba(255,230,160," + (.8 - tt * .8) + ")"); }
     K.radio = [rdx - m, rdy - m * 4, m * 9, m * 10];
+    var kbx = rdx - m * 9; keepBox(kbx, rdy + m * 5, m); K.box = [kbx - m, rdy - m, m * 9, m * 7];
     var rx = PW - lx, ry = y0 + h * .12; R(rx, 0, 1, ry, "#2a1a10"); R(rx - fr, ry, fr * 2 + 1, fr * 3, "#3a2414"); R(rx - fr + 1, ry + 1, fr * 2 - 1, fr * 3 - 2, night ? "#f6b73c" : "#c8a870");
     if (night) { g.fillStyle = "rgba(246,183,60,.07)"; g.beginPath(); g.arc(rx, ry + fr * 1.5, fr * 10, 0, 6.3); g.fill(); }
   }
@@ -156,8 +164,8 @@ canvas#cv{touch-action:none}
   function inK(p, k) { var b = K && K[k]; return b && p.x >= b[0] && p.x <= b[0] + b[2] && p.y >= b[1] && p.y <= b[1] + b[3]; }
   function at(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * PW / r.width, y: (e.clientY - r.top) * PH / r.height }; }
   function hit(p) { if (!G) return null; var best = null; ["mug", "candle", "plant"].forEach(function (k) { var x = G.x0 + G.ww * SILL[k], w = k === "candle" ? G.ms * 3 : G.ms * 5; if (p.x > x - G.ms && p.x < x + w && p.y > G.sy - G.ms * 9 && p.y < G.sy + G.ms * 2) best = k; }); return best; }
-  cv.addEventListener("pointerdown", function (e) { var p = at(e), k = hit(p); if (!k) { if (inK(p, "album")) return openAlbum(); if (inK(p, "radio")) return toggleRadio(); if (inGlass(p)) toggleWindow(); return; } drag = { k: k, dx: p.x - (G.x0 + G.ww * SILL[k]), x0: p.x, moved: false }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} cv.style.cursor = "grabbing"; });
-  cv.addEventListener("pointermove", function (e) { var p = at(e); if (drag) { if (Math.abs(p.x - drag.x0) > 2) drag.moved = true; SILL[drag.k] = Math.max(.02, Math.min(.92, (p.x - drag.dx - G.x0) / G.ww)); draw(); } else cv.style.cursor = hit(p) ? "grab" : inGlass(p) || inK(p, "album") || inK(p, "radio") ? "pointer" : ""; });
+  cv.addEventListener("pointerdown", function (e) { var p = at(e), k = hit(p); if (!k) { if (inK(p, "album")) return openAlbum(); if (inK(p, "box")) return openBox(); if (inK(p, "radio")) return toggleRadio(); if (inGlass(p)) toggleWindow(); return; } drag = { k: k, dx: p.x - (G.x0 + G.ww * SILL[k]), x0: p.x, moved: false }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} cv.style.cursor = "grabbing"; });
+  cv.addEventListener("pointermove", function (e) { var p = at(e); if (drag) { if (Math.abs(p.x - drag.x0) > 2) drag.moved = true; SILL[drag.k] = Math.max(.02, Math.min(.92, (p.x - drag.dx - G.x0) / G.ww)); draw(); } else cv.style.cursor = hit(p) ? "grab" : inGlass(p) || inK(p, "album") || inK(p, "box") || inK(p, "radio") ? "pointer" : ""; });
   ["pointerup", "pointercancel"].forEach(function (ev) { cv.addEventListener(ev, function () { if (!drag) return; if (!drag.moved && drag.k === "candle") flame = !lit(); drag = null; cv.style.cursor = ""; keep(); draw(); }); });
   window.FBCabin = { sill: function () { return G; } };
   function loop(ts) { if (ts - last > 80) { last = ts; f++; openT += ((open ? 1 : 0) - openT) * .18; if (Math.abs(openT - (open ? 1 : 0)) < .01) openT = open ? 1 : 0; draw(); } requestAnimationFrame(loop); }
@@ -199,7 +207,26 @@ canvas#cv{touch-action:none}
   var pg = 0, AL = document.getElementById("alb"), AC2 = document.getElementById("albC"), ag = AC2.getContext("2d");
   function A(x, y, w, h, c) { ag.fillStyle = c; ag.fillRect(x, y, w, h); }
   function person(x, y, hair, coat, small) { var k = small ? .7 : 1; A(x - 2 * k, y - 14 * k, 4 * k, 4 * k, "#f2cfa8"); A(x - 2 * k, y - 15 * k, 4 * k, 2 * k, hair); A(x - 3 * k, y - 10 * k, 6 * k, 7 * k, coat); A(x - 2 * k, y - 3 * k, 1.5 * k, 3 * k, "#2a1d14"); A(x + .5 * k, y - 3 * k, 1.5 * k, 3 * k, "#2a1d14"); }
+  var TONE = { arrive: "bw", clock: "bw", montserrat: "bw", wedding: "bw", sagrada: "faded", noodles: "faded", girls: "faded", tossa: "faded", roof: "faded", olympics: "nineties", mantou: "now", kittens: "now" };
+  function age(tone, key) {   /* the photo's years: grain, light, the chemistry of the time */
+    var Wd = AC2.width, Hd = AC2.height, im = ag.getImageData(0, 0, Wd, Hd), d = im.data, sd = 0; for (var c = 0; c < key.length; c++) sd = sd * 31 + key.charCodeAt(c) | 0;
+    function rnd() { sd = sd + 0x6D2B79F5 | 0; var t = Math.imul(sd ^ sd >>> 15, 1 | sd); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+    var grain = { bw: 26, faded: 14, nineties: 8, now: 3 }[tone] || 10;
+    for (var y = 0; y < Hd; y++) for (var x = 0; x < Wd; x++) {
+      var o = (y * Wd + x) * 4, r = d[o], g2 = d[o + 1], b = d[o + 2], dx = x / Wd - .5, dy = y / Hd - .5, vig = 1 - Math.min(.45, (dx * dx + dy * dy) * (tone === "now" ? .5 : 1.25)), n = (rnd() - .5) * grain;
+      if (tone === "bw") { var Y = .3 * r + .59 * g2 + .11 * b; Y = (Y - 128) * 1.12 + 128; Y = Y * vig + n; r = Y * 1.04 + 6; g2 = Y + 2; b = Y * .93; }
+      else if (tone === "faded") { r = r * .86 + 38; g2 = g2 * .8 + 28; b = b * .7 + 30; var m = (r + g2 + b) / 3; r = (r * .78 + m * .22) * vig + n; g2 = (g2 * .78 + m * .22) * vig + n; b = (b * .78 + m * .22) * vig + n; }
+      else if (tone === "nineties") { r = r * .94 + 14; g2 = g2 * .92 + 10; b = b * .88 + 12; r = r * vig + n; g2 = g2 * vig + n; b = b * vig + n; }
+      else { r = r * vig + n; g2 = g2 * vig + n; b = b * vig + n; }
+      d[o] = r; d[o + 1] = g2; d[o + 2] = b;
+    }
+    ag.putImageData(im, 0, 0);
+    if (tone === "bw" || tone === "faded") { ag.strokeStyle = "rgba(255,250,235,.22)"; ag.lineWidth = 1; for (var sc = 0; sc < 3; sc++) { var x0 = rnd() * Wd; ag.beginPath(); ag.moveTo(x0, rnd() * 40); ag.lineTo(x0 + (rnd() - .5) * 20, Hd - rnd() * 40); ag.stroke(); } }
+  }
   function photo(key) {
+    var PP = window.POPO_PHOTOS || {}; AC2.classList.toggle("px", !PP[key]);
+    if (PP[key]) { AC2.width = 480; AC2.height = 340; ag.save(); try { PP[key](ag, 480, 340); } catch (e) {} ag.restore(); age(TONE[key] || "faded", key); return; }
+    AC2.width = 72; AC2.height = 52;
     var i = ["arrive", "clock", "noodles", "girls", "roof", "mantou", "kittens", "empty"].indexOf(key);
     var Wd = 72, Hd = 52; A(0, 0, Wd, Hd, "#cfc2a4");
     if (key === "montserrat") { A(0, 0, Wd, 34, "#c4ccd4"); var sp = [[6, 18, 7], [12, 10, 6], [18, 6, 7], [25, 12, 6], [31, 8, 7], [38, 14, 6], [44, 9, 7], [51, 16, 6], [57, 12, 7], [64, 20, 8]]; sp.forEach(function (q) { A(q[0], q[1] + 2, q[2], 40 - q[1], "#b89a88"); A(q[0] + 1, q[1], q[2] - 2, 2, "#b89a88"); A(q[0] + 1, q[1] + 3, 1, 30 - q[1], "#a08070"); }); A(0, 38, Wd, 14, "#8a9a6a"); A(20, 34, 26, 8, "#d8ccb4"); A(22, 36, 3, 4, "#8a7a6a"); A(28, 36, 3, 4, "#8a7a6a"); A(34, 36, 3, 4, "#8a7a6a"); A(40, 32, 4, 10, "#d8ccb4"); for (var cl = 0; cl < 40; cl++) A(30 + cl, 30 - cl * .6, 1, 1, "#3a2a1c"); A(48, 15, 6, 5, "#b83a3a"); A(50, 17, 2, 1, "#f6e8c8"); A(51, 13, 1, 2, "#3a2a1c"); }
@@ -215,8 +242,10 @@ canvas#cv{touch-action:none}
     if (i === 6) { A(0, 0, Wd, Hd, "#c8b898"); A(26, 30, 22, 14, "#b8905a"); A(26, 30, 22, 2, "#8a6a3a"); A(29, 35, 16, 3, "#e8dcc4"); if (W.drawPet) { W.drawPet(ag, "miso", 32, 32, 1, {}); W.drawPet(ag, "yuzu", 43, 32, 1, { flip: true }); } person(14, 48, "#1a1410", "#e0a043", true); }
     if (i === 7) { A(0, 0, Wd, Hd, "#efe3c8"); for (var d = 4; d < Wd - 4; d += 4) { A(d, 4, 2, 1, "#a89878"); A(d, Hd - 5, 2, 1, "#a89878"); } for (var e = 4; e < Hd - 4; e += 4) { A(4, e, 1, 2, "#a89878"); A(Wd - 5, e, 1, 2, "#a89878"); } }
   }
-  function showPage() { var i = L(); document.getElementById("albT").textContent = T.alb[i]; document.getElementById("albP").textContent = PAGES[pg][i]; document.getElementById("albI").textContent = (pg + 1) + " / " + PAGES.length; photo(PAGES[pg][5]); document.getElementById("albPrev").disabled = pg === 0; document.getElementById("albNext").disabled = pg === PAGES.length - 1; }
-  function openAlbum() { pg = 0; AL.hidden = false; showPage(); setTimeout(function () { document.getElementById("albNext").focus(); }, 30); }
+  function showPage() { if (AL.classList.contains("box")) return openBox(); var i = L(); document.getElementById("albT").textContent = T.alb[i]; document.getElementById("albP").textContent = PAGES[pg][i]; document.getElementById("albI").textContent = (pg + 1) + " / " + PAGES.length; photo(PAGES[pg][5]); document.getElementById("albPrev").disabled = pg === 0; document.getElementById("albNext").disabled = pg === PAGES.length - 1; }
+  /* Popo's keepsake box beside the radio: inside, the one framed photo, their wedding */
+  function openBox() { AL.classList.add("box"); AL.hidden = false; var i = L(); document.getElementById("albT").textContent = T.box[i]; document.getElementById("albP").textContent = T.wed[i]; photo("wedding"); setTimeout(function () { document.getElementById("albX").focus(); }, 30); }
+  function openAlbum() { AL.classList.remove("box"); pg = 0; AL.hidden = false; showPage(); setTimeout(function () { document.getElementById("albNext").focus(); }, 30); }
   function closeAlbum() { AL.hidden = true; }
   document.getElementById("albPrev").onclick = function () { if (pg > 0) { pg--; showPage(); } };
   document.getElementById("albNext").onclick = function () { if (pg < PAGES.length - 1) { pg++; showPage(); } };
@@ -230,21 +259,52 @@ canvas#cv{touch-action:none}
     { n: "El cant dels ocells", beat: .55, w: "sine", m: [[71, 1], [71, 1], [72, 1], [71, 1], [69, 1], [67, 1], [69, 2], [71, 1], [67, 2], [66, 1], [64, 3], [67, 1], [69, 1], [71, 1], [72, 2], [74, 1], [72, 1], [71, 1], [69, 1], [71, 3]] },
     { n: "Muntanyes del Canigó", beat: .45, w: "triangle", m: [[62, 1], [67, 2], [67, 1], [69, 1], [71, 1], [72, 1], [71, 2], [69, 1], [67, 3], [67, 1], [69, 2], [71, 1], [72, 2], [74, 1], [72, 1], [71, 1], [69, 1], [67, 3]] },
     { n: "El noi de la mare", beat: .5, w: "sine", m: [[69, 1], [74, 2], [74, 1], [76, 1], [78, 1], [76, 1], [74, 3], [73, 1], [71, 2], [73, 1], [74, 1], [76, 1], [74, 1], [73, 3]] },
-    { n: "El rossinyol", beat: .45, w: "triangle", m: [[67, 1], [72, 2], [72, 1], [71, 1], [72, 1], [74, 1], [76, 2], [74, 1], [72, 3], [76, 1], [77, 2], [76, 1], [74, 1], [72, 1], [71, 1], [72, 3]] }
+    { n: "El rossinyol", beat: .45, w: "triangle", m: [[67, 1], [72, 2], [72, 1], [71, 1], [72, 1], [74, 1], [76, 2], [74, 1], [72, 3], [76, 1], [77, 2], [76, 1], [74, 1], [72, 1], [71, 1], [72, 3]] },
+    { n: "El testament d'Amèlia", beat: .5, w: "sine", m: [[64, 1], [69, 2], [69, 1], [71, 1], [72, 1], [71, 1], [69, 3], [67, 1], [65, 2], [64, 1], [62, 1], [64, 1], [65, 1], [64, 3]] },
+    { n: "La dama d'Aragó", beat: .42, w: "triangle", m: [[64, 1], [64, 1], [69, 2], [71, 1], [72, 2], [71, 1], [69, 2], [68, 1], [69, 3], [72, 1], [74, 2], [72, 1], [71, 2], [69, 1], [68, 3]] },
+    { n: "Baixant de la font del gat", beat: .36, w: "square", m: [[67, 1], [72, 1], [72, 1], [72, 1], [74, 1], [76, 2], [76, 1], [74, 1], [72, 1], [74, 1], [76, 1], [77, 2], [76, 2], [74, 1], [72, 3]] },
+    { n: "Rossinyol que vas a França", beat: .48, w: "sine", m: [[69, 1], [72, 2], [71, 1], [69, 1], [71, 1], [72, 1], [74, 2], [72, 1], [71, 3], [69, 1], [67, 2], [69, 1], [71, 1], [69, 1], [67, 1], [69, 3]] },
+    { n: "La filla del Carmesí", beat: .5, w: "triangle", m: [[62, 1], [67, 2], [67, 1], [69, 1], [71, 2], [69, 1], [67, 1], [66, 1], [67, 3], [71, 1], [72, 2], [74, 1], [72, 1], [71, 1], [69, 1], [67, 3]] }
   ];
+  /* now and then the radio plays a cassette instead: Popo and Josep, recorded at home in the seventies (Catalan, the device's own voice) */
+  var TAPES = [
+    [["j", "Ja grava? Ja grava. Popo, digues alguna cosa."], ["p", "Què dic? Què dic? … Bon dia, Barcelona!"], ["j", "Molt bé. Molt bé."]],
+    [["p", "Josep, el rellotge va lent."], ["j", "Ja ho sé. Així les hores bones duren més."], ["p", "Tonto."]],
+    [["j", "Què hi ha per sopar?"], ["p", "Sopa. Sempre sopa. Seu."], ["j", "Sempre sopa. Sempre bona."]],
+    [["p", "Josep, com es diu lemon en català?"], ["j", "Llimona."], ["p", "Llimona… llimona! Ja ho sé."]],
+    [["j", "Popo, balles?"], ["p", "Ara? A la cuina?"], ["j", "On, si no?"]]
+  ];
+  try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = function () {}; } catch (e) {}
+  function voice() { try { var vs = speechSynthesis.getVoices(); return vs.filter(function (v) { return /^ca/i.test(v.lang); })[0] || vs.filter(function (v) { return /^es/i.test(v.lang); })[0] || null; } catch (e) { return null; } }
+  function soundOff() { try { return localStorage.getItem("fb_sound") === "0"; } catch (e) { return false; } }
+  function tape(done) {
+    var v = voice(); if (!v || soundOff() || window.__fbAsleep || !window.speechSynthesis) return done();
+    var lines = TAPES[(Math.random() * TAPES.length) | 0], i = 0;
+    (function say() { if (!radioOn || i >= lines.length) return done(); var l = lines[i++], u = new SpeechSynthesisUtterance(l[1]); u.voice = v; u.lang = v.lang; u.pitch = l[0] === "p" ? 1.45 : .75; u.rate = l[0] === "p" ? 1.05 : .92; u.volume = .7;
+      u.onend = function () { setTimeout(say, 350); }; u.onerror = function () { done(); }; speechSynthesis.speak(u); })();
+  }
+  function tuning(t) {   /* turning the dial: hiss, a whistle sliding past stations, a click */
+    var len = (RAC.sampleRate * 1.3) | 0, bf = RAC.createBuffer(1, len, RAC.sampleRate), dd = bf.getChannelData(0); for (var j = 0; j < len; j++) dd[j] = (Math.random() * 2 - 1) * .5;
+    var ns = RAC.createBufferSource(), bp = RAC.createBiquadFilter(), ng = RAC.createGain(); ns.buffer = bf; bp.type = "bandpass"; bp.Q.value = 3; bp.frequency.setValueAtTime(600, t); bp.frequency.exponentialRampToValueAtTime(2600, t + .6); bp.frequency.exponentialRampToValueAtTime(900, t + 1.2);
+    ng.gain.setValueAtTime(0, t); ng.gain.linearRampToValueAtTime(.5, t + .1); ng.gain.linearRampToValueAtTime(.35, t + .9); ng.gain.linearRampToValueAtTime(0, t + 1.3); ns.connect(bp); bp.connect(ng); ng.connect(rG); ns.start(t); ns.stop(t + 1.3);
+    var o = RAC.createOscillator(), og = RAC.createGain(); o.type = "sine"; o.frequency.setValueAtTime(1800, t + .2); o.frequency.exponentialRampToValueAtTime(420, t + .7); o.frequency.exponentialRampToValueAtTime(1300, t + 1.1);
+    og.gain.setValueAtTime(0, t + .2); og.gain.linearRampToValueAtTime(.12, t + .3); og.gain.linearRampToValueAtTime(0, t + 1.15); o.connect(og); og.connect(rG); o.start(t + .2); o.stop(t + 1.2);
+    return t + 1.4;
+  }
   function hush(on) { window.FB_HUSH = on; if (on) stopSound(); else if (snd.getAttribute("aria-pressed") === "true") startSound(); }
   function toggleRadio() {
     radioOn = !radioOn;
-    if (!radioOn) { clearTimeout(rT); if (rG) try { rG.gain.setTargetAtTime(0, RAC.currentTime, .2); } catch (e) {} hush(false); return; }
+    if (!radioOn) { clearTimeout(rT); try { speechSynthesis.cancel(); } catch (e) {} if (rG) try { rG.gain.setTargetAtTime(0, RAC.currentTime, .2); } catch (e) {} hush(false); return; }
     hush(true);
     try { RAC = RAC || new (window.AudioContext || window.webkitAudioContext)(); if (RAC.state === "suspended") RAC.resume(); rG = RAC.createGain(); rG.gain.value = .07; var lp = RAC.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1900; rG.connect(lp); lp.connect(RAC.destination);
       (function play(t) {
         if (!radioOn) return; var k; do { k = (Math.random() * TUNES.length) | 0; } while (k === lastTune && TUNES.length > 1); lastTune = k;
-        var T0 = TUNES[k], beat = T0.beat, t1 = t;
-        for (var c = 0; c < 6; c++) { var cr = RAC.createBufferSource(), bf = RAC.createBuffer(1, 400, RAC.sampleRate), dd = bf.getChannelData(0); for (var j = 0; j < 400; j++) dd[j] = (Math.random() * 2 - 1) * (1 - j / 400) * .3; cr.buffer = bf; cr.connect(rG); cr.start(t + c * .13); }   /* the dial's crackle between pieces */
-        t1 += .9;
+        var T0 = TUNES[k], beat = T0.beat, t1 = tuning(Math.max(t, RAC.currentTime + .05));
         T0.m.forEach(function (n) { var o = RAC.createOscillator(), gg = RAC.createGain(); o.type = T0.w; o.frequency.value = 440 * Math.pow(2, (n[0] - 69) / 12); gg.gain.setValueAtTime(0, t1); gg.gain.linearRampToValueAtTime(1, t1 + .04); gg.gain.exponentialRampToValueAtTime(.001, t1 + n[1] * beat * .95); o.connect(gg); gg.connect(rG); o.start(t1); o.stop(t1 + n[1] * beat); t1 += n[1] * beat; });
-        rT = setTimeout(function () { play(t1 + beat * 2); }, (t1 - RAC.currentTime) * 1000 - 200);
+        rT = setTimeout(function () {
+          if (Math.random() < .3) { var tt = tuning(RAC.currentTime + .05); rT = setTimeout(function () { tape(function () { if (radioOn) play(RAC.currentTime + .2); }); }, (tt - RAC.currentTime) * 1000); }   /* a cassette now and then */
+          else play(t1 + beat * 2);
+        }, (t1 - RAC.currentTime) * 1000 - 200);
       })(RAC.currentTime + .1);
     } catch (e) {}
   }
