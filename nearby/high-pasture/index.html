@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=a3f1108e9a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0ece775e51" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=fa844c9bf7"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0ece775e51" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>High Pasture · Nearby</title>
 <meta name="description" content="A high pasture above the town. Walk the dog and the flock drifts home to the pen: sheep, and some days a goat, a cow or an alpaca. Alone, or with a friend as the second shepherd.">
@@ -133,7 +133,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     var sleepy = night();
     /* Mantou */
     if (sleepy) { dog.x += (pen.x - 10 - dog.x) * .05; dog.y += (pen.y + pen.h + 6 - dog.y) * .05; }
-    else { var dx = ptr.x - dog.x, dy = ptr.y - dog.y, d = Math.hypot(dx, dy); if (d > 1.5) { var sp = Math.min(d * .14, 2.05); dog.vx = dx / d * sp; dog.vy = dy / d * sp; dog.x += dog.vx; dog.y += dog.vy; if (Math.abs(dog.vx) > .15) dog.face = dog.vx > 0 ? 1 : -1; dog.step += sp * .35; if (time % 7 === 0 && sp > 1.1) parts.push({ x: dog.x, y: dog.y + 2, vx: -dog.vx * .2, vy: -.2, life: 16, t: "dust" }); } collide(dog, 5); }
+    else { var dx = ptr.x - dog.x, dy = ptr.y - dog.y, d = Math.hypot(dx, dy); if (d > 1.5) { var ex = Math.max(Math.abs(ptr.x - GW / 2) / (GW / 2), Math.abs(ptr.y - GH / 2) / (GH / 2)), sp = Math.min(d * .14, 2.05 * (1 + .8 * ex * ex));   /* a finger near the edge: the dog runs */ dog.vx = dx / d * sp; dog.vy = dy / d * sp; dog.x += dog.vx; dog.y += dog.vy; if (Math.abs(dog.vx) > .15) dog.face = dog.vx > 0 ? 1 : -1; dog.step += sp * .35; if (time % 7 === 0 && sp > 1.1) parts.push({ x: dog.x, y: dog.y + 2, vx: -dog.vx * .2, vy: -.2, life: 16, t: "dust" }); } collide(dog, 5); }
     if (mate) { mate.x += (mate.tx - mate.x) * .25; mate.y += (mate.ty - mate.y) * .25; if (Date.now() - mate.t > 12000) mate = null; }
     var host = !duo || !duo.peer() || duo.host(), pennedNow = 0;
     if (host && !sleepy) {

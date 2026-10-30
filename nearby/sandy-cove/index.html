@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=a3f1108e9a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0ece775e51" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=fa844c9bf7"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0ece775e51" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Sandy Cove · Nearby</title>
 <meta name="description" content="Row a little boat around the cove. Lanterns drift on the water; gather a few and let them go. Alone, or with a friend in the next boat.">
@@ -122,7 +122,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
       if (keys.ArrowUp || keys.KeyW) thrust += .015; if (keys.ArrowDown || keys.KeyS) thrust -= .008;
       if (keys.ArrowLeft || keys.KeyA) turn -= .0045; if (keys.ArrowRight || keys.KeyD) turn += .0045;
       if (ptr.on) { var sx = boat.x - cam.x + width / 2, sy = boat.y - cam.y + height / 2, dx = ptr.x - sx, dy = ptr.y - sy, d = Math.hypot(dx, dy);
-        if (d > 6) { var diff = Math.atan2(dy, dx) - boat.a; while (diff < -Math.PI) diff += 6.283; while (diff > Math.PI) diff -= 6.283; turn += Math.max(-.005, Math.min(.005, diff * .018)); thrust += Math.min(.015, d * .00045); } }
+        if (d > 6) { var diff = Math.atan2(dy, dx) - boat.a; while (diff < -Math.PI) diff += 6.283; while (diff > Math.PI) diff -= 6.283; turn += Math.max(-.005, Math.min(.005, diff * .018)); var ex = Math.max(Math.abs(ptr.x - width / 2) / (width / 2), Math.abs(ptr.y - height / 2) / (height / 2)); thrust += Math.min(.015 * (1 + .9 * ex * ex), d * .00045); }   /* a finger near the edge: you pull harder */ }
     } else if (ptr.on || keys.ArrowUp || keys.KeyW) setAnchor(false);   /* rowing again lifts the anchor */
     boat.va = (boat.va + turn) * .86; boat.a += boat.va;
     boat.vx += Math.cos(boat.a) * thrust; boat.vy += Math.sin(boat.a) * thrust;
