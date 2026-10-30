@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=a2f461fe2c"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=d743c38ec5" defer></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=a2f461fe2c"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=42d601a782" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -876,6 +876,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <div class="stage-sign" aria-hidden="true">營業中</div>
               <div class="shelf" style="top:46px"><span id="shelf-icon-left">🍾🍷🍸🍶</span><span id="cellar-banner-text" class="font-retro text-[13px] text-[var(--muted)] tracking-widest"></span><span id="shelf-icon-right">🥃🍹🍵☕</span></div>
               <div class="shelf" style="top:88px"><span id="shelf-row-2">🫙📻🪴</span><span>🎞️🕯️📚</span></div>
+              <button type="button" id="nd-tin" onclick="NDTin()" aria-label="Popo's tin" title="Popo's tin"></button>
 
               <button id="bond-badge" hidden onclick="tapBondBadge()" class="absolute left-2 top-2 z-20 px-2 py-1 rounded-md font-retro text-[14px] leading-none" style="background:rgba(12,8,6,.8);border:1px solid var(--line)">
                 <span class="flex items-center gap-1"><span id="bond-hearts" class="text-[#f08a7a]">♥♡♡♡♡</span><span id="bond-level-name" class="text-[var(--amber-2)]"></span></span>
@@ -1133,6 +1134,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <!-- one wall: graffiti and postcards hang together, as far back as anyone has painted -->
           <div class="flex flex-wrap items-center gap-2 mb-3">
             <button class="btn btn-amber" type="button" onclick="Wall.paint(true)">🎨 <span data-t="wall.paint">Paint</span></button>
+            <button class="btn" type="button" id="wall-meet" onclick="try{parent.FBShell.meet()}catch(e){}" hidden>🤝 <span id="wall-meet-l">Meet someone</span></button>
             <a class="btn" href="/nearby/say-hello/?to=bar">✍️ <span data-t="wall.writeCard">Write a postcard</span></a>
           </div>
           <div id="wall-one" class="wall-one"></div>
@@ -8972,6 +8974,23 @@ document.addEventListener("DOMContentLoaded", function () {
   function catTap(id) { try { SoundEngine.playMeow(id === 'miso' ? .9 : 1.3); } catch (e) {} try { Cats.anim(id, 'wiggle'); } catch (e) {} const l = CR[id]; panelSay(L(l[Math.floor(Math.random() * l.length)])); }
   function patchCats() { if (typeof Cats === 'undefined') return setTimeout(patchCats, 300); Cats.open = function (id) { catTap(id); }; Cats.say = function () {}; Cats.closeCard = Cats.closeCard || function () {}; }
   patchCats();
+})();
+</script>
+<script>
+/* Popo's blue biscuit tin sits on the lower shelf behind the counter: tap it to open it (what you've found, her story).
+   Meeting someone happens at the Wall, among the graffiti and the postcards (Wei's introductions, in the shell). */
+(function () {
+  const S = (en, zh, tw, es, ca) => lx([en, zh, tw, tw, es, ca]);
+  const TIN = S("Popo's tin", "婆婆的饼干罐", "婆婆的曲奇罐", "La lata de Popo", "La llauna de la Popo"), MEET = S("Meet someone", "认识个人", "認識個人", "Conoce a alguien", "Coneix algú");
+  const st = document.createElement('style');
+  st.textContent = '#nd-tin{position:absolute;top:92px;left:47%;z-index:5;width:26px;height:24px;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(1px 2px 0 rgba(0,0,0,.6))}#nd-tin svg{width:100%;height:100%;image-rendering:pixelated}#nd-tin:hover{transform:translateY(-1px)}#nd-tin:focus-visible{outline:2px solid var(--amber,#f6b73c);outline-offset:2px}';
+  document.head.appendChild(st);
+  const tin = document.getElementById('nd-tin'); try { tin.innerHTML = FBWorld.pix('tin'); } catch (e) {}
+  window.NDTin = function () { try { (window.FBTale || parent.FBTale).tin(); } catch (e) {} };
+  function words() { tin.setAttribute('aria-label', L(TIN)); tin.title = L(TIN); const m = document.getElementById('wall-meet-l'); if (m) m.textContent = L(MEET); }
+  let shell = null; try { shell = parent !== window && parent.FBShell && parent.FBShell.meet ? parent.FBShell : null; } catch (e) {}
+  const wm = document.getElementById('wall-meet'); if (wm && shell) wm.hidden = false;
+  words(); addEventListener('fbl:lang', words); setInterval(words, 4000);
 })();
 </script>
 </body>
