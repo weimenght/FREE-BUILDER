@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=c4017fe60d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=a0c39757b4" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=a3f1108e9a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0ece775e51" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Pine Wood · Nearby</title>
 <meta name="description" content="A slow walk under the pines. Stone lanterns, mist, fireflies, and sometimes a cat on the path. Alone, or with a friend somewhere else on the same path.">
@@ -140,7 +140,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
         ctx.fillStyle = night ? "#3a3028" : "#8a6a44"; ctx.fillRect(x0 - 6, GY - 1, 13, 2); ctx.fillStyle = night ? "#2a221c" : "#5e4a36"; ctx.fillRect(x0 - 6, GY + 1, 13, 1); ctx.fillRect(x0 - 5, GY + 2, 1, 2); ctx.fillRect(x0 + 5, GY + 2, 1, 2); }
     }
     /* a squirrel crossing the path, now and then, by day */
-    if (!night && !wet && !snow) { var sq = squirrel; if (!sq.on && Math.random() < .002) { sq.on = 1; sq.x = Math.random() < .5 ? -6 : W + 6; sq.v = sq.x < 0 ? 1 : -1; sq.stop = W * (.2 + Math.random() * .6); sq.wait = 0; }
+    if (!night && !wet && !snow) { var sq = squirrel; if (!sq.on && Math.random() < .006) { sq.on = 1; sq.x = Math.random() < .5 ? -6 : W + 6; sq.v = sq.x < 0 ? 1 : -1; sq.stop = W * (.2 + Math.random() * .6); sq.wait = 0; }
       if (sq.on) { if (sq.wait > 0) sq.wait -= .016; else { sq.x += sq.v * 1.4; if (Math.abs(sq.x - sq.stop) < 1.5 && sq.stop) { sq.wait = 1.2 + Math.random(); sq.stop = 0; } } if (sq.x < -10 || sq.x > W + 10) sq.on = 0;
         var hop = sq.wait > 0 ? 0 : Math.abs(Math.sin(time * 14)) * 2, X = Math.round(sq.x), Y = GY - 1 - Math.round(hop); ctx.fillStyle = "#a8582a"; ctx.fillRect(X - 2, Y - 2, 4, 2); ctx.fillRect(X + (sq.v > 0 ? 1 : -2), Y - 4, 2, 2); ctx.fillRect(X - 1 - sq.v * 3, Y - 5, 2, 4); ctx.fillRect(X - 2 - sq.v * 3, Y - 6, 2, 2); ctx.fillStyle = "#111"; ctx.fillRect(X + (sq.v > 0 ? 2 : -2), Y - 4, 1, 1); } }
   }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=c4017fe60d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=a0c39757b4" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=a3f1108e9a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0ece775e51" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Snow Peaks · Nearby</title>
 <meta name="description" content="Fresh snow and a long slope. Carve your own line through the pines, alone or next to a friend.">
@@ -83,7 +83,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     if (decos[r]) return decos[r];
     var out = [], q = function (k) { return h2(r, 900 + k); };
     for (var i = 0; i < 1 + (q(1) * 3 | 0); i++) out.push({ k: "tuft", x: (q(10 + i) - .5) * 560, d: r * ROW + q(30 + i) * ROW, v: q(50 + i) });
-    if (q(2) < .22) { var tx = (q(3) - .5) * 400, dir = q(4) < .5 ? -1 : 1, fox = q(5) < .35; for (var j = 0; j < 14; j++) out.push({ k: fox ? "fox" : "hare", x: tx + dir * j * 7, d: r * ROW + q(6) * ROW + j * (q(7) - .5) * 3, v: j }); }
+    if (q(2) < .4) { var tx = (q(3) - .5) * 400, dir = q(4) < .5 ? -1 : 1, fox = q(5) < .35; for (var j = 0; j < 14; j++) out.push({ k: fox ? "fox" : "hare", x: tx + dir * j * 7, d: r * ROW + q(6) * ROW + j * (q(7) - .5) * 3, v: j }); }
     if (r > 4 && r % 9 === 0) [-1, 1].forEach(function (sd) { out.push({ k: "pole", x: sd * (70 + q(8) * 20), d: r * ROW + 6 }); });
     if (q(11) < .12) out.push({ k: "stump", x: (q(12) - .5) * 480, d: r * ROW + q(13) * ROW });
     if (r > 8 && q(14) < .025) out.push({ k: "snowman", x: (q(15) - .5) * 300, d: r * ROW + q(16) * ROW, v: q(17) });
