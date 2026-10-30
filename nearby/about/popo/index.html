@@ -82,6 +82,7 @@ html:lang(und) .col p{white-space:pre-line;font-size:26px;line-height:1.55}
 footer{margin-top:44px;padding:16px 0 calc(22px + env(safe-area-inset-bottom));border-top:2px dashed rgba(251,238,221,.14);text-align:center;color:rgba(251,238,221,.5);font-size:.85em}
 footer nav{display:flex;justify-content:center;gap:6px 18px;flex-wrap:wrap}footer a{text-decoration:none}footer a:hover{color:var(--cream)}
 footer p{margin:8px 0 0;opacity:.8}
+html.inshell .sign{visibility:hidden}html.inshell #fTown{display:none}
 .rv{opacity:0;translate:0 14px;transition:opacity .6s ease,translate .6s ease}.rv.in{opacity:1;translate:0 0}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;translate:none;transition:none}.steam{animation:none;opacity:.5}}
 </style>
@@ -134,6 +135,11 @@ footer p{margin:8px 0 0;opacity:.8}
   <footer><nav><a href="/nearby/" id="fTown"></a><a href="/nearby/about/" id="fWhy"></a><a href="/privacy/" id="fPriv"></a></nav><p id="foot"></p></footer>
 </div>
 <script>
+/* opened from Wei inside the town: the shell's top bar names the page, and links go through the shell, never a town inside the town */
+(function () { var sh = null; try { sh = window.parent !== window && window.parent.FBShell; } catch (e) {} if (!sh) return;
+  document.documentElement.classList.add("inshell");
+  document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("a[href^='/nearby/']"); if (!a) return; e.preventDefault(); var h = a.getAttribute("href"); if (h === "/nearby/") sh.close(); else sh.open(h); });
+})();
 /* One language at a time, and with it who tells the story: Popo (Cantonese, Catalan), Wei (Simplified Chinese, Spanish),
    Mei (Traditional Chinese, English), or Miso, Yuzu & Mantou (emoji). Kept on the device; ?l=yue|ca|zh|es|tw|en|emo sets it. */
 (function () {
@@ -148,7 +154,7 @@ footer p{margin:8px 0 0;opacity:.8}
   function esc(t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
   var q = new URLSearchParams(location.search).get("l"), pref = (g("wm_preferred_lang", "") || navigator.language || "").toLowerCase();
   var lang = ORDER.indexOf(q) >= 0 ? q : g("fb_popo_l", "");
-  if (ORDER.indexOf(lang) < 0) lang = /^(yue|zh-hk)/.test(pref) ? "yue" : /^ca/.test(pref) ? "ca" : /^(zh-hant|zh-tw)/.test(pref) ? "tw" : /^zh/.test(pref) ? "zh" : /^es/.test(pref) ? "es" : /^en/.test(pref) ? "en" : "yue";
+  if (ORDER.indexOf(lang) < 0) lang = g("fb_yue", "") === "1" || /^(yue|zh-hk)/.test(pref) ? "yue" : /^ca/.test(pref) ? "ca" : /^(zh-hant|zh-tw)/.test(pref) ? "tw" : /^zh/.test(pref) ? "zh" : /^es/.test(pref) ? "es" : /^en/.test(pref) ? "en" : "yue";
   function paint() {
     var U = function (k) { return D.ui[k] && D.ui[k][lang] != null ? D.ui[k][lang] : ""; }, w = WHO[lang];
     document.documentElement.lang = LG[lang];
