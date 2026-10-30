@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=d077c7c0e8"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=25c6a2f0b5" defer></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=a2f461fe2c"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=d743c38ec5" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -8689,6 +8689,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function dress() {
     var h = who(), b = document.body, out = window.WeiAway && WeiAway.on(), P0 = h.who === "popo" && !out, C0 = h.who === "cats", D0 = h.who === "mantou" && !out;
     b.classList.toggle("popo-on", P0); b.classList.toggle("popo-nap", P0 && h.asleep); b.classList.toggle("cats-on", C0); b.classList.toggle("dog-on", D0);
+    try { if (typeof Cats !== "undefined" && Cats.st) { var HM = dress.home || (dress.home = { miso: Cats.st.miso.home.slice(), yuzu: Cats.st.yuzu.home.slice() });
+      var mid = C0;   /* the cats' own visit: they sit where the host stands, behind the counter */
+      Cats.st.miso.home = mid ? [41, 46] : HM.miso; Cats.st.yuzu.home = mid ? [54, 59] : HM.yuzu;
+      if (mid) ["miso", "yuzu"].forEach(function (id) { if (Cats.here(id)) Cats.returnHome(id); }); } } catch (e) {}
     guest();
     if (!P0 && !C0 && !D0) return;
     b.classList.remove("mei-on", "mei-nap");
@@ -8855,18 +8859,18 @@ document.addEventListener("DOMContentLoaded", function () {
         A(S("Can I help you cook?", "我可以帮你做饭吗？", "我可唔可以幫你煮？", "¿Te ayudo a cocinar?", "T'ajudo a cuinar?"), S("*hands you a spoon* Stir. Slowly. No talking to the soup.", "*递给你一把勺子* 搅。慢慢的。不要跟汤讲话。", "*遞咗隻匙羹俾你* 攪。慢慢攪。唔好同碗湯講嘢。", "*te da una cuchara* Remueve. Despacio. No hablar a la sopa.", "*et dona una cullera* Remena. A poc a poc. No parlis amb la sopa.")))
     ],
     mantou: [
-      Q(S("*Mantou drops his ball on your shoe and stares at it. Then at you.*", "*馒头把球丢在你的鞋上，盯着球，又盯着你。*", "*饅頭將個波掉喺你隻鞋度，望住個波，再望住你。*", "*Mantou deja la pelota en tu zapato y la mira. Luego a ti.*", "*En Mantou deixa la pilota a la teva sabata i la mira. Després a tu.*"),
-        A(S("*throw it*", "*扔出去*", "*掟出去*", "*lanzarla*", "*llançar-la*"), S("*Mantou skids across the floor, gets it, brings it back, drops it on your shoe again.* Woof!", "*馒头在地上打滑，叼到了，叼回来，又丢在你鞋上。* 汪！", "*饅頭喺地下打滑，咬到，擔返嚟，又掉喺你隻鞋度。* 汪！", "*Mantou derrapa por el suelo, la coge, la trae y te la vuelve a dejar en el zapato.* ¡Guau!", "*En Mantou derrapa per terra, l'agafa, la torna i te la deixa una altra vegada a la sabata.* Bup!")),
+      Q(S("*Mantou leans over the counter and drops his ball by your glass. He stares at it. Then at you.*", "*馒头从吧台后探出身子，把球丢在你杯子旁边，盯着球，又盯着你。*", "*饅頭喺吧枱後面探出身，將個波掉喺你杯隔籬，望住個波，再望住你。*", "*Mantou se asoma por encima de la barra y deja la pelota junto a tu vaso. La mira. Luego a ti.*", "*En Mantou treu el cap per sobre la barra i et deixa la pilota al costat del got. La mira. Després et mira a tu.*"),
+        A(S("*throw it*", "*扔出去*", "*掟出去*", "*lanzarla*", "*llançar-la*"), S("*Mantou skids across the floor, gets it, comes back behind the counter and drops it by your glass again.* Woof!", "*馒头在地上打滑，叼到了，叼回来，又丢在你杯子旁边。* 汪！", "*饅頭喺地下打滑，咬到，擔返嚟，又掉喺你杯隔籬。* 汪！", "*Mantou derrapa por el suelo, la coge, vuelve tras la barra y te la deja otra vez junto al vaso.* ¡Guau!", "*En Mantou derrapa per terra, l'agafa, torna darrere la barra i te la deixa una altra vegada al costat del got.* Bup!")),
         A(S("*pretend to throw it*", "*假装扔*", "*扮掟*", "*hacer como que la lanzas*", "*fer veure que la llences*"), S("*Mantou runs off, stops, looks back. Betrayal. He forgives you immediately.*", "*馒头冲出去，停下，回头看。被骗了。他马上原谅了你。*", "*饅頭衝出去，停低，回頭望。畀人呃咗。佢即刻原諒咗你。*", "*Mantou sale corriendo, se para, mira atrás. Traición. Te perdona al instante.*", "*En Mantou surt corrent, s'atura, mira enrere. Traïció. Et perdona a l'instant.*"))),
-      Q(S("*Mantou puts his chin on your knee and sighs, a long dog sigh.*", "*馒头把下巴搁在你膝盖上，长长地叹了一口狗气。*", "*饅頭將個下巴擱喺你膝頭，長長嘆咗一啖狗氣。*", "*Mantou apoya la barbilla en tu rodilla y suspira, un largo suspiro de perro.*", "*En Mantou recolza la barbeta al teu genoll i sospira, un llarg sospir de gos.*"),
+      Q(S("*Mantou rests his chin on the counter, right by your hand, and sighs, a long dog sigh.*", "*馒头把下巴搁在吧台上，就在你手边，长长地叹了一口狗气。*", "*饅頭將個下巴擱喺吧枱，就喺你手邊，長長嘆咗一啖狗氣。*", "*Mantou apoya la barbilla en la barra, junto a tu mano, y suspira, un largo suspiro de perro.*", "*En Mantou recolza la barbeta a la barra, al costat de la teva mà, i sospira, un llarg sospir de gos.*"),
         A(S("*scratch behind his ears*", "*挠他耳朵后面*", "*撓佢耳仔後面*", "*rascarle detrás de las orejas*", "*gratar-li darrere les orelles*"), S("*His back leg starts thumping. He did not authorise that.*", "*他的后腿开始自己蹬。他没批准这件事。*", "*佢隻後腳自己踢起上嚟。佢冇批准過。*", "*La pata de atrás empieza a dar golpes. Él no ha autorizado eso.*", "*La pota del darrere comença a picar. Ell no ho ha autoritzat.*")),
         A(S("*sigh back*", "*也叹一口气*", "*都嘆一啖氣*", "*suspirar también*", "*sospirar també*"), S("*You sigh together. It's the best conversation you've had all day.*", "*你们一起叹气。这是你今天最好的一场对话。*", "*你哋一齊嘆氣。呢個係你今日最好嘅對話。*", "*Suspiráis juntos. Es la mejor conversación que has tenido hoy.*", "*Sospireu junts. És la millor conversa que has tingut avui.*"))),
-      Q(S("*Mantou brings you his lead and sits by the door, very upright.*", "*馒头把牵绳叼给你，端端正正坐到门边。*", "*饅頭將條狗帶擔俾你，坐得好正喺門口。*", "*Mantou te trae la correa y se sienta junto a la puerta, muy recto.*", "*En Mantou et porta la corretja i s'asseu a la porta, molt dret.*"),
+      Q(S("*Mantou comes round the end of the counter with his lead in his mouth and sits by the door, very upright.*", "*馒头叼着牵绳从吧台那头绕出来，端端正正坐到门边。*", "*饅頭咬住條狗帶由吧枱嗰頭行出嚟，坐得好正喺門口。*", "*Mantou sale por el extremo de la barra con la correa en la boca y se sienta junto a la puerta, muy derecho.*", "*En Mantou surt per la punta de la barra amb la corretja a la boca i s'asseu a la porta, molt dret.*"),
         A(S("Not now, Mantou", "现在不行，馒头", "而家唔得呀，饅頭", "Ahora no, Mantou", "Ara no, Mantou"), S("*He lies down by the door anyway. He'll wait. He's good at waiting.*", "*他还是在门边趴下了。他会等。他很会等。*", "*佢都係喺門口伏低。佢會等。佢好識等。*", "*Se tumba junto a la puerta igualmente. Esperará. Se le da bien esperar.*", "*S'estira a la porta igualment. Esperarà. Se li dona bé esperar.*")),
         A(S("Later. A real walk.", "待会儿。真的去散步。", "陣間。真係去散步。", "Luego. Un paseo de verdad.", "Després. Una passejada de debò."), S("*Tail. Whole body tail.* Woof!", "*尾巴。整只狗都是尾巴。* 汪！", "*條尾。成隻狗都係尾。* 汪！", "*Cola. Todo él es cola.* ¡Guau!", "*Cua. Tot ell és cua.* Bup!")))
     ],
     cats: [
-      Q(S("*Yuzu climbs onto the stool beside you and stares* Mrrp?", "*柚子爬上你旁边的凳子，盯着你* 咪噜？", "*柚子爬上你旁邊的凳子，盯著你* 咪嚕？", "*Yuzu se sube al taburete de al lado y te mira fijamente* ¿Mrrp?", "*La Yuzu s'enfila al tamboret del costat i et mira fixament* Mrrp?"),
+      Q(S("*Yuzu hops up onto the counter right in front of you and stares* Mrrp?", "*柚子从吧台后面跳上台面，正对着你，盯着你* 咪噜？", "*柚子從吧台後面跳上檯面，正對著你，盯著你* 咪嚕？", "*Yuzu salta a la barra justo delante de ti y te mira fijamente* ¿Mrrp?", "*La Yuzu salta a la barra just davant teu i et mira fixament* Mrrp?"),
         A(S("*scratch her chin*", "*挠挠她的下巴*", "*撓撓她的下巴*", "*rascarle la barbilla*", "*gratar-li la barbeta*"), S("*Yuzu purrs so loud the spoons rattle*", "*柚子呼噜得勺子都在抖*", "*柚子呼嚕得湯匙都在抖*", "*Yuzu ronronea tan fuerte que tiemblan las cucharas*", "*La Yuzu ronca tan fort que tremolen les culleres*")),
         A(S("*offer a sardine*", "*递上一条沙丁鱼*", "*遞上一條沙丁魚*", "*ofrecer una sardina*", "*oferir una sardina*"), S("*Miso appears from nowhere. The sardine is gone. Nobody saw anything.*", "*味噌不知道从哪冒出来。沙丁鱼没了。谁也没看见。*", "*味噌不知道從哪冒出來。沙丁魚沒了。誰也沒看見。*", "*Miso aparece de la nada. La sardina ha desaparecido. Nadie ha visto nada.*", "*La Miso apareix del no-res. La sardina ha desaparegut. Ningú no ha vist res.*"))),
       Q(S("*Miso pushes your cup an inch towards the edge, holding eye contact* …Meow.", "*味噌盯着你的眼睛，把你的杯子往边上推了一寸* ……喵。", "*味噌盯著你的眼睛，把你的杯子往邊上推了一寸* ……喵。", "*Miso empuja tu taza un dedo hacia el borde, sin dejar de mirarte* …Miau.", "*La Miso empeny la teva tassa un dit cap a la vora, sense deixar de mirar-te* …Mèu."),
@@ -8891,13 +8895,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const away = window.WeiAway && WeiAway.on && WeiAway.on();
     const catsHere = typeof Cats !== 'undefined' && Cats.here && (Cats.here('miso') || Cats.here('yuzu'));
     if (!h) return AppState.weiState === 'awake' ? 'wei' : null;
-    if (h.who === 'cats') return h.asleep ? null : 'cats';
+    if (h.who === 'cats') return h.asleep || !catsHere ? null : 'cats';
     if (h.asleep || away || (h.who === 'wei' && AppState.weiState !== 'awake')) return catsHere ? 'cats' : null;   /* Mei and Popo use their own panel (Wei's state reads asleep then) */
     return h.who;
   }
   const resting = () => { const m = AppState.uiMode; const sl = document.getElementById('sleep-mode-screen'); return m === 'topic' || (sl && !sl.classList.contains('hidden') && getComputedStyle(sl).display !== 'none'); };
   function chat(force) {
-    const k = who(); if (!k) return false; const list = TALK[k]; let free = list.map((_, i) => i).filter(i => !used[k + i]); if (!free.length && force) { list.forEach((_, i) => { delete used[k + i]; }); free = list.map((_, i) => i); } if (!free.length) return false;
+    const k = who(); if (!k) return false; const list = TALK[k];
+    const CATLINE = ['yuzu', 'miso', 'yuzu', 'miso'], ok = i => k !== 'cats' || typeof Cats === 'undefined' || !Cats.here || Cats.here(CATLINE[i] || 'miso');   /* a line about Yuzu only when Yuzu is here */
+    let free = list.map((_, i) => i).filter(i => !used[k + i] && ok(i)); if (!free.length && force) { list.forEach((_, i) => { delete used[k + i]; }); free = list.map((_, i) => i).filter(ok); } if (!free.length) return false; if (!free.length) return false;
     const i = free[Math.floor(Math.random() * free.length)], t = list[i]; used[k + i] = 1; n++; lastChat = Date.now();
     try { if (k !== 'cats') setExpression('grin', 1400); else ['miso', 'yuzu'].forEach(id => Cats.anim && Cats.anim(id, 'hop')); } catch (e) {}
     try { if (k === 'cats') SoundEngine.playMeow(1.2); else SoundEngine.playClick(); } catch (e) {}
