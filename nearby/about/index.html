@@ -50,12 +50,13 @@ img{display:block;max-width:100%;height:auto}
 @media (max-width:459px){.brand>span:last-child{display:none}.sh span.opt{display:none}}
 .tr .px{min-height:40px;font-size:19px;padding:4px 10px}
 .lang{position:relative}
-.lang-m{position:absolute;right:0;top:calc(100% + 8px);display:grid;min-width:10.5rem;padding:6px;background:#2a1d14;border:3px solid #000;box-shadow:5px 5px 0 #000;z-index:30}
+.lang-m{position:absolute;right:0;top:calc(100% + 8px);display:grid;min-width:11.5rem;width:max-content;padding:6px;background:#2a1d14;border:3px solid #000;box-shadow:5px 5px 0 #000;z-index:30}
 .lang-m[hidden]{display:none}
-.lang-m button{display:flex;justify-content:space-between;gap:12px;min-height:40px;padding:6px 10px;border:0;background:transparent;color:var(--cream);font:400 20px/1 var(--pix);text-align:left;cursor:pointer}
+.lang-m button{display:flex;justify-content:space-between;align-items:baseline;gap:16px;white-space:nowrap;min-height:40px;padding:6px 10px;border:0;background:transparent;color:var(--cream);font:400 20px/1 var(--pix);text-align:left;cursor:pointer}
 .lang-m button[aria-checked="true"]{color:var(--amber)}
 .lang-m button:hover{background:var(--wood-hi)}
 .lang-m small{font:inherit;opacity:.6}
+.lang-m button:lang(zh),.lang-m button:lang(zh-Hant){font-size:18px}
 
 /* hero */
 .hero{display:grid;gap:28px;align-items:center;padding-top:36px;padding-bottom:28px}
@@ -91,12 +92,18 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
 .sign a{color:var(--amber)}
 
 /* a few places, as they are */
-.shots{display:grid;gap:14px;grid-template-columns:1fr 1fr}
-@media (min-width:960px){.shots{grid-template-columns:repeat(4,1fr)}}
+.car{position:relative}
+.shots{display:grid;grid-auto-flow:column;grid-auto-columns:min(78%,300px);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 2px;padding:2px 2px 14px;margin:0 -2px;scrollbar-width:thin;scrollbar-color:var(--line) transparent;overscroll-behavior-x:contain}
+@media (min-width:960px){.shots{grid-auto-columns:calc((100% - 42px) / 4)}}
+.shots:focus-visible{outline:3px solid var(--amber);outline-offset:4px}
+.shots .shot{scroll-snap-align:start}
+.nav{position:absolute;top:calc(50% - 30px);z-index:2;width:44px;padding:0;font-size:30px}
+.nav.prev{left:-10px}.nav.next{right:-10px}.nav[disabled]{opacity:0;pointer-events:none}
+@media (hover:none),(pointer:coarse){.nav{display:none}}
 .shot{display:flex;flex-direction:column;text-decoration:none;background:var(--card);border:3px solid #000;box-shadow:4px 4px 0 #000;transition:transform .08s,box-shadow .08s}
 .shot:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #000}
 @media (hover:hover){.shot:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000}}
-.shot .im{aspect-ratio:4/3;overflow:hidden;background:var(--night);border-bottom:3px solid #000}
+.shot .im{aspect-ratio:16/10;overflow:hidden;background:var(--night);border-bottom:3px solid #000}
 .shot img{width:100%;height:100%;object-fit:cover}
 .shot div+div{padding:10px 12px 12px}
 .shot b{display:block;font:700 15px/1.2 var(--sans)}
@@ -196,12 +203,26 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
   </section>
 
   <section class="wrap sec" aria-labelledby="h-look">
-    <div class="sh rv"><h2 id="h-look" data-k="lookH">Look around</h2><span>04</span></div>
-    <div class="shots">
-      <a class="shot rv" href="/nearby/lie-back/"><div class="im"><img src="lie-back.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kCalm">Quiet</small><b><span aria-hidden="true">☁️</span><span data-p="cloud.n">Lie Back Park</span></b><p data-p="cloud.l">Warm grass, slow clouds.</p></div></a>
-      <a class="shot rv" href="/nearby/plaza/"><div class="im"><img src="plaza.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kMake">Make something</small><b><span aria-hidden="true">⛲</span><span data-p="plaza.n">The Plaza</span></b><p data-p="plaza.l">A fountain, a coin, a wish.</p></div></a>
-      <a class="shot rv" href="/nearby/two-candles/"><div class="im"><img src="two-candles.webp" width="800" height="505" loading="lazy" alt=""></div><div><small data-k="kFriend">With a friend</small><b><span aria-hidden="true">🕯️</span><span data-p="table.n">Two Candles</span></b><p data-p="table.l">A table for two, however far apart.</p></div></a>
-      <a class="shot rv" href="/nearby/come-over/"><div class="im"><img src="come-over.webp" width="800" height="600" loading="lazy" alt=""></div><div><small data-k="kReal">Something real</small><b><span aria-hidden="true">🎈</span><span data-p="party.n">Come Over</span></b><p data-p="party.l">Plan a real get-together and see who's coming.</p></div></a>
+    <div class="sh rv"><h2 id="h-look" data-k="lookH">Look around</h2><span>14</span></div>
+    <div class="car rv">
+      <button class="px nav prev" type="button" id="cPrev" aria-label="Previous" data-ka2="prev">‹</button>
+      <div class="shots" id="shots" tabindex="0" role="region" aria-roledescription="carousel" aria-labelledby="h-look">
+      <a class="shot" href="/nearby/next-door/"><div class="im"><img src="next-door.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kStart"></small><b><span aria-hidden="true">🍸</span><span data-p="bar.n">Next Door</span></b><p data-p="bar.l">Coffee by day, drinks by night. A stool by the window.</p></div></a>
+      <a class="shot" href="/nearby/lie-back/"><div class="im"><img src="lie-back.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kCalm"></small><b><span aria-hidden="true">☁️</span><span data-p="cloud.n">Lie Back Park</span></b><p data-p="cloud.l">Warm grass, slow clouds.</p></div></a>
+      <a class="shot" href="/nearby/plaza/"><div class="im"><img src="plaza.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kMake"></small><b><span aria-hidden="true">⛲</span><span data-p="plaza.n">The Plaza</span></b><p data-p="plaza.l">A fountain, a coin, a wish.</p></div></a>
+      <a class="shot" href="/nearby/two-candles/"><div class="im"><img src="two-candles.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kFriend"></small><b><span aria-hidden="true">🕯️</span><span data-p="restaurant.n">Two Candles</span></b><p data-p="restaurant.l">A table for two, however far apart.</p></div></a>
+      <a class="shot" href="/nearby/come-over/"><div class="im"><img src="come-over.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kReal"></small><b><span aria-hidden="true">🎈</span><span data-p="party.n">Come Over</span></b><p data-p="party.l">Plan a real get-together and see who's coming.</p></div></a>
+      <a class="shot" href="/nearby/mirror-lake/"><div class="im"><img src="mirror-lake.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kFriend"></small><b><span aria-hidden="true">🛶</span><span data-p="lake.n">Mirror Lake</span></b><p data-p="lake.l">Cast from the dock. Let it go, or feed a cat.</p></div></a>
+      <a class="shot" href="/nearby/miso-and-yuzu/"><div class="im"><img src="miso-and-yuzu.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kCalm"></small><b><span aria-hidden="true">🐈</span><span data-p="nest.n">Miso & Yuzu's</span></b><p data-p="nest.l">Two cats, one sunny windowsill.</p></div></a>
+      <a class="shot" href="/nearby/mended/"><div class="im"><img src="mended.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kMake"></small><b><span aria-hidden="true">🍵</span><span data-p="kintsugi.n">Mended</span></b><p data-p="kintsugi.l">Mend what's broken with gold.</p></div></a>
+      <a class="shot" href="/nearby/pine-wood/"><div class="im"><img src="pine-wood.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kFriend"></small><b><span aria-hidden="true">🌲</span><span data-p="forest.n">Pine Wood</span></b><p data-p="forest.l">A slow walk under the pines.</p></div></a>
+      <a class="shot" href="/nearby/slow-clock/"><div class="im"><img src="slow-clock.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kCalm"></small><b><span aria-hidden="true">🕰</span><span data-p="tower.n">Slow Clock</span></b><p data-p="tower.l">The town's hour and weather, under your hand.</p></div></a>
+      <a class="shot" href="/nearby/station/"><div class="im"><img src="station.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kCalm"></small><b><span aria-hidden="true">🚃</span><span data-p="train.n">Nearby Station</span></b><p data-p="train.l">Watch the world go by from a night train.</p></div></a>
+      <a class="shot" href="/nearby/no-hurry/"><div class="im"><img src="no-hurry.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kCalm"></small><b><span aria-hidden="true">🛖</span><span data-p="cabin.n">No Hurry</span></b><p data-p="cabin.l">A window, a candle, the kettle on.</p></div></a>
+      <a class="shot" href="/nearby/high-pasture/"><div class="im"><img src="high-pasture.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kFriend"></small><b><span aria-hidden="true">🐑</span><span data-p="pasture.n">High Pasture</span></b><p data-p="pasture.l">Walk the dog. The flock drifts home.</p></div></a>
+      <a class="shot" href="/nearby/late-light/"><div class="im"><img src="late-light.webp" width="800" height="500" loading="lazy" alt=""></div><div><small data-k="kPlay"></small><b><span aria-hidden="true">🎧</span><span data-p="dj.n">Late Light</span></b><p data-p="dj.l">The club after the bar. Bring a friend for the other deck.</p></div></a>
+      </div>
+      <button class="px nav next" type="button" id="cNext" aria-label="Next" data-ka2="next">›</button>
     </div>
   </section>
 
@@ -283,13 +304,17 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
     r4t: ["No scores.", "不计分。", "不計分。", "Sin puntos.", "Sense punts."],
     r4: ["No streaks, no badges, no leaderboards.", "没有连续打卡，没有徽章，没有排行榜。", "沒有連續打卡，沒有徽章，沒有排行榜。", "Sin rachas, sin insignias, sin clasificaciones.", "Sense ratxes, sense insígnies, sense classificacions."],
     r5t: ["Someone's behind the counter.", "柜台后面总有人。", "櫃檯後面總有人。", "Siempre hay alguien en la barra.", "Sempre hi ha algú a la barra."],
-    r5: ["Wei, his cousin Mei, his grandmother Popo or the cats. They point you somewhere, then let you go.", "Wei、他表妹 Mei、婆婆，或者两只猫。给你指个地方，然后放你走。", "Wei、佢表妹 Mei、婆婆，或者兩隻貓。給你指個地方，然後放你走。", "Wei, su prima Mei, su abuela Popo o los gatos. Te indican un sitio y te dejan ir.", "En Wei, la seva cosina Mei, la seva àvia Popo o els gats. T'indiquen un lloc i et deixen anar."],
+    r5: ["Wei, his cousin Mei, his grandmother Popo or the cats. They point you somewhere, then let you go.", "Wei、他表妹 Mei、婆婆，或者两只猫。给你指个地方，然后放你走。", "Wei、他表妹 Mei、婆婆，或者兩隻貓。給你指個地方，然後放你走。", "Wei, su prima Mei, su abuela Popo o los gatos. Te indican un sitio y te dejan ir.", "En Wei, la seva cosina Mei, la seva àvia Popo o els gats. T'indiquen un lloc i et deixen anar."],
     r6t: ["Yours stays yours.", "你的就是你的。", "你的就是你的。", "Lo tuyo es tuyo.", "El que és teu és teu."],
     r6: ["Nothing leaves your device unless you say so. No tracking, and it asks before a phone number or email goes public.", "除非你同意，什么都不会离开你的设备。不追踪；电话号码或邮箱要公开前，会先问你一句。", "除非你同意，什麼都不會離開你的裝置。不追蹤；電話號碼或電郵要公開前，會先問你一句。", "Nada sale de tu dispositivo sin tu permiso. Sin rastreo, y antes de publicar un teléfono o un correo, te pregunta.", "Res surt del teu dispositiu sense el teu permís. Sense rastreig, i abans de publicar un telèfon o un correu, et pregunta."],
     lookH: ["Look around", "四处看看", "四處看看", "Echa un vistazo", "Fes un cop d'ull"],
     kCalm: ["Quiet", "安静一会", "安靜一會", "Tranquilo", "Tranquil"],
     kMake: ["Make something", "做点什么", "做點什麼", "Haz algo", "Fes alguna cosa"],
     kFriend: ["With a friend", "和朋友一起", "和朋友一起", "Con alguien", "Amb algú"],
+    kStart: ["Start here", "从这里开始", "從這裡開始", "Empieza aquí", "Comença aquí"],
+    kPlay: ["Play together", "一起玩", "一起玩", "Jugad juntos", "Jugueu junts"],
+    prev: ["Previous", "上一个", "上一個", "Anterior", "Anterior"],
+    next: ["Next", "下一个", "下一個", "Siguiente", "Següent"],
     kReal: ["Something real", "来点真的", "來點真的", "Algo de verdad", "Alguna cosa de debò"],
     storyH: ["Where it comes from", "它从哪里来", "它從哪裡來", "De dónde viene", "D'on ve"],
     tinK: ["Popo's tin", "婆婆的饼干罐", "婆婆的餅乾罐", "La lata de Popo", "La llauna de la Popo"],
@@ -316,10 +341,20 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
   };
   /* the places' own names and lines: the same words as the town's list (FBWorld.PLACES in build/fbl.js) */
   var P = {
+    bar: [["Next Door", "隔壁", "隔壁", "Al Lado", "Al Costat"], ["Coffee by day, drinks by night. A stool by the window.", "白天咖啡，晚上小酒。窗边有张高脚凳。", "白天咖啡，晚上小酒。窗邊有張高腳凳。", "Café de día, copas de noche. Un taburete junto a la ventana.", "Cafè de dia, copes de nit. Un tamboret vora la finestra."]],
     cloud: [["Lie Back Park", "看云坡", "看雲坡", "Parque Panza Arriba", "Parc Panxa Enlaire"], ["Warm grass, slow clouds.", "暖暖的草地，慢慢的云。", "暖暖的草地，慢慢的雲。", "Hierba tibia, nubes lentas.", "Herba tèbia, núvols lents."]],
     plaza: [["The Plaza", "广场", "廣場", "La Plaza", "La Plaça"], ["A fountain, a coin, a wish.", "一座喷泉，一枚硬币，一个愿望。", "一座噴泉，一枚硬幣，一個願望。", "Una fuente, una moneda, un deseo.", "Una font, una moneda, un desig."]],
+    restaurant: [["Two Candles", "双烛小馆", "雙燭小館", "Dos Velas", "Dues Espelmes"], ["A table for two, however far apart.", "无论相隔多远，都有一张双人桌。", "無論相隔多遠，都有一張雙人桌。", "Una mesa para dos, por lejos que estéis.", "Una taula per a dos, per lluny que sigueu."]],
     party: [["Come Over", "来我家", "來我家", "Ven a Casa", "Vine a Casa"], ["Plan a real get-together and see who's coming.", "办一次真实的聚会，看看谁会来。", "辦一次真實的聚會，看看誰會來。", "Organiza un encuentro de verdad y mira quién viene.", "Organitza una trobada de debò i mira qui ve."]],
-    table: [["Two Candles", "双烛小馆", "雙燭小館", "Dos Velas", "Dues Espelmes"], ["A table for two, however far apart.", "无论相隔多远，都有一张双人桌。", "無論相隔多遠，都有一張雙人桌。", "Una mesa para dos, por lejos que estéis.", "Una taula per a dos, per lluny que sigueu."]]
+    lake: [["Mirror Lake", "镜湖", "鏡湖", "Lago Espejo", "Llac Mirall"], ["Cast from the dock. Let it go, or feed a cat.", "从栈桥上抛竿。放回湖里，或者喂猫。", "從棧橋上拋竿。放回湖裡，或者餵貓。", "Lanza desde el muelle. Suéltalo o dáselo a un gato.", "Llança des del moll. Deixa'l anar o dona'l a un gat."]],
+    nest: [["Miso & Yuzu's", "味噌和柚子家", "味噌和柚子家", "Casa de Miso y Yuzu", "Cal Miso i la Yuzu"], ["Two cats, one sunny windowsill.", "两只猫，一个晒太阳的窗台。", "兩隻貓，一個曬太陽的窗台。", "Dos gatos y un alféizar al sol.", "Dos gats i un ampit assolellat."]],
+    kintsugi: [["Mended", "金缮坊", "金繕坊", "Remendado", "Adobat"], ["Mend what's broken with gold.", "用金子补好碎了的东西。", "用金子補好碎了的東西。", "Repara con oro lo que se rompió.", "Repara amb or el que s'ha trencat."]],
+    forest: [["Pine Wood", "松林", "松林", "Pinar", "Pineda"], ["A slow walk under the pines.", "在松树下慢慢走。", "在松樹下慢慢走。", "Un paseo lento bajo los pinos.", "Una passejada lenta sota els pins."]],
+    tower: [["Slow Clock", "慢钟", "慢鐘", "Reloj Lento", "Rellotge Lent"], ["The town's hour and weather, under your hand.", "小镇的时辰和天气，在你手里。", "小鎮的時辰和天氣，在你手裡。", "La hora y el tiempo del pueblo, bajo tu mano.", "L'hora i el temps del poble, sota la teva mà."]],
+    train: [["Nearby Station", "近邻站", "近鄰站", "Estación Cerca", "Estació A Prop"], ["Watch the world go by from a night train.", "坐夜车，看世界从窗外经过。", "坐夜車，看世界從窗外經過。", "Mira pasar el mundo desde un tren nocturno.", "Mira passar el món des d'un tren de nit."]],
+    cabin: [["No Hurry", "不急", "不急", "Sin Prisa", "Sense Pressa"], ["A window, a candle, the kettle on.", "一扇窗，一支蜡烛，水壶在烧。", "一扇窗，一支蠟燭，水壺在燒。", "Una ventana, una vela, la tetera al fuego.", "Una finestra, una espelma, la tetera al foc."]],
+    pasture: [["High Pasture", "高山牧场", "高山牧場", "Pasto Alto", "Pastura Alta"], ["Walk the dog. The flock drifts home.", "带狗走走，羊群慢慢回家。", "帶狗走走，羊群慢慢回家。", "Pasea al perro. El rebaño vuelve a casa.", "Passeja el gos. El ramat torna a casa."]],
+    dj: [["Late Light", "夜灯", "夜燈", "Luz Tardía", "Llum Tardana"], ["The club after the bar. Bring a friend for the other deck.", "酒吧打烊后的俱乐部。叫上朋友，一人一台唱机。", "酒吧打烊後的俱樂部。叫上朋友，一人一台唱盤。", "El club después del bar. Trae a un amigo para el otro plato.", "El club després del bar. Porta un amic per a l'altre plat."]]
   };
 
   /* one language preference for both sites (the same keys as the kit): ?fbl= first, then what was chosen before, then the browser */
@@ -344,6 +379,7 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
     document.title = T.title[n];
     document.querySelectorAll("[data-k]").forEach(function (e) { var v = T[e.getAttribute("data-k")]; if (v) e.textContent = v[n]; });
     document.querySelectorAll("[data-kh]").forEach(function (e) { var v = T[e.getAttribute("data-kh")]; if (v) e.innerHTML = v[n]; });
+    document.querySelectorAll("[data-ka2]").forEach(function (e) { var v = T[e.getAttribute("data-ka2")]; if (v) e.setAttribute("aria-label", v[n]); });
     document.querySelectorAll("[data-ka]").forEach(function (e) { var v = T[e.getAttribute("data-ka")]; if (v) e.alt = v[n]; });
     document.querySelectorAll("[data-p]").forEach(function (e) { var k = e.getAttribute("data-p").split("."), v = P[k[0]]; if (v) e.textContent = v[k[1] === "n" ? 0 : 1][n]; });
     var m = T.made[n], md = document.getElementById("made"), a = md.querySelector(".ai"), h = md.querySelector(".h");
@@ -411,6 +447,14 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
   function hint(e) { var a = e.target.closest && e.target.closest('a[href^="/nearby/"]'); if (a) warm(a.getAttribute("href"), e.type !== "pointerover"); }
   ["pointerover", "pointerdown", "focusin"].forEach(function (t) { document.addEventListener(t, hint, { passive: true }); });
   addEventListener("load", function () { var go = function () { warm("/nearby/"); }; setTimeout(function () { (window.requestIdleCallback || setTimeout)(go, { timeout: 4000 }); }, 2500); });
+
+  /* Look around: a strip of places that scrolls sideways (swipe on a phone, the arrows or the keyboard elsewhere) */
+  var sh = document.getElementById("shots"), cp = document.getElementById("cPrev"), cn2 = document.getElementById("cNext");
+  function step(d) { var c = sh.querySelector(".shot"); sh.scrollBy({ left: d * (c ? c.getBoundingClientRect().width + 14 : 300) * (innerWidth >= 960 ? 2 : 1), behavior: still ? "auto" : "smooth" }); }
+  function ends() { cp.disabled = sh.scrollLeft < 4; cn2.disabled = sh.scrollLeft + sh.clientWidth > sh.scrollWidth - 4; }
+  cp.onclick = function () { step(-1); }; cn2.onclick = function () { step(1); };
+  sh.addEventListener("scroll", ends, { passive: true }); addEventListener("resize", ends); ends();
+  sh.addEventListener("keydown", function (e) { if (e.target !== sh) return; if (e.key === "ArrowRight") { step(1); e.preventDefault(); } if (e.key === "ArrowLeft") { step(-1); e.preventDefault(); } });
 
   /* the map starts in black and white and the colour comes in when you look at it, as it does in town */
   var hero = document.getElementById("hero");
