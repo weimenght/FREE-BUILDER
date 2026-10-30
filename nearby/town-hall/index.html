@@ -115,6 +115,7 @@
 
   /* ---------- the hosts' own: a square each on the quilt (the first squares) and two notices on the board; kept in the page, never sent, nothing to report or answer ---------- */
   var HN_ = { wei: ["Wei", "Wei", "Wei", "Wei", "Wei"], mei: ["Mei", "Mei", "Mei", "Mei", "Mei"], popo: ["Popo", "婆婆", "婆婆", "Popo", "Popo"], cats: ["Miso & Yuzu", "味噌和柚子", "味噌和柚子", "Miso y Yuzu", "Miso i Yuzu"], mantou: ["Mantou", "馒头", "饅頭", "Mantou", "Mantou"] };
+  var QPAL = ["#f3ead8", "#c8303a", "#3a6ab0", "#4a8a44", "#f4c84a", "#f4a0b8", "#8a5a33", "#2a2a4a"];   /* before the scene: it draws the quilt by the door from the first frame */
   var HQ = [
     { id: "host-wei", host: "wei", p: "77777777" + "70000007" + "77003077" + "77700777" + "77700777" + "77700777" + "77000077" + "77777777",
       line: ["for whoever sat at the counter first. You know who you are.", "给第一个坐到吧台前的人。你知道是你。", "給第一個坐到吧台前的人。你知道是你。", "para quien se sentó primero en la barra. Ya sabes quién eres.", "per a qui es va asseure primer a la barra. Ja saps qui ets."] },
@@ -211,7 +212,7 @@
   }
 
   /* ---------- the town quilt: every visitor stitches one square (8×8 stitches, eight fabrics); it only grows ---------- */
-  var QPAL = ["#f3ead8", "#c8303a", "#3a6ab0", "#4a8a44", "#f4c84a", "#f4a0b8", "#8a5a33", "#2a2a4a"], qSel = null;
+  var qSel = null;
   function showView() { $("boardV").hidden = view !== "board"; $("quiltV").hidden = view !== "quilt"; $("pinBtn").style.display = view !== "board" ? "none" : ""; $("stitchBtn").style.display = view !== "quilt" ? "none" : ""; if (view === "quilt") paintQuilt(); }
   function loadQuilt() { return K.secret("quilt").then(function (s) { return K.rpc("quilt_list", { p_secret: s }); }).then(function (d) { quilt = Array.isArray(d) ? d : []; paintQuilt(); }).catch(function () { if (!quilt) paintQuilt(true); }); }
   var QC = 0;   /* squares per row, set when painting */
