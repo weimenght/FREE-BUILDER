@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=c1d644e2a9"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=76fbea1671" defer></script>
+<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=6002bc4c74"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=76fbea1671" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Borrowed Pages · Nearby</title>
 <meta name="description" content="A four-room book house next door to the bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one, and pass it on by hand.">
@@ -672,7 +672,8 @@ html.fbsh-in.bp-one body > header.sign { position: fixed; }
   function catSvg(c) { return window.FBWorld && FBWorld.petSvg ? FBWorld.petSvg(c.toLowerCase()) : ""; }   /* the same pixel cats as everywhere in town */
   function catWalk() {
     if (document.hidden) return later();
-    var rooms = ["attic", "parlor", "garden", "basement"], room = $("#" + rooms[Math.floor(Math.random() * 4)]), name = Math.random() < 0.5 ? "Yuzu" : "Miso";
+    var cw = window.FBWorld && FBWorld.cats ? FBWorld.cats() : { miso: "books", yuzu: "books" }, here = ["Yuzu", "Miso"].filter(function (k) { return cw[k.toLowerCase()] === "books"; }); if (!here.length) return later();   /* only a cat who's in the shop today */
+    var rooms = ["attic", "parlor", "garden", "basement"], room = $("#" + rooms[Math.floor(Math.random() * 4)]), name = here[Math.floor(Math.random() * here.length)];
     var c = document.createElement("button"); c.type = "button"; c.className = "cat" + (Math.random() < 0.5 ? " rev" : ""); c.innerHTML = catSvg(name); c.setAttribute("aria-label", t("catAria", { c: t(name) }));
     c.style.animationDuration = (12 + Math.random() * 8) + "s";
     c.onclick = function () {

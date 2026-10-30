@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=c1d644e2a9"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=76fbea1671" defer></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=6002bc4c74"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=76fbea1671" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -5711,7 +5711,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!AppState.inSanctuary || currentRoom !== 'counter' || this.cardFor || this.laser || document.hidden) return;
         ['miso', 'yuzu'].forEach(id => { this.st[id].hunger = Math.min(100, this.st[id].hunger + 3); });
 
-        const id = Math.random() < 0.5 ? 'miso' : 'yuzu';
+        const here = ['miso', 'yuzu'].filter(k => this.here(k)); if (!here.length) return;
+        const id = here[Math.floor(Math.random() * here.length)];
         const other = id === 'miso' ? 'yuzu' : 'miso';
         const s = this.st[id];
         const name = this.name(id);
@@ -5760,7 +5761,7 @@ document.addEventListener("DOMContentLoaded", function () {
           this.status('🍒 ' + fmt(L(WeiPlus.cat.steal), { cat: name }));
           this.moveTo(id, 50, true);
           setTimeout(() => { this.el(id).classList.remove('fast'); this.returnHome(id); }, 700);
-        } else if (roll < 0.9) {
+        } else if (roll < 0.9 && this.here(other)) {
           // the two cats meet
           this.moveTo(id, id === 'miso' ? 34 : 66);
           this.moveTo(other, other === 'miso' ? 30 : 70);
@@ -5781,8 +5782,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       },
 
+      /* each cat is in one place at a time (FBWorld.cats): at Next Door, home, or out in town */
+      here(id) { try { const c = window.FBWorld && FBWorld.cats && FBWorld.cats(); return !c || c[id] === 'bar'; } catch (e) { return true; } },
+      syncHere() {
+        ['miso', 'yuzu'].forEach(id => { const el = this.el(id); if (el) el.style.display = this.here(id) ? '' : 'none'; if (!this.here(id) && this.cardFor === id) this.closeCard(); });
+        const any = this.here('miso') || this.here('yuzu'), b = document.getElementById('sleep-btn-cats'); if (b && b.parentElement) b.parentElement.style.display = any ? '' : 'none';
+      },
       init() {
         this.load();
+        ['say', 'anim', 'moveTo', 'setPose', 'returnHome', 'open', 'gainAff'].forEach(m => { const o = this[m]; if (typeof o !== 'function') return; this[m] = function (id, ...a) { return this.here(id) ? o.call(this, id, ...a) : undefined; }; });
+        this.syncHere(); setInterval(() => this.syncHere(), 20000);
         ['miso', 'yuzu'].forEach(id => {
           const el = this.el(id);
           el.addEventListener('click', (e) => { e.stopPropagation(); this.open(id); });
@@ -5798,6 +5807,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // The status line above the stage still triggers a quick cat scene
     function triggerCatEncounter() {
+      if (!Cats.here('miso') || !Cats.here('yuzu')) return;
       if (Math.random() < 0.5) {
         SoundEngine.playMeow(1.4);
         Cats.status(i18n[AppState.lang].catFight);
@@ -8650,7 +8660,7 @@ document.addEventListener("DOMContentLoaded", function () {
       paint(h.asleep); if (hn) hn.textContent = L(M("Popo", "婆婆", "婆婆", "Popo", "Popo")); if (pill) pill.textContent = hn ? hn.textContent : "Popo";
       try { setText("sleep-header-title", L(h.asleep ? P.napHead : P.head)); } catch (e) {}
       var key = h.asleep ? "nap" : "hi"; if (said !== "popo-" + key) { said = "popo-" + key; say(L(pick(P[key]))); }
-      if (h.asleep) btn(function () { askCatToBartend(); }, L(lx(["Let the cats serve", "让猫来招呼", "", "等啲貓招呼你", "Que sirvan las gatas", "Que serveixin les gates"]))); else btn(menu, L(P.ask));
+      if (h.asleep && window.Cats && (Cats.here('miso') || Cats.here('yuzu'))) btn(function () { askCatToBartend(); }, L(lx(["Let the cats serve", "让猫来招呼", "", "等啲貓招呼你", "Que sirvan las gatas", "Que serveixin les gates"]))); else btn(menu, L(P.ask));
     } else {
       if (pill) pill.textContent = L(C.name);
       try { setText("sleep-header-title", L(h.asleep ? C.napHead : C.head)); } catch (e) {}

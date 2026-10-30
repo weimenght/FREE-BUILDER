@@ -255,6 +255,7 @@
   }
   function catWalk(name, dir, sit) {
     if (!S.boarded || document.querySelector(".cb-cat")) return;
+    try { var cw = window.FBWorld && FBWorld.cats ? FBWorld.cats() : null; if (cw) { var on = ["Yuzu", "Miso"].filter(function (k) { return cw[k.toLowerCase()] === "train"; }); if (!on.length) return; if (on.indexOf(name) < 0) name = on[0]; } } catch (e) {}   /* only a cat who's on the train walks the aisle */
     name = CAT[name] ? name : "Yuzu"; dir = dir === -1 ? -1 : 1;
     var v = vp(); if (!v) return;
     var c = document.createElement("button"); c.type = "button"; c.className = "cb-cat" + (dir < 0 ? " rev" : ""); c.innerHTML = catSvg(name); c.setAttribute("aria-label", name);

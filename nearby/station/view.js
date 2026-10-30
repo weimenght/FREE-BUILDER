@@ -430,7 +430,7 @@
     ctx.save(); ctx.font = "italic 600 " + Math.round(15 * S * k) + "px Georgia,'Songti SC',serif"; ctx.textAlign = "center"; ctx.fillStyle = lit > 0.3 ? "#ffd9a8" : "#e8c39a"; if (lit > 0.3) { ctx.shadowColor = "#ff8a3a"; ctx.shadowBlur = 12; }
     fitText("Next Door", bx + w / 2, base - h - 30 * S * k, w + gap * 0.8); ctx.restore();
     /* two cats on the step, sometimes */
-    if (Math.floor(state.scrollDist / 4000) % 2 === 0 && window.FBWorld && FBWorld.drawPet) { var pp = Math.max(1, 1.4 * S * k); FBWorld.drawPet(ctx, "yuzu", bx + 22 * S * k, base, pp, { asleep: true }); FBWorld.drawPet(ctx, "miso", bx + w - 22 * S * k, base, pp, { flip: true, asleep: true }); }
+    if (window.FBWorld && FBWorld.drawPet && FBWorld.cats) { var pp = Math.max(1, 1.4 * S * k), cw = FBWorld.cats(); if (cw.yuzu === "bar") FBWorld.drawPet(ctx, "yuzu", bx + 22 * S * k, base, pp, { asleep: true }); if (cw.miso === "bar") FBWorld.drawPet(ctx, "miso", bx + w - 22 * S * k, base, pp, { flip: true, asleep: true }); }   /* the cats on the step only when they are at Next Door */
     /* the book corner: green door, a wide window of shelves */
     ctx.fillStyle = css(land("#5a4a3a", 0.1)); ctx.fillRect(kx, base - h, w, h);
     ctx.fillStyle = css(land("#2a2a30", 0.1)); ctx.beginPath(); ctx.moveTo(kx - 10 * S * k, base - h); ctx.lineTo(kx + w / 2, base - h - 26 * S * k); ctx.lineTo(kx + w + 10 * S * k, base - h); ctx.fill();
@@ -567,7 +567,8 @@
     for (var bi = 0; bi < 3; bi++) { var bxx = x0 + wid * (0.18 + bi * 0.3); ctx.fillStyle = css(land("#5a3e2a", 0.05)); ctx.fillRect(bxx, py - 22 * S, 60 * S, 6 * S); ctx.fillRect(bxx, py - 36 * S, 60 * S, 4 * S); ctx.fillRect(bxx + 4 * S, py - 16 * S, 4 * S, 16 * S); ctx.fillRect(bxx + 52 * S, py - 16 * S, 4 * S, 16 * S); }
     var n = 2 + (hash(seed, 2) * 5 | 0), umb = WX.rain > 0.4 && !roofY;
     for (var k = 0; k < n; k++) person(st.name === "Gulou Hutong" ? x0 + wid * (hash(k, seed) < 0.5 ? 0.06 + hash(k, seed) * 0.4 : 0.54 + hash(k, seed) * 0.4) : x0 + wid * (0.1 + hash(k, seed) * 0.8), py, 0.85 + hash(k, seed + 1) * 0.3, k + seed, umb, now);
-    if (hash(seed, 9) < 0.5 && window.FBWorld && FBWorld.drawPet) { var catX = x0 + wid * (0.3 + hash(seed, 10) * 0.4); FBWorld.drawPet(ctx, hash(seed, 11) < 0.5 ? "yuzu" : "miso", catX, py, Math.max(1, 1.2 * S), { flip: hash(seed, 12) < 0.5, asleep: FBWorld.phase && FBWorld.phase() === "night" }); }   /* one of the cats, the same pixels as everywhere in town */
+    var cOn = window.FBWorld && FBWorld.cats ? FBWorld.cats() : {}, cOn1 = cOn.yuzu === "train" ? "yuzu" : cOn.miso === "train" ? "miso" : null;   /* a cat on the platform only when one of them is riding the train */
+    if (cOn1 && hash(seed, 9) < 0.5 && window.FBWorld && FBWorld.drawPet) { var catX = x0 + wid * (0.3 + hash(seed, 10) * 0.4); FBWorld.drawPet(ctx, cOn1, catX, py, Math.max(1, 1.2 * S), { flip: hash(seed, 12) < 0.5, asleep: FBWorld.phase && FBWorld.phase() === "night" }); }   /* one of the cats, the same pixels as everywhere in town */
   }
   /* ---------- a station looks like its country ---------- */
   function swin(x, y, w, h, arch, lit, frame) {
