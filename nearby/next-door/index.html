@@ -1216,6 +1216,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <button id="tab-btn-tap" class="tab" onclick="switchAlbumTab('tap')" data-t="menu.tap">On tap 🍺</button>
       </div>
       <p class="hint mb-2" data-t="menu.hint">Tap any drink and Wei will make it.</p>
+      <div id="album-pane-host" class="hidden flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
       <div id="album-pane-gt" class="hidden flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
       <div id="album-pane-classic" class="hidden flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
       <div id="album-pane-guest" class="flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
@@ -7210,7 +7211,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function toggleCodexModal(show) {
       SoundEngine.playClick();
       document.getElementById('codex-modal').classList.toggle('hidden', !show);
-      if (show) { populateCodexContent(); switchAlbumTab('guest'); }
+      if (show) { populateCodexContent(); switchAlbumTab('guest'); hostMenu(); }
       document.querySelectorAll('.dock-btn[data-room="menu"]').forEach(b => b.classList.toggle('active', !!show));
     }
 
@@ -7258,7 +7259,44 @@ document.addEventListener("DOMContentLoaded", function () {
       return div;
     }
 
+    /* the host makes it their own way: Wei the drink, Mei a (bad) coffee or tea but no cocktails, Popo food instead,
+       the cats whatever Miso sits on, Mantou whatever a dog brings */
+    function menuHost() { try { return (window.NDChat && NDChat.who()) || 'wei'; } catch (e) { return 'wei'; } }
+    function hostMakes(key) {
+      const h = menuHost(), d = DrinkManifest[key] || {};
+      if (h === 'mei' && window.NDMeiMake) return NDMeiMake(key);
+      if (h === 'popo' && window.NDPopoCook) return NDPopoCook(d.type === 'bar');
+      if (h === 'mantou' && window.NDDogBring) return NDDogBring();
+      if (h === 'cats' && window.NDCatServe) return NDCatServe('pick');
+      serveItemByKey(key);
+    }
+    const MENU_HINT = {
+      mei: lx(["Tap a coffee or a tea and Mei will make it. Cocktails wait for Wei.", "点一杯咖啡或茶，Mei 来做。鸡尾酒等 Wei 回来。", "點一杯咖啡或茶，Mei 來做。雞尾酒等 Wei 回來。", "點一杯咖啡或者茶，Mei 嚟整。雞尾酒等 Wei 返嚟。", "Toca un café o un té y Mei lo prepara. Los cócteles esperan a Wei.", "Toca un cafè o un te i la Mei el prepara. Els còctels esperen en Wei."]),
+      popo: lx(["Tap a dish and Popo cooks it. Finish your bowl.", "点一道菜，婆婆来煮。要吃完哦。", "點一道菜，婆婆來煮。要吃完喔。", "揀一味，婆婆煮。要食晒呀。", "Toca un plato y Popo lo cocina. Termina tu cuenco.", "Toca un plat i la Popo el cuina. Acaba't el bol."]),
+      cats: lx(["Tap one. A cat pushes it across.", "点一样。猫会把它推过来。", "點一樣。貓會把它推過來。", "揀一樣。隻貓會推過嚟。", "Toca uno. Un gato te lo acerca.", "Toca'n un. Un gat te l'acosta."]),
+      mantou: lx(["Tap one. Mantou fetches it.", "点一样。馒头去叼来。", "點一樣。饅頭去叼來。", "揀一樣。饅頭去擔嚟。", "Toca uno. Mantou te lo trae.", "Toca'n un. En Mantou te'l porta."])
+    };
+    /* the menu itself is the host's: Wei's drinks (with the tabs), Mei's coffees and teas, Popo's kitchen, the cats' menu, what Mantou can fetch */
+    const MENU_TITLE = {
+      mei: lx(["Mei's menu", "Mei 的菜单", "Mei 的菜單", "Mei 嘅餐牌", "La carta de Mei", "La carta de la Mei"]),
+      popo: lx(["Popo's kitchen", "婆婆的厨房", "婆婆的廚房", "婆婆嘅廚房", "La cocina de Popo", "La cuina de la Popo"]),
+      cats: lx(["The cats' menu", "猫咪菜单", "貓咪菜單", "貓貓餐牌", "La carta de los gatos", "La carta dels gats"]),
+      mantou: lx(["What Mantou can fetch", "馒头能叼来的", "饅頭能叼來的", "饅頭擔得嚟嘅", "Lo que Mantou puede traer", "El que en Mantou pot portar"])
+    };
+    function hostMenu() {
+      const h = menuHost(), pane = document.getElementById('album-pane-host'), tabs = document.querySelector('#codex-modal .tabs'), ttl = document.querySelector('#codex-modal [data-t="menu.title"]');
+      const src = { mei: window.NDMeiMenu, popo: window.NDPopoMenu, cats: window.NDCatMenu, mantou: window.NDDogMenu }[h];
+      const own = !!(src && pane);
+      if (tabs) tabs.style.display = own ? 'none' : '';
+      ['guest', 'gt', 'classic', 'tap'].forEach(k => { const el = document.getElementById('album-pane-' + k); if (el && own) el.classList.add('hidden'); });
+      if (ttl) ttl.textContent = own ? L(MENU_TITLE[h]) : T('menu.title');
+      const sub = document.getElementById('modal-sub-title'); if (sub) sub.style.visibility = own ? 'hidden' : '';
+      if (!pane) return; pane.classList.toggle('hidden', !own); if (!own) return;
+      pane.innerHTML = '';
+      src().forEach(it => { const el = menuItem('', it.name, it.desc, () => { toggleCodexModal(false); go('counter'); it.go(); }); const t = el.querySelector('div'); if (t && it.ic) { const sp = document.createElement('span'); sp.setAttribute('aria-hidden', 'true'); sp.style.cssText = 'display:inline-block;width:18px;height:18px;vertical-align:-3px;margin-right:6px'; sp.innerHTML = it.ic; const sv = sp.querySelector('svg'); if (sv) { sv.style.width = '18px'; sv.style.height = '18px'; } t.prepend(sp); } pane.appendChild(el); });
+    }
     function populateCodexContent() {
+      try { const hn = document.querySelector('[data-t="menu.hint"]'), hh = menuHost(); if (hn) hn.textContent = MENU_HINT[hh] ? L(MENU_HINT[hh]) : T('menu.hint'); } catch (e) {}
       const isBar = AppState.isBarOpen;
       const t = i18n[AppState.lang];
       setText('modal-sub-title', isBar ? t.modalSubBar : t.modalSubCafe);
@@ -7269,7 +7307,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const signatureKeys = isBar ? ['jasmine_gulou', 'catalan', 'catalan_vermut', 'kyoto', 'smoked_rosemary', 'paperplane'] : ['gesha_pourover', 'dirty_espresso', 'barceloneta_cortado', 'yunnan_honey_pour', 'coldbrew_tonic', 'matcha_cloud'];
       Object.entries(DrinkManifest).forEach(([key, d]) => {
         if (d.type !== (isBar ? 'bar' : 'cafe')) return;
-        const el = menuItem(d.icon, L(d.name), L(d.desc).replace(/^"|"$/g, ''), () => { toggleCodexModal(false); go('counter'); serveItemByKey(key); });
+        const el = menuItem(d.icon, L(d.name), L(d.desc).replace(/^"|"$/g, ''), () => { toggleCodexModal(false); go('counter'); hostMakes(key); });
         (signatureKeys.includes(key) ? sig : cls).appendChild(el);
       });
       if (Bond.level() >= 3) {
@@ -7458,6 +7496,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const x = document.createElement('button'); x.type = 'button'; x.className = 'opt-btn'; x.textContent = '🐾'; x.setAttribute('aria-label', '✕'); x.style.gridColumn = '1 / -1'; x.onclick = () => { m.remove(); Cats.returnHome('miso'); Cats.returnHome('yuzu'); }; m.appendChild(x);
       document.body.appendChild(m);
     }
+    window.NDCatServe = function (k) { catServe(k); };
+    window.NDCatMenu = function () { return CAT_MENU.map(it => ({ ic: (window.FBWorld && FBWorld.px) ? FBWorld.px(it.icon) : '', name: L(lx(it.name)), desc: '', go: () => catServe(it.k) })); };
     function catServe(k) {
       setTimeout(() => SoundEngine.playClink(), 400);
       setTimeout(() => { Cats.returnHome('miso'); Cats.returnHome('yuzu'); }, 2500);
@@ -8557,6 +8597,8 @@ document.addEventListener("DOMContentLoaded", function () {
     M("\"Mostly ice. She says that's how they do it in New York.\"", "\"大部分是冰。她说纽约都是这么做的。\"", "\"大部分是冰。她說紐約都是這樣做的。\"", "\"Casi todo hielo. Dice que así se hace en Nueva York.\"", "\"Gairebé tot gel. Diu que a Nova York es fa així.\""),
     M("\"The tea bag is still in. So is the label. So is, briefly, her phone.\"", "\"茶包还在里面。标签也在。她的手机也短暂地掉进去过。\"", "\"茶包還在裡面。標籤也在。她的手機也短暫地掉進去過。\"", "\"La bolsita sigue dentro. La etiqueta también. Su móvil, por un momento, también.\"", "\"La bossa de te encara hi és. L'etiqueta també. El seu mòbil, per un moment, també.\"")];
   T.served = M("*slides it over and watches you* …Well? Be nice. Wei makes it look easy.", "*把杯子推过来，盯着你* ……怎样？说点好听的。Wei 做起来看着很简单。", "*把杯子推過來，盯著你* ……怎樣？說點好聽的。Wei 做起來看著很簡單。", "*te lo desliza y te mira* …¿Y bien? Sé amable. Wei hace que parezca fácil.", "*te'l llisca i et mira* …I bé? Sigues amable. En Wei fa que sembli fàcil.");
+  window.NDMeiMenu = function () { return Object.keys(DrinkManifest).filter(function (k) { return DrinkManifest[k].type === "cafe"; }).map(function (k) { var d = DrinkManifest[k]; return { ic: d.icon || "", name: L(d.name), desc: L(d.desc).replace(/^"|"$/g, ""), go: function () { NDMeiMake(k); } }; }).concat([{ ic: "", name: L(T.booze), desc: "", go: function () { say(L(T.noBooze)); } }]); };
+  window.NDMeiMake = function (k) { var d = DrinkManifest[k]; if (!d || d.type === "bar") { say(L(T.noBooze)); return; } serveItemByKey(k); badCoffee(); setTimeout(function () { say(L(T.served)); }, 900); };
   function badCoffee() { try { var n = document.getElementById("res-name"), d = document.getElementById("res-description"); if (n && n.textContent.indexOf(L(T.tried)) !== 0) n.textContent = L(T.tried) + n.textContent; if (d) d.textContent = L(T.bad[(Math.random() * T.bad.length) | 0]); } catch (e) {} }
   function menu() {
     var old = document.getElementById("mei-menu"); if (old) old.remove();
@@ -8747,6 +8789,11 @@ document.addEventListener("DOMContentLoaded", function () {
     add("", "✕", function () {}, true);
     document.body.appendChild(m);
   }
+  /* from Tonight's menu: Popo doesn't make drinks, she cooks you something instead */
+  window.NDPopoCook = function (bar) { say(L(bar ? P.boozeNo : P.coffeeNo)); setTimeout(function () { serve(DISH[(Math.random() * DISH.length) | 0]); }, 1400); };
+  window.NDPopoMenu = function () { return DISH.map(function (d) { return { ic: W.pix ? W.pix(d.ic) : "", name: L(d.name), desc: L(d.sub), go: function () { serve(d); } }; }).concat([{ ic: W.pix ? W.pix("books") : "", name: L(lx(["Cook me someone's family recipe", "做一道别人家的家传菜给我", "做一道別人家的家傳菜給我", "煮一味人哋屋企嘅家傳菜俾我", "Cocíname la receta de familia de alguien", "Cuina'm la recepta de família d'algú"])), desc: "", go: function () { window.PopoRecipes && PopoRecipes.cook && PopoRecipes.cook(); } }]); };
+  window.NDDogMenu = function () { return DOGMENU.map(function (d) { return { ic: W.pix ? W.pix(d.ic) : "", name: L(d.name), desc: L(d.sub), go: function () { dogServe(d); } }; }); };
+  window.NDDogBring = function () { dogServe(DOGMENU[(Math.random() * DOGMENU.length) | 0]); };
   function serve(d) {
     try { showServed({ icon: "", name: L(d.name), sub: L(d.sub), desc: L(d.desc), formula: "", reactable: false, food: d.ic !== "cup" }); } catch (e) { say(L(d.desc)); return; }
     var ic = W.pix ? W.pix(d.ic) : ""; ["res-icon", "served-item-plate"].forEach(function (id) { var el = document.getElementById(id); if (el) el.innerHTML = ic; });
