@@ -223,7 +223,7 @@ canvas#cv{touch-action:none}
     ag.putImageData(im, 0, 0);
     if (tone === "bw" || tone === "faded") { ag.strokeStyle = "rgba(255,250,235,.22)"; ag.lineWidth = 1; for (var sc = 0; sc < 3; sc++) { var x0 = rnd() * Wd; ag.beginPath(); ag.moveTo(x0, rnd() * 40); ag.lineTo(x0 + (rnd() - .5) * 20, Hd - rnd() * 40); ag.stroke(); } }
   }
-  /* real photographs, when the owner drops them in: no-hurry/photos/<key>.webp (or .jpg), any landscape size (cropped to fill);
+  /* real photographs, when the owner drops them in: no-hurry/photos/<key>.webp (or .jpg), any landscape size, shown whole at its own shape;
      arrive clock montserrat sagrada noodles girls tossa roof olympics mantou kittens, and wedding for the keepsake box.
      A photo that isn't there falls back to the painted one below. */
   var REAL = {}, REAL_KEYS = ["arrive", "clock", "montserrat", "sagrada", "noodles", "girls", "tossa", "roof", "olympics", "mantou", "kittens", "wedding"], shown = "";
@@ -232,7 +232,7 @@ canvas#cv{touch-action:none}
     im.onerror = function () { if (ex === "webp") tryExt("jpg"); }; im.src = "photos/" + k + "." + ex; })("webp"); }); }
   function photo(key) {
     shown = key;
-    if (REAL[key]) { var im = REAL[key], cw = 960, ch = 680; AC2.classList.remove("px"); AC2.width = cw; AC2.height = ch; var sc = Math.max(cw / im.naturalWidth, ch / im.naturalHeight), w = im.naturalWidth * sc, h = im.naturalHeight * sc; ag.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h); return; }
+    if (REAL[key]) { var im = REAL[key], cw = Math.min(1376, im.naturalWidth), ch = Math.round(cw * im.naturalHeight / im.naturalWidth); AC2.classList.remove("px"); AC2.width = cw; AC2.height = ch; ag.drawImage(im, 0, 0, cw, ch); return;   /* the whole photograph, at its own shape */ }
     var PP = window.POPO_PHOTOS || {}; AC2.classList.toggle("px", !PP[key]);
     if (PP[key]) { AC2.width = 480; AC2.height = 340; ag.save(); try { PP[key](ag, 480, 340); } catch (e) {} ag.restore(); age(TONE[key] || "faded", key); return; }
     AC2.width = 72; AC2.height = 52;

@@ -1,5 +1,5 @@
 Popo's photographs for No Hurry (the album on the shelf, and the keepsake box).
-One file per photo, named by its key, .webp (or .jpg), landscape, about 1440x1020 or larger:
+One file per photo, named by its key, .webp (or .jpg), landscape (16:9 or so), shown whole:
 
   arrive.webp      1968, Estacio de Franca, Popo at nineteen
   clock.webp       Josep and the station clock
