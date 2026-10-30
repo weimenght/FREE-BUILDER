@@ -60,6 +60,14 @@ AUTHOR: FREE//BUILDER
 DESC: Walk the dog; a tap is a woof. The flock drifts away from him toward the pen: four to fourteen sheep, and some days a goat, a cow or an alpaca came up too. When everyone is home they settle, and later wander out again. At night everyone sleeps. A friend can be the second shepherd.
 URL: high-pasture/
 
+CODE: CARDS
+ID: PR-29
+TITLE: Paw Reading
+GENRE: A card a day from two cats
+AUTHOR: FREE//BUILDER
+DESC: Miso and Yuzu keep a little stall by the Plaza with the Nearby deck. Tap it and one of them paws a card over: what it says you'll do, somewhere real, today. One card a day. When they're out or asleep, cut the deck yourself.
+URL: paw-reading/
+
 CODE: CABIN
 ID: NH-16
 TITLE: No Hurry
