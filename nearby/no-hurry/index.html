@@ -223,7 +223,16 @@ canvas#cv{touch-action:none}
     ag.putImageData(im, 0, 0);
     if (tone === "bw" || tone === "faded") { ag.strokeStyle = "rgba(255,250,235,.22)"; ag.lineWidth = 1; for (var sc = 0; sc < 3; sc++) { var x0 = rnd() * Wd; ag.beginPath(); ag.moveTo(x0, rnd() * 40); ag.lineTo(x0 + (rnd() - .5) * 20, Hd - rnd() * 40); ag.stroke(); } }
   }
+  /* real photographs, when the owner drops them in: no-hurry/photos/<key>.webp (or .jpg), any landscape size (cropped to fill);
+     arrive clock montserrat sagrada noodles girls tossa roof olympics mantou kittens, and wedding for the keepsake box.
+     A photo that isn't there falls back to the painted one below. */
+  var REAL = {}, REAL_KEYS = ["arrive", "clock", "montserrat", "sagrada", "noodles", "girls", "tossa", "roof", "olympics", "mantou", "kittens", "wedding"], shown = "";
+  function loadReal() { REAL_KEYS.forEach(function (k) { if (k in REAL) return; REAL[k] = null; (function tryExt(ex) { var im = new Image(); im.decoding = "async";
+    im.onload = function () { if (im.naturalWidth > 200) { REAL[k] = im; if (shown === k && !AL.hidden) photo(k); } else if (ex === "webp") tryExt("jpg"); };
+    im.onerror = function () { if (ex === "webp") tryExt("jpg"); }; im.src = "photos/" + k + "." + ex; })("webp"); }); }
   function photo(key) {
+    shown = key;
+    if (REAL[key]) { var im = REAL[key], cw = 960, ch = 680; AC2.classList.remove("px"); AC2.width = cw; AC2.height = ch; var sc = Math.max(cw / im.naturalWidth, ch / im.naturalHeight), w = im.naturalWidth * sc, h = im.naturalHeight * sc; ag.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h); return; }
     var PP = window.POPO_PHOTOS || {}; AC2.classList.toggle("px", !PP[key]);
     if (PP[key]) { AC2.width = 480; AC2.height = 340; ag.save(); try { PP[key](ag, 480, 340); } catch (e) {} ag.restore(); age(TONE[key] || "faded", key); return; }
     AC2.width = 72; AC2.height = 52;
@@ -244,9 +253,10 @@ canvas#cv{touch-action:none}
   }
   function showPage() { if (AL.classList.contains("box")) return openBox(); var i = L(); document.getElementById("albT").textContent = T.alb[i]; document.getElementById("albP").textContent = PAGES[pg][i]; document.getElementById("albI").textContent = (pg + 1) + " / " + PAGES.length; photo(PAGES[pg][5]); document.getElementById("albPrev").disabled = pg === 0; document.getElementById("albNext").disabled = pg === PAGES.length - 1; }
   /* Popo's keepsake box beside the radio: inside, the one framed photo, their wedding */
-  function openBox() { AL.classList.add("box"); AL.hidden = false; var i = L(); document.getElementById("albT").textContent = T.box[i]; document.getElementById("albP").textContent = T.wed[i]; photo("wedding"); setTimeout(function () { document.getElementById("albX").focus(); }, 30); }
-  function openAlbum() { AL.classList.remove("box"); pg = 0; AL.hidden = false; showPage(); setTimeout(function () { document.getElementById("albNext").focus(); }, 30); }
+  function openBox() { loadReal(); AL.classList.add("box"); AL.hidden = false; var i = L(); document.getElementById("albT").textContent = T.box[i]; document.getElementById("albP").textContent = T.wed[i]; photo("wedding"); setTimeout(function () { document.getElementById("albX").focus(); }, 30); }
+  function openAlbum() { loadReal(); AL.classList.remove("box"); pg = 0; AL.hidden = false; showPage(); setTimeout(function () { document.getElementById("albNext").focus(); }, 30); }
   function closeAlbum() { AL.hidden = true; }
+  window.NHAlbum = { open: openAlbum, box: openBox };
   document.getElementById("albPrev").onclick = function () { if (pg > 0) { pg--; showPage(); } };
   document.getElementById("albNext").onclick = function () { if (pg < PAGES.length - 1) { pg++; showPage(); } };
   document.getElementById("albX").onclick = closeAlbum; AL.addEventListener("click", function (e) { if (e.target === AL) closeAlbum(); });
