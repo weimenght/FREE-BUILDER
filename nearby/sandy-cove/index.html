@@ -131,24 +131,24 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     if (waterF) waterF.frequency.setTargetAtTime(220 + Math.min(350, sp * 420), A.currentTime, .1);
     if (Math.abs(thrust) > .001 || Math.abs(turn) > .001) {
       boat.oar += .16; var sg = Math.sin(boat.oar) >= 0 ? 1 : -1;
-      if (sg !== lastSign && sg === 1) { splash(); var sa = boat.a + Math.PI / 2, ox = Math.cos(sa) * 7, oy = Math.sin(sa) * 7; ripples.push({ x: boat.x + ox, y: boat.y + oy, r: 1, max: 7, a: .65 }, { x: boat.x - ox, y: boat.y - oy, r: 1, max: 7, a: .65 }); }
+      if (sg !== lastSign && sg === 1) { splash(); var sa = boat.a + Math.PI / 2, ox = Math.cos(sa) * 14, oy = Math.sin(sa) * 14; ripples.push({ x: boat.x + ox, y: boat.y + oy, r: 1, max: 7, a: .65 }, { x: boat.x - ox, y: boat.y - oy, r: 1, max: 7, a: .65 }); }
       lastSign = sg;
     } else boat.oar += (0 - Math.sin(boat.oar)) * .08;
-    wake++; if (sp > .07 && wake % 6 === 0) ripples.push({ x: boat.x - Math.cos(boat.a) * 6, y: boat.y - Math.sin(boat.a) * 6, r: 1.5, max: 9 + sp * 8, a: .55 }); else if (wake % 45 === 0) ripples.push({ x: boat.x, y: boat.y, r: 3, max: 11, a: .35 });
+    wake++; if (sp > .07 && wake % 6 === 0) ripples.push({ x: boat.x - Math.cos(boat.a) * 12, y: boat.y - Math.sin(boat.a) * 12, r: 1.5, max: 9 + sp * 8, a: .55 }); else if (wake % 45 === 0) ripples.push({ x: boat.x, y: boat.y, r: 3, max: 11, a: .35 });
 
     var ccx = Math.floor(boat.x / CH), ccy = Math.floor(boat.y / CH);
     for (var oy2 = -1; oy2 <= 1; oy2++) for (var ox2 = -1; ox2 <= 1; ox2++) {
       var c = chunk(ccx + ox2, ccy + oy2);
-      if (c.island) { var di = Math.hypot(boat.x - c.island.x, boat.y - c.island.y), mn = c.island.r + 6; if (di < mn && di > .001) { var nx = (boat.x - c.island.x) / di, ny = (boat.y - c.island.y) / di; boat.x += nx * (mn - di) * .4; boat.y += ny * (mn - di) * .4; boat.vx += nx * .06; boat.vy += ny * .06; } }
-      c.rocks.forEach(function (rk) { var dd = Math.hypot(boat.x - rk.x, boat.y - rk.y), m2 = rk.r + 5; if (dd < m2 && dd > .001) { var nx2 = (boat.x - rk.x) / dd, ny2 = (boat.y - rk.y) / dd; boat.x += nx2 * (m2 - dd) * .5; boat.y += ny2 * (m2 - dd) * .5; boat.vx += nx2 * .05; boat.vy += ny2 * .05; } });
-      if (c.lantern && !taken[c.lantern.id] && boat.string.length < 7 && Math.hypot(boat.x - c.lantern.x, boat.y - c.lantern.y) < 11) {
+      if (c.island) { var di = Math.hypot(boat.x - c.island.x, boat.y - c.island.y), mn = c.island.r + 9; if (di < mn && di > .001) { var nx = (boat.x - c.island.x) / di, ny = (boat.y - c.island.y) / di; boat.x += nx * (mn - di) * .4; boat.y += ny * (mn - di) * .4; boat.vx += nx * .06; boat.vy += ny * .06; } }
+      c.rocks.forEach(function (rk) { var dd = Math.hypot(boat.x - rk.x, boat.y - rk.y), m2 = rk.r + 8; if (dd < m2 && dd > .001) { var nx2 = (boat.x - rk.x) / dd, ny2 = (boat.y - rk.y) / dd; boat.x += nx2 * (m2 - dd) * .5; boat.y += ny2 * (m2 - dd) * .5; boat.vx += nx2 * .05; boat.vy += ny2 * .05; } });
+      if (c.lantern && !taken[c.lantern.id] && boat.string.length < 7 && Math.hypot(boat.x - c.lantern.x, boat.y - c.lantern.y) < 15) {
         taken[c.lantern.id] = 1; boat.string.push({ x: c.lantern.x, y: c.lantern.y }); chime(); if (duo) duo.send("take", { id: c.lantern.id });
         ripples.push({ x: c.lantern.x, y: c.lantern.y, r: 1, max: 16, a: .9 });
         for (var p = 0; p < 10; p++) { var pa = p / 10 * 6.283; sparks.push({ x: c.lantern.x, y: c.lantern.y, vx: Math.cos(pa) * (.3 + Math.random() * .4), vy: Math.sin(pa) * (.3 + Math.random() * .4) - .2, life: 1 }); }
       }
     }
     /* the lanterns you gathered follow on a string */
-    var px = boat.x - Math.cos(boat.a) * 8, py = boat.y - Math.sin(boat.a) * 8;
+    var px = boat.x - Math.cos(boat.a) * 13, py = boat.y - Math.sin(boat.a) * 13;
     boat.string.forEach(function (l) { var dx2 = px - l.x, dy2 = py - l.y, d2 = Math.hypot(dx2, dy2); if (d2 > 6) { l.x += dx2 / d2 * (d2 - 6) * .2; l.y += dy2 / d2 * (d2 - 6) * .2; } px = l.x; py = l.y; });
     if (mate) { mate.x += (mate.tx - mate.x) * .2; mate.y += (mate.ty - mate.y) * .2; if (Date.now() - mate.t > 12000) mate = null; }
 
@@ -171,14 +171,45 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   function lantern(sx, sy, big) { disc(sx, sy, big ? 5 : 3, rgb(C.glow, .22 + .2 * C.fire));
     if (W.festival && W.festival() === "midautumn") { ctx.fillStyle = "#c8303a"; ctx.fillRect(Math.round(sx) - 2, Math.round(sy) - 2, 5, 4); ctx.fillStyle = "#f6c84a"; ctx.fillRect(Math.round(sx) - 2, Math.round(sy) - 3, 5, 1); ctx.fillRect(Math.round(sx) - 2, Math.round(sy) + 2, 5, 1); ctx.fillStyle = "#ffd88a"; ctx.fillRect(Math.round(sx) - 1, Math.round(sy) - 1, 3, 2); return; }   /* red Mid-Autumn lanterns */
     disc(sx, sy, 2, rgb(C.glow, .85)); ctx.fillStyle = rgb(C.core); ctx.fillRect(Math.round(sx), Math.round(sy), 1, 1); }
-  function drawBoat(x, y, a, oar, hull, inner) {
-    var ix = Math.round(x), iy = Math.round(y), co = Math.cos(a), si = Math.sin(a), st = Math.sin(oar) * .55;
-    [-1, 1].forEach(function (s) { var lx = ix - si * s * 3.5, ly = iy + co * s * 3.5, od = a + s * Math.PI / 2 - s * st; line(lx, ly, lx + Math.cos(od) * 6.5, ly + Math.sin(od) * 6.5, rgb(inner)); });
-    for (var dy = -10; dy <= 10; dy++) for (var dx = -10; dx <= 10; dx++) {
-      var lx2 = dx * co + dy * si, ly2 = -dx * si + dy * co, tap = lx2 > 0 ? 1 - lx2 / 7.5 * .35 : 1, d = lx2 * lx2 / 56.25 + ly2 * ly2 / ((3.8 * tap) * (3.8 * tap));
-      if (d <= 1) { ctx.fillStyle = d > .72 || lx2 > 5.1 || lx2 < -5.4 ? rgb(hull) : Math.abs(lx2 - 1) < 1.1 || Math.abs(lx2 + 3.2) < 1 ? rgb(C.seat) : rgb(inner); ctx.fillRect(ix + dx, iy + dy, 1, 1); }
+  /* a wooden rowing boat seen from above: pointed bow, square stern, planked hull with a dark gunwale, three thwarts,
+     a rower on the middle seat facing the stern, two oars with blades that sweep, a lantern on a short pole at the bow */
+  function shade(c, k) { return [Math.round(c[0] * k), Math.round(c[1] * k), Math.round(c[2] * k)]; }
+  var HL = 13, HW = 5.6;
+  function halfW(lx) { var u = lx / HL; if (u > 1 || lx < -HL + 1) return -1; return u > 0 ? HW * Math.pow(Math.max(0, 1 - u * u), .95) * (1 - .25 * u) : HW * (1 - .2 * u * u); }
+  function drawBoat(x, y, a, oar, hull, inner, coat) {
+    var ix = Math.round(x), iy = Math.round(y), co = Math.cos(a), si = Math.sin(a), st = Math.sin(oar) * .6, B = 16;
+    var P = function (lx, ly) { return [ix + lx * co - ly * si, iy + lx * si + ly * co]; };
+    /* shadow on the water */
+    ctx.fillStyle = "rgba(0,0,0,.18)";
+    for (var dy0 = -B; dy0 <= B; dy0++) for (var dx0 = -B; dx0 <= B; dx0++) { var l0 = (dx0 - 1) * co + (dy0 - 2) * si, m0 = -(dx0 - 1) * si + (dy0 - 2) * co, w0 = halfW(l0); if (w0 > 0 && Math.abs(m0) <= w0) ctx.fillRect(ix + dx0, iy + dy0, 1, 1); }
+    /* the oars (under the hull at the oarlocks) */
+    [-1, 1].forEach(function (s) { var lk = P(-.5, s * HW), od = a + s * Math.PI / 2 - s * st, ex = lk[0] + Math.cos(od) * 11, ey = lk[1] + Math.sin(od) * 11;
+      line(lk[0] - Math.cos(od) * 3, lk[1] - Math.sin(od) * 3, ex, ey, rgb(shade(inner, .78)));
+      var bx0 = lk[0] + Math.cos(od) * 8.5, by0 = lk[1] + Math.sin(od) * 8.5; disc(bx0 + Math.cos(od) * 1.5, by0 + Math.sin(od) * 1.5, 1, rgb(shade(inner, .9))); line(bx0, by0, ex, ey, rgb(shade(inner, .9))); });
+    /* the hull */
+    var gun = shade(hull, .55), hi = shade(inner, 1.12), seam = shade(inner, .82), seat = C.seat;
+    for (var dy = -B; dy <= B; dy++) for (var dx = -B; dx <= B; dx++) {
+      var lx = dx * co + dy * si, ly = -dx * si + dy * co, w = halfW(lx); if (w <= 0 || Math.abs(ly) > w) continue;
+      var e = w - Math.abs(ly), col;
+      if (e < 1.05 || lx > HL - 1.6 || lx < -HL + 2) col = ly < 0 ? shade(hull, .9) : gun;          /* gunwale: lit on one side */
+      else if (e < 1.9) col = hull;                                                                    /* the hull's sheer strake */
+      else if (Math.abs(lx + .5) < .9 || Math.abs(lx - 6.5) < .8 || Math.abs(lx + 9.5) < 1.1) col = seat; /* thwarts */
+      else if (Math.abs(Math.abs(ly) - w * .45) < .5 || Math.abs(ly) < .45) col = seam;               /* plank seams and the keelson */
+      else col = ly < 0 ? hi : inner;
+      ctx.fillStyle = rgb(col); ctx.fillRect(ix + dx, iy + dy, 1, 1);
     }
-    var bx = Math.round(ix + co * 6), by = Math.round(iy + si * 6); if (C.fire > .1) disc(bx, by, 4, rgb(C.glow, .22 * C.fire)); ctx.fillStyle = rgb(C.glow); ctx.fillRect(bx, by, 1, 1);
+    /* the rower, on the middle seat facing the stern: shoulders, arms to the oar grips, a head (hair, a hat some days) */
+    var cc = coat || [196, 84, 64], arm = shade(cc, .78), sw = Math.sin(oar) * 1.3, mate = !!coat;
+    [-1, 1].forEach(function (s) { var sh0 = P(-2.2 + sw * .4, s * 2.4), gp = P(-.4 + sw, s * (HW - 1.2)); line(sh0[0], sh0[1], gp[0], gp[1], rgb(arm)); ctx.fillStyle = rgb([236, 196, 160]); ctx.fillRect(Math.round(gp[0]), Math.round(gp[1]), 1, 1); });
+    var ox = -2 + sw * .45, straw = shade([232, 196, 120], C.fire > .5 ? .62 : 1);
+    for (var ey = -7; ey <= 7; ey++) for (var ex = -7; ex <= 7; ex++) {
+      var qx = ex * co + ey * si - ox, qy = -ex * si + ey * co, sh2 = qx * qx / 2.6 + qy * qy / 11.5, hd = Math.hypot(qx + .2, qy), col2 = null;
+      if (mate ? hd <= 1.6 : hd <= 2.3) col2 = mate ? (hd < .8 ? [70, 80, 120] : [40, 44, 70]) : hd > 1.25 && hd < 1.85 ? [160, 58, 48] : hd < .9 ? shade(straw, 1.08) : straw;
+      else if (sh2 <= 1) col2 = sh2 > .6 ? shade(cc, .72) : cc;
+      if (col2) { ctx.fillStyle = rgb(col2); ctx.fillRect(Math.round(x) + ex, Math.round(y) + ey, 1, 1); }
+    }
+    /* the bow lantern on its pole */
+    var bw = P(HL - 2.2, 0); if (C.fire > .1) disc(bw[0], bw[1], 4, rgb(C.glow, .25 * C.fire)); ctx.fillStyle = "#2a1a10"; ctx.fillRect(Math.round(bw[0]) - 1, Math.round(bw[1]) - 1, 3, 3); ctx.fillStyle = rgb(C.glow); ctx.fillRect(Math.round(bw[0]), Math.round(bw[1]), 1, 1);
   }
   function render() {
     ctx.fillStyle = rgb(C.deep); ctx.fillRect(0, 0, width, height);
@@ -217,8 +248,8 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     }
     gulls.forEach(function (g) { var gx = Math.round(g.x - L), gy = Math.round(g.y - T); if (gx < -10 || gx > width + 10 || gy < -10 || gy > height + 10) return; ctx.fillStyle = "#f8fafc"; ctx.fillRect(gx - 1, gy - 1, 3, 2); ctx.fillStyle = "#94a3b8"; ctx.fillRect(gx - 1, gy - 1, 1, 1); var hx = gx + Math.round(Math.cos(g.a)), hy = gy - 1 + Math.round(Math.sin(g.a)); ctx.fillStyle = "#f8fafc"; ctx.fillRect(hx, hy, 1, 1); ctx.fillStyle = "#f59e0b"; ctx.fillRect(hx + Math.round(Math.cos(g.a)), hy, 1, 1); });
     function strung(list, bx, by) { var lx = bx, ly = by; list.forEach(function (l) { line(lx - L, ly - T, l.x - L, l.y - T, rgb(C.inner, .5)); lx = l.x; ly = l.y; }); list.forEach(function (l) { lantern(l.x - L, l.y - T + Math.sin(time * 2 + l.x) * .8, false); }); }
-    strung(boat.string, boat.x - Math.cos(boat.a) * 6, boat.y - Math.sin(boat.a) * 6);
-    if (mate) { drawBoat(mate.x - L, mate.y - T, mate.a, mate.oar, C.hull2, C.inner2); for (var m = 0; m < (mate.n || 0); m++) lantern(mate.x - L - Math.cos(mate.a) * (8 + m * 6), mate.y - T - Math.sin(mate.a) * (8 + m * 6), false); }
+    strung(boat.string, boat.x - Math.cos(boat.a) * 12, boat.y - Math.sin(boat.a) * 12);
+    if (mate) { drawBoat(mate.x - L, mate.y - T, mate.a, mate.oar, C.hull2, C.inner2, [60, 132, 150]); for (var m = 0; m < (mate.n || 0); m++) lantern(mate.x - L - Math.cos(mate.a) * (8 + m * 6), mate.y - T - Math.sin(mate.a) * (8 + m * 6), false); }
     drawBoat(boat.x - L, boat.y - T, boat.a, boat.oar, C.hull, C.inner);
     sparks.forEach(function (s) { ctx.fillStyle = rgb(C.glow, s.life); ctx.fillRect(Math.round(s.x - L), Math.round(s.y - T), 1, 1); });
     /* lanterns let go: they rise off the water and out of the picture */
