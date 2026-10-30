@@ -76,6 +76,14 @@ AUTHOR: FREE//BUILDER
 DESC: A small cabin on the high pasture with one big window. Clouds drift, cows wander, the weather does what it does. There is nothing to win and nothing to finish. Stay as long as you like.
 URL: no-hurry/
 
+CODE: PLOT
+ID: YP-30
+TITLE: Your Plot
+GENRE: A piece of land that's yours
+AUTHOR: FREE//BUILDER
+DESC: A plot below the railway, past Come Over. Build whatever you like, block by block, in any shape and colour, put up signs that say what it's for, and name it. It stays on your device unless you keep a copy; show it to someone with a link.
+URL: your-plot/
+
 CODE: SCREEN
 ID: FR-26
 TITLE: Front Row

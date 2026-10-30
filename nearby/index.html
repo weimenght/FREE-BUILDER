@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=a2f461fe2c"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=7d22821bac" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=37e4661fd7" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Nearby — FREE//BUILDER</title>
 <meta name="description" content="Nearby: a small pixel town for finding your people, in real life. Wander alone or with a friend, leave something you made for the neighbours, borrow a real book, play with someone far away. Wei, the bartender, will show you around.">
@@ -115,6 +115,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     { k: "pasture", abs: 1, url: "/nearby/high-pasture/", x: 276, y: 30, w: 80, h: 50, n: ["High Pasture", "高山牧场", "高山牧場", "Pasto Alto", "Pastura Alta"] },
     { k: "cabin", abs: 1, url: "/nearby/no-hurry/", x: 314, y: 40, w: 26, h: 22 },
     { k: "arcade", quiet: 1, url: "/nearby/arcade/", x: 160, y: 232, w: 14, h: 16 },   /* no name tag: you find it or you don't */
+    { k: "plot", abs: 1, url: "/nearby/your-plot/", x: 280, y: 322, w: 74, h: 42, n: ["Your Plot", "你的地", "你的地", "Tu Parcela", "La Teva Parcel·la"] },
     { k: "lake", abs: 1, url: "/nearby/mirror-lake/", x: 274, y: 104, w: 84, h: 66, n: ["Mirror Lake", "镜湖", "鏡湖", "Lago Espejo", "Llac Mirall"] },
     { k: "sea", abs: 1, url: "/nearby/sandy-cove/", x: 274, y: 214, w: 84, h: 78, n: ["Sandy Cove", "沙湾", "沙灣", "Cala de Arena", "Cala de Sorra"] }
   ];
@@ -485,6 +486,17 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
     hearts = hearts.filter(function (h) { h.y -= .3; h.a -= .04; if (h.a <= 0) return false; g.globalAlpha = h.a; R(h.x, h.y, 1, 1, "#ff8fa0"); R(h.x + 2, h.y, 1, 1, "#ff8fa0"); R(h.x, h.y + 1, 3, 1, "#ff8fa0"); R(h.x + 1, h.y + 2, 1, 1, "#ff8fa0"); g.globalAlpha = 1; return true; });
   }
   /* ---------- the wild country either side of town ---------- */
+  /* Your Plot, east of the new street: a fenced patch of land with the visitor's own build on it (fb_plot, this device only) */
+  var PLOT_AL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_", PLOT_C = ["#b84a3a", "#efe2c4", "#3a8a8a", "#e8b838", "#e89ab0", "#4a6ab8", "#8a8a8a", "#8a5a30"];
+  function plotLand(night) {
+    var x0 = 280, y0 = 326, w = 74, h = 36; R(x0, y0, w, h, night ? "#3a2e22" : "#9a7a4a"); for (var fu = 0; fu < 6; fu++) R(x0 + 4 + fu * 12, y0 + 4 + (fu % 2) * 14, 8, 1, night ? "#2e241a" : "#8a6a3e");
+    var pl = null; try { pl = JSON.parse(localStorage.getItem("fb_plot") || "null"); } catch (e) {}
+    if (pl && typeof pl.c === "string" && pl.c.length === 800 && /[^.]/.test(pl.c)) {
+      for (var i = 0; i < 800; i++) { var ch = pl.c.charAt(i); if (ch === ".") continue; var k = PLOT_AL.indexOf(ch); if (k < 0) continue; var tp = k >> 3, col = PLOT_C[k & 7], cx = i % 40, cy = (i / 40) | 0;
+        R(x0 + 1 + cx * 1.8, y0 - 2 + cy * 1.8, 2, 2, tp === 1 ? (night ? "#f6c84a" : "#8ac8e8") : tp === 6 ? "#4a8a44" : tp === 7 && night ? "#ffe08a" : col); }
+    } else { R(x0 + 30, y0 + 10, 2, 14, "#5a3a22"); R(x0 + 24, y0 + 8, 14, 8, "#f4e8cf"); R(x0 + 27, y0 + 11, 8, 1, "#5a3a22"); R(x0 + 27, y0 + 13, 5, 1, "#5a3a22"); for (var sk = 0; sk < 4; sk++) R(x0 + 8 + sk * 18, y0 + 26, 1, 6, "#5a3a22"); }
+    for (var fx = x0 - 2; fx < x0 + w + 2; fx += 3) R(fx, y0 + h - 3, 1, 4, night ? "#8a7a64" : "#efe6d4"); R(x0 - 2, y0 + h - 2, w + 4, 1, night ? "#8a7a64" : "#efe6d4");
+  }
   function wilds(f, sky, ph, wx, night, lit) {
     var G = night ? "#1e2a1e" : "#6a9a4a", G2 = night ? "#1a3220" : "#5f9443", D = night ? "#14281a" : "#3f7a3a";
     [0, 270].forEach(function (x0) {
@@ -498,8 +510,9 @@ canvas{display:block;width:100%;height:100%;image-rendering:-moz-crisp-edges;ima
       R(x0, 112, 90, 172, G); R(x0, 284, 90, 8, "#8a8a84"); R(x0, 292, 90, 2, "#5a5a54");
       R(x0, 298, 90, 10, "#5a4a3a"); for (var sl = x0; sl < x0 + 90; sl += 5) R(sl, 298, 2, 10, "#3a2a1e"); R(x0, 300, 90, 1, "#c8c8c8"); R(x0, 305, 90, 1, "#c8c8c8"); R(x0, 308, 90, 60, G);
       R(x0, 314, 90, 4, night ? "#2a2a30" : "#8a8a84");   /* the new street carries on into the country */
-      for (var st = 0; st < 7; st++) { var sx0 = x0 + 6 + st * 12 + (hash("st" + x0 + st) * 4 | 0), sy0 = 334 + (hash("sy" + x0 + st) * 18 | 0); R(sx0 + 2, sy0 + 5, 2, 4, "#4a2e1a"); crown(sx0, sy0 - 2, 6, 8, D, night, st + x0, wx); }
+      if (x0 === 0) for (var st = 0; st < 7; st++) { var sx0 = x0 + 6 + st * 12 + (hash("st" + x0 + st) * 4 | 0), sy0 = 334 + (hash("sy" + x0 + st) * 18 | 0); R(sx0 + 2, sy0 + 5, 2, 4, "#4a2e1a"); crown(sx0, sy0 - 2, 6, 8, D, night, st + x0, wx); }
     });
+    plotLand(night);
     /* WEST: snow peaks with a waterfall, a pine wood, a wildflower meadow, terraced fields */
     for (var x = 0; x < 90; x++) { var top = 8 + Math.abs(((x + 14) % 46) - 23) * 1.6 + (hash("pk" + x) - .5) * 3; R(x, top, 1, 86 - top, night ? "#2e3442" : "#7a8494"); if (top < 30) R(x, top, 1, Math.max(2, 30 - top), night ? "#c8ccd8" : "#f4f6fa"); }
     for (var x2 = 0; x2 < 90; x2++) { var h2 = 54 + Math.sin(x2 / 9) * 4; R(x2, h2, 1, 32, night ? "#232a36" : "#5a6680"); }
