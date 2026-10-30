@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b7a7b30666"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=895d071b7b" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=84bd0246a9"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=53ece3b1f8" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Same Song · Nearby</title>
 <meta name="description" content="Light up a little tune, press it into a record, and drop it in the jukebox that plays in Next Door and Borrowed Pages at the same time.">
@@ -182,7 +182,7 @@ html.fbsh-in.fbfit main{height:100%;min-height:0;width:100%;min-width:0;max-widt
   function save() { ls("jb_draft", JB.encode(song)); }
   var prev = new JB.Player(), resumeJukebox = false;
 
-  var MOOD_ICON = ["☀️", "🌧️", "🏮", "🌙"], INST_ICON = ["🎐", "🎹", "👾", "🪕"], DRUM_ICON = ["🥁", "👏", "✨"];
+  var MOOD_ICON = ["☀️", "🌧️", "🏮", "🌙"], INST_ICON = ["🎐", "🎹", "📟", "🪕"], DRUM_ICON = ["🥁", "👏", "✨"];
   var moodBtns = MOOD_ICON.map(function (ic, i) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = ic; b.onclick = function () { song.mood = i; paintChips(); save(); audition(); }; $("#moods").appendChild(b); return b; });
   var instBtns = INST_ICON.map(function (ic, i) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = ic; b.onclick = function () { song.inst = i; paintChips(); save(); audition(); }; $("#insts").appendChild(b); return b; });
   function paintChips() {
