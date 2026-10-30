@@ -2,7 +2,7 @@
 <html lang="en" class="fbt">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=bc5e612149"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=4320d8e135" defer></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=3642405e50"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=e848ece7da" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#160e09">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -8638,24 +8638,70 @@ document.addEventListener("DOMContentLoaded", function () {
     ask: M("Ask Miso & Yuzu", "问味噌和柚子", "問味噌同柚子", "Pregunta a Miso y Yuzu", "Pregunta-ho a la Miso i la Yuzu"),
     name: M("Miso & Yuzu", "味噌和柚子", "味噌同柚子", "Miso y Yuzu", "Miso i Yuzu")
   };
+  /* Mantou's visits: the dog keeps the counter, front paws on the bar. He serves what a dog would bring you. */
+  var D = {
+    head: M("MANTOU'S ON", "馒头值班", "饅頭當值", "MANTOU DE TURNO", "EN MANTOU DE TORN"),
+    napHead: M("MANTOU'S ASLEEP", "馒头睡着了", "饅頭瞓著咗", "MANTOU DUERME", "EN MANTOU DORM"),
+    hi: [M("*Mantou stands behind the counter, front paws on the bar, very professional. His tail knocks a stool.* Woof!", "*馒头站在吧台后面，两只前爪搭在吧台上，非常专业。尾巴把一张凳子扫倒了。* 汪！", "*饅頭企喺吧枱後面，兩隻前爪擱喺吧枱度，好專業。條尾掃跌咗張櫈。* 汪！", "*Mantou está detrás de la barra, patas delanteras en la barra, muy profesional. Su cola tumba un taburete.* ¡Guau!", "*En Mantou és darrere la barra, potes del davant a la barra, molt professional. La cua tomba un tamboret.* Bup!"),
+      M("*Mantou has a tea towel over one shoulder. Nobody knows how.* Woof.", "*馒头肩膀上搭着一条茶巾。谁也不知道是怎么搭上去的。* 汪。", "*饅頭膊頭搭住條毛巾。冇人知點搭上去。* 汪。", "*Mantou lleva un trapo al hombro. Nadie sabe cómo.* Guau.", "*En Mantou porta un drap a l'espatlla. Ningú sap com.* Bup.")],
+    nap: [M("*Mantou asleep across the doorway behind the counter, paws twitching, chasing the 7:40 in a dream.*", "*馒头横躺在吧台后的门口睡着了，爪子一抽一抽，梦里在追七点四十那班车。*", "*饅頭打橫瞓喺吧枱後面門口，對爪郁吓郁吓，夢入面追緊七點四十班車。*", "*Mantou dormido atravesado en la puerta detrás de la barra, moviendo las patas, persiguiendo el tren de las 7:40 en sueños.*", "*En Mantou adormit de través a la porta darrere la barra, movent les potes, perseguint el tren de les 7:40 en somnis.*")],
+    ask: M("Ask Mantou", "问馒头", "問饅頭", "Pregunta a Mantou", "Pregunta-ho a en Mantou"),
+    name: M("Mantou", "馒头", "饅頭", "Mantou", "En Mantou")
+  };
+  var DOGMENU = [
+    { k: "ball", ic: "coin", name: M("His ball", "他的球", "佢個波", "Su pelota", "La seva pilota"), sub: M("Slightly chewed", "有点被啃过", "畀佢咬過少少", "Un poco mordida", "Una mica mossegada"), desc: M("You throw it, he brings it back. You throw it, he brings it back. Forever is a good length for this.", "你扔出去，他叼回来。你扔出去，他叼回来。这件事永远做下去也挺好。", "你掟出去，佢擔返嚟。你掟出去，佢擔返嚟。呢件事做到永遠都幾好。", "Tú la lanzas, él la trae. Tú la lanzas, él la trae. Para siempre es una buena duración.", "Tu la llences, ell la torna. Tu la llences, ell la torna. Per sempre és una bona durada.") },
+    { k: "water", ic: "cup", name: M("His water bowl", "他的水碗", "佢個水兜", "Su cuenco de agua", "El seu bol d'aigua"), sub: M("Shared, generously", "大方地分给你", "好大方咁分俾你", "Compartido, con generosidad", "Compartit, amb generositat"), desc: M("He pushes it across the floor to you with his nose. It's the thought that counts. Have a glass of real water too.", "他用鼻子把碗推到你面前。心意最重要。你也喝一杯真正的水吧。", "佢用個鼻將個兜推到你面前。心意最緊要。你都飲杯真嘅水啦。", "Te lo acerca por el suelo con el hocico. Lo que cuenta es la intención. Bebe también un vaso de agua de verdad.", "Te l'acosta per terra amb el morro. El que compta és la intenció. Beu també un got d'aigua de veritat.") },
+    { k: "sock", ic: "yarn", name: M("A sock", "一只袜子", "一隻襪", "Un calcetín", "Un mitjó"), sub: M("Someone's. Not yours. Probably Wei's.", "某人的。不是你的。大概是 Wei 的。", "某人嘅。唔係你嘅。應該係阿Wei嘅。", "De alguien. No tuyo. Seguramente de Wei.", "D'algú. No és teu. Segurament d'en Wei."), desc: M("He's very proud of it. Tell him he's a good boy. He knows.", "他非常得意。告诉他他是好狗狗。他知道的。", "佢好得戚。話佢知佢係乖狗狗。佢知㗎。", "Está muy orgulloso. Dile que es un buen chico. Ya lo sabe.", "N'està molt orgullós. Digues-li que és un bon gos. Ja ho sap.") },
+    { k: "bun", ic: "dumpling", name: M("A mantou", "一个馒头", "一個饅頭", "Un mantou", "Un mantou"), sub: M("A real steamed bun, from Popo's kitchen", "真的馒头，婆婆厨房里的", "真嘅饅頭，婆婆廚房嘅", "Un panecillo al vapor de verdad, de la cocina de Popo", "Un panet al vapor de veritat, de la cuina de la Popo"), desc: M("He carried it all the way here very gently. One small bite missing. He doesn't know anything about that.", "他一路小心翼翼地叼过来。少了一小口。他对此一无所知。", "佢成程好小心咁擔過嚟。少咗一細啖。佢乜都唔知。", "Lo ha traído con muchísimo cuidado. Le falta un mordisquito. Él no sabe nada de eso.", "L'ha portat amb moltíssima cura. Li falta una mossegadeta. Ell no en sap res.") },
+    { k: "lead", ic: "rope", name: M("His lead", "他的牵绳", "佢條狗帶", "Su correa", "La seva corretja"), sub: M("An invitation", "一个邀请", "一個邀請", "Una invitación", "Una invitació"), desc: M("He drops it in your lap and sits by the door. Take him to the Plaza, or High Pasture. Then go for a real walk with someone.", "他把牵绳丢在你腿上，坐到门边。带他去广场，或者高山牧场。然后和谁去真正散个步。", "佢將條狗帶掉落你大髀，坐喺門口。帶佢去廣場，或者高山牧場。跟住同人去真係散吓步。", "Te la deja en el regazo y se sienta junto a la puerta. Llévale a la Plaza o al Pasto Alto. Luego sal a pasear de verdad con alguien.", "Te la deixa a la falda i s'asseu a la porta. Porta'l a la Plaça o a la Pastura Alta. Després surt a passejar de debò amb algú.") }
+  ];
+  function dogMenu() {
+    var old = document.getElementById("popo-menu"); if (old) old.remove();
+    var m = document.createElement("div"); m.id = "popo-menu"; m.setAttribute("role", "dialog");
+    m.style.cssText = "position:fixed;left:50%;bottom:calc(16px + var(--safe-b, 0px));transform:translateX(-50%);z-index:96;width:min(400px,calc(100vw - 24px));max-height:calc(100% - 32px);overflow:auto;padding:10px;background:#2a1a10;border:3px solid #000;box-shadow:6px 6px 0 #000;display:grid;grid-template-columns:1fr 1fr;gap:8px";
+    function add(html, label, fn, wide) { var b = document.createElement("button"); b.type = "button"; b.className = "opt-btn"; b.style.cssText = "min-height:44px;text-align:left;justify-content:flex-start;display:flex;align-items:center;gap:6px" + (wide ? ";grid-column:1/-1;justify-content:center" : ""); b.innerHTML = html; b.appendChild(document.createTextNode(" " + label)); b.onclick = function () { m.remove(); fn(); }; m.appendChild(b); }
+    DOGMENU.forEach(function (d) { add(W.pix ? W.pix(d.ic) : "", L(d.name), function () { dogServe(d); }); });
+    add("", "✕", function () {}, true);
+    document.body.appendChild(m);
+  }
+  function dogServe(d) {
+    try { showServed({ icon: "", name: L(d.name), sub: L(d.sub), desc: L(d.desc), formula: "", reactable: false, food: d.k === "bun" }); } catch (e) { say(L(d.desc)); return; }
+    var ic = W.pix ? W.pix(d.ic) : ""; ["res-icon", "served-item-plate"].forEach(function (id) { var el = document.getElementById(id); if (el) el.innerHTML = ic; });
+    try { SoundEngine.playClick(); } catch (e) {}
+    try { DB.log("dog_serve", { k: d.k }); } catch (e) {}
+  }
+  var dcv = document.createElement("canvas"); dcv.id = "dog-avatar"; dcv.width = 32; dcv.height = 36; dcv.setAttribute("role", "img"); dcv.setAttribute("aria-label", "Mantou");
+  function paintDog(asleep) { var g = dcv.getContext("2d"); g.clearRect(0, 0, 32, 36); if (W.drawDogFace) W.drawDogFace(g, 0, 2, 1, { asleep: asleep }); }
+  var css0 = document.createElement("style");
+  css0.textContent = "#dog-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.dog-on #dog-avatar{display:block}body.dog-on #svg-wei-avatar,body.dog-on #mei-avatar,body.dog-on #popo-avatar,body.dog-on #wei-zzz-particles{display:none!important}" +
+    "#dog-guest{position:absolute;bottom:0;left:34%;z-index:6;width:44px;height:32px;image-rendering:pixelated;cursor:pointer;transform:translateX(-50%)}";
+  document.head.appendChild(css0);
   var css = document.createElement("style");
   css.textContent = "#popo-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.popo-on #popo-avatar{display:block}body.popo-on #svg-wei-avatar,body.popo-on #mei-avatar,body.popo-on:not(.popo-nap) #wei-zzz-particles,body.cats-on #svg-wei-avatar,body.cats-on #mei-avatar,body.cats-on #wei-zzz-particles{display:none!important}body.popo-on:not(.wei-away) #wei-anchor{visibility:visible!important}body.cats-on #wei-anchor{visibility:hidden!important}@media (min-width:768px){#popo-avatar{width:92px;height:104px}}";
   document.head.appendChild(css);
   var cv = document.createElement("canvas"); cv.id = "popo-avatar"; cv.width = 32; cv.height = 36; cv.setAttribute("role", "img"); cv.setAttribute("aria-label", "Popo");
-  var holder = document.getElementById("sprite-wei-container"); if (holder) holder.appendChild(cv);
+  var holder = document.getElementById("sprite-wei-container"); if (holder) { holder.appendChild(cv); holder.appendChild(dcv); }
   function paint(asleep) { var g = cv.getContext("2d"); g.clearRect(0, 0, 32, 36); W.drawPopo(g, 0, 3, 1, { asleep: asleep }); }
   function say(t) { try { setText("sleep-story-text", t); } catch (e) {} }
   function pick(a) { return a[(Math.random() * a.length) | 0]; }
   var line = { popo: -1, cats: -1 }, said = "";
   function btn(fn, label) { var cb = document.getElementById("sleep-btn-cats"); if (!cb) return; cb.textContent = label; cb.parentElement.onclick = fn; }
   function dress() {
-    var h = who(), b = document.body, out = window.WeiAway && WeiAway.on(), P0 = h.who === "popo" && !out, C0 = h.who === "cats";
-    b.classList.toggle("popo-on", P0); b.classList.toggle("popo-nap", P0 && h.asleep); b.classList.toggle("cats-on", C0);
-    if (!P0 && !C0) return;
+    var h = who(), b = document.body, out = window.WeiAway && WeiAway.on(), P0 = h.who === "popo" && !out, C0 = h.who === "cats", D0 = h.who === "mantou" && !out;
+    b.classList.toggle("popo-on", P0); b.classList.toggle("popo-nap", P0 && h.asleep); b.classList.toggle("cats-on", C0); b.classList.toggle("dog-on", D0);
+    guest();
+    if (!P0 && !C0 && !D0) return;
     b.classList.remove("mei-on", "mei-nap");
     var hn = document.getElementById("host-name"), pill = document.getElementById("host-mood-pill"), w = document.getElementById("sleep-wake");
     if (w) w.style.display = "none";
     try { setText("sleep-header-badge", ""); } catch (e) {}
+    if (D0) {
+      paintDog(h.asleep); if (hn) hn.textContent = L(D.name); if (pill) pill.textContent = L(D.name);
+      try { setText("sleep-header-title", L(h.asleep ? D.napHead : D.head)); } catch (e) {}
+      var kd = h.asleep ? "nap" : "hi"; if (said !== "dog-" + kd) { said = "dog-" + kd; say(L(pick(D[kd]))); }
+      if (h.asleep && typeof Cats !== "undefined" && (Cats.here("miso") || Cats.here("yuzu"))) btn(function () { askCatToBartend(); }, L(lx(["Let the cats serve", "让猫来招呼", "", "等啲貓招呼你", "Que sirvan las gatas", "Que serveixin les gates"]))); else btn(dogMenu, L(D.ask));
+      return;
+    }
     if (P0) {
       paint(h.asleep); if (hn) hn.textContent = L(M("Popo", "婆婆", "婆婆", "Popo", "Popo")); if (pill) pill.textContent = hn ? hn.textContent : "Popo";
       try { setText("sleep-header-title", L(h.asleep ? P.napHead : P.head)); } catch (e) {}
@@ -8667,6 +8713,20 @@ document.addEventListener("DOMContentLoaded", function () {
       var k2 = h.asleep ? "nap" : "hi"; if (said !== "cats-" + k2) { said = "cats-" + k2; say(L(pick(C[k2]))); }
       btn(function () { askCatToBartend(); }, L(C.ask));
     }
+  }
+  /* Mantou drops in behind the counter now and then on other hosts' visits (when his walk brings him to Next Door) */
+  var GD = [M("*Mantou leans his whole weight against your leg.* Hrrmf.", "*馒头把整个身子靠在你腿上。* 呼。", "*饅頭成個身挨晒落你隻腳度。* 呼。", "*Mantou se apoya con todo su peso en tu pierna.* Hrrmf.", "*En Mantou es recolza amb tot el pes a la teva cama.* Hrrmf."),
+    M("*Mantou offers a paw. Then the other one. Then both.* Woof!", "*馒头伸出一只爪子。又伸出另一只。然后两只一起。* 汪！", "*饅頭伸咗隻爪出嚟。又伸另一隻。跟住兩隻一齊。* 汪！", "*Mantou te da la pata. Luego la otra. Luego las dos.* ¡Guau!", "*En Mantou et dona la pota. Després l'altra. Després totes dues.* Bup!"),
+    M("*Mantou sneezes, embarrassed, and pretends it was the cats.* …woof.", "*馒头打了个喷嚏，有点不好意思，假装是猫干的。* ……汪。", "*饅頭乞嚏，有啲尷尬，扮係啲貓整嘅。* ……汪。", "*Mantou estornuda, avergonzado, y hace como que fueron las gatas.* …guau.", "*En Mantou esternuda, avergonyit, i fa veure que han estat les gates.* …bup.")];
+  var gcv = null;
+  function guest() {
+    var here = false; try { here = who().who !== "mantou" && W.dog && W.dog() === "bar"; } catch (e) {}
+    var stage = document.getElementById("cat-miso"); stage = stage && stage.parentElement;
+    if (!here || !stage) { if (gcv) gcv.style.display = "none"; return; }
+    if (!gcv) { gcv = document.createElement("canvas"); gcv.id = "dog-guest"; gcv.width = 22; gcv.height = 16; gcv.setAttribute("role", "img"); gcv.setAttribute("aria-label", "Mantou"); stage.appendChild(gcv);
+      gcv.onclick = function (e) { e.stopPropagation(); try { SoundEngine.playClick(); } catch (x) {} if (window.NDSay) NDSay(L(pick(GD))); }; }
+    var g = gcv.getContext("2d"); g.clearRect(0, 0, 22, 16); if (W.drawPet) W.drawPet(g, "dog", 11, 16, 1, { asleep: W.phase && W.phase() === "night" });
+    gcv.style.display = "";
   }
   function menu() {
     var old = document.getElementById("popo-menu"); if (old) old.remove();
@@ -8794,6 +8854,17 @@ document.addEventListener("DOMContentLoaded", function () {
         A(S("*nod*", "*点头*", "*點頭*", "*asentir*", "*assentir*"), S("*squeezes your shoulder and goes back to the stove*", "*捏了捏你的肩膀，回到灶台边*", "*揑揑你膊頭，返去灶頭度*", "*te aprieta el hombro y vuelve al fogón*", "*et pren l'espatlla i torna als fogons*")),
         A(S("Can I help you cook?", "我可以帮你做饭吗？", "我可唔可以幫你煮？", "¿Te ayudo a cocinar?", "T'ajudo a cuinar?"), S("*hands you a spoon* Stir. Slowly. No talking to the soup.", "*递给你一把勺子* 搅。慢慢的。不要跟汤讲话。", "*遞咗隻匙羹俾你* 攪。慢慢攪。唔好同碗湯講嘢。", "*te da una cuchara* Remueve. Despacio. No hablar a la sopa.", "*et dona una cullera* Remena. A poc a poc. No parlis amb la sopa.")))
     ],
+    mantou: [
+      Q(S("*Mantou drops his ball on your shoe and stares at it. Then at you.*", "*馒头把球丢在你的鞋上，盯着球，又盯着你。*", "*饅頭將個波掉喺你隻鞋度，望住個波，再望住你。*", "*Mantou deja la pelota en tu zapato y la mira. Luego a ti.*", "*En Mantou deixa la pilota a la teva sabata i la mira. Després a tu.*"),
+        A(S("*throw it*", "*扔出去*", "*掟出去*", "*lanzarla*", "*llançar-la*"), S("*Mantou skids across the floor, gets it, brings it back, drops it on your shoe again.* Woof!", "*馒头在地上打滑，叼到了，叼回来，又丢在你鞋上。* 汪！", "*饅頭喺地下打滑，咬到，擔返嚟，又掉喺你隻鞋度。* 汪！", "*Mantou derrapa por el suelo, la coge, la trae y te la vuelve a dejar en el zapato.* ¡Guau!", "*En Mantou derrapa per terra, l'agafa, la torna i te la deixa una altra vegada a la sabata.* Bup!")),
+        A(S("*pretend to throw it*", "*假装扔*", "*扮掟*", "*hacer como que la lanzas*", "*fer veure que la llences*"), S("*Mantou runs off, stops, looks back. Betrayal. He forgives you immediately.*", "*馒头冲出去，停下，回头看。被骗了。他马上原谅了你。*", "*饅頭衝出去，停低，回頭望。畀人呃咗。佢即刻原諒咗你。*", "*Mantou sale corriendo, se para, mira atrás. Traición. Te perdona al instante.*", "*En Mantou surt corrent, s'atura, mira enrere. Traïció. Et perdona a l'instant.*"))),
+      Q(S("*Mantou puts his chin on your knee and sighs, a long dog sigh.*", "*馒头把下巴搁在你膝盖上，长长地叹了一口狗气。*", "*饅頭將個下巴擱喺你膝頭，長長嘆咗一啖狗氣。*", "*Mantou apoya la barbilla en tu rodilla y suspira, un largo suspiro de perro.*", "*En Mantou recolza la barbeta al teu genoll i sospira, un llarg sospir de gos.*"),
+        A(S("*scratch behind his ears*", "*挠他耳朵后面*", "*撓佢耳仔後面*", "*rascarle detrás de las orejas*", "*gratar-li darrere les orelles*"), S("*His back leg starts thumping. He did not authorise that.*", "*他的后腿开始自己蹬。他没批准这件事。*", "*佢隻後腳自己踢起上嚟。佢冇批准過。*", "*La pata de atrás empieza a dar golpes. Él no ha autorizado eso.*", "*La pota del darrere comença a picar. Ell no ho ha autoritzat.*")),
+        A(S("*sigh back*", "*也叹一口气*", "*都嘆一啖氣*", "*suspirar también*", "*sospirar també*"), S("*You sigh together. It's the best conversation you've had all day.*", "*你们一起叹气。这是你今天最好的一场对话。*", "*你哋一齊嘆氣。呢個係你今日最好嘅對話。*", "*Suspiráis juntos. Es la mejor conversación que has tenido hoy.*", "*Sospireu junts. És la millor conversa que has tingut avui.*"))),
+      Q(S("*Mantou brings you his lead and sits by the door, very upright.*", "*馒头把牵绳叼给你，端端正正坐到门边。*", "*饅頭將條狗帶擔俾你，坐得好正喺門口。*", "*Mantou te trae la correa y se sienta junto a la puerta, muy recto.*", "*En Mantou et porta la corretja i s'asseu a la porta, molt dret.*"),
+        A(S("Not now, Mantou", "现在不行，馒头", "而家唔得呀，饅頭", "Ahora no, Mantou", "Ara no, Mantou"), S("*He lies down by the door anyway. He'll wait. He's good at waiting.*", "*他还是在门边趴下了。他会等。他很会等。*", "*佢都係喺門口伏低。佢會等。佢好識等。*", "*Se tumba junto a la puerta igualmente. Esperará. Se le da bien esperar.*", "*S'estira a la porta igualment. Esperarà. Se li dona bé esperar.*")),
+        A(S("Later. A real walk.", "待会儿。真的去散步。", "陣間。真係去散步。", "Luego. Un paseo de verdad.", "Després. Una passejada de debò."), S("*Tail. Whole body tail.* Woof!", "*尾巴。整只狗都是尾巴。* 汪！", "*條尾。成隻狗都係尾。* 汪！", "*Cola. Todo él es cola.* ¡Guau!", "*Cua. Tot ell és cua.* Bup!")))
+    ],
     cats: [
       Q(S("*Yuzu climbs onto the stool beside you and stares* Mrrp?", "*柚子爬上你旁边的凳子，盯着你* 咪噜？", "*柚子爬上你旁邊的凳子，盯著你* 咪嚕？", "*Yuzu se sube al taburete de al lado y te mira fijamente* ¿Mrrp?", "*La Yuzu s'enfila al tamboret del costat i et mira fixament* Mrrp?"),
         A(S("*scratch her chin*", "*挠挠她的下巴*", "*撓撓她的下巴*", "*rascarle la barbilla*", "*gratar-li la barbeta*"), S("*Yuzu purrs so loud the spoons rattle*", "*柚子呼噜得勺子都在抖*", "*柚子呼嚕得湯匙都在抖*", "*Yuzu ronronea tan fuerte que tiemblan las cucharas*", "*La Yuzu ronca tan fort que tremolen les culleres*")),
@@ -8846,6 +8917,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const k = who();
     if (k === 'mei') return 'MEI';
     if (k === 'popo') return L(lx(["POPO", "婆婆", "婆婆", "婆婆", "POPO", "LA POPO"]));
+    if (k === 'mantou') return L(lx(["MANTOU", "馒头", "饅頭", "饅頭", "MANTOU", "EN MANTOU"]));
     if (k === 'cats') return L(lx(["MISO & YUZU", "味噌和柚子", "味噌和柚子", "味噌同柚子", "MISO Y YUZU", "LA MISO I LA YUZU"]));
     return origTag ? origTag() : 'WEI';
   };
