@@ -7772,7 +7772,7 @@ document.addEventListener("DOMContentLoaded", function () {
       else if (saved) st = saved.p ? saved : null;
       else {
         var keys = Object.keys(PLACES);
-        st = Math.random() < 0.3 ? { p: keys[Math.floor(Math.random() * keys.length)], until: Date.now() + MIN } : { p: "" };
+        st = Math.random() < 0.05 ? { p: keys[Math.floor(Math.random() * keys.length)], until: Date.now() + MIN } : { p: "" };   /* a note behind the counter, one visit in twenty: someone's nearly always here */
         sessionStorage.setItem(KEY, JSON.stringify(st)); if (!st.p) st = null;
       }
     } catch (e) {}
@@ -7818,7 +7818,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var eval0 = window.evaluateWeiState;
     window.evaluateWeiState = function () {
       var r = eval0.apply(this, arguments);
-      if (away()) { var was = AppState.weiState; AppState.weiState = "asleep"; if (was !== "asleep" && window.Cats && Cats.st) try { Cats.syncSleep(); } catch (e) {} }
+      if (away()) { var was = AppState.weiState; AppState.weiState = "asleep"; if (was !== "asleep" && typeof Cats !== "undefined" && Cats.st) try { Cats.syncSleep(); } catch (e) {} }
       apply(); return r;
     };
     var render0 = window.renderCurrentDialogue;
@@ -8581,7 +8581,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /* Wei travelling (FBWorld.host says Mei's day): behind the counter it's as if he were out, whatever the hour */
   T.trav = M("WEI'S TRAVELLING", "WEI 出门旅行了", "WEI 出門旅行了", "WEI ESTÁ DE VIAJE", "EN WEI ÉS DE VIATGE");
   var eval1 = window.evaluateWeiState;
-  window.evaluateWeiState = function () { var r = eval1.apply(this, arguments); try { if (W.weiTravelling() && AppState.weiState !== "asleep") { AppState.weiState = "asleep"; if (window.Cats && Cats.st) Cats.syncSleep(); } } catch (e) {} return r; };
+  window.evaluateWeiState = function () { var r = eval1.apply(this, arguments); try { if (W.weiTravelling() && AppState.weiState !== "asleep") { AppState.weiState = "asleep"; if (typeof Cats !== "undefined" && Cats.st) Cats.syncSleep(); } } catch (e) {} return r; };
   try { if (W.weiTravelling()) evaluateWeiState(); } catch (e) {}
   var render0 = window.renderCurrentDialogue;
   window.renderCurrentDialogue = function () { var r = render0.apply(this, arguments); if (!on() && W.weiTravelling() && !(window.WeiAway && WeiAway.on())) { try { setText("sleep-header-title", L(T.trav)); setText("sleep-header-badge", ""); } catch (e) {} } if (on()) { dress(); say(L(T.hi[(Math.random() * T.hi.length) | 0])); } else if (napping()) dress(); return r; };
@@ -8660,7 +8660,7 @@ document.addEventListener("DOMContentLoaded", function () {
       paint(h.asleep); if (hn) hn.textContent = L(M("Popo", "婆婆", "婆婆", "Popo", "Popo")); if (pill) pill.textContent = hn ? hn.textContent : "Popo";
       try { setText("sleep-header-title", L(h.asleep ? P.napHead : P.head)); } catch (e) {}
       var key = h.asleep ? "nap" : "hi"; if (said !== "popo-" + key) { said = "popo-" + key; say(L(pick(P[key]))); }
-      if (h.asleep && window.Cats && (Cats.here('miso') || Cats.here('yuzu'))) btn(function () { askCatToBartend(); }, L(lx(["Let the cats serve", "让猫来招呼", "", "等啲貓招呼你", "Que sirvan las gatas", "Que serveixin les gates"]))); else btn(menu, L(P.ask));
+      if (h.asleep && typeof Cats !== 'undefined' && (Cats.here('miso') || Cats.here('yuzu'))) btn(function () { askCatToBartend(); }, L(lx(["Let the cats serve", "让猫来招呼", "", "等啲貓招呼你", "Que sirvan las gatas", "Que serveixin les gates"]))); else btn(menu, L(P.ask));
     } else {
       if (pill) pill.textContent = L(C.name);
       try { setText("sleep-header-title", L(h.asleep ? C.napHead : C.head)); } catch (e) {}
@@ -8818,15 +8818,15 @@ document.addEventListener("DOMContentLoaded", function () {
   function who() {
     let h = null; try { h = W.host && W.host(); } catch (e) {}
     const away = window.WeiAway && WeiAway.on && WeiAway.on();
-    const catsHere = window.Cats && Cats.here && (Cats.here('miso') || Cats.here('yuzu'));
+    const catsHere = typeof Cats !== 'undefined' && Cats.here && (Cats.here('miso') || Cats.here('yuzu'));
     if (!h) return AppState.weiState === 'awake' ? 'wei' : null;
     if (h.who === 'cats') return h.asleep ? null : 'cats';
     if (h.asleep || away || (h.who === 'wei' && AppState.weiState !== 'awake')) return catsHere ? 'cats' : null;   /* Mei and Popo use their own panel (Wei's state reads asleep then) */
     return h.who;
   }
   const resting = () => { const m = AppState.uiMode; const sl = document.getElementById('sleep-mode-screen'); return m === 'topic' || (sl && !sl.classList.contains('hidden') && getComputedStyle(sl).display !== 'none'); };
-  function chat() {
-    const k = who(); if (!k) return false; const list = TALK[k], free = list.map((_, i) => i).filter(i => !used[k + i]); if (!free.length) return false;
+  function chat(force) {
+    const k = who(); if (!k) return false; const list = TALK[k]; let free = list.map((_, i) => i).filter(i => !used[k + i]); if (!free.length && force) { list.forEach((_, i) => { delete used[k + i]; }); free = list.map((_, i) => i); } if (!free.length) return false;
     const i = free[Math.floor(Math.random() * free.length)], t = list[i]; used[k + i] = 1; n++; lastChat = Date.now();
     try { if (k !== 'cats') setExpression('grin', 1400); else ['miso', 'yuzu'].forEach(id => Cats.anim && Cats.anim(id, 'hop')); } catch (e) {}
     try { if (k === 'cats') SoundEngine.playMeow(1.2); else SoundEngine.playClick(); } catch (e) {}
@@ -8839,7 +8839,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (n >= 4 || now - last < 30000 || now - lastChat < 90000 || busy() || !resting()) return;
     chat();
   }, 5000);
-  window.NDChat = { now: chat };   /* for testing */
+  window.NDChat = { now: chat, who: who };
   /* the name over the words is whoever is talking: Wei (with his mood), Mei, Popo, or the cats */
   const origTag = window.speakerTag;
   window.speakerTag = function () {
@@ -8849,6 +8849,51 @@ document.addEventListener("DOMContentLoaded", function () {
     if (k === 'cats') return L(lx(["MISO & YUZU", "味噌和柚子", "味噌和柚子", "味噌同柚子", "MISO Y YUZU", "LA MISO I LA YUZU"]));
     return origTag ? origTag() : 'WEI';
   };
+})();
+</script>
+
+<script>
+/* One panel for every voice: the hosts' words, Wei's jokes, Mei's complaints, Popo's nagging and the animals all appear in the panel
+   under the counter, never in speech bubbles or pop-ups. Tapping whoever is behind the counter starts a new little conversation
+   (Wei asleep is the one exception: poking him three times still wakes him). Tapping a cat gets a reaction, in the panel. */
+(function () {
+  const S = (en, zh, tw, es, ca) => lx([en, zh, tw, tw, es, ca]);
+  function vis(id) { const e = document.getElementById(id); return e && !e.classList.contains('hidden') && e.getClientRects().length; }
+  function panelSay(t) {
+    if (!t) return false;
+    if (vis('rpg-dialogue-screen')) { try { Typer.run(document.getElementById('dialogue-speech-text'), t); } catch (e) { setText('dialogue-speech-text', t); } return true; }
+    if (vis('sleep-mode-screen')) { setText('sleep-story-text', t); return true; }
+    return false;
+  }
+  window.NDSay = panelSay;
+  /* Wei's bubble over his head becomes a line in the panel */
+  window.showBubble = function (text) { panelSay(text); };
+  /* no "(tap)" under the name: tapping just works */
+  const ph = document.getElementById('poke-hint'); if (ph) ph.style.display = 'none';
+  const st0 = document.createElement('style'); st0.textContent = '#poke-hint{display:none!important}#wei-bubble-wrap{display:none!important}.cat-bubble{display:none!important}'; document.head.appendChild(st0);
+  /* the host: each tap a new conversation */
+  const tap0 = window.tapBartender;
+  window.tapBartender = function () {
+    let h = null; try { h = FBWorld.host(); } catch (e) {}
+    if ((!h || h.who === 'wei') && AppState.weiState === 'asleep' && !(window.WeiAway && WeiAway.on())) return tap0 && tap0();   /* Wei asleep: poke to wake, his own way */
+    try { resetIdle(); } catch (e) {}
+    if (window.NDChat && NDChat.now(true)) return;
+    return tap0 && tap0();
+  };
+  /* the cats at Next Door: no card, no bubbles; a tap gets a reaction in the panel */
+  const CR = {
+    miso: [S("*Miso looks at your hand, then at you, then allows it.*", "*味噌看看你的手，又看看你，然后勉强同意了。*", "*味噌看看你的手，又看看你，然後勉強同意了。*", "*Miso mira tu mano, luego a ti, y lo permite.*", "*La Miso et mira la mà, després a tu, i ho permet.*"),
+      S("*Miso slow-blinks at you. In cat, that's a lot.*", "*味噌对你慢慢眨了眨眼。在猫的语言里，这很多了。*", "*味噌對你慢慢眨了眨眼。在貓的語言裡，這很多了。*", "*Miso te parpadea despacio. En gato, eso es mucho.*", "*La Miso et fa l'ullet a poc a poc. En gat, això és molt.*"),
+      S("*Miso pushes a coaster off the counter. Then looks at you. Your fault now.*", "*味噌把一个杯垫推下吧台，然后看着你。现在是你的错了。*", "*味噌把一個杯墊推下吧台，然後看著你。現在是你的錯了。*", "*Miso tira un posavasos de la barra. Luego te mira. Ahora es culpa tuya.*", "*La Miso tira un sotagot de la barra. Després et mira. Ara és culpa teva.*"),
+      S("*Miso yawns, all teeth, and goes back to being a loaf.*", "*味噌打了个满嘴尖牙的哈欠，又缩回成一条面包。*", "*味噌打了個滿嘴尖牙的哈欠，又縮回成一條麵包。*", "*Miso bosteza, todo dientes, y vuelve a ser una barra de pan.*", "*La Miso badalla, tota dents, i torna a fer de barra de pa.*")],
+    yuzu: [S("*Yuzu headbutts your hand. Purring like a small engine.*", "*柚子用头顶了顶你的手，呼噜声像个小马达。*", "*柚子用頭頂了頂你的手，呼嚕聲像個小馬達。*", "*Yuzu te da un cabezazo en la mano. Ronronea como un motor pequeño.*", "*La Yuzu et dona un cop de cap a la mà. Ronca com un motor petit.*"),
+      S("*Yuzu rolls over. It's a trap. You know it's a trap.*", "*柚子翻了个肚皮。是陷阱。你知道是陷阱。*", "*柚子翻了個肚皮。是陷阱。你知道是陷阱。*", "*Yuzu se pone panza arriba. Es una trampa. Sabes que es una trampa.*", "*La Yuzu es posa panxa enlaire. És una trampa. Ja saps que és una trampa.*"),
+      S("*Yuzu chirps at a fly only she can see.*", "*柚子对着一只只有她看得见的苍蝇咔咔叫。*", "*柚子對著一隻只有她看得見的蒼蠅咔咔叫。*", "*Yuzu le hace ruiditos a una mosca que solo ve ella.*", "*La Yuzu fa sorollets a una mosca que només veu ella.*"),
+      S("*Yuzu sits on your coaster, very pleased with herself.*", "*柚子坐在你的杯垫上，很得意。*", "*柚子坐在你的杯墊上，很得意。*", "*Yuzu se sienta en tu posavasos, muy satisfecha.*", "*La Yuzu s'asseu al teu sotagot, molt satisfeta.*")]
+  };
+  function catTap(id) { try { SoundEngine.playMeow(id === 'miso' ? .9 : 1.3); } catch (e) {} try { Cats.anim(id, 'wiggle'); } catch (e) {} const l = CR[id]; panelSay(L(l[Math.floor(Math.random() * l.length)])); }
+  function patchCats() { if (typeof Cats === 'undefined') return setTimeout(patchCats, 300); Cats.open = function (id) { catTap(id); }; Cats.say = function () {}; Cats.closeCard = Cats.closeCard || function () {}; }
+  patchCats();
 })();
 </script>
 </body>
