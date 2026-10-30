@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=d077c7c0e8"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=35f74900fa" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=d077c7c0e8"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=25c6a2f0b5" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>No Hurry · Nearby</title>
 <meta name="description" content="A cabin on the high pasture with a big window. Clouds, cows, weather, a candle on the sill.">
@@ -180,21 +180,32 @@ canvas#cv{touch-action:none}
   snd.onclick = function () { var on = snd.getAttribute("aria-pressed") !== "true"; snd.setAttribute("aria-pressed", on); snd.textContent = on ? "🔊" : "🔈"; if (on) startSound(); else stopSound(); };
 
   /* Popo's album: eight pages, old photos in her own words (her English, Spanish and Mandarin broken, her Cantonese and Catalan her own); the last page is empty */
+  /* each page names its photo; the Catalan ones keep to real history (the Aeri de Montserrat since 1930, the Sagrada Família's
+     Passion towers still going up in 1972, Tossa's Vila Vella, the archer lighting the Olympic flame on 25 July 1992) */
   var PAGES = [
-    ["1968. Me, nineteen. Big jar, small suitcase.", "1968。我，十九岁。罐子大，箱子小。", "1968。我，十九歲。樽大，喼細。", "1968. Yo, diecinueve. Tarro grande, maleta pequeña.", "1968. Jo, dinou anys. El pot gran, la maleta petita."],
-    ["Josep and his clock. Always oil on the hands.", "Josep 和他的钟。手上总是油。", "Josep 同佢個鐘。成日一手油。", "Josep y su reloj. Siempre aceite en las manos.", "En Josep i el seu rellotge. Sempre amb les mans d'oli."],
-    ["Popo's Noodles, opening day. Queue to the corner!", "婆婆面馆，开张那天。排队排到街角！", "婆婆麵家，開張嗰日。排隊排到街口！", "Fideos Popo, día que abre. ¡Cola hasta la esquina!", "Fideus Popo, el dia que vam obrir. Cua fins a la cantonada!"],
-    ["My girls and the lemon tree. Look, same height that year.", "我的两个女儿和柠檬树。你看，那年一样高。", "我兩個女同棵檸檬樹。你睇，嗰年一樣高。", "Mis niñas y el limonero. Mira, ese año mismo alto.", "Les meves nenes i el llimoner. Mira, aquell any feien la mateixa alçada."],
-    ["Josep on the roof. He build this cabin with his hands. I make the soup.", "Josep 在屋顶上。小屋他自己盖的。汤是我煮的。", "Josep 喺屋頂。間屋係佢親手起嘅，啲湯係我煲嘅。", "Josep en el tejado. Esta cabaña hizo con sus manos. La sopa, yo.", "En Josep dalt de la teulada. Va fer aquesta cabana amb les seves mans. La sopa, jo."],
-    ["Mantou, first winter. Still waiting for the 7:40.", "馒头，第一个冬天。还在等七点四十。", "饅頭，第一個冬天。仲等緊七點四十。", "Mantou, primer invierno. Todavía espera las 7:40.", "En Mantou, el primer hivern. Encara esperava el de les 7:40."],
-    ["Wei, ten years old, two kittens in a box. I said no.", "Wei，十岁，箱子里两只小猫。我说不要。", "阿 Wei，十歲，紙箱入面兩隻貓仔。我話唔要。", "Wei, diez años, dos gatitos en caja. Yo dije no.", "En Wei, deu anys, dues gatetes en una caixa. Jo vaig dir que no."],
-    ["This page is empty. For you. Bring somebody up here.", "这一页空着。给你的。带个人上来。", "呢頁吉嘅。留俾你。帶個人上嚟啦。", "Esta página vacía. Para ti. Trae a alguien aquí arriba.", "Aquesta pàgina és buida. És per a tu. Porta algú aquí dalt."]
+        ["1968. Me, nineteen. Big jar, small suitcase.", "1968。我，十九岁。罐子大，箱子小。", "1968。我，十九歲。樽大，喼細。", "1968. Yo, diecinueve. Tarro grande, maleta pequeña.", "1968. Jo, dinou anys. El pot gran, la maleta petita.", "arrive"],
+        ["Josep and his clock. Always oil on the hands.", "Josep 和他的钟。手上总是油。", "Josep 同佢個鐘。成日一手油。", "Josep y su reloj. Siempre aceite en las manos.", "En Josep i el seu rellotge. Sempre amb les mans d'oli.", "clock"],
+    ["1969. Montserrat. Josep take me up in the cable car. I hold his arm all the way.", "1969。蒙特塞拉特。Josep 带我坐缆车上山。我一路抓住他的手臂。", "1969。蒙特塞拉特。Josep 帶我坐纜車上山，我成程揸實佢隻手。", "1969. Montserrat. Josep me sube en el teleférico. Yo agarro su brazo todo el camino.", "1969. Montserrat. En Josep em va pujar amb l'aeri. Li vaig agafar el braç tot el camí.", "montserrat"],
+    ["1972. Sagrada Família, cranes everywhere. Josep say: they finish before we are old. Ha!", "1972。圣家堂，到处是吊车。Josep 说：我们老之前会盖好。哈！", "1972。聖家堂，周圍都係吊臂。Josep 話：我哋老之前會起好。哈！", "1972. Sagrada Família, grúas por todas partes. Josep dice: terminan antes que somos viejos. ¡Ja!", "1972. La Sagrada Família, plena de grues. En Josep deia: l'acabaran abans que siguem vells. Ha!", "sagrada"],
+        ["Popo's Noodles, opening day. Queue to the corner!", "婆婆面馆，开张那天。排队排到街角！", "婆婆麵家，開張嗰日。排隊排到街口！", "Fideos Popo, día que abre. ¡Cola hasta la esquina!", "Fideus Popo, el dia que vam obrir. Cua fins a la cantonada!", "noodles"],
+        ["My girls and the lemon tree. Look, same height that year.", "我的两个女儿和柠檬树。你看，那年一样高。", "我兩個女同棵檸檬樹。你睇，嗰年一樣高。", "Mis niñas y el limonero. Mira, ese año mismo alto.", "Les meves nenes i el llimoner. Mira, aquell any feien la mateixa alçada.", "girls"],
+    ["1984. Tossa de Mar, under the old walls. The girls never want to come out of the sea.", "1984。托萨德马尔，古城墙下。两个女儿泡在海里不肯上来。", "1984。托薩德馬爾，舊城牆下面。兩個女泡喺海度唔肯上嚟。", "1984. Tossa de Mar, debajo de murallas viejas. Las niñas no quieren salir del mar.", "1984. Tossa de Mar, sota les muralles. Les nenes no volien sortir mai de l'aigua.", "tossa"],
+        ["Josep on the roof. He build this cabin with his hands. I make the soup.", "Josep 在屋顶上。小屋他自己盖的。汤是我煮的。", "Josep 喺屋頂。間屋係佢親手起嘅，啲湯係我煲嘅。", "Josep en el tejado. Esta cabaña hizo con sus manos. La sopa, yo.", "En Josep dalt de la teulada. Va fer aquesta cabana amb les seves mans. La sopa, jo.", "roof"],
+    ["1992. Olympics. Whole restaurant watch the arrow light the fire, on the little TV. Everybody cry.", "1992。奥运会。整间面馆挤在小电视前，看那支箭点燃圣火。大家都哭了。", "1992。奧運。成間麵家擠喺部細電視前面，睇住支箭點着聖火。個個都喊。", "1992. Olimpiadas. Todo el restaurante mira la flecha encender el fuego, en tele pequeña. Todos lloran.", "1992. Els Jocs. Tot el restaurant mirant com la fletxa encenia el peveter, a la tele petita. Tothom plorava.", "olympics"],
+        ["Mantou, first winter. Still waiting for the 7:40.", "馒头，第一个冬天。还在等七点四十。", "饅頭，第一個冬天。仲等緊七點四十。", "Mantou, primer invierno. Todavía espera las 7:40.", "En Mantou, el primer hivern. Encara esperava el de les 7:40.", "mantou"],
+        ["Wei, ten years old, two kittens in a box. I said no.", "Wei，十岁，箱子里两只小猫。我说不要。", "阿 Wei，十歲，紙箱入面兩隻貓仔。我話唔要。", "Wei, diez años, dos gatitos en caja. Yo dije no.", "En Wei, deu anys, dues gatetes en una caixa. Jo vaig dir que no.", "kittens"],
+        ["This page is empty. For you. Bring somebody up here.", "这一页空着。给你的。带个人上来。", "呢頁吉嘅。留俾你。帶個人上嚟啦。", "Esta página vacía. Para ti. Trae a alguien aquí arriba.", "Aquesta pàgina és buida. És per a tu. Porta algú aquí dalt.", "empty"]
   ];
   var pg = 0, AL = document.getElementById("alb"), AC2 = document.getElementById("albC"), ag = AC2.getContext("2d");
   function A(x, y, w, h, c) { ag.fillStyle = c; ag.fillRect(x, y, w, h); }
   function person(x, y, hair, coat, small) { var k = small ? .7 : 1; A(x - 2 * k, y - 14 * k, 4 * k, 4 * k, "#f2cfa8"); A(x - 2 * k, y - 15 * k, 4 * k, 2 * k, hair); A(x - 3 * k, y - 10 * k, 6 * k, 7 * k, coat); A(x - 2 * k, y - 3 * k, 1.5 * k, 3 * k, "#2a1d14"); A(x + .5 * k, y - 3 * k, 1.5 * k, 3 * k, "#2a1d14"); }
-  function photo(i) {
+  function photo(key) {
+    var i = ["arrive", "clock", "noodles", "girls", "roof", "mantou", "kittens", "empty"].indexOf(key);
     var Wd = 72, Hd = 52; A(0, 0, Wd, Hd, "#cfc2a4");
+    if (key === "montserrat") { A(0, 0, Wd, 34, "#c4ccd4"); var sp = [[6, 18, 7], [12, 10, 6], [18, 6, 7], [25, 12, 6], [31, 8, 7], [38, 14, 6], [44, 9, 7], [51, 16, 6], [57, 12, 7], [64, 20, 8]]; sp.forEach(function (q) { A(q[0], q[1] + 2, q[2], 40 - q[1], "#b89a88"); A(q[0] + 1, q[1], q[2] - 2, 2, "#b89a88"); A(q[0] + 1, q[1] + 3, 1, 30 - q[1], "#a08070"); }); A(0, 38, Wd, 14, "#8a9a6a"); A(20, 34, 26, 8, "#d8ccb4"); A(22, 36, 3, 4, "#8a7a6a"); A(28, 36, 3, 4, "#8a7a6a"); A(34, 36, 3, 4, "#8a7a6a"); A(40, 32, 4, 10, "#d8ccb4"); for (var cl = 0; cl < 40; cl++) A(30 + cl, 30 - cl * .6, 1, 1, "#3a2a1c"); A(48, 15, 6, 5, "#b83a3a"); A(50, 17, 2, 1, "#f6e8c8"); A(51, 13, 1, 2, "#3a2a1c"); }
+    if (key === "sagrada") { A(0, 0, Wd, Hd, "#c8ccc8"); A(0, 44, Wd, 8, "#8a8478"); [[14, 8], [20, 4], [26, 4], [32, 8]].forEach(function (q) { A(q[0], q[1], 5, 40 - q[1], "#b8a088"); A(q[0] + 1, q[1] - 3, 3, 3, "#b8a088"); A(q[0] + 2, q[1] - 5, 1, 2, "#e8d080"); for (var hh = q[1] + 4; hh < 38; hh += 4) A(q[0] + 2, hh, 1, 2, "#6a5a48"); }); A(10, 30, 30, 14, "#a89078"); A(20, 34, 10, 10, "#5a4a3a"); [[46, 18], [52, 14], [58, 20]].forEach(function (q) { A(q[0], q[1], 5, 44 - q[1], "#b8a890"); }); A(64, 2, 1, 42, "#3a2a1c"); A(44, 3, 26, 1, "#3a2a1c"); A(66, 4, 3, 3, "#3a2a1c"); A(50, 4, 1, 8, "#3a2a1c"); A(49, 12, 3, 2, "#6a5a48"); }
+    if (key === "tossa") { A(0, 0, Wd, 22, "#c4d4dc"); A(0, 30, Wd, 22, "#6a9ab0"); for (var wv = 0; wv < 8; wv++) A((wv * 11) % Wd, 34 + (wv * 5) % 14, 6, 1, "#a8cad8"); A(0, 26, 40, 6, "#e0cc9a"); A(36, 10, Wd - 36, 22, "#a89870"); A(40, 14, 30, 14, "#c8b088"); [[42, 8], [54, 6], [66, 9]].forEach(function (q) { A(q[0], q[1], 6, 20, "#b8a078"); A(q[0], q[1] - 1, 1, 1, "#b8a078"); A(q[0] + 2, q[1] - 1, 1, 1, "#b8a078"); A(q[0] + 4, q[1] - 1, 1, 1, "#b8a078"); }); A(62, 2, 3, 6, "#efe8d8"); A(62, 1, 3, 1, "#b83a3a"); A(12, 33, 3, 3, "#f2cfa8"); A(12, 32, 3, 1, "#1a1410"); A(20, 35, 3, 3, "#f2cfa8"); A(20, 34, 3, 1, "#1a1410"); A(11, 36, 5, 2, "#d88a9a"); A(19, 38, 5, 2, "#8ab0d8"); }
+    if (key === "olympics") { A(0, 0, Wd, Hd, "#b8a888"); A(18, 6, 38, 30, "#3a2a1c"); A(21, 9, 32, 22, "#7a9ab8"); A(21, 22, 32, 9, "#9aa87a"); A(24, 18, 26, 6, "#c8c0b0"); A(44, 11, 3, 5, "#d8b080"); A(44, 10, 3, 2, "#f6a83a"); A(45, 8, 1, 2, "#f6d84a"); for (var ar = 0; ar < 14; ar++) A(28 + ar, 20 - ar * .7, 1, 1, "#f6d84a"); A(26, 20, 2, 3, "#2a1d14"); A(32, 36, 10, 2, "#3a2a1c"); A(56, 10, 3, 3, "#8a8a8a"); for (var hd = 0; hd < 7; hd++) { A(4 + hd * 10, 42, 7, 7, ["#1a1410", "#3a2a1c", "#8a8a8a", "#1a1410", "#6a4a2a", "#1a1410", "#3a2a1c"][hd]); A(3 + hd * 10, 48, 9, 4, ["#b83a3a", "#4a5a7a", "#e8e0d0", "#5a7a5a", "#c8a24a", "#8a4a6a", "#4a6a8a"][hd]); } }
     if (i === 0) { A(0, 0, Wd, 30, "#b8c4cc"); A(0, 30, Wd, 22, "#8a8478"); A(4, 14, 40, 16, "#5a6a5a"); for (var w = 0; w < 4; w++) A(7 + w * 9, 17, 6, 5, "#d8e4e0"); A(0, 38, Wd, 2, "#5a5448"); person(54, 44, "#1a1410", "#b83a3a"); A(57, 34, 4, 5, "#e8d48a"); A(46, 38, 6, 5, "#6a4428"); }
     if (i === 1) { A(0, 0, Wd, Hd, "#c8b898"); A(14, 6, 26, 26, "#fbf1de"); A(14, 6, 26, 2, "#3a2a1c"); A(14, 30, 26, 2, "#3a2a1c"); A(14, 6, 2, 26, "#3a2a1c"); A(38, 6, 2, 26, "#3a2a1c"); A(26, 10, 2, 9, "#2a1d14"); A(27, 18, 7, 2, "#2a1d14"); person(52, 48, "#3a2a1c", "#4a5a7a"); A(48, 38, 3, 2, "#2a1d14"); }
     if (i === 2) { A(0, 0, Wd, 22, "#c4ccd0"); A(6, 10, 60, 34, "#e8d8b8"); A(6, 10, 60, 6, "#b83a3a"); A(26, 11, 20, 4, "#f6d878"); A(14, 22, 14, 14, "#6a8a9a"); A(40, 22, 14, 22, "#6a4428"); for (var q = 0; q < 5; q++) person(10 + q * 12, 52, ["#1a1410", "#6a4a2a", "#2a1d14", "#8a6a3a", "#1a1410"][q], ["#5a7a9a", "#b8604a", "#4a6a3a", "#8a4a6a", "#c8a24a"][q], true); }
@@ -204,25 +215,40 @@ canvas#cv{touch-action:none}
     if (i === 6) { A(0, 0, Wd, Hd, "#c8b898"); A(26, 30, 22, 14, "#b8905a"); A(26, 30, 22, 2, "#8a6a3a"); A(29, 35, 16, 3, "#e8dcc4"); if (W.drawPet) { W.drawPet(ag, "miso", 32, 32, 1, {}); W.drawPet(ag, "yuzu", 43, 32, 1, { flip: true }); } person(14, 48, "#1a1410", "#e0a043", true); }
     if (i === 7) { A(0, 0, Wd, Hd, "#efe3c8"); for (var d = 4; d < Wd - 4; d += 4) { A(d, 4, 2, 1, "#a89878"); A(d, Hd - 5, 2, 1, "#a89878"); } for (var e = 4; e < Hd - 4; e += 4) { A(4, e, 1, 2, "#a89878"); A(Wd - 5, e, 1, 2, "#a89878"); } }
   }
-  function showPage() { var i = L(); document.getElementById("albT").textContent = T.alb[i]; document.getElementById("albP").textContent = PAGES[pg][i]; document.getElementById("albI").textContent = (pg + 1) + " / " + PAGES.length; photo(pg); document.getElementById("albPrev").disabled = pg === 0; document.getElementById("albNext").disabled = pg === PAGES.length - 1; }
+  function showPage() { var i = L(); document.getElementById("albT").textContent = T.alb[i]; document.getElementById("albP").textContent = PAGES[pg][i]; document.getElementById("albI").textContent = (pg + 1) + " / " + PAGES.length; photo(PAGES[pg][5]); document.getElementById("albPrev").disabled = pg === 0; document.getElementById("albNext").disabled = pg === PAGES.length - 1; }
   function openAlbum() { pg = 0; AL.hidden = false; showPage(); setTimeout(function () { document.getElementById("albNext").focus(); }, 30); }
   function closeAlbum() { AL.hidden = true; }
   document.getElementById("albPrev").onclick = function () { if (pg > 0) { pg--; showPage(); } };
   document.getElementById("albNext").onclick = function () { if (pg < PAGES.length - 1) { pg++; showPage(); } };
   document.getElementById("albX").onclick = closeAlbum; AL.addEventListener("click", function (e) { if (e.target === AL) closeAlbum(); });
   addEventListener("keydown", function (e) { if (AL.hidden) return; if (e.key === "Escape") closeAlbum(); if (e.key === "ArrowRight") document.getElementById("albNext").click(); if (e.key === "ArrowLeft") document.getElementById("albPrev").click(); });
-  /* Josep's radio: their bolero, soft, with a little crackle */
-  var RAC = null, rT = null, rG = null;
-  var BOL = [[67, 2], [69, 1], [71, 3], [69, 1], [67, 2], [64, 2], [62, 4], [64, 2], [67, 2], [69, 4], [71, 2], [72, 2], [71, 2], [69, 2], [67, 6]];
+  /* Josep's radio: a random piece each time, their bolero or one of the Catalan folk tunes he loved (traditional melodies,
+     simple and soft); while it plays, the town's sound and the cabin's own hush (window.FB_HUSH, read by fbg.js) */
+  var RAC = null, rT = null, rG = null, lastTune = -1;
+  var TUNES = [
+    { n: "bolero", beat: .42, w: "triangle", m: [[67, 2], [69, 1], [71, 3], [69, 1], [67, 2], [64, 2], [62, 4], [64, 2], [67, 2], [69, 4], [71, 2], [72, 2], [71, 2], [69, 2], [67, 6]] },
+    { n: "El cant dels ocells", beat: .55, w: "sine", m: [[71, 1], [71, 1], [72, 1], [71, 1], [69, 1], [67, 1], [69, 2], [71, 1], [67, 2], [66, 1], [64, 3], [67, 1], [69, 1], [71, 1], [72, 2], [74, 1], [72, 1], [71, 1], [69, 1], [71, 3]] },
+    { n: "Muntanyes del Canigó", beat: .45, w: "triangle", m: [[62, 1], [67, 2], [67, 1], [69, 1], [71, 1], [72, 1], [71, 2], [69, 1], [67, 3], [67, 1], [69, 2], [71, 1], [72, 2], [74, 1], [72, 1], [71, 1], [69, 1], [67, 3]] },
+    { n: "El noi de la mare", beat: .5, w: "sine", m: [[69, 1], [74, 2], [74, 1], [76, 1], [78, 1], [76, 1], [74, 3], [73, 1], [71, 2], [73, 1], [74, 1], [76, 1], [74, 1], [73, 3]] },
+    { n: "El rossinyol", beat: .45, w: "triangle", m: [[67, 1], [72, 2], [72, 1], [71, 1], [72, 1], [74, 1], [76, 2], [74, 1], [72, 3], [76, 1], [77, 2], [76, 1], [74, 1], [72, 1], [71, 1], [72, 3]] }
+  ];
+  function hush(on) { window.FB_HUSH = on; if (on) stopSound(); else if (snd.getAttribute("aria-pressed") === "true") startSound(); }
   function toggleRadio() {
     radioOn = !radioOn;
-    if (!radioOn) { clearTimeout(rT); if (rG) try { rG.gain.setTargetAtTime(0, RAC.currentTime, .2); } catch (e) {} return; }
-    try { RAC = RAC || new (window.AudioContext || window.webkitAudioContext)(); if (RAC.state === "suspended") RAC.resume(); rG = RAC.createGain(); rG.gain.value = .06; var lp = RAC.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1800; rG.connect(lp); lp.connect(RAC.destination);
-      var beat = .42, t0 = RAC.currentTime + .1;
-      (function play(t) { if (!radioOn) return; var t1 = t; BOL.forEach(function (n) { var o = RAC.createOscillator(), gg = RAC.createGain(); o.type = "triangle"; o.frequency.value = 440 * Math.pow(2, (n[0] - 69) / 12); gg.gain.setValueAtTime(0, t1); gg.gain.linearRampToValueAtTime(1, t1 + .04); gg.gain.exponentialRampToValueAtTime(.001, t1 + n[1] * beat * .95); o.connect(gg); gg.connect(rG); o.start(t1); o.stop(t1 + n[1] * beat); t1 += n[1] * beat; });
-        rT = setTimeout(function () { play(t1 + beat); }, (t1 - RAC.currentTime) * 1000 - 200); })(t0);
+    if (!radioOn) { clearTimeout(rT); if (rG) try { rG.gain.setTargetAtTime(0, RAC.currentTime, .2); } catch (e) {} hush(false); return; }
+    hush(true);
+    try { RAC = RAC || new (window.AudioContext || window.webkitAudioContext)(); if (RAC.state === "suspended") RAC.resume(); rG = RAC.createGain(); rG.gain.value = .07; var lp = RAC.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1900; rG.connect(lp); lp.connect(RAC.destination);
+      (function play(t) {
+        if (!radioOn) return; var k; do { k = (Math.random() * TUNES.length) | 0; } while (k === lastTune && TUNES.length > 1); lastTune = k;
+        var T0 = TUNES[k], beat = T0.beat, t1 = t;
+        for (var c = 0; c < 6; c++) { var cr = RAC.createBufferSource(), bf = RAC.createBuffer(1, 400, RAC.sampleRate), dd = bf.getChannelData(0); for (var j = 0; j < 400; j++) dd[j] = (Math.random() * 2 - 1) * (1 - j / 400) * .3; cr.buffer = bf; cr.connect(rG); cr.start(t + c * .13); }   /* the dial's crackle between pieces */
+        t1 += .9;
+        T0.m.forEach(function (n) { var o = RAC.createOscillator(), gg = RAC.createGain(); o.type = T0.w; o.frequency.value = 440 * Math.pow(2, (n[0] - 69) / 12); gg.gain.setValueAtTime(0, t1); gg.gain.linearRampToValueAtTime(1, t1 + .04); gg.gain.exponentialRampToValueAtTime(.001, t1 + n[1] * beat * .95); o.connect(gg); gg.connect(rG); o.start(t1); o.stop(t1 + n[1] * beat); t1 += n[1] * beat; });
+        rT = setTimeout(function () { play(t1 + beat * 2); }, (t1 - RAC.currentTime) * 1000 - 200);
+      })(RAC.currentTime + .1);
     } catch (e) {}
   }
+  addEventListener("pagehide", function () { window.FB_HUSH = false; });
   function words() {
     var i = L(); document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][i];
     var nm = window.FBWorld && FBWorld.name ? FBWorld.name("cabin") : "No Hurry"; document.title = nm + " · " + (window.FBWorld && FBWorld.name ? FBWorld.name("map") : "Nearby");
