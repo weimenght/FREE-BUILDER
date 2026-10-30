@@ -8725,5 +8725,131 @@ document.addEventListener("DOMContentLoaded", function () {
   setInterval(dress, 5000); setTimeout(function () { dress(); try { var h = who(); if ((h.who === "popo" || h.who === "cats") && AppState.inSanctuary) renderCurrentDialogue(); } catch (e) {} }, 900);
 })();
 </script>
+<script>
+/* Small talk: the host starts it. When you've been sitting quietly for a while (no tap for ~30 s, nothing open), whoever is
+   behind the counter leans in with something: a question, a bad joke, a glass of water. Two or three ways to answer, one
+   line back, then the counter again. Humour and care, in their own voice; four at most a visit, never over something open. */
+(function () {
+  const W = window.FBWorld || {};
+  const S = (en, zh, tw, es, ca) => lx([en, zh, tw, tw, es, ca]);
+  const Q = (q, ...a) => ({ q, a });
+  const A = (label, back) => [label, back];
+  const TALK = {
+    wei: [
+      Q(S("*wipes the same spot on the counter for the third time* Can I ask you something? What's the best thing you ate this week?", "*第三次擦同一块吧台* 问你个事儿：这周你吃过最好吃的是什么？", "*第三次擦同一塊吧台* 問你個事：這週你吃過最好吃的是什麼？", "*limpia el mismo trozo de barra por tercera vez* ¿Te puedo preguntar algo? ¿Qué es lo mejor que has comido esta semana?", "*neteja el mateix tros de barra per tercera vegada* Et puc preguntar una cosa? Què és el millor que has menjat aquesta setmana?"),
+        A(S("Something my mum made", "我妈做的菜", "我媽做的菜", "Algo que hizo mi madre", "Una cosa que va fer la meva mare"), S("*nods slowly* That's the right answer. It's always the right answer. Tell her.", "*慢慢点头* 标准答案。永远都是标准答案。去告诉她。", "*慢慢點頭* 標準答案。永遠都是標準答案。去告訴她。", "*asiente despacio* Respuesta correcta. Siempre lo es. Díselo.", "*assenteix a poc a poc* Resposta correcta. Sempre ho és. Digues-li.")),
+        A(S("Instant noodles", "泡面", "泡麵", "Fideos instantáneos", "Fideus instantanis"), S("*slides a lemon wedge over* No judgement. Crack an egg in next time. Small upgrades.", "*推过来一片柠檬* 不评判。下次打个蛋进去。小小升级。", "*推過來一片檸檬* 不評判。下次打顆蛋進去。小小升級。", "*te acerca una rodaja de limón* Sin juicios. La próxima, échale un huevo. Pequeñas mejoras.", "*t'acosta una rodanxa de llimona* Sense judicis. La propera, tira-hi un ou. Petites millores.")),
+        A(S("I forgot to eat", "我忘了吃饭", "我忘了吃飯", "Se me olvidó comer", "Em vaig oblidar de menjar"), S("*already cutting bread* Sit. This one's not on the menu.", "*已经在切面包了* 坐。这个不在菜单上。", "*已經在切麵包了* 坐。這個不在菜單上。", "*ya está cortando pan* Siéntate. Esto no está en la carta.", "*ja talla pa* Seu. Això no és a la carta."))),
+      Q(S("*sets a glass of water in front of you without a word* …You look like you've been carrying something today.", "*一言不发地在你面前放了杯水* ……你今天看起来扛着点什么。", "*一言不發地在你面前放了杯水* ……你今天看起來扛著點什麼。", "*te deja un vaso de agua delante sin decir nada* …Parece que hoy cargas con algo.", "*et deixa un got d'aigua al davant sense dir res* …Sembla que avui portes alguna cosa a sobre."),
+        A(S("Long day", "今天好长", "今天好長", "Día largo", "Dia llarg"), S("*pulls up a stool on his side* Then we take this one slowly. No need to talk.", "*在他那边也拉了张凳子* 那这杯我们慢慢来。不用说话。", "*在他那邊也拉了張凳子* 那這杯我們慢慢來。不用說話。", "*se acerca un taburete de su lado* Entonces esta va despacio. No hace falta hablar.", "*s'acosta un tamboret del seu costat* Doncs aquesta, a poc a poc. No cal parlar.")),
+        A(S("I'm alright", "我还好", "我還好", "Estoy bien", "Estic bé"), S("*nods* Good. The water stays anyway.", "*点头* 好。水还是留着。", "*點頭* 好。水還是留著。", "*asiente* Bien. El agua se queda igual.", "*assenteix* Bé. L'aigua es queda igualment.")),
+        A(S("Just tired", "就是累", "就是累", "Solo cansado", "Només cansat"), S("Tired is allowed in here. *turns the lamp down a little*", "累在这儿是被允许的。*把灯调暗了一点*", "累在這裡是被允許的。*把燈調暗了一點*", "Aquí se permite estar cansado. *baja un poco la lámpara*", "Aquí es permet estar cansat. *abaixa una mica el llum*"))),
+      Q(S("*leans in* Want to hear the worst joke I know?", "*凑过来* 想听我知道的最烂的笑话吗？", "*湊過來* 想聽我知道的最爛的笑話嗎？", "*se inclina* ¿Quieres oír el peor chiste que sé?", "*s'inclina* Vols sentir el pitjor acudit que sé?"),
+        A(S("Go on", "说吧", "說吧", "Venga", "Endavant"), S("Why did the lemon stop halfway across the road? It ran out of juice. *somewhere, a cat leaves the room*", "柠檬为什么过马路走到一半停下了？因为没汁（力）了。*某处，一只猫离开了房间*", "檸檬為什麼過馬路走到一半停下了？因為沒汁（力）了。*某處，一隻貓離開了房間*", "¿Por qué se paró el limón a mitad de la calle? Se quedó sin zumo. *en algún sitio, un gato sale de la habitación*", "Per què es va aturar la llimona a mig carrer? Es va quedar sense suc. *en algun lloc, un gat surt de l'habitació*")),
+        A(S("Please don't", "求你别", "求你別", "Por favor, no", "Si us plau, no"), S("*mimes zipping his mouth* …It was about a lemon. You'd have loved it.", "*比了个拉上嘴巴的手势* ……是个关于柠檬的。你肯定会喜欢的。", "*比了個拉上嘴巴的手勢* ……是個關於檸檬的。你肯定會喜歡的。", "*hace como que se cierra la boca con cremallera* …Era de un limón. Te habría encantado.", "*fa veure que es tanca la boca amb cremallera* …Era d'una llimona. T'hauria encantat."))),
+      Q(S("*looks out of the window* Who's someone you haven't seen in too long?", "*望向窗外* 有没有谁，你太久没见了？", "*望向窗外* 有沒有誰，你太久沒見了？", "*mira por la ventana* ¿A quién hace demasiado que no ves?", "*mira per la finestra* A qui fa massa temps que no veus?"),
+        A(S("A friend", "一个朋友", "一個朋友", "Un amigo", "Un amic"), S("Send them a \"thinking of you\". Now. I'll mind your glass.", "给他发一句“想你了”。现在。你的杯子我帮你看着。", "給他發一句「想你了」。現在。你的杯子我幫你看著。", "Mándale un \"me he acordado de ti\". Ahora. Yo te vigilo el vaso.", "Envia-li un \"m'he recordat de tu\". Ara. Jo et vigilo el got.")),
+        A(S("My grandmother", "我奶奶", "我奶奶", "Mi abuela", "La meva àvia"), S("*goes quiet for a second* Call her this week. Popo would make me say that.", "*安静了一秒* 这周给她打个电话。婆婆一定会让我这么说。", "*安靜了一秒* 這週給她打個電話。婆婆一定會讓我這麼說。", "*se queda callado un segundo* Llámala esta semana. Popo me obligaría a decírtelo.", "*calla un segon* Truca-li aquesta setmana. La Popo m'obligaria a dir-t'ho.")),
+        A(S("No one comes to mind", "想不起来", "想不起來", "No se me ocurre nadie", "No se m'acut ningú"), S("Then someone's waiting for you to come to theirs. *refills your water*", "那就有人在等你去找他。*给你续上水*", "那就有人在等你去找他。*給你續上水*", "Entonces alguien está esperando que vayas a verle. *te rellena el agua*", "Doncs algú t'espera que vagis a veure'l. *t'omple l'aigua*"))),
+      Q(S("*rearranges three bottles, steps back, frowns* Be honest. Better or worse?", "*把三个瓶子重新摆了摆，退后一步，皱眉* 说实话。好看了还是难看了？", "*把三個瓶子重新擺了擺，退後一步，皺眉* 說實話。好看了還是難看了？", "*recoloca tres botellas, da un paso atrás, frunce el ceño* Sé sincero. ¿Mejor o peor?", "*recol·loca tres ampolles, fa un pas enrere, arrufa el nas* Sigues sincer. Millor o pitjor?"),
+        A(S("Better", "好看了", "好看了", "Mejor", "Millor"), S("*proud* An hour of my life. Worth it.", "*得意* 花了我一小时。值了。", "*得意* 花了我一小時。值了。", "*orgulloso* Una hora de mi vida. Mereció la pena.", "*orgullós* Una hora de la meva vida. Ha valgut la pena.")),
+        A(S("Worse", "难看了", "難看了", "Peor", "Pitjor"), S("*puts them back* You're the only one who'd tell me. Thanks.", "*摆回去* 只有你会跟我说实话。谢了。", "*擺回去* 只有你會跟我說實話。謝了。", "*las vuelve a dejar* Eres el único que me lo diría. Gracias.", "*les torna a deixar* Ets l'únic que m'ho diria. Gràcies.")))
+    ],
+    mei: [
+      Q(S("*looks up from her phone* ok random question. last song you had on repeat?", "*从手机上抬起头* 好，随机提问：你最近单曲循环的是哪首？", "*從手機上抬起頭* 好，隨機提問：你最近單曲循環的是哪首？", "*levanta la vista del móvil* vale, pregunta random: ¿última canción que tuviste en bucle?", "*aixeca la vista del mòbil* va, pregunta random: última cançó que tenies en bucle?"),
+        A(S("Something old", "老歌", "老歌", "Algo antiguo", "Una cosa antiga"), S("respect. my mom only plays 2009 in the car. it's growing on me. don't tell her.", "尊重。我妈在车里只放2009年的歌。我开始有点喜欢了。别告诉她。", "尊重。我媽在車裡只放2009年的歌。我開始有點喜歡了。別告訴她。", "respeto. mi madre solo pone 2009 en el coche. me está empezando a gustar. no se lo digas.", "respecte. la meva mare només posa 2009 al cotxe. m'està començant a agradar. no li diguis.")),
+        A(S("Don't judge me", "别笑我", "別笑我", "No me juzgues", "No em jutgis"), S("too late. *judging, but nicely*", "晚了。*在评判，但很温柔*", "晚了。*在評判，但很溫柔*", "demasiado tarde. *juzgando, pero con cariño*", "massa tard. *jutjant, però amb carinyo*")),
+        A(S("I don't really do music", "我不怎么听歌", "我不怎麼聽歌", "No escucho mucha música", "No escolto gaire música"), S("*gasps like you insulted her shoes* we're fixing that. Same Song. after this.", "*倒吸一口气，像你侮辱了她的鞋* 这得治。待会儿去“同一首歌”。", "*倒吸一口氣，像你侮辱了她的鞋* 這得治。待會兒去「同一首歌」。", "*ahoga un grito como si le hubieras insultado los zapatos* esto se arregla. Misma Canción. después.", "*fa un crit ofegat com si li haguessis insultat les sabates* això s'arregla. Mateixa Cançó. després."))),
+      Q(S("hey. did you actually eat today or is coffee your whole personality", "喂。你今天真的吃饭了吗，还是咖啡就是你的全部人格", "喂。你今天真的吃飯了嗎，還是咖啡就是你的全部人格", "oye. ¿has comido hoy de verdad o el café es toda tu personalidad?", "ei. has menjat de veritat avui o el cafè és tota la teva personalitat?"),
+        A(S("I ate", "吃了", "吃了", "He comido", "He menjat"), S("*squints* ok I believe you. like 60%.", "*眯眼* 好吧我信你。大概六成。", "*瞇眼* 好吧我信你。大概六成。", "*entrecierra los ojos* vale, te creo. un 60%.", "*aclucla els ulls* va, et crec. un 60%.")),
+        A(S("Coffee counts", "咖啡也算", "咖啡也算", "El café cuenta", "El cafè compta"), S("it does NOT. Popo would chase you round the block with congee.", "不算！婆婆会端着粥追你绕一整条街。", "不算！婆婆會端著粥追你繞一整條街。", "NO cuenta. Popo te perseguiría por toda la manzana con un cuenco de congee.", "NO compta. La Popo et perseguiria per tota l'illa amb un bol de congee.")),
+        A(S("Not yet", "还没", "還沒", "Todavía no", "Encara no"), S("*pushes a packet of crackers over* emergency rations. tell no one I'm nice.", "*推过来一包饼干* 应急口粮。不许告诉别人我人很好。", "*推過來一包餅乾* 應急口糧。不許告訴別人我人很好。", "*te pasa un paquete de galletas* raciones de emergencia. no le digas a nadie que soy maja.", "*t'acosta un paquet de galetes* racions d'emergència. no diguis a ningú que sóc maca."))),
+      Q(S("*slides a cup over, not confident* I made you a latte. I think. it's a latte-adjacent experience.", "*没什么底气地推过来一杯* 我给你做了杯拿铁。应该是。一种类拿铁的体验。", "*沒什麼底氣地推過來一杯* 我給你做了杯拿鐵。應該是。一種類拿鐵的體驗。", "*te acerca una taza, sin mucha confianza* te he hecho un latte. creo. es una experiencia tipo latte.", "*t'acosta una tassa, no gaire convençuda* t'he fet un latte. crec. és una experiència tipus latte."),
+        A(S("Thanks, Mei", "谢谢你，Mei", "謝謝你，Mei", "Gracias, Mei", "Gràcies, Mei"), S("*pretends not to smile* whatever. drink it before it gets worse.", "*假装没笑* 随便啦。趁它还没变得更难喝快喝。", "*假裝沒笑* 隨便啦。趁它還沒變得更難喝快喝。", "*finge que no sonríe* lo que sea. bébetelo antes de que empeore.", "*fa veure que no somriu* el que sigui. beu-te'l abans que empitjori.")),
+        A(S("Is it… safe?", "这……安全吗？", "這……安全嗎？", "¿Es… seguro?", "És… segur?"), S("legally? probably. emotionally? no promises.", "法律上？大概安全。情感上？不保证。", "法律上？大概安全。情感上？不保證。", "¿legalmente? probablemente. ¿emocionalmente? no prometo nada.", "legalment? probablement. emocionalment? no prometo res."))),
+      Q(S("*phone face down* it's weird. everyone back home is always busy. here people just… sit.", "*把手机扣下* 好奇怪。家那边的人永远都很忙。这里的人就……坐着。", "*把手機扣下* 好奇怪。家那邊的人永遠都很忙。這裡的人就……坐著。", "*móvil boca abajo* qué raro. en casa todo el mundo está siempre ocupado. aquí la gente solo… se sienta.", "*mòbil cap per avall* que estrany. a casa tothom està sempre ocupat. aquí la gent només… seu."),
+        A(S("Sitting is nice", "坐着挺好", "坐著挺好", "Sentarse está bien", "Seure està bé"), S("yeah. don't tell anyone I said that either.", "嗯。这句也别告诉别人是我说的。", "嗯。這句也別告訴別人是我說的。", "ya. tampoco digas que he dicho eso.", "ja. tampoc diguis que he dit això.")),
+        A(S("Miss New York?", "想纽约吗？", "想紐約嗎？", "¿Echas de menos Nueva York?", "Trobes a faltar Nova York?"), S("*long pause* the bagels. and my mom. mostly my mom. *sips her own terrible coffee*", "*停了好久* 贝果。还有我妈。主要是我妈。*喝了一口自己做的难喝咖啡*", "*停了好久* 貝果。還有我媽。主要是我媽。*喝了一口自己做的難喝咖啡*", "*pausa larga* los bagels. y mi madre. sobre todo mi madre. *le da un sorbo a su propio café horrible*", "*pausa llarga* els bagels. i la meva mare. sobretot la meva mare. *fa un glop del seu propi cafè horrible*"))),
+      Q(S("*holds up two polaroids* help me pick: me looking cool, or me looking cool but Yuzu's in it", "*举起两张拍立得* 帮我选：我很酷的，还是我很酷但柚子入镜了的", "*舉起兩張拍立得* 幫我選：我很酷的，還是我很酷但柚子入鏡了的", "*enseña dos polaroids* ayúdame a elegir: yo molando, o yo molando pero sale Yuzu", "*ensenya dues polaroids* ajuda'm a triar: jo molant, o jo molant però surt la Yuzu"),
+        A(S("The one with Yuzu", "有柚子的", "有柚子的", "La de Yuzu", "La de la Yuzu"), S("correct. she ruins every photo and makes it better.", "正确。她毁掉每一张照片，又让它变得更好。", "正確。她毀掉每一張照片，又讓它變得更好。", "correcto. arruina todas las fotos y las mejora.", "correcte. espatlla totes les fotos i les millora.")),
+        A(S("The cool one", "酷的那张", "酷的那張", "La que molas", "La que moles"), S("see, you get it. Wei says I'm \"too much\". he's too little.", "看吧，你懂。Wei说我“太过了”。是他太不够了。", "看吧，你懂。Wei說我「太過了」。是他太不夠了。", "¿ves? lo pillas. Wei dice que soy \"demasiado\". él es demasiado poco.", "veus? ho entens. en Wei diu que sóc \"massa\". ell és massa poc.")))
+    ],
+    popo: [
+      Q(S("*puts a bowl down* You eat already? You look thin.", "*放下一个碗* 你吃了没有？你看起来瘦瘦的。", "*放低個碗* 食咗飯未呀？你睇落好瘦喎。", "*deja un cuenco* ¿Tú comer ya? Tú muy delgado.", "*deixa un bol* Ja has menjat? Fas cara de prim."),
+        A(S("I ate", "吃了", "食咗喇", "Ya comí", "Sí, he menjat"), S("Eat more. One more bowl never kill nobody.", "再吃。多吃一碗不会死人的。", "食多啲。多食一碗死唔去㗎。", "Come más. Un cuenco más no mata a nadie.", "Menja'n més. Un bol més no ha matat mai ningú.")),
+        A(S("Not yet", "还没", "未呀", "Todavía no", "Encara no"), S("Aiya! Sit, sit. Congee five minutes.", "哎呀！坐，坐。粥五分钟就好。", "哎呀！坐低坐低。粥五分鐘就得。", "¡Aiya! Siéntate, siéntate. Congee cinco minutos.", "Aiya! Seu, seu. El congee, cinc minuts."))),
+      Q(S("Outside cold. You wear jacket?", "外面冷。你有穿外套吗？", "出面凍呀。你有冇著褸？", "Fuera frío. ¿Tú llevar chaqueta?", "Fora fa fred. Portes jaqueta?"),
+        A(S("Yes, Popo", "穿了，婆婆", "有呀，婆婆", "Sí, Popo", "Sí, Popo"), S("Good. *pats your hand* Good.", "好。*拍拍你的手* 好。", "乖。*拍拍你隻手* 乖。", "Bien. *te da palmaditas en la mano* Bien.", "Molt bé. *et dona copets a la mà* Molt bé.")),
+        A(S("It's fine", "没事的", "冇事嘅", "Da igual", "No passa res"), S("Not fine! Wind go in your bones. Later you old like me, you know.", "不是没事！风会钻进骨头里。以后你老了像我一样你就知道。", "乜冇事呀！風會吹入骨㗎。第日你老咗好似我咁你就知。", "¡No da igual! El viento entra en huesos. Luego tú viejo como yo, ya verás.", "Sí que passa! El vent se't fica als ossos. Quan siguis vell com jo, ja ho veuràs."))),
+      Q(S("Your mama, she call you this week?", "你妈妈这个星期有打电话给你吗？", "你阿媽呢個禮拜有冇打俾你呀？", "Tu mamá, ¿te llama esta semana?", "La teva mare t'ha trucat aquesta setmana?"),
+        A(S("Yes", "有", "有呀", "Sí", "Sí"), S("Good. You call back also. Mama always waiting.", "好。你也要打回去。妈妈总是在等的。", "好。你都要打返俾佢。阿媽成日都喺度等㗎。", "Bien. Tú llamar también. Mamá siempre espera.", "Bé. Truca-li tu també. Les mares sempre esperen.")),
+        A(S("Not yet", "还没有", "未呀", "Todavía no", "Encara no"), S("You call her. Tonight. Say Popo say.", "你打给她。今晚。就说是婆婆说的。", "你打俾佢。今晚。話係婆婆叫你打嘅。", "Tú llamas. Esta noche. Di que Popo dice.", "Truca-li tu. Aquesta nit. Digues que ho diu la Popo."))),
+      Q(S("*takes a photo out of her apron pocket* This one Jordi. Very handsome, no? Clock man.", "*从围裙口袋里拿出一张照片* 这个是Jordi。很帅，对不对？修钟的。", "*喺圍裙袋攞咗張相出嚟* 呢個係Jordi。好靚仔㗎，係咪？整鐘嘅。", "*saca una foto del bolsillo del delantal* Este Jordi. Muy guapo, ¿no? Hombre del reloj.", "*treu una foto de la butxaca del davantal* Aquest és en Jordi. Molt guapo, oi? El rellotger."),
+        A(S("Very handsome", "很帅", "好靚仔", "Muy guapo", "Molt guapo"), S("*laughs* He know it too. Too much.", "*笑了* 他自己也知道。太知道了。", "*笑* 佢自己都知㗎。知得滯。", "*se ríe* Él lo sabe también. Demasiado.", "*riu* Ell ja ho sabia. Massa i tot.")),
+        A(S("Tell me about him", "说说他吧", "講吓佢啦", "Háblame de él", "Parla'm d'ell"), S("Every night he fix the clock slow-slow, so the good hours stay longer. Silly man. *smiles at the photo*", "每天晚上他都把钟调得慢慢的，好让好时光留久一点。傻佬。*对着照片笑*", "佢晚晚都將個鐘校慢少少，等啲好時光留耐啲。傻佬嚟㗎。*對住張相笑*", "Cada noche arreglar reloj lento-lento, para horas buenas quedar más. Hombre tonto. *sonríe a la foto*", "Cada nit endarreria el rellotge una mica, perquè les hores bones duressin més. Quin ximple. *somriu a la foto*"))),
+      Q(S("You have somebody cook for you?", "有没有人做饭给你吃？", "有冇人煮飯俾你食呀？", "¿Tú tienes alguien que cocina para ti?", "Tens algú que et cuini?"),
+        A(S("Sometimes", "有时候", "有時啦", "A veces", "A vegades"), S("Sometimes not enough. You learn one dish. I teach you. Easy.", "有时候不够的。你学一个菜。我教你。容易的。", "有時唔夠㗎。你學一味餸。我教你。好易㗎。", "A veces no suficiente. Tú aprender un plato. Yo enseño. Fácil.", "A vegades no n'hi ha prou. Aprèn un plat. T'ensenyo jo. És fàcil.")),
+        A(S("I cook for others", "我做饭给别人吃", "我煮俾人食", "Yo cocino para otros", "Jo cuino per als altres"), S("*nods, very serious* Then you good person. Eat yourself also, ah.", "*很认真地点头* 那你是好人。自己也要吃啊。", "*好認真咁點頭* 咁你係好人。自己都要食呀。", "*asiente, muy seria* Entonces tú buena persona. Come tú también, ¿eh?", "*assenteix, molt seriosa* Doncs ets bona persona. Però menja tu també, eh."))),
+      Q(S("Hong Kong, Barcelona… everywhere same. People hungry, people lonely. Food fix both. Half-half.", "香港、巴塞罗那……哪里都一样。人会饿，人会寂寞。吃的两样都治。一半一半。", "香港、巴塞隆拿……邊度都一樣。人會肚餓，人會寂寞。食嘢兩樣都醫得。一半半啦。", "Hong Kong, Barcelona… todo igual. Gente hambre, gente sola. Comida arregla las dos. Mitad-mitad.", "Hong Kong, Barcelona… tot igual. La gent té gana, la gent està sola. El menjar arregla les dues coses. Meitat i meitat."),
+        A(S("*nod*", "*点头*", "*點頭*", "*asentir*", "*assentir*"), S("*squeezes your shoulder and goes back to the stove*", "*捏了捏你的肩膀，回到灶台边*", "*揑揑你膊頭，返去灶頭度*", "*te aprieta el hombro y vuelve al fogón*", "*et pren l'espatlla i torna als fogons*")),
+        A(S("Can I help you cook?", "我可以帮你做饭吗？", "我可唔可以幫你煮？", "¿Te ayudo a cocinar?", "T'ajudo a cuinar?"), S("*hands you a spoon* Stir. Slowly. No talking to the soup.", "*递给你一把勺子* 搅。慢慢的。不要跟汤讲话。", "*遞咗隻匙羹俾你* 攪。慢慢攪。唔好同碗湯講嘢。", "*te da una cuchara* Remueve. Despacio. No hablar a la sopa.", "*et dona una cullera* Remena. A poc a poc. No parlis amb la sopa.")))
+    ],
+    cats: [
+      Q(S("*Yuzu climbs onto the stool beside you and stares* Mrrp?", "*柚子爬上你旁边的凳子，盯着你* 咪噜？", "*柚子爬上你旁邊的凳子，盯著你* 咪嚕？", "*Yuzu se sube al taburete de al lado y te mira fijamente* ¿Mrrp?", "*La Yuzu s'enfila al tamboret del costat i et mira fixament* Mrrp?"),
+        A(S("*scratch her chin*", "*挠挠她的下巴*", "*撓撓她的下巴*", "*rascarle la barbilla*", "*gratar-li la barbeta*"), S("*Yuzu purrs so loud the spoons rattle*", "*柚子呼噜得勺子都在抖*", "*柚子呼嚕得湯匙都在抖*", "*Yuzu ronronea tan fuerte que tiemblan las cucharas*", "*La Yuzu ronca tan fort que tremolen les culleres*")),
+        A(S("*offer a sardine*", "*递上一条沙丁鱼*", "*遞上一條沙丁魚*", "*ofrecer una sardina*", "*oferir una sardina*"), S("*Miso appears from nowhere. The sardine is gone. Nobody saw anything.*", "*味噌不知道从哪冒出来。沙丁鱼没了。谁也没看见。*", "*味噌不知道從哪冒出來。沙丁魚沒了。誰也沒看見。*", "*Miso aparece de la nada. La sardina ha desaparecido. Nadie ha visto nada.*", "*La Miso apareix del no-res. La sardina ha desaparegut. Ningú no ha vist res.*"))),
+      Q(S("*Miso pushes your cup an inch towards the edge, holding eye contact* …Meow.", "*味噌盯着你的眼睛，把你的杯子往边上推了一寸* ……喵。", "*味噌盯著你的眼睛，把你的杯子往邊上推了一寸* ……喵。", "*Miso empuja tu taza un dedo hacia el borde, sin dejar de mirarte* …Miau.", "*La Miso empeny la teva tassa un dit cap a la vora, sense deixar de mirar-te* …Mèu."),
+        A(S("*move the cup back*", "*把杯子挪回来*", "*把杯子挪回來*", "*devolver la taza a su sitio*", "*tornar la tassa al seu lloc*"), S("*Miso pushes it again. This is a negotiation now.*", "*味噌又推了一下。现在这是一场谈判了。*", "*味噌又推了一下。現在這是一場談判了。*", "*Miso la vuelve a empujar. Ahora es una negociación.*", "*La Miso la torna a empènyer. Ara és una negociació.*")),
+        A(S("*let it be*", "*随她去*", "*隨她去*", "*dejarlo estar*", "*deixar-ho estar*"), S("*the cup does not fall. Miso is disappointed in both of you and leaves.*", "*杯子没掉。味噌对你们俩都很失望，走了。*", "*杯子沒掉。味噌對你們倆都很失望，走了。*", "*la taza no se cae. Miso está decepcionada con los dos y se va.*", "*la tassa no cau. La Miso està decebuda amb tots dos i se'n va.*"))),
+      Q(S("*Yuzu drops a bottle cap at your feet and waits*", "*柚子把一个瓶盖丢在你脚边，等着*", "*柚子把一個瓶蓋丟在你腳邊，等著*", "*Yuzu deja una chapa a tus pies y espera*", "*La Yuzu deixa una xapa als teus peus i espera*"),
+        A(S("*throw it*", "*扔出去*", "*扔出去*", "*lanzarla*", "*llançar-la*"), S("*Yuzu sprints, skids, brings it back, drops it on your shoe again*", "*柚子冲出去，打滑，叼回来，又丢在你鞋上*", "*柚子衝出去，打滑，叼回來，又丟在你鞋上*", "*Yuzu sale disparada, derrapa, la trae y te la vuelve a dejar en el zapato*", "*La Yuzu surt disparada, derrapa, la torna i te la deixa una altra vegada a la sabata*")),
+        A(S("*keep it*", "*收起来*", "*收起來*", "*guardarla*", "*guardar-la*"), S("*Yuzu sits down, outraged. Then she forgets.*", "*柚子坐下，很生气。然后她忘了。*", "*柚子坐下，很生氣。然後她忘了。*", "*Yuzu se sienta, indignada. Luego se le olvida.*", "*La Yuzu seu, indignada. Després se n'oblida.*"))),
+      Q(S("*Miso curls up on your lap without asking and starts kneading*", "*味噌没打招呼就窝到你腿上，开始踩奶*", "*味噌沒打招呼就窩到你腿上，開始踩奶*", "*Miso se acurruca en tu regazo sin pedir permiso y empieza a amasar*", "*La Miso s'arrauleix a la teva falda sense demanar permís i comença a pastar*"),
+        A(S("*stay very still*", "*一动不动*", "*一動不動*", "*quedarse muy quieto*", "*quedar-se molt quiet*"), S("*a purr like a small engine. Nobody's going anywhere for a while.*", "*呼噜声像个小马达。一时半会儿谁也走不了了。*", "*呼嚕聲像個小馬達。一時半會兒誰也走不了了。*", "*un ronroneo como un motor pequeño. Nadie se va a ningún sitio en un rato.*", "*un ronc com un motor petit. Ningú no se'n va enlloc durant una estona.*")),
+        A(S("*stroke her back*", "*摸摸她的背*", "*摸摸她的背*", "*acariciarle el lomo*", "*acariciar-li l'esquena*"), S("*she sighs and goes heavy. Breathe with her.*", "*她叹了口气，整只沉了下去。跟她一起慢慢呼吸。*", "*她嘆了口氣，整隻沉了下去。跟她一起慢慢呼吸。*", "*suspira y se pone pesada. Respira con ella.*", "*sospira i es fa pesada. Respira amb ella.*")))
+    ]
+  };
+  /* the visitor's last tap, key or scroll: the host only starts something when you've been sitting quietly */
+  let last = Date.now(), lastChat = 0, n = 0; const used = {};
+  ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(t => addEventListener(t, () => { last = Date.now(); }, { passive: true, capture: true }));
+  const busy = () => document.hidden || window.__fbAsleep || (typeof currentRoom !== 'undefined' && currentRoom !== 'counter') ||
+    [].some.call(document.querySelectorAll('#cat-menu, #cat-card, .ps-sheet, [role="dialog"], .fbw, .fbc, .fbs, .fbduo'), e => e.getClientRects().length && getComputedStyle(e).visibility !== 'hidden') ||
+    (parent !== window && parent.document && parent.document.querySelector('.fbw, .fbs, .fbc, .fbduo'));
+  function who() {
+    let h = null; try { h = W.host && W.host(); } catch (e) {}
+    const away = window.WeiAway && WeiAway.on && WeiAway.on();
+    const catsHere = window.Cats && Cats.here && (Cats.here('miso') || Cats.here('yuzu'));
+    if (!h) return AppState.weiState === 'awake' ? 'wei' : null;
+    if (h.who === 'cats') return h.asleep ? null : 'cats';
+    if (h.asleep || away || (h.who === 'wei' && AppState.weiState !== 'awake')) return catsHere ? 'cats' : null;   /* Mei and Popo use their own panel (Wei's state reads asleep then) */
+    return h.who;
+  }
+  const resting = () => { const m = AppState.uiMode; const sl = document.getElementById('sleep-mode-screen'); return m === 'topic' || (sl && !sl.classList.contains('hidden') && getComputedStyle(sl).display !== 'none'); };
+  function chat() {
+    const k = who(); if (!k) return false; const list = TALK[k], free = list.map((_, i) => i).filter(i => !used[k + i]); if (!free.length) return false;
+    const i = free[Math.floor(Math.random() * free.length)], t = list[i]; used[k + i] = 1; n++; lastChat = Date.now();
+    try { if (k !== 'cats') setExpression('grin', 1400); else ['miso', 'yuzu'].forEach(id => Cats.anim && Cats.anim(id, 'hop')); } catch (e) {}
+    try { if (k === 'cats') SoundEngine.playMeow(1.2); else SoundEngine.playClick(); } catch (e) {}
+    const back = { label: L(lx(["‹ Back to the counter", "‹ 回到吧台", "‹ 回到吧檯", "‹ 返去吧枱", "‹ Volver a la barra", "‹ Tornar a la barra"])), onClick: () => { last = Date.now(); backToOrder(); } };
+    renderWei(L(t.q), t.a.map(a => ({ label: L(a[0]), onClick: () => { last = Date.now(); try { if (k === 'cats') SoundEngine.playPurr ? SoundEngine.playPurr() : SoundEngine.playMeow(.9); } catch (e) {} renderWei(L(a[1]), [back], COMPACT_GRID, 'chat'); } })).concat([back]), COMPACT_GRID, 'chat');
+    return true;
+  }
+  setInterval(() => {
+    const now = Date.now();
+    if (n >= 4 || now - last < 30000 || now - lastChat < 90000 || busy() || !resting()) return;
+    chat();
+  }, 5000);
+  window.NDChat = { now: chat };   /* for testing */
+  /* the name over the words is whoever is talking: Wei (with his mood), Mei, Popo, or the cats */
+  const origTag = window.speakerTag;
+  window.speakerTag = function () {
+    const k = who();
+    if (k === 'mei') return 'MEI';
+    if (k === 'popo') return L(lx(["POPO", "婆婆", "婆婆", "婆婆", "POPO", "LA POPO"]));
+    if (k === 'cats') return L(lx(["MISO & YUZU", "味噌和柚子", "味噌和柚子", "味噌同柚子", "MISO Y YUZU", "LA MISO I LA YUZU"]));
+    return origTag ? origTag() : 'WEI';
+  };
+})();
+</script>
 </body>
 </html>
