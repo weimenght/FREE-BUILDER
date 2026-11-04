@@ -1,390 +1,1016 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=615d6db739"></script><script src="../vk.js?v=4"></script><script src="./ui.js?v=2"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#FBF8F3">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Cymraeg">
-<title>Cymraeg bob dydd — geiriau, treiglo, rhifau</title>
-<meta name="description" content="Learn Welsh: flashcards with pronunciation, mutation practice, numbers and the sounds of Welsh letters. Progress stays on your phone.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23fff'/%3E%3Crect y='16' width='32' height='16' rx='0' fill='%2300843D'/%3E%3Ctext x='16' y='22' font-size='15' text-anchor='middle' fill='%23C8102E' font-family='Georgia,serif' font-weight='700'%3ECy%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="/fonts/g/fonts.css">
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=8ed2d0134e"></script><script src="../vk.js?v=5"></script><script src="./ui.js?v=3"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FBF8F3">
+  <title>Cymraeg bob dydd · Vocab</title>
+  <meta name="description" content="Learn Welsh: 200 everyday words with how to say them, the sounds of the letters, mutations and numbers. Kept on your device; sync if you like.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23fff'/%3E%3Crect y='20' width='32' height='12' fill='%2300843D'/%3E%3Ctext x='16' y='19' font-size='14' font-weight='700' text-anchor='middle' fill='%23C8102E' font-family='Georgia,serif'%3ECy%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/fonts/g/fonts.css">
 <style>
-:root{--bg:#FBF8F3;--card:#fff;--surface:#F3EEE6;--border:#E6DED2;--text:#1C1917;--muted:#6B6560;--red:#C8102E;--green:#00843D;--ok:#047857;--okS:#ECFDF5;--bad:#BE123C;--badS:#FFF1F2;--gold:#B7791F;
-  --shadow:0 1px 2px rgba(28,25,23,.06),0 6px 20px rgba(28,25,23,.06);--font:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif;--serif:"Playfair Display",Georgia,serif;
-  /* carthen: the geometry of an old Welsh tapestry blanket */
-  --carthen:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke-width='1.4'%3E%3Cpath d='M30 6L54 30L30 54L6 30Z' stroke='%23C8102E' stroke-opacity='.07'/%3E%3Cpath d='M30 18L42 30L30 42L18 30Z' stroke='%2300843D' stroke-opacity='.08'/%3E%3Cpath d='M30 26v8M26 30h8' stroke='%23C8102E' stroke-opacity='.1'/%3E%3Cpath d='M0 0l6 6M60 0l-6 6M0 60l6-6M60 60l-6-6' stroke='%2300843D' stroke-opacity='.07'/%3E%3C/g%3E%3C/svg%3E");color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#0F0E10;--card:#19171C;--surface:#232026;--border:#302B34;--text:#F5F3F1;--muted:#A9A3A8;--red:#FF5A6E;--green:#3DD68C;--ok:#34D399;--okS:rgba(16,185,129,.12);--bad:#FB7185;--badS:rgba(244,63,94,.12);--gold:#F2C14E;--shadow:0 1px 2px rgba(0,0,0,.4);
-  --carthen:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke-width='1.4'%3E%3Cpath d='M30 6L54 30L30 54L6 30Z' stroke='%23FF5A6E' stroke-opacity='.06'/%3E%3Cpath d='M30 18L42 30L30 42L18 30Z' stroke='%233DD68C' stroke-opacity='.06'/%3E%3Cpath d='M30 26v8M26 30h8' stroke='%23FF5A6E' stroke-opacity='.08'/%3E%3C/g%3E%3C/svg%3E");color-scheme:dark}}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.5 var(--font);-webkit-tap-highlight-color:transparent}
-body{min-height:100vh;background-image:var(--carthen);background-size:60px 60px;padding-bottom:calc(var(--tab-h) + 16px + env(safe-area-inset-bottom))}
-button{font:inherit;color:inherit;cursor:pointer}
+    /* ============ TOKENS ============ */
+    :root {
+      --bg:#FBF8F3; --card:#FFFFFF; --surface:#F4EFE8; --border:#E8E0D5; --text:#1C1917; --muted:#6B6560;
+      --accent:#B3261E; --accent-ink:#FFFFFF; --accent-soft:rgba(214,40,57,.08); --accent-line:rgba(214,40,57,.35);
+      --jade:#3B5B7A; --gold:#F2B705;
+      --ok:#047857; --ok-soft:#ECFDF5; --ok-line:#A7F3D0;
+      --warn:#B45309; --warn-soft:#FFFBEB; --warn-line:#FCD34D;
+      --bad:#BE123C; --bad-soft:#FFF1F2; --bad-line:#FECDD3;
+      --h0:#EEE7DD; --h1:#F7C9CE; --h2:#EC8A95; --h3:#D9445A; --h4:#9E1426;
+      --shadow:0 1px 2px rgba(28,25,23,.06), 0 4px 16px rgba(28,25,23,.05);
+      --radius:16px; --tab-h:64px;
+      --safe-b:env(safe-area-inset-bottom, 0px); --safe-t:env(safe-area-inset-top, 0px);
+      --font:"Plus Jakarta Sans", system-ui, -apple-system, "PingFang HK", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      --serif:"Playfair Display", Georgia, "Songti TC", "PMingLiU", serif;
+      --han:"PingFang HK", "PingFang TC", "Noto Sans HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      --mono:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      /* 窗花: the lattice of an old Hong Kong window grille */
+      --lattice:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='48' viewBox='0 0 72 48'%3E%3Cg fill='none' stroke='%23E9C46A' stroke-opacity='.06' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M6 30c0-6 8-8 11-3 1-7 11-8 13-1 4-3 10 0 8 5H8'/%3E%3Cpath d='M20 27c2-2 5-1 5 2s-4 3-5 1'/%3E%3Cpath d='M42 12c0-5 7-7 9-2 2-5 10-4 10 2 3-1 6 2 4 4H44'/%3E%3Cpath d='M53 12c2-1 4 0 4 2s-3 2-4 1'/%3E%3C/g%3E%3C/svg%3E");
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg:#0E0D10; --card:#18161B; --surface:#221F25; --border:#2E2A33; --text:#F5F4F6; --muted:#A8A2AD;
+        --accent:#F07167; --accent-ink:#1A0A10; --accent-soft:rgba(255,92,122,.12); --accent-line:rgba(255,92,122,.4);
+        --jade:#3DDBC3;
+        --ok:#34D399; --ok-soft:rgba(16,185,129,.12); --ok-line:rgba(52,211,153,.35);
+        --warn:#FBBF24; --warn-soft:rgba(245,158,11,.12); --warn-line:rgba(251,191,36,.35);
+        --bad:#FB7185; --bad-soft:rgba(244,63,94,.12); --bad-line:rgba(251,113,133,.35);
+        --h0:#24202A; --h1:#4A1F2C; --h2:#80304A; --h3:#C9466A; --h4:#FF5C7A;
+        --lattice:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='48' viewBox='0 0 72 48'%3E%3Cg fill='none' stroke='%23E9C46A' stroke-opacity='.06' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M6 30c0-6 8-8 11-3 1-7 11-8 13-1 4-3 10 0 8 5H8'/%3E%3Cpath d='M20 27c2-2 5-1 5 2s-4 3-5 1'/%3E%3Cpath d='M42 12c0-5 7-7 9-2 2-5 10-4 10 2 3-1 6 2 4 4H44'/%3E%3Cpath d='M53 12c2-1 4 0 4 2s-3 2-4 1'/%3E%3C/g%3E%3C/svg%3E");
+        --shadow:0 1px 2px rgba(0,0,0,.4); color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg:#0E0D10; --card:#18161B; --surface:#221F25; --border:#2E2A33; --text:#F5F4F6; --muted:#A8A2AD;
+      --accent:#F07167; --accent-ink:#1A0A10; --accent-soft:rgba(255,92,122,.12); --accent-line:rgba(255,92,122,.4);
+      --jade:#3DDBC3;
+      --ok:#34D399; --ok-soft:rgba(16,185,129,.12); --ok-line:rgba(52,211,153,.35);
+      --warn:#FBBF24; --warn-soft:rgba(245,158,11,.12); --warn-line:rgba(251,191,36,.35);
+      --bad:#FB7185; --bad-soft:rgba(244,63,94,.12); --bad-line:rgba(251,113,133,.35);
+      --h0:#24202A; --h1:#4A1F2C; --h2:#80304A; --h3:#C9466A; --h4:#FF5C7A;
+      --lattice:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='48' viewBox='0 0 72 48'%3E%3Cg fill='none' stroke='%23E9C46A' stroke-opacity='.06' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M6 30c0-6 8-8 11-3 1-7 11-8 13-1 4-3 10 0 8 5H8'/%3E%3Cpath d='M20 27c2-2 5-1 5 2s-4 3-5 1'/%3E%3Cpath d='M42 12c0-5 7-7 9-2 2-5 10-4 10 2 3-1 6 2 4 4H44'/%3E%3Cpath d='M53 12c2-1 4 0 4 2s-3 2-4 1'/%3E%3C/g%3E%3C/svg%3E");
+      --shadow:0 1px 2px rgba(0,0,0,.4); color-scheme: dark;
+    }
 
+    /* ============ BASE ============ */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      margin:0; background:var(--bg); color:var(--text); font-family:var(--font); font-size:15px; line-height:1.45;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      min-height:100vh; min-height:100dvh; background-image:var(--azulejo); background-attachment:fixed;
+      padding-bottom:calc(var(--tab-h) + var(--safe-b) + 8px);
+      -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none;
+    }
+    body.kb { padding-bottom: 12px; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor:pointer; border:0; background:none; padding:0; touch-action: manipulation; }
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    [hidden] { display:none !important; }
+    ::selection { background:var(--gold); color:#1C1917; }
+    .ic { width:18px; height:18px; flex:none; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .ic.sm { width:14px; height:14px; } .ic.lg { width:22px; height:22px; }
+    .ic.fill { fill: currentColor; }
+    .serif { font-family:var(--serif); }
+    .mono { font-family:var(--mono); }
+    .muted { color:var(--muted); }
+    .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
+    /* ============ HEADER ============ */
+    .flagbar { position:fixed; top:0; left:0; right:0; height:calc(4px + var(--safe-t)); z-index:60;
+      background:linear-gradient(to right,#C60B1E 0 25%,#FFC400 25% 75%,#C60B1E 75% 100%); }
+    .top { position:sticky; top:0; z-index:40; padding-top:calc(4px + var(--safe-t));
+      background:var(--bg); background:color-mix(in srgb, var(--bg) 92%, transparent);
+      -webkit-backdrop-filter:saturate(1.4) blur(10px); backdrop-filter:saturate(1.4) blur(10px);
+      border-bottom:1px solid var(--border); }
+    .top-row { max-width:920px; margin:0 auto; padding:0 12px; height:52px; display:flex; align-items:center; gap:8px; }
+    .brand { display:flex; align-items:center; gap:8px; min-width:0; flex:1; }
+    .logo { width:30px; height:30px; border-radius:8px; flex:none; display:grid; place-items:center; font-weight:800; font-size:11px; color:#C60B1E;
+      background:linear-gradient(#C60B1E 0 25%, #FFC400 25% 75%, #C60B1E 75%); box-shadow:inset 0 0 0 1px rgba(0,0,0,.08); }
+    .brand-title { font-family:var(--serif); font-weight:700; font-size:18px; white-space:nowrap; }
+    .lvl-pill { display:inline-flex; align-items:center; gap:4px; height:32px; padding:0 10px; border-radius:999px; font-weight:800; font-size:13px;
+      background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent-line); }
+    .icon-btn { width:40px; height:40px; border-radius:12px; display:grid; place-items:center; color:var(--muted); position:relative; }
+    .icon-btn:hover { color:var(--text); background:var(--surface); }
+    .icon-btn .dot { position:absolute; top:8px; right:8px; width:8px; height:8px; border-radius:50%; background:var(--muted); border:2px solid var(--bg); }
+    .dot.ok { background:#10B981 !important; } .dot.off { background:#F59E0B !important; } .dot.err { background:#EF4444 !important; }
 
+    .subnav { max-width:920px; margin:0 auto; min-width:0; display:flex; gap:6px; padding:0 12px 10px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+    .subnav::-webkit-scrollbar { display:none; }
+    .chip { flex:none; display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 14px; border-radius:999px; font-size:13px; font-weight:600;
+      color:var(--muted); background:transparent; border:1px solid var(--border); white-space:nowrap; }
+    .chip:hover { color:var(--text); }
+    .chip.on { background:var(--text); color:var(--bg); border-color:var(--text); }
+    .chip .n { font-size:11px; font-weight:700; padding:1px 6px; border-radius:999px; background:var(--surface); color:var(--muted); }
+    .chip.on .n { background:rgba(255,255,255,.18); color:inherit; }
 
+    /* ============ TAB BAR ============ */
+    .tabbar { position:fixed; left:0; right:0; bottom:0; z-index:45; background:var(--card); border-top:1px solid var(--border);
+      padding-bottom:var(--safe-b); }
+    body.kb .tabbar { display:none; }
+    .tabbar-in { max-width:560px; margin:0 auto; height:var(--tab-h); display:grid; grid-template-columns:repeat(4,1fr); }
+    .tab { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; font-size:11px; font-weight:600; color:var(--muted); position:relative; }
+    .tab .ic { width:22px; height:22px; }
+    .tab.on { color:var(--accent); }
+    .tab.on::before { content:""; position:absolute; top:0; width:28px; height:3px; border-radius:0 0 3px 3px; background:var(--accent); }
 
-main{max-width:640px;margin:0 auto;padding:8px 18px}
-.view{display:none}.view.on{display:block;animation:in .25s ease}
-@keyframes in{from{opacity:0;transform:translateY(6px)}}
-.seg{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:6px 0 14px}
-.seg button{flex:none;padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--card);font-size:14px;font-weight:600}
-.seg button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
-/* flashcard */
-.card{position:relative;min-height:300px;perspective:1200px;margin-top:4px}
-.flip{position:relative;min-height:300px;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.3,1.3,.5,1);cursor:pointer}
-.flip.on{transform:rotateY(180deg)}
-.side{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column}
-.side.b{transform:rotateY(180deg)}
-.side::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;border-radius:22px 22px 0 0;background:linear-gradient(90deg,var(--red),var(--red) 40%,var(--green) 40%)}
-.lv{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.w{margin:auto 0;font:700 clamp(28px,8.4vw,52px)/1.1 var(--serif);text-align:center;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto}
-.say{text-align:center;color:var(--muted);font-size:15px;font-family:ui-monospace,Menlo,monospace}
-.en{font:700 26px/1.2 var(--serif);margin-top:10px}
-.ex{margin-top:16px;padding:14px;border-radius:14px;background:var(--surface)}
-.ex b{display:block;font-size:17px}.ex span{color:var(--muted);font-size:14px}
-.hint{text-align:center;color:var(--muted);font-size:13px;margin-top:auto}
-.spk[hidden]{display:none}.spk{position:absolute;right:16px;top:16px;width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--surface);font-size:18px;display:grid;place-items:center}
-.grade{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:10px 16px;border-radius:16px;border:1px solid var(--border);background:var(--card);font-weight:700;font-size:16px;box-shadow:var(--shadow)}
-.btn.again{color:var(--bad)}.btn.good{background:var(--green);border-color:var(--green);color:#fff}
-.btn:active{transform:scale(.98)}
-.count{text-align:center;color:var(--muted);font-size:13px;margin-top:10px}
-/* quiz */
-.q{background:var(--card);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow);padding:22px 20px;text-align:center}
-.q .k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.q .p{font:700 clamp(28px,8vw,40px)/1.2 var(--serif);margin:14px 0 4px}
-.q .p u{text-decoration:none;border-bottom:3px dotted var(--red)}
-.q .g{color:var(--muted)}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.opt{min-height:56px;border-radius:16px;border:1px solid var(--border);background:var(--card);font:600 18px/1.2 var(--font);padding:8px;box-shadow:var(--shadow)}
-.opt.ok{background:var(--okS);border-color:var(--ok);color:var(--ok)}.opt.no{background:var(--badS);border-color:var(--bad);color:var(--bad)}
-.why{min-height:48px;margin-top:12px;text-align:center;color:var(--muted);font-size:14px}
-.why b{color:var(--text)}
-.next{margin:6px auto 0;width:100%}
-table{width:100%;border-collapse:collapse;margin-top:16px;background:var(--card);border-radius:16px;overflow:hidden;border:1px solid var(--border);font-size:15px}
-th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--border)}th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface)}
-td b{font-family:var(--serif);font-size:17px}
-details{margin-top:14px}summary{cursor:pointer;color:var(--muted);font-weight:600;font-size:14px}
-.sounds{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.snd{text-align:left;padding:14px;border-radius:18px;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow)}
-.snd b{display:block;font:700 30px/1 var(--serif);color:var(--red)}.snd i{display:block;font-style:normal;margin-top:6px;font-weight:600}.snd small{color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.stat{padding:16px 10px;text-align:center;border-radius:18px;background:var(--card);border:1px solid var(--border)}
-.stat b{display:block;font:700 28px/1 var(--serif)}.stat small{color:var(--muted);font-size:12px}
+    /* ============ LAYOUT ============ */
+    main { max-width:920px; margin:0 auto; padding:14px 12px 24px; }
+    .view { display:flex; flex-direction:column; gap:12px; animation:fade .18s ease; }
+    @keyframes fade { from { opacity:0; transform:translateY(4px);} to { opacity:1; transform:none; } }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); }
+    .pad { padding:16px; }
+    .row { display:flex; align-items:center; gap:8px; }
+    .between { justify-content:space-between; }
+    .wrap { flex-wrap:wrap; }
+    .grow { flex:1; min-width:0; }
+    .stack { display:flex; flex-direction:column; gap:8px; }
+    .narrow { max-width:600px; width:100%; margin:0 auto; }
+    .meta { font-size:12px; color:var(--muted); }
+    .label { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+    .h2 { font-family:var(--serif); font-weight:700; font-size:20px; margin:0; }
+    .empty { padding:28px 16px; text-align:center; color:var(--muted); font-size:14px; }
 
-.toast{position:fixed;left:50%;bottom:calc(var(--tab-h) + 14px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(10px);opacity:0;transition:.25s;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:600;pointer-events:none;z-index:30}
-.toast.on{opacity:1;transform:translateX(-50%)}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+    /* Buttons */
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:46px; padding:0 16px; border-radius:14px;
+      font-weight:700; font-size:14px; border:1px solid var(--border); background:var(--card); color:var(--text); transition:transform .08s, background .15s; }
+    .btn:active { transform:scale(.97); }
+    .btn.primary { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+    .btn.ghost { background:transparent; }
+    .btn.sm { min-height:36px; padding:0 12px; font-size:13px; border-radius:11px; }
+    .btn.block { width:100%; }
+    .btn.square { width:46px; padding:0; flex:none; }
+    .btn.ok { background:var(--ok-soft); color:var(--ok); border-color:var(--ok-line); }
+    .btn.warn { background:var(--warn-soft); color:var(--warn); border-color:var(--warn-line); }
+    .btn.bad { background:var(--bad-soft); color:var(--bad); border-color:var(--bad-line); }
+    .seg { display:flex; padding:3px; gap:3px; background:var(--surface); border:1px solid var(--border); border-radius:12px; }
+    .seg button { flex:1; height:32px; padding:0 10px; border-radius:9px; font-size:12px; font-weight:700; color:var(--muted); white-space:nowrap; }
+    .seg button.on { background:var(--card); color:var(--text); box-shadow:var(--shadow); }
+    .tag { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--surface); color:var(--muted); white-space:nowrap; }
+    .tag.accent { background:var(--accent-soft); color:var(--accent); }
+    .tag.ok { background:var(--ok-soft); color:var(--ok); } .tag.warn { background:var(--warn-soft); color:var(--warn); } .tag.bad { background:var(--bad-soft); color:var(--bad); }
 
-:root{--accent:var(--red);--accent-soft:rgba(200,16,46,.08);--tab-h:60px}
-.top{position:sticky;top:0;z-index:40;padding-top:env(safe-area-inset-top,0px);background:var(--bg);background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--border)}
-.top::before{content:"";display:block;height:5px;background:linear-gradient(90deg,#fff 0 30%,var(--red) 30% 60%,var(--green) 60%)}
-.top-row{max-width:920px;margin:0 auto;padding:0 12px;height:52px;display:flex;align-items:center;gap:8px}
-.brand{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
-.flag{width:30px;height:30px;flex:none;border-radius:9px 9px 9px 2px;background:linear-gradient(#fff 0 64%,var(--green) 64%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);display:grid;place-items:start center;padding-top:4px;font:700 12px/1 var(--serif);color:#C8102E}
-.brand-title{font-family:var(--serif);font-weight:700;font-size:19px;white-space:nowrap;letter-spacing:-.01em;min-width:0;overflow:hidden;text-overflow:ellipsis}
-.brand-title i{font-style:italic;font-weight:600;color:var(--accent)}
-.icon-btn{width:40px;height:40px;flex:none;border:0;background:none;border-radius:12px;display:grid;place-items:center;color:var(--muted)}
-.icon-btn:hover{color:var(--text);background:var(--surface)}
-@media (max-width:400px){.top-row{gap:4px;padding:0 8px}.brand-title{font-size:17px}.flag{width:24px;height:24px;font-size:10px;padding-top:3px}}
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--card);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0px)}
-nav.tabs .tabbar-in{max-width:560px;margin:0 auto;height:var(--tab-h);display:grid;grid-template-columns:repeat(4,1fr)}
-nav.tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:none;font-size:11px;font-weight:600;color:var(--muted);position:relative}
-nav.tabs button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-nav.tabs button[aria-current=page]{color:var(--accent)}
-nav.tabs button[aria-current=page]::before{content:"";position:absolute;top:0;width:30px;height:4px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,var(--red) 0 50%,var(--green) 50%)}
-@media (max-height:480px) and (orientation:landscape){:root{--tab-h:48px}nav.tabs button span{display:none}}
-@media (prefers-color-scheme:dark){.btn.good{color:#06210F}}
-.mine-empty{padding:28px 20px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--border);border-radius:22px}.mine-empty p{margin:0}.imp-row{text-align:center;margin:12px 0 0}.btn.imp{display:inline-flex;min-height:44px;font-size:15px;box-shadow:none}
-[hidden]{display:none!important}
+    /* Inputs (16px minimum: prevents iOS zoom) */
+    .field { display:flex; flex-direction:column; gap:6px; }
+    .input, .select, .textarea { width:100%; font-size:16px; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background:var(--surface);
+      color:var(--text); outline:none; -webkit-appearance:none; appearance:none; transition:border-color .15s, box-shadow .15s; }
+    .input:focus, .select:focus, .textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+    .select { background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+      background-position:calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size:5px 5px; background-repeat:no-repeat; padding-right:36px; }
+    .textarea { resize:vertical; min-height:72px; line-height:1.4; }
+    .answer { text-align:center; font-size:22px; font-weight:700; padding:14px 48px; background:var(--card); }
+    .answer.ok { border-color:var(--ok); background:var(--ok-soft); }
+    .answer.warn { border-color:var(--warn); background:var(--warn-soft); }
+    .answer.bad { border-color:var(--bad); background:var(--bad-soft); }
+    .search { position:relative; flex:1; }
+    .search .ic { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none; }
+    .search .input { padding-left:38px; }
+    .keys { display:grid; grid-template-columns:repeat(9, minmax(0, 44px)); justify-content:center; gap:5px; }
+    .key { width:100%; height:42px; border-radius:10px; background:var(--surface); border:1px solid var(--border); font-weight:700; font-size:16px; }
+    .key:active { background:var(--border); }
+    .switch { position:relative; width:46px; height:28px; flex:none; }
+    .switch input { opacity:0; width:100%; height:100%; margin:0; position:absolute; z-index:1; cursor:pointer; }
+    .switch span { position:absolute; inset:0; border-radius:999px; background:var(--border); transition:background .2s; }
+    .switch span::after { content:""; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.25); transition:transform .2s; }
+    .switch input:checked + span { background:var(--accent); }
+    .switch input:checked + span::after { transform:translateX(18px); }
+    .setting { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+    .setting:last-child { border-bottom:0; }
+    .setting .t { font-weight:600; font-size:14px; } .setting .d { font-size:12px; color:var(--muted); }
+
+    /* Feedback */
+    .fb { padding:12px 14px; border-radius:14px; border:1px solid; font-size:14px; font-weight:600; text-align:center; }
+    .fb.ok { background:var(--ok-soft); color:var(--ok); border-color:var(--ok-line); }
+    .fb.warn { background:var(--warn-soft); color:var(--warn); border-color:var(--warn-line); }
+    .fb.bad { background:var(--bad-soft); color:var(--bad); border-color:var(--bad-line); }
+    .fb .big { font-size:18px; font-weight:800; display:block; margin-top:2px; }
+    .shake { animation:shake .25s ease-in-out; }
+    @keyframes shake { 25% { transform:translateX(-5px);} 75% { transform:translateX(5px);} }
+    .pop { animation:pop .3s ease; }
+    @keyframes pop { 50% { transform:scale(1.04);} }
+
+    /* ============ FLASHCARD ============ */
+    .progress { height:4px; border-radius:999px; background:var(--surface); overflow:hidden; }
+    .progress > i { display:block; height:100%; width:0; background:var(--accent); border-radius:inherit; transition:width .25s; }
+    .scene { -webkit-perspective:1200px; perspective:1200px; height:clamp(250px, calc(100vh - 400px), 440px); height:clamp(250px, calc(100dvh - 400px), 440px); touch-action:pan-y; user-select:none; -webkit-user-select:none; cursor:pointer; }
+    .flip { position:relative; width:100%; height:100%; -webkit-transform-style:preserve-3d; transform-style:preserve-3d; transition:transform .45s cubic-bezier(.2,.7,.2,1); }
+    .flip.on { -webkit-transform:rotateY(180deg); transform:rotateY(180deg); }
+    .flip.swipe { transition:transform .45s cubic-bezier(.2,.7,.2,1), opacity .2s; }
+    .face { position:absolute; inset:0; -webkit-backface-visibility:hidden; backface-visibility:hidden; display:flex; flex-direction:column; padding:16px; border-radius:20px;
+      background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow); overflow:hidden; }
+    .face.back { -webkit-transform:rotateY(180deg); transform:rotateY(180deg); border-top:3px solid var(--accent); }
+    .face-mid { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:8px; min-height:0; padding:4px 6px; }
+    .term { font-family:var(--serif); font-weight:700; font-size:clamp(28px, 8.5vw, 44px); line-height:1.12; margin:0; word-break:break-word; hyphens:auto; }
+    .meaning { font-family:var(--serif); font-weight:700; font-size:clamp(22px, 6vw, 30px); margin:0; line-height:1.2; }
+    .example { font-size:15px; color:var(--muted); font-style:italic; margin:0; max-width:34em; }
+    .back-scroll { overflow-y:auto; -webkit-overflow-scrolling:touch; width:100%; }
+    .note-box { width:100%; margin-top:8px; text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:8px 10px; }
+    .note-box textarea { width:100%; border:0; outline:0; background:transparent; resize:none; font-size:16px; line-height:1.35; color:var(--text); padding:0; }
+    .hint-line { font-size:12px; color:var(--muted); text-align:center; display:flex; align-items:center; justify-content:center; gap:6px; }
+    .rate { display:grid; grid-template-columns:46px 1fr 1fr 1fr 46px; gap:6px; }
+    .rate .btn { padding:0 6px; font-size:13px; flex-direction:column; gap:0; line-height:1.1; }
+    .rate .btn small { font-size:10px; font-weight:600; opacity:.7; }
+    .kbd { display:none; }
+    @media (hover:hover) and (pointer:fine) { .kbd { display:inline; font-family:var(--mono); font-size:10px; opacity:.6; } }
+
+    /* ============ LISTS ============ */
+    .list { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .li { display:flex; align-items:center; gap:8px; padding:12px 12px 12px 14px; border-bottom:1px solid var(--border); }
+    .li:last-child { border-bottom:0; }
+    .li .w { font-weight:700; }
+    .li .s { font-size:13px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; }
+    .li .x { font-size:12px; color:var(--muted); font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .li .n { font-size:12px; color:var(--warn); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .li-acts { display:flex; flex:none; }
+    .li-acts .icon-btn { width:38px; height:38px; }
+
+    /* ============ VERBS ============ */
+    .prompt { text-align:center; padding:18px 16px; }
+    .prompt .inf { font-family:var(--serif); font-size:clamp(30px, 9vw, 42px); font-weight:700; margin:4px 0 0; line-height:1.1; }
+    .badges { display:flex; justify-content:center; gap:6px; flex-wrap:wrap; }
+    .pron { font-size:20px; font-weight:800; color:var(--accent); margin-top:6px; }
+    .mini-table { display:grid; grid-template-columns:auto 1fr; gap:2px 12px; font-size:14px; text-align:left; max-width:320px; margin:8px auto 0; }
+    .mini-table .p { color:var(--muted); font-size:12px; align-self:center; }
+    .mini-table .hl { color:var(--accent); font-weight:800; }
+    .choices { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .choice { min-height:60px; padding:10px; border-radius:14px; border:1px solid var(--border); background:var(--card); font-weight:700; font-size:16px; line-height:1.2; }
+    .choice:disabled { opacity:1; cursor:default; }
+    .choice.ok { border-color:var(--ok); background:var(--ok-soft); color:var(--ok); }
+    .choice.bad { border-color:var(--bad); background:var(--bad-soft); color:var(--bad); }
+    .choice .k { display:none; }
+    @media (hover:hover) and (pointer:fine) { .choice .k { display:inline; font-family:var(--mono); font-size:10px; color:var(--muted); margin-right:6px; } }
+    .tgrid { display:grid; grid-template-columns:1fr; gap:10px; }
+    @media (min-width:640px) { .tgrid { grid-template-columns:1fr 1fr; } }
+    @media (min-width:900px) { .tgrid { grid-template-columns:1fr 1fr 1fr; } }
+    .tcard { padding:12px 14px; }
+    .tcard h3 { margin:0 0 6px; font-size:13px; font-weight:800; display:flex; justify-content:space-between; align-items:center; gap:6px; }
+    .trow { display:flex; justify-content:space-between; gap:10px; padding:6px 0; border-top:1px dashed var(--border); font-size:14px; cursor:pointer; }
+    .trow .p { color:var(--muted); font-size:12px; white-space:nowrap; }
+    .trow .f { font-weight:700; text-align:right; }
+    .trow .alt { color:var(--muted); font-weight:500; font-size:12px; }
+    .streak-pill { display:inline-flex; align-items:center; gap:4px; font-weight:800; font-size:13px; color:var(--warn); }
+
+    /* ============ DICTATION ============ */
+    .diff { font-size:18px; line-height:1.8; text-align:center; }
+    .diff span { padding:1px 4px; border-radius:6px; margin:0 1px; }
+    .diff .ok { color:var(--ok); background:var(--ok-soft); }
+    .diff .warn { color:var(--warn); background:var(--warn-soft); }
+    .diff .miss { color:var(--bad); background:var(--bad-soft); text-decoration:underline wavy; }
+    .gq { font-size:clamp(20px, 5.5vw, 26px); font-family:var(--serif); font-weight:700; text-align:center; line-height:1.35; margin:6px 0; }
+    .gq .blank { display:inline-block; min-width:64px; border-bottom:3px solid var(--accent); color:var(--accent); }
+
+    /* ============ STATS ============ */
+    .kpis { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    @media (min-width:640px) { .kpis { grid-template-columns:repeat(4,1fr); } }
+    .kpi { padding:14px; }
+    .kpi .v { font-size:24px; font-weight:800; line-height:1.1; font-variant-numeric:tabular-nums; }
+    .kpi .l { font-size:12px; color:var(--muted); margin-top:2px; }
+    .hero { display:flex; align-items:center; gap:16px; padding:16px; }
+    .ring { width:92px; height:92px; flex:none; position:relative; }
+    .ring svg { width:100%; height:100%; transform:rotate(-90deg); }
+    .ring .c { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.1; }
+    .ring .c b { font-size:20px; } .ring .c small { font-size:11px; color:var(--muted); }
+    .heat-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px; }
+    .heat { display:grid; grid-auto-flow:column; grid-template-rows:repeat(7, 13px); grid-auto-columns:13px; gap:3px; }
+    .heat i { border-radius:3px; background:var(--h0); }
+    .heat i.l1 { background:var(--h1);} .heat i.l2 { background:var(--h2);} .heat i.l3 { background:var(--h3);} .heat i.l4 { background:var(--h4);}
+    .heat i.fut { background:transparent; }
+    .heat i.today { box-shadow:inset 0 0 0 1.5px var(--text); }
+    .legend { display:flex; align-items:center; gap:3px; font-size:11px; color:var(--muted); }
+    .legend i { width:11px; height:11px; border-radius:3px; display:inline-block; }
+    .bars7 { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; align-items:end; height:130px; padding-top:18px; }
+    .b7 { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:4px; font-size:11px; color:var(--muted); }
+    .b7 .bar { width:100%; max-width:34px; background:var(--accent); border-radius:4px 4px 0 0; min-height:2px; position:relative; }
+    .b7 .bar.zero { background:var(--border); }
+    .b7 .val { font-size:11px; font-weight:700; color:var(--text); font-variant-numeric:tabular-nums; }
+    .b7.today .d { color:var(--text); font-weight:800; }
+    .hbar { display:grid; grid-template-columns:minmax(90px, 38%) 1fr 64px; gap:8px; align-items:center; font-size:13px; padding:5px 0; }
+    .hbar .track { height:10px; background:var(--surface); border-radius:999px; overflow:hidden; }
+    .hbar .track i { display:block; height:100%; background:var(--accent); border-radius:999px; }
+    .hbar .pct { text-align:right; font-variant-numeric:tabular-nums; font-weight:700; }
+    .hbar .pct small { display:block; font-weight:500; color:var(--muted); font-size:10px; }
+    .stackbar { display:flex; height:12px; border-radius:999px; overflow:hidden; background:var(--surface); gap:2px; }
+    .stackbar i { display:block; height:100%; }
+    .st-m { background:var(--ok); } .st-r { background:var(--warn); } .st-n { background:var(--border); }
+    .sess { display:grid; grid-template-columns:1fr auto auto; gap:8px; align-items:center; padding:10px 14px; border-bottom:1px solid var(--border); font-size:13px; }
+    .sess:last-child { border-bottom:0; }
+
+    /* ============ SHEET / TOAST ============ */
+    .backdrop { position:fixed; inset:0; z-index:80; background:rgba(0,0,0,.45); display:flex; align-items:flex-end; justify-content:center; animation:fadeIn .15s; }
+    @keyframes fadeIn { from { opacity:0; } }
+    .sheet { width:100%; max-width:560px; max-height:88vh; max-height:88dvh; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+      background:var(--card); border-radius:22px 22px 0 0; padding:8px 16px calc(16px + var(--safe-b)); animation:up .22s cubic-bezier(.2,.7,.2,1); }
+    @keyframes up { from { transform:translateY(40px); opacity:.6; } }
+    .sheet .grab { width:40px; height:5px; border-radius:99px; background:var(--border); margin:4px auto 10px; }
+    .sheet-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    @media (min-width:640px) { .backdrop { align-items:center; } .sheet { border-radius:22px; padding-bottom:16px; } .sheet .grab { display:none; } }
+    .lv-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+    .lv-btn { padding:10px 4px; border-radius:12px; border:1px solid var(--border); background:var(--surface); text-align:center; }
+    .lv-btn b { display:block; font-size:16px; } .lv-btn small { font-size:10px; color:var(--muted); }
+    .lv-btn.on { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
+    .tense-pick { display:flex; flex-wrap:wrap; gap:6px; }
+    .tense-pick label { display:inline-flex; align-items:center; gap:6px; padding:8px 10px; border-radius:10px; border:1px solid var(--border); font-size:13px; cursor:pointer; background:var(--surface); }
+    .tense-pick input { width:16px; height:16px; accent-color:var(--accent); margin:0; }
+    .tense-pick label.on { border-color:var(--accent); }
+    .toast { position:fixed; left:50%; bottom:calc(var(--tab-h) + var(--safe-b) + 14px); z-index:90; transform:translate(-50%, 10px); opacity:0; pointer-events:none;
+      background:var(--text); color:var(--bg); padding:10px 16px; border-radius:999px; font-size:13px; font-weight:600; box-shadow:0 6px 24px rgba(0,0,0,.25);
+      transition:opacity .2s, transform .2s; max-width:calc(100vw - 32px); text-align:center; }
+    .toast.show { opacity:1; transform:translate(-50%,0); }
+    body.kb .toast { bottom:16px; }
+
+    @media (min-width:640px) { main { padding:20px 20px 32px; } .pad { padding:20px; } }
+    @media (orientation:landscape) and (max-height:520px) { .scene { height:240px; } .term { font-size:30px; } :root { --tab-h:54px; } .tab span { display:none; } }
+    @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
+
+    /* ============ CANTONESE ============ */
+    body { background-image:var(--lattice); background-attachment:fixed; }
+    .flagbar { background:linear-gradient(90deg,#B3261E,#E9C46A 50%,#1C1917) !important; }
+    .logo { background:#B3261E !important; color:#fff !important; font:700 17px/1 var(--han) !important; border-radius:9px 9px 9px 2px !important; }
+    .brand-title { font-family:var(--han) !important; font-weight:800 !important; letter-spacing:.02em; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+    .brand-title i { font-style:normal; color:var(--accent); }
+    .top-row > button { flex:none; }
+    @media (max-width:400px) { .top-row { gap:4px; padding:0 8px; } .brand-title { font-size:17px; } .logo { width:26px !important; height:26px !important; font-size:15px !important; } .top-row .icon-btn { width:36px; height:36px; } }
+    .han { font-family:var(--han); }
+    .term.han { font-family:var(--han); font-weight:800; font-size:clamp(40px, 13vw, 64px); letter-spacing:.04em; }
+    .jp { font-family:var(--mono); font-size:15px; color:var(--jade); letter-spacing:.02em; }
+    .jp.big { font-size:18px; }
+    .mando { font-size:13px; color:var(--muted); }
+    .mando b { font-family:var(--han); color:var(--text); font-weight:600; }
+    .ex-han { font-family:var(--han); font-size:18px; font-weight:600; margin:0; }
+    .ex-en { font-size:14px; color:var(--muted); margin:0; font-style:italic; }
+    .sp { display:inline-grid; place-items:center; width:36px; height:36px; border-radius:50%; background:var(--accent-soft); color:var(--accent); flex:none; }
+    .sp.big { width:64px; height:64px; } .sp.big .ic { width:28px; height:28px; }
+    .tone-btns { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .tone-btn { display:flex; flex-direction:column; align-items:center; gap:2px; padding:10px 6px; border-radius:14px; border:1px solid var(--border); background:var(--card); font-weight:800; font-size:18px; }
+    .tone-btn svg { width:44px; height:22px; } .tone-btn small { font-size:11px; color:var(--muted); font-weight:600; }
+    .tone-btn.ok { border-color:var(--ok); background:var(--ok-soft); color:var(--ok); } .tone-btn.bad { border-color:var(--bad); background:var(--bad-soft); color:var(--bad); }
+    .tone-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; }
+    .tone-cell { display:flex; flex-direction:column; align-items:center; gap:2px; padding:10px 2px; border-radius:12px; border:1px solid var(--border); background:var(--card); }
+    .tone-cell b { font-family:var(--han); font-size:26px; } .tone-cell span { font-family:var(--mono); font-size:11px; color:var(--jade); } .tone-cell small { font-size:10px; color:var(--muted); text-align:center; line-height:1.15; }
+    .tone-head { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; text-align:center; font-size:11px; color:var(--muted); }
+    .tone-head svg { width:40px; height:20px; display:block; margin:0 auto 2px; }
+    .contour { fill:none; stroke:var(--accent); stroke-width:3; stroke-linecap:round; }
+    .contour-grid { stroke:var(--border); stroke-width:1; }
+    .choices .choice.han { font-family:var(--han); font-size:22px; }
+    .gq.han { font-family:var(--han); font-size:clamp(24px, 7vw, 32px); }
+    .numpad { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .numpad button { height:52px; border-radius:14px; background:var(--surface); border:1px solid var(--border); font-weight:800; font-size:20px; }
+    .lv-grid.three { grid-template-columns:repeat(3,1fr); }
+    .noVoice { display:none; }
+    body.mute-voice .noVoice { display:block; }
+    .idiom { font-family:"Songti SC","STSong","Noto Serif SC","Noto Serif TC","Songti TC","PMingLiU","SimSun",serif; font-weight:900; letter-spacing:.12em; }
+    .term.idiom { font-size:clamp(40px, 12vw, 64px); }
+    .py { font-size:15px; color:var(--jade); letter-spacing:.02em; }
+    .story { text-align:left; font-size:15px; line-height:1.6; margin:0; }
+    .seal { align-self:flex-start; display:inline-grid; place-items:center; padding:2px 6px; border:2px solid var(--accent); color:var(--accent); border-radius:4px; font:800 12px/1.2 var(--han); }
+    .script-btn { min-width:44px; height:36px; padding:0 10px; border-radius:999px; border:1px solid var(--border); font:800 14px/1 var(--han); color:var(--text); }
+    .choice.long { font-size:15px; font-weight:600; text-align:left; }
+    .choices.one { grid-template-columns:1fr; }
+  
+/* Cymraeg: red and green of the flag, the geometry of a carthen blanket */
+:root { --accent:#C8102E; --accent-soft:rgba(200,16,46,.08); --accent-line:rgba(200,16,46,.35); --green:#00843D; --lattice:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke-width='1.4'%3E%3Cpath d='M30 6L54 30L30 54L6 30Z' stroke='%23C8102E' stroke-opacity='.07'/%3E%3Cpath d='M30 18L42 30L30 42L18 30Z' stroke='%2300843D' stroke-opacity='.08'/%3E%3Cpath d='M30 26v8M26 30h8' stroke='%23C8102E' stroke-opacity='.1'/%3E%3C/g%3E%3C/svg%3E"); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --accent:#FF5A6E; --accent-ink:#1A0A10; --accent-soft:rgba(255,90,110,.12); --accent-line:rgba(255,90,110,.4); --green:#3DD68C; } }
+.flagbar { background:linear-gradient(90deg,#fff 0 30%,#C8102E 30% 60%,#00843D 60%) !important; }
+.logo { background:linear-gradient(#fff 0 64%,#00843D 64%) !important; color:#C8102E !important; font:700 12px/1 var(--serif) !important; place-items:start center !important; padding-top:4px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.12); }
+.tab.on::before { background:linear-gradient(90deg,var(--accent) 0 50%,var(--green) 50%) !important; }
+.term { font-family:var(--serif); }
+.term.en { font-family:var(--font); font-weight:700; }
+.term.small { font-size:30px; margin:4px 0 0; }
+.py { font-family:var(--mono); color:var(--muted); }
+.sm-ico { width:30px; height:30px; display:inline-grid; vertical-align:middle; }
+.sel { appearance:none; -webkit-appearance:none; border:1px solid var(--border); background:var(--card); color:inherit; border-radius:999px; padding:8px 30px 8px 14px; font:600 13px var(--font); max-width:60vw;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6560' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; }
+.sounds { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px; margin:12px 0; }
+.snd { position:relative; border-radius:18px; background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow); }
+.snd-say { display:block; width:100%; text-align:left; padding:14px; }
+.snd-say b { display:block; font:700 28px/1 var(--serif); color:var(--accent); }
+.snd-say i { display:block; font-style:normal; margin-top:6px; font-weight:700; }
+.snd-say small { color:var(--muted); font-size:12px; }
+.snd .mic { position:absolute; right:6px; top:6px; }
+.mt { width:100%; border-collapse:collapse; margin-top:10px; font-size:14px; } .mt td, .mt th { padding:7px 8px; border-bottom:1px solid var(--border); text-align:left; } .mt th { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+details.card summary { cursor:pointer; font-weight:600; color:var(--muted); }
+.fb small { display:block; font-weight:500; opacity:.85; }
+.gq u { text-decoration:none; border-bottom:3px dotted var(--accent); }
 </style>
-<link rel="stylesheet" href="../vk.css?v=3">
+<style>.tabbar-in.three{grid-template-columns:repeat(3,1fr)}</style>
+<link rel="stylesheet" href="../vk.css?v=4">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
-<header class="top">
-  <div class="top-row">
-    <a class="brand" href="../#all" aria-label="Vocab"><svg class="vk-back" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="flag" aria-hidden="true">Cy</span><span class="brand-title">Cymraeg <i>bob dydd</i></span></a>
-    <button class="icon-btn vk-lang" data-vk="lang" type="button" aria-label="Interface language"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5S9.4 5.2 12 2.5z"/></svg></button>
-  </div>
-</header>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<symbol id="i-layers" viewBox="0 0 24 24"><svg class="lucide lucide-layers" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" /> <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" /> <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" /></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><svg class="lucide lucide-flame" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" /></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24"><svg class="lucide lucide-sparkles" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /> <path d="M20 3v4" /> <path d="M22 5h-4" /> <path d="M4 17v2" /> <path d="M5 18H3" /></symbol>
+<symbol id="i-book-open" viewBox="0 0 24 24"><svg class="lucide lucide-book-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 7v14" /> <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><svg class="lucide lucide-star" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></symbol>
+<symbol id="i-circle-plus" viewBox="0 0 24 24"><svg class="lucide lucide-circle-plus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <path d="M8 12h8" /> <path d="M12 8v8" /></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><svg class="lucide lucide-pencil" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /> <path d="m15 5 4 4" /></symbol>
+<symbol id="i-volume-2" viewBox="0 0 24 24"><svg class="lucide lucide-volume-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /> <path d="M16 9a5 5 0 0 1 0 6" /> <path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol>
+<symbol id="i-volume-x" viewBox="0 0 24 24"><svg class="lucide lucide-volume-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /> <line x1="22" x2="16" y1="9" y2="15" /> <line x1="16" x2="22" y1="9" y2="15" /></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><svg class="lucide lucide-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="4" /> <path d="M12 2v2" /> <path d="M12 20v2" /> <path d="m4.93 4.93 1.41 1.41" /> <path d="m17.66 17.66 1.41 1.41" /> <path d="M2 12h2" /> <path d="M20 12h2" /> <path d="m6.34 17.66-1.41 1.41" /> <path d="m19.07 4.93-1.41 1.41" /></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><svg class="lucide lucide-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></symbol>
+<symbol id="i-shuffle" viewBox="0 0 24 24"><svg class="lucide lucide-shuffle" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22" /> <path d="m18 2 4 4-4 4" /> <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2" /> <path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8" /> <path d="m18 14 4 4-4 4" /></symbol>
+<symbol id="i-arrow-left" viewBox="0 0 24 24"><svg class="lucide lucide-arrow-left" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m12 19-7-7 7-7" /> <path d="M19 12H5" /></symbol>
+<symbol id="i-arrow-right" viewBox="0 0 24 24"><svg class="lucide lucide-arrow-right" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></symbol>
+<symbol id="i-rotate-ccw" viewBox="0 0 24 24"><svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><svg class="lucide lucide-search" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="11" cy="11" r="8" /> <path d="m21 21-4.3-4.3" /></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><svg class="lucide lucide-upload" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <polyline points="17 8 12 3 7 8" /> <line x1="12" x2="12" y1="3" y2="15" /></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><svg class="lucide lucide-download" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <polyline points="7 10 12 15 17 10" /> <line x1="12" x2="12" y1="15" y2="3" /></symbol>
+<symbol id="i-trash-2" viewBox="0 0 24 24"><svg class="lucide lucide-trash-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 6h18" /> <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /> <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /> <line x1="10" x2="10" y1="11" y2="17" /> <line x1="14" x2="14" y1="11" y2="17" /></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><svg class="lucide lucide-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M18 6 6 18" /> <path d="m6 6 12 12" /></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><svg class="lucide lucide-play" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <polygon points="6 3 20 12 6 21 6 3" /></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><svg class="lucide lucide-check" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M20 6 9 17l-5-5" /></symbol>
+<symbol id="i-circle-alert" viewBox="0 0 24 24"><svg class="lucide lucide-circle-alert" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <line x1="12" x2="12" y1="8" y2="12" /> <line x1="12" x2="12.01" y1="16" y2="16" /></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><svg class="lucide lucide-table" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 3v18" /> <rect width="18" height="18" x="3" y="3" rx="2" /> <path d="M3 9h18" /> <path d="M3 15h18" /></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><svg class="lucide lucide-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" /></symbol>
+<symbol id="i-headphones" viewBox="0 0 24 24"><svg class="lucide lucide-headphones" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" /></symbol>
+<symbol id="i-chart-column" viewBox="0 0 24 24"><svg class="lucide lucide-chart-column" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="M18 17V9" /> <path d="M13 17V5" /> <path d="M8 17v-3" /></symbol>
+<symbol id="i-sliders-horizontal" viewBox="0 0 24 24"><svg class="lucide lucide-sliders-horizontal" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <line x1="21" x2="14" y1="4" y2="4" /> <line x1="10" x2="3" y1="4" y2="4" /> <line x1="21" x2="12" y1="12" y2="12" /> <line x1="8" x2="3" y1="12" y2="12" /> <line x1="21" x2="16" y1="20" y2="20" /> <line x1="12" x2="3" y1="20" y2="20" /> <line x1="14" x2="14" y1="2" y2="6" /> <line x1="8" x2="8" y1="10" y2="14" /> <line x1="16" x2="16" y1="18" y2="22" /></symbol>
+<symbol id="i-graduation-cap" viewBox="0 0 24 24"><svg class="lucide lucide-graduation-cap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" /> <path d="M22 10v6" /> <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" /></symbol>
+<symbol id="i-hash" viewBox="0 0 24 24"><svg class="lucide lucide-hash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <line x1="4" x2="20" y1="9" y2="9" /> <line x1="4" x2="20" y1="15" y2="15" /> <line x1="10" x2="8" y1="3" y2="21" /> <line x1="16" x2="14" y1="3" y2="21" /></symbol>
+<symbol id="i-lightbulb" viewBox="0 0 24 24"><svg class="lucide lucide-lightbulb" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /> <path d="M9 18h6" /> <path d="M10 22h4" /></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><svg class="lucide lucide-cloud" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" /></symbol>
+<symbol id="i-cloud-off" viewBox="0 0 24 24"><svg class="lucide lucide-cloud-off" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m2 2 20 20" /> <path d="M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.307-.193" /> <path d="M21.532 16.5A4.5 4.5 0 0 0 17.5 10h-1.79A7.008 7.008 0 0 0 10 5.07" /></symbol>
+<symbol id="i-chevron-down" viewBox="0 0 24 24"><svg class="lucide lucide-chevron-down" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m6 9 6 6 6-6" /></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><svg class="lucide lucide-eye" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /> <circle cx="12" cy="12" r="3" /></symbol>
+<symbol id="i-snail" viewBox="0 0 24 24"><svg class="lucide lucide-snail" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M2 13a6 6 0 1 0 12 0 4 4 0 1 0-8 0 2 2 0 0 0 4 0" /> <circle cx="10" cy="13" r="8" /> <path d="M2 21h12c4.4 0 8-3.6 8-8V7a2 2 0 1 0-4 0v6" /> <path d="M18 3 19.1 5.2" /> <path d="M22 3 20.9 5.2" /></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><svg class="lucide lucide-target" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <circle cx="12" cy="12" r="10" /> <circle cx="12" cy="12" r="6" /> <circle cx="12" cy="12" r="2" /></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><svg class="lucide lucide-plus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M5 12h14" /> <path d="M12 5v14" /></symbol>
+<symbol id="i-pen-line" viewBox="0 0 24 24"><svg class="lucide lucide-pen-line" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M12 20h9" /> <path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z" /></symbol>
+<symbol id="i-book-a" viewBox="0 0 24 24"><svg class="lucide lucide-book-a" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" /> <path d="m8 13 4-7 4 7" /> <path d="M9.1 11h5.7" /></symbol>
+<symbol id="i-languages" viewBox="0 0 24 24"><svg class="lucide lucide-languages" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" > <path d="m5 8 6 6" /> <path d="m4 14 6-6 2-3" /> <path d="M2 5h12" /> <path d="M7 2h1" /> <path d="m22 22-5-10-5 10" /> <path d="M14 18h6" /></symbol>
+</svg>
 
-<main>
-  <h1 class="sr">Cymraeg bob dydd — learn Welsh</h1>
 
-  <!-- CARDIAU -->
-  <section class="view on" id="v-cards" aria-label="Cardiau">
-    <div class="seg" id="lvSeg" role="group"></div>
-    <div class="card"><div class="flip" id="flip" role="button" tabindex="0" aria-label="Troi'r cerdyn · flip the card">
-      <div class="side a"><span class="lv" id="cLv"></span><button class="spk" id="spk" type="button" aria-label="Gwrando · listen" hidden>🔊</button><div class="w" id="cW" lang="cy"></div><div class="say" id="cSay"></div><div class="hint">Tapia i droi · tap to flip</div></div>
-      <div class="side b"><span class="lv">Saesneg · English</span><div class="en" id="cEn"></div><div class="ex"><b id="cEx"></b><span id="cExEn"></span></div><div class="hint" id="cBox"></div></div>
-    </div></div>
-    <div class="grade"><button class="btn again" id="again" type="button">↺ Eto <small>· again</small></button><button class="btn good" id="good" type="button">✓ Iawn <small>· got it</small></button></div>
-    <p class="count" id="cCount"></p>
-    <div class="mine-empty" id="cMine" hidden><p>Dewch â'ch geiriau eich hun · bring your own words: paste them or choose a file.</p></div>
-    <p class="imp-row" id="cImpRow" hidden><button class="btn imp" id="cImp" type="button">⬆ Mewnforio · import a list</button></p>
-  </section>
+  <div class="flagbar" aria-hidden="true"></div>
+  <header class="top">
+    <div class="top-row">
+      <a class="brand" href="../#all" aria-label="Vocab"><svg class="vk-back" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        <div class="logo" aria-hidden="true">Cy</div>
+        <span class="brand-title">Cymraeg <i>bob dydd</i></span>
+      </a>
+      <button class="icon-btn vk-lang" data-vk="lang" type="button" aria-label="Interface language"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5S9.4 5.2 12 2.5z"/></svg></button>
+    </div>
+    <nav class="subnav" id="subnav" aria-label="Adrannau"></nav>
+  </header>
 
-  <!-- TREIGLO -->
-  <section class="view" id="v-mut" aria-label="Treiglo">
-    <div class="seg" id="mutSeg" role="group"></div>
-    <div class="q"><div class="k" id="mK"></div><div class="p" id="mP"></div><div class="g" id="mG"></div><div class="opts" id="mOpts"></div><div class="why" id="mWhy"></div></div>
-    <button class="btn next" id="mNext" type="button" hidden>Nesaf · next →</button>
-    <details><summary>Tabl treiglo · the mutation table</summary>
-      <table><thead><tr><th></th><th>Meddal<br><small>soft</small></th><th>Trwynol<br><small>nasal</small></th><th>Llaes<br><small>aspirate</small></th></tr></thead><tbody id="mTable"></tbody></table>
-      <table><thead><tr><th>Ar ôl · after</th><th>Treiglad · mutation</th></tr></thead><tbody>
-        <tr><td><b>dy</b> your · <b>ei</b> his · <b>i</b> to · <b>o</b> from · <b>am</b> · <b>ar</b> · <b>y</b> + fem. noun</td><td>Meddal · soft</td></tr>
-        <tr><td><b>fy</b> my · <b>yn</b> in (yn → ym / yng)</td><td>Trwynol · nasal</td></tr>
-        <tr><td><b>ei</b> her · <b>a</b> and · <b>gyda</b> with · <b>tri</b> three · <b>chwe</b> six</td><td>Llaes · aspirate</td></tr>
-      </tbody></table>
-    </details>
-  </section>
+  <main id="main">
+    <section class="view" id="v-cards-study">
+      <div class="row between wrap">
+        <select class="sel" id="thSel" aria-label="Thema"></select>
+        <div class="row">
+          <button class="btn sm ghost" data-act="dir" aria-label="Cyfeiriad"><svg class="ic sm"><use href="#i-languages"/></svg><span id="dirTxt">CY → EN</span></button>
+          <button class="btn sm square" data-act="shuffle" aria-label="Cymysgu"><svg class="ic sm"><use href="#i-shuffle"/></svg></button>
+        </div>
+      </div>
+      <div class="row between"><span class="meta" id="deckMeta"></span><span class="meta" id="deckStats"></span></div>
+      <div class="progress"><i id="deckBar"></i></div>
+      <div class="scene" id="scene" data-act="flip">
+        <div class="flip" id="flip">
+          <div class="face front">
+            <div class="row between"><span class="tag" id="fcTag"></span><span class="row" style="gap:2px"><button class="icon-btn" data-act="star" id="fcStar" aria-label="Cadw"><svg class="ic"><use href="#i-star"/></svg></button><button class="icon-btn" data-act="say" aria-label="Gwrando"><svg class="ic"><use href="#i-volume-2"/></svg></button><button class="icon-btn vk-micbtn" data-vk="mic" aria-label="Dywedwch e"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg></button></span></div>
+            <div class="face-mid" id="fcFront"></div>
+            <div class="hint-line"><svg class="ic sm"><use href="#i-rotate-ccw"/></svg> <span>Tapiwch i droi · llithro am y nesaf</span></div>
+          </div>
+          <div class="face back">
+            <div class="row between"><span class="tag accent" id="fcTag2"></span><span class="row" style="gap:2px"><button class="icon-btn" data-act="say" aria-label="Gwrando"><svg class="ic"><use href="#i-volume-2"/></svg></button><button class="icon-btn vk-micbtn" data-vk="mic" aria-label="Dywedwch e"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg></button></span></div>
+            <div class="face-mid back-scroll" id="fcBack" style="justify-content:flex-start"></div>
+          </div>
+        </div>
+      </div>
+      <div class="empty card" id="fcEmpty" hidden></div>
+      <div class="rate">
+        <button class="btn" data-act="prev" aria-label="Blaenorol"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
+        <button class="btn bad" data-act="rate" data-arg="again"><span>Eto</span><small>ailadrodd</small></button>
+        <button class="btn" data-act="rate" data-arg="good"><span>Iawn</span><small id="goodDays"></small></button>
+        <button class="btn ok" data-act="rate" data-arg="mastered"><span>Gwybod</span><small>wedi dysgu</small></button>
+        <button class="btn" data-act="next" aria-label="Nesaf"><svg class="ic"><use href="#i-arrow-right"/></svg></button>
+      </div>
+    </section>
 
-  <!-- RHIFAU -->
-  <section class="view" id="v-num" aria-label="Rhifau">
-    <div class="q"><div class="k">Rhif · number</div><div class="p" id="nP" style="font-size:clamp(46px,14vw,72px)"></div><div class="opts" id="nOpts" style="grid-template-columns:1fr"></div><div class="why" id="nWhy"></div></div>
-    <button class="btn next" id="nNext" type="button" hidden>Nesaf · next →</button>
-    <details><summary>Sut mae'n gweithio · how it works</summary>
-      <table><tbody id="nTable"></tbody></table>
-      <p style="color:var(--muted);font-size:14px">Modern Welsh counts in tens: <b>dau ddeg tri</b> is "two tens three", 23. Note <b>dau ddeg</b> (20, soft mutation after <i>dau</i>), <b>pum deg</b> (50) and <b>chwe deg</b> (60): <i>pump</i> and <i>chwech</i> shorten before a noun or <i>deg</i>.</p>
-    </details>
-  </section>
+    <section class="view" id="v-cards-list" hidden>
+      <div class="search"><svg class="ic"><use href="#i-search"/></svg><input class="input" id="listQ" placeholder="Chwilio: Cymraeg neu Saesneg" autocomplete="off"></div>
+      <div class="list" id="wordList"></div>
+    </section>
 
-  <!-- SEINIAU -->
-  <section class="view" id="v-snd" aria-label="Seiniau">
-    <p style="color:var(--muted);margin:6px 0 14px">Welsh is spelt the way it sounds. Learn these and you can read any word aloud.</p>
-    <div class="sounds" id="sounds"></div>
-    <h2 style="font:700 20px var(--serif);margin:26px 0 10px">Cynnydd · progress</h2>
-    <div class="stats"><div class="stat"><b id="sKnown">0</b><small>geiriau · words known</small></div><div class="stat"><b id="sDays">0</b><small>diwrnod · days</small></div><div class="stat"><b id="sMut">0%</b><small>treiglo · mutations right</small></div></div>
-    <p style="text-align:center;margin-top:18px"><button class="btn" id="reset" type="button" style="display:inline-flex;min-height:40px;font-size:14px">Dechrau eto · start over</button></p>
-  </section>
-</main>
+    <section class="view narrow" id="v-cards-add" hidden>
+      <div class="card pad stack">
+        <div class="h2">Ychwanegu gair</div>
+        <label class="field"><span class="label">Cymraeg</span><input class="input" id="nCy" lang="cy" autocomplete="off" placeholder="e.e. cwtsh"></label>
+        <label class="field"><span class="label">Saesneg / ystyr</span><input class="input" id="nEn" autocomplete="off" placeholder="a cuddle"></label>
+        <label class="field"><span class="label">Sut i'w ddweud (dewisol)</span><input class="input" id="nSay" autocomplete="off" placeholder="kootch"></label>
+        <label class="field"><span class="label">Enghraifft (dewisol)</span><input class="input" id="nEx" lang="cy" autocomplete="off"></label>
+        <label class="field"><span class="label">Enghraifft yn Saesneg (dewisol)</span><input class="input" id="nExEn" autocomplete="off"></label>
+        <button class="btn primary block" data-act="addWord"><svg class="ic"><use href="#i-plus"/></svg>Ychwanegu</button>
+      </div>
+      <button class="btn block vk-imp-btn" data-act="importMine"><svg class="ic"><use href="#i-upload"/></svg>Mewnforio rhestr</button>
+      <div class="list" id="mineList"></div>
+    </section>
 
-<nav class="tabs" aria-label="Adrannau · sections"><div class="tabbar-in">
-  <button type="button" class="tab" data-v="cards" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.8 2.2a2 2 0 0 0-1.6 0L2.6 6.1a1 1 0 0 0 0 1.8l8.6 3.9a2 2 0 0 0 1.6 0l8.6-3.9a1 1 0 0 0 0-1.8z"/><path d="M22 17.6l-9.2 4.2a2 2 0 0 1-1.6 0L2 17.6"/><path d="M22 12.6l-9.2 4.2a2 2 0 0 1-1.6 0L2 12.6"/></svg><span>Cardiau</span></button>
-  <button type="button" class="tab" data-v="mut"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg><span>Treiglo</span></button>
-  <button type="button" class="tab" data-v="num"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18"/></svg><span>Rhifau</span></button>
-  <button type="button" class="tab" data-v="snd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 10v3M6 6v11M10 3v18M14 8v7M18 5v13M22 10v3"/></svg><span>Seiniau</span></button>
-</div></nav>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <section class="view" id="v-sounds" hidden></section>
+    <section class="view narrow" id="v-prac-tr" hidden></section>
+    <section class="view narrow" id="v-prac-listen" hidden></section>
+    <section class="view narrow" id="v-prac-mut" hidden></section>
+    <section class="view narrow" id="v-prac-num" hidden></section>
+    <section class="view" id="v-stats" hidden></section>
+  </main>
+
+  <nav class="tabbar" aria-label="Prif ddewislen">
+    <div class="tabbar-in">
+      <button class="tab" data-act="tab" data-arg="cards"><svg class="ic"><use href="#i-layers"/></svg><span>Geiriau</span></button>
+      <button class="tab" data-act="tab" data-arg="sounds"><svg class="ic"><use href="#i-volume-2"/></svg><span>Seiniau</span></button>
+      <button class="tab" data-act="tab" data-arg="prac"><svg class="ic"><use href="#i-target"/></svg><span>Ymarfer</span></button>
+      <button class="tab" data-act="tab" data-arg="stats"><svg class="ic"><use href="#i-chart-column"/></svg><span>Cynnydd</span></button>
+    </div>
+  </nav>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-(function () {
-  "use strict";
-  var $ = function (id) { return document.getElementById(id); };
-  /* ---------- words: Cymraeg | English | say it | example | example in English ---------- */
-  var LEVELS = {
-    "Cyfarch": ["Greetings", `
-Bore da|Good morning|BOR-eh dah|Bore da! Sut wyt ti?|Good morning! How are you?
-Prynhawn da|Good afternoon|prin-HOWN dah|Prynhawn da, croeso!|Good afternoon, welcome!
-Noswaith dda|Good evening|NOS-wyth tha|Noswaith dda i chi i gyd.|Good evening to you all.
-Nos da|Good night|nohs dah|Nos da, cysga'n dawel.|Good night, sleep well.
-Diolch|Thank you|DEE-olkh|Diolch yn fawr!|Thank you very much!
-Croeso|Welcome; you're welcome|KROY-so|Croeso i Gymru!|Welcome to Wales!
-Os gwelwch yn dda|Please|os GWEL-ookh un tha|Paned, os gwelwch yn dda.|A cuppa, please.
-Sut wyt ti?|How are you? (to a friend)|sit OO-it tee|Sut wyt ti heddiw?|How are you today?
-Da iawn|Very good, very well|dah YOWN|Da iawn, diolch.|Very well, thanks.
-Hwyl fawr|Goodbye|HOO-il vowr|Hwyl fawr, wela i di!|Goodbye, see you!
-Iechyd da|Cheers (good health)|YEH-khid dah|Iechyd da i bawb!|Cheers, everyone!
-Beth yw dy enw di?|What's your name?|beth yoo duh EN-oo dee|Beth yw dy enw di? Siân dw i.|What's your name? I'm Siân.
-Dw i'n dod o…|I come from…|doo een dohd oh|Dw i'n dod o Gaerdydd.|I come from Cardiff.
-Llongyfarchiadau|Congratulations|llon-guv-ar-KHYAH-dye|Llongyfarchiadau ar y swydd!|Congratulations on the job!
-Pen-blwydd hapus|Happy birthday|pen-BLOO-idh HAP-is|Pen-blwydd hapus, cariad!|Happy birthday, love!`],
-    "Pob dydd": ["Every day", `
-Paned|a cuppa|PAN-ed|Wyt ti eisiau paned?|Do you want a cuppa?
-Coffi|coffee|KOFF-ee|Coffi gyda llaeth, plîs.|Coffee with milk, please.
-Te|tea|teh|Te heb siwgr.|Tea without sugar.
-Dŵr|water|doo-er|Gwydraid o ddŵr, plîs.|A glass of water, please.
-Bara|bread|BAH-ra|Bara brith i de.|Bara brith for tea.
-Caws|cheese|kows|Caws ar dost, os gwelwch yn dda.|Cheese on toast, please.
-Llaeth|milk|LL-yth|Oes llaeth yn yr oergell?|Is there milk in the fridge?
-Tŷ|house|tee|Dw i'n byw mewn tŷ bach.|I live in a small house.
-Cath|cat|kahth|Mae'r gath yn cysgu.|The cat is sleeping.
-Ci|dog|kee|Mae'r ci yn y parc.|The dog is in the park.
-Llyfr|book|LLIV-r|Dw i'n darllen llyfr da.|I'm reading a good book.
-Trên|train|trehn|Mae'r trên yn hwyr eto.|The train is late again.
-Gorsaf|station|GOR-sav|Ble mae'r orsaf?|Where's the station?
-Gwaith|work|gwyth|Dw i yn y gwaith tan bump.|I'm at work until five.
-Ffrind|friend|frind|Dyma fy ffrind i.|This is my friend.
-Teulu|family|TAY-lee|Mae fy nheulu yn byw yn y gogledd.|My family lives in the north.
-Heddiw|today|HEDH-ee-oo|Mae hi'n braf heddiw.|It's lovely weather today.
-Yfory|tomorrow|uh-VOR-ee|Wela i di yfory.|See you tomorrow.
-Glaw|rain|glow|Mae hi'n bwrw glaw eto!|It's raining again!
-Môr|sea|mohr|Awn ni i lan y môr.|Let's go to the seaside.
-Mynydd|mountain|MUN-ith|Yr Wyddfa yw'r mynydd uchaf.|Snowdon is the highest mountain.
-Dydd Llun|Monday|deedh LLEEN|Mae'r siop ar gau ddydd Llun.|The shop is closed on Monday.
-Dydd Gwener|Friday|deedh GWEN-er|Diolch byth, mae'n ddydd Gwener!|Thank goodness, it's Friday!`],
-    "Berfau": ["Verbs", `
-Dw i'n hoffi…|I like…|doo een HOFF-ee|Dw i'n hoffi canu.|I like singing.
-Bwyta|to eat|BOO-ee-ta|Dw i'n bwyta brecwast.|I'm eating breakfast.
-Yfed|to drink|UV-ed|Dw i'n yfed te.|I'm drinking tea.
-Mynd|to go|mind|Dw i'n mynd adre.|I'm going home.
-Dod|to come|dohd|Wyt ti'n dod heno?|Are you coming tonight?
-Gweld|to see|gweld|Wela i di wedyn!|See you later!
-Siarad|to speak|SHAR-ad|Wyt ti'n siarad Cymraeg?|Do you speak Welsh?
-Dysgu|to learn; to teach|DUS-gee|Dw i'n dysgu Cymraeg.|I'm learning Welsh.
-Darllen|to read|DARR-llen|Mae hi'n darllen papur newydd.|She's reading a newspaper.
-Cysgu|to sleep|KUS-gee|Mae'r babi'n cysgu o'r diwedd.|The baby is sleeping at last.
-Canu|to sing|KAN-ee|Mae Cymru'n wlad y gân.|Wales is the land of song.
-Caru|to love|KAH-ree|Dw i'n dy garu di.|I love you.
-Gwybod|to know (a fact)|GOO-ee-bod|Dw i ddim yn gwybod.|I don't know.
-Eisiau|to want|EYE-shy|Dw i eisiau mynd i'r traeth.|I want to go to the beach.`],
-    "Hwyl": ["Fun & feelings", `
-Hiraeth|a deep longing for home|HEER-aeth|Mae gen i hiraeth am Gymru.|I long for Wales.
-Cwtch|a cuddle; a cosy hug|kootch|Dere 'ma am gwtch.|Come here for a cuddle.
-Cariad|love; darling|KAR-yad|Diolch, cariad.|Thanks, love.
-Bendigedig|wonderful|ben-di-GED-ig|Roedd y cyngerdd yn fendigedig!|The concert was wonderful!
-Hyfryd|lovely|HUV-rid|Diwrnod hyfryd!|A lovely day!
-Hapus|happy|HAP-is|Dw i mor hapus heddiw.|I'm so happy today.
-Wedi blino|tired|WED-ee BLIN-o|Dw i wedi blino'n lân.|I'm completely worn out.
-Popty ping|microwave (lit. "ping oven")|POP-tee ping|Rho fe yn y popty ping.|Put it in the microwave.
-Pili-pala|butterfly|PIL-ee PAL-a|Edrych, pili-pala!|Look, a butterfly!
-Ych a fi|yuck|ukh a VEE|Ych a fi, mae'n oer!|Yuck, it's cold!
-Araf|slow (on every road)|AR-av|Araf! Mae plant yn chwarae.|Slow! Children playing.
-Chwarae teg|fair play; fair enough|KHWAR-eye teg|Chwarae teg, ti wedi gweithio'n galed.|Fair play, you've worked hard.
-Twp|daft, silly|toop|Paid â bod yn dwp!|Don't be daft!`]
-  };
-  var WORDS = [];
-  Object.keys(LEVELS).forEach(function (lv) { LEVELS[lv][1].trim().split("\n").forEach(function (l) { var f = l.split("|"); WORDS.push({ k: lv + ":" + f[0], lv: lv, cy: f[0], en: f[1], say: f[2], ex: f[3], exEn: f[4] }); }); });
+const WORDS_A1 = `
+Bore da|Good morning|BOR-eh dah|Bore da! Sut wyt ti?|Good morning! How are you?|Cyfarch
+Prynhawn da|Good afternoon|prin-HOWN dah|Prynhawn da, croeso!|Good afternoon, welcome!|Cyfarch
+Noswaith dda|Good evening|NOS-wyth tha|Noswaith dda i chi i gyd.|Good evening to you all.|Cyfarch
+Nos da|Good night|nohs dah|Nos da, cysga'n dawel.|Good night, sleep well.|Cyfarch
+Diolch|Thank you|DEE-olkh|Diolch yn fawr!|Thank you very much!|Cyfarch
+Croeso|Welcome; you're welcome|KROY-so|Croeso i Gymru!|Welcome to Wales!|Cyfarch
+Os gwelwch yn dda|Please|os GWEL-ookh un tha|Paned, os gwelwch yn dda.|A cuppa, please.|Cyfarch
+Sut wyt ti?|How are you? (to a friend)|sit OO-it tee|Sut wyt ti heddiw?|How are you today?|Cyfarch
+Da iawn|Very good, very well|dah YOWN|Da iawn, diolch.|Very well, thanks.|Cyfarch
+Hwyl fawr|Goodbye|HOO-il vowr|Hwyl fawr, wela i di!|Goodbye, see you!|Cyfarch
+Iechyd da|Cheers (good health)|YEH-khid dah|Iechyd da i bawb!|Cheers, everyone!|Cyfarch
+Beth yw dy enw di?|What's your name?|beth yoo duh EN-oo dee|Beth yw dy enw di? Siân dw i.|What's your name? I'm Siân.|Cyfarch
+Dw i'n dod o…|I come from…|doo een dohd oh|Dw i'n dod o Gaerdydd.|I come from Cardiff.|Cyfarch
+Llongyfarchiadau|Congratulations|llon-guv-ar-KHYAH-dye|Llongyfarchiadau ar y swydd!|Congratulations on the job!|Cyfarch
+Pen-blwydd hapus|Happy birthday|pen-BLOO-idh HAP-is|Pen-blwydd hapus, cariad!|Happy birthday, love!|Cyfarch
+Paned|a cuppa|PAN-ed|Wyt ti eisiau paned?|Do you want a cuppa?|Pob dydd
+Coffi|coffee|KOFF-ee|Coffi gyda llaeth, plîs.|Coffee with milk, please.|Pob dydd
+Te|tea|teh|Te heb siwgr.|Tea without sugar.|Pob dydd
+Dŵr|water|doo-er|Gwydraid o ddŵr, plîs.|A glass of water, please.|Pob dydd
+Bara|bread|BAH-ra|Bara brith i de.|Bara brith for tea.|Pob dydd
+Caws|cheese|kows|Caws ar dost, os gwelwch yn dda.|Cheese on toast, please.|Pob dydd
+Llaeth|milk|LL-yth|Oes llaeth yn yr oergell?|Is there milk in the fridge?|Pob dydd
+Tŷ|house|tee|Dw i'n byw mewn tŷ bach.|I live in a small house.|Pob dydd
+Cath|cat|kahth|Mae'r gath yn cysgu.|The cat is sleeping.|Pob dydd
+Ci|dog|kee|Mae'r ci yn y parc.|The dog is in the park.|Pob dydd
+Llyfr|book|LLIV-r|Dw i'n darllen llyfr da.|I'm reading a good book.|Pob dydd
+Trên|train|trehn|Mae'r trên yn hwyr eto.|The train is late again.|Pob dydd
+Gorsaf|station|GOR-sav|Ble mae'r orsaf?|Where's the station?|Pob dydd
+Gwaith|work|gwyth|Dw i yn y gwaith tan bump.|I'm at work until five.|Pob dydd
+Ffrind|friend|frind|Dyma fy ffrind i.|This is my friend.|Pob dydd
+Teulu|family|TAY-lee|Mae fy nheulu yn byw yn y gogledd.|My family lives in the north.|Pob dydd
+Heddiw|today|HEDH-ee-oo|Mae hi'n braf heddiw.|It's lovely weather today.|Pob dydd
+Yfory|tomorrow|uh-VOR-ee|Wela i di yfory.|See you tomorrow.|Pob dydd
+Glaw|rain|glow|Mae hi'n bwrw glaw eto!|It's raining again!|Pob dydd
+Môr|sea|mohr|Awn ni i lan y môr.|Let's go to the seaside.|Pob dydd
+Mynydd|mountain|MUN-ith|Yr Wyddfa yw'r mynydd uchaf.|Snowdon is the highest mountain.|Pob dydd
+Dydd Llun|Monday|deedh LLEEN|Mae'r siop ar gau ddydd Llun.|The shop is closed on Monday.|Pob dydd
+Dydd Gwener|Friday|deedh GWEN-er|Diolch byth, mae'n ddydd Gwener!|Thank goodness, it's Friday!|Pob dydd
+Dw i'n hoffi…|I like…|doo een HOFF-ee|Dw i'n hoffi canu.|I like singing.|Berfau
+Bwyta|to eat|BOO-ee-ta|Dw i'n bwyta brecwast.|I'm eating breakfast.|Berfau
+Yfed|to drink|UV-ed|Dw i'n yfed te.|I'm drinking tea.|Berfau
+Mynd|to go|mind|Dw i'n mynd adre.|I'm going home.|Berfau
+Dod|to come|dohd|Wyt ti'n dod heno?|Are you coming tonight?|Berfau
+Gweld|to see|gweld|Wela i di wedyn!|See you later!|Berfau
+Siarad|to speak|SHAR-ad|Wyt ti'n siarad Cymraeg?|Do you speak Welsh?|Berfau
+Dysgu|to learn; to teach|DUS-gee|Dw i'n dysgu Cymraeg.|I'm learning Welsh.|Berfau
+Darllen|to read|DARR-llen|Mae hi'n darllen papur newydd.|She's reading a newspaper.|Berfau
+Cysgu|to sleep|KUS-gee|Mae'r babi'n cysgu o'r diwedd.|The baby is sleeping at last.|Berfau
+Canu|to sing|KAN-ee|Mae Cymru'n wlad y gân.|Wales is the land of song.|Berfau
+Caru|to love|KAH-ree|Dw i'n dy garu di.|I love you.|Berfau
+Gwybod|to know (a fact)|GOO-ee-bod|Dw i ddim yn gwybod.|I don't know.|Berfau
+Eisiau|to want|EYE-shy|Dw i eisiau mynd i'r traeth.|I want to go to the beach.|Berfau
+Hiraeth|a deep longing for home|HEER-aeth|Mae gen i hiraeth am Gymru.|I long for Wales.|Hwyl
+Cwtch|a cuddle; a cosy hug|kootch|Dere 'ma am gwtch.|Come here for a cuddle.|Hwyl
+Cariad|love; darling|KAR-yad|Diolch, cariad.|Thanks, love.|Hwyl
+Bendigedig|wonderful|ben-di-GED-ig|Roedd y cyngerdd yn fendigedig!|The concert was wonderful!|Hwyl
+Hyfryd|lovely|HUV-rid|Diwrnod hyfryd!|A lovely day!|Hwyl
+Hapus|happy|HAP-is|Dw i mor hapus heddiw.|I'm so happy today.|Hwyl
+Wedi blino|tired|WED-ee BLIN-o|Dw i wedi blino'n lân.|I'm completely worn out.|Hwyl
+Popty ping|microwave (lit. "ping oven")|POP-tee ping|Rho fe yn y popty ping.|Put it in the microwave.|Hwyl
+Pili-pala|butterfly|PIL-ee PAL-a|Edrych, pili-pala!|Look, a butterfly!|Hwyl
+Ych a fi|yuck|ukh a VEE|Ych a fi, mae'n oer!|Yuck, it's cold!|Hwyl
+Araf|slow (on every road)|AR-av|Araf! Mae plant yn chwarae.|Slow! Children playing.|Hwyl
+Chwarae teg|fair play; fair enough|KHWAR-eye teg|Chwarae teg, ti wedi gweithio'n galed.|Fair play, you've worked hard.|Hwyl
+Twp|daft, silly|toop|Paid â bod yn dwp!|Don't be daft!|Hwyl
+Shwmae|Hi (southern)|shoo-MY|Shwmae! Ti'n iawn?|Hi! You OK?|Cyfarch
+Sut dych chi?|How are you? (polite, or to several)|sit deekh khee|Sut dych chi heddiw?|How are you today?|Cyfarch
+Esgusodwch fi|Excuse me|es-gis-OD-ookh vee|Esgusodwch fi, ble mae'r orsaf?|Excuse me, where's the station?|Cyfarch
+Mae'n ddrwg gen i|I'm sorry|mine throog gen ee|Mae'n ddrwg gen i, dw i'n hwyr.|I'm sorry, I'm late.|Cyfarch
+Pob lwc|Good luck|pohb look|Pob lwc yfory!|Good luck tomorrow!|Cyfarch
+Ffôn|phone|fohn|Ble mae fy ffôn i?|Where's my phone?|Pob dydd
+Car|car|kar|Mae'r car yn y garej.|The car is in the garage.|Pob dydd
+Arian|money|AR-yan|Does dim arian gyda fi.|I haven't got any money.|Pob dydd
+Drws|door|droos|Mae'r drws ar agor.|The door is open.|Pob dydd
+Allwedd|key|AH-llweth|Ble mae'r allwedd?|Where's the key?|Pob dydd
+Gwneud|to do; to make|gnayd|Dw i'n gwneud cacen.|I'm making a cake.|Berfau
+Cael|to have; to get|kyle|Ga i goffi, plîs?|Can I have a coffee, please?|Berfau
+Prynu|to buy|PRUN-ee|Dw i'n prynu bara.|I'm buying bread.|Berfau
+Gweithio|to work|GWAYTH-yo|Dw i'n gweithio yn Abertawe.|I work in Swansea.|Berfau
+Byw|to live|bee-oo|Ble wyt ti'n byw?|Where do you live?|Berfau
+Edrych|to look|ED-rikh|Edrych ar y môr!|Look at the sea!|Berfau
+Gwrando|to listen|GOO-ran-do|Dw i'n gwrando ar y radio.|I'm listening to the radio.|Berfau
+Cerdded|to walk|KER-thed|Dw i'n cerdded i'r gwaith.|I walk to work.|Berfau
+Coginio|to cook|ko-GIN-yo|Mae Dad yn coginio swper.|Dad is cooking supper.|Berfau
+Rhedeg|to run|RHED-eg|Mae'r ci'n rhedeg ar y traeth.|The dog is running on the beach.|Berfau
+Agor|to open|AG-or|Mae'r siop yn agor am naw.|The shop opens at nine.|Berfau
+Deall|to understand|DEH-ahll|Dw i ddim yn deall.|I don't understand.|Berfau
+Helpu|to help|HEL-pee|Wyt ti'n gallu helpu?|Can you help?|Berfau
+Talu|to pay|TAL-ee|Ga i dalu â cherdyn?|Can I pay by card?|Berfau
+Trist|sad|treest|Dw i'n drist heddiw.|I'm sad today.|Hwyl
+Grac|angry (southern)|grahk|Mae e'n grac iawn.|He's very angry.|Hwyl
+Ofn|fear|OH-vun|Mae ofn arna i.|I'm scared.|Hwyl
+Wedi diflasu|bored|WED-ee div-LAS-ee|Dw i wedi diflasu.|I'm bored.|Hwyl
+Nerfus|nervous|NER-vis|Dw i'n nerfus am yr arholiad.|I'm nervous about the exam.|Hwyl
+Hwyl|fun|HOO-il|Roedd y parti'n llawer o hwyl.|The party was lots of fun.|Hwyl
+Gwych|great, brilliant|gweekh|Mae hynny'n wych!|That's brilliant!|Hwyl
+Parti|party|PAR-tee|Wyt ti'n dod i'r parti?|Are you coming to the party?|Hwyl
+Bwyd|food|BOO-id|Mae'r bwyd yn barod!|The food is ready!|Bwyd
+Brecwast|breakfast|BREK-wast|Beth sy i frecwast?|What's for breakfast?|Bwyd
+Cinio|lunch; dinner|KIN-yo|Amser cinio!|Lunchtime!|Bwyd
+Swper|supper|SOO-per|Mae swper yn y ffwrn.|Supper is in the oven.|Bwyd
+Afal|apple|AV-al|Dw i'n bwyta afal bob dydd.|I eat an apple every day.|Bwyd
+Oren|orange|OR-en|Sudd oren, plîs.|Orange juice, please.|Bwyd
+Wy|egg|OO-ee|Wy wedi berwi i frecwast.|A boiled egg for breakfast.|Bwyd
+Cig|meat|keeg|Dw i ddim yn bwyta cig.|I don't eat meat.|Bwyd
+Pysgod|fish|PUS-god|Pysgod a sglodion, plîs.|Fish and chips, please.|Bwyd
+Sglodion|chips|SGLOD-yon|Dw i'n caru sglodion!|I love chips!|Bwyd
+Cawl|soup; Welsh stew|kowl|Mae cawl yn dda yn y gaeaf.|Cawl is good in winter.|Bwyd
+Cacen|cake|KAK-en|Darn o gacen?|A piece of cake?|Bwyd
+Siwgr|sugar|SHOO-gur|Dim siwgr, diolch.|No sugar, thanks.|Bwyd
+Llysiau|vegetables|LLUSH-eye|Bwyta dy lysiau!|Eat your vegetables!|Bwyd
+Ffrwythau|fruit|FROO-ith-eye|Dw i'n prynu ffrwythau ffres.|I'm buying fresh fruit.|Bwyd
+Gwin|wine|gween|Gwydraid o win coch.|A glass of red wine.|Bwyd
+Cwrw|beer|KOO-roo|Peint o gwrw, plîs.|A pint of beer, please.|Bwyd
+Sudd|juice|seeth|Sudd afal i fi.|Apple juice for me.|Bwyd
+Eisiau bwyd|hungry (lit. want of food)|EYE-shy BOO-id|Mae eisiau bwyd arna i.|I'm hungry.|Bwyd
+Blasus|tasty|BLAS-is|Mae'r gacen yn flasus.|The cake is tasty.|Bwyd
+Mam|mum|mam|Mae Mam yn y gegin.|Mum is in the kitchen.|Teulu
+Tad|father|tahd|Mae fy nhad yn athro.|My father is a teacher.|Teulu
+Brawd|brother|browd|Mae un brawd gyda fi.|I've got one brother.|Teulu
+Chwaer|sister|khwyr|Mae fy chwaer yn byw yn Llundain.|My sister lives in London.|Teulu
+Mab|son|mahb|Mae ein mab ni'n wyth oed.|Our son is eight.|Teulu
+Merch|girl; daughter|merkh|Dyma fy merch i, Lowri.|This is my daughter, Lowri.|Teulu
+Bachgen|boy|BAKH-gen|Mae'r bachgen yn chwarae pêl-droed.|The boy is playing football.|Teulu
+Plentyn|child|PLEN-tin|Mae'r plentyn yn cysgu.|The child is sleeping.|Teulu
+Mam-gu|grandmother (southern)|mam-GEE|Mae Mam-gu yn wyth deg oed.|Gran is eighty.|Teulu
+Tad-cu|grandfather (southern)|tad-KEE|Mae Tad-cu yn hoffi garddio.|Grandad likes gardening.|Teulu
+Gŵr|husband; man|goor|Dyma fy ngŵr i.|This is my husband.|Teulu
+Gwraig|wife|goo-RIGE|Mae fy ngwraig yn feddyg.|My wife is a doctor.|Teulu
+Dyn|man|deen|Pwy yw'r dyn 'na?|Who's that man?|Teulu
+Menyw|woman (southern)|MEN-oo|Mae'r fenyw yn canu.|The woman is singing.|Teulu
+Pobl|people|POB-ul|Mae llawer o bobl yma.|There are lots of people here.|Teulu
+Cymydog|neighbour|kuh-MUH-dog|Mae fy nghymydog yn garedig.|My neighbour is kind.|Teulu
+Tref|town|trev|Mae'r dref yn brysur heddiw.|The town is busy today.|Lle
+Pentref|village|PEN-trev|Dw i'n byw mewn pentref bach.|I live in a small village.|Lle
+Dinas|city|DEE-nas|Mae Abertawe'n ddinas fawr.|Swansea is a big city.|Lle
+Siop|shop|shop|Dw i'n mynd i'r siop.|I'm going to the shop.|Lle
+Ysgol|school|US-gol|Mae'r plant yn yr ysgol.|The children are at school.|Lle
+Ysbyty|hospital|us-BUT-ee|Mae hi'n gweithio yn yr ysbyty.|She works at the hospital.|Lle
+Parc|park|park|Awn ni i'r parc?|Shall we go to the park?|Lle
+Traeth|beach|tryth|Mae'r traeth yn hyfryd.|The beach is lovely.|Lle
+Stryd|street|streed|Dw i'n byw ar y stryd fawr.|I live on the high street.|Lle
+Tafarn|pub|TAV-arn|Wela i di yn y dafarn.|See you in the pub.|Lle
+Caffi|café|KAFF-ee|Mae'r caffi'n gwneud coffi da.|The café makes good coffee.|Lle
+Eglwys|church|EG-loo-is|Mae'r eglwys ar y bryn.|The church is on the hill.|Lle
+Gwlad|country|gwlahd|Mae Cymru'n wlad fach.|Wales is a small country.|Lle
+Afon|river|AV-on|Mae'r afon yn llifo i'r môr.|The river flows to the sea.|Lle
+Ble?|Where?|bleh|Ble mae'r tŷ bach?|Where's the toilet?|Lle
+Fan hyn|here|van HIN|Dw i fan hyn!|I'm here!|Lle
+Dydd Mawrth|Tuesday|deeth MOWRTH|Dw i'n nofio ddydd Mawrth.|I swim on Tuesday.|Amser
+Dydd Mercher|Wednesday|deeth MER-kher|Mae'r farchnad ar agor ddydd Mercher.|The market is open on Wednesday.|Amser
+Dydd Iau|Thursday|deeth YAI|Wela i di ddydd Iau.|See you on Thursday.|Amser
+Dydd Sadwrn|Saturday|deeth SAD-oorn|Dw i ddim yn gweithio ddydd Sadwrn.|I don't work on Saturday.|Amser
+Dydd Sul|Sunday|deeth SEEL|Cinio dydd Sul gyda Mam-gu.|Sunday lunch with Gran.|Amser
+Wythnos|week|OOITH-nos|Wela i di wythnos nesa.|See you next week.|Amser
+Bore|morning|BOR-eh|Dw i'n rhedeg yn y bore.|I run in the morning.|Amser
+Heno|tonight|HEN-o|Wyt ti'n rhydd heno?|Are you free tonight?|Amser
+Ddoe|yesterday|thoy|Roedd hi'n bwrw glaw ddoe.|It rained yesterday.|Amser
+Nawr|now (southern)|nowr|Dw i'n mynd nawr.|I'm going now.|Amser
+Tywydd|weather|TUH-with|Sut mae'r tywydd?|What's the weather like?|Amser
+Haul|sun|hile|Mae'r haul allan.|The sun is out.|Amser
+Oer|cold|oyr|Mae hi'n oer heddiw.|It's cold today.|Amser
+Eira|snow|AY-ra|Mae hi'n bwrw eira!|It's snowing!|Amser
+Haf|summer|hahv|Dw i'n caru'r haf.|I love the summer.|Amser
+Gaeaf|winter|GUY-av|Mae'r gaeaf yn hir.|Winter is long.|Amser
+Faint o'r gloch yw hi?|What time is it?|vynt or GLOKH yoo hee|Faint o'r gloch yw hi? Tri o'r gloch.|What time is it? Three o'clock.|Amser
+Pen|head|pen|Mae pen tost gyda fi.|I've got a headache.|Corff
+Llaw|hand|llow|Rho dy law i fi.|Give me your hand.|Corff
+Troed|foot|troyd|Mae fy nhroed yn brifo.|My foot hurts.|Corff
+Llygad|eye|LLUG-ad|Mae rhywbeth yn fy llygad.|There's something in my eye.|Corff
+Ceg|mouth|keg|Agor dy geg, plîs.|Open your mouth, please.|Corff
+Clust|ear|kleest|Mae clust y gath yn binc.|The cat's ear is pink.|Corff
+Braich|arm|brykh|Mae ei fraich e wedi torri.|His arm is broken.|Corff
+Coes|leg|koys|Mae coesau hir gyda fe.|He has long legs.|Corff
+Gwallt|hair|gwahllt|Mae gwallt Dad yn llwyd.|Dad's hair is grey.|Corff
+Bola|tummy|BOL-a|Mae bola tost gyda fi.|I've got a tummy ache.|Corff
+Calon|heart|KAL-on|Mae fy nghalon yng Nghymru.|My heart is in Wales.|Corff
+Sâl|ill, sick|sahl|Dw i'n teimlo'n sâl.|I feel ill.|Corff
+Tost|sore; ill (southern)|tost|Mae fy ngwddf i'n dost.|My throat is sore.|Corff
+Meddyg|doctor|METH-ig|Dw i'n mynd at y meddyg.|I'm going to the doctor.|Corff
+Brifo|to hurt|BREE-vo|Ble mae'n brifo?|Where does it hurt?|Corff
+Mawr|big|mowr|Mae'n dŷ mawr.|It's a big house.|Disgrifio
+Bach|small, little|bahkh|Ci bach yw e.|It's a little dog.|Disgrifio
+Hen|old|hehn|Mae'r castell yn hen iawn.|The castle is very old.|Disgrifio
+Newydd|new|NEH-with|Mae gen i gar newydd.|I've got a new car.|Disgrifio
+Da|good|dah|Mae'r bwyd yn dda.|The food is good.|Disgrifio
+Poeth|hot|poyth|Mae'r te yn boeth.|The tea is hot.|Disgrifio
+Hir|long|heer|Mae'r ffordd yn hir.|The road is long.|Disgrifio
+Prysur|busy|PRUS-ir|Wyt ti'n brysur yfory?|Are you busy tomorrow?|Disgrifio
+Tawel|quiet|TAH-wel|Mae'r pentref yn dawel.|The village is quiet.|Disgrifio
+Coch|red|kohkh|Mae'r ddraig yn goch.|The dragon is red.|Disgrifio
+Glas|blue|glahs|Mae'r awyr yn las.|The sky is blue.|Disgrifio
+Gwyrdd|green|gwirth|Mae Cymru'n wyrdd iawn.|Wales is very green.|Disgrifio
+Melyn|yellow|MEL-in|Mae'r cennin Pedr yn felyn.|The daffodils are yellow.|Disgrifio
+Du|black|dee|Mae gen i gath ddu.|I've got a black cat.|Disgrifio
+Gwyn|white|gwin|Mae'r eira'n wyn.|The snow is white.|Disgrifio
+Llwyd|grey|llooid|Mae'n ddiwrnod llwyd.|It's a grey day.|Disgrifio
+Hawdd|easy|howth|Mae Cymraeg yn hawdd!|Welsh is easy!|Disgrifio
+Anodd|difficult|AN-oth|Mae'r gwaith yn anodd.|The work is difficult.|Disgrifio
+Cyflym|fast|KUV-lim|Mae'r trên yn gyflym.|The train is fast.|Disgrifio
+`;
+'use strict';
+/* Cymraeg bob dydd · the same way of learning as the other rooms:
+   Geiriau (cards with familiarity, the word list, your own words) · Seiniau (letters and how they sound, say it yourself)
+   · Ymarfer (translate, listen, mutations, numbers) · Cynnydd (progress). Everything on this device; ☁ sync if you turn it on. */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { const r = a.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; };
+const pad2 = n => String(n).padStart(2, '0');
+const dayKey = (d = new Date()) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const ico = n => `<svg class="ic"><use href="#i-${n}"/></svg>`;
+const MIC = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg>';
+const SRS_DAYS = [0, 1, 3, 7, 16, 35, 80], DAY = 86400000;
+const THEMES = ['Cyfarch', 'Pob dydd', 'Berfau', 'Hwyl', 'Bwyd', 'Teulu', 'Lle', 'Amser', 'Corff', 'Disgrifio'];
+const THEME_EN = { 'Cyfarch': 'Greetings', 'Pob dydd': 'Every day', 'Berfau': 'Verbs', 'Hwyl': 'Fun & feelings', 'Bwyd': 'Food & drink', 'Teulu': 'Family & people', 'Lle': 'Places', 'Amser': 'Time & weather', 'Corff': 'Body', 'Disgrifio': 'Describing', 'Fy ngeiriau': 'My words', 'Pob un': 'All' };
+const ALL_B = WORDS_A1.trim().split('\n').map(l => { const f = l.split('|').map(x => x.trim()); return { key: 'w:' + f[0], src: 'b', th: f[5], cy: f[0], en: f[1], say: f[2], ex: f[3], exEn: f[4] }; });
 
-  /* ---------- this phone's progress ---------- */
-  var KEY = "cymraeg_v1", S = { box: {}, days: {}, mut: [0, 0], lv: "Cyfarch", mine: [] };
-  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) S = Object.assign(S, saved); } catch (e) {}
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
-  function day(d) { d = d || new Date(); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
-  function practised() { S.days[day()] = 1; save(); paintStreak(); }
-  function streak() { var n = 0, d = new Date(); if (!S.days[day(d)]) d.setDate(d.getDate() - 1); while (S.days[day(d)]) { n++; d.setDate(d.getDate() - 1); } return n; }
-  function paintStreak() {}
-  function toast(t) { var e = $("toast"); e.textContent = t; e.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(function () { e.classList.remove("on"); }, 1800); }
+/* ---------- store (old progress from the first version carries over) ---------- */
+const STORE_KEY = 'cymraeg_v2';
+const DEF = () => ({ th: 'Pob un', dir: 'cy', meta: {}, days: {}, scores: {}, mine: [] });
+let S = DEF();
+try { const r = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); if (r) S = Object.assign(DEF(), r); else {
+  const o = JSON.parse(localStorage.getItem('cymraeg_v1') || 'null');
+  if (o) { Object.keys(o.box || {}).forEach(k => { const cy = k.split(':').slice(1).join(':'), b = o.box[k]; if (!cy || !b) return; S.meta['w:' + cy] = b >= 3 ? { box: 4, due: Date.now() + 30 * DAY, status: 'mastered' } : { box: b, due: 0, status: 'review' }; });
+    Object.keys(o.days || {}).forEach(d => { const p = d.split('-'); S.days[`${p[0]}-${pad2(p[1])}-${pad2(p[2])}`] = { n: 1, ok: 1, ms: 0 }; });
+    if (o.mut) S.scores.mut = o.mut; (o.mine || []).forEach(m => S.mine.push({ id: m.cy, cy: m.cy, en: m.en || '', say: m.say || '', ex: m.ex || '', exEn: m.exEn || '' })); }
+} } catch (e) {}
+let saveT; function save() { clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} }, 200); }
+const mineItems = () => S.mine.map(m => ({ key: 'm:' + m.id, src: 'm', th: 'Fy ngeiriau', cy: m.cy, en: m.en, say: m.say || '', ex: m.ex || '', exEn: m.exEn || '' }));
+const allItems = () => ALL_B.concat(mineItems());
+const byKey = k => allItems().find(x => x.key === k);
+const meta = k => S.meta[k] || (S.meta[k] = { box: 0, due: 0 });
+const peek = k => S.meta[k] || {};
+function today() { const k = dayKey(); return S.days[k] || (S.days[k] = { n: 0, ok: 0, ms: 0 }); }
+function tally(ok) { const d = today(); d.n++; if (ok) d.ok++; save(); }
+function score(k, ok) { const s = S.scores[k] || (S.scores[k] = [0, 0]); if (ok) s[0]++; s[1]++; tally(ok); }
+let lastAct = Date.now();
+document.addEventListener('pointerdown', () => { const n = Date.now(), g = n - lastAct; lastAct = n; if (g < 120000) { today().ms += g; save(); } }, true);
 
-  /* ---------- a Welsh voice, if this device has one ---------- */
-  var voice = null;
-  function findVoice() { try { voice = (speechSynthesis.getVoices() || []).filter(function (v) { return /^cy/i.test(v.lang); })[0] || null; } catch (e) {} $("spk").hidden = !voice; }
-  if (window.speechSynthesis) { findVoice(); speechSynthesis.onvoiceschanged = findVoice; }
-  function say(t) { if (!voice) return; try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t); u.voice = voice; u.lang = voice.lang; u.rate = .9; speechSynthesis.speak(u); } catch (e) {} }
+/* ---------- voice: a Welsh voice if the device has one, otherwise an approximate one (vk.js) ---------- */
+let warned = false;
+function say(text, sayHint) {
+  const how = window.VK ? VK.say(String(text).replace('…', ''), { lang: 'cy', say: sayHint, rate: S.slow ? .7 : .9 }) : 'none';
+  if (how === 'approx' && !warned) { warned = true; if (window.VK) VK.note('≈ Llais bras · does dim llais Cymraeg ar y ddyfais hon', 3600); }
+  if (how === 'none' && !warned) { warned = true; if (window.VK) VK.note('Does dim llais ar y ddyfais hon · darllenwch yr ynganiad', 3600); }
+  return how;
+}
+window.VK && (VK.micNow = () => { const it = App.tab === 'cards' ? byKey(App.deck[App.idx]) : App.sayNow; return it ? { text: it.cy, speak: () => say(it.cy, it.say) } : null; });
 
-  /* ---------- cards: a simple Leitner box; words you miss come back sooner ---------- */
-  var deck = [], idx = 0, flipped = false;
-  var MINE = "Fy ngeiriau";
-  LEVELS[MINE] = ["My words", ""];
-  function mineWords() { WORDS = WORDS.filter(function (w) { return w.lv !== MINE; }).concat((S.mine || []).map(function (m) { return { k: MINE + ":" + m.cy, lv: MINE, cy: m.cy, en: m.en || "", say: m.say || "", ex: m.ex || "", exEn: m.exEn || "" }; })); }
-  mineWords();
-  function buildDeck() {
-    var list = WORDS.filter(function (w) { return w.lv === S.lv; });
-    var none = !list.length, isMine = S.lv === MINE;
-    document.querySelector("#v-cards .card").hidden = none; document.querySelector("#v-cards .grade").hidden = none; $("cCount").hidden = none;
-    $("cMine").hidden = !(none && isMine); $("cImpRow").hidden = !isMine;
-    list.sort(function (a, b) { return (S.box[a.k] || 0) - (S.box[b.k] || 0) || Math.random() - .5; });
-    deck = list; idx = 0; paintCard();
-  }
-  function paintCard() {
-    var w = deck[idx]; if (!w) return; flipped = false; $("cSay").hidden = !w.say; $("flip").classList.remove("on");
-    $("cLv").textContent = w.lv + " · " + LEVELS[w.lv][0]; $("cW").textContent = w.cy; $("cSay").textContent = w.say ? "/ " + w.say + " /" : "";
-    $("cEn").textContent = w.en; $("cEx").textContent = w.ex; $("cExEn").textContent = w.exEn;
-    var b = S.box[w.k] || 0; $("cBox").textContent = b >= 3 ? "⭐ Rwyt ti'n gwybod hwn · you know this one" : b ? "Bocs " + b + " / 3" : "Newydd · new";
-    var known = deck.filter(function (x) { return (S.box[x.k] || 0) >= 3; }).length;
-    $("cCount").textContent = (idx + 1) + " / " + deck.length + " · " + known + " ⭐";
-  }
-  function grade(ok) {
-    var w = deck[idx]; S.box[w.k] = ok ? Math.min(3, (S.box[w.k] || 0) + 1) : 0; practised();
-    if (!ok) deck.splice(Math.min(deck.length, idx + 3), 0, w);   /* see it again in a moment */
-    idx = (idx + 1) % deck.length; paintCard(); if (ok && S.box[w.k] === 3) toast("⭐ " + w.cy);
-  }
-  $("flip").onclick = function () { flipped = !flipped; $("flip").classList.toggle("on", flipped); };
-  $("flip").onkeydown = function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); $("flip").click(); } };
-  $("spk").onclick = function (e) { e.stopPropagation(); say(deck[idx].cy.replace("…", "")); };
-  $("again").onclick = function () { grade(false); }; $("good").onclick = function () { grade(true); };
-  Object.keys(LEVELS).forEach(function (lv) { var b = document.createElement("button"); b.type = "button"; b.textContent = lv + " · " + LEVELS[lv][0]; b.onclick = function () { S.lv = lv; save(); paintSeg(); buildDeck(); }; b.dataset.lv = lv; $("lvSeg").appendChild(b); });
-  $("cImp").onclick = function () {
-    VK.importList({ cols: [["Welsh", "威尔士语", "威爾斯語", "galés", "gal·lès"], ["English", "英语", "英語", "inglés", "anglès"], ["how to say it", "读法", "讀法", "pronunciación", "pronúncia"], ["example", "例句", "例句", "ejemplo", "exemple"], ["example in English", "例句英文", "例句英文", "ejemplo en inglés", "exemple en anglès"]],
-      add: function (rows) { S.mine = S.mine || []; var have = {}, added = 0, dup = 0; S.mine.forEach(function (m) { have[m.cy] = 1; });
-        rows.forEach(function (c) { if (have[c[0]]) { dup++; return; } S.mine.push({ cy: c[0], en: c[1], say: c[2], ex: c[3], exEn: c[4] }); have[c[0]] = 1; added++; });
-        save(); mineWords(); buildDeck(); return { added: added, dup: dup }; } });
-  };
-  function paintSeg() { [].forEach.call($("lvSeg").children, function (b) { b.setAttribute("aria-pressed", b.dataset.lv === S.lv); }); }
-  (function swipe() { var x0 = null; $("flip").addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true }); $("flip").addEventListener("touchend", function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 70) { e.preventDefault(); grade(dx > 0); } }); })();
+/* ---------- navigation ---------- */
+const SUBS = {
+  cards: [['study', 'Dysgu', 'sparkles'], ['list', 'Rhestr', 'book-open'], ['add', 'Ychwanegu', 'circle-plus']],
+  sounds: [],
+  prac: [['tr', 'Cyfieithu', 'languages'], ['listen', 'Gwrando', 'headphones'], ['mut', 'Treiglo', 'zap'], ['num', 'Rhifau', 'hash']],
+  stats: []
+};
+const App = { tab: 'cards', sub: { cards: 'study', prac: 'tr' }, deck: [], idx: 0, flipped: false, sayNow: null };
+function renderSubnav() { const l = SUBS[App.tab]; $('subnav').innerHTML = l.map(([k, t, i]) => `<button class="chip ${App.sub[App.tab] === k ? 'on' : ''}" data-act="sub" data-arg="${k}">${ico(i)}${t}</button>`).join(''); $('subnav').hidden = !l.length; }
+function viewId(tab) { return tab === 'stats' ? 'v-stats' : tab === 'sounds' ? 'v-sounds' : `v-${tab}-${App.sub[tab]}`; }
+function go(tab, sub) {
+  App.tab = tab; if (sub) App.sub[tab] = sub;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.arg === tab));
+  document.querySelectorAll('main > .view').forEach(v => v.hidden = true);
+  $(viewId(tab)).hidden = false; renderSubnav(); window.scrollTo(0, 0);
+  ({ 'cards-study': renderCard, 'cards-list': renderList, 'cards-add': renderMine, 'prac-tr': trNew, 'prac-listen': listenNew, 'prac-mut': mutNew, 'prac-num': numNew, sounds: renderSounds, stats: renderStats })[tab === 'stats' || tab === 'sounds' ? tab : `${tab}-${App.sub[tab]}`]();
+}
 
-  /* ---------- mutations ---------- */
-  var SOFT = [["p", "b"], ["t", "d"], ["c", "g"], ["b", "f"], ["d", "dd"], ["g", ""], ["m", "f"], ["ll", "l"], ["rh", "r"]];
-  var NASAL = [["p", "mh"], ["t", "nh"], ["c", "ngh"], ["b", "m"], ["d", "n"], ["g", "ng"]];
-  var ASP = [["p", "ph"], ["t", "th"], ["c", "ch"]];
-  function mutate(w, table) {
-    var lw = w.toLowerCase(), cap = w[0] !== lw[0];
-    for (var i = 0; i < table.length; i++) { var a = table[i][0]; if (lw.indexOf(a) === 0 && !(a === "d" && lw.indexOf("dd") === 0) && !(a === "c" && lw.indexOf("ch") === 0) && !(a === "p" && lw.indexOf("ph") === 0) && !(a === "t" && lw.indexOf("th") === 0)) {
-      var r = table[i][1] + w.slice(a.length); return cap && r ? r[0].toUpperCase() + r.slice(1) : r; } }
-    return w;
-  }
-  var NOUNS = [["cath", "cat"], ["ci", "dog"], ["tad", "father"], ["tŷ", "house"], ["pen", "head"], ["bara", "bread"], ["brawd", "brother"], ["desg", "desk"], ["gardd", "garden"], ["mam", "mother"], ["llyfr", "book"], ["rhaglen", "programme"], ["cariad", "love, partner"], ["teulu", "family"], ["plentyn", "child"], ["beic", "bike"], ["drws", "door"], ["gwaith", "work"]];
-  var PLACES = [["Caerdydd", "Cardiff"], ["Bangor", "Bangor"], ["Pontypridd", "Pontypridd"], ["Tregaron", "Tregaron"], ["Dinbych", "Denbigh"], ["Gwynedd", "Gwynedd"], ["Pwllheli", "Pwllheli"], ["Machynlleth", "Machynlleth"], ["Rhuthun", "Ruthin"], ["Caernarfon", "Caernarfon"]];
-  var FRAMES = [
-    { t: "soft", w: "dy", g: "your {e}", src: NOUNS, n: "Meddal · soft" }, { t: "soft", w: "ei", g: "his {e}", src: NOUNS, n: "Meddal · soft" },
-    { t: "soft", w: "i", g: "to {e}", src: PLACES, n: "Meddal · soft" }, { t: "soft", w: "o", g: "from {e}", src: PLACES, n: "Meddal · soft" },
-    { t: "nasal", w: "fy", g: "my {e}", src: NOUNS, n: "Trwynol · nasal" }, { t: "nasal", w: "yn", g: "in {e}", src: PLACES, n: "Trwynol · nasal" },
-    { t: "asp", w: "ei", g: "her {e}", src: NOUNS, n: "Llaes · aspirate" }, { t: "asp", w: "a", g: "and {e}", src: NOUNS, n: "Llaes · aspirate" }, { t: "asp", w: "gyda", g: "with {e}", src: NOUNS, n: "Llaes · aspirate" }
-  ];
-  var TAB = { soft: SOFT, nasal: NASAL, asp: ASP }, mode = "all", cur = null;
-  function yn(form) { var l = form.toLowerCase(); return l.indexOf("ng") === 0 ? "yng" : l.indexOf("m") === 0 && l.indexOf("mh") !== 0 ? "ym" : l.indexOf("mh") === 0 ? "ym" : "yn"; }
-  function phrase(f, form) { return (f.w === "yn" && f.t === "nasal" ? yn(form) : f.w) + " " + form; }
-  function mutNew() {
-    var frames = FRAMES.filter(function (f) { return mode === "all" || f.t === mode; }), f, x, right, tries = 0;
-    do { f = frames[(Math.random() * frames.length) | 0]; x = f.src[(Math.random() * f.src.length) | 0]; right = mutate(x[0], TAB[f.t]); tries++; } while (right === x[0] && tries < 40);
-    var forms = [right, x[0], mutate(x[0], SOFT), mutate(x[0], NASAL), mutate(x[0], ASP)].filter(function (v, i, a) { return v && a.indexOf(v) === i; }).slice(0, 4);
-    forms.sort(function () { return Math.random() - .5; });
-    cur = { f: f, x: x, right: right };
-    $("mK").textContent = f.n === "?" ? "" : "Pa ffurf? · which form?";
-    $("mP").innerHTML = ""; $("mP").appendChild(document.createTextNode((f.w === "yn" && f.t === "nasal" ? "yn" : f.w) + " + ")); var u = document.createElement("u"); u.textContent = x[0]; $("mP").appendChild(u);
-    $("mG").textContent = f.g.replace("{e}", x[1]);
-    $("mOpts").innerHTML = ""; $("mWhy").textContent = ""; $("mNext").hidden = true;
-    forms.forEach(function (v) { var b = document.createElement("button"); b.type = "button"; b.className = "opt"; b.textContent = phrase(f, v); b.onclick = function () { mutAns(b, v); }; $("mOpts").appendChild(b); });
-  }
-  function mutAns(b, v) {
-    if (!$("mNext").hidden) return; var ok = v === cur.right; S.mut[1]++; if (ok) S.mut[0]++; practised();
-    [].forEach.call($("mOpts").children, function (o) { if (o.textContent === phrase(cur.f, cur.right)) o.classList.add("ok"); });
-    if (!ok) b.classList.add("no");
-    var a = cur.x[0].toLowerCase(), first = (TAB[cur.f.t].filter(function (p) { return a.indexOf(p[0]) === 0; })[0] || [])[0];
-    $("mWhy").innerHTML = (ok ? "✓ Da iawn! " : "") + "<b>" + cur.f.n + "</b> after <b>" + cur.f.w + "</b>" + (first ? ": " + first + " → " + (TAB[cur.f.t].filter(function (p) { return p[0] === first; })[0][1] || "(drops)") : "");
-    $("mNext").hidden = false; $("mNext").focus({ preventScroll: true });
-  }
-  $("mNext").onclick = mutNew;
-  [["all", "Pob un · all"], ["soft", "Meddal · soft"], ["nasal", "Trwynol · nasal"], ["asp", "Llaes · aspirate"]].forEach(function (m) { var b = document.createElement("button"); b.type = "button"; b.textContent = m[1]; b.dataset.m = m[0]; b.onclick = function () { mode = m[0]; [].forEach.call($("mutSeg").children, function (x) { x.setAttribute("aria-pressed", x.dataset.m === mode); }); mutNew(); }; b.setAttribute("aria-pressed", m[0] === "all"); $("mutSeg").appendChild(b); });
-  $("mTable").innerHTML = ["p", "t", "c", "b", "d", "g", "m", "ll", "rh"].map(function (l) { var f = function (tb) { var r = tb.filter(function (p) { return p[0] === l; })[0]; return r ? (r[1] || "—") : ""; }; return "<tr><td><b>" + l + "</b></td><td>" + f(SOFT) + "</td><td>" + f(NASAL) + "</td><td>" + f(ASP) + "</td></tr>"; }).join("");
+/* ---------- cards: the same familiarity as every room (again · good · learnt) ---------- */
+function deckSource() { const th = S.th; return allItems().filter(x => th === 'Pob un' ? x.src === 'b' : x.th === th); }
+function buildDeck() {
+  const now = Date.now(); let items = deckSource().filter(x => peek(x.key).status !== 'mastered');
+  const due = items.filter(x => (peek(x.key).due || 0) <= now); items = due.length ? due : items;
+  items.sort((a, b) => (peek(a.key).due || 0) - (peek(b.key).due || 0) || Math.random() - .5); App.deck = items.map(x => x.key); App.idx = 0;
+}
+function thName(t) { return `${t} · ${THEME_EN[t] || ''}`; }
+function renderCard() {
+  const opts = ['Pob un'].concat(THEMES, S.mine.length ? ['Fy ngeiriau'] : []);
+  $('thSel').innerHTML = opts.map(t => `<option value="${esc(t)}" ${S.th === t ? 'selected' : ''}>${esc(thName(t))}</option>`).join('');
+  $('dirTxt').textContent = S.dir === 'cy' ? 'CY → EN' : 'EN → CY';
+  if (!App.deck.length) buildDeck();
+  const src = deckSource(), mastered = src.filter(x => peek(x.key).status === 'mastered').length, review = src.filter(x => peek(x.key).status === 'review').length;
+  $('deckStats').innerHTML = `<b style="color:var(--ok)">${mastered}</b> wedi dysgu · <b style="color:var(--warn)">${review}</b> wrthi`;
+  $('deckBar').style.width = (src.length ? mastered / src.length * 100 : 0) + '%';
+  $('flip').classList.remove('on'); App.flipped = false;
+  const it = byKey(App.deck[App.idx]), empty = !it;
+  $('scene').hidden = empty; document.querySelector('.rate').hidden = empty; $('fcEmpty').hidden = !empty;
+  if (empty) { $('fcEmpty').innerHTML = S.th === 'Fy ngeiriau' ? `<p>Dewch â'ch geiriau eich hun.</p><button class="btn primary" data-act="sub" data-arg="add">${ico('circle-plus')}Ychwanegu</button>` : `<p>Rydych chi'n gwybod pob gair yn y set hon! Dewiswch set arall.</p>`; $('deckMeta').textContent = ''; return; }
+  $('deckMeta').textContent = `${App.idx + 1} / ${App.deck.length}`;
+  const tag = it.src === 'm' ? 'Fy ngeiriau' : thName(it.th); $('fcTag').textContent = tag; $('fcTag2').textContent = tag;
+  $('fcStar').style.color = peek(it.key).saved ? '#F59E0B' : '';
+  const front = S.dir === 'cy'
+    ? `<p class="term" lang="cy">${esc(it.cy)}</p>${it.say ? `<div class="py">/ ${esc(it.say)} /</div>` : ''}`
+    : `<p class="term en">${esc(it.en)}</p>`;
+  $('fcFront').innerHTML = front;
+  $('fcBack').innerHTML = `<p class="term small" lang="cy">${esc(it.cy)}</p>${it.say ? `<div class="py">/ ${esc(it.say)} /</div>` : ''}<p class="meaning">${esc(it.en)}</p>
+    ${it.ex ? `<div class="note-box stack" style="gap:4px"><span class="seal">Enghraifft</span><p class="story" lang="cy">${esc(it.ex)} <button class="icon-btn sm-ico" data-act="sayEx" aria-label="Gwrando">${ico('volume-2')}</button></p>${it.exEn ? `<p class="ex-en">${esc(it.exEn)}</p>` : ''}</div>` : ''}`;
+  const m = peek(it.key); $('goodDays').textContent = '+' + SRS_DAYS[Math.min((m.box || 0) + 1, SRS_DAYS.length - 1)] + ' d';
+  if (S.dir === 'cy' && S.auto) say(it.cy, it.say);
+}
+function flip() { App.flipped = !App.flipped; $('flip').classList.toggle('on', App.flipped); if (App.flipped && S.dir === 'en') { const it = byKey(App.deck[App.idx]); if (it) say(it.cy, it.say); } }
+function step(d) { if (!App.deck.length) return; App.idx = (App.idx + d + App.deck.length) % App.deck.length; renderCard(); }
+function rate(g) {
+  const k = App.deck[App.idx]; if (!k) return; const m = meta(k);
+  if (g === 'again') { m.box = 0; m.due = Date.now() + 60000; m.status = 'review'; m.lapses = (m.lapses || 0) + 1; tally(false); }
+  else if (g === 'good') { m.box = Math.min((m.box || 0) + 1, SRS_DAYS.length - 1); m.due = Date.now() + SRS_DAYS[m.box] * DAY; m.status = 'review'; tally(true); }
+  else { m.status = 'mastered'; m.due = Date.now() + 365 * DAY; tally(true); }
+  m.t = Date.now(); save(); App.deck.splice(App.idx, 1); if (!App.deck.length) buildDeck(); if (App.idx >= App.deck.length) App.idx = 0; renderCard();
+}
+function setupSwipe() { const sc = $('scene'); let x0 = 0, y0 = 0; sc.addEventListener('pointerdown', e => { x0 = e.clientX; y0 = e.clientY; }); sc.addEventListener('pointerup', e => { const dx = e.clientX - x0, dy = e.clientY - y0; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) { sc.dataset.swiped = '1'; step(dx < 0 ? 1 : -1); setTimeout(() => sc.dataset.swiped = '', 50); } }); }
 
-  /* ---------- numbers (the modern decimal way) ---------- */
-  var U = ["dim", "un", "dau", "tri", "pedwar", "pump", "chwech", "saith", "wyth", "naw"], T = ["", "deg", "dau ddeg", "tri deg", "pedwar deg", "pum deg", "chwe deg", "saith deg", "wyth deg", "naw deg"];
-  function cym(n) { if (n === 100) return "cant"; if (n < 10) return U[n]; if (n === 10) return "deg"; if (n < 20) return "un deg " + U[n - 10]; return T[(n / 10) | 0] + (n % 10 ? " " + U[n % 10] : ""); }
-  var nCur = null;
-  function numNew() {
-    var n = Math.random() < .3 ? (Math.random() * 11) | 0 : Math.random() < .06 ? 100 : (11 + Math.random() * 89) | 0; nCur = n;
-    $("nP").textContent = n; $("nWhy").textContent = ""; $("nNext").hidden = true; $("nOpts").innerHTML = "";
-    var set = [n]; while (set.length < 4) { var m = Math.max(0, Math.min(100, n + [(-11), (-10), (-1), 1, 9, 10, 11, 20][(Math.random() * 8) | 0])); if (set.indexOf(m) < 0) set.push(m); }
-    set.sort(function () { return Math.random() - .5; }).forEach(function (m) { var b = document.createElement("button"); b.type = "button"; b.className = "opt"; b.textContent = cym(m); b.onclick = function () { if (!$("nNext").hidden) return; practised(); if (m === n) { b.classList.add("ok"); $("nWhy").textContent = "✓ Da iawn!"; } else { b.classList.add("no"); [].forEach.call($("nOpts").children, function (o) { if (o.textContent === cym(n)) o.classList.add("ok"); }); $("nWhy").textContent = cym(m) + " = " + m; } $("nNext").hidden = false; say(cym(n)); }; $("nOpts").appendChild(b); });
-  }
-  $("nNext").onclick = numNew;
-  $("nTable").innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 20, 23, 50, 60, 99, 100].map(function (n) { return "<tr><td>" + n + "</td><td><b>" + cym(n) + "</b></td></tr>"; }).join("");
+/* ---------- the word list ---------- */
+function statusTag(k) { const s = peek(k).status; return s === 'mastered' ? '<span class="tag ok">wedi dysgu</span>' : s === 'review' ? '<span class="tag warn">wrthi</span>' : ''; }
+function renderList() {
+  const q = $('listQ').value.trim().toLowerCase(), norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const rows = allItems().filter(x => !q || norm(x.cy).includes(norm(q)) || x.en.toLowerCase().includes(q));
+  $('wordList').innerHTML = rows.length ? rows.map(x => `<div class="li"><button class="sp" data-act="sayW" data-arg="${esc(x.key)}" aria-label="Gwrando">${ico('volume-2')}</button><div class="grow"><div class="row" style="gap:8px;flex-wrap:wrap"><span class="w" lang="cy">${esc(x.cy)}</span><span class="py">${esc(x.say)}</span>${statusTag(x.key)}</div><div class="s">${esc(x.en)}</div></div><button class="icon-btn" data-act="starKey" data-arg="${esc(x.key)}" style="${peek(x.key).saved ? 'color:#F59E0B' : ''}" aria-label="Cadw">${ico('star')}</button></div>`).join('') : '<div class="empty">Dim byd.</div>';
+}
 
-  /* ---------- the sounds of Welsh letters ---------- */
-  var SND = [["c", "always k", "cath · cat"], ["ch", "as in Scottish loch", "bach · small"], ["dd", "th in this", "dydd · day"], ["f", "v in van", "fan · place"], ["ff", "f in fun", "ffordd · road"], ["ll", "tongue behind teeth, blow out the sides", "llan · church"], ["rh", "a breathy r", "rhosyn · rose"], ["th", "th in thin", "wyth · eight"], ["si", "sh in shop", "siop · shop"], ["w", "often a vowel: oo", "cwm · valley"], ["u", "ee, or i in bit", "un · one"], ["y", "uh in a short word's middle, ee at the end", "mynydd · mountain"], ["ŵ ŷ â", "the little roof makes it long", "tŷ · house"], ["ae / ai", "like eye", "Cymraeg · Welsh"]];
-  $("sounds").innerHTML = SND.map(function (s) { return '<button type="button" class="snd" data-say="' + s[2].split(" · ")[0] + '"><b>' + s[0] + "</b><i>" + s[2] + "</i><small>" + s[1] + "</small></button>"; }).join("");
-  $("sounds").onclick = function (e) { var b = e.target.closest(".snd"); if (b) say(b.dataset.say); };
+/* ---------- your own words ---------- */
+function renderMine() {
+  $('mineList').innerHTML = S.mine.length ? S.mine.map(m => `<div class="li"><button class="sp" data-act="sayW" data-arg="m:${esc(m.id)}" aria-label="Gwrando">${ico('volume-2')}</button><div class="grow"><div class="row" style="gap:8px"><span class="w" lang="cy">${esc(m.cy)}</span><span class="py">${esc(m.say || '')}</span></div><div class="s">${esc(m.en)}</div></div><button class="icon-btn" data-act="delMine" data-arg="${esc(m.id)}" aria-label="Dileu">${ico('x')}</button></div>`).join('') : '<div class="empty">Bydd eich geiriau chi yma.</div>';
+}
+function addMine(c) {
+  const cy = (c[0] || '').trim(), en = (c[1] || '').trim(); if (!cy || !en) return false;
+  if (S.mine.some(m => m.cy.toLowerCase() === cy.toLowerCase()) || ALL_B.some(x => x.cy.toLowerCase() === cy.toLowerCase())) return null;
+  S.mine.push({ id: cy, cy, en, say: (c[2] || '').trim(), ex: (c[3] || '').trim(), exEn: (c[4] || '').trim() }); return true;
+}
 
-  /* ---------- tabs ---------- */
-  function show(v) {
-    document.querySelectorAll(".view").forEach(function (s) { s.classList.toggle("on", s.id === "v-" + v); });
-    document.querySelectorAll("nav.tabs button").forEach(function (b) { if (b.dataset.v === v) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
-    if (v === "mut" && !cur) mutNew(); if (v === "num" && nCur === null) numNew(); if (v === "snd") stats();
-    try { history.replaceState(null, "", "#" + v); } catch (e) {} scrollTo(0, 0);
-  }
-  function stats() { $("sKnown").textContent = Object.keys(S.box).filter(function (k) { return S.box[k] >= 3; }).length; $("sDays").textContent = Object.keys(S.days).length; $("sMut").textContent = S.mut[1] ? Math.round(S.mut[0] / S.mut[1] * 100) + "%" : "—"; }
-  document.querySelectorAll("nav.tabs button").forEach(function (b) { b.onclick = function () { show(b.dataset.v); }; });
-  $("reset").onclick = function () { if (!confirm("Dechrau eto? · Start over? Your progress on this phone will be cleared.")) return; S = { box: {}, days: {}, mut: [0, 0], lv: "Cyfarch", mine: S.mine || [] }; save(); paintSeg(); buildDeck(); stats(); paintStreak(); };
+/* ---------- practice: translate (English → Welsh), listen (Welsh → English), mutations, numbers ---------- */
+let MC = null;
+const pool = () => allItems().filter(x => S.th === 'Pob un' || x.th === S.th).concat(S.th === 'Pob un' ? [] : []).filter(x => x.en);
+function mc(viewId, key, q) {
+  $(viewId).innerHTML = `<div class="card pad stack" style="text-align:center">${q.head}</div><div class="choices ${q.long ? 'one' : ''}">${shuffle(q.opts).map(o => `<button class="choice ${q.long ? 'long' : ''}" data-act="mcAns" data-arg="${esc(o)}" ${q.cyOpts ? 'lang="cy"' : ''}>${esc(o)}</button>`).join('')}</div><div id="${viewId}-fb"></div>
+    <div class="row between"><span class="meta">${(() => { const s = S.scores[key]; return s && s[1] ? `Cywir ${s[0]} / ${s[1]}` : ''; })()}</span><button class="btn sm" data-act="mcNext">Nesaf ${ico('arrow-right')}</button></div>`;
+  MC = { viewId, key, q, done: false };
+}
+function mcAns(a) {
+  if (!MC || MC.done) return; MC.done = true; const ok = a === MC.q.ans;
+  document.querySelectorAll(`#${MC.viewId} .choice`).forEach(b => { if (b.dataset.arg === MC.q.ans) b.classList.add('ok'); else if (b.dataset.arg === a && !ok) b.classList.add('bad'); });
+  $(MC.viewId + '-fb').innerHTML = `<div class="fb ${ok ? 'ok' : 'bad'}">${ok ? 'Da iawn!' : 'Bron!'}<span class="big" lang="cy">${esc(MC.q.it.cy)}</span><small>${esc(MC.q.it.en)}</small></div>`;
+  score(MC.key, ok); say(MC.q.it.cy, MC.q.it.say);
+  const m = meta(MC.q.it.key); if (!ok) { m.box = 0; m.due = Date.now(); m.status = 'review'; } m.t = Date.now(); save();
+  if (ok) setTimeout(() => { if (MC && MC.done && !$(MC.viewId).hidden) mcNext(); }, 1800);
+}
+function mcNext() { ({ 'v-prac-tr': trNew, 'v-prac-listen': listenNew })[MC.viewId](); }
+function choose(n) { const p = pool(), it = pick(p.filter(x => peek(x.key).status !== 'mastered').concat(p).slice(0, Math.max(8, p.length))); const others = shuffle(p.filter(x => x.key !== it.key && x.en !== it.en && x.cy !== it.cy)).slice(0, n); return { it, others }; }
+function trNew() {
+  const { it, others } = choose(3); App.sayNow = it;
+  mc('v-prac-tr', 'tr', { it, cyOpts: true, head: `<span class="label">Sut mae dweud hyn yn Gymraeg?</span><div class="gq">${esc(it.en)}</div>`, opts: [it.cy].concat(others.map(x => x.cy)), ans: it.cy });
+}
+function listenNew() {
+  const { it, others } = choose(3); App.sayNow = it;
+  mc('v-prac-listen', 'listen', { it, long: true, head: `<span class="label">Gwrandewch a dewiswch</span><div><button class="btn primary" data-act="sayNow">${ico('volume-2')}Gwrando</button></div><div class="py hint-say" hidden>/ ${esc(it.say)} /</div>`, opts: [it.en].concat(others.map(x => x.en)), ans: it.en });
+  const how = say(it.cy, it.say); if (how === 'none') document.querySelector('#v-prac-listen .hint-say').hidden = false;
+}
 
-  paintSeg(); buildDeck(); paintStreak();
-  var h = (location.hash || "").slice(1); if (["mut", "num", "snd"].indexOf(h) >= 0) show(h);
-})();
+/* mutations: the three changes after the little words that trigger them */
+const SOFT = [['p', 'b'], ['t', 'd'], ['c', 'g'], ['b', 'f'], ['d', 'dd'], ['g', ''], ['m', 'f'], ['ll', 'l'], ['rh', 'r']];
+const NASAL = [['p', 'mh'], ['t', 'nh'], ['c', 'ngh'], ['b', 'm'], ['d', 'n'], ['g', 'ng']];
+const ASP = [['p', 'ph'], ['t', 'th'], ['c', 'ch']];
+function mutate(w, table) {
+  const lw = w.toLowerCase(), cap = w[0] !== lw[0];
+  for (const [a, b] of table) if (lw.indexOf(a) === 0 && !(a === 'd' && lw.indexOf('dd') === 0) && !(a === 'c' && lw.indexOf('ch') === 0) && !(a === 'p' && lw.indexOf('ph') === 0) && !(a === 't' && lw.indexOf('th') === 0)) { const r = b + w.slice(a.length); return cap && r ? r[0].toUpperCase() + r.slice(1) : r; }
+  return w;
+}
+const NOUNS = [['cath', 'cat'], ['ci', 'dog'], ['tad', 'father'], ['tŷ', 'house'], ['pen', 'head'], ['bara', 'bread'], ['brawd', 'brother'], ['desg', 'desk'], ['gardd', 'garden'], ['mam', 'mother'], ['llyfr', 'book'], ['rhaglen', 'programme'], ['cariad', 'love, partner'], ['teulu', 'family'], ['plentyn', 'child'], ['beic', 'bike'], ['drws', 'door'], ['gwaith', 'work'], ['car', 'car'], ['pentref', 'village']];
+const PLACES = [['Caerdydd', 'Cardiff'], ['Bangor', 'Bangor'], ['Pontypridd', 'Pontypridd'], ['Tregaron', 'Tregaron'], ['Dinbych', 'Denbigh'], ['Gwynedd', 'Gwynedd'], ['Pwllheli', 'Pwllheli'], ['Machynlleth', 'Machynlleth'], ['Rhuthun', 'Ruthin'], ['Caernarfon', 'Caernarfon'], ['Llanelli', 'Llanelli'], ['Penarth', 'Penarth']];
+const FRAMES = [
+  { t: 'soft', w: 'dy', g: 'your {e}', src: NOUNS }, { t: 'soft', w: 'ei', g: 'his {e}', src: NOUNS }, { t: 'soft', w: 'i', g: 'to {e}', src: PLACES }, { t: 'soft', w: 'o', g: 'from {e}', src: PLACES },
+  { t: 'nasal', w: 'fy', g: 'my {e}', src: NOUNS }, { t: 'nasal', w: 'yn', g: 'in {e}', src: PLACES },
+  { t: 'asp', w: 'ei', g: 'her {e}', src: NOUNS }, { t: 'asp', w: 'a', g: 'and {e}', src: NOUNS }, { t: 'asp', w: 'gyda', g: 'with {e}', src: NOUNS }
+];
+const TAB = { soft: SOFT, nasal: NASAL, asp: ASP }, MUTN = { soft: 'Meddal', nasal: 'Trwynol', asp: 'Llaes' };
+let mutMode = 'all', MU = null;
+function yn(form) { const l = form.toLowerCase(); return l.indexOf('ng') === 0 ? 'yng' : l.indexOf('m') === 0 ? 'ym' : 'yn'; }
+function phrase(f, form) { return (f.w === 'yn' && f.t === 'nasal' ? yn(form) : f.w) + ' ' + form; }
+function mutNew() {
+  const frames = FRAMES.filter(f => mutMode === 'all' || f.t === mutMode); let f, x, right, tries = 0;
+  do { f = pick(frames); x = pick(f.src); right = mutate(x[0], TAB[f.t]); tries++; } while (right === x[0] && tries < 40);
+  const forms = shuffle([right, x[0], mutate(x[0], SOFT), mutate(x[0], NASAL), mutate(x[0], ASP)].filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 4));
+  MU = { f, x, right, done: false }; App.sayNow = { cy: phrase(f, right), say: '' };
+  const segs = [['all', 'Pob un'], ['soft', 'Meddal'], ['nasal', 'Trwynol'], ['asp', 'Llaes']];
+  $('v-prac-mut').innerHTML = `<div class="seg">${segs.map(([k, l]) => `<button class="${mutMode === k ? 'on' : ''}" data-act="mutMode" data-arg="${k}">${l}</button>`).join('')}</div>
+    <div class="card pad stack" style="text-align:center"><span class="label">Pa ffurf?</span><div class="gq" lang="cy">${esc(f.w === 'yn' && f.t === 'nasal' ? 'yn' : f.w)} + <u>${esc(x[0])}</u></div><div class="meta">${esc(f.g.replace('{e}', x[1]))}</div></div>
+    <div class="choices">${forms.map(v => `<button class="choice" data-act="mutAns" data-arg="${esc(v)}" lang="cy">${esc(phrase(f, v))}</button>`).join('')}</div><div id="mutFb"></div>
+    <div class="row between"><span class="meta">${(() => { const s = S.scores.mut; return s && s[1] ? `Cywir ${s[0]} / ${s[1]}` : ''; })()}</span><button class="btn sm" data-act="mutNext">Nesaf ${ico('arrow-right')}</button></div>
+    <details class="card pad"><summary>Tabl treiglo</summary><table class="mt"><thead><tr><th></th><th>Meddal</th><th>Trwynol</th><th>Llaes</th></tr></thead><tbody>${['p', 't', 'c', 'b', 'd', 'g', 'm', 'll', 'rh'].map(l => { const g = tb => { const r = tb.find(p => p[0] === l); return r ? (r[1] || '—') : ''; }; return `<tr><td><b>${l}</b></td><td>${g(SOFT)}</td><td>${g(NASAL)}</td><td>${g(ASP)}</td></tr>`; }).join('')}</tbody></table>
+    <p class="meta">Meddal ar ôl: dy, ei (his), i, o, am, ar · Trwynol ar ôl: fy, yn · Llaes ar ôl: ei (her), a, gyda, tri, chwe</p></details>`;
+}
+function mutAns(v) {
+  if (!MU || MU.done) return; MU.done = true; const ok = v === MU.right;
+  document.querySelectorAll('#v-prac-mut .choice').forEach(b => { if (b.dataset.arg === MU.right) b.classList.add('ok'); else if (b.dataset.arg === v && !ok) b.classList.add('bad'); });
+  const a = MU.x[0].toLowerCase(), first = (TAB[MU.f.t].find(p => a.indexOf(p[0]) === 0) || [])[0];
+  $('mutFb').innerHTML = `<div class="fb ${ok ? 'ok' : 'bad'}">${ok ? 'Da iawn! ' : ''}${MUTN[MU.f.t]} · ${esc(MU.f.w)}${first ? `: ${first} → ${(TAB[MU.f.t].find(p => p[0] === first) || [])[1] || '∅'}` : ''}<span class="big" lang="cy">${esc(phrase(MU.f, MU.right))}</span></div>`;
+  score('mut', ok); say(phrase(MU.f, MU.right));
+  if (ok) setTimeout(() => { if (MU && MU.done && !$('v-prac-mut').hidden) mutNew(); }, 1800);
+}
+
+/* numbers: hear or read one, pick the Welsh (the modern decimal way) */
+const U = ['dim', 'un', 'dau', 'tri', 'pedwar', 'pump', 'chwech', 'saith', 'wyth', 'naw'], T10 = ['', 'deg', 'dau ddeg', 'tri deg', 'pedwar deg', 'pum deg', 'chwe deg', 'saith deg', 'wyth deg', 'naw deg'];
+function cym(n) { if (n === 100) return 'cant'; if (n < 10) return U[n]; if (n === 10) return 'deg'; if (n < 20) return 'un deg ' + U[n - 10]; return T10[(n / 10) | 0] + (n % 10 ? ' ' + U[n % 10] : ''); }
+let NU = null;
+function numNew() {
+  const n = Math.random() < .3 ? (Math.random() * 11) | 0 : Math.random() < .06 ? 100 : (11 + Math.random() * 89) | 0;
+  const set = [n]; while (set.length < 4) { const m = Math.max(0, Math.min(100, n + pick([-11, -10, -1, 1, 9, 10, 11, 20]))); if (set.indexOf(m) < 0) set.push(m); }
+  NU = { n, done: false }; App.sayNow = { cy: cym(n), say: '' };
+  $('v-prac-num').innerHTML = `<div class="card pad stack" style="text-align:center"><span class="label">Rhif</span><div class="gq" style="font-size:clamp(46px,14vw,72px)">${n}</div></div>
+    <div class="choices one">${shuffle(set).map(m => `<button class="choice long" data-act="numAns" data-arg="${m}" lang="cy">${cym(m)}</button>`).join('')}</div><div id="numFb"></div>
+    <div class="row between"><span class="meta">${(() => { const s = S.scores.num; return s && s[1] ? `Cywir ${s[0]} / ${s[1]}` : ''; })()}</span><button class="btn sm" data-act="numNext">Nesaf ${ico('arrow-right')}</button></div>
+    <details class="card pad"><summary>Sut mae'n gweithio</summary><table class="mt"><tbody>${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 20, 23, 50, 60, 99, 100].map(x => `<tr><td>${x}</td><td><b lang="cy">${cym(x)}</b></td></tr>`).join('')}</tbody></table>
+    <p class="meta">Mae Cymraeg modern yn cyfrif fesul deg: dau ddeg tri = "dau ddeg" + "tri" = 23.</p></details>`;
+}
+function numAns(m) {
+  if (!NU || NU.done) return; NU.done = true; m = Number(m); const ok = m === NU.n;
+  document.querySelectorAll('#v-prac-num .choice').forEach(b => { if (Number(b.dataset.arg) === NU.n) b.classList.add('ok'); else if (Number(b.dataset.arg) === m && !ok) b.classList.add('bad'); });
+  $('numFb').innerHTML = `<div class="fb ${ok ? 'ok' : 'bad'}">${ok ? 'Da iawn!' : 'Bron!'}<span class="big" lang="cy">${cym(NU.n)}</span></div>`;
+  score('num', ok); say(cym(NU.n));
+  if (ok) setTimeout(() => { if (NU && NU.done && !$('v-prac-num').hidden) numNew(); }, 1600);
+}
+
+/* ---------- the sounds of Welsh: every letter is said one way ---------- */
+const SND = [['a', 'a in "cat" (long: "father")', 'tad · father'], ['c', 'always k', 'cath · cat'], ['ch', 'as in Scottish "loch"', 'bach · small'], ['dd', 'th in "this"', 'dydd · day'], ['e', 'e in "bed"', 'pen · head'], ['f', 'v in "van"', 'fan · place'], ['ff', 'f in "fun"', 'ffordd · road'], ['g', 'always hard, as in "go"', 'gardd · garden'], ['i', 'ee in "see"', 'ti · you'], ['ll', 'tongue behind the teeth, blow out the sides', 'llan · church'], ['o', 'o in "hot"', 'bore · morning'], ['r', 'rolled, as in Spanish', 'bara · bread'], ['rh', 'a breathy r', 'rhosyn · rose'], ['si', 'sh in "shop"', 'siop · shop'], ['th', 'th in "thin"', 'wyth · eight'], ['u', 'ee, or i in "bit"', 'un · one'], ['w', 'often a vowel: oo', 'cwm · valley'], ['y', 'uh in most syllables, ee in the last', 'mynydd · mountain'], ['ŵ ŷ â', 'the little roof makes the vowel long', 'tŷ · house'], ['ae ai au', 'like "eye"', 'Cymraeg · Welsh'], ['wy', 'oo-ee', 'wy · egg'], ['aw', 'ow in "cow"', 'mawr · big']];
+function renderSounds() {
+  const v = window.VK ? (VK.hasVoice('cy') ? 'cy' : VK.hasVoice('es') || VK.hasVoice('en') ? 'approx' : 'none') : 'none';
+  $('v-sounds').innerHTML = `<p class="meta" style="margin:0 2px">Mae Cymraeg yn cael ei sillafu fel mae'n swnio. Dysgwch y rhain a gallwch chi ddarllen unrhyw air.</p>
+    <div class="sounds">${SND.map((s, i) => `<div class="snd"><button class="snd-say" data-act="saySnd" data-arg="${i}"><b>${s[0]}</b><i lang="cy">${esc(s[2].split(' · ')[0])}</i><small>${esc(s[2].split(' · ')[1])} · ${esc(s[1])}</small></button><button class="icon-btn mic" data-act="micSnd" data-arg="${i}" aria-label="Dywedwch e">${MIC}</button></div>`).join('')}</div>
+    <div class="card pad stack"><span class="label">Llais</span><p class="meta" style="margin:0">${v === 'cy' ? 'Mae llais Cymraeg ar y ddyfais hon.' : v === 'approx' ? 'Does dim llais Cymraeg ar y ddyfais hon, felly mae llais arall yn ei ddarllen yn fras. Ar Android: Gosodiadau → Testun i lais → Google → gosod Cymraeg. Ar Windows: Gosodiadau → Amser ac iaith → Lleferydd → ychwanegu Cymraeg.' : 'Does dim llais ar y ddyfais hon: darllenwch yr ynganiad o dan bob gair.'}</p></div>`;
+}
+
+/* ---------- progress: what you know, not how long you kept going ---------- */
+function renderStats() {
+  const all = allItems(), mastered = all.filter(x => peek(x.key).status === 'mastered').length, review = all.filter(x => peek(x.key).status === 'review').length;
+  const wd = ['Sul', 'Llun', 'Maw', 'Mer', 'Iau', 'Gwe', 'Sad'];
+  const week = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - 6 + i); const x = S.days[dayKey(d)] || { n: 0 }; return { d: wd[d.getDay()], n: x.n, today: i === 6 }; });
+  const max = Math.max(1, ...week.map(w => w.n)), mins = Object.values(S.days).reduce((a, x) => a + (x.ms || 0), 0);
+  const pct = k => { const s = S.scores[k]; return s && s[1] ? Math.round(s[0] / s[1] * 100) : 0; };
+  $('v-stats').innerHTML = `<div class="kpis"><div class="card kpi"><div class="v">${mastered}</div><div class="l">Wedi dysgu</div></div><div class="card kpi"><div class="v">${review}</div><div class="l">Wrthi</div></div><div class="card kpi"><div class="v">${Object.keys(S.days).filter(k => S.days[k] && S.days[k].n).length}</div><div class="l">Diwrnodau o ymarfer</div></div><div class="card kpi"><div class="v">${Math.round(mins / 60000)}</div><div class="l">Munudau</div></div></div>
+    <div class="card pad"><div class="label">Yr wythnos hon</div><div class="bars7">${week.map(w => `<div class="b7 ${w.today ? 'today' : ''}"><span class="val">${w.n || ''}</span><div class="bar ${w.n ? '' : 'zero'}" style="height:${w.n / max * 100}%"></div><span class="d">${w.d}</span></div>`).join('')}</div></div>
+    <div class="card pad stack">${THEMES.concat(S.mine.length ? ['Fy ngeiriau'] : []).map(t => { const a = all.filter(x => x.th === t), m = a.filter(x => peek(x.key).status === 'mastered').length; return `<div><div class="row between"><b>${esc(thName(t))}</b><span class="meta">${m} / ${a.length}</span></div><div class="progress"><i style="width:${a.length ? m / a.length * 100 : 0}%"></i></div></div>`; }).join('')}</div>
+    <div class="card pad">${[['tr', 'Cyfieithu'], ['listen', 'Gwrando'], ['mut', 'Treiglo'], ['num', 'Rhifau']].map(([k, l]) => `<div class="hbar"><span>${l}</span><div class="track"><i style="width:${pct(k)}%"></i></div><span class="pct">${pct(k)}%<small>${(S.scores[k] || [0, 0])[1]} cwestiwn</small></span></div>`).join('')}</div>
+    <div class="card pad stack"><div class="setting"><div><div class="t">Darllen yn araf</div><div class="d">Llais arafach</div></div><label class="switch"><input type="checkbox" id="sSlow" ${S.slow ? 'checked' : ''}><span></span></label></div>
+    <div class="setting"><div><div class="t">Darllen yn awtomatig</div><div class="d">Dweud pob cerdyn wrth iddo ymddangos</div></div><label class="switch"><input type="checkbox" id="sAuto" ${S.auto ? 'checked' : ''}><span></span></label></div>
+    <div class="setting"><div><div class="t">Dechrau eto</div><div class="d">Clirio'r cynnydd (mae eich geiriau'n aros)</div></div><button class="btn sm bad" data-act="reset">Clirio</button></div></div>`;
+  $('sSlow').onchange = e => { S.slow = e.target.checked; save(); }; $('sAuto').onchange = e => { S.auto = e.target.checked; save(); };
+}
+
+function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2200); }
+
+const ACT = {
+  tab: a => go(a), sub: a => go(App.tab, a), flip: () => { if (!$('scene').dataset.swiped) flip(); }, next: () => step(1), prev: () => step(-1), rate,
+  dir: () => { S.dir = S.dir === 'cy' ? 'en' : 'cy'; save(); renderCard(); }, shuffle: () => { App.deck = shuffle(App.deck); App.idx = 0; renderCard(); },
+  star: () => { const k = App.deck[App.idx]; if (!k) return; const m = meta(k); m.saved = !m.saved; m.t = Date.now(); save(); $('fcStar').style.color = m.saved ? '#F59E0B' : ''; },
+  starKey: k => { const m = meta(k); m.saved = !m.saved; m.t = Date.now(); save(); renderList(); },
+  say: () => { const it = byKey(App.deck[App.idx]); if (it) say(it.cy, it.say); }, sayEx: () => { const it = byKey(App.deck[App.idx]); if (it) say(it.ex); },
+  sayW: k => { const it = byKey(k); if (it) say(it.cy, it.say); }, sayNow: () => { if (App.sayNow) say(App.sayNow.cy, App.sayNow.say); },
+  saySnd: i => { const w = SND[i][2].split(' · ')[0]; say(w); },
+  micSnd: i => { const w = SND[i][2].split(' · ')[0]; if (window.VK) VK.mic(w, () => say(w)); },
+  mcAns, mcNext, mutAns, mutNext: mutNew, mutMode: m => { mutMode = m; mutNew(); }, numAns, numNext: numNew,
+  addWord: () => { const r = addMine([$('nCy').value, $('nEn').value, $('nSay').value, $('nEx').value, $('nExEn').value]);
+    if (r === false) { toast('Ysgrifennwch y gair a’r ystyr yn gyntaf'); return; } if (r === null) { toast('Mae’r gair yna yma’n barod'); return; }
+    ['nCy', 'nEn', 'nSay', 'nEx', 'nExEn'].forEach(i => $(i).value = ''); save(); renderMine(); toast('Wedi ychwanegu ✓'); },
+  delMine: id => { S.mine = S.mine.filter(m => m.id !== id); delete S.meta['m:' + id]; save(); renderMine(); },
+  importMine: () => VK.importList({ cols: [['Welsh', '威尔士语', '威爾斯語', 'galés', 'gal·lès'], ['English', '英语', '英語', 'inglés', 'anglès'], ['how to say it', '读法', '讀法', 'pronunciación', 'pronúncia'], ['example', '例句', '例句', 'ejemplo', 'exemple'], ['example in English', '例句英文', '例句英文', 'ejemplo en inglés', 'exemple en anglès']],
+    add: rows => { let added = 0, dup = 0; rows.forEach(c => { const r = addMine(c); if (r) added++; else if (r === null) dup++; }); save(); renderMine(); if (added) { S.th = 'Fy ngeiriau'; App.deck = []; } return { added, dup }; } }),
+  reset: () => { if (!confirm('Dechrau eto? Bydd eich cynnydd ar y ddyfais hon yn cael ei glirio; mae eich geiriau’n aros.')) return; S = Object.assign(DEF(), { mine: S.mine }); save(); App.deck = []; go('cards', 'study'); }
+};
+document.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (!b) return; const f = ACT[b.dataset.act]; if (f) { e.stopPropagation(); f(b.dataset.arg); } });
+document.addEventListener('keydown', e => { if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return; if (App.tab === 'cards' && App.sub.cards === 'study') { if (e.key === ' ') { e.preventDefault(); flip(); } else if (e.key === 'ArrowRight') step(1); else if (e.key === 'ArrowLeft') step(-1); else if (e.key === '1') rate('again'); else if (e.key === '2') rate('good'); else if (e.key === '3') rate('mastered'); } });
+$('listQ').addEventListener('input', renderList);
+$('thSel').addEventListener('change', e => { S.th = e.target.value; save(); App.deck = []; renderCard(); });
+setupSwipe(); go('cards');
+
+/* ☁ your own words and how well you know each card, on your other devices too */
+if (window.VK && VK.sync) VK.sync({
+  room: 'cymraeg',
+  words: () => S.mine, setWords: arr => { S.mine = arr.filter(m => m && m.cy); save(); },
+  meta: () => S.meta, setMeta: o => { S.meta = o; save(); },
+  refresh: () => { App.deck = []; go(App.tab); }
+});
+
 </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=615d6db739"></script><script src="../vk.js?v=4"></script><script src="./ui.js?v=2"></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=8ed2d0134e"></script><script src="../vk.js?v=5"></script><script src="./ui.js?v=3"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FBF8F3">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -372,7 +372,8 @@
     .choice.long { font-size:15px; font-weight:600; text-align:left; }
     .choices.one { grid-template-columns:1fr; }
   </style>
-<link rel="stylesheet" href="../vk.css?v=3">
+<style>.tabbar-in.three{grid-template-columns:repeat(3,1fr)}</style>
+<link rel="stylesheet" href="../vk.css?v=4">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -445,7 +446,7 @@
       <div class="scene" id="scene" data-act="flip">
         <div class="flip" id="flip">
           <div class="face front">
-            <div class="row between"><span class="tag" id="fcTag"></span><button class="icon-btn" data-act="star" id="fcStar" aria-label="收藏"><svg class="ic"><use href="#i-star"/></svg></button></div>
+            <div class="row between"><span class="tag" id="fcTag"></span><span class="row" style="gap:2px"><button class="icon-btn" data-act="star" id="fcStar" aria-label="收藏"><svg class="ic"><use href="#i-star"/></svg></button><button class="icon-btn" data-act="sayFront" aria-label="朗读"><svg class="ic"><use href="#i-volume-2"/></svg></button><button class="icon-btn vk-micbtn" data-vk="mic" aria-label="Say it yourself"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg></button></span></div>
             <div class="face-mid" id="fcFront"></div>
             <div class="hint-line"><svg class="ic sm"><use href="#i-rotate-ccw"/></svg> <span data-u>点一下看故事 · 左右滑换一张</span></div>
           </div>
@@ -478,7 +479,7 @@
   </main>
 
   <nav class="tabbar" aria-label="主目录">
-    <div class="tabbar-in" style="grid-template-columns:repeat(3,1fr)">
+    <div class="tabbar-in three">
       <button class="tab" data-act="tab" data-arg="cards"><svg class="ic"><use href="#i-book-open"/></svg><span data-u>成语</span></button>
       <button class="tab" data-act="tab" data-arg="prac"><svg class="ic"><use href="#i-target"/></svg><span data-u>练习</span></button>
       <button class="tab" data-act="tab" data-arg="stats"><svg class="ic"><use href="#i-chart-column"/></svg><span data-u>进度</span></button>
@@ -522,6 +523,176 @@ L1: `
 垂头丧气|chuí tóu sàng qì|情绪低落，失望|crestfallen||比赛输了，队员们垂头丧气。
 小心翼翼|xiǎo xīn yì yì|非常谨慎小心|very cautiously||他小心翼翼地捧着蛋糕。
 一石二鸟|yī shí èr niǎo|一个行动达到两个目的|to kill two birds with one stone||这个办法一石二鸟。
+井井有条|jǐng jǐng yǒu tiáo|条理分明，很整齐|neat and orderly||她把书桌收拾得井井有条。
+千方百计|qiān fāng bǎi jì|想尽一切办法|by every possible means||他千方百计地帮朋友找工作。
+全心全意|quán xīn quán yì|投入全部精力和心思|with all one's heart||医生全心全意地照顾病人。
+不慌不忙|bù huāng bù máng|从容，不着急|calmly, unhurriedly||他不慌不忙地回答了问题。
+大惊小怪|dà jīng xiǎo guài|对小事过分惊讶|to make a fuss over nothing||这点小事，不必大惊小怪。
+东张西望|dōng zhāng xī wàng|到处张望|to look around||他站在门口东张西望。
+无精打采|wú jīng dǎ cǎi|没有精神，提不起劲|listless and low-spirited||他昨晚没睡好，今天无精打采。
+一干二净|yī gān èr jìng|十分彻底，一点不剩|completely, thoroughly||他把饭菜吃得一干二净。
+一清二楚|yī qīng èr chǔ|非常清楚|crystal clear||这件事我记得一清二楚。
+一五一十|yī wǔ yī shí|原原本本，毫无遗漏|in full detail||他把经过一五一十地告诉了妈妈。
+一路平安|yī lù píng ān|旅途平平安安|have a safe trip||祝你一路平安，早点到家！
+一帆风顺|yī fān fēng shùn|非常顺利|plain sailing||祝你新的一年一帆风顺。
+万事如意|wàn shì rú yì|一切都顺心|may all go well||祝您新年快乐，万事如意。
+十全十美|shí quán shí měi|完美，没有缺点|perfect in every way||世上没有十全十美的人。
+一无所知|yī wú suǒ zhī|什么都不知道|to know nothing at all||我对这件事一无所知。
+一无所有|yī wú suǒ yǒu|什么都没有|to have nothing at all||他刚来城市时一无所有。
+一事无成|yī shì wú chéng|什么事都没做成|to accomplish nothing||光想不做，最后只会一事无成。
+一丝不苟|yī sī bù gǒu|做事认真细致，毫不马虎|careful down to the last detail||王老师批改作业一丝不苟。
+一动不动|yī dòng bù dòng|完全不动|perfectly still||小猫一动不动地趴在窗台上。
+一言一行|yī yán yī xíng|每句话和每个行动|every word and deed||父母的一言一行都影响着孩子。
+一针见血|yī zhēn jiàn xiě|说话直接说中要害|to hit the nail on the head||他的评论一针见血。
+一目了然|yī mù liǎo rán|一眼就看清楚|clear at a glance||这张图表让数据一目了然。
+一日千里|yī rì qiān lǐ|进步或发展极快|to progress by leaps and bounds||这座城市的变化一日千里。
+一本正经|yī běn zhèng jīng|态度庄重，很严肃|in all seriousness||他一本正经地讲了个笑话。
+一毛不拔|yī máo bù bá|非常小气|too stingy to give a thing||他一毛不拔，从来不请客。
+一言为定|yī yán wéi dìng|说定了，不再改变|it's a deal||明天八点见，一言为定！
+一知半解|yī zhī bàn jiě|知道得不全面，不透彻|superficial understanding||对这个问题，我只是一知半解。
+三言两语|sān yán liǎng yǔ|几句话|in a few words||这件事三言两语说不清楚。
+三番五次|sān fān wǔ cì|很多次|again and again||我三番五次地提醒他带伞。
+七嘴八舌|qī zuǐ bā shé|人多嘴杂，说法不一|everyone talking at once||同学们七嘴八舌地讨论起来。
+五湖四海|wǔ hú sì hǎi|全国各地|from all corners of the land||我们班的同学来自五湖四海。
+四通八达|sì tōng bā dá|道路通向各处，交通便利|accessible from all directions||这座城市的交通四通八达。
+千言万语|qiān yán wàn yǔ|很多很多的话|countless words||千言万语也说不完我对你的感谢。
+千变万化|qiān biàn wàn huà|变化极多|endlessly changing||天上的云千变万化。
+千家万户|qiān jiā wàn hù|很多人家|countless households||春节时千家万户都贴春联。
+万紫千红|wàn zǐ qiān hóng|百花盛开，色彩艳丽|a riot of colour||春天的公园万紫千红。
+万众一心|wàn zhòng yī xīn|大家团结一致|united as one||大家万众一心，战胜了洪水。
+百发百中|bǎi fā bǎi zhòng|每次都射中；做事很有把握|to hit the target every time|楚国的养由基能在百步外射中柳叶，百发百中。|他投篮几乎百发百中。
+百花齐放|bǎi huā qí fàng|各种花一起开放；形容繁荣|a hundred flowers bloom||春天到了，校园里百花齐放。
+大名鼎鼎|dà míng dǐng dǐng|名气很大|very famous||他是一位大名鼎鼎的作家。
+大同小异|dà tóng xiǎo yì|大体相同，略有差别|much the same||这两种手机大同小异。
+大街小巷|dà jiē xiǎo xiàng|城市里的各处街道|streets and lanes everywhere||过年时大街小巷都挂满了灯笼。
+大吃一惊|dà chī yī jīng|非常吃惊|greatly surprised||听到这个消息，我大吃一惊。
+小题大做|xiǎo tí dà zuò|把小事当大事处理|to make a mountain out of a molehill||只是迟到一分钟，别小题大做。
+自由自在|zì yóu zì zài|无拘无束，很自在|free and easy||鱼儿在水里自由自在地游。
+自作自受|zì zuò zì shòu|自己做错事自己承受后果|to reap what one sows||不听劝告，结果自作自受。
+自以为是|zì yǐ wéi shì|认为自己总是对的|thinking one is always right||他太自以为是，听不进意见。
+自强不息|zì qiáng bù xī|自己努力向上，永不停止|to strive ceaselessly||我们要自强不息，努力学习。
+无忧无虑|wú yōu wú lǜ|没有任何忧愁|free from all worries||小时候的生活无忧无虑。
+无影无踪|wú yǐng wú zōng|完全消失，找不到|without a trace||小偷跑得无影无踪。
+无微不至|wú wēi bù zhì|关怀照顾得非常周到|meticulously caring||妈妈对我们的照顾无微不至。
+无能为力|wú néng wéi lì|没有能力去做|unable to do anything||这件事我也无能为力。
+无边无际|wú biān wú jì|非常广阔，看不到边|stretching without end||无边无际的大草原真美。
+无所事事|wú suǒ shì shì|什么事也不做，闲着|to idle about||放假了，他整天无所事事。
+无可奈何|wú kě nài hé|没有办法，只好这样|to have no choice||他无可奈何地叹了口气。
+不可思议|bù kě sī yì|难以想象，很难理解|hard to believe||这个魔术真是不可思议。
+不知不觉|bù zhī bù jué|没有察觉到|before one knows it||不知不觉，天已经黑了。
+不约而同|bù yuē ér tóng|事先没商量，做法却一致|without prior agreement||大家不约而同地笑了起来。
+不言而喻|bù yán ér yù|不用说就明白|it goes without saying||健康的重要性不言而喻。
+不计其数|bù jì qí shù|数量极多，数不过来|too many to count||夜空中的星星不计其数。
+不劳而获|bù láo ér huò|自己不劳动而占有成果|to reap without sowing||不劳而获的想法是错误的。
+不由自主|bù yóu zì zhǔ|控制不住自己|in spite of oneself||听到音乐，他不由自主地跳了起来。
+不闻不问|bù wén bù wèn|不关心，不过问|to be indifferent||对孩子的学习不能不闻不问。
+不知所措|bù zhī suǒ cuò|不知道怎么办才好|at a loss||突然被点名，他不知所措。
+不假思索|bù jiǎ sī suǒ|不经思考就做出反应|without hesitation||他不假思索地回答了问题。
+不可开交|bù kě kāi jiāo|忙得无法摆脱|terribly busy||年底大家都忙得不可开交。
+争先恐后|zhēng xiān kǒng hòu|抢着向前，怕落在后面|to strive to be first||同学们争先恐后地举手发言。
+恍然大悟|huǎng rán dà wù|一下子明白过来|to suddenly realise||听了老师的解释，我恍然大悟。
+聚精会神|jù jīng huì shén|集中注意力|with rapt attention||同学们聚精会神地听讲。
+全神贯注|quán shén guàn zhù|注意力高度集中|totally absorbed||他全神贯注地看着棋盘。
+迫不及待|pò bù jí dài|急得不能再等|unable to wait||放学后，他迫不及待地打开礼物。
+依依不舍|yī yī bù shě|舍不得离开|reluctant to part||毕业时，大家依依不舍。
+念念不忘|niàn niàn bù wàng|一直记在心里|to keep in mind constantly||他对家乡的小吃念念不忘。
+滔滔不绝|tāo tāo bù jué|话很多，说个不停|to talk on and on||一说起足球，他就滔滔不绝。
+络绎不绝|luò yì bù jué|来往的人或车接连不断|in an endless stream||来参观的游客络绎不绝。
+川流不息|chuān liú bù xī|行人车马来往不断|a constant flow||马路上的车辆川流不息。
+赞不绝口|zàn bù jué kǒu|不住口地称赞|to praise endlessly||客人对妈妈做的菜赞不绝口。
+目瞪口呆|mù dèng kǒu dāi|吃惊得说不出话|struck dumb with surprise||看完表演，观众都目瞪口呆。
+眉开眼笑|méi kāi yǎn xiào|非常高兴的样子|beaming with joy||听说要放假了，他眉开眼笑。
+喜出望外|xǐ chū wàng wài|遇到意想不到的喜事而高兴|overjoyed at the unexpected||收到礼物，她喜出望外。
+欢天喜地|huān tiān xǐ dì|非常高兴|wild with joy||孩子们欢天喜地地过新年。
+捧腹大笑|pěng fù dà xiào|捧着肚子大笑|to split one's sides laughing||这个笑话让大家捧腹大笑。
+哭笑不得|kū xiào bù dé|又好气又好笑|not knowing whether to laugh or cry||他的回答让人哭笑不得。
+心花怒放|xīn huā nù fàng|心里高兴极了|bursting with happiness||听到好消息，她心花怒放。
+心平气和|xīn píng qì hé|心情平静，态度温和|calm and good-tempered||有问题要心平气和地谈。
+心满意足|xīn mǎn yì zú|非常满足|perfectly content||吃完大餐，他心满意足地回家了。
+心甘情愿|xīn gān qíng yuàn|完全愿意|perfectly willing||为了家人，他心甘情愿地吃苦。
+提心吊胆|tí xīn diào dǎn|十分担心害怕|on edge||走夜路时，她总是提心吊胆。
+震耳欲聋|zhèn ěr yù lóng|声音大得耳朵快震聋|loud enough to deafen||除夕夜的鞭炮声震耳欲聋。
+鸦雀无声|yā què wú shēng|非常安静|dead silence||老师走进来，教室里鸦雀无声。
+一声不吭|yī shēng bù kēng|一句话也不说|without a word||他一声不吭地走了出去。
+面红耳赤|miàn hóng ěr chì|脸和耳朵都红了|flushed in the face||两个人争得面红耳赤。
+气喘吁吁|qì chuǎn xū xū|呼吸急促，大口喘气|out of breath||他跑到车站，累得气喘吁吁。
+筋疲力尽|jīn pí lì jìn|非常疲劳，没有力气|completely worn out||爬完山，大家都筋疲力尽了。
+狼吞虎咽|láng tūn hǔ yàn|吃东西又猛又急|to wolf down one's food||他饿坏了，狼吞虎咽地吃完了饭。
+手舞足蹈|shǒu wǔ zú dǎo|高兴得手脚跳动|to dance for joy||孩子们高兴得手舞足蹈。
+东奔西走|dōng bēn xī zǒu|到处奔走|to rush about||为了这件事，他东奔西走。
+走马观花|zǒu mǎ guān huā|粗略地看一看|to take a cursory look||旅游不要走马观花。
+跃跃欲试|yuè yuè yù shì|急切地想试一试|eager to try||看到新游戏，大家都跃跃欲试。
+笨鸟先飞|bèn niǎo xiān fēi|能力差的人提早行动|the slow bird sets off early||我基础差，就笨鸟先飞，早点复习。
+熟能生巧|shú néng shēng qiǎo|熟练了就能找到窍门|practice makes perfect|卖油翁把油从铜钱孔里倒进葫芦，铜钱不沾一点油，他说只是手熟罢了。|弹琴要多练，熟能生巧。
+持之以恒|chí zhī yǐ héng|长久坚持下去|to persevere||学外语要持之以恒。
+坚持不懈|jiān chí bù xiè|坚持到底，不松懈|to keep going without letting up||他坚持不懈地练习跑步。
+再接再厉|zài jiē zài lì|继续努力，再加把劲|to keep up the good work||这次考得不错，要再接再厉。
+精益求精|jīng yì qiú jīng|好了还要更好|to keep improving||老师傅做活总是精益求精。
+勤勤恳恳|qín qín kěn kěn|勤劳踏实|diligent and conscientious||他勤勤恳恳地工作了二十年。
+脚踏实地|jiǎo tà shí dì|做事踏实认真|with one's feet on the ground||学习要脚踏实地，一步一步来。
+实事求是|shí shì qiú shì|从实际出发，说真话|to seek truth from facts||做调查一定要实事求是。
+名副其实|míng fù qí shí|名声和实际相符|worthy of the name||他是名副其实的好老师。
+有声有色|yǒu shēng yǒu sè|形容表现得生动|vivid and lively||他把故事讲得有声有色。
+有说有笑|yǒu shuō yǒu xiào|又说又笑，很融洽|chatting and laughing||大家有说有笑地走进教室。
+有始有终|yǒu shǐ yǒu zhōng|做事坚持到底|to finish what one starts||做事要有始有终。
+有条不紊|yǒu tiáo bù wěn|有条理，一点不乱|in an orderly way||他有条不紊地安排着工作。
+栩栩如生|xǔ xǔ rú shēng|形象逼真，像活的一样|true to life||画上的小鸟栩栩如生。
+绘声绘色|huì shēng huì sè|叙述描写生动逼真|vividly told||奶奶绘声绘色地讲着故事。
+引人入胜|yǐn rén rù shèng|吸引人，很有意思|absorbing, gripping||这本小说的情节引人入胜。
+美不胜收|měi bù shèng shōu|美好的东西太多，看不过来|too beautiful to take in||秋天的山谷美不胜收。
+山清水秀|shān qīng shuǐ xiù|山水风景优美|picturesque scenery||我的家乡山清水秀。
+鸟语花香|niǎo yǔ huā xiāng|鸟叫花香，春天的景象|birdsong and fragrant flowers||春天的公园鸟语花香。
+风和日丽|fēng hé rì lì|风很温和，阳光明媚|sunny and breezy||今天风和日丽，适合去郊游。
+春暖花开|chūn nuǎn huā kāi|春天温暖，鲜花盛开|warm spring, flowers in bloom||春暖花开的时候，我们去踏青。
+冰天雪地|bīng tiān xuě dì|到处是冰雪，非常寒冷|a world of ice and snow||北方的冬天冰天雪地。
+狂风暴雨|kuáng fēng bào yǔ|又大又猛的风雨|a violent storm||昨天夜里下了一场狂风暴雨。
+倾盆大雨|qīng pén dà yǔ|雨下得非常大|pouring rain||放学时突然下起了倾盆大雨。
+日新月异|rì xīn yuè yì|变化快，不断出新|changing with each passing day||科技的发展日新月异。
+光阴似箭|guāng yīn sì jiàn|时间过得很快|time flies||光阴似箭，转眼一年过去了。
+争分夺秒|zhēng fēn duó miǎo|抓紧每一点时间|to race against time||医生争分夺秒地抢救病人。
+早出晚归|zǎo chū wǎn guī|很早出门，很晚回来|to leave early and return late||爸爸每天早出晚归，非常辛苦。
+家喻户晓|jiā yù hù xiǎo|每家每户都知道|known to everyone||这个故事家喻户晓。
+众所周知|zhòng suǒ zhōu zhī|大家都知道|as everyone knows||众所周知，地球是圆的。
+同心协力|tóng xīn xié lì|团结一致，共同努力|to work together||大家同心协力，完成了任务。
+助人为乐|zhù rén wéi lè|把帮助别人当作快乐|to take pleasure in helping others||他助人为乐，大家都喜欢他。
+拾金不昧|shí jīn bù mèi|捡到钱物不据为己有|to return lost property||小明拾金不昧，受到了表扬。
+尊老爱幼|zūn lǎo ài yòu|尊敬老人，爱护孩子|respect the old, care for the young||尊老爱幼是中华民族的美德。
+彬彬有礼|bīn bīn yǒu lǐ|文雅有礼貌|refined and polite||他对每个人都彬彬有礼。
+和蔼可亲|hé ǎi kě qīn|态度温和，容易亲近|kindly and approachable||我们的校长和蔼可亲。
+平易近人|píng yì jìn rén|态度谦和，容易接近|friendly and approachable||这位老作家平易近人。
+形影不离|xíng yǐng bù lí|像身体和影子，总在一起|always together||她们俩从小形影不离。
+取长补短|qǔ cháng bǔ duǎn|吸取长处，弥补短处|to learn from others' strengths||同学之间要取长补短。
+各种各样|gè zhǒng gè yàng|多种多样|all kinds of||商店里有各种各样的玩具。
+五花八门|wǔ huā bā mén|花样多，变化多|of every kind||市场上的商品五花八门。
+应有尽有|yīng yǒu jìn yǒu|该有的都有了|everything one could wish for||超市里的东西应有尽有。
+琳琅满目|lín láng mǎn mù|美好的东西很多|a dazzling array||书店里的新书琳琅满目。
+丰富多彩|fēng fù duō cǎi|内容丰富，种类多|rich and varied||学校的课外活动丰富多彩。
+密密麻麻|mì mì má má|又多又密|densely packed||本子上写满了密密麻麻的字。
+成千上万|chéng qiān shàng wàn|数量非常多|thousands upon thousands||成千上万的人来看这场比赛。
+寥寥无几|liáo liáo wú jǐ|非常少|very few||下雨天，街上的行人寥寥无几。
+独一无二|dú yī wú èr|只有一个，没有相同的|one of a kind||每个人都是独一无二的。
+与众不同|yǔ zhòng bù tóng|跟大家不一样|out of the ordinary||她的打扮总是与众不同。
+异口同声|yì kǒu tóng shēng|大家说的都一样|with one voice||同学们异口同声地说：“好！”
+半信半疑|bàn xìn bàn yí|有点相信，又有点怀疑|half believing, half doubting||听了他的话，我半信半疑。
+犹豫不决|yóu yù bù jué|拿不定主意|unable to decide||他犹豫不决，不知道选哪一个。
+当机立断|dāng jī lì duàn|抓住时机，马上决定|to make a prompt decision||关键时刻，队长当机立断。
+胡思乱想|hú sī luàn xiǎng|不切实际地乱想|to let one's imagination run wild||别胡思乱想了，快睡觉吧。
+异想天开|yì xiǎng tiān kāi|想法离奇，不切实际|fanciful idea||他异想天开，想造一台时光机。
+理所当然|lǐ suǒ dāng rán|按道理应当这样|as a matter of course||帮助朋友是理所当然的。
+出人意料|chū rén yì liào|超出人们的预料|beyond all expectations||这场比赛的结果出人意料。
+迫在眉睫|pò zài méi jié|事情非常紧急|extremely urgent||考试迫在眉睫，要抓紧复习。
+前所未有|qián suǒ wèi yǒu|从来没有过|never seen before||这是一个前所未有的好机会。
+来之不易|lái zhī bù yì|得到很不容易|hard to come by||今天的幸福生活来之不易。
+得意洋洋|dé yì yáng yáng|非常得意的样子|pleased with oneself||他考了第一名，得意洋洋的。
+举一反三|jǔ yī fǎn sān|从一件事推知其他|to infer many things from one||学数学要学会举一反三。
+循序渐进|xún xù jiàn jìn|按步骤逐渐深入|step by step||学习要循序渐进，不能着急。
+物美价廉|wù měi jià lián|东西好，价钱便宜|good and cheap||这家小店的东西物美价廉。
+车水马龙|chē shuǐ mǎ lóng|车马很多，非常热闹|bustling traffic||城市的街道上车水马龙。
+热火朝天|rè huǒ cháo tiān|场面热烈，情绪高涨|in full swing||工地上一片热火朝天的景象。
+张灯结彩|zhāng dēng jié cǎi|挂灯笼、系彩带，很喜庆|decorated with lanterns||过年时家家户户张灯结彩。
+欢声笑语|huān shēng xiào yǔ|欢乐的笑声和话语|laughter and cheerful voices||教室里充满了欢声笑语。
+手足无措|shǒu zú wú cuò|慌张得不知怎么办|at a loss what to do||突然停电，大家手足无措。
+雪上加霜|xuě shàng jiā shuāng|灾难上又加灾难|to make matters worse||手机丢了，又下大雨，真是雪上加霜。
 `,
 L2: `
 卧薪尝胆|wò xīn cháng dǎn|刻苦自励，发愤图强|to endure hardship to prepare for a comeback|越王勾践战败后睡在柴草上，每天尝苦胆，提醒自己不忘耻辱，终于打败吴国。|他卧薪尝胆三年，终于考上了。
@@ -610,6 +781,176 @@ L1: `
 垂頭喪氣|chuí tóu sàng qì|情緒低落，失望|crestfallen||比賽輸了，隊員們垂頭喪氣。
 小心翼翼|xiǎo xīn yì yì|非常謹慎小心|very cautiously||他小心翼翼地捧著蛋糕。
 一石二鳥|yī shí èr niǎo|一個行動達到兩個目的|to kill two birds with one stone||這個辦法一石二鳥。
+井井有條|jǐng jǐng yǒu tiáo|條理分明，很整齊|neat and orderly||她把書桌收拾得井井有條。
+千方百計|qiān fāng bǎi jì|想盡一切辦法|by every possible means||他千方百計地幫朋友找工作。
+全心全意|quán xīn quán yì|投入全部精力和心思|with all one's heart||醫生全心全意地照顧病人。
+不慌不忙|bù huāng bù máng|從容，不著急|calmly, unhurriedly||他不慌不忙地回答了問題。
+大驚小怪|dà jīng xiǎo guài|對小事過分驚訝|to make a fuss over nothing||這點小事，不必大驚小怪。
+東張西望|dōng zhāng xī wàng|到處張望|to look around||他站在門口東張西望。
+無精打采|wú jīng dǎ cǎi|沒有精神，提不起勁|listless and low-spirited||他昨晚沒睡好，今天無精打采。
+一乾二淨|yī gān èr jìng|十分徹底，一點不剩|completely, thoroughly||他把飯菜吃得一乾二淨。
+一清二楚|yī qīng èr chǔ|非常清楚|crystal clear||這件事我記得一清二楚。
+一五一十|yī wǔ yī shí|原原本本，毫無遺漏|in full detail||他把經過一五一十地告訴了媽媽。
+一路平安|yī lù píng ān|旅途平平安安|have a safe trip||祝你一路平安，早點到家！
+一帆風順|yī fān fēng shùn|非常順利|plain sailing||祝你新的一年一帆風順。
+萬事如意|wàn shì rú yì|一切都順心|may all go well||祝您新年快樂，萬事如意。
+十全十美|shí quán shí měi|完美，沒有缺點|perfect in every way||世上沒有十全十美的人。
+一無所知|yī wú suǒ zhī|什麼都不知道|to know nothing at all||我對這件事一無所知。
+一無所有|yī wú suǒ yǒu|什麼都沒有|to have nothing at all||他剛來城市時一無所有。
+一事無成|yī shì wú chéng|什麼事都沒做成|to accomplish nothing||光想不做，最後只會一事無成。
+一絲不苟|yī sī bù gǒu|做事認真細緻，毫不馬虎|careful down to the last detail||王老師批改作業一絲不苟。
+一動不動|yī dòng bù dòng|完全不動|perfectly still||小貓一動不動地趴在窗臺上。
+一言一行|yī yán yī xíng|每句話和每個行動|every word and deed||父母的一言一行都影響著孩子。
+一針見血|yī zhēn jiàn xiě|說話直接說中要害|to hit the nail on the head||他的評論一針見血。
+一目瞭然|yī mù liǎo rán|一眼就看清楚|clear at a glance||這張圖表讓數據一目瞭然。
+一日千里|yī rì qiān lǐ|進步或發展極快|to progress by leaps and bounds||這座城市的變化一日千里。
+一本正經|yī běn zhèng jīng|態度莊重，很嚴肅|in all seriousness||他一本正經地講了個笑話。
+一毛不拔|yī máo bù bá|非常小氣|too stingy to give a thing||他一毛不拔，從來不請客。
+一言為定|yī yán wéi dìng|說定了，不再改變|it's a deal||明天八點見，一言為定！
+一知半解|yī zhī bàn jiě|知道得不全面，不透徹|superficial understanding||對這個問題，我只是一知半解。
+三言兩語|sān yán liǎng yǔ|幾句話|in a few words||這件事三言兩語說不清楚。
+三番五次|sān fān wǔ cì|很多次|again and again||我三番五次地提醒他帶傘。
+七嘴八舌|qī zuǐ bā shé|人多嘴雜，說法不一|everyone talking at once||同學們七嘴八舌地討論起來。
+五湖四海|wǔ hú sì hǎi|全國各地|from all corners of the land||我們班的同學來自五湖四海。
+四通八達|sì tōng bā dá|道路通向各處，交通便利|accessible from all directions||這座城市的交通四通八達。
+千言萬語|qiān yán wàn yǔ|很多很多的話|countless words||千言萬語也說不完我對你的感謝。
+千變萬化|qiān biàn wàn huà|變化極多|endlessly changing||天上的雲千變萬化。
+千家萬戶|qiān jiā wàn hù|很多人家|countless households||春節時千家萬戶都貼春聯。
+萬紫千紅|wàn zǐ qiān hóng|百花盛開，色彩豔麗|a riot of colour||春天的公園萬紫千紅。
+萬眾一心|wàn zhòng yī xīn|大家團結一致|united as one||大家萬眾一心，戰勝了洪水。
+百發百中|bǎi fā bǎi zhòng|每次都射中；做事很有把握|to hit the target every time|楚國的養由基能在百步外射中柳葉，百發百中。|他投籃幾乎百發百中。
+百花齊放|bǎi huā qí fàng|各種花一起開放；形容繁榮|a hundred flowers bloom||春天到了，校園裡百花齊放。
+大名鼎鼎|dà míng dǐng dǐng|名氣很大|very famous||他是一位大名鼎鼎的作家。
+大同小異|dà tóng xiǎo yì|大體相同，略有差別|much the same||這兩種手機大同小異。
+大街小巷|dà jiē xiǎo xiàng|城市裡的各處街道|streets and lanes everywhere||過年時大街小巷都掛滿了燈籠。
+大吃一驚|dà chī yī jīng|非常吃驚|greatly surprised||聽到這個消息，我大吃一驚。
+小題大做|xiǎo tí dà zuò|把小事當大事處理|to make a mountain out of a molehill||只是遲到一分鐘，別小題大做。
+自由自在|zì yóu zì zài|無拘無束，很自在|free and easy||魚兒在水裡自由自在地遊。
+自作自受|zì zuò zì shòu|自己做錯事自己承受後果|to reap what one sows||不聽勸告，結果自作自受。
+自以為是|zì yǐ wéi shì|認為自己總是對的|thinking one is always right||他太自以為是，聽不進意見。
+自強不息|zì qiáng bù xī|自己努力向上，永不停止|to strive ceaselessly||我們要自強不息，努力學習。
+無憂無慮|wú yōu wú lǜ|沒有任何憂愁|free from all worries||小時候的生活無憂無慮。
+無影無蹤|wú yǐng wú zōng|完全消失，找不到|without a trace||小偷跑得無影無蹤。
+無微不至|wú wēi bù zhì|關懷照顧得非常周到|meticulously caring||媽媽對我們的照顧無微不至。
+無能為力|wú néng wéi lì|沒有能力去做|unable to do anything||這件事我也無能為力。
+無邊無際|wú biān wú jì|非常廣闊，看不到邊|stretching without end||無邊無際的大草原真美。
+無所事事|wú suǒ shì shì|什麼事也不做，閒著|to idle about||放假了，他整天無所事事。
+無可奈何|wú kě nài hé|沒有辦法，只好這樣|to have no choice||他無可奈何地嘆了口氣。
+不可思議|bù kě sī yì|難以想像，很難理解|hard to believe||這個魔術真是不可思議。
+不知不覺|bù zhī bù jué|沒有察覺到|before one knows it||不知不覺，天已經黑了。
+不約而同|bù yuē ér tóng|事先沒商量，做法卻一致|without prior agreement||大家不約而同地笑了起來。
+不言而喻|bù yán ér yù|不用說就明白|it goes without saying||健康的重要性不言而喻。
+不計其數|bù jì qí shù|數量極多，數不過來|too many to count||夜空中的星星不計其數。
+不勞而獲|bù láo ér huò|自己不勞動而佔有成果|to reap without sowing||不勞而獲的想法是錯誤的。
+不由自主|bù yóu zì zhǔ|控制不住自己|in spite of oneself||聽到音樂，他不由自主地跳了起來。
+不聞不問|bù wén bù wèn|不關心，不過問|to be indifferent||對孩子的學習不能不聞不問。
+不知所措|bù zhī suǒ cuò|不知道怎麼辦才好|at a loss||突然被點名，他不知所措。
+不假思索|bù jiǎ sī suǒ|不經思考就做出反應|without hesitation||他不假思索地回答了問題。
+不可開交|bù kě kāi jiāo|忙得無法擺脫|terribly busy||年底大家都忙得不可開交。
+爭先恐後|zhēng xiān kǒng hòu|搶著向前，怕落在後面|to strive to be first||同學們爭先恐後地舉手發言。
+恍然大悟|huǎng rán dà wù|一下子明白過來|to suddenly realise||聽了老師的解釋，我恍然大悟。
+聚精會神|jù jīng huì shén|集中注意力|with rapt attention||同學們聚精會神地聽講。
+全神貫注|quán shén guàn zhù|注意力高度集中|totally absorbed||他全神貫注地看著棋盤。
+迫不及待|pò bù jí dài|急得不能再等|unable to wait||放學後，他迫不及待地打開禮物。
+依依不捨|yī yī bù shě|捨不得離開|reluctant to part||畢業時，大家依依不捨。
+念念不忘|niàn niàn bù wàng|一直記在心裡|to keep in mind constantly||他對家鄉的小吃念念不忘。
+滔滔不絕|tāo tāo bù jué|話很多，說個不停|to talk on and on||一說起足球，他就滔滔不絕。
+絡繹不絕|luò yì bù jué|來往的人或車接連不斷|in an endless stream||來參觀的遊客絡繹不絕。
+川流不息|chuān liú bù xī|行人車馬來往不斷|a constant flow||馬路上的車輛川流不息。
+讚不絕口|zàn bù jué kǒu|不住口地稱讚|to praise endlessly||客人對媽媽做的菜讚不絕口。
+目瞪口呆|mù dèng kǒu dāi|吃驚得說不出話|struck dumb with surprise||看完表演，觀眾都目瞪口呆。
+眉開眼笑|méi kāi yǎn xiào|非常高興的樣子|beaming with joy||聽說要放假了，他眉開眼笑。
+喜出望外|xǐ chū wàng wài|遇到意想不到的喜事而高興|overjoyed at the unexpected||收到禮物，她喜出望外。
+歡天喜地|huān tiān xǐ dì|非常高興|wild with joy||孩子們歡天喜地地過新年。
+捧腹大笑|pěng fù dà xiào|捧著肚子大笑|to split one's sides laughing||這個笑話讓大家捧腹大笑。
+哭笑不得|kū xiào bù dé|又好氣又好笑|not knowing whether to laugh or cry||他的回答讓人哭笑不得。
+心花怒放|xīn huā nù fàng|心裡高興極了|bursting with happiness||聽到好消息，她心花怒放。
+心平氣和|xīn píng qì hé|心情平靜，態度溫和|calm and good-tempered||有問題要心平氣和地談。
+心滿意足|xīn mǎn yì zú|非常滿足|perfectly content||吃完大餐，他心滿意足地回家了。
+心甘情願|xīn gān qíng yuàn|完全願意|perfectly willing||為了家人，他心甘情願地吃苦。
+提心吊膽|tí xīn diào dǎn|十分擔心害怕|on edge||走夜路時，她總是提心吊膽。
+震耳欲聾|zhèn ěr yù lóng|聲音大得耳朵快震聾|loud enough to deafen||除夕夜的鞭炮聲震耳欲聾。
+鴉雀無聲|yā què wú shēng|非常安靜|dead silence||老師走進來，教室裡鴉雀無聲。
+一聲不吭|yī shēng bù kēng|一句話也不說|without a word||他一聲不吭地走了出去。
+面紅耳赤|miàn hóng ěr chì|臉和耳朵都紅了|flushed in the face||兩個人爭得面紅耳赤。
+氣喘吁吁|qì chuǎn xū xū|呼吸急促，大口喘氣|out of breath||他跑到車站，累得氣喘吁吁。
+筋疲力盡|jīn pí lì jìn|非常疲勞，沒有力氣|completely worn out||爬完山，大家都筋疲力盡了。
+狼吞虎嚥|láng tūn hǔ yàn|吃東西又猛又急|to wolf down one's food||他餓壞了，狼吞虎嚥地吃完了飯。
+手舞足蹈|shǒu wǔ zú dǎo|高興得手腳跳動|to dance for joy||孩子們高興得手舞足蹈。
+東奔西走|dōng bēn xī zǒu|到處奔走|to rush about||為了這件事，他東奔西走。
+走馬觀花|zǒu mǎ guān huā|粗略地看一看|to take a cursory look||旅遊不要走馬觀花。
+躍躍欲試|yuè yuè yù shì|急切地想試一試|eager to try||看到新遊戲，大家都躍躍欲試。
+笨鳥先飛|bèn niǎo xiān fēi|能力差的人提早行動|the slow bird sets off early||我基礎差，就笨鳥先飛，早點複習。
+熟能生巧|shú néng shēng qiǎo|熟練了就能找到竅門|practice makes perfect|賣油翁把油從銅錢孔裡倒進葫蘆，銅錢不沾一點油，他說只是手熟罷了。|彈琴要多練，熟能生巧。
+持之以恆|chí zhī yǐ héng|長久堅持下去|to persevere||學外語要持之以恆。
+堅持不懈|jiān chí bù xiè|堅持到底，不鬆懈|to keep going without letting up||他堅持不懈地練習跑步。
+再接再厲|zài jiē zài lì|繼續努力，再加把勁|to keep up the good work||這次考得不錯，要再接再厲。
+精益求精|jīng yì qiú jīng|好了還要更好|to keep improving||老師傅做活總是精益求精。
+勤勤懇懇|qín qín kěn kěn|勤勞踏實|diligent and conscientious||他勤勤懇懇地工作了二十年。
+腳踏實地|jiǎo tà shí dì|做事踏實認真|with one's feet on the ground||學習要腳踏實地，一步一步來。
+實事求是|shí shì qiú shì|從實際出發，說真話|to seek truth from facts||做調查一定要實事求是。
+名副其實|míng fù qí shí|名聲和實際相符|worthy of the name||他是名副其實的好老師。
+有聲有色|yǒu shēng yǒu sè|形容表現得生動|vivid and lively||他把故事講得有聲有色。
+有說有笑|yǒu shuō yǒu xiào|又說又笑，很融洽|chatting and laughing||大家有說有笑地走進教室。
+有始有終|yǒu shǐ yǒu zhōng|做事堅持到底|to finish what one starts||做事要有始有終。
+有條不紊|yǒu tiáo bù wěn|有條理，一點不亂|in an orderly way||他有條不紊地安排著工作。
+栩栩如生|xǔ xǔ rú shēng|形象逼真，像活的一樣|true to life||畫上的小鳥栩栩如生。
+繪聲繪色|huì shēng huì sè|敘述描寫生動逼真|vividly told||奶奶繪聲繪色地講著故事。
+引人入勝|yǐn rén rù shèng|吸引人，很有意思|absorbing, gripping||這本小說的情節引人入勝。
+美不勝收|měi bù shèng shōu|美好的東西太多，看不過來|too beautiful to take in||秋天的山谷美不勝收。
+山清水秀|shān qīng shuǐ xiù|山水風景優美|picturesque scenery||我的家鄉山清水秀。
+鳥語花香|niǎo yǔ huā xiāng|鳥叫花香，春天的景象|birdsong and fragrant flowers||春天的公園鳥語花香。
+風和日麗|fēng hé rì lì|風很溫和，陽光明媚|sunny and breezy||今天風和日麗，適合去郊遊。
+春暖花開|chūn nuǎn huā kāi|春天溫暖，鮮花盛開|warm spring, flowers in bloom||春暖花開的時候，我們去踏青。
+冰天雪地|bīng tiān xuě dì|到處是冰雪，非常寒冷|a world of ice and snow||北方的冬天冰天雪地。
+狂風暴雨|kuáng fēng bào yǔ|又大又猛的風雨|a violent storm||昨天夜裡下了一場狂風暴雨。
+傾盆大雨|qīng pén dà yǔ|雨下得非常大|pouring rain||放學時突然下起了傾盆大雨。
+日新月異|rì xīn yuè yì|變化快，不斷出新|changing with each passing day||科技的發展日新月異。
+光陰似箭|guāng yīn sì jiàn|時間過得很快|time flies||光陰似箭，轉眼一年過去了。
+爭分奪秒|zhēng fēn duó miǎo|抓緊每一點時間|to race against time||醫生爭分奪秒地搶救病人。
+早出晚歸|zǎo chū wǎn guī|很早出門，很晚回來|to leave early and return late||爸爸每天早出晚歸，非常辛苦。
+家喻戶曉|jiā yù hù xiǎo|每家每戶都知道|known to everyone||這個故事家喻戶曉。
+眾所周知|zhòng suǒ zhōu zhī|大家都知道|as everyone knows||眾所周知，地球是圓的。
+同心協力|tóng xīn xié lì|團結一致，共同努力|to work together||大家同心協力，完成了任務。
+助人為樂|zhù rén wéi lè|把幫助別人當作快樂|to take pleasure in helping others||他助人為樂，大家都喜歡他。
+拾金不昧|shí jīn bù mèi|撿到錢物不據為己有|to return lost property||小明拾金不昧，受到了表揚。
+尊老愛幼|zūn lǎo ài yòu|尊敬老人，愛護孩子|respect the old, care for the young||尊老愛幼是中華民族的美德。
+彬彬有禮|bīn bīn yǒu lǐ|文雅有禮貌|refined and polite||他對每個人都彬彬有禮。
+和藹可親|hé ǎi kě qīn|態度溫和，容易親近|kindly and approachable||我們的校長和藹可親。
+平易近人|píng yì jìn rén|態度謙和，容易接近|friendly and approachable||這位老作家平易近人。
+形影不離|xíng yǐng bù lí|像身體和影子，總在一起|always together||她們倆從小形影不離。
+取長補短|qǔ cháng bǔ duǎn|吸取長處，彌補短處|to learn from others' strengths||同學之間要取長補短。
+各種各樣|gè zhǒng gè yàng|多種多樣|all kinds of||商店裡有各種各樣的玩具。
+五花八門|wǔ huā bā mén|花樣多，變化多|of every kind||市場上的商品五花八門。
+應有盡有|yīng yǒu jìn yǒu|該有的都有了|everything one could wish for||超市裡的東西應有盡有。
+琳琅滿目|lín láng mǎn mù|美好的東西很多|a dazzling array||書店裡的新書琳琅滿目。
+豐富多彩|fēng fù duō cǎi|內容豐富，種類多|rich and varied||學校的課外活動豐富多彩。
+密密麻麻|mì mì má má|又多又密|densely packed||本子上寫滿了密密麻麻的字。
+成千上萬|chéng qiān shàng wàn|數量非常多|thousands upon thousands||成千上萬的人來看這場比賽。
+寥寥無幾|liáo liáo wú jǐ|非常少|very few||下雨天，街上的行人寥寥無幾。
+獨一無二|dú yī wú èr|只有一個，沒有相同的|one of a kind||每個人都是獨一無二的。
+與眾不同|yǔ zhòng bù tóng|跟大家不一樣|out of the ordinary||她的打扮總是與眾不同。
+異口同聲|yì kǒu tóng shēng|大家說的都一樣|with one voice||同學們異口同聲地說：“好！”
+半信半疑|bàn xìn bàn yí|有點相信，又有點懷疑|half believing, half doubting||聽了他的話，我半信半疑。
+猶豫不決|yóu yù bù jué|拿不定主意|unable to decide||他猶豫不決，不知道選哪一個。
+當機立斷|dāng jī lì duàn|抓住時機，馬上決定|to make a prompt decision||關鍵時刻，隊長當機立斷。
+胡思亂想|hú sī luàn xiǎng|不切實際地亂想|to let one's imagination run wild||別胡思亂想了，快睡覺吧。
+異想天開|yì xiǎng tiān kāi|想法離奇，不切實際|fanciful idea||他異想天開，想造一臺時光機。
+理所當然|lǐ suǒ dāng rán|按道理應當這樣|as a matter of course||幫助朋友是理所當然的。
+出人意料|chū rén yì liào|超出人們的預料|beyond all expectations||這場比賽的結果出人意料。
+迫在眉睫|pò zài méi jié|事情非常緊急|extremely urgent||考試迫在眉睫，要抓緊複習。
+前所未有|qián suǒ wèi yǒu|從來沒有過|never seen before||這是一個前所未有的好機會。
+來之不易|lái zhī bù yì|得到很不容易|hard to come by||今天的幸福生活來之不易。
+得意洋洋|dé yì yáng yáng|非常得意的樣子|pleased with oneself||他考了第一名，得意洋洋的。
+舉一反三|jǔ yī fǎn sān|從一件事推知其他|to infer many things from one||學數學要學會舉一反三。
+循序漸進|xún xù jiàn jìn|按步驟逐漸深入|step by step||學習要循序漸進，不能著急。
+物美價廉|wù měi jià lián|東西好，價錢便宜|good and cheap||這家小店的東西物美價廉。
+車水馬龍|chē shuǐ mǎ lóng|車馬很多，非常熱鬧|bustling traffic||城市的街道上車水馬龍。
+熱火朝天|rè huǒ cháo tiān|場面熱烈，情緒高漲|in full swing||工地上一片熱火朝天的景象。
+張燈結綵|zhāng dēng jié cǎi|掛燈籠、系綵帶，很喜慶|decorated with lanterns||過年時家家戶戶張燈結綵。
+歡聲笑語|huān shēng xiào yǔ|歡樂的笑聲和話語|laughter and cheerful voices||教室裡充滿了歡聲笑語。
+手足無措|shǒu zú wú cuò|慌張得不知怎麼辦|at a loss what to do||突然停電，大家手足無措。
+雪上加霜|xuě shàng jiā shuāng|災難上又加災難|to make matters worse||手機丟了，又下大雨，真是雪上加霜。
 `,
 L2: `
 臥薪嘗膽|wò xīn cháng dǎn|刻苦自勵，發憤圖強|to endure hardship to prepare for a comeback|越王勾踐戰敗後睡在柴草上，每天嘗苦膽，提醒自己不忘恥辱，終於打敗吳國。|他臥薪嘗膽三年，終於考上了。
@@ -845,6 +1186,7 @@ const ACT = {
   setLv: a => { S.lv = a; save(); App.deck = []; renderCard(); }, shuffle: () => { App.deck = shuffle(App.deck); App.idx = 0; renderCard(); },
   star: () => { const k = App.deck[App.idx]; if (!k) return; const m = meta(k); m.saved = !m.saved; save(); $('fcStar').style.color = m.saved ? '#F59E0B' : ''; },
   starKey: k => { const m = meta(k); m.saved = !m.saved; save(); renderList(); },
+  sayFront: () => { const it = byKey(App.deck[App.idx]); if (it) Voice.say(it.w); },
   say: () => { const it = byKey(App.deck[App.idx]); if (it) Voice.say(it.w + '。' + it.mean); }, sayW: w => Voice.say(w), sayStory: k => { const it = byKey(k); if (it) Voice.say(it.story); },
   mcAns, mcNext,
   toggleScript: () => { S.script = T() ? 's' : 't'; save(); try { if (window.FBL && /^zh/.test(FBL.get() || '')) FBL.set(T() ? 'zh-Hant' : 'zh'); } catch (e) {} words(); go(App.tab); },
@@ -857,6 +1199,10 @@ $('listQ').addEventListener('input', renderList);
 window.FBL_GET = () => T() ? 'zh-Hant' : 'zh';
 window.FBL_SET = l => { S.script = l === 'zh-Hant' ? 't' : 's'; save(); words(); go(App.tab); };
 setupSwipe(); applyTheme(); words(); go('cards');
+if (window.VK) {
+  VK.micNow = () => { const it = byKey(App.deck[App.idx]); return it ? { text: it.w, speak: () => Voice.say(it.w) } : null; };
+  VK.sync({ room: 'chengyu', words: () => S.mine || [], setWords: arr => { S.mine = arr.filter(m => m && m.w); save(); }, meta: () => S.meta, setMeta: o => { S.meta = o; save(); }, refresh: () => { App.deck = []; go(App.tab); } });
+}
 
 </script>
 </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=615d6db739"></script><script src="../vk.js?v=4"></script><script src="./ui.js?v=2"></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=8ed2d0134e"></script><script src="../vk.js?v=5"></script><script src="./ui.js?v=3"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FBF9F5" id="metaTheme">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -326,7 +326,7 @@
     @media (orientation:landscape) and (max-height:520px) { .scene { height:240px; } .term { font-size:30px; } :root { --tab-h:54px; } .tab span { display:none; } }
     @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
   </style>
-<link rel="stylesheet" href="../vk.css?v=3">
+<link rel="stylesheet" href="../vk.css?v=4">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -417,7 +417,7 @@
               <span class="tag" id="fcGram"></span>
               <div class="row" style="gap:2px">
                 <button class="icon-btn" data-act="toggleSaveCard" id="fcStar" aria-label="Guardar"><svg class="ic"><use href="#i-star"/></svg></button>
-                <button class="icon-btn" data-act="speakFront" aria-label="Pronunciar"><svg class="ic"><use href="#i-volume-2"/></svg></button>
+                <button class="icon-btn" data-act="speakFront" aria-label="Pronunciar"><svg class="ic"><use href="#i-volume-2"/></svg></button><button class="icon-btn vk-micbtn" data-vk="mic" aria-label="Say it yourself"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg></button>
               </div>
             </div>
             <div class="face-mid">
@@ -653,7 +653,7 @@
 /* ==============================================================
    CONFIGURACIÓN — Cloudflare Worker + D1
    ============================================================== */
-const API_BASE = 'https://esp-vocab-api.enzowmeng.workers.dev';
+const API_BASE = '';   /* the old shared list; sync now goes through ☁ (VK.sync, one key per device) */
 
 /* Conjugaciones verificadas (102 verbos, A1–C1). Formato: inf|en|nivel|participio|gerundio|pres|indef|imperf|fut|cond|subj.pres|subj.imp(-ra)|imperativo(tú,usted,nos.,vos.,ustedes). "~" = raíz. */
 const VERB_DATA = `
@@ -796,7 +796,178 @@ mucho/a|a lot (of), much|Hay mucha gente en la plaza.
 el desayuno|breakfast|El desayuno está listo.
 la hora|hour; time (clock)|¿Qué hora es?
 el hermano / la hermana|brother / sister|Mi hermano tiene veinte años.
-la semana|week|Voy al gimnasio tres veces por semana.`,
+la semana|week|Voy al gimnasio tres veces por semana.
+hola|hello, hi|Hola, ¿qué tal estás?
+adiós|goodbye|Adiós, hasta el lunes.
+buenos días|good morning|Buenos días, ¿cómo está usted?
+buenas tardes|good afternoon|Buenas tardes, quiero un café.
+buenas noches|good evening, good night|Buenas noches, me voy a dormir.
+por favor|please|Un vaso de agua, por favor.
+gracias|thank you|Muchas gracias por la ayuda.
+perdón|sorry, excuse me|Perdón, ¿dónde está la estación?
+hasta luego|see you later|Me voy al trabajo, hasta luego.
+el padre|father|Mi padre trabaja en un banco.
+la madre|mother|Mi madre se llama Carmen.
+el hijo / la hija|son / daughter|Su hija tiene cinco años.
+el abuelo / la abuela|grandfather / grandmother|Mi abuela hace una tortilla muy rica.
+el marido|husband|Su marido es profesor.
+la mujer|woman; wife|Esa mujer es mi vecina.
+el hombre|man|El hombre lleva un sombrero.
+el niño / la niña|boy / girl, child|Los niños juegan en el parque.
+el chico / la chica|boy / girl, young person|La chica de la tienda es muy simpática.
+el novio / la novia|boyfriend / girlfriend|Mi novia es de Granada.
+la gente|people|La gente es muy amable aquí.
+el nombre|name|¿Cuál es tu nombre?
+la persona|person|Hay cuatro personas en la cola.
+la cabeza|head|Me duele la cabeza.
+la mano|hand|Lávate las manos antes de comer.
+el pie|foot|Voy al colegio a pie.
+el ojo|eye|Tiene los ojos verdes.
+la boca|mouth|Abre la boca, por favor.
+el pelo|hair|Mi hermana tiene el pelo largo.
+el pan|bread|Compro pan todas las mañanas.
+la leche|milk|Quiero un café con leche.
+el café|coffee; café|Tomo un café después de comer.
+el vino|wine|Pedimos una botella de vino tinto.
+la cerveza|beer|Una cerveza bien fría, por favor.
+la fruta|fruit|Como fruta todos los días.
+el huevo|egg|Quiero dos huevos fritos.
+la carne|meat|No como carne los lunes.
+el pescado|fish (food)|El pescado está muy fresco hoy.
+el queso|cheese|Me gusta mucho el queso manchego.
+el arroz|rice|La paella lleva arroz.
+la cena|dinner|La cena es a las nueve.
+el plato|plate, dish|El plato está en la mesa.
+el vaso|glass (for drinking)|Necesito un vaso limpio.
+el restaurante|restaurant|Este restaurante es muy bueno.
+la cocina|kitchen; cooking|Mi madre está en la cocina.
+el baño|bathroom|¿Dónde está el baño, por favor?
+el dormitorio|bedroom|Mi dormitorio es muy luminoso.
+la habitación|room|El hotel tiene veinte habitaciones.
+la puerta|door|Cierra la puerta, por favor.
+la ventana|window|Abre la ventana, hace calor.
+la cama|bed|La cama es muy cómoda.
+la silla|chair|Hay una silla al lado de la ventana.
+el piso|flat, apartment; floor|Vivo en un piso pequeño.
+la llave|key|No encuentro la llave de casa.
+el salón|living room|Vemos la tele en el salón.
+el colegio|school|Mis hijos van al colegio en autobús.
+el hospital|hospital|El hospital está en el centro.
+el banco|bank; bench|El banco cierra a las dos.
+el supermercado|supermarket|Voy al supermercado el sábado.
+el mercado|market|Compro fruta en el mercado.
+la playa|beach|En verano vamos a la playa.
+el parque|park|Paseo con mi perro en el parque.
+la plaza|square (town)|Hay una fuente en la plaza.
+el hotel|hotel|El hotel está cerca de la playa.
+la estación|station; season|La estación de tren está lejos.
+el centro|centre|Trabajo en el centro de la ciudad.
+el pueblo|village, town|Mis abuelos viven en un pueblo.
+el país|country|España es un país muy bonito.
+el autobús|bus|Tomo el autobús a las ocho.
+el tren|train|El tren sale a las diez.
+el metro|underground, metro|Voy al trabajo en metro.
+el avión|plane|El avión llega a Madrid a las cinco.
+la bicicleta|bicycle|Voy a clase en bicicleta.
+el aeropuerto|airport|El aeropuerto está a veinte minutos.
+el lunes|Monday|El lunes empiezo un trabajo nuevo.
+el martes|Tuesday|El martes tengo clase de inglés.
+el miércoles|Wednesday|El miércoles ceno con mis padres.
+el jueves|Thursday|El jueves voy al cine.
+el viernes|Friday|El viernes salimos a cenar.
+el sábado|Saturday|El sábado no trabajo.
+el domingo|Sunday|El domingo como con mi familia.
+el fin de semana|weekend|¿Qué haces el fin de semana?
+el mes|month|Mi cumpleaños es este mes.
+el año|year|Tengo treinta años.
+enero|January|En enero hace mucho frío.
+agosto|August|En agosto voy de vacaciones.
+la tarde|afternoon, evening|Por la tarde estudio en casa.
+el verano|summer|En verano hace mucho calor.
+el invierno|winter|En invierno nieva en la sierra.
+el sol|sun|Hoy hace mucho sol.
+la lluvia|rain|No me gusta la lluvia.
+llover|to rain|Hoy llueve mucho en Bilbao.
+el frío|cold|En la calle hace frío.
+el calor|heat|Tengo mucho calor.
+rojo/a|red|Llevo una camiseta roja.
+azul|blue|El cielo está muy azul.
+verde|green|Me gusta el color verde.
+blanco/a|white|La casa es blanca.
+negro/a|black|Tengo un gato negro.
+amarillo/a|yellow|El plátano es amarillo.
+el color|colour|¿De qué color es tu coche?
+la camisa|shirt|Esta camisa es muy bonita.
+los pantalones|trousers|Necesito unos pantalones nuevos.
+los zapatos|shoes|Estos zapatos son muy cómodos.
+la chaqueta|jacket|Hace frío, ponte la chaqueta.
+el precio|price|¿Cuál es el precio de este libro?
+el euro|euro|El café cuesta un euro y medio.
+caro/a|expensive|Este restaurante es muy caro.
+barato/a|cheap|La fruta aquí es barata.
+comprar|to buy|Quiero comprar un regalo.
+pagar|to pay|¿Puedo pagar con tarjeta?
+costar|to cost|¿Cuánto cuesta esta camisa?
+la clase|class, lesson|La clase empieza a las nueve.
+el profesor / la profesora|teacher|Mi profesora es de Salamanca.
+el estudiante / la estudiante|student|Soy estudiante de medicina.
+la oficina|office|Trabajo en una oficina.
+estudiar|to study|Estudio español por la tarde.
+trabajar|to work|Trabajo de lunes a viernes.
+ser|to be (identity)|Soy de Barcelona.
+estar|to be (state, place)|Estoy en casa.
+tener|to have|Tengo dos hermanos.
+hacer|to do, to make|¿Qué haces esta tarde?
+ir|to go|Voy al cine con Laura.
+venir|to come|¿Vienes a la fiesta?
+comer|to eat|Comemos a las dos.
+beber|to drink|Bebo mucha agua.
+vivir|to live|Vivo en Madrid.
+hablar|to speak, to talk|Hablo un poco de francés.
+querer|to want; to love|Quiero un helado de chocolate.
+poder|to be able to, can|¿Puedes abrir la ventana?
+saber|to know (facts, how)|No sé dónde está.
+llamarse|to be called|Me llamo Pablo.
+gustar|to like (please)|Me gusta mucho la música.
+leer|to read|Leo el periódico por la mañana.
+escribir|to write|Escribo un correo a mi jefe.
+dormir|to sleep|Duermo ocho horas cada noche.
+abrir|to open|La farmacia abre a las nueve.
+cerrar|to close|¿A qué hora cierra el museo?
+ver|to see, to watch|Vemos una película en casa.
+escuchar|to listen (to)|Escucho la radio en el coche.
+llegar|to arrive|El tren llega a las seis.
+salir|to go out, to leave|Salgo de casa a las ocho.
+levantarse|to get up|Me levanto a las siete.
+necesitar|to need|Necesito un bolígrafo.
+malo/a|bad|Hoy hace mal tiempo.
+bonito/a|pretty, nice|Tienes una casa muy bonita.
+alto/a|tall, high|Mi hermano es muy alto.
+bajo/a|short, low|Mi abuela es baja.
+joven|young|Mi profesor es muy joven.
+viejo/a|old|Este coche es muy viejo.
+simpático/a|nice, friendly|Tu hermana es muy simpática.
+fácil|easy|El examen es fácil.
+difícil|difficult|El chino es un idioma difícil.
+contento/a|happy, pleased|Estoy muy contento con mi trabajo.
+qué|what|¿Qué quieres beber?
+dónde|where|¿Dónde vives?
+cuándo|when|¿Cuándo es tu cumpleaños?
+cómo|how|¿Cómo te llamas?
+cuánto/a|how much, how many|¿Cuántos años tienes?
+quién|who|¿Quién es ese chico?
+por qué|why|¿Por qué estudias español?
+ahora|now|Ahora estoy en la oficina.
+nunca|never|Nunca bebo café por la noche.
+muy|very|La película es muy buena.
+bien|well, fine|Estoy bien, gracias.
+allí|there|Mi coche está allí.
+cerca|near, close|El metro está cerca.
+lejos|far|Mi trabajo está lejos de casa.
+con|with|Vivo con mis padres.
+sin|without|Quiero un café sin azúcar.
+pero|but|Me gusta, pero es caro.
+`,
       A2: `
 el viaje|trip, journey|El viaje a Sevilla fue increíble.
 el billete|ticket|Ya he comprado los billetes de tren.
@@ -2326,7 +2497,15 @@ const ACTIONS = {
   unsave: a => { const it = findItem(a); if (it) { setSaved(it, false); renderSaved(); renderSubnav(); } },
   corpusFilter: a => { corpusFilter = a; corpusLimit = 200; renderCorpus(); },
   moreCorpus: () => { corpusLimit += 300; renderCorpus(); },
-  importTxt: () => $('txtFile').click(), exportTxt,
+  importTxt: () => VK.importList({
+    cols: [['Spanish', '西班牙语', '西班牙語', 'español', 'castellà'], ['meaning', '意思', '意思', 'significado', 'significat'], ['example', '例句', '例句', 'ejemplo', 'exemple'], ['notes', '笔记', '筆記', 'notas', 'notes']],
+    add: rows => {
+      const known = new Set(corpus.map(c => normalize(c.word))); let added = 0, dup = 0; const t0 = Date.now();
+      rows.forEach((c, n) => { if (!c[1]) return; if (known.has(normalize(c[0]))) { dup++; return; } known.add(normalize(c[0])); const id = 'loc-' + t0 + '-' + n;
+        corpus.push({ key: 'c:' + id, src: 'c', id, word: c[0], meaning: c[1], example: c[2] || '', notes: c[3] || '', status: 'unseen', saved: false }); added++; });
+      cacheCorpus(); refreshCards(); return { added, dup };
+    }
+  }), exportTxt,
   practiceSaved: a => { App.savedOnly = true; S.settings.deck = 'saved'; S.settings.shuffle = a === '1'; save(); buildDeck(); go('cards', 'study'); if (S.settings.shuffle && App.deck.length > 1) { App.idx = Math.floor(Math.random() * App.deck.length); renderCard(); } },
   speakDrillInf: () => Drill.cur && Audio.speak(Drill.cur.verb.inf),
   speakDrillAnswer: () => Drill.cur && Audio.speak(Drill.cur.target.split('/')[0]),
@@ -2442,7 +2621,18 @@ function init() {
     if (!hadCorpus && corpus.length && S.settings.deck === 'level' && !chosen) { S.settings.deck = 'corpus'; save(); if (App.tab === 'cards' && App.sub.cards === 'study') { buildDeck(); renderCard(); } }
   });
 }
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+  init();
+  if (!window.VK) return;
+  VK.micNow = () => { const it = App.deck[App.idx]; return it ? { text: it.word, speak: () => Audio.speak(it.word) } : null; };
+  /* ☁ your own words and how well you know each card, on your other devices too */
+  VK.sync({
+    room: 'es',
+    words: () => S.corpusCache, setWords: arr => { S.corpusCache = arr.filter(x => x && x.word); corpus = S.corpusCache.map(mapCorpusRow); save(); },
+    meta: () => S.meta, setMeta: o => { S.meta = o; save(); },
+    refresh: () => refreshCards()
+  });
+});
 
 </script>
 </body>

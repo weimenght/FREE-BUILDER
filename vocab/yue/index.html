@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=615d6db739"></script><script src="../vk.js?v=4"></script><script src="./ui.js?v=2"></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=8ed2d0134e"></script><script src="../vk.js?v=5"></script><script src="./ui.js?v=3"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FBF8F3">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -362,9 +362,9 @@
     .numpad button { height:52px; border-radius:14px; background:var(--surface); border:1px solid var(--border); font-weight:800; font-size:20px; }
     .lv-grid.three { grid-template-columns:repeat(3,1fr); }
     .noVoice { display:none; }
-    body.mute-voice .noVoice { display:block; }
+    .setting .d.warn { color:var(--warn); }
   </style>
-<link rel="stylesheet" href="../vk.css?v=3">
+<link rel="stylesheet" href="../vk.css?v=4">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -429,7 +429,6 @@
   </header>
 
   <main id="main">
-    <div class="fb warn noVoice" id="noVoice">呢部機冇廣東話聲音，聽唔到讀音。iPhone：設定 → 輔助使用 → 朗讀內容 → 聲音 → 中文（香港）。</div>
 
     <!-- 生字 · 溫習 -->
     <section class="view" id="v-cards-study">
@@ -449,7 +448,7 @@
       <div class="scene" id="scene" data-act="flip">
         <div class="flip" id="flip">
           <div class="face front">
-            <div class="row between"><span class="tag" id="fcTag"></span><span class="row"><button class="icon-btn" data-act="star" id="fcStar" aria-label="收藏"><svg class="ic"><use href="#i-star"/></svg></button><button class="icon-btn" data-act="sayCard" aria-label="讀出嚟"><svg class="ic"><use href="#i-volume-2"/></svg></button></span></div>
+            <div class="row between"><span class="tag" id="fcTag"></span><span class="row"><button class="icon-btn" data-act="star" id="fcStar" aria-label="收藏"><svg class="ic"><use href="#i-star"/></svg></button><button class="icon-btn" data-act="sayCard" aria-label="讀出嚟"><svg class="ic"><use href="#i-volume-2"/></svg></button><button class="icon-btn vk-micbtn" data-vk="mic" aria-label="Say it yourself"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg></button></span></div>
             <div class="face-mid" id="fcFront"></div>
             <div class="hint-line"><svg class="ic sm"><use href="#i-rotate-ccw"/></svg> 撳一下反轉 · 掃走下一張</div>
           </div>
@@ -623,6 +622,121 @@ A1: `
 肚餓|tou5 ngo6|hungry|餓|你肚唔肚餓？|nei5 tou5 m4 tou5 ngo6?|Are you hungry?
 得|dak1|OK; can||得，冇問題。|dak1, mou5 man6 tai4.|OK, no problem.
 冇問題|mou5 man6 tai4|no problem|沒問題|聽日交畀你，冇問題。|ting1 jat6 gaau1 bei2 nei5, mou5 man6 tai4.|I'll hand it to you tomorrow, no problem.
+一|jat1|one||一杯咖啡，唔該。|jat1 bui1 gaa3 fe1, m4 goi1.|One coffee, please.
+二|ji6|two (in counting and numbers)||而家十二點。|ji4 gaa1 sap6 ji6 dim2.|It's twelve o'clock now.
+三|saam1|three||佢有三隻貓。|keoi5 jau5 saam1 zek3 maau1.|She has three cats.
+四|sei3|four||我哋四個人。|ngo5 dei6 sei3 go3 jan4.|There are four of us.
+五|ng5|five||五點放工。|ng5 dim2 fong3 gung1.|I finish work at five.
+六|luk6|six||六點食飯。|luk6 dim2 sik6 faan6.|Dinner's at six.
+七|cat1|seven||我七點起身。|ngo5 cat1 dim2 hei2 san1.|I get up at seven.
+八|baat3|eight||佢個女八歲。|keoi5 go3 neoi2 baat3 seoi3.|Her daughter is eight.
+九|gau2|nine||九點返工。|gau2 dim2 faan1 gung1.|Work starts at nine.
+十|sap6|ten||十蚊一個。|sap6 man1 jat1 go3.|Ten dollars each.
+百|baak3|hundred||三百蚊。|saam1 baak3 man1.|Three hundred dollars.
+千|cin1|thousand||一千蚊好貴。|jat1 cin1 man1 hou2 gwai3.|A thousand dollars is expensive.
+半|bun3|half||三點半見。|saam1 dim2 bun3 gin3.|See you at half past three.
+個|go3|measure word (general)||一個蘋果。|jat1 go3 ping4 gwo2.|An apple.
+隻|zek3|measure word (animals; one of a pair)|只|兩隻狗。|loeng5 zek3 gau2.|Two dogs.
+杯|bui1|cup, glass||一杯水，唔該。|jat1 bui1 seoi2, m4 goi1.|A glass of water, please.
+碗|wun2|bowl||一碗飯。|jat1 wun2 faan6.|A bowl of rice.
+本|bun2|measure word (books)||我買咗兩本書。|ngo5 maai5 zo2 loeng5 bun2 syu1.|I bought two books.
+書|syu1|book||我鍾意睇書。|ngo5 zung1 ji3 tai2 syu1.|I like reading.
+張|zoeng1|measure word (flat things)||呢度有張凳。|ni1 dou6 jau5 zoeng1 dang3.|There's a stool here.
+件|gin6|measure word (clothes, items)||呢件衫幾錢？|ni1 gin6 saam1 gei2 cin2?|How much is this top?
+啲|di1|some; a bit|些 / 一點|食多啲啦。|sik6 do1 di1 laa1.|Have a bit more.
+飛|fei1|ticket|票|我買咗兩張飛。|ngo5 maai5 zo2 loeng5 zoeng1 fei1.|I bought two tickets.
+幾錢|gei2 cin2|how much (money)|多少錢|呢個幾錢？|ni1 go3 gei2 cin2?|How much is this one?
+八達通|baat3 daat6 tung1|Octopus card||我用八達通畀錢。|ngo5 jung6 baat3 daat6 tung1 bei2 cin2.|I pay with my Octopus card.
+散紙|saan2 zi2|small change|零錢|你有冇散紙？|nei5 jau5 mou5 saan2 zi2?|Have you got any change?
+現金|jin6 gam1|cash||淨係收現金。|zing6 hai6 sau1 jin6 gam1.|Cash only.
+點|dim2|o'clock||而家三點。|ji4 gaa1 saam1 dim2.|It's three o'clock.
+分鐘|fan1 zung1|minute||等五分鐘。|dang2 ng5 fan1 zung1.|Wait five minutes.
+尋晚|cam4 maan5|last night|昨晚|尋晚我好夜瞓。|cam4 maan5 ngo5 hou2 je6 fan3.|I went to bed late last night.
+聽朝|ting1 ziu1|tomorrow morning|明天早上|聽朝見。|ting1 ziu1 gin3.|See you tomorrow morning.
+週末|zau1 mut6|weekend||週末你得唔得閒？|zau1 mut6 nei5 dak1 m4 dak1 haan4?|Are you free at the weekend?
+歲|seoi3|years old||你幾多歲？|nei5 gei2 do1 seoi3?|How old are you?
+早餐|zou2 caan1|breakfast||你食咗早餐未？|nei5 sik6 zo2 zou2 caan1 mei6?|Have you had breakfast?
+蝦餃|haa1 gaau2|har gow (shrimp dumpling)||一籠蝦餃，唔該。|jat1 lung4 haa1 gaau2, m4 goi1.|A basket of har gow, please.
+燒賣|siu1 maai2|siu mai (pork dumpling)||我最鍾意燒賣。|ngo5 zeoi3 zung1 ji3 siu1 maai2.|Siu mai is my favourite.
+叉燒|caa1 siu1|char siu (barbecued pork)||叉燒飯好好食。|caa1 siu1 faan6 hou2 hou2 sik6.|Char siu rice is delicious.
+粥|zuk1|congee||早餐食粥。|zou2 caan1 sik6 zuk1.|Congee for breakfast.
+菠蘿包|bo1 lo4 baau1|pineapple bun||一個菠蘿包。|jat1 go3 bo1 lo4 baau1.|One pineapple bun.
+蛋撻|daan6 taat1|egg tart||蛋撻啱啱出爐。|daan6 taat1 ngaam1 ngaam1 ceot1 lou4.|The egg tarts are fresh out of the oven.
+可樂|ho2 lok6|cola||我想飲可樂。|ngo5 soeng2 jam2 ho2 lok6.|I'd like a Coke.
+糖|tong4|sugar; sweets||唔該唔要糖。|m4 goi1 m4 jiu3 tong4.|No sugar, please.
+雞蛋|gai1 daan2|egg||我食咗兩隻雞蛋。|ngo5 sik6 zo2 loeng5 zek3 gai1 daan2.|I had two eggs.
+生果|saang1 gwo2|fruit|水果|食多啲生果。|sik6 do1 di1 saang1 gwo2.|Eat more fruit.
+肉|juk6|meat||我唔食肉。|ngo5 m4 sik6 juk6.|I don't eat meat.
+雞|gai1|chicken||我想食雞。|ngo5 soeng2 sik6 gai1.|I'd like chicken.
+筷子|faai3 zi2|chopsticks||唔該畀對筷子我。|m4 goi1 bei2 deoi3 faai3 zi2 ngo5.|Could I have a pair of chopsticks, please?
+餐牌|caan1 paai2|menu|菜單|唔該，睇下餐牌。|m4 goi1, tai2 haa5 caan1 paai2.|Can I see the menu, please?
+枱|toi2|table|桌子|有冇枱呀？|jau5 mou5 toi2 aa3?|Is there a table free?
+叫|giu3|to order; to call||我哋叫嘢食啦。|ngo5 dei6 giu3 je5 sik6 laa1.|Let's order some food.
+好味|hou2 mei6|tasty|好吃|呢碗粥好好味。|ni1 wun2 zuk1 hou2 hou2 mei6.|This congee is really tasty.
+辣|laat6|spicy||呢個好辣。|ni1 go3 hou2 laat6.|This is very spicy.
+頸渴|geng2 hot3|thirsty|口渴|我好頸渴。|ngo5 hou2 geng2 hot3.|I'm really thirsty.
+哥哥|go4 go1|older brother||我哥哥喺英國。|ngo5 go4 go1 hai2 jing1 gwok3.|My older brother is in the UK.
+家姐|gaa1 ze1|older sister|姐姐|我家姐好高。|ngo5 gaa1 ze1 hou2 gou1.|My older sister is tall.
+細佬|sai3 lou2|younger brother|弟弟|我細佬讀小學。|ngo5 sai3 lou2 duk6 siu2 hok6.|My little brother is in primary school.
+妹妹|mui4 mui2|younger sister||我妹妹好鍾意狗。|ngo5 mui4 mui2 hou2 zung1 ji3 gau2.|My little sister loves dogs.
+老師|lou5 si1|teacher||你係老師嗎？|nei5 hai6 lou5 si1 maa3?|Are you a teacher?
+學校|hok6 haau6|school||學校好近。|hok6 haau6 hou2 kan5.|The school is close by.
+超市|ciu1 si5|supermarket||我去超市買嘢。|ngo5 heoi3 ciu1 si5 maai5 je5.|I'm going to the supermarket.
+舖頭|pou3 tau2|shop|商店|呢間舖頭好平。|ni1 gaan1 pou3 tau2 hou2 peng4.|This shop is cheap.
+銀行|ngan4 hong4|bank||銀行幾點開門？|ngan4 hong4 gei2 dim2 hoi1 mun4?|What time does the bank open?
+公園|gung1 jyun2|park||我哋去公園行下。|ngo5 dei6 heoi3 gung1 jyun2 haang4 haa5.|Let's go for a walk in the park.
+機場|gei1 coeng4|airport||去機場要幾耐？|heoi3 gei1 coeng4 jiu3 gei2 noi6?|How long does it take to get to the airport?
+呢度|ni1 dou6|here|這裡|嚟呢度坐。|lei4 ni1 dou6 co5.|Come and sit here.
+嗰度|go2 dou6|there|那裡|佢喺嗰度。|keoi5 hai2 go2 dou6.|He's over there.
+近|kan5|near||地鐵站好近。|dei6 tit3 zaam6 hou2 kan5.|The MTR station is close.
+遠|jyun5|far||機場好遠。|gei1 coeng4 hou2 jyun5.|The airport is far.
+轉|zyun3|to turn; to change (lines)||喺金鐘轉車。|hai2 gam1 zung1 zyun3 ce1.|Change at Admiralty.
+左|zo2|left||轉左。|zyun3 zo2.|Turn left.
+站|zaam6|station, stop||下個站落車。|haa6 go3 zaam6 lok6 ce1.|Get off at the next stop.
+落車|lok6 ce1|to get off (a vehicle)|下車|我喺呢度落車。|ngo5 hai2 ni1 dou6 lok6 ce1.|I'll get off here.
+試|si3|to try; to try on||我想試下呢件。|ngo5 soeng2 si3 haa5 ni1 gin6.|I'd like to try this one on.
+天氣|tin1 hei3|weather||今日天氣點呀？|gam1 jat6 tin1 hei3 dim2 aa3?|What's the weather like today?
+風|fung1|wind||今日好大風。|gam1 jat6 hou2 daai6 fung1.|It's very windy today.
+打風|daa2 fung1|typhoon (to have one)|颳颱風|聽日打風。|ting1 jat6 daa2 fung1.|There's a typhoon tomorrow.
+濕|sap1|humid; wet||香港好濕。|hoeng1 gong2 hou2 sap1.|Hong Kong is very humid.
+冷氣|laang5 hei3|air conditioning|空調|開冷氣啦，好熱。|hoi1 laang5 hei3 laa1, hou2 jit6.|Turn on the air con, it's hot.
+頭|tau4|head||我個頭好痛。|ngo5 go3 tau4 hou2 tung3.|My head really hurts.
+手|sau2|hand||洗手先。|sai2 sau2 sin1.|Wash your hands first.
+痛|tung3|painful; to hurt|疼|好痛呀！|hou2 tung3 aa3!|It really hurts!
+笑|siu3|to smile, to laugh||佢笑咗。|keoi5 siu3 zo2.|She smiled.
+成日|seng4 jat6|always, often|經常|佢成日遲到。|keoi5 seng4 jat6 ci4 dou3.|He's always late.
+名|meng2|name|名字|你叫咩名？|nei5 giu3 me1 meng2?|What's your name?
+咩|me1|what (short for 乜嘢)|什麼|你做咩呀？|nei5 zou6 me1 aa3?|What are you doing?
+寫|se2|to write||寫你個名。|se2 nei5 go3 meng2.|Write your name.
+住|zyu6|to live||我住喺九龍。|ngo5 zyu6 hai2 gau2 lung4.|I live in Kowloon.
+開|hoi1|to open; to switch on||開燈啦。|hoi1 dang1 laa1.|Turn the light on.
+走|zau2|to leave|離開|我走先喇。|ngo5 zau2 sin1 laa3.|I'm off now.
+先|sin1|first||你食先。|nei5 sik6 sin1.|You eat first.
+幫|bong1|to help||你可唔可以幫我？|nei5 ho2 m4 ho2 ji5 bong1 ngo5?|Could you help me?
+見|gin3|to see, to meet||好耐冇見！|hou2 noi6 mou5 gin3!|Long time no see!
+到|dou3|to arrive||我到喇！|ngo5 dou3 laa3!|I'm here!
+可以|ho2 ji5|can, may||我可唔可以坐呢度？|ngo5 ho2 m4 ho2 ji5 co5 ni1 dou6?|May I sit here?
+高|gou1|tall, high||佢好高。|keoi5 hou2 gou1.|He's tall.
+新|san1|new||我買咗部新手機。|ngo5 maai5 zo2 bou6 san1 sau2 gei1.|I bought a new phone.
+快|faai3|fast||地鐵好快。|dei6 tit3 hou2 faai3.|The MTR is fast.
+忙|mong4|busy||我今日好忙。|ngo5 gam1 jat6 hou2 mong4.|I'm busy today.
+好睇|hou2 tai2|good-looking; good to watch|好看|套戲好好睇。|tou3 hei3 hou2 hou2 tai2.|The film is really good.
+夠|gau3|enough||夠喇，唔該。|gau3 laa3, m4 goi1.|That's enough, thanks.
+都|dou1|also; all|也|我都係。|ngo5 dou1 hai6.|Me too.
+同|tung4|and; with|和 / 跟|我同你去。|ngo5 tung4 nei5 heoi3.|I'll go with you.
+未|mei6|not yet|還沒|我未食飯。|ngo5 mei6 sik6 faan6.|I haven't eaten yet.
+唔好|m4 hou2|don't|不要|唔好走！|m4 hou2 zau2!|Don't go!
+冇事|mou5 si6|it's nothing; I'm fine|沒事|我冇事。|ngo5 mou5 si6.|I'm fine.
+咗|zo2|particle: completed action|了|我食咗喇。|ngo5 sik6 zo2 laa3.|I've eaten.
+緊|gan2|particle: ongoing action|正在|我食緊飯。|ngo5 sik6 gan2 faan6.|I'm eating.
+呀|aa3|sentence particle (softening)|啊|係呀！|hai6 aa3!|That's right!
+啦|laa1|particle: suggestion, request|吧|走啦！|zau2 laa1!|Let's go!
+喇|laa3|particle: change of state|了|落雨喇。|lok6 jyu5 laa3.|It's started raining.
+呢|ne1|particle: what about…?||你呢？|nei5 ne1?|And you?
+定|ding6|or (in questions)|還是|茶定咖啡？|caa4 ding6 gaa3 fe1?|Tea or coffee?
+喂|wai2|hello (on the phone); hey||喂，你喺邊？|wai2, nei5 hai2 bin1?|Hello, where are you?
+早唞|zou2 tau2|good night|晚安|早唞，聽日見。|zou2 tau2, ting1 jat6 gin3.|Good night, see you tomorrow.
+請|cing2|please; to treat (someone)||我請你飲茶。|ngo5 cing2 nei5 jam2 caa4.|I'll treat you to yum cha.
 `,
 A2: `
 返工|faan1 gung1|to go to work|上班|你幾點返工？|nei5 gei2 dim2 faan1 gung1?|What time do you start work?
@@ -847,7 +961,7 @@ const Voice = {
     this.v = vs.find(v => /^(zh[-_]HK|yue)/i.test(v.lang)) || vs.find(v => /cantonese|粵|廣東/i.test(v.name)) || null;
     this.ok = !!this.v; this.done();
   },
-  done() { document.body.classList.toggle('mute-voice', !this.ok && this.tried); },
+  done() { if (!this.ok && this.tried && !this.noted) { this.noted = true; if (window.VK) VK.note('呢部機冇廣東話聲音 · 設定入面有方法加', 4200); } },
   say(text, rate) {
     if (!window.speechSynthesis) return;
     if (!this.v) this.load();
@@ -1072,6 +1186,7 @@ function openSettings() {
   bd.innerHTML = `<div class="sheet" role="dialog" aria-label="設定"><div class="grab"></div><div class="sheet-head"><div class="h2 han">設定</div><button class="icon-btn" data-act="closeSheet">${ico('x')}</button></div>
     <div class="label" style="margin:6px 0">程度</div><div class="lv-grid three">${LEVELS.map(l => `<button class="lv-btn ${S.lv === l ? 'on' : ''}" data-act="setLv" data-arg="${l}"><b>${l}</b><small>${LEVEL_INFO[l]} · ${BUILTIN[l].length}</small></button>`).join('')}</div>
     <div class="setting"><div><div class="t">顯示粵拼</div><div class="d">Jyutping 喺字卡正面</div></div><label class="switch"><input type="checkbox" id="sJp" ${S.jp ? 'checked' : ''}><span></span></label></div>
+    <div class="setting"><div><div class="t">廣東話聲音</div><div class="d ${Voice.ok ? '' : 'warn'}">${Voice.ok ? esc(Voice.v.name) : '呢部機冇廣東話聲音，聽唔到讀音。iPhone：設定 → 輔助使用 → 朗讀內容 → 聲音 → 中文（香港）。Android：設定 → 語言 → 文字轉語音 → 安裝廣東話。'}</div></div></div>
     <div class="setting"><div><div class="t">慢慢讀</div><div class="d">讀音慢啲</div></div><label class="switch"><input type="checkbox" id="sSlow" ${S.slow ? 'checked' : ''}><span></span></label></div>
     <div class="setting"><div><div class="t">全部喺呢部機</div><div class="d">冇帳戶、唔會上傳。清除瀏覽器資料就會冇咗。</div></div></div>
     <div class="setting"><div><div class="t">由頭嚟過</div><div class="d">清除所有進度</div></div><button class="btn sm bad" data-act="reset">清除</button></div></div>`;
@@ -1132,6 +1247,10 @@ $('listQ').addEventListener('input', renderList);
 setupSwipe(); applyTheme();
 matchMedia('(prefers-color-scheme: dark)').addEventListener && matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 go('cards');
+if (window.VK) {
+  VK.micNow = () => { const it = App.deck[App.idx]; return it ? { text: it.word, speak: () => Voice.say(it.word) } : null; };
+  VK.sync({ room: 'yue', words: () => S.mine, setWords: arr => { S.mine = arr.filter(m => m && m.word); save(); }, meta: () => S.meta, setMeta: o => { S.meta = o; save(); }, refresh: () => { App.deck = []; go(App.tab); } });
+}
 
 </script>
 </body>

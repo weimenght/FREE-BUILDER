@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=615d6db739"></script><script src="../vk.js?v=4"></script><script src="./ui.js?v=2"></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=8ed2d0134e"></script><script src="../vk.js?v=5"></script><script src="./ui.js?v=3"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FBF6EA" id="metaTheme">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -337,7 +337,7 @@
     @media (orientation:landscape) and (max-height:520px) { .scene { height:240px; } .term { font-size:30px; } :root { --tab-h:54px; } .tab span { display:none; } }
     @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
   </style>
-<link rel="stylesheet" href="../vk.css?v=3">
+<link rel="stylesheet" href="../vk.css?v=4">
 <link rel="manifest" href="/vocab/manifest.webmanifest"><link rel="apple-touch-icon" href="/vocab/icon.svg"><meta name="apple-mobile-web-app-title" content="Vocab"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
@@ -428,7 +428,7 @@
               <span class="tag" id="fcGram"></span>
               <div class="row" style="gap:2px">
                 <button class="icon-btn" data-act="toggleSaveCard" id="fcStar" aria-label="Desar"><svg class="ic"><use href="#i-star"/></svg></button>
-                <button class="icon-btn" data-act="speakFront" aria-label="Pronunciar"><svg class="ic"><use href="#i-volume-2"/></svg></button>
+                <button class="icon-btn" data-act="speakFront" aria-label="Pronunciar"><svg class="ic"><use href="#i-volume-2"/></svg></button><button class="icon-btn vk-micbtn" data-vk="mic" aria-label="Say it yourself"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg></button>
               </div>
             </div>
             <div class="face-mid">
@@ -671,7 +671,7 @@
    const API_BASE = 'https://cat-vocab-api.<el-teu-subdomini>.workers.dev';
    ⚠️ Fes servir una base de dades diferent de la de castellà.
    ============================================================== */
-const API_BASE = 'https://cat-vocab-api.enzowmeng.workers.dev';
+const API_BASE = '';   /* the old shared list; sync now goes through ☁ (VK.sync, one key per device) */
 
 /* Conjugacions (100 verbs, A1–C1; ortografia IEC 2016, s'accepten les formes amb accent diacrític antic).
    Format: inf|en|nivell|participi|gerundi|present|imperfet|futur|condicional|subj.present|subj.imperfet|imperatiu(tu,vostè,nos.,vos.,vostès)|irregular. "~" = arrel. */
@@ -814,7 +814,178 @@ el matí|morning|Al matí bec cafè amb llet.
 l'esmorzar|breakfast|L'esmorzar ja és a punt.
 l'hora|hour; time (clock)|Quina hora és?
 el germà / la germana|brother / sister|El meu germà té vint anys.
-la setmana|week|Vaig al gimnàs tres cops per setmana.`,
+la setmana|week|Vaig al gimnàs tres cops per setmana.
+hola|hello, hi|Hola, com estàs?
+adéu|goodbye|Adéu, fins aviat!
+bon dia|good morning|Bon dia, senyora Puig!
+bona tarda|good afternoon|Bona tarda, què desitja?
+bona nit|good night|Bona nit, que descansis.
+gràcies|thank you|Moltes gràcies per l'ajuda.
+si us plau|please|Un cafè, si us plau.
+de res|you're welcome|Gràcies! De res, home.
+perdó|sorry, excuse me|Perdó, on és l'estació?
+el pare|father|El meu pare és professor.
+la mare|mother|La meva mare treballa en un hospital.
+el fill / la filla|son / daughter|La seva filla té cinc anys.
+l'avi / l'àvia|grandfather / grandmother|La meva àvia fa una sopa boníssima.
+l'oncle / la tia|uncle / aunt|La meva tia viu a València.
+la dona|woman; wife|Aquella dona és la meva veïna.
+l'home|man|L'home del bar és molt simpàtic.
+el nen / la nena|child, boy / girl|Els nens juguen al parc.
+el noi / la noia|young man / young woman|La noia de la botiga és molt amable.
+el veí / la veïna|neighbour|El meu veí té un gat negre.
+el nom|name|Com et dius? El meu nom és Pau.
+el cap|head|Em fa mal el cap.
+la mà|hand|Renta't les mans abans de menjar.
+l'ull|eye|La Laia té els ulls blaus.
+la boca|mouth|Obre la boca, si us plau.
+el braç|arm|M'he trencat el braç.
+la cama|leg|Tinc les cames cansades.
+el peu|foot|Vaig a la feina a peu.
+els cabells|hair|La Marta té els cabells llargs.
+el pa|bread|Compro pa cada matí.
+la llet|milk|Vols llet amb el cafè?
+el cafè|coffee|Prenem un cafè junts?
+el te|tea|A la tarda bec un te.
+el vi|wine|Un got de vi negre, si us plau.
+la cervesa|beer|Dues cerveses ben fredes, si us plau.
+la fruita|fruit|M'agrada molt la fruita.
+la poma|apple|Menjo una poma cada dia.
+la taronja|orange|Aquestes taronges són molt dolces.
+el formatge|cheese|Vull un entrepà de formatge.
+la carn|meat|No menjo carn.
+el peix|fish|Avui sopem peix.
+l'ou|egg|Vull dos ous ferrats.
+l'arròs|rice|L'arròs amb verdures és boníssim.
+la verdura|vegetables|Has de menjar més verdura.
+l'entrepà|sandwich|Porto un entrepà per dinar.
+el sucre|sugar|El cafè sense sucre, si us plau.
+el dinar|lunch|El dinar és a les dues.
+el sopar|dinner|El sopar ja és a taula.
+el pis|flat, apartment|El nostre pis té dues habitacions.
+l'habitació|room, bedroom|La meva habitació és molt clara.
+la cuina|kitchen|La mare és a la cuina.
+el bany|bathroom|On és el bany, si us plau?
+la porta|door|Tanca la porta, si us plau.
+la finestra|window|Obre la finestra, fa calor.
+el llit|bed|Me'n vaig al llit a les onze.
+la cadira|chair|Seu en aquesta cadira.
+la clau|key|No trobo les claus de casa.
+l'escola|school|Els nens van a l'escola a peu.
+el restaurant|restaurant|Aquest restaurant és molt bo.
+el bar|bar, café|Esmorzem al bar de la plaça.
+el mercat|market|Compro la fruita al mercat.
+el supermercat|supermarket|El supermercat tanca a les nou.
+el parc|park|Passegem pel parc cada tarda.
+la platja|beach|A l'estiu anem a la platja.
+el banc|bank; bench|El banc és al costat de la farmàcia.
+la farmàcia|pharmacy|La farmàcia és oberta tota la nit.
+l'hospital|hospital|L'hospital és molt a prop.
+l'estació|station|L'estació de tren és lluny.
+la plaça|square|Ens veiem a la plaça a les sis.
+l'autobús|bus|Agafo l'autobús per anar a la feina.
+el tren|train|El tren surt a les vuit.
+el metro|underground, metro|Vaig a la universitat amb metro.
+la bicicleta|bicycle|Vaig a l'escola en bicicleta.
+l'avió|plane|L'avió arriba a les tres.
+el dilluns|Monday|El dilluns començo a les vuit.
+el dimarts|Tuesday|El dimarts tinc classe d'anglès.
+el dimecres|Wednesday|Dimecres sopem amb els avis.
+el dijous|Thursday|El dijous vaig a la piscina.
+el divendres|Friday|Divendres a la nit sortim.
+el dissabte|Saturday|El dissabte no treballo.
+el diumenge|Sunday|El diumenge dinem en família.
+el cap de setmana|weekend|Què fas aquest cap de setmana?
+el gener|January|Al gener fa molt de fred.
+el febrer|February|El meu aniversari és al febrer.
+el març|March|Al març comença la primavera.
+l'abril|April|L'abril plou molt.
+el maig|May|Al maig fa bon temps.
+el juny|June|Al juny acaba l'escola.
+el juliol|July|Al juliol anem de vacances.
+l'agost|August|A l'agost fa molta calor.
+el setembre|September|Al setembre torno a la feina.
+l'octubre|October|A l'octubre cauen les fulles.
+el novembre|November|El novembre és un mes tranquil.
+el desembre|December|Al desembre és Nadal.
+la tarda|afternoon|A la tarda faig els deures.
+el vespre|evening|Al vespre mirem la televisió.
+el mes|month|El mes que ve vaig a París.
+l'any|year|Tinc trenta anys.
+l'estiu|summer|A l'estiu fa molta calor.
+l'hivern|winter|A l'hivern neva a la muntanya.
+el sol|sun|Avui fa sol.
+la pluja|rain|M'agrada el soroll de la pluja.
+ploure|to rain|Avui plou molt.
+el fred|cold|Fa fred, posa't l'abric.
+la calor|heat|Avui fa molta calor.
+el vent|wind|Fa molt de vent a la platja.
+blanc / blanca|white|Porto una camisa blanca.
+negre / negra|black|El gat de la veïna és negre.
+vermell / vermella|red|Vull la jaqueta vermella.
+blau / blava|blue|El cel és blau.
+verd / verda|green|La porta de casa és verda.
+groc / groga|yellow|El taxi de Barcelona és groc i negre.
+la camisa|shirt|Aquesta camisa és molt bonica.
+els pantalons|trousers|Necessito uns pantalons nous.
+les sabates|shoes|Aquestes sabates són còmodes.
+la jaqueta|jacket|Agafa la jaqueta, fa vent.
+l'abric|coat|A l'hivern porto abric.
+el preu|price|Quin és el preu d'aquest llibre?
+car / cara|expensive|Aquest restaurant és molt car.
+barat / barata|cheap|La fruita del mercat és barata.
+comprar|to buy|Vull comprar pa i llet.
+pagar|to pay|Puc pagar amb targeta?
+l'euro|euro|Costa tres euros.
+l'estudiant|student|Sóc estudiant de medicina.
+el professor / la professora|teacher|La professora parla molt a poc a poc.
+la classe|class, lesson|La classe comença a les deu.
+estudiar|to study|Estudio català a la tarda.
+treballar|to work|Treballo en una botiga.
+ser|to be|Jo sóc de Tarragona.
+estar|to be (state, place)|Estic molt content avui.
+tenir|to have|Tinc dos germans.
+fer|to do, to make|Què fas avui a la tarda?
+anar|to go|Anem al cinema aquesta nit?
+venir|to come|Vens a sopar a casa?
+voler|to want|Vull un te, si us plau.
+poder|can, to be able|Puc obrir la finestra?
+parlar|to speak, to talk|Parles català?
+beure|to drink|Vols beure alguna cosa?
+viure|to live|Visc a Barcelona.
+dormir|to sleep|El nadó dorm molt.
+llegir|to read|M'agrada llegir al llit.
+escriure|to write|Escric un missatge a la mare.
+mirar|to look, to watch|Mira, el tren ja arriba!
+escoltar|to listen|Escolto música al metro.
+obrir|to open|Les botigues obren a les deu.
+tancar|to close|Tanquem la porta amb clau.
+agradar|to like|M'agrada molt la xocolata.
+entendre|to understand|No t'entenc, parla més a poc a poc.
+sortir|to go out, to leave|Surto de casa a les vuit.
+arribar|to arrive|Arribo a casa a les set.
+bonic / bonica|pretty, beautiful|Quina platja més bonica!
+alt / alta|tall, high|El meu germà és molt alt.
+vell / vella|old|Aquest cotxe és molt vell.
+content / contenta|happy, glad|Estic molt content de veure't.
+fàcil|easy|L'exercici és molt fàcil.
+difícil|difficult|El català no és difícil.
+calent / calenta|hot, warm|La sopa és molt calenta.
+què|what|Què vols per sopar?
+qui|who|Qui és aquell noi?
+on|where|On vius?
+quan|when|Quan és el teu aniversari?
+com|how|Com et dius?
+quant / quanta|how much, how many|Quant costa aquesta samarreta?
+per què|why|Per què no vens a la festa?
+molt|very, a lot|El pis és molt gran.
+bé|well, fine|Estic bé, gràcies.
+ara|now|Ara no puc parlar.
+ahir|yesterday|Ahir vaig anar al mercat.
+a prop|near, nearby|L'escola és a prop de casa.
+lluny|far|La platja és lluny d'aquí.
+amb|with|Vaig al cinema amb la Júlia.
+`,
       A2: `
 el viatge|trip, journey|El viatge a Tarragona va ser increïble.
 el bitllet|ticket|Ja he comprat els bitllets de tren.
@@ -2333,7 +2504,15 @@ const ACTIONS = {
   unsave: a => { const it = findItem(a); if (it) { setSaved(it, false); renderSaved(); renderSubnav(); } },
   corpusFilter: a => { corpusFilter = a; corpusLimit = 200; renderCorpus(); },
   moreCorpus: () => { corpusLimit += 300; renderCorpus(); },
-  importTxt: () => $('txtFile').click(), exportTxt,
+  importTxt: () => VK.importList({
+    cols: [['Catalan', '加泰罗尼亚语', '加泰隆尼亞語', 'catalán', 'català'], ['meaning', '意思', '意思', 'significado', 'significat'], ['example', '例句', '例句', 'ejemplo', 'exemple'], ['notes', '笔记', '筆記', 'notas', 'notes']],
+    add: rows => {
+      const known = new Set(corpus.map(c => normalize(c.word))); let added = 0, dup = 0; const t0 = Date.now();
+      rows.forEach((c, n) => { if (!c[1]) return; if (known.has(normalize(c[0]))) { dup++; return; } known.add(normalize(c[0])); const id = 'loc-' + t0 + '-' + n;
+        corpus.push({ key: 'c:' + id, src: 'c', id, word: c[0], meaning: c[1], example: c[2] || '', notes: c[3] || '', status: 'unseen', saved: false }); added++; });
+      cacheCorpus(); refreshCards(); return { added, dup };
+    }
+  }), exportTxt,
   practiceSaved: a => { App.savedOnly = true; S.settings.deck = 'saved'; S.settings.shuffle = a === '1'; save(); buildDeck(); go('cards', 'study'); if (S.settings.shuffle && App.deck.length > 1) { App.idx = Math.floor(Math.random() * App.deck.length); renderCard(); } },
   speakDrillInf: () => Drill.cur && Audio.speak(Drill.cur.verb.inf),
   speakDrillAnswer: () => Drill.cur && Audio.speak(Drill.cur.target.split('/')[0]),
@@ -2450,7 +2629,18 @@ function init() {
     if (!hadCorpus && corpus.length && S.settings.deck === 'level' && !chosen) { S.settings.deck = 'corpus'; save(); if (App.tab === 'cards' && App.sub.cards === 'study') { buildDeck(); renderCard(); } }
   });
 }
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+  init();
+  if (!window.VK) return;
+  VK.micNow = () => { const it = App.deck[App.idx]; return it ? { text: it.word, speak: () => Audio.speak(it.word) } : null; };
+  /* ☁ your own words and how well you know each card, on your other devices too */
+  VK.sync({
+    room: 'cat',
+    words: () => S.corpusCache, setWords: arr => { S.corpusCache = arr.filter(x => x && x.word); corpus = S.corpusCache.map(mapCorpusRow); save(); },
+    meta: () => S.meta, setMeta: o => { S.meta = o; save(); },
+    refresh: () => refreshCards()
+  });
+});
 
 </script>
 </body>
