@@ -296,7 +296,7 @@
     function draw() {
       var on = syncing();
       s.innerHTML = '<h2></h2><p class="vk-how"></p><p class="vk-st" aria-live="polite"></p><button type="button" class="vk-tog"></button>' +
-        (on ? '<details class="vk-take"><summary></summary><p class="vk-how2"></p><div class="vk-row"><input readonly class="vk-link"><button type="button" class="vk-copy"></button></div></details><button type="button" class="vk-forget"></button>' : '') +
+        (on ? '<details class="vk-take"><summary></summary><p class="vk-how2"></p><div class="vk-row"><input readonly class="vk-link"><button type="button" class="vk-copy"></button></div><p class="vk-fp" title="fingerprint"></p></details><button type="button" class="vk-forget"></button>' : '') +
         '<button type="button" class="vk-x"></button>';
       var q = function (x) { return s.querySelector(x); };
       q("h2").textContent = t("syTitle"); q(".vk-how").textContent = t("syWhat"); q(".vk-st").textContent = statusText();
@@ -310,6 +310,7 @@
         q(".vk-take summary").textContent = t("syTake"); q(".vk-how2").textContent = t("syTakeHow");
         var link = location.origin + "/vocab/#vk=" + vkKey(); q(".vk-link").value = link;
         q(".vk-copy").textContent = t("syCopy");
+        uid().then(function (u) { var f = q(".vk-fp"); if (f) f.textContent = "# " + u; });
         q(".vk-copy").onclick = function () { var done = function () { note(t("syCopied")); }; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(done, function () { q(".vk-link").select(); }); else { q(".vk-link").select(); try { document.execCommand("copy"); done(); } catch (e) {} } };
         q(".vk-forget").textContent = t("syForget");
         q(".vk-forget").onclick = function () { if (!window.confirm(t("syForgetQ"))) return; uid().then(function (u) { return post("/v1/forget", { u: u }); }).then(function () {

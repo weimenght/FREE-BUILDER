@@ -113,3 +113,4 @@ a.brand:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
   .top-row .lvl-pill { padding:0 7px !important; }
   .top-row .brand-title { font-size:17px !important; }
 }
+.vk-sync .vk-fp { margin:8px 0 0; font:500 10px/1.3 var(--mono, ui-monospace, monospace); color:var(--muted, #6B6155); word-break:break-all; user-select:all; }
