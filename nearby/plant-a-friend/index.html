@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8ed2d0134e"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0f928170c5" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=4844bd2557"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8fe2bb6ed8" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Plant a Friend · Nearby</title>
 <meta name="description" content="One endless garden that everyone plants together. Pick a seed, plant it next to someone else's, water what you pass, and come back to see it bloom.">
@@ -230,8 +230,9 @@ html.fbsh-in header.top .sign { display: none !important; }
   function glide(x, y) { var sx0 = cx, sy0 = cy, t0 = performance.now(); (function step(now) { var k = Math.min(1, (now - t0) / 700), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; cx = sx0 + (x - sx0) * e; cy = sy0 + (y - sy0) * e; if (k < 1) requestAnimationFrame(step); else load(); })(t0); }
 
   function chime(fq) { try { var A = new (window.AudioContext || window.webkitAudioContext)(), n = A.currentTime; [fq, fq * 1.5].forEach(function (q, i) { var o = A.createOscillator(), gg = A.createGain(); o.type = "triangle"; o.frequency.value = q; gg.gain.setValueAtTime(.05, n + i * .08); gg.gain.exponentialRampToValueAtTime(.0001, n + i * .08 + .5); o.connect(gg); gg.connect(A.destination); o.start(n + i * .08); o.stop(n + i * .08 + .55); }); } catch (e) {} }
-  var card = null;
+  var card = null, cardAt = 0;   /* a plant's card closes when you tap the field again (no ✕); the name card is a form and keeps one. The tap that opened a card never closes it. */
   function closeCard() { if (card) { card.remove(); card = null; } }
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && card && !card.querySelector("input")) closeCard(); });
   function nick(v) { try { if (v != null) localStorage.setItem("fb_nick", v); return (localStorage.getItem("fb_nick") || "").trim(); } catch (e) { return ""; } }
   var askedName = false;
   function once(v) { try { if (v) localStorage.setItem("fb_nick_asked", "1"); return !!localStorage.getItem("fb_nick_asked"); } catch (e) { return false; } }
@@ -241,11 +242,12 @@ html.fbsh-in header.top .sign { display: none !important; }
     card.querySelector("b").textContent = t("who"); var inp = card.querySelector("input"); inp.placeholder = t("yourName"); inp.setAttribute("aria-label", t("yourName")); inp.value = nick();
     var go = function () { askedName = true; once(1); nick(inp.value.trim().slice(0, 24)); paintMe(); closeCard(); then(); };
     card.querySelector(".go").onclick = go; inp.onkeydown = function (e) { if (e.key === "Enter") go(); };
-    card.querySelector(".x").onclick = function () { askedName = true; once(1); closeCard(); then(); };
-    field.appendChild(card); setTimeout(function () { inp.focus(); }, 30);
+    card.querySelector(".x").onclick = function () { if (Date.now() - cardAt < 450) return; askedName = true; once(1); closeCard(); then(); };
+    cardAt = Date.now(); field.appendChild(card); setTimeout(function () { inp.focus(); }, 30);
   }
   function paintMe() { var b = $("me"); if (b) { var n = nick(); b.textContent = n ? "🙂 " + n : "🙂"; b.setAttribute("aria-label", t("yourName")); } }
   function tap(tl) {
+    if (card && Date.now() - cardAt < 450) return;
     closeCard(); var p = plants[tl.x + "," + tl.y];
     if (p) { info(p); return; }
     if (!sel) { var tr = $("tray"); tr.classList.remove("nudge"); void tr.offsetWidth; tr.classList.add("nudge"); return; }
@@ -259,14 +261,14 @@ html.fbsh-in header.top .sign { display: none !important; }
   function info(p) {
     var k = KIND[p[3]], s = stage(p), lab = s === 0 ? t("st") : s === 1 ? t("st1") : s === 2 ? t("st2") : (k.tree ? t("st3t") : t("st3"));
     card = document.createElement("div"); card.className = "card"; card.setAttribute("role", "dialog");
-    card.innerHTML = '<b></b><small></small><div class="row"></div><button type="button" class="x" aria-label="✕">✕</button>';
+    card.innerHTML = '<b></b><small></small><div class="row"></div>';
     card.querySelector("b").textContent = k.n[L()] || k.n[0];
     card.querySelector("small").textContent = p[8] ? lab : (k.fixed ? "" : lab + " · ") + ago(age(p)) + (k.fixed || !(p[5] > 0) ? "" : " · " + t("waters"));   /* watered or not, never how many times */
     if (p[7]) { var who = document.createElement("div"); who.className = "who"; who.textContent = "🌱 " + t("by").replace("{n}", p[7]); card.insertBefore(who, card.querySelector(".row"));
       if (p[8]) { var hl = document.createElement("small"); hl.className = "hline"; hl.textContent = "“" + (p[8].line[L()] || p[8].line[0]) + "”"; card.insertBefore(hl, card.querySelector(".row")); }
       if (p[0] && !p[8]) { var rp = document.createElement("button"); rp.type = "button"; rp.className = "rp"; rp.textContent = "⚑"; rp.title = t("report"); rp.setAttribute("aria-label", t("report")); rp.onclick = function () { rp.disabled = true; api("garden_report_name", { p_secret: key(), p_id: p[0] }).then(function () { rp.textContent = "✓"; }).catch(function () {}); }; who.appendChild(rp); } }
     if (!k.fixed && p[0] && !p[8]) { var b = document.createElement("button"); b.type = "button"; b.className = "go"; b.textContent = "💧 " + t("water"); b.onclick = function () { b.disabled = true; api("garden_water", { p_secret: key(), p_id: p[0] }).then(function (n) { if (n < 0) toast(t("wateredAlready")); else { p[5] = n; toast("💧 " + t("watered")); chime(784); } closeCard(); }).catch(function () { b.disabled = false; toast(t("offline")); }); }; card.querySelector(".row").appendChild(b); }
-    card.querySelector(".x").onclick = closeCard; field.appendChild(card);
+    cardAt = Date.now(); field.appendChild(card);
   }
 
   /* ---------- the seed tray ---------- */

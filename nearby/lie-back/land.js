@@ -12,6 +12,7 @@
   function size() { DPR = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W * DPR; cv.height = H * DPR; g.setTransform(DPR, 0, 0, DPR, 0, 0); build(); }
   function rnd(seed) { var x = seed >>> 0 || 7; return function () { x ^= x << 13; x >>>= 0; x ^= x >> 17; x ^= x << 5; x >>>= 0; return x / 4294967296; }; }
   var R = rnd((Math.random() * 1e9) | 0), seed = (R() * 1e9) | 0;
+  function snowy() { try { return window.FBWorld && FBWorld.weather() === "snow"; } catch (e) { return false; } }
   function rgb(c, a) { return "rgba(" + (c[0] | 0) + "," + (c[1] | 0) + "," + (c[2] | 0) + "," + (a == null ? 1 : a) + ")"; }
   function mix(a, b, k) { return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k]; }
   function pal() {   /* the sky's light, borrowed from the engine */
@@ -50,6 +51,7 @@
     for (var x = 0; x <= W + 8; x += 8) { var y = rd.base - Math.abs(rd.n(x)) * rd.amp - rd.n(x * 0.5) * rd.amp * 0.3; g.lineTo(x, y); }
     g.lineTo(W, H); g.closePath();
     var c = lit(col, P, rd.depth); g.fillStyle = rgb(c); g.fill();
+    if (snowy() && SCENE !== "snow") { g.fillStyle = rgb(mix([238, 242, 250], P.haze, rd.depth * 0.4 + (P.night ? 0.45 : 0)), 0.6); g.fill(); }   /* the town's snow settles here too */
     if (rd.snow && SCENE === "mountain") {   /* snow on the high peaks */
       g.save(); g.clip(); g.fillStyle = rgb(mix([240, 245, 255], P.haze, rd.depth * 0.5 + (P.night ? 0.5 : 0)), 0.92);
       g.beginPath(); for (var x2 = 0; x2 <= W + 8; x2 += 8) { var top = rd.base - Math.abs(rd.n(x2)) * rd.amp - rd.n(x2 * 0.5) * rd.amp * 0.3, line = rd.base - rd.amp * 0.55 + Math.sin(x2 * 0.05) * 6; g.rect(x2, top - 2, 8, Math.max(0, line - top)); } g.fill(); g.restore();

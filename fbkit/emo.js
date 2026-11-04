@@ -620,5 +620,11 @@ window.FB_EMO={
  "Below the railway, past Come Over, there's a plot of land now that's yours. Build whatever you like.": "🚂⬇️ 🎉➡️ 🧱🫵 · 🏗️✨",
  "Tips": "💡",
  "Tips on: how-to cards and small notes come up by themselves": "💡✅ 🃏📝➡️",
- "Tips off: only when you tap ?": "💡❌ 👆❓"
+ "Tips off: only when you tap ?": "💡❌ 👆❓",
+ "Pick the awning and the cloth": "⛱️🎨 + 🧵",
+ "Tap the counter to lay out what you'd offer": "👆🪵 → 🍋📚🌼🍞",
+ "Name it, chalk the board, show someone": "✏️🪧 → 👀👥",
+ "Put out what you have too much of (lemons, books, a spare chair) with a note: free to a neighbour.": "🍋📚🪑 → 🚪📝 🎁🏘️",
+ "I set up a stall at Set Up Shop: “{n}”. Come and see what's on the counter.": "🏪✨ → 👀🪵🍋📚",
+ "New below the railway, left of Town Hall: Set Up Shop. A market stall that's yours: the awning, what's on the counter, the chalkboard. Show it to someone.": "🆕🛤️⬇️🏛️⬅️ 🏪: ⛱️🍋🪧 → 👀👥"
 };

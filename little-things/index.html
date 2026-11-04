@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=4844bd2557"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Little Things</title>
+<meta name="description" content="Popo's jar of little offline things: one at a time, in her kitchen, for a fuller life away from the screen. Kept on your own device.">
+<meta name="theme-color" content="#f3ead8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1410" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Little Things">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+  :root {
+    --bg:#f3ead8; --bg2:#eadcc0; --panel:#fffaf0; --ink:#1a1410; --muted:#6a5a48; --wood:#e2c497; --wood2:#c9a46c; --amber:#e8a838; --amber2:#c8841c;
+    --paper:#fffdf6; --line:#000; --shadow:#000; --teal:#4aa07a; color-scheme:light;
+    --pix:"VT323", ui-monospace, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", monospace;
+    --sign:"Press Start 2P", "VT323", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg:#1a1410; --bg2:#231a13; --panel:#2a1e16; --ink:#f3ead8; --muted:#bba88e; --wood:#8a5a34; --wood2:#5e3a20; --amber:#e8a838; --amber2:#b07018; --paper:#f6ecd4; color-scheme:dark; }
+  }
+  :root[data-theme="dark"] { --bg:#1a1410; --bg2:#231a13; --panel:#2a1e16; --ink:#f3ead8; --muted:#bba88e; --wood:#8a5a34; --wood2:#5e3a20; --amber:#e8a838; --amber2:#b07018; --paper:#f6ecd4; color-scheme:dark; }
+  :lang(zh) { --pix:"VT323", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; }
+  :lang(zh-Hant) { --pix:"VT323", "PingFang HK", "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC", sans-serif; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; background:var(--bg); color:var(--ink); }
+  body { font:22px/1.25 var(--pix); min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; -webkit-text-size-adjust:100%;
+    background-image:radial-gradient(rgba(0,0,0,.035) 1px, transparent 1px); background-size:6px 6px; }
+  :lang(zh) body, :lang(zh-Hant) body, html:lang(zh) body, html:lang(zh-Hant) body { font-size:18px; line-height:1.5; }
+  .wrap { width:100%; max-width:560px; margin:0 auto; padding:max(12px, env(safe-area-inset-top)) 16px 20px; flex:1; display:flex; flex-direction:column; gap:12px; }
+  header { display:flex; align-items:center; gap:10px; }
+  .brand { display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
+  .brand svg { width:28px; height:28px; flex:none; }
+  .brand h1 { margin:0; font:12px/1.4 var(--sign); letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  html:lang(zh) .brand h1, html:lang(zh-Hant) .brand h1 { font:700 18px/1.2 var(--pix); letter-spacing:.1em; }
+  .btn { font:20px/1 var(--pix); color:var(--ink); background:var(--wood); border:3px solid var(--line); border-radius:0; padding:10px 14px; min-height:44px;
+    box-shadow:inset -3px -3px 0 rgba(0,0,0,.22), inset 3px 3px 0 rgba(255,255,255,.28), 3px 3px 0 var(--shadow); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; text-align:center; }
+  html:lang(zh) .btn, html:lang(zh-Hant) .btn { font-size:17px; }
+  .btn:hover { filter:brightness(1.06); }
+  .btn:active { transform:translate(3px,3px); box-shadow:inset 3px 3px 0 rgba(0,0,0,.25); }
+  .btn:focus-visible { outline:3px solid var(--amber); outline-offset:3px; }
+  .btn.pri { background:var(--amber); color:#1a1410; }
+  .btn.quiet { background:var(--panel); }
+  .btn.sm { min-height:40px; padding:6px 10px; font-size:18px; }
+  .btn svg.fbpx, .pxi svg { width:18px; height:18px; image-rendering:pixelated; }
+  .scene { position:relative; border:3px solid var(--line); box-shadow:4px 4px 0 var(--shadow); background:#3a2414; }
+  .scene canvas { display:block; width:100%; height:auto; image-rendering:pixelated; image-rendering:crisp-edges; }
+  .scene button.jarhit { position:absolute; right:12%; top:28%; width:22%; height:48%; background:transparent; border:0; cursor:pointer; }
+  .scene button.jarhit:focus-visible { outline:3px solid var(--amber); }
+  .talk { display:flex; flex-direction:column; gap:10px; min-height:120px; }
+  .say { display:flex; gap:10px; align-items:flex-start; animation:pop .22s ease-out both; }
+  .say canvas { width:48px; height:48px; flex:none; image-rendering:pixelated; border:3px solid var(--line); background:#3a2414; }
+  .say .b { font-size:24px; flex:1; background:var(--panel); border:3px solid var(--line); box-shadow:3px 3px 0 var(--shadow); padding:6px 10px 8px; position:relative; }
+  .say .who { font:9px/1.6 var(--sign); text-transform:uppercase; color:var(--amber2); display:block; margin-bottom:2px; }
+  html:lang(zh) .say .b, html:lang(zh-Hant) .say .b { font-size:18px; }
+  html:lang(zh) .say.small .b, html:lang(zh-Hant) .say.small .b { font-size:16px; }
+  html:lang(zh) .say .who, html:lang(zh-Hant) .say .who { font:700 13px/1.4 var(--pix); letter-spacing:.1em; }
+  .say.small .b { font-size:21px; background:var(--bg2); }
+  .say.small canvas { width:36px; height:36px; }
+  .act { font-style:normal; color:var(--muted); }
+  .paper { position:relative; background:var(--paper); color:#2a2018; border:3px solid var(--line); box-shadow:4px 4px 0 var(--shadow); padding:16px 16px 14px; transform:rotate(-.6deg);
+    background-image:repeating-linear-gradient(transparent 0 29px, rgba(74,126,192,.18) 29px 30px); animation:pop .25s ease-out both; }
+  .paper::before { content:""; position:absolute; top:-9px; left:50%; width:54px; height:16px; margin-left:-27px; background:rgba(232,168,56,.55); border:2px solid rgba(0,0,0,.25); transform:rotate(2deg); }
+  .paper p { margin:0; font-size:24px; line-height:30px; }
+  html:lang(zh) .paper p, html:lang(zh-Hant) .paper p { font-size:19px; line-height:30px; }
+  .paper .go { margin-top:12px; display:flex; flex-wrap:wrap; gap:8px; }
+  .paper .go a { font:18px/1.1 var(--pix); color:#1a1410; background:#f3ead8; border:2px solid #000; padding:6px 9px; text-decoration:none; display:inline-flex; gap:6px; align-items:center; }
+  .paper .go a:hover { background:#fff; }
+  .paper input { width:100%; font:22px/1.2 var(--pix); color:#2a2018; background:transparent; border:0; border-bottom:2px dashed #8a7a64; padding:6px 2px; outline:none; margin-top:6px; }
+  .paper input::placeholder { color:#9a8a74; }
+  .paper .lbl { font-size:18px; color:#6a5a48; }
+  .acts { display:flex; flex-wrap:wrap; gap:10px; }
+  .acts .btn { flex:1 1 auto; }
+  .jars { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+  .jarbtn { flex-direction:column; padding:10px 6px 12px; gap:6px; }
+  .jarbtn canvas { width:100%; max-width:64px; height:auto; image-rendering:pixelated; }
+  .jarbtn b { font:9px/1.5 var(--sign); text-transform:uppercase; font-weight:400; }
+  html:lang(zh) .jarbtn b, html:lang(zh-Hant) .jarbtn b { font:700 15px/1.3 var(--pix); }
+  .jarbtn small { font-size:17px; color:inherit; opacity:.8; }
+  footer { max-width:560px; width:100%; margin:0 auto; padding:6px 16px max(14px, env(safe-area-inset-bottom)); font-size:17px; color:var(--muted); display:flex; flex-wrap:wrap; gap:6px 14px; justify-content:center; text-align:center; }
+  footer a { color:inherit; display:inline-flex; align-items:center; gap:5px; }
+  footer svg { width:14px; height:14px; }
+  /* the jar, opened */
+  .sheet { position:fixed; inset:0; z-index:20; background:rgba(10,6,4,.6); display:flex; align-items:flex-end; justify-content:center; animation:fade .18s both; }
+  .sheet[hidden] { display:none; }
+  .sheet .in { width:100%; max-width:640px; max-height:88vh; max-height:88dvh; overflow:auto; background:var(--bg); border:3px solid var(--line); border-bottom:0; box-shadow:0 -4px 0 var(--shadow); padding:14px 16px max(18px, env(safe-area-inset-bottom)); }
+  @media (min-width:700px) { .sheet { align-items:center; } .sheet .in { border-bottom:3px solid var(--line); box-shadow:6px 6px 0 var(--shadow); max-height:84vh; } }
+  .sheet h2 { margin:0; font:12px/1.5 var(--sign); text-transform:uppercase; flex:1; }
+  html:lang(zh) .sheet h2, html:lang(zh-Hant) .sheet h2 { font:700 19px/1.3 var(--pix); }
+  .sheet .top { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .slips { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:12px; padding:4px 2px 8px; }
+  .slip { background:var(--paper); color:#2a2018; border:2px solid #000; box-shadow:2px 2px 0 #000; padding:8px 9px 7px; font-size:19px; line-height:1.15; }
+  html:lang(zh) .slip, html:lang(zh-Hant) .slip { font-size:16px; line-height:1.4; }
+  .slip:nth-child(3n) { transform:rotate(1.2deg); background:#fdf1d8; } .slip:nth-child(3n+1) { transform:rotate(-1deg); } .slip:nth-child(5n) { background:#eaf3e2; } .slip:nth-child(7n) { background:#fbe6ea; }
+  .slip .own { display:block; margin-top:5px; font-family:"Caveat", var(--pix); font-size:20px; line-height:1.05; color:#3a5a8a; }
+  html:lang(zh) .slip .own, html:lang(zh-Hant) .slip .own { font-family:var(--pix); font-size:15px; }
+  .slip time { display:block; margin-top:5px; font-size:15px; color:#8a7a64; }
+  .empty { color:var(--muted); padding:8px 0 14px; }
+  .older { margin-top:14px; border-top:3px dashed var(--wood2); padding-top:10px; }
+  .older summary { cursor:pointer; font-size:19px; color:var(--muted); padding:6px 0; }
+  .older .slips { margin-top:8px; }
+  .tools { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+  .langmenu { position:absolute; right:16px; top:58px; z-index:30; background:var(--panel); border:3px solid var(--line); box-shadow:4px 4px 0 var(--shadow); display:flex; flex-direction:column; min-width:150px; }
+  .langmenu button { font:20px/1.2 var(--pix); color:var(--ink); background:none; border:0; text-align:left; padding:10px 14px; min-height:44px; cursor:pointer; }
+  .langmenu button[aria-checked="true"] { background:var(--amber); color:#1a1410; }
+  .langmenu button:hover { background:var(--wood); }
+  @keyframes pop { from { opacity:0; transform:translateY(6px); } }
+  @keyframes fade { from { opacity:0; } }
+  @media (prefers-reduced-motion: reduce) { .say, .paper, .sheet { animation:none; } }
+  @media (min-width:900px) { .wrap { max-width:620px; } }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#000" d="M4 1h8v1h1v3h-1v1h1v1h1v8h-1v1H3v-1H2V7h1V6h1V5H3V2h1z"/><path fill="#c8303a" d="M4 2h8v3H4z"/><path fill="#e8a838" d="M5 3h1v1H5zM8 3h1v1H8zM10 3h1v1h-1z"/><path fill="#cfe7ee" d="M5 6h6v1h1v7H4V7h1z"/><path fill="#fffdf6" d="M5 10h3v2H5z"/><path fill="#f4d04a" d="M8 11h3v2H8z"/><path fill="#f48fb8" d="M6 12h2v1H6z"/><path fill="#fff" d="M5 7h1v2H5z"/></svg><h1 id="appName">Little Things</h1></div>
+    <button class="btn sm quiet" id="langBtn" aria-haspopup="menu" aria-expanded="false"><span class="pxi" id="langIco"></span><span id="langLbl">EN</span></button>
+  </header>
+  <div class="scene">
+    <canvas id="scene" width="160" height="84" role="img" aria-label="Popo's kitchen"></canvas>
+    <button class="jarhit" id="jarHit" aria-label="Look in the jar"></button>
+  </div>
+  <div class="talk" id="talk" aria-live="polite"></div>
+  <div id="card"></div>
+  <div class="acts" id="acts"></div>
+</div>
+<footer id="foot"></footer>
+<div class="sheet" id="sheet" hidden><div class="in" role="dialog" aria-modal="true" aria-labelledby="jarTitle"><div class="top"><h2 id="jarTitle">Popo's jar</h2><button class="btn sm" id="sheetClose">✕</button></div><div id="sheetBody"></div></div></div>
+<script src="./things.js?v=1"></script>
+<script>
+(function () {
+"use strict";
+var LANGS = ["en", "zh", "zh-Hant", "es", "ca"], NAMES = ["English", "简体中文", "繁體中文", "Español", "Català"], SHORT = ["EN", "简中", "繁中", "ES", "CA"];
+var THINGS = window.LT_THINGS || [], BY = {}; THINGS.forEach(function (t) { BY[t.id] = t; });
+var FW = window.FBWorld || {};
+function li() { var l = window.FBL ? FBL.get() : (localStorage.getItem("wm_preferred_lang") || "en"); var i = LANGS.indexOf(l); return i < 0 ? 0 : i; }
+function T(a) { return a ? (a[li()] != null ? a[li()] : a[0]) : ""; }
+function pick(a) { return a[(Math.random() * a.length) | 0]; }
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+/* *actions* in italics-free muted text */
+function fmt(s) { return esc(s).replace(/\*([^*]+)\*/g, '<span class="act">*$1*</span>'); }
+function $(id) { return document.getElementById(id); }
+
+/* ---------------- words ---------------- */
+var W = {
+  app: ["Little Things", "小事", "小事", "Cosas pequeñas", "Petites coses"],
+  did: ["I did it", "我做了", "我做了", "Lo hice", "Ho he fet"],
+  another: ["Another", "换一个", "換一個", "Otra", "Una altra"],
+  notToday: ["Not today", "今天不了", "今天不了", "Hoy no", "Avui no"],
+  fold: ["Into the jar", "放进罐子", "放進罐子", "Al tarro", "Al pot"],
+  line: ["A line of your own for the paper, if you like", "想的话，在纸条上写一句自己的话", "想的話，在紙條上寫一句自己的話", "Una línea tuya para el papel, si quieres", "Una línia teva per al paper, si vols"],
+  tomorrow: ["See you tomorrow, Popo", "明天见，婆婆", "明天見，婆婆", "Hasta mañana, Popo", "Fins demà, Popo"],
+  more: ["One more", "再来一个", "再來一個", "Una más", "Una més"],
+  give: ["A little thing, Popo", "婆婆，给我一件小事", "婆婆，給我一件小事", "Una cosita, Popo", "Una coseta, Popo"],
+  look: ["Look in the jar", "看看罐子里", "看看罐子裡", "Mirar el tarro", "Mirar el pot"],
+  next: ["›", "›", "›", "›", "›"],
+  small: ["Small jar", "小罐", "小罐", "Tarro pequeño", "Pot petit"],
+  mid: ["Middle jar", "中罐", "中罐", "Tarro mediano", "Pot mitjà"],
+  big: ["Big jar", "大罐", "大罐", "Tarro grande", "Pot gran"],
+  n20: ["20 little things", "20 件小事", "20 件小事", "20 cositas", "20 cosetes"],
+  n50: ["50 little things", "50 件小事", "50 件小事", "50 cositas", "50 cosetes"],
+  n100: ["100 little things", "100 件小事", "100 件小事", "100 cositas", "100 cosetes"],
+  jar: ["Popo's jar", "婆婆的罐子", "婆婆的罐子", "El tarro de Popo", "El pot de la Popo"],
+  empty: ["Nothing in it yet. It's a jar. It can wait.", "里面还什么都没有。罐子嘛，可以等。", "裡面還什麼都沒有。罐子嘛，可以等。", "Aún no hay nada. Es un tarro. Puede esperar.", "Encara no hi ha res. És un pot. Pot esperar."],
+  older: ["An earlier jar", "以前的一罐", "以前的一罐", "Un tarro anterior", "Un pot anterior"],
+  newJar: ["A new jar", "换个新罐子", "換個新罐子", "Un tarro nuevo", "Un pot nou"],
+  bigger: ["A bigger jar", "换个大点的罐子", "換個大點的罐子", "Un tarro más grande", "Un pot més gran"],
+  other: ["A different jar", "换个罐子", "換個罐子", "Otro tarro", "Un altre pot"],
+  restart: ["Start again", "从头开始", "從頭開始", "Empezar de nuevo", "Tornar a començar"],
+  sure: ["Yes, empty it", "好，倒空", "好，倒空", "Sí, vacíalo", "Sí, buida'l"],
+  keep: ["No, keep them", "不，留着", "不，留著", "No, guárdalos", "No, guarda'ls"],
+  close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"],
+  back: ["‹ Back to Popo", "‹ 回到婆婆那儿", "‹ 回到婆婆那兒", "‹ Volver con Popo", "‹ Tornar amb la Popo"],
+  device: ["Kept on this device. Nothing is sent anywhere.", "只保存在这台设备上，什么都不会发送。", "只保存在這台裝置上，什麼都不會傳送。", "Se guarda en este dispositivo. No se envía nada.", "Es guarda en aquest dispositiu. No s'envia res."],
+  nearby: ["Nearby", "近邻", "近鄰", "Cerca", "A Prop"],
+  privacy: ["Privacy", "隐私", "隱私", "Privacidad", "Privadesa"],
+  story: ["Popo's story", "婆婆的故事", "婆婆的故事", "La historia de Popo", "La història de la Popo"],
+  goIn: ["{p}, in Nearby", "去近邻的“{p}”", "去近鄰的「{p}」", "{p}, en Cerca", "{p}, a A Prop"],
+  lang: ["Language", "语言", "語言", "Idioma", "Idioma"],
+  kitchen: ["Popo's kitchen", "婆婆的厨房", "婆婆的廚房", "La cocina de Popo", "La cuina de la Popo"]
+};
+var WHO = {
+  popo: ["Popo", "婆婆", "婆婆", "Popo", "Popo"], mei: ["Mei", "Mei", "Mei", "Mei", "Mei"], wei: ["Wei", "Wei", "Wei", "Wei", "Wei"],
+  cats: ["Miso & Yuzu", "味噌和柚子", "味噌和柚子", "Miso y Yuzu", "Miso i Yuzu"], mantou: ["Mantou", "馒头", "饅頭", "Mantou", "Mantou"],
+  note: ["Popo's paper", "婆婆的纸条", "婆婆的紙條", "El papel de Popo", "El paper de la Popo"]
+};
+/* Popo's own lines: en (broken), zh (broken), zh-Hant (her Cantonese), es (broken), ca (her own, fluent) */
+var P = {
+  intro: [
+    ["*wipes her hands on her apron* Ah, you come! Sit, sit. You eat already?", "*在围裙上擦擦手* 啊，你来了！坐，坐。吃了没有？", "*喺條圍裙度抹抹手* 哎，你嚟喇！坐，坐低先。食咗飯未呀？", "*se seca las manos en el delantal* ¡Ah, vienes! Siéntate, siéntate. ¿Comido ya?", "*s'eixuga les mans al davantal* Ah, ja ets aquí! Seu, seu. Ja has menjat?"],
+    ["Look, my jar. *taps the glass* Inside, little things. Small, small things to do. Not on the phone! Out there, in your life.", "看，我的罐子。*敲敲玻璃* 里面，小事情。很小很小的事情去做。不是在手机上！是外面，你的生活里。", "睇，我個樽。*篤一篤個玻璃* 入面係啲小事，細細件嘅事。唔係喺部電話度做㗎！係出面，喺你自己嘅生活度。", "Mira, mi tarro. *da golpecitos al cristal* Dentro, cositas. Cosas pequeñas, pequeñas para hacer. ¡No en el móvil! Fuera, en tu vida.", "Mira, el meu pot. *dona copets al vidre* A dins hi ha coses petites, petitíssimes, per fer. Al mòbil, no! A fora, a la teva vida."],
+    ["I give you one. You go do it. Then you come back, tell me, and the paper goes in the jar. Simple.", "我给你一个。你去做。做完回来告诉我，纸条就放进罐子。简单。", "我俾一件你，你去做。做完返嚟話我知，張紙就放入個樽。好簡單啫。", "Te doy una. Tú vas, la haces. Luego vuelves, me cuentas, y el papel va al tarro. Fácil.", "Te'n dono una, tu la vas a fer, i després tornes i m'ho expliques. I el paper, al pot. Així de fàcil."],
+    ["Small jar, middle jar, big jar. Small is good for start. No hurry. Nobody is counting.", "小罐，中罐，大罐。开始小的好。不急。没人在数。", "細樽、中樽、大樽。啱啱開始揀細嘅好。唔使急，冇人數㗎。", "Tarro pequeño, mediano, grande. Pequeño es bueno para empezar. Sin prisa. Nadie cuenta.", "Pot petit, mitjà o gran. Per començar, el petit va bé. No hi ha pressa. Ningú no compta res."]
+  ],
+  chose: [["*unscrews the lid* Good choice. Let me see what's inside…", "*拧开盖子* 选得好。我看看里面有什么……", "*扭開個蓋* 揀得好。等我睇下入面有乜……", "*desenrosca la tapa* Buena elección. A ver qué hay dentro…", "*descargola la tapa* Bona tria. A veure què hi ha a dins…"]],
+  hi: {
+    morn: [["*stirring a pot of congee* Morning! You sleep OK? Here, today's little thing.", "*搅着一锅粥* 早晨！睡得好吗？来，今天的小事。", "*攪緊煲粥* 早晨！瞓得好唔好呀？嚟，今日件小事。", "*remueve el congee* ¡Buenos días! ¿Dormiste bien? Toma, la cosita de hoy.", "*remena el congee* Bon dia! Has dormit bé? Té, la coseta d'avui."],
+      ["*opens the window a crack* Morning, morning. Fresh air! And one little thing for you.", "*把窗打开一条缝* 早，早。新鲜空气！还有给你的一件小事。", "*將個窗推開少少* 早晨早晨！吸啖新鮮空氣先！仲有件小事俾你。", "*abre un poco la ventana* Buenos días, buenos días. ¡Aire fresco! Y una cosita para ti.", "*obre una mica la finestra* Bon dia, bon dia. Aire fresc! I una coseta per a tu."]],
+    aft: [["*peeling an orange* Afternoon. Sit. Take a piece. *reaches into the jar*", "*剥着橙子* 下午好。坐。吃一瓣。*把手伸进罐子*", "*擘緊個橙* 午安。坐低，食片橙先。*伸手入個樽度*", "*pela una naranja* Buenas tardes. Siéntate. Toma un gajo. *mete la mano en el tarro*", "*pela una taronja* Bona tarda. Seu. Agafa un grill. *fica la mà al pot*"],
+      ["*folding laundry* Ah, you. Good timing. Hold this. *hands you a towel and a paper*", "*叠着衣服* 啊，是你。来得好。拿着。*递给你一条毛巾和一张纸条*", "*摺緊衫* 哎，係你呀。嚟得啱，幫我拎住。*遞條毛巾同張紙仔俾你*", "*doblando ropa* Ah, tú. Buen momento. Sujeta. *te da una toalla y un papel*", "*plegant roba* Ah, ets tu. Arribes en bon moment. Aguanta això. *et dona una tovallola i un paper*"]],
+    eve: [["*the soup is on* Evening! Wear socks, the floor is cold. Here, one little thing.", "*汤在炉上* 晚上好！穿袜子，地板凉。来，一件小事。", "*煲緊湯* 晚安！著對襪先，地下好凍㗎。嚟，件小事俾你。", "*la sopa al fuego* ¡Buenas noches! Ponte calcetines, suelo frío. Toma, una cosita.", "*la sopa al foc* Bon vespre! Posa't mitjons, que el terra és fred. Té, una coseta."],
+      ["*turns on the little lamp* You come in the evening, OK. Something small, before bed.", "*打开小灯* 晚上来，好。睡觉以前做点小事。", "*開咗盞小燈* 夜晚先嚟，都好。瞓覺之前，做件小事啦。", "*enciende la lamparita* Vienes en la noche, vale. Algo pequeño, antes de cama.", "*encén el llumet* Vens al vespre, d'acord. Una cosa petita, abans d'anar a dormir."]]
+  },
+  night: [["*Popo is asleep in her armchair, knitting in her lap. Miso paws a folded paper out of her apron pocket and pushes it towards you.*", "*婆婆在扶手椅上睡着了，毛线还在腿上。味噌从她围裙口袋里扒出一张折好的纸条，推到你面前。*", "*婆婆在扶手椅上睡著了，毛線還在腿上。味噌從她圍裙口袋裡扒出一張摺好的紙條，推到你面前。*", "*Popo duerme en su butaca, con el punto en el regazo. Miso saca con la pata un papel doblado del bolsillo de su delantal y te lo acerca.*", "*La Popo dorm a la butaca, amb la mitja a la falda. Miso treu amb la pota un paper doblegat de la butxaca del davantal i te l'acosta.*"]],
+  back: [["You come back! *taps the paper* This one. You did it?", "你回来了！*敲敲纸条* 这个。做了吗？", "你返嚟喇！*篤一篤張紙* 呢件呀，做咗未？", "¡Vuelves! *toca el papel* Esta. ¿La hiciste?", "Ja has tornat! *toca el paper* Aquesta. L'has feta?"],
+    ["Ah, there you are. The paper is still here, waiting. Like me.", "啊，你来了。纸条还在这里等。跟我一样。", "哎，你嚟喇。張紙仔仲喺度等緊你，同我一樣。", "Ah, ahí estás. El papel sigue aquí, esperando. Como yo.", "Ah, ja hi ets. El paper encara és aquí, esperant. Com jo."]],
+  done: [["Good! Very good. *folds the paper twice and drops it in the jar*", "好！很好。*把纸条折两下，放进罐子*", "好！好叻！*將張紙摺兩摺，放入個樽*", "¡Bien! Muy bien. *dobla el papel dos veces y lo echa al tarro*", "Molt bé! Molt bé. *doblega el paper dues vegades i el deixa caure al pot*"],
+    ["Aiya, look at you! *pinches your cheek* In the jar it goes.", "哎呀，你看你！*捏捏你的脸* 放进罐子。", "哎呀，睇下你！*搣下你塊面* 放入個樽度先。", "¡Aiya, mírate! *te pellizca la mejilla* Al tarro.", "Aiya, mira't! *et pessiga la galta* Cap al pot."],
+    ["*nods slowly, very pleased* This is life. Real life. *the paper goes in*", "*慢慢点头，很满意* 这就是生活。真的生活。*纸条放进去了*", "*慢慢擰頭，好滿意噉* 呢啲先係生活，真嘅生活。*張紙放咗入去*", "*asiente despacio, muy contenta* Esto es vida. Vida de verdad. *el papel entra*", "*fa que sí amb el cap, a poc a poc, molt contenta* Això és viure. Viure de debò. *el paper hi entra*"],
+    ["Josep would like this one. *smooths the paper and puts it in the jar*", "Josep 会喜欢这个。*把纸条抚平，放进罐子*", "Josep 實鍾意呢件。*撫平張紙，放入個樽*", "A Josep le gustaría esta. *alisa el papel y lo mete en el tarro*", "Aquesta li hauria agradat, a en Josep. *allisa el paper i el posa al pot*"],
+    ["See? Not so hard. *the jar goes clink*", "看？没那么难。*罐子叮的一声*", "睇？都唔係咁難啫。*個樽叮一聲*", "¿Ves? No tan difícil. *el tarro hace clinc*", "Ho veus? No era tan difícil. *el pot fa clinc*"]],
+  enough: [["One is enough for today. Go, live. Come back when you want, I pull another.", "今天一个就够了。去吧，好好过。想来就来，我再抽一个。", "今日一件就夠喇。去啦，好好過。想嚟就嚟，我再抽過件俾你。", "Una es suficiente por hoy. Ve, vive. Vuelve cuando quieras, saco otra.", "Per avui, amb una n'hi ha prou. Vés, viu. Torna quan vulguis i en trauré una altra."]],
+  another: [["Picky! Like Wei with vegetables. OK, this one.", "挑剔！像 Wei 挑菜。好吧，这个。", "咁揀擇！好似 Wei 揀菜噉。好啦，呢件。", "¡Exigente! Como Wei con verduras. Vale, esta.", "Que llepafils! Com en Wei amb la verdura. Va, aquesta."],
+    ["*puts it back, digs around* Hm. This one maybe.", "*放回去，翻了翻* 嗯。这个吧。", "*放返入去，撈下撈下* 嗯……呢件啦。", "*lo devuelve, rebusca* Mm. Esta quizás.", "*el torna a posar, remena* Mm. Potser aquesta."],
+    ["Fine, fine. Try this.", "好好好。试试这个。", "得啦得啦，試下呢件。", "Bueno, bueno. Prueba esta.", "Bé, bé. Prova aquesta."]],
+  picky: [["Aiya, so picky! Last one. Next time you take what you get.", "哎呀，好挑剔！最后一个。下次给什么就拿什么。", "哎呀，咁揀擇！最後一件喇，下次俾乜你就要乜。", "¡Aiya, tan exigente! La última. Próxima vez coges lo que hay.", "Aiya, quin llepafils! L'última. La propera vegada, el que toqui."]],
+  later: [["OK. Not today. Tomorrow is also a day. *puts the paper in her apron pocket*", "好。今天不了。明天也是一天。*把纸条放进围裙口袋*", "好啦，今日唔做。聽日又係新一日。*將張紙袋返入圍裙袋*", "Vale. Hoy no. Mañana también es día. *se guarda el papel en el delantal*", "D'acord. Avui no. Demà també és un dia. *es guarda el paper a la butxaca del davantal*"],
+    ["No problem. Go rest. *pats your hand* Rest is also a little thing.", "没问题。去休息。*拍拍你的手* 休息也是一件小事。", "冇問題，去唞下啦。*拍拍你隻手* 唞下都係一件小事嚟㗎。", "No problema. Ve descansar. *te da palmaditas en la mano* Descansar también es cosita.", "Cap problema. Vés a descansar. *et dona copets a la mà* Descansar també és una coseta."]],
+  rest: [["*knitting* I'm here. Come back when you want.", "*织着毛线* 我在这里。想来就来。", "*織緊冷* 我喺度。想嚟就嚟。", "*tejiendo* Aquí estoy. Vuelve cuando quieras.", "*fent mitja* Soc aquí. Torna quan vulguis."],
+    ["*tasting the soup* More salt? No. Perfect. Oh, you're still here! Go, go outside.", "*尝尝汤* 再加盐？不用。刚好。哦，你还在！去，出去走走。", "*試下啲湯* 加啲鹽？唔使喇，啱啱好。哎，你仲喺度？去啦，出去行下啦。", "*prueba la sopa* ¿Más sal? No. Perfecta. ¡Oh, sigues aquí! Ve, ve fuera.", "*tasta la sopa* Més sal? No. Perfecta. Ai, encara ets aquí! Vés, surt a fora."]],
+  full: [["The jar is full! Look, all the papers. Every one is a real thing you did. *wipes her eyes with the apron* Onions. It's onions.", "罐子满了！你看，全部纸条。每一张都是你真的做过的事。*用围裙擦擦眼睛* 洋葱。是洋葱。", "個樽滿咗喇！睇下，咁多張紙，每一張都係你真係做過嘅事。*用圍裙抹抹眼* 洋蔥嚟啫，係洋蔥。", "¡El tarro está lleno! Mira, todos los papeles. Cada uno es una cosa de verdad que hiciste. *se seca los ojos con el delantal* Cebolla. Es cebolla.", "El pot és ple! Mira tots els papers. Cadascun és una cosa de debò que has fet. *s'eixuga els ulls amb el davantal* Ceba. És la ceba."]],
+  restartQ: [["All the papers in the bin? *holds the jar tight* You are sure?", "所有纸条都扔掉？*紧紧抱着罐子* 你确定？", "啲紙全部掉晒？*攬實個樽* 你肯定？", "¿Todos los papeles a la basura? *abraza el tarro* ¿Seguro?", "Tots els papers a les escombraries? *abraça el pot* N'estàs segur?"]],
+  restarted: [["*empties the jar, very slowly, and sighs* OK. A clean jar. We start again.", "*慢慢倒空罐子，叹口气* 好。干净的罐子。重新开始。", "*慢慢倒清個樽，嘆一啖氣* 好啦，乾乾淨淨個樽，由頭嚟過。", "*vacía el tarro, muy despacio, y suspira* Vale. Tarro limpio. Empezamos otra vez.", "*buida el pot, molt a poc a poc, i sospira* D'acord. Un pot net. Tornem a començar."]]
+};
+/* the cats, while Popo sleeps (actions only) */
+var CATS = {
+  done: [["*Yuzu noses the paper into the jar. Miso purrs, loudly.*", "*柚子用鼻子把纸条拱进罐子。味噌大声呼噜。*", "*柚子用鼻子把紙條拱進罐子。味噌大聲呼嚕。*", "*Yuzu empuja el papel al tarro con el hocico. Miso ronronea, fuerte.*", "*Yuzu empeny el paper dins del pot amb el nas. Miso ronca de gust, fort.*"]],
+  another: [["*Miso fishes another paper out of the apron pocket*", "*味噌从围裙口袋里又钓出一张纸条*", "*味噌從圍裙口袋裡又釣出一張紙條*", "*Miso pesca otro papel del bolsillo del delantal*", "*Miso pesca un altre paper de la butxaca del davantal*"]],
+  later: [["*Both cats curl up on your lap. Clearly not today.*", "*两只猫都在你腿上蜷起来了。今天显然不了。*", "*兩隻貓都在你腿上蜷起來了。今天顯然不了。*", "*Los dos gatos se acurrucan en tu regazo. Claramente, hoy no.*", "*Els dos gats s'arrauleixen a la teva falda. Avui no, és clar.*"]],
+  rest: [["*Popo snores softly. Miso blinks at you, slowly. Yuzu is asleep on the knitting.*", "*婆婆轻轻打着呼。味噌对你慢慢眨眼。柚子在毛线上睡着了。*", "*婆婆輕輕打著呼。味噌對你慢慢眨眼。柚子在毛線上睡著了。*", "*Popo ronca bajito. Miso te parpadea despacio. Yuzu duerme sobre el punto.*", "*La Popo ronca fluixet. Miso et fa l'ullet a poc a poc. Yuzu dorm damunt la mitja.*"]]
+};
+/* now and then someone else is in the kitchen */
+var DROP = [
+  ["mei", ["*looks up from her phone* What? I'm reading. It's a… recipe. Sort of.", "*从手机上抬头* 干嘛？我在看。看……菜谱。差不多吧。", "*從手機上抬頭* 幹嘛？我在看。看……食譜。差不多啦。", "*levanta la vista del móvil* ¿Qué? Estoy leyendo. Es una… receta. Más o menos.", "*aixeca la vista del mòbil* Què? Estic llegint. És una… recepta. Més o menys."]],
+  ["mei", ["She gave me \"look at a cloud for ten minutes\". I found a cloud shaped like my ex. Healing.", "她给我的是“看云十分钟”。我找到一朵长得像我前任的云。治愈了。", "她給我的是「看雲十分鐘」。我找到一朵長得像我前任的雲。療癒了。", "A mí me tocó \"mirar una nube diez minutos\". Encontré una con la forma de mi ex. Sanador.", "A mi em va tocar \"mirar un núvol deu minuts\". En vaig trobar un amb la forma del meu ex. Sanador."]],
+  ["wei", ["*leaves a glass of water by your elbow* She's right more often than she lets on.", "*在你手边放了一杯水* 她说对的时候，比她承认的多。", "*在你手邊放了一杯水* 她說對的時候，比她承認的多。", "*te deja un vaso de agua junto al codo* Acierta más de lo que admite.", "*et deixa un got d'aigua al costat del colze* Té raó més sovint del que admet."]],
+  ["wei", ["Take your time. The jar isn't going anywhere, and neither is she.", "慢慢来。罐子不会跑，她也不会。", "慢慢來。罐子不會跑，她也不會。", "Tómate tu tiempo. El tarro no se va a ninguna parte, y ella tampoco.", "Pren-t'ho amb calma. El pot no se'n va enlloc, i ella tampoc."]],
+  ["mantou", ["*Mantou rests his chin on your knee and looks at the door, meaningfully*", "*馒头把下巴搁在你膝盖上，意味深长地看着门*", "*饅頭把下巴擱在你膝蓋上，意味深長地看著門*", "*Mantou apoya la barbilla en tu rodilla y mira a la puerta, con intención*", "*Mantou recolza el morro al teu genoll i mira la porta, amb intenció*"]],
+  ["cats", ["*Yuzu tries to fit inside the jar. Does not fit. Tries again.*", "*柚子想钻进罐子。钻不进去。再试一次。*", "*柚子想鑽進罐子。鑽不進去。再試一次。*", "*Yuzu intenta meterse en el tarro. No cabe. Lo vuelve a intentar.*", "*Yuzu prova de ficar-se dins del pot. No hi cap. Ho torna a provar.*"]]
+];
+
+/* ---------------- state (this device only) ---------------- */
+var KEY = "lt_jar";
+function load() { try { var s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s && s.v === 1) return s; } catch (e) {} return { v: 1, size: 0, cur: null, at: 0, done: [], later: {}, old: [] }; }
+var S = load();
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+function day(t) { var d = t ? new Date(t) : new Date(); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
+function tierMax(n) { return n >= 100 ? 3 : n >= 50 ? 2 : 1; }
+function pool() { var m = tierMax(S.size); return THINGS.filter(function (t) { return t.t <= m; }); }
+function doneIds() { var o = {}; S.done.forEach(function (d) { o[d.id] = 1; }); return o; }
+function isFull() { var d = doneIds(); return S.size > 0 && pool().every(function (t) { return d[t.id]; }); }
+function draw(except) {
+  var d = doneIds(), today = day(), all = pool().filter(function (t) { return !d[t.id] && t.id !== except; });
+  var a = all.filter(function (t) { return S.later[t.id] !== today; }); if (!a.length) a = all; if (!a.length) return null;
+  var lo = Math.min.apply(null, a.map(function (t) { return t.t; })), low = a.filter(function (t) { return t.t === lo; });
+  return (Math.random() < .75 ? pick(low) : pick(a)).id;
+}
+function hour() { var h = new Date().getHours(); return h; }
+var welcomed = false;   /* a newcomer is welcomed by Popo herself, whatever the hour */
+function asleep() { var h = hour(); return !welcomed && (h >= 21 || h < 5); }   /* Popo keeps her hours: early to bed, up at dawn */
+function chose() { return asleep() ? ["cats", CATS.another[0]] : ["popo", P.chose[0]]; }
+function part() { var h = hour(); return h < 12 ? "morn" : h < 18 ? "aft" : "eve"; }
+
+/* ---------------- drawing ---------------- */
+var WEI = [[9,3,14,4,"#1c1917"],[7,5,4,5,"#1c1917"],[21,5,4,5,"#1c1917"],[11,2,10,2,"#292524"],[9,7,14,12,"#f5d49a"],[8,10,1,4,"#e9be78"],[23,10,1,4,"#e9be78"],
+  [10,10,4,4,"rgba(125,178,168,.3)"],[10,9,4,1,"#e0a043"],[10,14,4,1,"#e0a043"],[9,10,1,4,"#e0a043"],[14,10,1,4,"#e0a043"],[11,10,1,1,"rgba(255,255,255,.8)"],[12,12,1,2,"#1b0f07"],[15,11,2,1,"#e0a043"],
+  [18,10,4,4,"rgba(125,178,168,.3)"],[18,9,4,1,"#e0a043"],[18,14,4,1,"#e0a043"],[17,10,1,4,"#e0a043"],[22,10,1,4,"#e0a043"],[19,10,1,1,"rgba(255,255,255,.8)"],[20,12,1,2,"#1b0f07"],
+  [7,10,2,1,"#b9772c"],[23,10,2,1,"#b9772c"],[14,16,4,1,"#a0521d"],[13,19,6,2,"#f5d49a"],
+  [11,21,10,2,"#f3ead8"],[15,22,2,2,"#6b3a1b"],[8,23,16,11,"#1c1410"],[12,23,8,10,"#4a2410"],[14,24,4,7,"#f3ead8"],[15,27,2,1,"#e0a043"],[15,30,2,1,"#e0a043"]];
+function rect(g, x, y, w, h, c) { g.fillStyle = c; g.fillRect(x, y, w, h); }
+function face(cv, who, o) {
+  o = o || {}; var g = cv.getContext("2d"); cv.width = 32; cv.height = 32; rect(g, 0, 0, 32, 32, who === "note" ? "#f6ecd4" : "#3a2414");
+  if (who === "popo" && FW.drawPopo) return FW.drawPopo(g, 0, 0, 1, { asleep: !!o.asleep });
+  if (who === "mei" && FW.drawMei) return FW.drawMei(g, 0, 0, 1, { phone: Math.random() < .3 });
+  if (who === "cats" && FW.drawCatsFace) return FW.drawCatsFace(g, 0, 0, 1, {});
+  if (who === "mantou" && FW.drawDogFace) return FW.drawDogFace(g, 0, 0, 1, {});
+  if (who === "wei") { WEI.forEach(function (r) { rect(g, r[0], r[1] - 1, r[2], r[3], r[4]); }); return; }
+  if (who === "note") { rect(g, 6, 6, 20, 22, "#fffdf6"); rect(g, 6, 6, 20, 1, "#000"); rect(g, 6, 27, 20, 1, "#000"); rect(g, 6, 6, 1, 22, "#000"); rect(g, 25, 6, 1, 22, "#000"); for (var i = 0; i < 4; i++) rect(g, 9, 11 + i * 4, i === 3 ? 8 : 14, 1, "#4a7ec0"); rect(g, 12, 4, 8, 4, "rgba(232,168,56,.8)"); return; }
+  rect(g, 8, 8, 16, 16, "#d6d2ca");
+}
+/* the jar: glass, a red cloth lid tied with string, and the papers inside, one for every little thing done */
+var PAPER = ["#fffdf6", "#f4d04a", "#f48fb8", "#cfe7c4", "#bcd6f0", "#f6c89a", "#e8dcff"];
+function hash(n) { var h = 2166136261; n = String(n); for (var i = 0; i < n.length; i++) { h ^= n.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function jar(g, x, y, w, h, fill, papers, drop) {
+  /* outline */
+  rect(g, x + 2, y, w - 4, 1, "#000"); rect(g, x + 1, y + 1, 1, 5, "#000"); rect(g, x + w - 2, y + 1, 1, 5, "#000");
+  rect(g, x + 2, y + 1, w - 4, 4, "#c8303a"); rect(g, x + 3, y + 2, 2, 1, "#e85a5a"); rect(g, x + 1, y + 5, w - 2, 1, "#000"); rect(g, x + 2, y + 4, w - 4, 1, "#e8a838");
+  rect(g, x, y + 6, 1, h - 7, "#000"); rect(g, x + w - 1, y + 6, 1, h - 7, "#000"); rect(g, x + 1, y + h - 1, w - 2, 1, "#000");
+  rect(g, x + 1, y + 6, w - 2, h - 7, "rgba(200,232,240,.42)");
+  /* papers */
+  var inner = h - 9, n = papers.length, rows = Math.max(0, Math.round(inner * fill)), placed = 0;
+  for (var r = 0; r < rows && placed < Math.max(n, rows ? 1 : 0); r++) {
+    var yy = y + h - 3 - r; for (var c = 0; c < 3; c++) { var k = hash(r * 7 + c), col = PAPER[k % PAPER.length], xx = x + 2 + c * Math.floor((w - 4) / 3) + (k % 2); rect(g, xx, yy, Math.floor((w - 4) / 3) - 1, 1, col); if (k % 5 === 0) rect(g, xx + 1, yy, 1, 1, "rgba(0,0,0,.18)"); }
+    placed++;
+  }
+  if (drop) rect(g, x + (w >> 1) - 2, drop, 4, 3, "#fffdf6");
+  /* shine */
+  rect(g, x + 2, y + 8, 1, h - 14, "rgba(255,255,255,.7)"); rect(g, x + 3, y + 9, 1, 3, "rgba(255,255,255,.5)");
+}
+var anim = { drop: -1, t0: 0 }, blink = 0, cv = $("scene"), sg = cv.getContext("2d");
+function sky(h) { return h >= 21 || h < 5 ? ["#141a34", "#1e2648"] : h < 7 ? ["#e89a6a", "#f6c89a"] : h < 18 ? ["#7cc0e8", "#bfe2f4"] : h < 20 ? ["#e8805a", "#f4b07a"] : ["#3a3060", "#5a4a7a"]; }
+function scene(t) {
+  var g = sg, h = hour(), night = asleep(), sk = sky(h);
+  g.imageSmoothingEnabled = false;
+  /* wall, tiles, shelf */
+  rect(g, 0, 0, 160, 84, night ? "#4a3424" : "#c9a46c"); for (var i = 0; i < 160; i += 8) rect(g, i, 0, 1, 52, "rgba(0,0,0,.06)");
+  rect(g, 0, 40, 160, 12, night ? "#3e6a62" : "#6aa898"); for (i = 0; i < 160; i += 6) rect(g, i, 40, 1, 12, "rgba(0,0,0,.15)"); rect(g, 0, 46, 160, 1, "rgba(0,0,0,.15)");
+  /* window */
+  rect(g, 62, 6, 34, 28, "#000"); rect(g, 64, 8, 30, 24, sk[0]); rect(g, 64, 20, 30, 12, sk[1]);
+  if (night) { rect(g, 86, 11, 3, 3, "#f3ead8"); rect(g, 86, 11, 1, 1, sk[0]); rect(g, 70, 12, 1, 1, "#fff"); rect(g, 78, 16, 1, 1, "#fff"); rect(g, 90, 22, 1, 1, "#fff"); }
+  else { rect(g, 84, 11, 4, 4, h < 7 || h >= 18 ? "#f8d070" : "#fff2a0"); rect(g, 67 + ((t / 900) | 0) % 24, 14, 8, 2, "rgba(255,255,255,.85)"); rect(g, 69 + ((t / 900) | 0) % 24, 13, 4, 1, "rgba(255,255,255,.85)"); }
+  rect(g, 78, 8, 2, 24, "#000"); rect(g, 64, 19, 30, 2, "#000"); rect(g, 60, 34, 38, 3, "#8a5a34"); rect(g, 60, 37, 38, 1, "#000");
+  /* a pot of spring onion on the sill */
+  rect(g, 88, 29, 6, 5, "#c0603a"); rect(g, 88, 29, 6, 1, "#000"); rect(g, 89, 24, 1, 5, "#5aa04a"); rect(g, 91, 22, 1, 7, "#5aa04a"); rect(g, 93, 25, 1, 4, "#2e6b34");
+  /* a shelf with jars and a red tin */
+  rect(g, 104, 14, 50, 2, "#8a5a34"); rect(g, 104, 16, 50, 1, "#000");
+  rect(g, 108, 8, 6, 6, "#e8d070"); rect(g, 108, 7, 6, 1, "#000"); rect(g, 117, 9, 5, 5, "#d6d2ca"); rect(g, 125, 6, 8, 8, "#4a7ec0"); rect(g, 126, 7, 6, 1, "#7cc8d8"); rect(g, 137, 9, 10, 5, "#f3ead8"); rect(g, 138, 10, 8, 1, "#c8303a");
+  /* a calendar on the wall: paper, no numbers that count anything */
+  rect(g, 10, 6, 18, 20, "#000"); rect(g, 11, 7, 16, 18, "#fffdf6"); rect(g, 11, 7, 16, 4, "#c8303a"); for (i = 0; i < 4; i++) rect(g, 13, 13 + i * 3, 12, 1, "#d6d2ca");
+  /* Popo (or Popo asleep in her armchair) */
+  if (night) {
+    rect(g, 14, 24, 40, 30, "#7a2232"); rect(g, 14, 24, 40, 2, "#000"); rect(g, 12, 34, 6, 22, "#8a2a3a"); rect(g, 50, 34, 6, 22, "#8a2a3a");
+    if (FW.drawPopo) FW.drawPopo(g, 18, 26, 1, { asleep: true });
+    var zt = (t / 700 | 0) % 3; g.fillStyle = "#f3ead8"; g.font = "8px monospace"; g.fillText("z", 48 + zt * 2, 24 - zt * 3);
+  } else {
+    if (FW.drawPopo) FW.drawPopo(g, 20, 24, 1, {}); else rect(g, 24, 28, 24, 28, "#8a2a3a");
+    if (blink) { rect(g, 31, 37, 3, 1, "#3a2418"); rect(g, 38, 37, 3, 1, "#3a2418"); rect(g, 32, 38, 1, 1, "#fbf3e6"); rect(g, 39, 38, 1, 1, "#fbf3e6"); }
+  }
+  /* the table */
+  rect(g, 0, 56, 160, 3, "#a0683a"); rect(g, 0, 56, 160, 1, "#c88a4a"); rect(g, 0, 59, 160, 1, "#000"); rect(g, 0, 60, 160, 24, "#7a4a28");
+  for (i = 0; i < 160; i += 20) rect(g, i, 60, 1, 24, "rgba(0,0,0,.18)"); rect(g, 0, 70, 160, 1, "rgba(0,0,0,.12)");
+  /* a bowl and a teapot, steam rising */
+  rect(g, 50, 51, 10, 5, "#f3ead8"); rect(g, 49, 51, 12, 1, "#000"); rect(g, 52, 55, 6, 1, "#4a7ec0");
+  if (!night) { var s = (t / 260 | 0) % 4; rect(g, 53 + (s % 2), 46 - s, 1, 2, "rgba(255,255,255,.7)"); rect(g, 56 - (s % 2), 44 - s, 1, 2, "rgba(255,255,255,.55)"); }
+  rect(g, 66, 49, 12, 7, "#4aa07a"); rect(g, 68, 47, 8, 2, "#4aa07a"); rect(g, 71, 46, 2, 1, "#000"); rect(g, 78, 51, 3, 2, "#4aa07a"); rect(g, 63, 50, 3, 2, "#3a8a64"); rect(g, 66, 49, 12, 1, "#000");
+  /* the jar */
+  var fill = S.size ? Math.min(1, S.done.length / S.size) : 0, dy = -1;
+  if (anim.drop >= 0) { var p = (t - anim.t0) / 900; if (p >= 1) anim.drop = -1; else dy = Math.round(18 + p * 30); fill = S.size ? Math.min(1, (S.done.length - (p < 1 ? 1 : 0)) / S.size) : 0; }
+  jar(g, 112, 26, 26, 30, fill, S.done, dy >= 0 ? dy : 0);
+  /* Miso and Yuzu, wherever cats like to be */
+  if (FW.drawPet) {
+    FW.drawPet(g, "miso", 148, 56, 1, { asleep: night || h < 8, flip: true });
+    if (night || (h >= 13 && h < 17)) FW.drawPet(g, "yuzu", 96, 56, 1, { asleep: true });
+    else FW.drawPet(g, "yuzu", 92, 84, 1, { step: (t / 400 | 0) % 2 });
+  }
+}
+var lastT = 0;
+function loop(t) {
+  if (t - lastT > 110) { lastT = t; if (Math.random() < .012) { blink = 2; } else if (blink) blink--; scene(t); }
+  requestAnimationFrame(loop);
+}
+
+/* ---------------- talking ---------------- */
+var talk = $("talk"), card = $("card"), acts = $("acts");
+function say(who, line, o) {
+  o = o || {}; var d = document.createElement("div"); d.className = "say" + (o.small ? " small" : "");
+  var c = document.createElement("canvas"); face(c, who, o); c.setAttribute("aria-hidden", "true");
+  var b = document.createElement("div"); b.className = "b"; b.innerHTML = '<span class="who">' + esc(T(WHO[who])) + "</span>" + fmt(typeof line === "string" ? line : T(line));
+  d.appendChild(c); d.appendChild(b); talk.appendChild(d); return d;
+}
+function clear() { talk.innerHTML = ""; card.innerHTML = ""; acts.innerHTML = ""; }
+function btn(label, fn, cls) { var b = document.createElement("button"); b.className = "btn " + (cls || ""); b.innerHTML = label; b.addEventListener("click", fn); acts.appendChild(b); return b; }
+function placeLink(k) {
+  if (k === "story") return { href: "/nearby/about/popo/", label: T(W.story) };
+  var nm = FW.name ? FW.name(k, LANGS[li()]) : k, href = FW.url ? FW.url(k) : "/nearby/";
+  return { href: href, label: T(W.goIn).replace("{p}", nm) };
+}
+function icon(n) { return FW.pix ? FW.pix(n) : ""; }
+function paper(t, writing) {
+  var h = '<div class="paper"><p>' + fmt(T(t.p)) + "</p>";
+  if (writing) h += '<label class="lbl" for="own">' + esc(T(W.line)) + '</label><input id="own" maxlength="80" autocomplete="off" enterkeyhint="done">';
+  else if (t.go) { var L = placeLink(t.go); h += '<div class="go"><a href="' + esc(L.href) + '">' + (icon(t.go === "story" ? "books" : "map")) + "↗ " + esc(L.label) + "</a></div>"; }
+  card.innerHTML = h + "</div>";
+}
+var mode = "", anotherN = 0;
+function show(t, opener) {
+  clear(); var night = asleep();
+  if (opener) say(opener[0], opener[1], { asleep: opener[0] === "popo" && night });
+  paper(t);
+  if (t.c && Math.random() < .55) say(t.c[0], t.c[1], { small: true });
+  else if (Math.random() < .12) { var d = pick(DROP); say(d[0], d[1], { small: true }); }
+  btn(icon("heart") + esc(T(W.did)), function () { didIt(t); }, "pri");
+  btn(esc(T(W.another)), function () { another(t); });
+  btn(esc(T(W.notToday)), function () { notToday(t); }, "quiet");
+  mode = "thing";
+}
+function present(opener) {
+  if (isFull()) return full();
+  if (!S.cur || !BY[S.cur]) { S.cur = draw(); S.at = Date.now(); save(); }
+  if (!S.cur) return full();
+  show(BY[S.cur], opener);
+}
+function didIt(t) {
+  clear(); var night = asleep();
+  paper(t, true);
+  var inp = $("own");
+  var go = function () {
+    var w = (inp.value || "").trim().slice(0, 80);
+    S.done.push({ id: t.id, at: Date.now(), w: w || undefined }); S.cur = null; delete S.later[t.id]; anotherN = 0; save();
+    anim.drop = 1; anim.t0 = performance.now();
+    clear();
+    if (isFull()) { say(night ? "cats" : "popo", night ? pick(CATS.done) : pick(P.done)); setTimeout(full, 900); return; }
+    say(night ? "cats" : "popo", night ? pick(CATS.done) : T(pick(P.done)) + " " + T(P.enough[0]));
+    btn(esc(T(W.tomorrow)), function () { rest(); }, "pri");
+    btn(esc(T(W.more)), function () { present(); });
+    btn(esc(T(W.look)), openJar, "quiet");
+  };
+  inp.addEventListener("keydown", function (e) { if (e.key === "Enter") go(); });
+  btn(esc(T(W.fold)), go, "pri");
+  btn(esc(T(W.back)), function () { show(t); }, "quiet");
+  setTimeout(function () { try { if (matchMedia("(hover:hover)").matches) inp.focus(); } catch (e) {} }, 50);
+}
+function another(t) {
+  anotherN++; var night = asleep(), id = draw(t.id);
+  if (!id) return show(t, ["popo", pick(P.another)]);
+  S.cur = id; S.at = Date.now(); save();
+  show(BY[id], night ? ["cats", pick(CATS.another)] : ["popo", anotherN >= 4 ? pick(P.picky) : pick(P.another)]);
+}
+function notToday(t) {
+  S.later[t.id] = day(); S.cur = null; anotherN = 0; save();
+  rest(asleep() ? ["cats", pick(CATS.later)] : ["popo", pick(P.later)]);
+}
+function rest(opener) {
+  clear(); var night = asleep();
+  if (opener) say(opener[0], opener[1]);
+  else say(night ? "cats" : "popo", night ? pick(CATS.rest) : pick(P.rest), { asleep: night });
+  if (!opener && Math.random() < .35) { var d = pick(DROP); say(d[0], d[1], { small: true }); }
+  btn(esc(T(W.give)), function () { present(); }, "pri");
+  btn(esc(T(W.look)), openJar, "quiet");
+  mode = "rest";
+}
+function full() {
+  clear(); say("popo", pick(P.full));
+  if (S.size < 100) btn(esc(T(W.bigger)), function () { S.size = S.size < 50 ? 50 : 100; S.cur = null; save(); present(chose()); }, "pri");
+  btn(esc(T(W.newJar)), function () { S.old.unshift({ size: S.size, done: S.done, end: Date.now() }); S.done = []; S.cur = null; S.later = {}; save(); present(chose()); }, S.size < 100 ? "" : "pri");
+  btn(esc(T(W.look)), openJar, "quiet");
+  mode = "full";
+}
+var SIZES = [[20, "small", "n20"], [50, "mid", "n50"], [100, "big", "n100"]];
+function jarButtons(onPick) {
+  var row = document.createElement("div"); row.className = "jars";
+  SIZES.forEach(function (z, i) {
+    var b = document.createElement("button"); b.className = "btn jarbtn" + (S.size === z[0] ? " pri" : "");
+    var c = document.createElement("canvas"); c.width = 20 + i * 6; c.height = 24 + i * 8; var g = c.getContext("2d"); jar(g, 0, 0, c.width, c.height, 0, []);
+    b.appendChild(c); b.insertAdjacentHTML("beforeend", "<b>" + esc(T(W[z[1]])) + "</b><small>" + esc(T(W[z[2]])) + "</small>");
+    b.addEventListener("click", function () { onPick(z[0]); }); row.appendChild(b);
+  });
+  return row;
+}
+function intro(i) {
+  i = i || 0; clear();
+  welcomed = true; say("popo", P.intro[i]);
+  if (i === 1) say("mei", ["*not looking up from her phone* She means real life. It's like an app, but you leave it.", "*头也不抬地看着手机* 她说的是现实生活。像个 app，但你得退出来。", "*頭也不抬地看著手機* 她說的是現實生活。像個 app，但你得退出來。", "*sin levantar la vista del móvil* Se refiere a la vida real. Es como una app, pero te sales.", "*sense aixecar els ulls del mòbil* Vol dir la vida real. És com una app, però en surts."], { small: true });
+  if (i < P.intro.length - 1) { btn(esc(T(W.next)), function () { intro(i + 1); }, "pri"); return; }
+  acts.appendChild(jarButtons(function (n) { S.size = n; S.met = 1; save(); present(chose()); }));
+  mode = "intro";
+}
+
+/* ---------------- the jar, opened ---------------- */
+var sheet = $("sheet"), sbody = $("sheetBody"), lastFocus = null;
+var DF = null;
+function when(t) { try { return new Intl.DateTimeFormat(LANGS[li()] === "zh-Hant" ? "zh-HK" : LANGS[li()], { day: "numeric", month: "short", year: new Date(t).getFullYear() === new Date().getFullYear() ? undefined : "numeric" }).format(new Date(t)); } catch (e) { return new Date(t).toDateString(); } }
+function slips(list) { return '<div class="slips">' + list.slice().reverse().map(function (d) { var t = BY[d.id]; if (!t) return ""; return '<div class="slip">' + esc(T(t.n)) + (d.w ? '<span class="own">' + esc(d.w) + "</span>" : "") + '<time datetime="' + new Date(d.at).toISOString() + '">' + esc(when(d.at)) + "</time></div>"; }).join("") + "</div>"; }
+function jarBody() {
+  var h = S.done.length ? slips(S.done) : '<p class="empty">' + esc(T(W.empty)) + "</p>";
+  S.old.forEach(function (o) { h += '<details class="older"><summary>' + esc(T(W.older)) + " · " + esc(when(o.end)) + "</summary>" + slips(o.done) + "</details>"; });
+  h += '<div class="tools" id="tools"></div>';
+  sbody.innerHTML = h;
+  var tools = $("tools");
+  var mk = function (label, fn, cls) { var b = document.createElement("button"); b.className = "btn sm " + (cls || ""); b.textContent = label; b.addEventListener("click", fn); tools.appendChild(b); return b; };
+  if (S.size) mk(T(W.other), function () { tools.innerHTML = ""; tools.appendChild(jarButtons(function (n) { S.size = n; if (S.cur && BY[S.cur] && BY[S.cur].t > tierMax(n)) S.cur = null; save(); closeJar(); present(chose()); })); });
+  if (S.done.length || S.old.length) mk(T(W.restart), function () {
+    tools.innerHTML = ""; var d = document.createElement("div"); d.style.width = "100%"; tools.appendChild(d);
+    var q = say("popo", P.restartQ[0]); d.appendChild(q);
+    mk(T(W.keep), function () { jarBody(); }, "pri");
+    mk(T(W.restart), function () { S = { v: 1, size: S.size, cur: null, at: 0, done: [], later: {}, old: [], met: 1 }; save(); closeJar(); present(["popo", P.restarted[0]]); }, "quiet");
+  }, "quiet");
+}
+function openJar() { lastFocus = document.activeElement; $("jarTitle").textContent = T(W.jar); jarBody(); sheet.hidden = false; $("sheetClose").focus(); }
+function closeJar() { sheet.hidden = true; if (lastFocus && lastFocus.focus) try { lastFocus.focus(); } catch (e) {} }
+$("sheetClose").addEventListener("click", closeJar);
+sheet.addEventListener("click", function (e) { if (e.target === sheet) closeJar(); });
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (!sheet.hidden) closeJar(); closeLang(); } });
+$("jarHit").addEventListener("click", function () { if (S.size) openJar(); });
+
+/* ---------------- language ---------------- */
+var menu = null;
+function closeLang() { if (menu) { menu.remove(); menu = null; $("langBtn").setAttribute("aria-expanded", "false"); } }
+$("langBtn").addEventListener("click", function (e) {
+  e.stopPropagation(); if (menu) return closeLang();
+  menu = document.createElement("div"); menu.className = "langmenu"; menu.setAttribute("role", "menu");
+  LANGS.forEach(function (l, i) { var b = document.createElement("button"); b.setAttribute("role", "menuitemradio"); b.setAttribute("aria-checked", String(i === li())); b.lang = l; b.textContent = NAMES[i];
+    b.addEventListener("click", function () { if (window.FBL) FBL.set(l); else try { localStorage.setItem("wm_preferred_lang", l); } catch (x) {} closeLang(); paint(true); }); menu.appendChild(b); });
+  document.body.appendChild(menu); $("langBtn").setAttribute("aria-expanded", "true"); menu.querySelector("[aria-checked=true]").focus();
+});
+document.addEventListener("click", function (e) { if (menu && !menu.contains(e.target)) closeLang(); });
+
+function chrome() {
+  var i = li(); document.documentElement.lang = LANGS[i];
+  $("appName").textContent = T(W.app); document.title = T(W.app);
+  $("langLbl").textContent = SHORT[i]; $("langIco").innerHTML = icon("globe"); $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + NAMES[i]);
+  $("jarHit").setAttribute("aria-label", T(W.look)); cv.setAttribute("aria-label", T(W.kitchen)); $("sheetClose").setAttribute("aria-label", T(W.close));
+  $("foot").innerHTML = "<span>" + esc(T(W.device)) + '</span><a href="/nearby/">' + icon("heart") + " " + esc(T(W.nearby)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a>";
+}
+function paint(again) {
+  chrome();
+  if (!sheet.hidden) { $("jarTitle").textContent = T(W.jar); jarBody(); }
+  if (!S.size) return intro(0);
+  if (again && mode === "thing" && S.cur && BY[S.cur]) return show(BY[S.cur]);
+  if (again && mode === "rest") return rest();
+  if (again && mode === "full") return full();
+  start();
+}
+function start() {
+  if (isFull()) return full();
+  var night = asleep();
+  if (S.cur && BY[S.cur]) return show(BY[S.cur], night ? ["cats", P.night[0]] : ["popo", pick(P.back)]);
+  present(night ? ["cats", P.night[0]] : ["popo", pick(P.hi[part()])]);
+}
+addEventListener("fbl:lang", function () { paint(true); });
+addEventListener("storage", function (e) { if (e.key === KEY) { S = load(); paint(true); } });
+chrome();
+if (!S.size) intro(0); else start();
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

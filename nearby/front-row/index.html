@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8ed2d0134e"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0f928170c5" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=4844bd2557"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8fe2bb6ed8" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Front Row · Nearby</title>
 <meta name="description" content="The town's little cinema club: nominate a film with a line on why, say which ones you'd watch, and the one most people want plays this week. Then watch it with someone.">
@@ -165,8 +165,9 @@
   ];
 
   /* ---------- nominate ---------- */
-  function show(id) { ["nom"].forEach(function (s) { $(s).hidden = s !== id; }); $("dock").hidden = !!id; }
-  [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.onclick = function () { show(null); }; });
+  var shownAt = 0;
+  function show(id) { if (id) shownAt = Date.now(); ["nom"].forEach(function (s) { $(s).hidden = s !== id; }); $("dock").hidden = !!id; }
+  [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.onclick = function () { if (Date.now() - shownAt > 450) show(null); }; });   /* the tap that opened the form can't land on its ✕ */
   addEventListener("keydown", function (e) { if (e.key === "Escape") show(null); });
   $("nomBtn").onclick = function () { $("fTitle").value = ""; $("fYear").value = ""; $("fWhy").value = ""; show("nom"); setTimeout(function () { try { $("fTitle").focus({ preventScroll: true }); } catch (e) {} }, 60); };
   $("fGo").onclick = function () {

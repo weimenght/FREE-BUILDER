@@ -231,7 +231,8 @@
     if (!JB.listening()) { JB.listen(true); fire(); paintAll(); }
     function close() { M.dead = true; machines.splice(machines.indexOf(M), 1); sc.remove(); document.removeEventListener("keydown", esc1); paintAll(); }
     function esc1(e) { if (e.key === "Escape") close(); }
-    x.addEventListener("click", close); sc.addEventListener("click", function (e) { if (e.target === sc) close(); }); document.addEventListener("keydown", esc1);
+    var at0 = Date.now(); function settled() { return Date.now() - at0 > 450; }   /* the tap that opened the machine can't land on its × */
+    x.addEventListener("click", function () { if (settled()) close(); }); sc.addEventListener("click", function (e) { if (e.target === sc && settled()) close(); }); document.addEventListener("keydown", esc1);
     x.focus();
   }
 

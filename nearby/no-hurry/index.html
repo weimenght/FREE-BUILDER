@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8ed2d0134e"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0f928170c5" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=4844bd2557"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8fe2bb6ed8" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>No Hurry · Nearby</title>
 <meta name="description" content="A cabin on the high pasture with a big window. Clouds, cows, weather, a candle on the sill.">
@@ -17,7 +17,8 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:-moz
 .alb-b{width:min(520px,100%);max-height:calc(100dvh - 24px);overflow:auto;padding:16px 16px 12px;background:#efe3c8;color:#2a1d14;border:3px solid #000;box-shadow:6px 6px 0 #000,inset 0 0 0 6px #e4d4b0;font:400 21px/1.25 'VT323','PingFang SC','PingFang TC','Microsoft YaHei',monospace}
 .alb-b h2{margin:0 0 8px;font:400 10px/1.5 'Press Start 2P',monospace;letter-spacing:.06em;color:#8a3a2a;text-transform:uppercase}
 .alb-b canvas{display:block;width:100%;height:auto;image-rendering:auto;border:8px solid #fbf6ea;border-bottom-width:14px;box-shadow:2px 2px 0 rgba(0,0,0,.35);transform:rotate(-1deg)}.alb-b canvas.px{image-rendering:pixelated}.alb.box .alb-n span,.alb.box #albPrev,.alb.box #albNext{visibility:hidden}.alb.box .alb-b{background:#e9dcc0}
-.alb-b p{margin:12px 2px 10px;min-height:52px}
+.alb-b p{margin:6px 2px 10px;min-height:52px}
+.alb-ai{display:block;margin:8px 2px 0;font-size:16px;line-height:1.1;text-align:right;opacity:.5;letter-spacing:.02em}.alb-ai[hidden]{display:none}
 .alb-n{display:flex;gap:8px;align-items:center}.alb-n span{flex:1;text-align:center;opacity:.6}
 .snd{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:calc(14px + env(safe-area-inset-bottom));width:40px;height:40px;border:2px solid rgba(0,0,0,.6);background:rgba(29,19,13,.55);color:#fbeedd;font-size:18px;cursor:pointer;opacity:.5;transition:opacity .3s}
 .snd:hover,.snd:focus-visible{opacity:1}
@@ -29,8 +30,8 @@ canvas#cv{touch-action:none}
 <h1 class="sr" id="h1">No Hurry</h1>
 <canvas id="cv" role="img" aria-label="A view from a cabin window over a high pasture"></canvas>
 <div class="alb" id="alb" role="dialog" aria-modal="true" aria-labelledby="albT" hidden>
-  <div class="alb-b"><h2 id="albT"></h2><canvas id="albC" width="480" height="340" aria-hidden="true"></canvas><p id="albP"></p>
-    <div class="alb-n"><button type="button" id="albPrev" class="fbb" aria-label="‹">‹</button><span id="albI"></span><button type="button" id="albNext" class="fbb" aria-label="›">›</button><button type="button" id="albX" class="fbb">✕</button></div></div>
+  <div class="alb-b" tabindex="-1"><h2 id="albT"></h2><canvas id="albC" width="480" height="340" aria-hidden="true"></canvas><small class="alb-ai" id="albAI"></small><p id="albP"></p>
+    <div class="alb-n"><button type="button" id="albPrev" class="fbb" aria-label="‹">‹</button><span id="albI"></span><button type="button" id="albNext" class="fbb" aria-label="›">›</button></div></div>
 </div>
 <button class="snd" id="snd" type="button" data-fb-snd aria-pressed="false">🔈</button>
 <script src="album.js" defer></script>
@@ -45,7 +46,8 @@ canvas#cv{touch-action:none}
     wed: ["1970. Plaça Sant Jaume. Rice in my hair one whole week. Josep laugh the whole day.", "1970。圣若梅广场。头发里的米一个星期都没弄干净。Josep 笑了一整天。", "1970。聖若梅廣場。啲米喺頭髮度成個禮拜都未清走。Josep 笑足成日。", "1970. Plaça Sant Jaume. Arroz en mi pelo una semana entera. Josep ríe todo el día.", "1970. La plaça de Sant Jaume. Vaig tenir arròs als cabells una setmana sencera. En Josep va riure tot el dia."],
     radio: ["Josep's radio", "Josep 的收音机", "Josep 部收音機", "La radio de Josep", "La ràdio d'en Josep"],
     album: ["Popo's albums", "婆婆的相册", "婆婆嘅相簿", "Los álbumes de Popo", "Els àlbums de la Popo"],
-    snd: ["Sound", "声音", "聲音", "Sonido", "So"]
+    snd: ["Sound", "声音", "聲音", "Sonido", "So"],
+    ai: ["Photographs made with AI", "照片由 AI 生成", "相片由 AI 生成", "Fotografías hechas con IA", "Fotografies fetes amb IA"]
   };
   var W = window.FBWorld || { hour: function () { var d = new Date(); return d.getHours() + d.getMinutes() / 60; }, phase: function () { return "day"; }, weather: function () { return "clear"; } };
   var cv = document.getElementById("cv"), g = cv.getContext("2d"), PW = 0, PH = 0;
@@ -78,9 +80,9 @@ canvas#cv{touch-action:none}
     if (wx === "storm" && f % 400 < 3) { g.fillStyle = "rgba(255,255,255,.55)"; g.fillRect(x0, y0, w, h); }
   }
   function draw() {
-    var ph = W.phase(), wx = W.weather(), night = ph === "night", warm = night || ph === "dusk";
+    var ph = W.phase(), wx = W.weather(), night = ph === "night", warm = night || ph === "dusk"; LIGHTS = []; FIX = null;
     // the room: wooden walls
-    R(0, 0, PW, PH, night ? "#2a1a10" : "#5a3a22"); for (var x = 0; x < PW; x += 8) R(x, 0, 1, PH, night ? "#22140c" : "#4a2e1a");
+    var nw = night && !lamp; R(0, 0, PW, PH, nw ? "#2a1a10" : "#5a3a22"); for (var x = 0; x < PW; x += 8) R(x, 0, 1, PH, nw ? "#22140c" : "#4a2e1a");
     // the window is square, whatever the screen: the room around it grows instead
     var land = PW > PH, side = Math.round(Math.min(PW * (land ? .6 : .8), PH * (land ? .66 : .5))), ww = side, wh = side, wx0 = Math.round((PW - ww) / 2), wy0 = Math.round((PH - wh) * (land ? .32 : .36));
     g.save(); g.beginPath(); g.rect(wx0, wy0, ww, wh); g.clip(); view(wx0, wy0, ww, wh); outside(wx0, wy0, ww, wh); g.restore();   /* the sky stays inside the window */
@@ -94,18 +96,20 @@ canvas#cv{touch-action:none}
     [[wx0, 1], [wx0 + ww, -1]].forEach(function (c) { var x = c[1] > 0 ? c[0] : c[0] - sw; R(x, wy0, sw, Math.max(2, fr / 2), "#3a2414"); R(x, wy0 + wh * .45, sw, Math.max(2, fr / 2), "#3a2414"); R(c[1] > 0 ? x + sw - fr : x, wy0, fr, wh, "#3a2414"); if (op > .05) { g.fillStyle = "rgba(200,225,255," + (.12 * op) + ")"; g.fillRect(x, wy0, sw, wh); } });
     if (op > .5) { var cu = Math.sin(f / 9) * fr * .8 * op; R(wx0 - fr * 2 + cu, wy0 - fr, fr * 1.5, wh * .7, "rgba(240,226,200,.55)"); R(wx0 + ww + fr * .5 - cu, wy0 - fr, fr * 1.5, wh * .7, "rgba(240,226,200,.55)"); }   /* the curtains catch the breeze */
     if (land && wx0 > 40) room(wx0, wy0, ww, wh, fr, night);
+    fixture(wx0, wy0, ww, wh, fr, Math.max(2, fr));
     // the sill: a mug, a plant, a candle at night; a cat if one wandered up here
     var sy = wy0 + wh + fr; R(wx0 - fr * 3, sy, ww + fr * 6, fr * 2, "#6a4428"); R(wx0 - fr * 3, sy + fr * 2, ww + fr * 6, 1, "#2a1a10");
     var ms = Math.max(2, fr); G = { x0: wx0, ww: ww, sy: sy, ms: ms, wy: wy0 }; var mx = wx0 + ww * SILL.mug; R(mx, sy - ms * 4, ms * 3, ms * 4, "#e8dcc4"); R(mx + ms * 3, sy - ms * 3, ms, ms * 2, "#e8dcc4"); R(mx + ms * .5, sy - ms * 4, ms * 2, ms * .7, "#5a2a14");
     for (var st = 0; st < 3; st++) { var t = ((f * .6 + st * 20) % 60) / 60; R(mx + ms + Math.sin(t * 9 + st) * ms, sy - ms * 4 - t * ms * 8, 1, 2, "rgba(255,255,255," + (.5 - t * .5) + ")"); }
     var px = wx0 + ww * SILL.plant; R(px, sy - ms * 3, ms * 3, ms * 3, "#a8582a"); for (var lf = 0; lf < 5; lf++) R(px + ms * 1.5 + Math.sin(lf * 1.3) * ms * 2, sy - ms * 4 - lf * ms * .8, ms * 1.4, ms, "#4a8a3a");
     var cx = wx0 + ww * SILL.candle; R(cx, sy - ms * 4, ms, ms * 4, "#fbf1de"); R(cx + ms * .4, sy - ms * 4.6, ms * .2, ms * .6, "#3a2414");
-    if (lit()) { var fh = ms * (1.3 + Math.sin(f / 4) * .3); R(cx, sy - ms * 4 - fh, ms, fh, "#f6b73c"); g.fillStyle = "rgba(246,183,60,.08)"; g.beginPath(); g.arc(cx, sy - ms * 5, ww * .18, 0, 6.3); g.fill(); }
+    if (lit()) { var fh = ms * (1.3 + Math.sin(f / 4) * .3); R(cx, sy - ms * 4 - fh, ms, fh, "#f6b73c"); g.fillStyle = "rgba(246,183,60,.08)"; g.beginPath(); g.arc(cx, sy - ms * 5, ww * .18, 0, 6.3); g.fill(); LIGHTS.push({ x: cx + ms / 2, y: sy - ms * 5, r: ww * (.34 + Math.sin(f / 4) * .01), s: .95 }); }
     /* Popo's cabin: a little shelf under the sill with her albums, Josep's radio and the folded blanket */
     var ky = sy + fr * 2 + Math.max(ms * 9, Math.round((PH - sy) * .32)), kx = wx0 + ww * .12; if (ky < PH - ms * 2) {
       R(wx0 - fr, ky, ww + fr * 2, Math.max(2, ms), "#6a4428"); R(wx0 - fr, ky + Math.max(2, ms), ww + fr * 2, 1, "#2a1a10");
       ["#8a3a2a", "#3a5a7a", "#c8a24a"].forEach(function (c, i) { R(kx + i * ms * 2.2, ky - ms * (6 - i % 2), ms * 2, ms * (6 - i % 2), c); R(kx + i * ms * 2.2 + ms * .4, ky - ms * (5 - i % 2), ms * 1.2, ms * .5, "rgba(255,240,200,.6)"); });
-      var rx = wx0 + ww * .52; R(rx, ky - ms * 5, ms * 7, ms * 5, "#7a4a28"); R(rx + ms * .6, ky - ms * 4.2, ms * 3, ms * 3.2, "#2a1a10"); for (var gr = 0; gr < 3; gr++) R(rx + ms * .9, ky - ms * (3.9 - gr), ms * 2.4, ms * .3, "#5a3a22");
+      var rx = wx0 + ww * .52; R(rx, ky - ms * 5, ms * 7, ms * 5, "#7a4a28"); R(rx + ms * .6, ky - ms * 4.2, ms * 3, ms * 3.2, radioOn ? "#f8eba8" : "#2a1a10"); for (var gr = 0; gr < 3; gr++) R(rx + ms * .9, ky - ms * (3.9 - gr), ms * 2.4, ms * .3, radioOn ? "#d8c070" : "#5a3a22");
+      if (radioOn) LIGHTS.push({ x: rx + ms * 2.1, y: ky - ms * 2.6, r: ms * 7, s: .5 });   /* the dial's glass lights up while it plays */
       R(rx + ms * 4.4, ky - ms * 3.6, ms * 1.6, ms * 1.6, radioOn ? "#f6b73c" : "#c8a870"); R(rx + ms * 6.2, ky - ms * 8, ms * .3, ms * 3, "#2a1a10");
       if (radioOn) for (var nt = 0; nt < 2; nt++) { var tt = ((f * .7 + nt * 30) % 60) / 60; R(rx + ms * (3 + nt * 2) + Math.sin(tt * 6) * ms, ky - ms * 6 - tt * ms * 6, ms * .8, ms * .8, "rgba(255,230,160," + (.8 - tt * .8) + ")"); }
       var bx = wx0 + ww * .8; keepBox(bx, ky, ms);
@@ -113,6 +117,7 @@ canvas#cv{touch-action:none}
     } else if (!(land && wx0 > 40)) K = null;
     var cats = W.cats ? W.cats() : {};
     if ((cats.miso === "cabin" || cats.yuzu === "cabin") && W.drawPet) W.drawPet(g, cats.miso === "cabin" ? "miso" : "yuzu", wx0 + ww * .66, sy, Math.max(1, Math.round(ms / 2.6)), { asleep: night || Math.sin(f / 300) > .2 });   /* a cat on the sill, napping more often than not */
+    dim(wx0, wy0, ww, wh);
     // a warm glow from the stove, out of frame, on cold or late evenings
     if (warm || wx === "snow") { g.fillStyle = "rgba(240,120,40," + (.05 + Math.sin(f / 6) * .015) + ")"; g.fillRect(0, 0, PW, PH); }
   }
@@ -144,13 +149,44 @@ canvas#cv{touch-action:none}
     for (var b = 0; b < 5; b++) R(lx - sh / 2 + 2 + b * (sh / 6), ly + sh * .5 - (6 + (b % 3) * 2) * fr / 3, sh / 7, (6 + (b % 3) * 2) * fr / 3, ["#8a3a2a", "#3a5a7a", "#c8a24a", "#4a6a3a", "#6a3a6a"][b]);   /* Popo's albums */
     K = { album: [lx - sh / 2, ly + sh * .5 - 10 * fr / 3 - 4, sh, 10 * fr / 3 + 8] };
     var rdx = PW - lx - fr * 4, rdy = y0 + h * .78, m = fr; R(rdx - fr * 11, rdy + m * 5, fr * 21, Math.max(2, fr / 2), "#3a2414");   /* Josep's radio and Popo's box on a little shelf */
-    R(rdx, rdy, m * 7, m * 5, "#7a4a28"); R(rdx + m * .6, rdy + m * .8, m * 3, m * 3.2, "#2a1a10"); R(rdx + m * 4.4, rdy + m * 1.4, m * 1.6, m * 1.6, radioOn ? "#f6b73c" : "#c8a870"); R(rdx + m * 6.2, rdy - m * 3, m * .3, m * 3, "#2a1a10");
+    R(rdx, rdy, m * 7, m * 5, "#7a4a28"); R(rdx + m * .6, rdy + m * .8, m * 3, m * 3.2, radioOn ? "#f8eba8" : "#2a1a10"); if (radioOn) { for (var gl2 = 0; gl2 < 3; gl2++) R(rdx + m * .9, rdy + m * (1.1 + gl2), m * 2.4, Math.max(1, m * .3), "#d8c070"); LIGHTS.push({ x: rdx + m * 2.1, y: rdy + m * 2.4, r: m * 7, s: .5 }); } R(rdx + m * 4.4, rdy + m * 1.4, m * 1.6, m * 1.6, radioOn ? "#f6b73c" : "#c8a870"); R(rdx + m * 6.2, rdy - m * 3, m * .3, m * 3, "#2a1a10");
     if (radioOn) for (var nt = 0; nt < 2; nt++) { var tt = ((f * .7 + nt * 30) % 60) / 60; R(rdx + m * (3 + nt * 2) + Math.sin(tt * 6) * m, rdy - m - tt * m * 6, m * .8, m * .8, "rgba(255,230,160," + (.8 - tt * .8) + ")"); }
     K.radio = [rdx - m, rdy - m * 4, m * 9, m * 10];
     var kbx = rdx - m * 9; keepBox(kbx, rdy + m * 5, m); K.box = [kbx - m, rdy - m, m * 9, m * 7];
-    var rx = PW - lx, ry = y0 + h * .12; R(rx, 0, 1, ry, "#2a1a10"); R(rx - fr, ry, fr * 2 + 1, fr * 3, "#3a2414"); R(rx - fr + 1, ry + 1, fr * 2 - 1, fr * 3 - 2, night ? "#f6b73c" : "#c8a870");
-    if (night) { g.fillStyle = "rgba(246,183,60,.07)"; g.beginPath(); g.arc(rx, ry + fr * 1.5, fr * 10, 0, 6.3); g.fill(); }
+    var rx = PW - lx, ry = y0 + h * .12; R(rx, 0, 1, ry, "#2a1a10"); R(rx - fr, ry, fr * 2 + 1, fr * 3, "#3a2414"); R(rx - fr + 1, ry + 1, fr * 2 - 1, fr * 3 - 2, lamp ? "#f6c860" : "#8a7050");
+    FIX = { x: rx, y: ry + fr * 1.5, top: ry + fr * 3, bot: Math.min(PH - fr * 4, ry + fr * 3 + h * .3), lantern: 1 };   /* the lantern hangs here; its pull cord below it */
   }
+  /* the room's own light: a pull-cord lamp (a bulb by the window; on a wide wall, the lantern) */
+  function fixture(x0, y0, w, h, fr, ms) {
+    if (!FIX) { var bx = Math.min(PW - ms * 2, x0 + w + fr * 3), by = Math.max(ms * 3, Math.min(y0 - fr * 2, Math.round(y0 * .55))); if (by < ms * 3 + 2) by = ms * 3 + 2;
+      R(bx, 0, 1, by - ms, "#1a100a"); R(bx - ms * .5, by - ms * 1.4, ms * 1.4, ms, "#3a2414");
+      R(bx - ms * .7, by - ms * .5, ms * 1.8, ms * 1.6, lamp ? "#fff0b8" : "#b8ab90"); R(bx - ms * .3, by + ms * 1.1, ms, ms * .5, lamp ? "#ffe08a" : "#a89a80");
+      FIX = { x: bx + ms * .2, y: by + ms * .3, top: by + ms * 1.6, bot: Math.min(PH - ms * 6, by + Math.max(ms * 10, (y0 + h * .45) - by)) };
+    }
+    var pull = f - pulledAt < 3 ? ms * 1.4 : 0, cx = Math.round(FIX.x + (FIX.lantern ? 0 : ms * .9)), cb = FIX.bot + pull;
+    R(cx, FIX.top, 1, cb - FIX.top, "#e8dcc4"); R(cx - ms * .45, cb, ms * 1.2, ms * 1.5, "#a8763e"); R(cx - ms * .2, cb + ms * .2, ms * .4, ms * .5, "#d8a868");   /* a cotton cord and a wooden bead */
+    FIX.cx = cx; FIX.cb = cb;
+    if (lamp) LIGHTS.push({ x: FIX.x, y: FIX.y, r: Math.max(PW, PH) * 1.1, s: .9 });
+  }
+  /* inside follows the light outside: at night or under a dark sky the room is dim, and only what you light brightens it */
+  var dk = document.createElement("canvas"), dg = dk.getContext("2d"), LIGHTS = [], FIX = null, lamp = false, pulledAt = -99;
+  function gloom() {
+    var s = W.solar ? W.solar() : W.hour(); s = ((s % 24) + 24) % 24;
+    var day = Math.max(0, Math.min(1, (s - 5.6) / 1.8)) * Math.max(0, Math.min(1, (19.4 - s) / 1.8)), wx = W.weather(), cl = wx === "storm" ? .34 : wx === "rain" || wx === "fog" ? .22 : wx === "snow" ? .14 : 0;
+    return Math.max((1 - day) * .68, cl);
+  }
+  function dim(x0, y0, w, h) {
+    var D = gloom(); if (D < .02) return;
+    if (dk.width !== PW || dk.height !== PH) { dk.width = PW; dk.height = PH; }
+    dg.globalCompositeOperation = "source-over"; dg.clearRect(0, 0, PW, PH); dg.fillStyle = "rgba(10,6,14," + D.toFixed(3) + ")"; dg.fillRect(0, 0, PW, PH);
+    dg.globalCompositeOperation = "destination-out"; dg.fillStyle = "#000"; dg.fillRect(x0, y0, w, h);   /* the sky is its own light */
+    LIGHTS.forEach(function (l) { var gr = dg.createRadialGradient(l.x, l.y, 0, l.x, l.y, l.r); gr.addColorStop(0, "rgba(0,0,0," + l.s + ")"); gr.addColorStop(.55, "rgba(0,0,0," + (l.s * .55) + ")"); gr.addColorStop(1, "rgba(0,0,0,0)"); dg.fillStyle = gr; dg.fillRect(l.x - l.r, l.y - l.r, l.r * 2, l.r * 2); });
+    dg.globalCompositeOperation = "source-over"; g.drawImage(dk, 0, 0);
+    LIGHTS.forEach(function (l) { if (l.r > PW) return; var gr = g.createRadialGradient(l.x, l.y, 0, l.x, l.y, l.r * .8); gr.addColorStop(0, "rgba(255,190,100," + (.16 * l.s * D * 1.4).toFixed(3) + ")"); gr.addColorStop(1, "rgba(255,170,80,0)"); g.fillStyle = gr; g.fillRect(l.x - l.r, l.y - l.r, l.r * 2, l.r * 2); });   /* and warms what it reaches */
+  }
+  function click() { try { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume(); var n = AC.currentTime, o = AC.createOscillator(), gg = AC.createGain(); o.type = "square"; o.frequency.setValueAtTime(lamp ? 1700 : 1300, n); o.frequency.exponentialRampToValueAtTime(500, n + .03); gg.gain.setValueAtTime(.025, n); gg.gain.exponentialRampToValueAtTime(.0001, n + .05); o.connect(gg); gg.connect(AC.destination); o.start(n); o.stop(n + .06); } catch (e) {} }
+  function pullCord() { lamp = !lamp; pulledAt = f; keep(); click(); draw(); }
+  function inCord(p) { if (!FIX || FIX.cx == null) return false; var m = G ? G.ms : 2; return (Math.abs(p.x - FIX.cx) < m * 2.6 && p.y > FIX.top - m && p.y < FIX.cb + m * 3) || (Math.abs(p.x - FIX.x) < m * 2.2 && Math.abs(p.y - FIX.y) < m * 2.2); }
   function toggleWindow() { open = !open; try { sessionStorage.setItem("fb_cabin_open", open ? "1" : "0"); } catch (e) {} creak(); }
   function inGlass(p) { return G && p.x > G.x0 && p.x < G.x0 + G.ww && p.y > G.wy && p.y < G.sy - G.ms * 5; }
   function creak() { try { if (!AC) return; var n = AC.currentTime, o = AC.createOscillator(), gg = AC.createGain(); o.type = "sawtooth"; o.frequency.setValueAtTime(140, n); o.frequency.linearRampToValueAtTime(open ? 210 : 110, n + .35); gg.gain.setValueAtTime(.0001, n); gg.gain.linearRampToValueAtTime(.012, n + .05); gg.gain.exponentialRampToValueAtTime(.0001, n + .4); o.connect(gg); gg.connect(AC.destination); o.start(n); o.stop(n + .45); if (windG) windG.gain.setTargetAtTime(open ? .09 : .03, n, .6); } catch (e) {} }
@@ -158,16 +194,17 @@ canvas#cv{touch-action:none}
   /* the sill: pick up the mug, the candle or the plant and set it down somewhere else; tap the candle to light it or blow it out */
   var SILL = { mug: .16, candle: .5, plant: .8 }, G = null, drag = null, flame = null;
   try { var sv = JSON.parse(sessionStorage.getItem("fb_cabin_sill") || "null"); if (sv) { SILL = sv.s || SILL; flame = sv.f; } } catch (e) {}
-  function lit() { var ph = W.phase(); return flame == null ? (ph === "night" || ph === "dusk") : flame; }
-  function keep() { try { sessionStorage.setItem("fb_cabin_sill", JSON.stringify({ s: SILL, f: flame })); } catch (e) {} }
+  try { if (sv && sv.l) lamp = true; } catch (e) {}
+  function lit() { return !!flame; }   /* the candle waits for you to light it */
+  function keep() { try { sessionStorage.setItem("fb_cabin_sill", JSON.stringify({ s: SILL, f: flame, l: lamp })); } catch (e) {} }
   var K = null, radioOn = false;
   function inK(p, k) { var b = K && K[k]; return b && p.x >= b[0] && p.x <= b[0] + b[2] && p.y >= b[1] && p.y <= b[1] + b[3]; }
   function at(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * PW / r.width, y: (e.clientY - r.top) * PH / r.height }; }
   function hit(p) { if (!G) return null; var best = null; ["mug", "candle", "plant"].forEach(function (k) { var x = G.x0 + G.ww * SILL[k], w = k === "candle" ? G.ms * 3 : G.ms * 5; if (p.x > x - G.ms && p.x < x + w && p.y > G.sy - G.ms * 9 && p.y < G.sy + G.ms * 2) best = k; }); return best; }
-  cv.addEventListener("pointerdown", function (e) { var p = at(e), k = hit(p); if (!k) { if (inK(p, "album")) return openAlbum(); if (inK(p, "box")) return openBox(); if (inK(p, "radio")) return toggleRadio(); if (inGlass(p)) toggleWindow(); return; } drag = { k: k, dx: p.x - (G.x0 + G.ww * SILL[k]), x0: p.x, moved: false }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} cv.style.cursor = "grabbing"; });
-  cv.addEventListener("pointermove", function (e) { var p = at(e); if (drag) { if (Math.abs(p.x - drag.x0) > 2) drag.moved = true; SILL[drag.k] = Math.max(.02, Math.min(.92, (p.x - drag.dx - G.x0) / G.ww)); draw(); } else cv.style.cursor = hit(p) ? "grab" : inGlass(p) || inK(p, "album") || inK(p, "box") || inK(p, "radio") ? "pointer" : ""; });
+  cv.addEventListener("pointerdown", function (e) { var p = at(e), k = hit(p); if (!k) { if (inCord(p)) return pullCord(); if (inK(p, "album")) return openAlbum(); if (inK(p, "box")) return openBox(); if (inK(p, "radio")) return toggleRadio(); if (inGlass(p)) toggleWindow(); return; } drag = { k: k, dx: p.x - (G.x0 + G.ww * SILL[k]), x0: p.x, moved: false }; try { cv.setPointerCapture(e.pointerId); } catch (x) {} cv.style.cursor = "grabbing"; });
+  cv.addEventListener("pointermove", function (e) { var p = at(e); if (drag) { if (Math.abs(p.x - drag.x0) > 2) drag.moved = true; SILL[drag.k] = Math.max(.02, Math.min(.92, (p.x - drag.dx - G.x0) / G.ww)); draw(); } else cv.style.cursor = hit(p) ? "grab" : inCord(p) || inGlass(p) || inK(p, "album") || inK(p, "box") || inK(p, "radio") ? "pointer" : ""; });
   ["pointerup", "pointercancel"].forEach(function (ev) { cv.addEventListener(ev, function () { if (!drag) return; if (!drag.moved && drag.k === "candle") flame = !lit(); drag = null; cv.style.cursor = ""; keep(); draw(); }); });
-  window.FBCabin = { sill: function () { return G; } };
+  window.FBCabin = { sill: function () { return G; }, lamp: function () { return FIX; }, keep: function () { return K; } };
   function loop(ts) { if (ts - last > 80) { last = ts; f++; openT += ((open ? 1 : 0) - openT) * .18; if (Math.abs(openT - (open ? 1 : 0)) < .01) openT = open ? 1 : 0; draw(); } requestAnimationFrame(loop); }
   requestAnimationFrame(loop);
 
@@ -225,13 +262,20 @@ canvas#cv{touch-action:none}
   }
   /* real photographs, when the owner drops them in: no-hurry/photos/<key>.webp (or .jpg), any landscape size, shown whole at its own shape;
      arrive clock montserrat sagrada noodles girls tossa roof olympics mantou kittens, and wedding for the keepsake box.
-     A photo that isn't there falls back to the painted one below. */
-  var REAL = {}, REAL_KEYS = ["arrive", "clock", "montserrat", "sagrada", "noodles", "girls", "tossa", "roof", "olympics", "mantou", "kittens", "wedding"], shown = "";
-  function loadReal() { REAL_KEYS.forEach(function (k) { if (k in REAL) return; REAL[k] = null; (function tryExt(ex) { var im = new Image(); im.decoding = "async";
-    im.onload = function () { if (im.naturalWidth > 200) { REAL[k] = im; if (shown === k && !AL.hidden) photo(k); } else if (ex === "webp") tryExt("jpg"); };
-    im.onerror = function () { if (ex === "webp") tryExt("jpg"); }; im.src = "photos/" + k + "." + ex; })("webp"); }); }
+     While one is on its way the page shows an empty frame (paper); only a photo that isn't there, or hasn't come after 5 s, falls back to the painted one below. */
+  var REAL = {}, MISS = {}, ASKED = {}, REAL_KEYS = ["arrive", "clock", "montserrat", "sagrada", "noodles", "girls", "tossa", "roof", "olympics", "mantou", "kittens", "wedding"], shown = "", waitT = null;
+  function fetchReal(k) { if (k in REAL) return; REAL[k] = null; ASKED[k] = Date.now(); (function tryExt(ex) { var im = new Image(); im.decoding = "async";
+    im.onload = function () { if (im.naturalWidth > 200) { REAL[k] = im; if (shown === k && !AL.hidden) photo(k); } else if (ex === "webp") tryExt("jpg"); else miss(); };
+    im.onerror = function () { if (ex === "webp") tryExt("jpg"); else miss(); }; im.src = "photos/" + k + "." + ex; })("webp");
+    function miss() { MISS[k] = 1; if (shown === k && !AL.hidden) photo(k); } }
+  function loadReal(first) { if (first) fetchReal(first); REAL_KEYS.forEach(fetchReal); }   /* the one you're opening first, then the rest */
+  function paper() {   /* an empty photo corner on the page: the frame is there, the picture is coming */
+    AC2.classList.remove("px"); AC2.width = 480; AC2.height = 270; var gr = ag.createLinearGradient(0, 0, 480, 270); gr.addColorStop(0, "#f3ead6"); gr.addColorStop(1, "#e6d9bc"); ag.fillStyle = gr; ag.fillRect(0, 0, 480, 270);
+    ag.fillStyle = "rgba(120,96,60,.08)"; for (var i = 0; i < 90; i++) ag.fillRect((i * 97) % 480, (i * 53) % 270, 2, 1);
+  }
   function photo(key) {
-    shown = key;
+    shown = key; clearTimeout(waitT);
+    if (!REAL[key] && REAL_KEYS.indexOf(key) >= 0 && !MISS[key]) { if (!(key in REAL)) fetchReal(key); var left = 5000 - (Date.now() - (ASKED[key] || Date.now())); if (left > 0) { paper(); waitT = setTimeout(function () { if (shown === key && !AL.hidden) photo(key); }, left + 20); return; } }
     if (REAL[key]) { var im = REAL[key], cw = Math.min(1376, im.naturalWidth), ch = Math.round(cw * im.naturalHeight / im.naturalWidth); AC2.classList.remove("px"); AC2.width = cw; AC2.height = ch; ag.drawImage(im, 0, 0, cw, ch); return;   /* the whole photograph, at its own shape */ }
     var PP = window.POPO_PHOTOS || {}; AC2.classList.toggle("px", !PP[key]);
     if (PP[key]) { AC2.width = 480; AC2.height = 340; ag.save(); try { PP[key](ag, 480, 340); } catch (e) {} ag.restore(); age(TONE[key] || "faded", key); return; }
@@ -251,15 +295,19 @@ canvas#cv{touch-action:none}
     if (i === 6) { A(0, 0, Wd, Hd, "#c8b898"); A(26, 30, 22, 14, "#b8905a"); A(26, 30, 22, 2, "#8a6a3a"); A(29, 35, 16, 3, "#e8dcc4"); if (W.drawPet) { W.drawPet(ag, "miso", 32, 32, 1, {}); W.drawPet(ag, "yuzu", 43, 32, 1, { flip: true }); } person(14, 48, "#1a1410", "#e0a043", true); }
     if (i === 7) { A(0, 0, Wd, Hd, "#efe3c8"); for (var d = 4; d < Wd - 4; d += 4) { A(d, 4, 2, 1, "#a89878"); A(d, Hd - 5, 2, 1, "#a89878"); } for (var e = 4; e < Hd - 4; e += 4) { A(4, e, 1, 2, "#a89878"); A(Wd - 5, e, 1, 2, "#a89878"); } }
   }
-  function showPage() { if (AL.classList.contains("box")) return openBox(); var i = L(); document.getElementById("albT").textContent = T.alb[i]; document.getElementById("albP").textContent = PAGES[pg][i]; document.getElementById("albI").textContent = (pg + 1) + " / " + PAGES.length; photo(PAGES[pg][5]); document.getElementById("albPrev").disabled = pg === 0; document.getElementById("albNext").disabled = pg === PAGES.length - 1; }
+  function showPage() { if (AL.classList.contains("box")) return openBox(); var i = L(); document.getElementById("albT").textContent = T.alb[i]; document.getElementById("albP").textContent = PAGES[pg][i]; document.getElementById("albI").textContent = (pg + 1) + " / " + PAGES.length; photo(PAGES[pg][5]); aiLine(PAGES[pg][5] !== "empty"); document.getElementById("albPrev").disabled = pg === 0; document.getElementById("albNext").disabled = pg === PAGES.length - 1; }
   /* Popo's keepsake box beside the radio: inside, the one framed photo, their wedding */
-  function openBox() { loadReal(); AL.classList.add("box"); AL.hidden = false; var i = L(); document.getElementById("albT").textContent = T.box[i]; document.getElementById("albP").textContent = T.wed[i]; photo("wedding"); setTimeout(function () { document.getElementById("albX").focus(); }, 30); }
-  function openAlbum() { loadReal(); AL.classList.remove("box"); pg = 0; AL.hidden = false; showPage(); setTimeout(function () { document.getElementById("albNext").focus(); }, 30); }
-  function closeAlbum() { AL.hidden = true; }
+  function openBox() { loadReal("wedding"); AL.classList.add("box"); AL.hidden = false; var i = L(); document.getElementById("albT").textContent = T.box[i]; document.getElementById("albP").textContent = T.wed[i]; photo("wedding"); aiLine(true); setTimeout(function () { try { AL.querySelector(".alb-b").focus({ preventScroll: true }); } catch (e) {} }, 30); }
+  function openAlbum() { loadReal(PAGES[0][5]); AL.classList.remove("box"); pg = 0; AL.hidden = false; showPage(); setTimeout(function () { document.getElementById("albNext").focus(); }, 30); }
+  function aiLine(on) { var e = document.getElementById("albAI"); e.textContent = T.ai[L()]; e.hidden = !on; }   /* said plainly, and quietly */
+  function closeAlbum() { AL.hidden = true; clearTimeout(waitT); }
   window.NHAlbum = { open: openAlbum, box: openBox };
   document.getElementById("albPrev").onclick = function () { if (pg > 0) { pg--; showPage(); } };
   document.getElementById("albNext").onclick = function () { if (pg < PAGES.length - 1) { pg++; showPage(); } };
-  document.getElementById("albX").onclick = closeAlbum; AL.addEventListener("click", function (e) { if (e.target === AL) closeAlbum(); });
+  /* no ✕: a tap outside the photo puts it away (or Esc); the tap that opened it never closes it */
+  var openedAt = 0; new MutationObserver(function () { if (!AL.hidden) openedAt = Date.now(); }).observe(AL, { attributes: true, attributeFilter: ["hidden"] });
+  AL.addEventListener("click", function (e) { if (e.target === AL && Date.now() - openedAt > 450) closeAlbum(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !AL.hidden) closeAlbum(); });
   addEventListener("keydown", function (e) { if (AL.hidden) return; if (e.key === "Escape") closeAlbum(); if (e.key === "ArrowRight") document.getElementById("albNext").click(); if (e.key === "ArrowLeft") document.getElementById("albPrev").click(); });
   /* Josep's radio: a random piece each time, their bolero or one of the Catalan folk tunes he loved (traditional melodies,
      simple and soft); while it plays, the town's sound and the cabin's own hush (window.FB_HUSH, read by fbg.js) */

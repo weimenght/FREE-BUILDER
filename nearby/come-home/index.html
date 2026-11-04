@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8ed2d0134e"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0f928170c5" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=4844bd2557"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8fe2bb6ed8" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Come Home · Nearby</title>
 <meta name="description" content="Mantou the dog's home by the meadow: play fetch with him, follow his story, and help real animals find a home. Post an animal that needs one, or ask to adopt.">
@@ -280,9 +280,10 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
   }
 
   /* ---------- sheets ---------- */
-  function sheet(html) {
-    var s = document.createElement("div"); s.className = "scrim"; s.innerHTML = '<div class="sheet" role="dialog" aria-modal="true">' + html + '<button type="button" class="x" aria-label="✕">✕</button></div>';
-    s.onclick = function (e) { if (e.target === s || e.target.closest(".x")) s.remove(); };
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { var l = document.querySelectorAll(".scrim"); if (l.length) l[l.length - 1].remove(); } });
+  function sheet(html, view) {   /* a form keeps its ✕; a card to look at (view) closes with a tap outside. The tap that opened it never closes it. */
+    var s = document.createElement("div"), at0 = Date.now(); s.className = "scrim"; s.innerHTML = '<div class="sheet" role="dialog" aria-modal="true">' + html + (view ? "" : '<button type="button" class="x" aria-label="✕">✕</button>') + '</div>';
+    s.onclick = function (e) { if (Date.now() - at0 < 450) return; if (e.target === s || e.target.closest(".x")) s.remove(); };
     document.body.appendChild(s); var first = s.querySelector("input,textarea,select"); if (first) try { first.focus({ preventScroll: true }); } catch (e) {} return s;
   }
   function askSheet(a) {
@@ -331,7 +332,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:28px 0 12px;letter-spacing:
   $("mineBtn").onclick = function () {
     var h = "<h3>" + esc(t("mineT")) + "</h3>";
     if (!MINE || (!MINE.animals.length && !MINE.asked.length)) h += '<p class="note">' + esc(t("mineNone")) + "</p>";
-    var s = sheet(h + '<div id="mList"></div>'), box = s.querySelector("#mList");
+    var s = sheet(h + '<div id="mList"></div>', true), box = s.querySelector("#mList");
     (MINE ? MINE.animals : []).forEach(function (a) {
       var st = a.adopted ? t("sDone") : a.hidden ? t("sDown") : a.approved ? t("sLive") : t("sWait");
       var d = document.createElement("div"); d.className = "mine"; d.innerHTML = '<span class="st"></span><b></b><div class="asks"></div><div class="row" style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"></div>';

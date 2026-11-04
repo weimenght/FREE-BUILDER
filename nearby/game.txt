@@ -84,6 +84,14 @@ AUTHOR: FREE//BUILDER
 DESC: A plot below the railway, past Come Over. Build whatever you like, block by block, in any shape and colour, put up signs that say what it's for, and name it. It stays on your device unless you keep a copy; show it to someone with a link.
 URL: your-plot/
 
+CODE: SHOP
+ID: SS-31
+TITLE: Set Up Shop
+GENRE: A market stall that's yours
+AUTHOR: FREE//BUILDER
+DESC: A little market stall below the railway, left of Town Hall. Pick the awning and the cloth, lay out what you'd offer on the counter, say how it works (free, swap, pay what you like, or just come and chat), name it and chalk the board. It stays on your device; show it to someone with a link.
+URL: set-up-shop/
+
 CODE: SCREEN
 ID: FR-26
 TITLE: Front Row

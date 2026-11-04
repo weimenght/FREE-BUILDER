@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" class="fbt">
+<head>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=4844bd2557"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8fe2bb6ed8" defer></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Set Up Shop · Nearby</title>
+<meta name="description" content="A little market stall below the railway that's yours: pick the awning and the cloth, lay out what you'd offer, say how it works, name it and chalk the board. It stays on your device; show it to someone with a link.">
+<meta name="theme-color" content="#1d130d">
+<link rel="icon" href="/nearby/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<link rel="stylesheet" href="/nearby/townkit.css">
+<style>
+.tk-scene{height:48vh;height:48dvh;background:#1a1420}
+@media (min-aspect-ratio:6/5){.tk-scene{width:60%;height:auto}}
+#cv{cursor:pointer;touch-action:manipulation}
+.ss-k{display:block;font:400 9px/1.5 'Press Start 2P',monospace;letter-spacing:.06em;color:#f6b73c;margin:4px 0 6px}
+.ss-row{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 10px;align-items:center}
+.swatch{width:32px;height:32px;min-width:32px;border:3px solid #000;padding:0;cursor:pointer;box-shadow:2px 2px 0 #000}
+.swatch[aria-pressed=true]{outline:3px solid #f6b73c;outline-offset:1px}
+.ss-row .fbb{min-height:40px;font-size:17px;padding:0 10px}
+.ss-row .fbb[aria-pressed=true]{background:var(--fbb-amber,#f6b73c);color:#1d130d}
+.ss-sub{font-size:15px;color:var(--dim);margin:0 2px 0 0;min-width:46px}
+.slots{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:0 0 10px}
+.slots .fbb{min-height:52px;padding:2px!important;display:grid;place-items:center}
+.slots canvas,.goods canvas{width:40px;height:32px;image-rendering:pixelated;display:block}
+.goods{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px;margin:6px 0 10px}
+.goods .fbb{flex-direction:column;align-items:center;gap:2px;min-height:64px;padding:4px;font-size:16px;line-height:1.05}
+.ss-in{display:block;width:100%;box-sizing:border-box;margin:0 0 10px;padding:7px 10px;border:3px solid #000;background:#fbf3e2;color:#1d130d;font:400 20px/1.25 var(--vt);border-radius:0}
+.ss-in:focus{outline:2px solid #f6c84a;outline-offset:1px}
+.ss-view{position:absolute;left:8px;bottom:8px;right:8px;display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 10px;background:rgba(20,14,10,.88);border:3px solid #000;color:#fbeedd;font:400 20px/1.2 var(--vt)}
+.ss-view[hidden]{display:none}
+.ss-view .fbb{min-height:40px;padding:0 12px;font-size:18px}
+html.ss-viewing .tk-panel{display:none}html.ss-viewing .tk-scene{flex:1;height:auto;width:auto;border:0}
+</style>
+<link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
+<body>
+<h1 class="sr" id="h1">Set Up Shop</h1>
+<div class="tk">
+  <div class="tk-scene"><canvas id="cv" role="img" aria-label="Your market stall"></canvas><div class="ss-view" id="view" hidden><span id="viewT"></span><button class="fbb fbb-pri" type="button" id="viewMine"></button></div></div>
+  <main class="tk-panel" id="panel">
+    <div class="ss-edit">
+      <span class="ss-k" id="kAwn">THE AWNING</span>
+      <div class="ss-row" id="a1Row"></div>
+      <div class="ss-row" id="a2Row"></div>
+      <div class="ss-row" id="patRow"></div>
+      <span class="ss-k" id="kCloth">THE CLOTH</span>
+      <div class="ss-row" id="clRow"></div>
+      <span class="ss-k" id="kGoods">ON THE COUNTER</span>
+      <div class="slots" id="slots"></div>
+      <span class="ss-k" id="kDeal">HOW IT WORKS</span>
+      <div class="ss-row" id="dealRow"></div>
+      <span class="ss-k" id="kName">THE SIGN</span>
+      <input class="ss-in" id="name" maxlength="22" autocomplete="off" />
+      <span class="ss-k" id="kBoard">THE CHALKBOARD</span>
+      <input class="ss-in" id="board" maxlength="44" autocomplete="off" />
+      <div class="ss-row">
+        <button class="fbb fbb-pri" type="button" id="share"><span aria-hidden="true">↗</span> <span id="shareL">Show someone</span></button>
+        <button class="fbb fbb-glass" type="button" id="clear"><span aria-hidden="true">🧽</span> <span id="clearL">Clear</span></button>
+      </div>
+    </div>
+  </main>
+</div>
+<section class="sheet" id="sheet" hidden role="dialog"><button class="x" type="button" data-close aria-label="Close">✕</button><div id="sheetB"></div></section>
+<script src="/nearby/townkit.js"></script>
+<script>
+/* Set Up Shop: a little market stall below the railway, left of Town Hall, that's the visitor's own. Pick the awning (two
+   colours, stripes, plain or checks) and the cloth, lay out up to six things on the counter, say how it works (free, swap,
+   pay what you like, or just come and chat), name it, chalk the board. It lives on this device (fb_stall) and the map draws
+   it; show someone: the whole stall travels inside the link (#stall=…), nothing stored anywhere. Nobody else's stall shows here. */
+(function () {
+  "use strict";
+  var W = window.FBWorld || {}, T = window.FBTown || { t: function (a) { return a[0]; } }, t = function (a, v) { return T.t(a, v); };
+  var COLS = ["#c8303a", "#f3ead8", "#3a8a8a", "#e8b838", "#e89ab0", "#4a6ab8", "#5a9a4a", "#8a5a30"];
+  var S = {
+    awn: ["THE AWNING", "遮篷", "遮篷", "EL TOLDO", "EL TENDAL"], cloth: ["THE CLOTH", "桌布", "桌布", "EL MANTEL", "LES ESTOVALLES"],
+    goods: ["ON THE COUNTER", "柜台上", "櫃台上", "EN EL MOSTRADOR", "AL TAULELL"], deal: ["HOW IT WORKS", "怎么换", "怎麼換", "CÓMO FUNCIONA", "COM FUNCIONA"],
+    nameK: ["THE SIGN", "招牌", "招牌", "EL LETRERO", "EL RÈTOL"], boardK: ["THE CHALKBOARD", "小黑板", "小黑板", "LA PIZARRA", "LA PISSARRA"],
+    main: ["Colour", "颜色", "顏色", "Color", "Color"], trim: ["Second", "配色", "配色", "Segundo", "Segon"],
+    pat: [["Stripes", "条纹", "條紋", "Rayas", "Ratlles"], ["Plain", "素色", "素色", "Liso", "Llis"], ["Checks", "格子", "格子", "Cuadros", "Quadres"]],
+    namePh: ["e.g. Lemons from the Back Garden", "比如：后院的柠檬", "比如：後院的檸檬", "p. ej. Limones del Patio", "p. ex. Llimones del Pati"],
+    boardPh: ["e.g. Take two, bring a story", "比如：拿两个，留个故事", "比如：拿兩個，留個故事", "p. ej. Coge dos, trae una historia", "p. ex. Agafa'n dues, porta una història"],
+    pick: ["What goes here?", "这里摆什么？", "這裡擺什麼？", "¿Qué va aquí?", "Què hi va, aquí?"], none: ["Leave it empty", "空着", "空著", "Déjalo vacío", "Deixa-ho buit"],
+    share: ["Show someone", "给谁看看", "給誰看看", "Enséñalo", "Ensenya-ho"], clear: ["Clear", "清空", "清空", "Vaciar", "Buidar"],
+    clearQ: ["Take the whole stall down? It can't be undone.", "把整个摊子收掉？无法撤销。", "把整個攤子收掉？無法復原。", "¿Desmontar todo el puesto? No se puede deshacer.", "Desmuntar tota la parada? No es pot desfer."],
+    yesClear: ["Yes, take it down", "收掉", "收掉", "Sí, desmontarlo", "Sí, desmunta-la"],
+    shareT: ["I set up a stall in Nearby: {n}. Come and see what's on the counter.", "我在近邻摆了个摊：{n}。来看看柜台上有什么。", "我在近鄰擺了個攤：{n}。來看看櫃台上有什麼。", "He montado un puesto en Cerca: {n}. Ven a ver qué hay en el mostrador.", "He parat parada a A Prop: {n}. Vine a veure què hi ha al taulell."],
+    something: ["a little stall", "一个小摊", "一個小攤", "un puestecito", "una parada"],
+    view: ["{n}: someone's stall", "{n}：别人的摊", "{n}：別人的攤", "{n}: el puesto de alguien", "{n}: la parada d'algú"], viewMine: ["Set up your own", "摆你自己的", "擺你自己的", "Monta el tuyo", "Para la teva"],
+    sc: ["Your market stall below the railway", "铁路下面你的小摊", "鐵路下面你的小攤", "Tu puesto bajo el ferrocarril", "La teva parada sota la via"]
+  };
+  var DEALS = [["🎁", ["Free to a good home", "送给有缘人", "送給有緣人", "Gratis, para quien lo cuide", "Gratis, per a qui en tingui cura"], ["FREE", "白送", "白送", "GRATIS", "GRATIS"]],
+    ["🔁", ["Swap something", "换点什么", "換點什麼", "Truéquelo por algo", "Canvia-ho per alguna cosa"], ["SWAP", "交换", "交換", "TRUEQUE", "INTERCANVI"]],
+    ["🫙", ["Pay what you like", "随意给", "隨意給", "La voluntad", "La voluntat"], ["PAY WHAT YOU LIKE", "随意给", "隨意給", "LA VOLUNTAD", "LA VOLUNTAT"]],
+    ["💬", ["Just come and chat", "只是来聊聊", "只是來聊聊", "Solo ven a charlar", "Només vine a fer petar la xerrada"], ["COME AND CHAT", "来聊聊", "來聊聊", "VEN A CHARLAR", "VINE A XERRAR"]]];
+  /* what can go on the counter: a name and a little drawing (10×8, one letter a colour) */
+  var PAL = { k: "#1a1410", y: "#f4d04a", Y: "#c8a020", o: "#e8802a", O: "#b05a1a", r: "#d0402a", R: "#902a1a", g: "#5aa04a", G: "#2e6b34", n: "#c8884a", N: "#8a5a2a", w: "#f3ead8", W: "#c8bca0",
+    p: "#f48fb8", P: "#e0408a", v: "#8a5ac8", V: "#5a3a8a", b: "#4a7ec0", B: "#24456e", h: "#e8a838", H: "#a86a18", t: "#a0683a", T: "#6a4224", s: "#a8a8a8", S: "#5c5c5c", c: "#7cc8d8", C: "#3a8a9a", x: "#ffffff", m: "#f0dca8", l: "#e8d8b0", j: "#4a8a44", z: "#2a2a30", q: "#c87a3a" };
+  function pile(A, B, L) { return ["....L.....", "..AALAA...", ".AAAAAAAA.", "AABAAAABAA", "AAAAABAAAA", ".AAAAAAAA.", "tTtTtTtTtT", "TTTTTTTTTT"].map(function (r) { return r.replace(/A/g, A).replace(/B/g, B).replace(/L/g, L); }); }
+  var GOODS = [
+    [["Lemons", "柠檬", "檸檬", "Limones", "Llimones"], pile("y", "Y", "j")],
+    [["Oranges", "橙子", "橙", "Naranjas", "Taronges"], pile("o", "O", "j")],
+    [["Tomatoes", "番茄", "番茄", "Tomates", "Tomàquets"], pile("r", "R", "g")],
+    [["Apples", "苹果", "蘋果", "Manzanas", "Pomes"], pile("r", "x", "N")],
+    [["Bread", "面包", "麵包", "Pan", "Pa"], ["....nnnn..", "..nnNnNnn.", ".nnnnnnnnn", "nnNnnnNnn.", "nnnnnnnnn.", ".NNNNNNN..", "llllllllll", "WWWWWWWWWW"]],
+    [["Jam", "果酱", "果醬", "Mermelada", "Melmelada"], ["..........", ".rrrr.bbbb", ".wwww.wwww", ".RxxR.VxxV", ".RRRR.VVVV", ".RRRR.VVVV", ".RRRR.VVVV", "SSSSSSSSSS"]],
+    [["Honey", "蜂蜜", "蜂蜜", "Miel", "Mel"], ["......N...", "..wwwwN...", "..mmmmN...", ".hhhhhhh..", ".hHxxHhh..", ".hhhhhhh..", ".hhhhhhh..", "SSSSSSSSSS"]],
+    [["Eggs", "鸡蛋", "雞蛋", "Huevos", "Ous"], ["..........", "..........", ".ww.ww.ww.", "wwwwwwwwww", "WwwWwwWwwW", "llllllllll", "lWllWllWll", "llllllllll"]],
+    [["Flowers", "鲜花", "鮮花", "Flores", "Flors"], ["pPpyYyPpP.", ".pg.yg.Pg.", "..g..g..g.", "..g..g..g.", ".SSSSSSSS.", ".SsssssSS.", ".SsssssSS.", ".SSSSSSSS."]],
+    [["Plants", "盆栽", "盆栽", "Plantas", "Plantes"], ["..j....j..", ".jGj..jjj.", "jjjjj.jGj.", ".jjj..jjj.", ".qqq..qqq.", ".qNq..qNq.", ".qqq..qqq.", "SSSSSSSSSS"]],
+    [["Books", "旧书", "舊書", "Libros", "Llibres"], ["..........", ".bbbbbbbb.", ".rrrrrrr..", "..ggggggg.", ".hhhhhhhh.", ".wwwwwwww.", ".BBBBBBBB.", "SSSSSSSSSS"]],
+    [["Records", "唱片", "唱片", "Discos", "Discos"], ["..........", ".zz.zz.zz.", "zzzzzzzzzz", "zzrzzpzzcz", "zzzzzzzzzz", "tTtTtTtTtT", "tttttttttt", "TTTTTTTTTT"]],
+    [["Bowls", "陶碗", "陶碗", "Cuencos", "Bols"], ["..........", "..........", "..........", "cccccccccc", "cxccccccCc", ".cccccccC.", "..CCCCCC..", "SSSSSSSSSS"]],
+    [["Knitted socks", "毛线袜", "毛線襪", "Calcetines de lana", "Mitjons de llana"], [".vv...rr..", ".vv...rr..", ".vV...rR..", ".vv...rr..", ".vvvv.rrrr", ".vvvv.rrrr", "..........", "SSSSSSSSSS"]],
+    [["Cake", "蛋糕", "蛋糕", "Pastel", "Pastís"], ["....r.....", "..pppppp..", ".pxpxpxpp.", ".mmmmmmmm.", ".pppppppp.", ".mmmmmmmm.", "....SS....", "..SSSSSS.."]],
+    [["Dumplings", "饺子", "餃子", "Empanadillas", "Crestes"], ["..........", ".ww.ww.ww.", "wwwwwwwwww", "WwwWwwWwwW", "nnnnnnnnnn", "nNnNnNnNnN", "nnnnnnnnnn", ".NNNNNNNN."]],
+    [["Postcards", "明信片", "明信片", "Postales", "Postals"], ["..........", ".bbbb.pppp", ".bxxb.pwwp", ".bbbb.pppp", ".gggg.hhhh", ".gwwg.hxxh", ".gggg.hhhh", "SSSSSSSSSS"]],
+    [["Herbs", "香草", "香草", "Hierbas", "Herbes"], [".j.G..j.G.", "jGjGjjGjGj", ".jGj..jGj.", "..j....j..", "..r....r..", "..N....N..", "..........", "SSSSSSSSSS"]],
+    [["Tea", "茶叶", "茶葉", "Té", "Te"], ["..........", ".SSS..SSS.", ".ccc..rrr.", ".cxc..rxr.", ".ccc..rrr.", ".ccc..rrr.", ".CCC..RRR.", "SSSSSSSSSS"]],
+    [["Wooden toys", "木头玩具", "木頭玩具", "Juguetes de madera", "Joguines de fusta"], ["..........", "......n...", ".hhh..nn..", ".hhh.nnnn.", "rrrrrrrnn.", "rrrrrrrr..", ".k..k..k..", "SSSSSSSSSS"]]
+  ];
+
+  /* ---------- the stall ---------- */
+  function blank() { return { v: 1, n: "", b: "", a1: 0, a2: 1, p: 0, c: 5, g: [-1, -1, -1, -1, -1, -1], d: 0 }; }
+  function clean(o) {
+    var b = blank(); if (!o || typeof o !== "object") return b; var ci = function (x, n, d) { x = x | 0; return x >= 0 && x < n ? x : d; };
+    b.n = String(o.n || "").slice(0, 22); b.b = String(o.b || "").slice(0, 44); b.a1 = ci(o.a1, 8, 0); b.a2 = ci(o.a2, 8, 1); b.p = ci(o.p, 3, 0); b.c = ci(o.c, 8, 5); b.d = ci(o.d, 4, 0);
+    b.g = (Array.isArray(o.g) ? o.g : []).slice(0, 6).map(function (x) { return x == null || x < 0 || x >= GOODS.length ? -1 : x | 0; }); while (b.g.length < 6) b.g.push(-1);
+    if (o.m) b.m = 1; return b;
+  }
+  var st = blank(), viewing = null;
+  try { st = clean(JSON.parse(localStorage.getItem("fb_stall") || "null")); } catch (e) {}
+  var madeT = 0;
+  function save() {
+    try { localStorage.setItem("fb_stall", JSON.stringify(st)); } catch (e) {}
+    /* once it's a real stall (a name and three things on the counter), one quiet note offers to show someone */
+    clearTimeout(madeT); if (!st.m && st.n.trim() && st.g.filter(function (x) { return x >= 0; }).length >= 3) madeT = setTimeout(function () { st.m = 1; try { localStorage.setItem("fb_stall", JSON.stringify(st)); } catch (e) {} try { if (window.FBG && FBG.made) FBG.made("stall", st.n.trim()); } catch (e) {} }, 2500);
+  }
+  function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify({ n: o.n, b: o.b, a1: o.a1, a2: o.a2, p: o.p, c: o.c, g: o.g, d: o.d })))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+  function dec(s) { try { return clean(JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, "+").replace(/_/g, "/")))))); } catch (e) { return null; } }
+  var hm = /[#&]stall=([A-Za-z0-9_-]+)/.exec(location.hash); if (hm) viewing = dec(hm[1]);
+
+  /* ---------- drawing: a 128×84 pixel scene at a whole-number scale, words at the screen's own sharpness ---------- */
+  var LW = 128, LH = 84, cv = document.getElementById("cv"), g = cv.getContext("2d"), CW = 0, CH = 0, PX = 2, OX = 0, OY = 0;
+  function size() { var r = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1); CW = Math.max(160, r.width | 0); CH = Math.max(110, r.height | 0); cv.width = CW * dpr; cv.height = CH * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); g.imageSmoothingEnabled = false;
+    PX = Math.max(1, Math.floor(Math.min(CW / LW, CH / LH) * 4) / 4); OX = Math.round((CW - LW * PX) / 2); OY = Math.round((CH - LH * PX) / 2); draw(); }
+  addEventListener("resize", size);
+  function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(OX + x * PX), Math.round(OY + y * PX), Math.ceil(w * PX), Math.ceil(h * PX)); }
+  function sprite(rows, x, y) { for (var j = 0; j < rows.length; j++) for (var i = 0; i < rows[j].length; i++) { var c = PAL[rows[j].charAt(i)]; if (c) R(x + i, y + j, 1, 1, c); } }
+  function tint(c) { try { return W.tint ? W.tint(c) : c; } catch (e) { return c; } }
+  var SKY = { dawn: ["#3b3a6e", "#e8996a"], day: ["#6fb4ea", "#c2e2f6"], dusk: ["#2a2050", "#f09a5a"], night: ["#0a0a1e", "#20204a"] };
+  var SLOT = function (i) { return { x: 21 + i * 15, y: 46, w: 12, h: 10 }; }, SIGN = { x: 32, y: 4, w: 64, h: 12 }, BOARD = { x: 26, y: 62, w: 76, h: 15 }, AWN = { x: 10, y: 18, w: 108, h: 14 };
+  var f = 0;
+  function draw() {
+    if (!CW) return; var P = viewing || st, ph = W.phase ? W.phase() : "day", night = ph === "night", dusk = ph === "dusk", lit = night || dusk, wx = W.weather ? W.weather() : "clear", sk = SKY[ph] || SKY.day;
+    var gr = g.createLinearGradient(0, 0, 0, OY + 58 * PX); gr.addColorStop(0, sk[0]); gr.addColorStop(1, sk[1]); g.fillStyle = gr; g.fillRect(0, 0, CW, CH);
+    if (night) for (var s0 = 0; s0 < 30; s0++) R((s0 * 37) % LW, (s0 * 23) % 20, .5, .5, "#fff6c0");
+    /* the street behind: Town Hall's stone on the right, a row of houses, the railway embankment */
+    for (var hx = -40; hx < LW + 40; hx += 22) { var hh = 20 + ((hx * 7 + 400) % 9); R(hx, 58 - hh, 20, hh, night ? "#2a2434" : ["#d8b8a0", "#c8c0b0", "#e0c898"][((hx + 40) / 22 | 0) % 3]); R(hx - 1, 58 - hh - 2, 22, 2, night ? "#3a2428" : "#9a4a3a");
+      for (var wy = 58 - hh + 4; wy < 52; wy += 8) for (var wx2 = hx + 3; wx2 < hx + 18; wx2 += 6) R(wx2, wy, 3, 4, lit && ((wx2 * 13 + wy) % 5 < 3) ? "#f6c84a" : night ? "#1a1828" : "#5a6a8a"); }
+    R(-200, 58, LW + 400, 40, night ? "#3a3438" : "#a89a88"); for (var cb = -200; cb < LW + 200; cb += 4) R(cb + ((cb / 4) % 2), 60 + ((cb / 4) % 3) * 6, 3, 1, night ? "#2e282c" : "#968876");
+    g.fillStyle = night ? "#3a3438" : "#a89a88"; g.fillRect(0, OY + 60 * PX, CW, CH);   /* cobbles to the bottom of the frame */
+    /* a potted bay tree by the stall (it turns with the season) */
+    R(4, 48, 6, 10, "#8a4a2a"); R(3, 47, 8, 2, "#a85a32"); R(6, 36, 2, 12, "#5a3a22"); R(2, 28, 10, 10, tint(night ? "#1e3a22" : "#4a8a44")); R(3, 26, 8, 3, tint(night ? "#1e3a22" : "#5aa04a"));
+    var a1 = COLS[P.a1], a2 = COLS[P.a2], cl = COLS[P.c];
+    /* posts and the shade under the awning */
+    R(14, 26, 2, 52, "#4a2e1a"); R(112, 26, 2, 52, "#4a2e1a"); R(16, 30, 96, 26, night ? "#22180f" : "#4a3220");
+    if (lit) { R(62, 30, 4, 3, "#2a2a30"); R(61, 33, 6, 3, "#ffe08a"); g.globalAlpha = .16; R(30, 30, 68, 26, "#ffd27a"); g.globalAlpha = 1; }
+    /* the awning: stripes, plain with a trim, or checks; a scalloped edge */
+    for (var ax = AWN.x; ax < AWN.x + AWN.w; ax++) for (var ay = AWN.y; ay < AWN.y + 10; ay++) {
+      var c = P.p === 1 ? (ay >= AWN.y + 8 ? a2 : a1) : P.p === 2 ? ((((ax - AWN.x) >> 2) + ((ay - AWN.y) >> 2)) % 2 ? a2 : a1) : (((ax - AWN.x) >> 3) % 2 ? a2 : a1);
+      R(ax, ay, 1, 1, c); }
+    R(AWN.x, AWN.y, AWN.w, 1, "rgba(255,255,255,.25)");
+    for (var sc = 0; sc < Math.floor(AWN.w / 8); sc++) { var sx = AWN.x + sc * 8, scc = P.p === 0 ? (sc % 2 ? a2 : a1) : a2; R(sx + 1, AWN.y + 10, 6, 1, scc); R(sx + 2, AWN.y + 11, 4, 1, scc); R(sx + 3, AWN.y + 12, 2, 1, scc); }
+    R(AWN.x, AWN.y + 9, AWN.w, 1, "rgba(0,0,0,.18)");
+    if (wx === "snow") { R(AWN.x, AWN.y - 1, AWN.w, 2, "#f4f6fa"); for (var sn = 0; sn < AWN.w; sn += 5) R(AWN.x + sn, AWN.y - 2, 3, 1, "#f4f6fa"); }
+    if (lit) for (var lb = 0; lb < 13; lb++) { var on = (f / 20 + lb) % 6 > 1; R(AWN.x + 4 + lb * 8, AWN.y + 14 + (lb % 2), 1, 1, on ? "#ffd27a" : "#a8803a"); if (on && night) { g.globalAlpha = .25; R(AWN.x + 3 + lb * 8, AWN.y + 13 + (lb % 2), 3, 3, "#ffd27a"); g.globalAlpha = 1; } }
+    /* the sign hangs on two chains */
+    R(SIGN.x + 6, SIGN.y + SIGN.h, 1, AWN.y - SIGN.y - SIGN.h, "#3a3a40"); R(SIGN.x + SIGN.w - 7, SIGN.y + SIGN.h, 1, AWN.y - SIGN.y - SIGN.h, "#3a3a40");
+    R(SIGN.x, SIGN.y, SIGN.w, SIGN.h, "#6a4224"); R(SIGN.x + 1, SIGN.y + 1, SIGN.w - 2, SIGN.h - 2, night ? "#3a2a1c" : "#f4e8cf");
+    /* the counter and what's on it */
+    for (var i = 0; i < 6; i++) { var sl = SLOT(i), gi = P.g[i]; if (gi >= 0) sprite(GOODS[gi][1], sl.x + 1, sl.y + 2); else if (!viewing) { g.globalAlpha = .35 + .15 * Math.sin(f / 18 + i); R(sl.x + 1, sl.y + 9, 10, 1, "#f3ead8"); R(sl.x + 5, sl.y + 3, 2, 5, "#f3ead8"); R(sl.x + 3.5, sl.y + 4.5, 5, 2, "#f3ead8"); g.globalAlpha = 1; } }
+    R(12, 56, 104, 3, "#a8743a"); R(12, 58, 104, 1, "#6a4020");
+    R(14, 59, 100, 19, cl); for (var gx = 14; gx < 114; gx += 4) for (var gy = 59; gy < 78; gy += 4) if (((gx + gy) >> 2) % 2) R(gx, gy, 2, 2, "rgba(255,255,255,.22)");
+    for (var fr = 14; fr < 114; fr += 3) R(fr, 77, 2, 1, "rgba(0,0,0,.25)");
+    R(BOARD.x, BOARD.y, BOARD.w, BOARD.h, "#5a3a22"); R(BOARD.x + 1, BOARD.y + 1, BOARD.w - 2, BOARD.h - 2, "#1e2a24");
+    /* words: the sign's name and the chalkboard */
+    var fs = Math.max(11, Math.round(PX * 7)), name = P.n.trim();
+    g.textAlign = "center"; g.textBaseline = "middle";
+    text(name || (viewing ? "" : "· · ·"), OX + (SIGN.x + SIGN.w / 2) * PX, OY + (SIGN.y + SIGN.h / 2 + .5) * PX, (SIGN.w - 4) * PX, fs, night ? "#f6c84a" : "#2a1d14");
+    var deal = t(DEALS[P.d][2]), line = P.b.trim(), bx = OX + (BOARD.x + BOARD.w / 2) * PX;
+    var lines = wrap(line, (BOARD.w - 6) * PX, Math.max(10, Math.round(PX * 4.6)));
+    if (!lines.length) text(deal, bx, OY + (BOARD.y + BOARD.h / 2) * PX, (BOARD.w - 6) * PX, Math.max(10, Math.round(PX * 5.2)), "#f6c84a");
+    else { text(deal, bx, OY + (BOARD.y + 3.2) * PX, (BOARD.w - 6) * PX, Math.max(9, Math.round(PX * 3.8)), "#f6c84a"); lines.slice(0, 2).forEach(function (l, k) { text(l, bx, OY + (BOARD.y + (lines.length > 1 ? 7.4 + k * 4.4 : 9.2)) * PX, (BOARD.w - 6) * PX, Math.max(10, Math.round(PX * 4.6)), "#e8ecea"); }); }
+    /* the weather */
+    if (wx === "rain" || wx === "storm") { g.fillStyle = "rgba(190,210,230,.35)"; for (var q = 0; q < 80; q++) g.fillRect((q * 37 + f * 2) % CW, (q * 53 + f * 9) % CH, 1, 6); }
+    if (wx === "snow") { g.fillStyle = "rgba(255,255,255,.85)"; for (var q2 = 0; q2 < 60; q2++) g.fillRect((q2 * 37 + Math.sin((f + q2) / 20) * 6 + CW) % CW, (q2 * 53 + f * 1.5) % CH, 2, 2); }
+    if (wx === "fog") { g.fillStyle = "rgba(220,224,232,.25)"; g.fillRect(0, 0, CW, CH); }
+    if (W.drift && wx !== "storm") try { W.drift(g, CW, CH, f * 60, Math.max(2, PX), 10); } catch (e) {}
+  }
+  function text(s, x, y, maxW, fs, col) { if (!s) return; var size = fs; g.font = size + "px VT323, monospace"; while (g.measureText(s).width > maxW && size > 8) { size--; g.font = size + "px VT323, monospace"; } g.fillStyle = col; g.fillText(s, Math.round(x), Math.round(y)); }
+  function wrap(s, maxW, fs) {
+    if (!s) return []; g.font = fs + "px VT323, monospace"; if (g.measureText(s).width <= maxW) return [s];
+    var cjk = /[㐀-鿿]/.test(s), parts = cjk ? s.split("") : s.split(/\s+/), out = [], cur = "";
+    parts.forEach(function (w) { var nx = cur ? cur + (cjk ? "" : " ") + w : w; if (g.measureText(nx).width > maxW && cur) { out.push(cur); cur = w; } else cur = nx; }); if (cur) out.push(cur);
+    if (out.length > 2) out = [out[0], out.slice(1).join(cjk ? "" : " ")]; return out;
+  }
+  (function loop() { f++; if (f % 3 === 0) draw(); requestAnimationFrame(loop); })();
+
+  /* ---------- tapping the scene: a slot opens the goods, the sign and the board go to their field ---------- */
+  function hit(r, x, y) { return x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h; }
+  cv.addEventListener("click", function (e) {
+    if (viewing) return; var b = cv.getBoundingClientRect(), x = (e.clientX - b.left - OX) / PX, y = (e.clientY - b.top - OY) / PX;
+    for (var i = 0; i < 6; i++) if (hit(SLOT(i), x, y)) return pickSheet(i);
+    if (hit(SIGN, x, y)) return go(document.getElementById("name"));
+    if (hit(BOARD, x, y)) return go(document.getElementById("board"));
+    if (hit(AWN, x, y)) return go(document.getElementById("a1Row"));
+    if (y >= 59 && y < 78 && x >= 14 && x < 114) return go(document.getElementById("clRow"));
+  });
+  function go(el) { try { el.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (e) {} if (el.tagName === "INPUT") setTimeout(function () { try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }, 250); else { el.classList.remove("hop"); void el.offsetWidth; el.classList.add("hop"); } }
+
+  /* ---------- the panel ---------- */
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function mini(gi) { var c = document.createElement("canvas"); c.width = 10; c.height = 8; var x = c.getContext("2d"); if (gi >= 0) GOODS[gi][1].forEach(function (r, j) { for (var i = 0; i < r.length; i++) { var col = PAL[r.charAt(i)]; if (col) { x.fillStyle = col; x.fillRect(i, j, 1, 1); } } }); else { x.fillStyle = "rgba(243,234,216,.5)"; x.fillRect(4, 1, 2, 6); x.fillRect(2, 3, 6, 2); } return c; }
+  function swatches(row, key, label) {
+    row.innerHTML = ""; if (label) row.appendChild(el("span", "ss-sub", label));
+    COLS.forEach(function (c, i) { var b = el("button", "swatch"); b.type = "button"; b.style.background = c; b.setAttribute("aria-pressed", String(st[key] === i)); b.setAttribute("aria-label", label ? label + " " + (i + 1) : String(i + 1)); b.onclick = function () { st[key] = i; save(); paint(); }; row.appendChild(b); });
+  }
+  function paint() {
+    swatches(document.getElementById("a1Row"), "a1", t(S.main)); swatches(document.getElementById("a2Row"), "a2", t(S.trim)); swatches(document.getElementById("clRow"), "c", "");
+    var pr = document.getElementById("patRow"); pr.innerHTML = ""; S.pat.forEach(function (p, i) { var b = el("button", "fbb", t(p)); b.type = "button"; b.setAttribute("aria-pressed", String(st.p === i)); b.onclick = function () { st.p = i; save(); paint(); }; pr.appendChild(b); });
+    var sl = document.getElementById("slots"); sl.innerHTML = ""; st.g.forEach(function (gi, i) { var b = el("button", "fbb"); b.type = "button"; b.setAttribute("aria-label", gi >= 0 ? t(GOODS[gi][0]) : t(S.pick)); b.title = b.getAttribute("aria-label"); b.appendChild(mini(gi)); b.onclick = function () { pickSheet(i); }; sl.appendChild(b); });
+    var dr = document.getElementById("dealRow"); dr.innerHTML = ""; DEALS.forEach(function (d, i) { var b = el("button", "fbb", d[0] + " " + t(d[1])); b.type = "button"; b.setAttribute("aria-pressed", String(st.d === i)); b.onclick = function () { st.d = i; save(); paint(); }; dr.appendChild(b); });
+    draw();
+  }
+  var sheet = document.getElementById("sheet"), sb = document.getElementById("sheetB");
+  sheet.querySelector("[data-close]").onclick = function () { sheet.hidden = true; };
+  function pickSheet(i) {
+    sb.innerHTML = ""; sb.appendChild(el("p", "q", t(S.pick)));
+    var grid = el("div", "goods"); GOODS.forEach(function (gd, gi) { var b = el("button", "fbb"); b.type = "button"; if (st.g[i] === gi) b.setAttribute("aria-pressed", "true"); b.appendChild(mini(gi)); b.appendChild(el("span", "", t(gd[0]))); b.onclick = function () { st.g[i] = gi; save(); paint(); sheet.hidden = true; }; grid.appendChild(b); });
+    sb.appendChild(grid);
+    var none = el("button", "fbb fbb-glass", t(S.none)); none.type = "button"; none.onclick = function () { st.g[i] = -1; save(); paint(); sheet.hidden = true; }; sb.appendChild(none);
+    sheet.hidden = false; try { sheet.querySelector(".goods .fbb").focus({ preventScroll: true }); } catch (e) {}
+  }
+  var nameEl = document.getElementById("name"), boardEl = document.getElementById("board");
+  nameEl.value = st.n; boardEl.value = st.b;
+  nameEl.oninput = function () { st.n = nameEl.value.slice(0, 22); save(); draw(); };
+  boardEl.oninput = function () { st.b = boardEl.value.slice(0, 44); save(); draw(); };
+  document.getElementById("share").onclick = function () {
+    var u = location.origin + "/nearby/set-up-shop/#stall=" + enc(st), n = st.n.trim() ? "“" + st.n.trim() + "”" : t(S.something);
+    if (T.share) T.share(n, t(S.shareT, { n: n }), u);
+  };
+  document.getElementById("clear").onclick = function () {
+    sb.innerHTML = ""; sb.appendChild(el("p", "q", t(S.clearQ)));
+    var b = el("button", "fbb fbb-pri", t(S.yesClear)); b.type = "button"; b.onclick = function () { st = blank(); st.m = 1; nameEl.value = ""; boardEl.value = ""; save(); paint(); sheet.hidden = true; }; sb.appendChild(b); sheet.hidden = false;
+  };
+  addEventListener("keydown", function (e) { if (e.key === "Escape" && !sheet.hidden) sheet.hidden = true; });
+  /* someone's stall from a link: look, then set up your own */
+  var view = document.getElementById("view");
+  document.getElementById("viewMine").onclick = function () { viewing = null; view.hidden = true; document.documentElement.classList.remove("ss-viewing"); try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} setTimeout(size, 30); };
+  function words() {
+    [["kAwn", S.awn], ["kCloth", S.cloth], ["kGoods", S.goods], ["kDeal", S.deal], ["kName", S.nameK], ["kBoard", S.boardK], ["shareL", S.share], ["clearL", S.clear]].forEach(function (p) { document.getElementById(p[0]).textContent = t(p[1]); });
+    nameEl.placeholder = t(S.namePh); boardEl.placeholder = t(S.boardPh); cv.setAttribute("aria-label", t(S.sc)); paint();
+    if (viewing) { view.hidden = false; document.documentElement.classList.add("ss-viewing"); document.getElementById("viewT").textContent = t(S.view, { n: viewing.n || "…" }); document.getElementById("viewMine").textContent = t(S.viewMine); }
+  }
+  window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
+  addEventListener("fbl:lang", words); addEventListener("fbback", draw);
+  words(); size();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+})();
+</script>
+</body>
+</html>

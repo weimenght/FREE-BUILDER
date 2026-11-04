@@ -16,14 +16,32 @@
     { p: "#f6d640", c: "#d89a20", n: 5 },   /* buttercup */
     { p: "#e88ab0", c: "#b8507a", n: 9 }    /* clover */
   ];
-  var fl = [], puffs = [], bee = null;
+  /* the meadow keeps the town's season (Slow Clock can turn it): full in spring and summer, a few asters in autumn, snowdrops in winter */
+  var ASTER = { p: "#9a6ad0", c: "#f2c230", n: 9 }, SNOWDROP = { p: "#f4f4ee", c: "#8ab868", n: 3 };
+  function season() { try { return FBWorld.season(); } catch (e) { return "summer"; } }
+  var fl = [], puffs = [], bee = null, SE = season();
   function size() {
     W = innerWidth; H = innerHeight; U = Math.max(3, Math.round(Math.min(W, H) / 110));
     cv.width = Math.ceil(W / U); cv.height = Math.ceil(H / U); g.imageSmoothingEnabled = false;
-    var n = Math.max(4, Math.min(8, Math.round(W / 140))); fl = [];
-    for (var i = 0; i < n; i++) fl.push({ k: KINDS[(i * 3 + (Math.random() * 5 | 0)) % KINDS.length], x: (i + .5 + (Math.random() - .5) * .5) / n, h: .14 + Math.random() * .16, r: 3 + (Math.random() * 2 | 0), ph: Math.random() * 6.3, nod: 0 });
+    SE = season(); var n = Math.max(4, Math.min(8, Math.round(W / 140))); fl = [];
+    if (SE === "autumn") n = Math.max(3, Math.round(n * .6)); else if (SE === "winter") n = Math.max(2, Math.round(n * .4));
+    for (var i = 0; i < n; i++) fl.push({ k: SE === "winter" ? SNOWDROP : SE === "autumn" ? [ASTER, KINDS[0], ASTER, KINDS[4]][i % 4] : KINDS[(i * 3 + (Math.random() * 5 | 0)) % KINDS.length], x: (i + .5 + (Math.random() - .5) * .5) / n, h: (SE === "winter" ? .08 : .14) + Math.random() * (SE === "winter" ? .06 : .16), r: SE === "winter" ? 2 : 3 + (Math.random() * 2 | 0), ph: Math.random() * 6.3, nod: 0 });
+    tones();
   }
-  size(); addEventListener("resize", size);
+  /* every visit the flowers are tuned afresh: a new key and a new scale (pentatonic, or the tones of one soft chord), lowest on the left.
+     Whatever you breathe in, and however many at once, they sound well together. */
+  var SCALES = [[0, 2, 4, 7, 9], [0, 3, 5, 7, 10], [0, 2, 5, 7, 9], [0, 4, 7, 11], [0, 3, 7, 10], [0, 2, 4, 7, 11], [0, 2, 7, 9]], TUNE = null;
+  function retune() {
+    var last = -1; try { last = +sessionStorage.getItem("fb_meadow_key"); } catch (e) {}
+    var k; do { k = (Math.random() * 12 * SCALES.length) | 0; } while (k === last); try { sessionStorage.setItem("fb_meadow_key", k); } catch (e) {}
+    TUNE = { root: 57 + (k % 12), sc: SCALES[(k / 12) | 0], wave: Math.random() < .5 ? "sine" : "triangle" }; tones();
+  }
+  function tones() {
+    if (!TUNE) return; var sc = TUNE.sc, order = fl.map(function (f, i) { return i; }).sort(function (a, b) { return fl[a].x - fl[b].x; });
+    order.forEach(function (fi, r) { fl[fi].note = 440 * Math.pow(2, (TUNE.root + sc[r % sc.length] + 12 * Math.floor(r / sc.length) - 69) / 12); });
+  }
+  retune(); size(); addEventListener("resize", size);
+  addEventListener("fbback", function () { retune(); if (season() !== SE) size(); });   /* back in the meadow: new tones, and the season Slow Clock may have turned */
   function wetSky() { try { var w = FBWorld.weather(); return w !== "clear"; } catch (e) { return false; } }   /* bees only come out in the sun */
   function night() { var h = window.FBWorld ? (FBWorld.solar ? FBWorld.solar() : FBWorld.hour()) : new Date().getHours(); h = ((h % 24) + 24) % 24; return h < 5.5 || h >= 20; }
   function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
@@ -43,6 +61,7 @@
   }
   function tick() {
     t++;
+    if (t % 120 === 0 && season() !== SE) size();
     fl.forEach(function (f) { f.nod *= .95; });
     puffs.forEach(function (q) { q.x += Math.sin((t + q.s) / 9) * .25 + q.vx; q.y -= .35; q.a -= .012; }); puffs = puffs.filter(function (q) { return q.a > 0; });
     if (bee) { bee.a += .07; var tg = bee.f ? head(bee.f) : { x: bee.tx, y: bee.ty }; bee.x += (tg.x + Math.cos(bee.a) * 6 - bee.x) * .05; bee.y += (tg.y - 3 + Math.sin(bee.a * 1.3) * 4 - bee.y) * .05; if (--bee.life < 0) { bee.f = null; bee.tx = cv.width + 20; bee.ty = -10; if (bee.x > cv.width + 10 || bee.y < -5) bee = null; } }
@@ -58,7 +77,7 @@
       var n = A.currentTime, len = A.sampleRate * .9, b = A.createBuffer(1, len, A.sampleRate), d = b.getChannelData(0); for (var k = 0; k < len; k++) d[k] = Math.random() * 2 - 1;
       var s = A.createBufferSource(), bp = A.createBiquadFilter(), gg = A.createGain(); s.buffer = b; bp.type = "bandpass"; bp.frequency.setValueAtTime(900, n); bp.frequency.linearRampToValueAtTime(1800, n + .8); bp.Q.value = .8;
       gg.gain.setValueAtTime(.0001, n); gg.gain.linearRampToValueAtTime(.03, n + .35); gg.gain.exponentialRampToValueAtTime(.0001, n + .9); s.connect(bp); bp.connect(gg); gg.connect(A.destination); s.start(n); s.stop(n + .95);
-      var o = A.createOscillator(), og = A.createGain(), f = [523.25, 587.33, 659.25, 783.99, 880][i % 5]; o.type = "sine"; o.frequency.value = f; og.gain.setValueAtTime(.0001, n + .7); og.gain.linearRampToValueAtTime(.035, n + .75); og.gain.exponentialRampToValueAtTime(.0001, n + 2.4); o.connect(og); og.connect(A.destination); o.start(n + .7); o.stop(n + 2.5);
+      var o = A.createOscillator(), og = A.createGain(), f = fl[i] && fl[i].note || 523.25; o.type = TUNE ? TUNE.wave : "sine"; o.frequency.value = f; og.gain.setValueAtTime(.0001, n + .7); og.gain.linearRampToValueAtTime(TUNE && TUNE.wave === "triangle" ? .028 : .035, n + .75); og.gain.exponentialRampToValueAtTime(.0001, n + 2.4); o.connect(og); og.connect(A.destination); o.start(n + .7); o.stop(n + 2.5);
     } catch (e) {}
   }
   function hit(e) {

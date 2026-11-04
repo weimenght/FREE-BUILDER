@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8ed2d0134e"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0f928170c5" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=4844bd2557"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8fe2bb6ed8" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Say Hello · Nearby</title>
 <meta name="description" content="Write a postcard, seal it until the day you choose, and send it to a friend or hang it on the wall in Next Door.">
@@ -455,9 +455,11 @@ window.PCScenes = (function () {
     }).then(function () { btns.forEach(function (b) { b.disabled = false; }); });
   }
   function link(id) { return location.origin + "/nearby/say-hello/?c=" + id; }
+  /* these cards are only to look at: a tap outside (or Esc) puts one away, no ✕; the tap that opened it never closes it */
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { var l = document.querySelectorAll(".scrim"); if (l.length) l[l.length - 1].remove(); } });
   function sheet(html) {
-    var s = document.createElement("div"); s.className = "scrim"; s.innerHTML = '<div class="sheet" role="dialog" aria-modal="true">' + html + '<button class="pill x" type="button" aria-label="' + esc(t("close")) + '">✕</button></div>';
-    s.onclick = function (e) { if (e.target === s || e.target.closest(".x")) s.remove(); };
+    var s = document.createElement("div"), at0 = Date.now(); s.className = "scrim"; s.innerHTML = '<div class="sheet" role="dialog" aria-modal="true">' + html + '</div>';
+    s.onclick = function (e) { if (e.target === s && Date.now() - at0 > 450) s.remove(); };
     document.body.appendChild(s); return s;
   }
   function done(id, wall, body) {

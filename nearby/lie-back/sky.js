@@ -28,8 +28,12 @@
   /* ---------- the sky keeps your time ---------- */
   function byClock() { var h = window.FBWorld ? (FBWorld.solar ? FBWorld.solar() : FBWorld.hour()) : new Date().getHours() + new Date().getMinutes() / 60;   /* Nearby's hour for this visit */ return h >= 5 && h < 10.5 ? "morning" : h >= 10.5 && h < 16.5 ? "noon" : h >= 16.5 && h < 19.5 ? "dusk" : "night"; }
   var sky = byClock(); setSkyPalette(sky);
-  setInterval(function () { var k = byClock(); if (k !== sky) { sky = k; setSkyPalette(k); } }, 60e3);
+  function reclock() { var k = byClock(); if (k !== sky) { sky = k; setSkyPalette(k); X.stars = night(); if (night()) X.flies = X.flies || Math.random() < 0.7; } }
+  setInterval(reclock, 60e3); addEventListener("fbback", reclock);   /* Slow Clock may have moved the hour while you were away */
   function night() { return sky === "night"; }
+  /* the town's weather and season for this visit (Slow Clock sets them), read fresh every frame */
+  function wx() { try { return (window.FBWorld && FBWorld.weather()) || "clear"; } catch (e) { return "clear"; } }
+  function season() { try { return (window.FBWorld && FBWorld.season && FBWorld.season()) || "summer"; } catch (e) { return "summer"; } }
 
   /* ---------- each visit, somewhere else to lie down: a meadow, a mountain, the sea… (drawn by land.js) ---------- */
   var pick = function (a) { return a[(Math.random() * a.length) | 0]; };
@@ -140,7 +144,7 @@
   addEventListener("pointermove", function (e) { px = e.clientX; py = e.clientY; }, { passive: true });
   function grass(t) {
     var ac = (typeof activeColors !== "undefined") ? activeColors : null, far = FLORA.far || (ac ? ac.meadowFar : [90, 140, 80]), nearC = FLORA.near || (ac ? ac.meadowNear : [50, 90, 50]), sunC = ac ? ac.sunColor : [255, 240, 200];
-    var dark = night() ? 0.75 : sky === "dusk" ? 0.35 : 0, breeze = (state.breezeSpeed || 1);
+    var dark = night() ? 0.75 : sky === "dusk" ? 0.35 : 0, breeze = (state.breezeSpeed || 1), se = season();
     for (var i = 0; i < blades.length; i++) {
       var b = blades[i], sway = Math.sin(t * (0.6 + breeze * 0.4) + b.x * 0.012 + b.p) * 0.06 * breeze;
       var dx = b.x - px, dy = (H - b.h * 0.6) - py; if (dx * dx + dy * dy < 14000) b.bend += (dx > 0 ? 0.03 : -0.03); b.bend *= 0.94;
@@ -148,7 +152,7 @@
       var base = b.near ? nearC : far, col = mixc(mixc(base, b.near ? [70, 120, 60] : [120, 170, 90], night() ? 0 : sky === "dusk" ? 0.15 : 0.5), [8, 12, 18], dark), lit = mixc(col, sunC, night() ? 0.05 : 0.35);
       var gr = g.createLinearGradient(b.x, H, tipX, tipY); gr.addColorStop(0, rgb(mixc(col, [0, 0, 0], 0.35), 1)); gr.addColorStop(1, rgb(lit, b.near ? 0.98 : 0.9));
       g.fillStyle = gr; g.beginPath(); g.moveTo(b.x - b.w / 2, H + 2); g.quadraticCurveTo(midX - b.w * 0.3, midY, tipX, tipY); g.quadraticCurveTo(midX + b.w * 0.3, midY, b.x + b.w / 2, H + 2); g.closePath(); g.fill();
-      if (b.flower) { var fc = night() ? "rgba(200,200,220,.35)" : b.flower; g.fillStyle = fc; for (var q = 0; q < 5; q++) { g.beginPath(); g.arc(tipX + Math.cos(q * 1.257 + t * 0.2) * 3, tipY + Math.sin(q * 1.257 + t * 0.2) * 3, 2.4, 0, TAU); g.fill(); } g.fillStyle = night() ? "rgba(120,110,80,.5)" : "#f2b632"; g.beginPath(); g.arc(tipX, tipY, 1.8, 0, TAU); g.fill(); }
+      if (b.flower && se !== "winter" && (se !== "autumn" || (b.p * 7) % 1 < 0.4)) { var fc = night() ? "rgba(200,200,220,.35)" : b.flower; g.fillStyle = fc; for (var q = 0; q < 5; q++) { g.beginPath(); g.arc(tipX + Math.cos(q * 1.257 + t * 0.2) * 3, tipY + Math.sin(q * 1.257 + t * 0.2) * 3, 2.4, 0, TAU); g.fill(); } g.fillStyle = night() ? "rgba(120,110,80,.5)" : "#f2b632"; g.beginPath(); g.arc(tipX, tipY, 1.8, 0, TAU); g.fill(); }
       if (b.seed) { g.fillStyle = FLORA.reed ? rgb(mixc([92, 58, 32], [10, 10, 15], dark), 0.95) : rgb(mixc(lit, [230, 220, 170], 0.5), 0.9); g.beginPath(); g.ellipse(tipX, tipY + (FLORA.reed ? 12 : 8), FLORA.reed ? 4 : 3, FLORA.reed ? 16 : 11, ang, 0, TAU); g.fill(); }
     }
   }
@@ -165,16 +169,35 @@
     g.restore();
   }
   /* a passing shower: the light dims, rain slants across, and a rainbow comes out after */
-  var drops = [];
+  var drops = [], wet = -1, wasWet = false, flash = 0, flakes = [], fogA = 0;
   function shower(t) {
-    if (!X.shower) return 0;
-    var k = Math.max(0, Math.sin(Math.min(Math.PI, (t - 30) / 35 * Math.PI))); if (t > 66 && !X.rainbow) { X.rainbow = true; bow.start = t; }
+    var k;
+    if (window.FBWorld) {
+      var w = wx(), want = SCENE === "snow" ? 0 : w === "storm" ? 1 : w === "rain" ? 0.75 : 0;
+      if (wet < 0) wet = want; wet += (want - wet) * 0.01;
+      if (wasWet && !want && !night() && !X.rainbow) { X.rainbow = true; bow.start = t; } wasWet = want > 0;   /* the rain stops: a rainbow */
+      if (w === "storm" && !flash && Math.random() < 0.002) flash = 1;
+      if (flash) { g.fillStyle = "rgba(235,240,255," + (0.35 * flash) + ")"; g.fillRect(0, 0, W, H); flash = Math.max(0, flash - 0.08); }
+      k = wet;
+    } else {
+      if (!X.shower) return 0;
+      k = Math.max(0, Math.sin(Math.min(Math.PI, (t - 30) / 35 * Math.PI))); if (t > 66 && !X.rainbow) { X.rainbow = true; bow.start = t; }
+    }
     if (k <= 0.01) return 0;
-    g.fillStyle = "rgba(60,70,90," + 0.22 * k + ")"; g.fillRect(0, 0, W, H);
+    g.fillStyle = "rgba(60,70,90," + (window.FBWorld ? 0.34 : 0.22) * k + ")"; g.fillRect(0, 0, W, H);
     while (drops.length < 180 * k) drops.push({ x: Math.random() * (W + 200), y: Math.random() * H, l: 10 + Math.random() * 14, v: 9 + Math.random() * 6 });
-    g.strokeStyle = "rgba(220,230,245," + 0.35 * k + ")"; g.lineWidth = 1; g.beginPath();
+    g.strokeStyle = "rgba(220,230,245," + (window.FBWorld ? 0.5 : 0.35) * k + ")"; g.lineWidth = 1; g.beginPath();
     drops.forEach(function (d) { d.y += d.v; d.x -= d.v * 0.25 * (state.breezeSpeed || 1); if (d.y > H) { d.y = -20; d.x = Math.random() * (W + 200); } g.moveTo(d.x, d.y); g.lineTo(d.x + d.l * 0.25, d.y - d.l); });
     g.stroke(); return k;
+  }
+  /* snow in the town snows here too (the snowfield has its own); fog lies low over the ground */
+  function weatherVeil() {
+    var w = wx();
+    if (w === "snow") { g.fillStyle = night() ? "rgba(40,46,60,.18)" : "rgba(205,210,222,.22)"; g.fillRect(0, 0, W, H); }   /* a white sky */
+    if (w === "snow" && SCENE !== "snow") { while (flakes.length < 140) flakes.push({ x: Math.random() * W, y: Math.random() * H - H, v: 0.4 + Math.random() * 0.9, r: 0.8 + Math.random() * 2, p: Math.random() * TAU }); }
+    if (flakes.length) { g.fillStyle = "rgba(255,255,255,.85)"; flakes.forEach(function (f) { f.p += 0.01; f.y += f.v; f.x += Math.sin(f.p) * 0.5 - 0.2 * (state.breezeSpeed || 1); if (f.y > H) { if (w === "snow") { f.y = -5; f.x = Math.random() * W; } else f.dead = 1; } if (f.x < -5) f.x = W + 5; g.beginPath(); g.arc(f.x, f.y, f.r, 0, TAU); g.fill(); }); flakes = flakes.filter(function (f) { return !f.dead; }); }
+    fogA += ((w === "fog" ? 1 : 0) - fogA) * 0.01;
+    if (fogA > 0.01) { var fg = g.createLinearGradient(0, H * 0.35, 0, H); fg.addColorStop(0, "rgba(220,226,234,0)"); fg.addColorStop(1, night() ? "rgba(70,80,100," + (0.55 * fogA) + ")" : "rgba(225,230,238," + (0.6 * fogA) + ")"); g.fillStyle = fg; g.fillRect(0, 0, W, H); }
   }
   function vignette() { var vg = g.createRadialGradient(W / 2, H * 0.45, Math.min(W, H) * 0.35, W / 2, H * 0.45, Math.max(W, H) * 0.8); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, night() ? "rgba(0,0,10,.35)" : "rgba(20,30,50,.18)"); g.fillStyle = vg; g.fillRect(0, 0, W, H); }
 
@@ -224,7 +247,7 @@
       g.restore();
     }
     /* a rainbow after rain that never came, fading in and out */
-    if (X.rainbow) { bow.a = Math.min(1, Math.max(0, Math.sin(Math.min(Math.PI, (t - (bow.start || 6)) / 70 * Math.PI)))); if (bow.a > 0.01) { var cx = W * 0.78, cy = H * 0.95, R = Math.max(W, H) * 0.55, cols = ["255,80,80", "255,160,60", "255,230,90", "110,220,120", "90,170,255", "150,110,255"]; g.save(); g.globalAlpha = 0.16 * bow.a; g.lineWidth = R * 0.018; cols.forEach(function (c, i) { g.strokeStyle = "rgb(" + c + ")"; g.beginPath(); g.arc(cx, cy, R - i * g.lineWidth, Math.PI * 1.05, Math.PI * 1.75); g.stroke(); }); g.restore(); } }
+    if (X.rainbow && wx() === "clear") { bow.a = Math.min(1, Math.max(0, Math.sin(Math.min(Math.PI, (t - (bow.start || 6)) / 70 * Math.PI)))); if (bow.a > 0.01) { var cx = W * 0.78, cy = H * 0.95, R = Math.max(W, H) * 0.55, cols = ["255,80,80", "255,160,60", "255,230,90", "110,220,120", "90,170,255", "150,110,255"]; g.save(); g.globalAlpha = 0.16 * bow.a; g.lineWidth = R * 0.018; cols.forEach(function (c, i) { g.strokeStyle = "rgb(" + c + ")"; g.beginPath(); g.arc(cx, cy, R - i * g.lineWidth, Math.PI * 1.05, Math.PI * 1.75); g.stroke(); }); g.restore(); } }
     /* a visitor that belongs to this place, drifting through now and then */
     if (X.visitor && !night()) visitor(t);
     /* a plane high up, drawing a contrail that spreads and fades */
@@ -233,12 +256,12 @@
         g.save(); g.lineCap = "round"; for (var j = 1; j < plane.trail.length; j += 2) { var p0 = plane.trail[j], age = (plane.trail.length - j) / 600; g.strokeStyle = "rgba(255,255,255," + (0.5 * (1 - age)) + ")"; g.lineWidth = 1.5 + age * 9; g.beginPath(); g.moveTo(plane.trail[j - 1].x, plane.trail[j - 1].y); g.lineTo(p0.x, p0.y); g.stroke(); }
         g.fillStyle = "rgba(255,255,255,.95)"; g.fillRect(plane.x, plane.y - 1, 6, 2); g.restore(); if (plane.x > W + 400) plane = null; } }
     /* shooting stars at night */
-    if (X.stars) { if (!shoot && Math.random() < (window.FBWorld && FBWorld.weather() === "clear" ? 0.007 : 0.003)) shoot = { x: W * (0.3 + Math.random() * 0.6), y: H * (0.05 + Math.random() * 0.25), l: 1 };
+    if (X.stars) { if (!shoot && wx() === "clear" && Math.random() < 0.007) shoot = { x: W * (0.3 + Math.random() * 0.6), y: H * (0.05 + Math.random() * 0.25), l: 1 };
       if (shoot) { shoot.x -= 9; shoot.y += 3; shoot.l -= 0.025; var sg = g.createLinearGradient(shoot.x, shoot.y, shoot.x + 70, shoot.y - 23); sg.addColorStop(0, "rgba(255,250,225," + shoot.l + ")"); sg.addColorStop(1, "rgba(255,250,225,0)"); g.strokeStyle = sg; g.lineWidth = 2; g.beginPath(); g.moveTo(shoot.x, shoot.y); g.lineTo(shoot.x + 70, shoot.y - 23); g.stroke(); if (shoot.l <= 0) shoot = null; } }
     /* fireflies over the grass */
     if (X.flies && (night() || sky === "dusk")) flies.forEach(function (f) { f.p += 0.02 * f.v; var x = ((f.x * W + Math.sin(f.p) * 30 + t * 6 * f.v) % W + W) % W, y = f.y * H + Math.cos(f.p * 1.3) * 12, a = 0.5 + 0.5 * Math.sin(f.p * 3); var fg = g.createRadialGradient(x, y, 0, x, y, 10); fg.addColorStop(0, "rgba(230,255,140," + 0.8 * a + ")"); fg.addColorStop(1, "rgba(230,255,140,0)"); g.fillStyle = fg; g.fillRect(x - 10, y - 10, 20, 20); });
     if (window.FBWorld && FBWorld.drift && FBWorld.weather() !== "storm") FBWorld.drift(g, W, H, now, 3, 22);   /* blossom in spring, leaves in autumn */
-    grass(t); vignette();
+    grass(t); weatherVeil(); vignette();
     /* the trail fades when you hold still */
     for (var m = 0; m < trail.length; m++) trail[m].a = Math.max(0.15, trail[m].a - 0.002);
     requestAnimationFrame(frame);

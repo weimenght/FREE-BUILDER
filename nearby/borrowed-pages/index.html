@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8ed2d0134e"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0f928170c5" defer></script>
+<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=4844bd2557"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8fe2bb6ed8" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Borrowed Pages · Nearby</title>
 <meta name="description" content="A four-room book house next door to the bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one, and pass it on by hand.">
@@ -483,9 +483,11 @@ html.fbsh-in.bp-one body > header.sign { position: fixed; }
   function sheet(html, cls, redo) {
     var s0 = $(".scrim"); if (s0) s0.remove(); else lastFocus = document.activeElement;
     var s = document.createElement("div"); s.className = "scrim"; s._redo = redo;
-    s.innerHTML = '<div class="sheet ' + (cls || "") + '" role="dialog" aria-modal="true"><button class="x" type="button" aria-label="' + esc(t("close")) + '">×</button>' + html + "</div>";
+    /* a form keeps its × ; a page to look at (a book, the ledger) closes with a tap outside or Esc. The tap that opened it never closes it. */
+    var form = /<form/.test(html), at0 = Date.now();
+    s.innerHTML = '<div class="sheet ' + (cls || "") + '" role="dialog" aria-modal="true">' + (form ? '<button class="x" type="button" aria-label="' + esc(t("close")) + '">×</button>' : "") + html + "</div>";
     document.body.appendChild(s); document.body.style.overflow = "hidden";
-    s.addEventListener("click", function (e) { if (e.target === s || e.target.closest(".x")) close(); });
+    s.addEventListener("click", function (e) { if (Date.now() - at0 < 450) return; if (e.target === s || e.target.closest(".x")) close(); });
     var f = s.querySelector("input:not([type=hidden]),textarea,.btn.pri,.btn"); if (f && matchMedia("(pointer:fine)").matches) setTimeout(function () { f.focus(); }, 60);
     return s.querySelector(".sheet");
   }

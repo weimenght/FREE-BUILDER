@@ -522,9 +522,14 @@
 
   /* ---------- stations ---------- */
   var STYLE = { hutong: "open", metropolis: "city", coastal: "open", desert: "open", lake: "open", countryside: "halt", forest: "halt", alpine: "chalet", snow: "chalet" };
+  /* the platform in the window is the one the train stopped at: when it pulls out, the next stop's name (and its country)
+     is already chosen, but the sign going past stays the one you were at */
+  var platSt = null, boardLater = null;
   function station(now) {
-    var sx = state.stationScrollOffset; if (!(sx > -cw * 3 && sx < cw * 3)) return;
-    var st = state.station || {}, style = STYLE[state.biome] || "halt", cx = cw * 0.5 + sx, wid = cw * (style === "city" ? 2.6 : 1.6), x0 = cx - wid / 2, x1 = cx + wid / 2;
+    var sx = state.stationScrollOffset;
+    if (!platSt || state.trainState === "BRAKING" || state.trainState === "STOPPED" || !(sx > -cw * 3 && sx < cw * 3)) platSt = state.station;
+    if (!(sx > -cw * 3 && sx < cw * 3)) return;
+    var st = platSt || {}, style = STYLE[st.biome || state.biome] || "halt", cx = cw * 0.5 + sx, wid = cw * (style === "city" ? 2.6 : 1.6), x0 = cx - wid / 2, x1 = cx + wid / 2;
     var py = ch * 0.8, lit = L.lights, seed = (st.name || "x").length * 7 + (st.name || "x").charCodeAt(0);
     /* back wall for the big city stations */
     if (style === "city" && !st.look) { ctx.fillStyle = css(land("#3a3c44", 0.15)); ctx.fillRect(x0, ch * 0.14, wid, py - ch * 0.14);
@@ -552,17 +557,20 @@
       if (lit > 0.2) { glowDot(lx, ly + 4 * S, 90 * S, [255, 200, 120], 0.5 * lit); var pool = ctx.createRadialGradient(lx, py + 10 * S, 0, lx, py + 10 * S, 90 * S); pool.addColorStop(0, "rgba(255,210,140," + 0.22 * lit + ")"); pool.addColorStop(1, "rgba(255,210,140,0)"); ctx.fillStyle = pool; ctx.fillRect(lx - 90 * S, py, 180 * S, 40 * S); }
     }
     /* the name board */
-    var bw = Math.min(360 * S, cw * 0.5), bh = 70 * S, by = roofY ? roofY + 40 * S : st.name === "Gulou Hutong" ? ch * 0.06 : ch * 0.26, bx = cx - bw / 2;
+    var bw = Math.min(360 * S, cw * (cw < ch ? 0.86 : 0.5)), bh = 70 * S, by = roofY ? roofY + 40 * S : st.name === "Gulou Hutong" ? ch * 0.06 : ch * 0.26, bx = cx - bw / 2;
     if (!roofY) { ctx.fillStyle = css(land("#2a2a30", 0.05)); ctx.fillRect(bx + 20 * S, by + bh, 5 * S, py - by - bh); ctx.fillRect(bx + bw - 25 * S, by + bh, 5 * S, py - by - bh); }
     else { ctx.strokeStyle = roofCol; ctx.beginPath(); ctx.moveTo(bx + 30 * S, roofY); ctx.lineTo(bx + 30 * S, by); ctx.moveTo(bx + bw - 30 * S, roofY); ctx.lineTo(bx + bw - 30 * S, by); ctx.stroke(); }
+    if (st.look) props(st.look, x0, x1, wid, cx, py, roofY, seed, lit, now);
+    /* the name board goes up last (after the masts and wires in front), so nothing ever covers the name */
+    boardLater = function () {
     if (st.look) { board(st, bx, by, bw, bh, lit); } else {
     ctx.fillStyle = css(mix([246, 244, 236], L.low, 0.1)); ctx.fillRect(bx, by, bw, bh); if (lit > 0.3) glowDot(cx, by + bh / 2, bw * 0.7, [255, 250, 230], 0.25 * lit);
     ctx.fillStyle = st.ink || "#1d4ed8"; ctx.fillRect(bx, by + bh - 9 * S, bw, 9 * S);
     ctx.fillStyle = "#1c1c22"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.font = "600 " + Math.round(24 * S) + "px 'Plus Jakarta Sans','PingFang SC','Microsoft YaHei',system-ui,sans-serif"; fitText(st.name || "", cx, by + bh * 0.38, bw - 24 * S);
-    if (st.jp) { ctx.font = Math.round(12 * S) + "px 'Hiragino Sans','Noto Sans JP','PingFang SC',sans-serif"; ctx.fillStyle = "#55555e"; ctx.fillText(st.jp, cx, by + bh * 0.74); }
+    ctx.font = "600 " + Math.round(24 * S) + "px 'Plus Jakarta Sans','PingFang SC','Microsoft YaHei',system-ui,sans-serif"; fitText(st.name || "", cx, by + bh * (st.jp ? 0.38 : 0.45), bw - 24 * S);
+    if (st.jp) { ctx.font = Math.round(12 * S) + "px 'Hiragino Sans','Noto Sans JP','PingFang SC',sans-serif"; ctx.fillStyle = "#55555e"; fitText(st.jp, cx, by + bh * 0.74, bw - 24 * S); }
     ctx.textAlign = "start"; ctx.textBaseline = "alphabetic"; }
-    if (st.look) props(st.look, x0, x1, wid, cx, py, roofY, seed, lit, now);
+    };
     /* benches, a clock, people waiting */
     for (var bi = 0; bi < 3; bi++) { var bxx = x0 + wid * (0.18 + bi * 0.3); ctx.fillStyle = css(land("#5a3e2a", 0.05)); ctx.fillRect(bxx, py - 22 * S, 60 * S, 6 * S); ctx.fillRect(bxx, py - 36 * S, 60 * S, 4 * S); ctx.fillRect(bxx + 4 * S, py - 16 * S, 4 * S, 16 * S); ctx.fillRect(bxx + 52 * S, py - 16 * S, 4 * S, 16 * S); }
     var n = 2 + (hash(seed, 2) * 5 | 0), umb = WX.rain > 0.4 && !roofY;
@@ -578,6 +586,7 @@
   }
   function flowers(x, y, w, seed) { ctx.fillStyle = css(land("#3e6b2e", 0.05)); ctx.fillRect(x, y - 6 * S, w, 6 * S); for (var i = 0; i < w / (5 * S); i++) { ctx.fillStyle = css([[220, 40, 50], [240, 120, 160], [250, 200, 60], [255, 255, 255]][(hash(i, seed) * 4) | 0]); ctx.beginPath(); ctx.arc(x + i * 5 * S + 2 * S, y - 7 * S - hash(i, seed + 3) * 4 * S, 2.2 * S, 0, TAU); ctx.fill(); } }
   function facade(look, x0, x1, wid, py, style, seed, lit) {
+    var cx = (x0 + x1) / 2;   /* (the Japanese stations' vending machines stand by the middle; without it those stops drew no platform at all) */
     var top = py - ch * (style === "city" ? 0.5 : 0.34), h = py - top, x, i;
     if (look === "fr") {
       ctx.fillStyle = css(land("#e6d8bb", 0.12)); ctx.fillRect(x0, top, wid, h); ctx.fillStyle = css(land("#c9b896", 0.12)); ctx.fillRect(x0, top, wid, 10 * S); ctx.fillRect(x0, top + h * 0.12, wid, 4 * S);
@@ -668,7 +677,12 @@
       ctx.fillStyle = "#0c1322"; ctx.fillRect(cx + cw * 0.24, ch * 0.2, 90 * S, 28 * S); ctx.fillStyle = "#59f07a"; ctx.font = "700 " + Math.round(16 * S) + "px 'Plus Jakarta Sans',sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText((1 + (seed % 9)) + "站台", cx + cw * 0.24 + 45 * S, ch * 0.2 + 14 * S); ctx.textAlign = "start"; ctx.textBaseline = "alphabetic";
     }
   }
-  function fitText(t, x, y, max) { var s = 1; while (ctx.measureText(t).width > max && s > 0.5) { s -= 0.06; var f = ctx.font.replace(/(\d+)px/, function (m, p) { return Math.round(p * 0.94) + "px"; }); ctx.font = f; } ctx.fillText(t, x, y); }
+  function fitText(t, x, y, max) {   /* the whole name, always: smaller if it must, on two lines if it's very long */
+    t = String(t || ""); var m = /(\d+(?:\.\d+)?)px/.exec(ctx.font), px = m ? +m[1] : 16, w = ctx.measureText(t).width; if (w <= max) return ctx.fillText(t, x, y);
+    var k = max / w, sp = t.lastIndexOf(" ", Math.ceil(t.length / 2) + 4);
+    if (k < 0.62 && sp > 0) { var a = t.slice(0, sp), b = t.slice(sp + 1), ka = Math.min(0.78, max / Math.max(ctx.measureText(a).width, ctx.measureText(b).width)); ctx.font = ctx.font.replace(m[0], (px * ka).toFixed(1) + "px"); var lh = px * ka * 0.98; ctx.fillText(a, x, y - lh / 2); ctx.fillText(b, x, y + lh / 2); ctx.font = ctx.font.replace((px * ka).toFixed(1) + "px", m[0]); return; }
+    ctx.font = ctx.font.replace(m[0], (px * k * 0.98).toFixed(1) + "px"); ctx.fillText(t, x, y); ctx.font = ctx.font.replace((px * k * 0.98).toFixed(1) + "px", m[0]);
+  }
   function person(x, base, sc, seed, umb, now) {
     var h = 62 * S * sc, col = css(land(["#2a2a34", "#3a2a2a", "#2a3a34", "#3a3428"][(hash(seed, 1) * 4) | 0], 0.03)), sway = Math.sin(now * 0.0015 + seed) * 0.6 * S;
     var u = S * sc, skirt = hash(seed, 3) < 0.4, hair = hash(seed, 4);   /* people on the platform: some in a dress or a skirt, long hair, a bun */
@@ -778,7 +792,7 @@
         sky(now, dt);
         if (prev && fade < 1 && BIOMES[prev]) BIOMES[prev](now);
         if (BIOMES[shown]) { if (fade < 1) { ctx.save(); ctx.globalAlpha = fade; } BIOMES[shown](now); if (fade < 1) ctx.restore(); }
-        crossing(now); rails(); station(now); express(dt); catenary();
+        crossing(now); rails(); boardLater = null; station(now); express(dt); catenary(); if (boardLater) { boardLater(); boardLater = null; }
       }
       tunnel(now);
       weather(now, dt);
@@ -905,7 +919,7 @@
     var lk = lookOf(st), ch = CHIME[lk] || CHIME.uk;
     if (typeof audioCtx === "undefined" || !audioCtx || !isAudioPlaying) return false;
     var t0 = audioCtx.currentTime + 0.05;
-    ch[0].forEach(function (f, i) { var o = audioCtx.createOscillator(), g = audioCtx.createGain(), t = t0 + i * ch[1]; o.type = ch[2]; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.09, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0006, t + 1.1); o.connect(g); g.connect(masterTrainGain); o.start(t); o.stop(t + 1.2); });
+    ch[0].forEach(function (f, i) { var o = audioCtx.createOscillator(), g = audioCtx.createGain(), t = t0 + i * ch[1]; o.type = "sine"; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.05, t + 0.04); g.gain.exponentialRampToValueAtTime(0.0006, t + 1.1); o.connect(g); g.connect(masterTrainGain); o.start(t); o.stop(t + 1.2); });
     setTimeout(function () { speak(st, "arrive"); }, ch[0].length * ch[1] * 1000 + 500);
     return true;
   }

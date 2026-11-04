@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8ed2d0134e"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0f928170c5" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=4844bd2557"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8fe2bb6ed8" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Paw Reading · Nearby</title>
 <meta name="description" content="Miso and Yuzu's little stall by the Plaza: one of them paws a card from the Nearby deck over to you, and the card says what you'll do today, somewhere real. One card a day.">
@@ -80,6 +80,8 @@
     home: ["A sign on the counter: GONE HOME. The deck is right here.", "柜台上有块牌子：回家了。牌就在这儿。", "櫃台上有塊牌子：回家了。牌就在這兒。", "Un cartel en el mostrador: EN CASA. La baraja está aquí.", "Un cartell al taulell: A CASA. La baralla és aquí."],
     paw: [["*Yuzu slides one card out with a paw and pushes it across.*", "*柚子用爪子抽出一张牌，推了过来。*", "*柚子用爪子抽出一張牌，推了過來。*", "*Yuzu saca una carta con la pata y te la acerca.*", "*La Yuzu treu una carta amb la pota i te l'acosta.*"],
       ["*Miso knocks the deck over, then sits on the one card she wants you to have.*", "*味噌把牌碰倒，然后坐在她想给你的那一张上。*", "*味噌把牌碰倒，然後坐在她想給你的那一張上。*", "*Miso tumba la baraja y se sienta sobre la carta que quiere darte.*", "*La Miso tomba la baralla i s'asseu damunt la carta que et vol donar.*"]],
+    doze: ["*Miso and Yuzu doze behind the counter, curled up nose to tail. The deck is right here.*", "*味噌和柚子在柜台后面打盹，头尾相接蜷成一团。牌就在这儿。*", "*味噌和柚子在櫃台後面打盹，頭尾相接蜷成一團。牌就在這兒。*", "*Miso y Yuzu dormitan tras el mostrador, hechas un ovillo. La baraja está aquí.*", "*La Miso i la Yuzu dormisquegen darrere el taulell, fetes un cabdell. La baralla és aquí.*"],
+    dozeOne: ["*{c} dozes behind the counter, curled up. The deck is right here.*", "*{c}在柜台后面打盹，蜷成一团。牌就在这儿。*", "*{c}在櫃台後面打盹，蜷成一團。牌就在這兒。*", "*{c} dormita tras el mostrador, hecha un ovillo. La baraja está aquí.*", "*La {c} dormisqueja darrere el taulell, feta un cabdell. La baralla és aquí.*"],
     self: ["You cut the deck. The top card:", "你自己切了牌。最上面那张：", "你自己切了牌。最上面那張：", "Cortas la baraja. La de arriba:", "Talles la baralla. La de dalt:"],
     sc: ["Miso and Yuzu's stall: a striped awning, a counter, the deck.", "味噌和柚子的小摊：条纹遮阳篷、柜台、一副牌。", "味噌和柚子的小攤：條紋遮陽篷、櫃台、一副牌。", "El puesto de Miso y Yuzu: un toldo a rayas, un mostrador, la baraja.", "La parada de la Miso i la Yuzu: un tendal a ratlles, un taulell, la baralla."],
     cat: { miso: ["Miso", "味噌", "味噌", "Miso", "Miso"], yuzu: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"] }
@@ -88,7 +90,7 @@
   function saved() { try { var v = JSON.parse(localStorage.getItem("fb_paw") || "null"); return v && v.d === day() ? v : null; } catch (e) { return null; } }
   function cats() { var c = {}; try { c = W.cats ? W.cats() : {}; } catch (e) {} return ["miso", "yuzu"].filter(function (k) { return c[k] === "fortune"; }); }
   function elsewhere() { var c = {}; try { c = W.cats ? W.cats() : {}; } catch (e) {} return c.miso && c.miso !== "fortune" ? c.miso : c.yuzu; }
-  function asleep() { var h = 12; try { h = W.hour ? W.hour() : 12; } catch (e) {} return h >= 23 || h < 5; }
+  function asleep() { var h = 12; try { h = W.hour ? W.hour() : 12; } catch (e) {} return h >= 23 || h < 6; }
   function cardOf(i) { var s = Math.floor(i / 13), r = i % 13; return i >= 52 ? { joker: i - 52 } : { s: SUIT[s], r: RANKS[r], n: r + 1 }; }
   function askOf(c) { if (c.joker != null) return JOKER[c.joker]; if (c.r === "A") return ACE; if (COURT[c.r]) return COURT[c.r]; return ASK[c.s][c.n % 3]; }
   function esc(x) { return String(x).replace(/[&<>"]/g, function (m) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]; }); }
@@ -129,6 +131,7 @@
   /* ---------- the reading ---------- */
   function line() {
     var here = cats();
+    if (here.length && asleep()) return here.length === 2 ? act(t(S.doze)) : act(t(S.dozeOne, { c: t(S.cat[here[0]]) }));
     if (here.length === 2) return act(t(S.here[(Date.now() / 6e4 | 0) % 3]));
     if (here.length === 1) return act(t(S.one, { c: t(S.cat[here[0]]) }));
     var p = elsewhere();

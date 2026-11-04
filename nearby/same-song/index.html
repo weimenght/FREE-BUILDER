@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8ed2d0134e"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0f928170c5" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=4844bd2557"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8fe2bb6ed8" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Same Song · Nearby</title>
 <meta name="description" content="Light up a little tune, press it into a record, and drop it in the jukebox that plays in Next Door and Borrowed Pages at the same time.">
@@ -287,7 +287,7 @@ html.fbsh-in.fbfit main{height:100%;min-height:0;width:100%;min-width:0;max-widt
     ttl.placeholder = t("untitled"); ttl.setAttribute("aria-label", t("titleA")); who.placeholder = t("yourName"); who.setAttribute("aria-label", t("yourName"));
     who.value = JB.nick(); ttl.value = ls("jb_title") || "";
     setTimeout(function () { ttl.focus(); }, 50);
-    function close() { sc.remove(); }
+    var at0 = Date.now(); function close() { if (Date.now() - at0 > 450) sc.remove(); }   /* the tap on Press can't land on the X */
     $(".x", sc).onclick = close; sc.addEventListener("click", function (e) { if (e.target === sc) close(); });
     sc.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); if (e.key === "Enter") go.click(); });
     go.onclick = function () {

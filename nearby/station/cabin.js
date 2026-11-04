@@ -211,7 +211,7 @@
         var k = Math.min(1, (now - t0) / dur), hp0 = heart(k), x = r.width * hp0.x, y = r.height * hp0.y;
         dot.style.transform = "translate(" + x + "px," + y + "px)"; dot.style.opacity = k < 0.08 ? k * 12 : k > 0.92 ? (1 - k) * 12 : 1;
         for (var kk = prevK; kk < k; kk += 0.004) finger(heart(kk), heart(Math.min(k, kk + 0.004))); prevK = k;
-        if (k < 1) requestAnimationFrame(step); else { dot.classList.add("tap"); setTimeout(function () { knock({ x: 0.78, y: 0.5 }, false); }, 300); setTimeout(function () { dot.remove(); }, 900); }
+        if (k < 1) requestAnimationFrame(step); else { dot.classList.add("tap"); setTimeout(function () { knock({ x: 0.78, y: 0.5 }, false, true); }, 300); setTimeout(function () { dot.remove(); }, 900); }
       })(t0);
     }, 1600);
   }
@@ -273,7 +273,7 @@
   }
   function purr(c) {
     var h = document.createElement("span"); h.className = "cb-heart"; h.textContent = "♥"; c.appendChild(h); setTimeout(function () { h.remove(); }, 1200);
-    try { kctx = kctx || new (window.AudioContext || window.webkitAudioContext)(); var t0 = kctx.currentTime, o = kctx.createOscillator(), g = kctx.createGain(); o.type = "triangle"; o.frequency.setValueAtTime(520, t0); o.frequency.exponentialRampToValueAtTime(880, t0 + 0.12); o.frequency.exponentialRampToValueAtTime(600, t0 + 0.3); g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.12, t0 + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.35); o.connect(g); g.connect(kctx.destination); o.start(t0); o.stop(t0 + 0.4); } catch (e) {}
+    try { kctx = kctx || new (window.AudioContext || window.webkitAudioContext)(); var t0 = kctx.currentTime, o = kctx.createOscillator(), g = kctx.createGain(); o.type = "triangle"; o.frequency.setValueAtTime(520, t0); o.frequency.exponentialRampToValueAtTime(880, t0 + 0.12); o.frequency.exponentialRampToValueAtTime(600, t0 + 0.3); g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.05, t0 + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.35); o.connect(g); g.connect(kctx.destination); o.start(t0); o.stop(t0 + 0.4); } catch (e) {}
   }
   var catBoarded = "";
   setInterval(function () {   /* at the hutong the cats from the bar hop on */
@@ -312,7 +312,7 @@
     el.hidden = !k || !S.boarded; if (k) { var lab = cw5("cord") + " · " + wildName(k); el.querySelector("span").textContent = lab; el.setAttribute("aria-label", lab); el.title = lab; }
     if (cordFor && state.trainState === "STOPPED" && !document.querySelector(".cb-off")) wildCard(cordFor);
   }
-  function bell() { try { kctx = kctx || new (window.AudioContext || window.webkitAudioContext)(); var t0 = kctx.currentTime; [1320, 1760].forEach(function (f, i) { var o = kctx.createOscillator(), g = kctx.createGain(); o.type = "sine"; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t0 + i * 0.12); g.gain.exponentialRampToValueAtTime(0.18, t0 + i * 0.12 + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + i * 0.12 + 0.9); o.connect(g); g.connect(kctx.destination); o.start(t0 + i * 0.12); o.stop(t0 + i * 0.12 + 1); }); } catch (e) {} }
+  function bell() { try { kctx = kctx || new (window.AudioContext || window.webkitAudioContext)(); var t0 = kctx.currentTime; [1320, 1760].forEach(function (f, i) { var o = kctx.createOscillator(), g = kctx.createGain(); o.type = "sine"; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t0 + i * 0.12); g.gain.exponentialRampToValueAtTime(0.07, t0 + i * 0.12 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + i * 0.12 + 0.9); o.connect(g); g.connect(kctx.destination); o.start(t0 + i * 0.12); o.stop(t0 + i * 0.12 + 1); }); } catch (e) {} }
   function wildCard(k) {
     cordFor = null; director.next.depart = Date.now() + 60e3;
     var w = document.createElement("div"), ic = (FBWorld.icon && FBWorld.icon(k)) || "🌿"; w.className = "cb-sheet cb-off";
@@ -362,16 +362,23 @@
     setTimeout(function () { el.style.opacity = "0"; }, 170000); setTimeout(function () { el.remove(); delete S.notes[n.id]; }, 175000);
   }
   var kctx = null;
-  function knock(p, mine) {
+  function knock(p, mine, soft) {
     var r = document.createElement("div"); r.className = "cb-ring"; place(r, p); vp().appendChild(r); setTimeout(function () { r.remove(); }, 1100);
     try {
       kctx = kctx || new (window.AudioContext || window.webkitAudioContext)();
-      [0, 0.16].forEach(function (dt) {
-        var o = kctx.createOscillator(), g = kctx.createGain(), f = kctx.createBiquadFilter(), t0 = kctx.currentTime + dt;
-        o.type = "triangle"; o.frequency.setValueAtTime(180, t0); o.frequency.exponentialRampToValueAtTime(70, t0 + 0.09);
-        f.type = "lowpass"; f.frequency.value = 900; g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.5, t0 + 0.005); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.14);
-        var pan = kctx.createStereoPanner ? kctx.createStereoPanner() : null; if (pan) pan.pan.value = (p.x - 0.5) * 1.6;
-        o.connect(f); f.connect(g); (pan ? (g.connect(pan), pan) : g).connect(kctx.destination); o.start(t0); o.stop(t0 + 0.16);
+      /* never into a sleeping context: what waits there plays all at once on the first tap (the old loud blip on opening) */
+      if (kctx.state !== "running") { if (mine) try { kctx.resume(); } catch (x) {} else throw 0; }
+      if (window.__fbAsleep || document.hidden) throw 0;
+      try { if (window.parent !== window && window.parent.FBSound && !window.parent.FBSound.on()) throw 0; } catch (x) { if (x === 0) throw 0; }
+      var t00 = kctx.currentTime + 0.02;
+      if (soft) {   /* the ghost finger's knock: two small notes on the glass, a soft chime */
+        [[1046.5, 0], [1568, 0.14]].forEach(function (n) { var o = kctx.createOscillator(), g = kctx.createGain(), t0 = t00 + n[1]; o.type = "sine"; o.frequency.value = n[0]; g.gain.setValueAtTime(0.0001, t0); g.gain.linearRampToValueAtTime(0.022, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.9); o.connect(g); g.connect(kctx.destination); o.start(t0); o.stop(t0 + 0.95); });
+      } else [0, 0.16].forEach(function (dt) {   /* knuckles on wood and glass: low and short, not a click */
+        var o = kctx.createOscillator(), g = kctx.createGain(), f = kctx.createBiquadFilter(), t0 = t00 + dt;
+        o.type = "sine"; o.frequency.setValueAtTime(200, t0); o.frequency.exponentialRampToValueAtTime(95, t0 + 0.09);
+        f.type = "lowpass"; f.frequency.value = 700; g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.11, t0 + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.16);
+        var pan = kctx.createStereoPanner ? kctx.createStereoPanner() : null; if (pan) pan.pan.value = (p.x - 0.5) * 1.2;
+        o.connect(f); f.connect(g); (pan ? (g.connect(pan), pan) : g).connect(kctx.destination); o.start(t0); o.stop(t0 + 0.18);
       });
     } catch (e) {}
     if (mine) send("knock", p);
