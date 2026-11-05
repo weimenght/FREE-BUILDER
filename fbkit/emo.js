@@ -406,7 +406,6 @@ window.FB_EMO={
  "*Mantou pants by the door to {p}, tongue out, hopeful.* Woof.": "🐕👅🚪{p} 🥺",
  "*Mantou comes in with a leaf on his ear and sits facing {p}.* Woof.": "🐕🍃👂 → {p}",
  "*Mantou lies against the stove, then lifts his head toward {p}.* Hrrmf.": "🐕🔥💤 ⬆️ → {p}",
- "*Mantou is behind the counter, front paws on the bar, very professional.* Woof.": "🐕🍸🐾🐾 😎",
  "*Mantou wags so hard the stools wobble.* Woof! Woof!": "🐕〰️〰️🪑🫨!!",
  "*Mantou tilts his head one way, then the other.* Woof?": "🐕↖️↗️?",
  "*Mantou smells {a} on the doormat (Miso), and {b} (Yuzu).* Woof.": "🐕👃{a} 🐈‍⬛ {b} 🐈",
@@ -629,5 +628,6 @@ window.FB_EMO={
  "New below the railway, left of Town Hall: Set Up Shop. A market stall that's yours: the awning, what's on the counter, the chalkboard. Show it to someone.": "🆕🛤️⬇️🏛️⬅️ 🏪: ⛱️🍋🪧 → 👀👥",
  "Also after hours:": "🌙➕",
  "All of it →": "🌙🌙🌙 →",
- "new": "🆕"
+ "new": "🆕",
+ "*Mantou sits on his stool behind the counter, very upright, very professional.* Woof.": "🐕🍸🐾🐾 😎"
 };
