@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=9cd48637f2"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=b09feb0a24"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Common Ground</title>
 <meta name="description" content="Build your team's town together: each place is a way you meet and look after each other, and asks one honest question. Then take it to the table. Lives in its link; nothing stored.">
@@ -48,6 +48,8 @@
   .hero { display:flex; flex-direction:column; gap:12px; }
   .scene { border:3px solid var(--line); box-shadow:4px 4px 0 var(--shadow); background:#5a9a48; }
   .scene canvas { display:block; width:100%; height:auto; image-rendering:pixelated; }
+  .kick { margin:0 0 -4px; font-size:18px; color:var(--muted); }
+  .kick a { color:inherit; }
   .lead { margin:0; font:13px/1.6 var(--sign); text-transform:uppercase; }
   html:lang(zh) .lead, html:lang(zh-Hant) .lead { font:700 22px/1.4 var(--pix); }
   .rows { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
@@ -328,6 +330,8 @@ var W = {
   madeOn: ["Made together on Common Ground", "在“共同之地”一起做的", "在「共同之地」一起做的", "Hecho juntos en Terreno Común", "Fet junts a Terreny Comú"],
   device: ["The town lives in its link and on your devices. Nothing is stored on a server.", "小镇装在它的链接里和你们的设备上，服务器上什么都不存。", "小鎮裝在它的連結裡和你們的裝置上，伺服器上什麼都不存。", "El pueblo vive en su enlace y en vuestros dispositivos. No se guarda nada en ningún servidor.", "El poble viu al seu enllaç i als vostres dispositius. No es desa res a cap servidor."],
   nearby: ["Nearby", "近邻", "近鄰", "Cerca", "A Prop"],
+  lab: ["A FREE//BUILDER lab", "FREE//BUILDER 的实验", "FREE//BUILDER 的實驗", "Un lab de FREE//BUILDER", "Un lab de FREE//BUILDER"],
+  by: ["A practice by Wei", "Wei 的工作室", "Wei 的工作室", "Una práctica de Wei", "Una pràctica de Wei"],
   privacy: ["Privacy", "隐私", "隱私", "Privacidad", "Privadesa"],
   made: ["Made with {ai} & {h}", "用 {ai} 和 {h} 做的", "用 {ai} 和 {h} 做的", "Hecho con {ai} y {h}", "Fet amb {ai} i {h}"],
   fb: ["Better work starts between people.", "更好的工作，始于人与人之间。", "更好的工作，始於人與人之間。", "El buen trabajo empieza entre personas.", "La bona feina comença entre persones."],
@@ -716,7 +720,7 @@ function sheet() {
     '<div class="sec nextq"><h3>' + esc(sg(T(W.sheetNext))) + "</h3><ol>" + questions().map(function (q) { return "<li>" + esc(q) + "</li>"; }).join("") + "</ol></div>" +
     (here || hl ? '<div class="sec"><h3>' + esc(sg(T(W.sheetHere))) + "</h3>" + here + hl + "</div>" : "") +
     (gone.length ? '<div class="sec"><h3>' + esc(sg(T(W.missing))) + "</h3><ul>" + ["listen", "feedback", "trust", "together"].map(function (th) { var g2 = gone.filter(function (p) { return p.th === th; }); return g2.length ? "<li><b style=\"font-weight:400;color:#9a530b\">" + esc(T(THEMES[th])) + ":</b> " + g2.map(function (p) { return esc(T(p.t)); }).join(" · ") + "</li>" : ""; }).join("") + "</ul></div>" : "") +
-    '<p class="foot">' + esc(T(W.madeOn)) + " · freebuilder.net/common-ground/</p></article></div>";
+    '<p class="foot">' + esc(T(W.madeOn)) + " · freebuilder.net/labs/common-ground/</p></article></div>";
   var bar = $("sheetBar");
   bar.appendChild(btn(T(W.backTown), closeSheet, "quiet"));
   bar.appendChild(btn(T(W.share), function (e) { shareTown(e.currentTarget); }, "", "friends"));
@@ -840,7 +844,7 @@ function startView() {
   var col1 = document.createElement("div"); col1.style.display = "flex"; col1.style.flexDirection = "column"; col1.style.gap = "12px";
   var sc = document.createElement("div"); sc.className = "scene"; var c = document.createElement("canvas"); c.width = 160; c.height = 96; c.setAttribute("role", "img"); c.setAttribute("aria-label", T(W.app)); sc.appendChild(c); col1.appendChild(sc);
   drawTown(c.getContext("2d"), demo(), 10, 6, { night: night(), present: { "lucía": 1, "wei": 1 } });
-  col1.insertAdjacentHTML("beforeend", '<p class="lead">' + esc(sg(T(W.lead))) + '</p><ul class="rows">' + [["pin", W.r1], ["thought", W.r2], ["card", W.r3]].map(function (r) { return "<li><b>" + icon(r[0]) + "</b><span>" + esc(T(r[1])) + "</span></li>"; }).join("") + "</ul>");
+  col1.insertAdjacentHTML("beforeend", '<p class="kick"><a href="/">FREE//BUILDER</a> · ' + esc(T(W.fb)) + '</p><p class="lead">' + esc(sg(T(W.lead))) + '</p><ul class="rows">' + [["pin", W.r1], ["thought", W.r2], ["card", W.r3]].map(function (r) { return "<li><b>" + icon(r[0]) + "</b><span>" + esc(T(r[1])) + "</span></li>"; }).join("") + "</ul>");
   var col2 = document.createElement("div"); col2.style.display = "flex"; col2.style.flexDirection = "column"; col2.style.gap = "14px";
   var f = document.createElement("form"); f.className = "form"; f.noValidate = true;
   f.innerHTML = '<label class="l" for="cgTown">' + esc(T(W.townName)) + '</label><input class="in" id="cgTown" maxlength="40" autocomplete="off" placeholder="' + esc(T(W.townPh)) + '">' +
@@ -896,8 +900,8 @@ function chrome() {
   var i = li(); document.documentElement.lang = LANGS[i];
   $("appName").textContent = sg(T(W.app)); document.title = TOWN && TOWN.n ? TOWN.n + " · " + T(W.app) : T(W.app);
   $("langLbl").textContent = SHORT[i]; $("langIco").innerHTML = icon("globe"); $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + NAMES[i]);
-  $("foot").innerHTML = '<span class="line">' + esc(T(W.device)) + '</span><a href="/">FREE//BUILDER · ' + esc(T(W.fb)) + '</a><a href="/nearby/">' + icon("heart") + " " + esc(T(W.nearby)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a><span>" +
-    F(esc(T(W.made)), { ai: '<a href="/notes/ai-use/" style="display:inline">AI</a>', h: '<a href="https://www.wei-meng.org/after-hours/" style="display:inline">♥</a>' }) + "</span>";
+  $("foot").innerHTML = '<span class="line">' + esc(T(W.device)) + '</span><a href="/#services">‹ ' + esc(T(W.lab)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + '</a><a href="https://www.wei-meng.org/">' + esc(T(W.by)) + "</a><span>" +
+    F(esc(T(W.made)), { ai: '<a href="/notes/ai-use/" style="display:inline">AI</a>', h: '<a href="https://www.wei-meng.org/after-hours/" style="display:inline" aria-label="After hours">♥</a>' }) + "</span>";
 }
 var paintT = 0;
 function paint() {
