@@ -20,7 +20,12 @@
   --fbb-bevel-pri: inset -3px -3px 0 rgba(0, 0, 0, .22), inset 3px 3px 0 rgba(255, 255, 255, .42);
   --fbb-drop: 3px 3px 0 #000;
   --fbb-font: "VT323", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-monospace, monospace;
+  /* the town's page: the map's and the top bar's night ink under a 4px pixel check. A place uses
+     background: var(--fbt-px), var(--fbt-page) for the field around its content (it stays night in light mode);
+     html.fbt-pg turns that field to paper in light mode, for pages whose words all sit in their own boxes. */
+  --fbt-page: #14101e; --fbt-px: repeating-conic-gradient(rgba(0, 0, 0, .25) 0 25%, transparent 0 50%) 0 0 / 4px 4px;
 }
+html.fbt-pg body { background: var(--fbt-px), var(--fbt-page); }
 
 /* ---------- the button ---------- */
 .fbb,
@@ -123,6 +128,7 @@ html.fbsh-in.fbfit .fit-panel > :first-child { margin-top: 0 !important; }
     --fbb-bevel: inset -3px -3px 0 rgba(110, 62, 24, .3), inset 3px 3px 0 rgba(255, 255, 255, .55);
     --fbl-paper: #f4e8cf; --fbl-paper2: #e9d6b0; --fbl-ink: #2b1a0f; --fbl-muted: #6e5638; --fbl-label: #9a530b;
   }
+  html.fbt-pg { --fbt-page: #f4e8cf; --fbt-px: repeating-conic-gradient(rgba(110, 62, 24, .06) 0 25%, transparent 0 50%) 0 0 / 4px 4px; }
   html .fbsh { background: var(--fbl-paper2); color: var(--fbl-ink); box-shadow: 0 3px 0 rgba(60, 36, 14, .25); }
   html .fbsh .fbsh-home { color: var(--fbl-ink); }
   html .fbsh-mid { color: var(--fbl-label); }

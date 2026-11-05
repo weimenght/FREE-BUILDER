@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=64da877b8c"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=697958bed0" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=64da877b8c"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=90879bbe31" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>No Hurry · Nearby</title>
 <meta name="description" content="A cabin on the high pasture with a big window. Clouds, cows, weather, a candle on the sill.">
@@ -43,7 +43,7 @@ canvas#cv{touch-action:none}
   var T = {
     alb: ["Popo's album", "婆婆的相册", "婆婆嘅相簿", "El álbum de Popo", "L'àlbum de la Popo"],
     box: ["Popo's box", "婆婆的盒子", "婆婆個盒", "La caja de Popo", "La capsa de la Popo"],
-    wed: ["1970. Plaça Sant Jaume. Rice in my hair one whole week. Josep laugh the whole day.", "1970。圣若梅广场。头发里的米一个星期都没弄干净。Josep 笑了一整天。", "1970。聖若梅廣場。啲米喺頭髮度成個禮拜都未清走。Josep 笑足成日。", "1970. Plaça Sant Jaume. Arroz en mi pelo una semana entera. Josep ríe todo el día.", "1970. La plaça de Sant Jaume. Vaig tenir arròs als cabells una setmana sencera. En Josep va riure tot el dia."],
+    wed: ["1970. Plaça Sant Jaume. Rice in my hair one whole week. Josep laugh the whole day.", "1970。圣若梅广场。啲米在头发里，成个礼拜都冇搞干净。Josep 笑足一日。", "1970。聖若梅廣場。啲米喺頭髮度成個禮拜都未清走。Josep 笑足成日。", "1970. Plaça Sant Jaume. Arroz en mi pelo una semana entera. Josep ríe todo el día.", "1970. La plaça de Sant Jaume. Vaig tenir arròs als cabells una setmana sencera. En Josep va riure tot el dia."],
     radio: ["Josep's radio", "Josep 的收音机", "Josep 部收音機", "La radio de Josep", "La ràdio d'en Josep"],
     album: ["Popo's albums", "婆婆的相册", "婆婆嘅相簿", "Los álbumes de Popo", "Els àlbums de la Popo"],
     snd: ["Sound", "声音", "聲音", "Sonido", "So"],
@@ -228,18 +228,18 @@ canvas#cv{touch-action:none}
   /* each page names its photo; the Catalan ones keep to real history (the Aeri de Montserrat since 1930, the Sagrada Família's
      Passion towers still going up in 1972, Tossa's Vila Vella, the archer lighting the Olympic flame on 25 July 1992) */
   var PAGES = [
-        ["1968. Me, nineteen. Big jar, small suitcase.", "1968。我，十九岁。罐子大，箱子小。", "1968。我，十九歲。樽大，喼細。", "1968. Yo, diecinueve. Tarro grande, maleta pequeña.", "1968. Jo, dinou anys. El pot gran, la maleta petita.", "arrive"],
-        ["Josep and his clock. Always oil on the hands.", "Josep 和他的钟。手上总是油。", "Josep 同佢個鐘。成日一手油。", "Josep y su reloj. Siempre aceite en las manos.", "En Josep i el seu rellotge. Sempre amb les mans d'oli.", "clock"],
-    ["1969. Montserrat. Josep take me up in the cable car. I hold his arm all the way.", "1969。蒙特塞拉特。Josep 带我坐缆车上山。我一路抓住他的手臂。", "1969。蒙特塞拉特。Josep 帶我坐纜車上山，我成程揸實佢隻手。", "1969. Montserrat. Josep me sube en el teleférico. Yo agarro su brazo todo el camino.", "1969. Montserrat. En Josep em va pujar amb l'aeri. Li vaig agafar el braç tot el camí.", "montserrat"],
-    ["1972. Sagrada Família, cranes everywhere. Josep say: they finish before we are old. Ha!", "1972。圣家堂，到处是吊车。Josep 说：我们老之前会盖好。哈！", "1972。聖家堂，周圍都係吊臂。Josep 話：我哋老之前會起好。哈！", "1972. Sagrada Família, grúas por todas partes. Josep dice: terminan antes que somos viejos. ¡Ja!", "1972. La Sagrada Família, plena de grues. En Josep deia: l'acabaran abans que siguem vells. Ha!", "sagrada"],
-        ["Popo's Noodles, opening day. Queue to the corner!", "婆婆面馆，开张那天。排队排到街角！", "婆婆麵家，開張嗰日。排隊排到街口！", "Fideos Popo, día que abre. ¡Cola hasta la esquina!", "Fideus Popo, el dia que vam obrir. Cua fins a la cantonada!", "noodles"],
-        ["My girls and the lemon tree. Look, same height that year.", "我的两个女儿和柠檬树。你看，那年一样高。", "我兩個女同棵檸檬樹。你睇，嗰年一樣高。", "Mis niñas y el limonero. Mira, ese año mismo alto.", "Les meves nenes i el llimoner. Mira, aquell any feien la mateixa alçada.", "girls"],
-    ["1984. Tossa de Mar, under the old walls. The girls never want to come out of the sea.", "1984。托萨德马尔，古城墙下。两个女儿泡在海里不肯上来。", "1984。托薩德馬爾，舊城牆下面。兩個女泡喺海度唔肯上嚟。", "1984. Tossa de Mar, debajo de murallas viejas. Las niñas no quieren salir del mar.", "1984. Tossa de Mar, sota les muralles. Les nenes no volien sortir mai de l'aigua.", "tossa"],
-        ["Josep on the roof. He build this cabin with his hands. I make the soup.", "Josep 在屋顶上。小屋他自己盖的。汤是我煮的。", "Josep 喺屋頂。間屋係佢親手起嘅，啲湯係我煲嘅。", "Josep en el tejado. Esta cabaña hizo con sus manos. La sopa, yo.", "En Josep dalt de la teulada. Va fer aquesta cabana amb les seves mans. La sopa, jo.", "roof"],
-    ["1992. Olympics. Whole restaurant watch the arrow light the fire, on the little TV. Everybody cry.", "1992。奥运会。整间面馆挤在小电视前，看那支箭点燃圣火。大家都哭了。", "1992。奧運。成間麵家擠喺部細電視前面，睇住支箭點着聖火。個個都喊。", "1992. Olimpiadas. Todo el restaurante mira la flecha encender el fuego, en tele pequeña. Todos lloran.", "1992. Els Jocs. Tot el restaurant mirant com la fletxa encenia el peveter, a la tele petita. Tothom plorava.", "olympics"],
-        ["Mantou, first winter. Still waiting for the 7:40.", "馒头，第一个冬天。还在等七点四十。", "饅頭，第一個冬天。仲等緊七點四十。", "Mantou, primer invierno. Todavía espera las 7:40.", "En Mantou, el primer hivern. Encara esperava el de les 7:40.", "mantou"],
-        ["Wei, ten years old, two kittens in a box. I said no.", "Wei，十岁，箱子里两只小猫。我说不要。", "阿 Wei，十歲，紙箱入面兩隻貓仔。我話唔要。", "Wei, diez años, dos gatitos en caja. Yo dije no.", "En Wei, deu anys, dues gatetes en una caixa. Jo vaig dir que no.", "kittens"],
-        ["This page is empty. For you. Bring somebody up here.", "这一页空着。给你的。带个人上来。", "呢頁吉嘅。留俾你。帶個人上嚟啦。", "Esta página vacía. Para ti. Trae a alguien aquí arriba.", "Aquesta pàgina és buida. És per a tu. Porta algú aquí dalt.", "empty"]
+        ["1968. Me, nineteen. Big jar, small suitcase.", "1968。我，十九岁。樽大，喼细。", "1968。我，十九歲。樽大，喼細。", "1968. Yo, diecinueve. Tarro grande, maleta pequeña.", "1968. Jo, dinou anys. El pot gran, la maleta petita.", "arrive"],
+        ["Josep and his clock. Always oil on the hands.", "Josep 同他个钟。成日一手油。", "Josep 同佢個鐘。成日一手油。", "Josep y su reloj. Siempre aceite en las manos.", "En Josep i el seu rellotge. Sempre amb les mans d'oli.", "clock"],
+    ["1969. Montserrat. Josep take me up in the cable car. I hold his arm all the way.", "1969。蒙特塞拉特。Josep 带我坐缆车上山。我成程揸实他只手。", "1969。蒙特塞拉特。Josep 帶我坐纜車上山，我成程揸實佢隻手。", "1969. Montserrat. Josep me sube en el teleférico. Yo agarro su brazo todo el camino.", "1969. Montserrat. En Josep em va pujar amb l'aeri. Li vaig agafar el braç tot el camí.", "montserrat"],
+    ["1972. Sagrada Família, cranes everywhere. Josep say: they finish before we are old. Ha!", "1972。圣家堂，周围都系吊车。Josep 话：我们老之前会起好。哈！", "1972。聖家堂，周圍都係吊臂。Josep 話：我哋老之前會起好。哈！", "1972. Sagrada Família, grúas por todas partes. Josep dice: terminan antes que somos viejos. ¡Ja!", "1972. La Sagrada Família, plena de grues. En Josep deia: l'acabaran abans que siguem vells. Ha!", "sagrada"],
+        ["Popo's Noodles, opening day. Queue to the corner!", "婆婆面家，开张那日。排队排到街口！", "婆婆麵家，開張嗰日。排隊排到街口！", "Fideos Popo, día que abre. ¡Cola hasta la esquina!", "Fideus Popo, el dia que vam obrir. Cua fins a la cantonada!", "noodles"],
+        ["My girls and the lemon tree. Look, same height that year.", "我两个女同棵柠檬树。你看，那年一样高。", "我兩個女同棵檸檬樹。你睇，嗰年一樣高。", "Mis niñas y el limonero. Mira, ese año mismo alto.", "Les meves nenes i el llimoner. Mira, aquell any feien la mateixa alçada.", "girls"],
+    ["1984. Tossa de Mar, under the old walls. The girls never want to come out of the sea.", "1984。托萨德马尔，旧城墙下面。两个女泡在海里，唔肯上来。", "1984。托薩德馬爾，舊城牆下面。兩個女泡喺海度唔肯上嚟。", "1984. Tossa de Mar, debajo de murallas viejas. Las niñas no quieren salir del mar.", "1984. Tossa de Mar, sota les muralles. Les nenes no volien sortir mai de l'aigua.", "tossa"],
+        ["Josep on the roof. He build this cabin with his hands. I make the soup.", "Josep 在屋顶。间屋系他亲手起的。啲汤系我煲的。", "Josep 喺屋頂。間屋係佢親手起嘅，啲湯係我煲嘅。", "Josep en el tejado. Esta cabaña hizo con sus manos. La sopa, yo.", "En Josep dalt de la teulada. Va fer aquesta cabana amb les seves mans. La sopa, jo.", "roof"],
+    ["1992. Olympics. Whole restaurant watch the arrow light the fire, on the little TV. Everybody cry.", "1992。奥运。成间面家挤在部细电视前面，看支箭点着圣火。个个都喊。", "1992。奧運。成間麵家擠喺部細電視前面，睇住支箭點着聖火。個個都喊。", "1992. Olimpiadas. Todo el restaurante mira la flecha encender el fuego, en tele pequeña. Todos lloran.", "1992. Els Jocs. Tot el restaurant mirant com la fletxa encenia el peveter, a la tele petita. Tothom plorava.", "olympics"],
+        ["Mantou, first winter. Still waiting for the 7:40.", "馒头，第一个冬天。还等紧七点四十。", "饅頭，第一個冬天。仲等緊七點四十。", "Mantou, primer invierno. Todavía espera las 7:40.", "En Mantou, el primer hivern. Encara esperava el de les 7:40.", "mantou"],
+        ["Wei, ten years old, two kittens in a box. I said no.", "阿Wei，十岁，纸箱里两只猫仔。我话唔要。", "阿 Wei，十歲，紙箱入面兩隻貓仔。我話唔要。", "Wei, diez años, dos gatitos en caja. Yo dije no.", "En Wei, deu anys, dues gatetes en una caixa. Jo vaig dir que no.", "kittens"],
+        ["This page is empty. For you. Bring somebody up here.", "这页空的。留俾你。带个人上来啦。", "呢頁吉嘅。留俾你。帶個人上嚟啦。", "Esta página vacía. Para ti. Trae a alguien aquí arriba.", "Aquesta pàgina és buida. És per a tu. Porta algú aquí dalt.", "empty"]
   ];
   var pg = 0, AL = document.getElementById("alb"), AC2 = document.getElementById("albC"), ag = AC2.getContext("2d");
   function A(x, y, w, h, c) { ag.fillStyle = c; ag.fillRect(x, y, w, h); }

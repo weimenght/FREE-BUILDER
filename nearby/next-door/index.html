@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="fbt">
+<html lang="en" class="fbt fbt-pg">
 <head>
   <script>document.documentElement.classList.add('fb-autoin')</script>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=64da877b8c"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=697958bed0" defer></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=64da877b8c"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=90879bbe31" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#160e09">
+  <meta name="theme-color" content="#14101e" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f4e8cf" media="(prefers-color-scheme: light)">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="description" content="A small bar and coffee house in Nearby. Wei, Mei, Popo, Mantou or the cats keep the counter: a drink or a bowl, a chat, the jukebox, postcards on the wall.">
   <title>Next Door · Nearby</title>
@@ -30,7 +30,7 @@
 
   <style>
     :root {
-      --bg: #140c08;
+      --bg: var(--fbt-page, #14101e);   /* the town's page (fbb.css), paper in light mode */
       --wood-900: #1d120b;
       --wood-800: #26180f;
       --wood-700: #332015;
@@ -66,7 +66,6 @@
       font-family: "VT323", "PingFang SC", "PingFang TC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft JhengHei", ui-monospace, monospace;   /* the town's type: VT323 for text, Press Start 2P for signs */
       height: 100dvh;
       touch-action: manipulation;
-      transition: background 0.8s ease;
     }
     button, input, select, textarea { font: inherit; color: inherit; }
     button { cursor: pointer; }
@@ -245,9 +244,11 @@
         border: 2px solid #000;
         border-radius: 14px;
         overflow: hidden;
-        box-shadow: inset 0 0 0 1px var(--line), 0 30px 80px rgba(0,0,0,0.6), 0 0 120px rgba(242,165,65,0.08);
-        background: rgba(20,12,8,0.55);
+        box-shadow: inset 0 0 0 1px var(--line), 0 30px 80px rgba(0,0,0,0.6);
+        background: transparent;
       }
+      /* in town the shell's frame is the frame: the room sits straight on the town's page */
+      html.fbsh-in #view-sanctuary { inset: 0; max-width: none; border: 0; border-radius: 0; box-shadow: none; }
       .room { padding: 18px 24px 24px; }
     }
 
@@ -513,8 +514,6 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body class="grain no-select">
 
-  <canvas id="weather-canvas" class="fixed inset-0 w-full h-full pointer-events-none" style="z-index:0"></canvas>
-  <div id="ambient-aura" class="fixed inset-0 pointer-events-none" style="z-index:0;opacity:.5"></div>
 
   <!-- LANGUAGE MENU -->
   <div id="lang-menu" class="panel hidden" role="menu"></div>
@@ -2854,107 +2853,10 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
   </script>
 
   <script>
-    /* WEATHER PARTICLES */
-    const WeatherSystem = {
-      canvas: null,
-      ctx: null,
-      particles: [],
-      animId: null,
-
-      init() {
-        this.canvas = document.getElementById('weather-canvas');
-        if (!this.canvas) return;
-        this.ctx = this.canvas.getContext('2d');
-        this.resize();
-        window.addEventListener('resize', () => this.resize());
-        this.createParticles();
-        this.loop();
-      },
-
-      resize() {
-        if (!this.canvas) return;
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-      },
-
-      createParticles() {
-        this.particles = [];
-        const count = 55;
-        for (let i = 0; i < count; i++) {
-          this.particles.push({
-            x: Math.random() * (this.canvas ? this.canvas.width : 500),
-            y: Math.random() * (this.canvas ? this.canvas.height : 500),
-            speed: Math.random() * 3 + 2,
-            size: Math.random() * 2 + 1
-          });
-        }
-      },
-
-      loop() {
-        if (!this.ctx || !this.canvas) return;
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        const w = AppState.weather;
-        if (w === 'rain' || w === 'storm') {
-          this.ctx.strokeStyle = 'rgba(186, 230, 253, 0.22)';
-          this.ctx.lineWidth = 1.1;
-          this.particles.forEach(p => {
-            this.ctx.beginPath();
-            this.ctx.moveTo(p.x, p.y);
-            this.ctx.lineTo(p.x - 2, p.y + p.speed * 4.2);
-            this.ctx.stroke();
-            p.y += p.speed * 4.2;
-            p.x -= 0.8;
-            if (p.y > this.canvas.height) { p.y = -10; p.x = Math.random() * this.canvas.width; }
-          });
-        } else if (w === 'snow') {
-          this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-          this.particles.forEach(p => {
-            this.ctx.fillRect(Math.floor(p.x), Math.floor(p.y), p.size, p.size);
-            p.y += p.speed * 0.45;
-            p.x += Math.sin(p.y * 0.04) * 0.8;
-            if (p.y > this.canvas.height) { p.y = -5; p.x = Math.random() * this.canvas.width; }
-          });
-        } else {
-          this.ctx.fillStyle = AppState.isBarOpen ? 'rgba(245, 158, 11, 0.2)' : 'rgba(253, 224, 71, 0.25)';
-          this.particles.forEach(p => {
-            this.ctx.fillRect(Math.floor(p.x), Math.floor(p.y), p.size * 1.4, p.size * 1.4);
-            p.y -= 0.35;
-            p.x += Math.sin(p.y * 0.03) * 0.6;
-            if (p.y < 0) { p.y = this.canvas.height; p.x = Math.random() * this.canvas.width; }
-          });
-        }
-
-        this.animId = requestAnimationFrame(() => this.loop());
-      }
-    };
-
-    /* the sky is the town's (Slow Clock sets it): rain, snow or motes of light behind the room */
+    /* the sky is the town's (Slow Clock sets it); it shows through the room's window. Around the room is the town's
+       own page (fbb.css: --fbt-page under the pixel check, paper in light mode), not the weather. */
     function setWeather(w) {
       AppState.weather = w;
-      WeatherSystem.createParticles();
-      applyTimeWeatherPalette();
-    }
-
-    function applyTimeWeatherPalette() {
-      const h = AppState.hour;
-      let bgGrad = '';
-      let auraGrad = '';
-
-      if (h >= 6 && h < 12) {
-        bgGrad = 'radial-gradient(circle at 50% 20%, #3d2616 0%, #150d08 95%)';
-        auraGrad = 'linear-gradient(to bottom, rgba(251, 191, 36, 0.16), transparent)';
-      } else if (h >= 12 && h < 18) {
-        bgGrad = 'radial-gradient(circle at 50% 20%, #362212 0%, #130a05 95%)';
-        auraGrad = 'linear-gradient(to bottom, rgba(245, 158, 11, 0.14), transparent)';
-      } else {
-        bgGrad = 'radial-gradient(circle at 50% 25%, #19120c 0%, #080605 95%)';
-        auraGrad = 'linear-gradient(to bottom, rgba(14, 165, 233, 0.12), transparent)';
-      }
-
-      document.body.style.background = bgGrad;
-      const aura = document.getElementById('ambient-aura');
-      if (aura) aura.style.background = auraGrad;
     }
   </script>
 
@@ -2969,7 +2871,6 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
       setText('nav-brand-title', T(AppState.isBarOpen ? 'brand.bar' : 'brand.cafe'));
       applyCafeOrBarEnvironment();
       evaluateWeiState();
-      applyTimeWeatherPalette();
     }
 
   </script>
@@ -4488,7 +4389,7 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     }
     const MENU_HINT = {
       mei: lx(["Tap a coffee or a tea and Mei will make it. Cocktails wait for Wei.", "点一杯咖啡或茶，Mei 来做。鸡尾酒等 Wei 回来。", "點一杯咖啡或茶，Mei 來做。雞尾酒等 Wei 回來。", "點一杯咖啡或者茶，Mei 嚟整。雞尾酒等 Wei 返嚟。", "Toca un café o un té y Mei lo prepara. Los cócteles esperan a Wei.", "Toca un cafè o un te i la Mei el prepara. Els còctels esperen en Wei."]),
-      popo: lx(["Tap a dish and Popo cooks it. Finish your bowl.", "点一道菜，婆婆来煮。要吃完哦。", "點一道菜，婆婆來煮。要吃完喔。", "揀一味，婆婆煮。要食晒呀。", "Toca un plato y Popo lo cocina. Termina tu cuenco.", "Toca un plat i la Popo el cuina. Acaba't el bol."]),
+      popo: lx(["Tap a dish and Popo cooks it. Finish your bowl.", "点一味，婆婆煮。要食晒呀。", "揀一味，婆婆煮。要食晒呀。", "揀一味，婆婆煮。要食晒呀。", "Toca un plato y Popo lo cocina. Termina tu cuenco.", "Toca un plat i la Popo el cuina. Acaba't el bol."]),
       cats: lx(["Tap one. A cat pushes it across.", "点一样。猫会把它推过来。", "點一樣。貓會把它推過來。", "揀一樣。隻貓會推過嚟。", "Toca uno. Un gato te lo acerca.", "Toca'n un. Un gat te l'acosta."]),
       mantou: lx(["Tap one. Mantou fetches it.", "点一样。馒头去叼来。", "點一樣。饅頭去叼來。", "揀一樣。饅頭去擔嚟。", "Toca uno. Mantou te lo trae.", "Toca'n un. En Mantou te'l porta."])
     };
@@ -4751,7 +4652,6 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
 
       Patron.load();
 
-      WeatherSystem.init();
       startIdleLoop();
       initEyeTracking();
       Cats.init();
@@ -4863,7 +4763,7 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     var HN = { wei: ["Wei", "Wei", "Wei", "Wei", "Wei", "Wei"], mei: ["Mei", "Mei", "Mei", "Mei", "Mei", "Mei"], popo: ["Popo", "婆婆", "婆婆", "婆婆", "Popo", "Popo"] };
     var CAN = { wei: "en Wei", mei: "la Mei", popo: "la Popo" };
     var HT = { mei: ["At {p}. Back soon-ish.", "在{p}。差不多快回来。", "在{p}。差不多快回來。", "喺{p}。就快返。", "En {p}. Vuelvo prontito.", "Sóc a {p}. Torno aviat, més o menys."],
-      popo: ["Gone to {p}. Soup on the stove. Eat!", "去{p}了。炉上有汤。吃！", "去{p}了。爐上有湯。吃！", "去咗{p}。爐頭有湯。食啦！", "Fui a {p}. Sopa en fuego. ¡Come!", "He anat a {p}. Hi ha sopa al foc. Menja!"] };
+      popo: ["Gone to {p}. Soup on the stove. Eat!", "去咗{p}。炉头有汤。食啦！", "去咗{p}。爐頭有湯。食啦！", "去咗{p}。爐頭有湯。食啦！", "Fui a {p}. Sopa en fuego. ¡Come!", "He anat a {p}. Hi ha sopa al foc. Menja!"] };
     function hostTx(t) { var w = hw(); if (w === "wei" || !HN[w]) return t; var n = tx(HN[w]); return String(t).replace(/\ben Wei\b/g, CAN[w]).replace(/\bWei\b/g, n); }
     function away() { var w = hw(); return w !== "cats" && w !== "mantou" && !!(st && st.p && Date.now() < st.until); }
     window.WeiAway = { on: away, place: function () { return away() ? st.p : null; } };
@@ -5124,8 +5024,8 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     wei: [T.toldOpened, T.toldRaised],
     mei: [["oh, the {d} you left? someone picked it up. cute.", "哦，你留的{d}？有人拿走了。挺可爱。", "哦，你留的{d}？有人拿走了。挺可愛。", "哦，你留低嗰杯{d}？有人攞咗。幾得意。", "oye, el {d} que dejaste: alguien lo recogió. qué mono.", "ei, el {d} que vas deixar: algú l'ha recollit. quina monada."],
       ["your {d}? they raised it back. I saw. very wholesome.", "你请的{d}？对方举杯回敬了。我看见了。好暖。", "你請的{d}？對方舉杯回敬了。我看見了。好暖。", "你請嗰杯{d}？佢舉杯回敬咗。我見到。好暖。", "¿tu {d}? te brindaron de vuelta. lo vi. muy tierno.", "el teu {d}? t'han brindat de tornada. ho he vist. molt tendre."]],
-    popo: [["Your {d}, somebody come take it. Good, good.", "你留的{d}，有人来拿了。好，好。", "你留低嗰杯{d}，有人嚟攞咗。好，好。", "你留低嗰杯{d}，有人嚟攞咗。好，好。", "El {d} que dejaste, alguien viene y lo coge. Bien, bien.", "El {d} que vas deixar, algú l'ha vingut a buscar. Molt bé, molt bé."],
-      ["Your {d}, they drink and say cheers back! Good friend. Keep.", "你请的{d}，人家喝了还回敬你！好朋友。要留住。", "你請嗰杯{d}，人哋飲咗仲回敬你！好朋友嚟，要珍惜。", "你請嗰杯{d}，人哋飲咗仲回敬你！好朋友嚟，要珍惜。", "Tu {d}, ellos beben y dicen salud de vuelta. Buen amigo. Guarda.", "El teu {d}: se l'han begut i t'han brindat de tornada! Bon amic. Cuida'l."]],
+    popo: [["Your {d}, somebody come take it. Good, good.", "你留低那杯{d}，有人来拎咗。好，好。", "你留低嗰杯{d}，有人嚟攞咗。好，好。", "你留低嗰杯{d}，有人嚟攞咗。好，好。", "El {d} que dejaste, alguien viene y lo coge. Bien, bien.", "El {d} que vas deixar, algú l'ha vingut a buscar. Molt bé, molt bé."],
+      ["Your {d}, they drink and say cheers back! Good friend. Keep.", "你请那杯{d}，人家饮咗还回敬你！好朋友来的。要珍惜呀。", "你請嗰杯{d}，人哋飲咗仲回敬你！好朋友嚟，要珍惜。", "你請嗰杯{d}，人哋飲咗仲回敬你！好朋友嚟，要珍惜。", "Tu {d}, ellos beben y dicen salud de vuelta. Buen amigo. Guarda.", "El teu {d}: se l'han begut i t'han brindat de tornada! Bon amic. Cuida'l."]],
     cats: [["*Yuzu sits on an empty coaster with your name on it, very pleased. Someone came for the {d}.*", "*柚子坐在一张写着你名字的空杯垫上，很得意。有人来取走了那杯{d}。*", "*柚子坐在一張寫著你名字的空杯墊上，很得意。有人來取走了那杯{d}。*", "*柚子坐咗喺一張寫住你個名嘅空杯墊度，好得意。有人嚟攞咗杯{d}。*", "*Yuzu se sienta en un posavasos vacío con tu nombre, muy satisfecha. Alguien vino por el {d}.*", "*La Yuzu s'asseu en un sotagot buit amb el teu nom, molt satisfeta. Algú ha vingut pel {d}.*"],
       ["*Miso pushes an empty glass towards you, then taps it. Your {d} was raised back. Clink.*", "*味噌把一只空杯推到你面前，又碰了碰它。你请的{d}被回敬了。叮。*", "*味噌把一隻空杯推到你面前，又碰了碰它。你請的{d}被回敬了。叮。*", "*味噌推隻空杯埋嚟，再掂一掂佢。你請嗰杯{d}有人回敬咗。叮。*", "*Miso te acerca un vaso vacío y le da un toque. Te devolvieron el brindis por el {d}. Chin.*", "*La Miso t'acosta un got buit i hi dona un copet. T'han tornat el brindis pel {d}. Xin.*"]],
     mantou: [["*Mantou brings you the coaster from your {d}, a little chewed. Someone picked it up.* Woof.", "*馒头把你那杯{d}的杯垫叼过来，有点被咬过。有人来取走了。* 汪。", "*饅頭把你那杯{d}的杯墊叼過來，有點被咬過。有人來取走了。* 汪。", "*饅頭擔咗你杯{d}張杯墊過嚟，有少少咬過。有人嚟攞咗。* 汪。", "*Mantou te trae el posavasos de tu {d}, un poco mordido. Alguien lo recogió.* Guau.", "*En Mantou et porta el sotagot del teu {d}, una mica mossegat. Algú l'ha recollit.* Bup."],
@@ -5436,8 +5336,8 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     empty: ["Nobody has left a recipe yet. Leave yours?", "还没人留下食谱。留下你的？", "還沒人留下食譜。留下你的？", "仲未有人留低食譜。留低你嘅？", "Aún nadie ha dejado una receta. ¿Dejas la tuya?", "Encara ningú no hi ha deixat cap recepta. Hi deixes la teva?"],
     by: ["from {n}", "来自 {n}", "來自 {n}", "{n} 留低嘅", "de {n}", "de {n}"],
     forX: ["for {f}", "做给{f}", "做給{f}", "煮俾{f}", "para {f}", "per a {f}"],
-    thanks: ["*Popo puts it in the tin box with the others, very carefully* Good. Somebody eat this tomorrow.", "*婆婆小心翼翼地把它放进铁盒，和别的放在一起* 好。明天有人吃这个。", "*婆婆小心翼翼地把它放進鐵盒，和別的放在一起* 好。明天有人吃這個。", "*婆婆好小心咁放入鐵盒，同其他嗰啲擺埋一齊* 好。聽日有人食呢個。", "*Popo la guarda en la caja de lata con las otras, con mucho cuidado* Bien. Mañana alguien come esto.", "*La Popo la desa a la capsa de llauna amb les altres, amb molta cura* Molt bé. Demà algú es menjarà això."],
-    served: { popo: ["*reads it twice, rolls up her sleeves* Somebody's family make this. I make it like them. Eat slow.", "*看了两遍，卷起袖子* 别人家里做这个。我照他们那样做。慢慢吃。", "*看了兩遍，捲起袖子* 別人家裡做這個。我照他們那樣做。慢慢吃。", "*睇咗兩次，捋起衫袖* 人哋屋企煮嘅嘢。我照佢哋咁煮。慢慢食。", "*la lee dos veces, se arremanga* La familia de alguien hace esto. Yo hago como ellos. Come despacio.", "*la llegeix dues vegades i s'arremanga* Això ho fa la família d'algú. Ho faig com ells. Menja a poc a poc."],
+    thanks: ["*Popo puts it in the tin box with the others, very carefully* Good. Somebody eat this tomorrow.", "*婆婆好小心放入铁盒，同其他那些摆埋一齐* 好。明天有人食这个。", "*婆婆好小心咁放入鐵盒，同其他嗰啲擺埋一齊* 好。聽日有人食呢個。", "*婆婆好小心咁放入鐵盒，同其他嗰啲擺埋一齊* 好。聽日有人食呢個。", "*Popo la guarda en la caja de lata con las otras, con mucho cuidado* Bien. Mañana alguien come esto.", "*La Popo la desa a la capsa de llauna amb les altres, amb molta cura* Molt bé. Demà algú es menjarà això."],
+    served: { popo: ["*reads it twice, rolls up her sleeves* Somebody's family make this. I make it like them. Eat slow.", "*睇了两次，卷起衫袖* 人家屋企煮的嘢。我照他们咁煮。慢慢食。", "*睇咗兩次，捋起衫袖* 人哋屋企煮嘅嘢。我照佢哋咁煮。慢慢食。", "*睇咗兩次，捋起衫袖* 人哋屋企煮嘅嘢。我照佢哋咁煮。慢慢食。", "*la lee dos veces, se arremanga* La familia de alguien hace esto. Yo hago como ellos. Come despacio.", "*la llegeix dues vegades i s'arremanga* Això ho fa la família d'algú. Ho faig com ells. Menja a poc a poc."],
       wei: ["*follows the card to the letter, then tastes it* Someone's family recipe. I hope I did it justice.", "*照着卡片一步不差地做，然后尝了一口* 别人家的家传菜。希望我没做砸。", "*照著卡片一步不差地做，然後嚐了一口* 別人家的家傳菜。希望我沒做砸。", "*照住張卡一步一步咁煮，再試咗一啖* 人哋屋企嘅家傳菜。希望冇煮衰佢。", "*sigue la tarjeta al pie de la letra y lo prueba* La receta de familia de alguien. Espero haberle hecho justicia.", "*segueix la targeta al peu de la lletra i ho tasta* La recepta de família d'algú. Espero haver-li fet justícia."],
       mei: ["*reads it off the card, burns one bit* It's… mostly right? Someone's grandma would fix it.", "*照着卡片念，烧焦了一点* 大概……差不多对？人家外婆会帮我修好的。", "*照著卡片念，燒焦了一點* 大概……差不多對？人家外婆會幫我修好的。", "*照住張卡讀，燶咗少少* 大概……差唔多啱？人哋婆婆會幫我執返好。", "*lo lee de la tarjeta y quema un trozo* ¿Está… casi bien? La abuela de alguien lo arreglaría.", "*ho llegeix de la targeta i en crema un tros* Està… gairebé bé? L'àvia d'algú ho arreglaria."],
       cats: ["*Miso pushes the recipe card across the counter to you. Someone will have to cook this at home.* Meow.", "*味噌把食谱卡推到你面前。得有人回家做这个了。* 喵。", "*味噌把食譜卡推到你面前。得有人回家做這個了。* 喵。", "*味噌將張食譜卡推埋你面前。要有人返屋企煮呢個喇。* 喵。", "*Miso te empuja la tarjeta por la barra. Alguien tendrá que cocinarlo en casa.* Miau.", "*La Miso t'empeny la targeta per la barra. Algú ho haurà de cuinar a casa.* Mèu."],
@@ -5458,11 +5358,11 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     { dish: ["Congee for whoever is sick", "给生病的人煮的粥", "煲俾病咗嘅人食嘅粥", "煲俾病咗嘅人食嘅粥", "Congee para quien esté enfermo", "Congee per a qui estigui malalt"],
       whose: ["Popo's, from her mother in Sham Shui Po", "婆婆的，她妈妈在深水埗教的", "婆婆嘅，佢阿媽喺深水埗教嘅", "婆婆嘅，佢阿媽喺深水埗教嘅", "De Popo, de su madre en Sham Shui Po", "De la Popo, de la seva mare a Sham Shui Po"],
       forwho: ["anyone in bed with a cold", "躺在床上感冒的人", "瞓喺床感冒嗰個", "瞓喺床感冒嗰個", "quien esté en la cama con un resfriado", "qui sigui al llit amb un refredat"],
-      body: ["One cup rice, wash two times. Ten cups water. A little oil, a little salt on the rice before. Boil, then small fire, one and a half hour. Stir sometimes, not always. Ginger in thin strips, spring onion at the end. White pepper. Sit with them while they eat. That is the medicine part.", "米一杯，洗两次。水十杯。下锅前米拌一点油、一点盐。大火煮开，转小火，一个半钟头。有时候搅一下，不要一直搅。姜切细丝，最后放葱，白胡椒。他们吃的时候陪着坐。这才是药。", "米一杯，洗兩次。水十杯。落鍋之前啲米撈少少油、少少鹽。大火滾起，收細火，一個半鐘。間中攪吓，唔使成日攪。薑切幼絲，最後先落蔥，白胡椒粉。佢食嘅時候坐喺隔籬陪住佢。嗰樣先係藥。", "米一杯，洗兩次。水十杯。落鍋之前啲米撈少少油、少少鹽。大火滾起，收細火，一個半鐘。間中攪吓，唔使成日攪。薑切幼絲，最後先落蔥，白胡椒粉。佢食嘅時候坐喺隔籬陪住佢。嗰樣先係藥。", "Una taza arroz, lavar dos veces. Diez tazas agua. Un poco aceite, un poco sal en el arroz antes. Hervir, luego fuego pequeño, hora y media. Remover a veces, no siempre. Jengibre en tiras finas, cebolleta al final. Pimienta blanca. Siéntate con ellos mientras comen. Esa es la parte medicina.", "Una tassa d'arròs, rentat dues vegades. Deu tasses d'aigua. Abans, una mica d'oli i de sal per sobre l'arròs. Que bulli, després foc baix una hora i mitja. Remena de tant en tant, no tota l'estona. Gingebre a tiretes fines i ceba tendra al final. Pebre blanc. Seu amb ells mentre mengen: aquesta és la part que cura."] },
+      body: ["One cup rice, wash two times. Ten cups water. A little oil, a little salt on the rice before. Boil, then small fire, one and a half hour. Stir sometimes, not always. Ginger in thin strips, spring onion at the end. White pepper. Sit with them while they eat. That is the medicine part.", "米一杯，洗两次。水十杯。落锅之前，啲米拌少少油、少少盐。大火滚起，转细火，一个半钟。有时搅下，唔使成日搅。姜切幼丝，最后先落葱，白胡椒粉。他们食的时候，坐在旁边陪住。这个先系药。", "米一杯，洗兩次。水十杯。落鍋之前啲米撈少少油、少少鹽。大火滾起，收細火，一個半鐘。間中攪吓，唔使成日攪。薑切幼絲，最後先落蔥，白胡椒粉。佢食嘅時候坐喺隔籬陪住佢。嗰樣先係藥。", "米一杯，洗兩次。水十杯。落鍋之前啲米撈少少油、少少鹽。大火滾起，收細火，一個半鐘。間中攪吓，唔使成日攪。薑切幼絲，最後先落蔥，白胡椒粉。佢食嘅時候坐喺隔籬陪住佢。嗰樣先係藥。", "Una taza arroz, lavar dos veces. Diez tazas agua. Un poco aceite, un poco sal en el arroz antes. Hervir, luego fuego pequeño, hora y media. Remover a veces, no siempre. Jengibre en tiras finas, cebolleta al final. Pimienta blanca. Siéntate con ellos mientras comen. Esa es la parte medicina.", "Una tassa d'arròs, rentat dues vegades. Deu tasses d'aigua. Abans, una mica d'oli i de sal per sobre l'arròs. Que bulli, després foc baix una hora i mitja. Remena de tant en tant, no tota l'estona. Gingebre a tiretes fines i ceba tendra al final. Pebre blanc. Seu amb ells mentre mengen: aquesta és la part que cura."] },
     { dish: ["Escudella for a cold Sunday", "冷天星期日的 escudella", "凍嘅禮拜日煲嘅 escudella", "凍嘅禮拜日煲嘅 escudella", "Escudella para un domingo frío", "Escudella per a un diumenge de fred"],
       whose: ["Josep's mother's, taught to Popo in 1970", "Josep 妈妈的，1970 年教给婆婆", "Josep 阿媽嘅，1970 年教俾婆婆", "Josep 阿媽嘅，1970 年教俾婆婆", "De la madre de Josep, se la enseñó a Popo en 1970", "De la mare d'en Josep, que la va ensenyar a la Popo el 1970"],
       forwho: ["the whole family round one pot", "围着一锅的全家人", "成家人圍住一煲", "成家人圍住一煲", "toda la familia alrededor de una olla", "tota la família al voltant d'una olla"],
-      body: ["Big pot. Chicken, a bone of ham, beef bone, chickpeas from the night before. Cold water, slow, take the foam. Two hours. Then carrot, potato, cabbage, celery. The pilota: minced meat, egg, garlic, parsley, breadcrumb, one big ball. Thirty minutes more. First the soup with big pasta, galets. Then the meat on a plate. Josep always say his mama put more salt. I never put more salt.", "大锅。鸡、一块火腿骨、牛骨、前一晚泡好的鹰嘴豆。冷水，慢慢煮，撇掉浮沫。两个钟头。再放胡萝卜、土豆、包菜、芹菜。肉丸 pilota：肉碎、鸡蛋、蒜、香芹、面包屑，搓一个大的。再煮三十分钟。先喝汤，汤里放大的贝壳面 galets。肉再装盘。Josep 总说他妈妈放的盐多。我从来不多放。", "大煲。雞、一嚿火腿骨、牛骨、隔晚浸好嘅雞心豆。凍水落，慢慢煲，撇走啲泡。兩個鐘。之後落紅蘿蔔、薯仔、椰菜、西芹。個肉丸 pilota：免治肉、雞蛋、蒜、番荽、麵包糠，搓一個大嘅。再煲三十分鐘。先飲湯，湯入面落大大粒嘅 galets。啲肉再上碟。Josep 成日話佢阿媽落多啲鹽。我從來唔落多。", "大煲。雞、一嚿火腿骨、牛骨、隔晚浸好嘅雞心豆。凍水落，慢慢煲，撇走啲泡。兩個鐘。之後落紅蘿蔔、薯仔、椰菜、西芹。個肉丸 pilota：免治肉、雞蛋、蒜、番荽、麵包糠，搓一個大嘅。再煲三十分鐘。先飲湯，湯入面落大大粒嘅 galets。啲肉再上碟。Josep 成日話佢阿媽落多啲鹽。我從來唔落多。", "Olla grande. Pollo, un hueso de jamón, hueso de ternera, garbanzos de la noche antes. Agua fría, despacio, quitar espuma. Dos horas. Luego zanahoria, patata, col, apio. La pilota: carne picada, huevo, ajo, perejil, pan rallado, una bola grande. Treinta minutos más. Primero la sopa con pasta grande, galets. Luego la carne en plato. Josep siempre decía su mamá ponía más sal. Yo nunca pongo más sal.", "Olla gran. Pollastre, un os de pernil, os de vedella i els cigrons en remull de la nit abans. Aigua freda, a poc a poc, i treu l'escuma. Dues hores. Després pastanaga, patata, col i api. La pilota: carn picada, ou, all, julivert i pa ratllat, una bola grossa. Mitja hora més. Primer la sopa amb galets, després la carn al plat. En Josep sempre deia que sa mare hi posava més sal. Jo no n'hi poso mai més."] }
+      body: ["Big pot. Chicken, a bone of ham, beef bone, chickpeas from the night before. Cold water, slow, take the foam. Two hours. Then carrot, potato, cabbage, celery. The pilota: minced meat, egg, garlic, parsley, breadcrumb, one big ball. Thirty minutes more. First the soup with big pasta, galets. Then the meat on a plate. Josep always say his mama put more salt. I never put more salt.", "大煲。鸡、一块火腿骨、牛骨、隔晚浸好的鹰嘴豆。冷水落，慢慢煲，撇走啲泡。两个钟。之后落红萝卜、薯仔、椰菜、芹菜。肉丸 pilota：肉碎、鸡蛋、蒜、香芹、面包糠，搓一个大的。再煲三十分钟。先饮汤，汤里落大粒的 galets。啲肉再上碟。Josep 成日话他阿妈落多啲盐。我从来唔落多。", "大煲。雞、一嚿火腿骨、牛骨、隔晚浸好嘅雞心豆。凍水落，慢慢煲，撇走啲泡。兩個鐘。之後落紅蘿蔔、薯仔、椰菜、西芹。個肉丸 pilota：免治肉、雞蛋、蒜、番荽、麵包糠，搓一個大嘅。再煲三十分鐘。先飲湯，湯入面落大大粒嘅 galets。啲肉再上碟。Josep 成日話佢阿媽落多啲鹽。我從來唔落多。", "大煲。雞、一嚿火腿骨、牛骨、隔晚浸好嘅雞心豆。凍水落，慢慢煲，撇走啲泡。兩個鐘。之後落紅蘿蔔、薯仔、椰菜、西芹。個肉丸 pilota：免治肉、雞蛋、蒜、番荽、麵包糠，搓一個大嘅。再煲三十分鐘。先飲湯，湯入面落大大粒嘅 galets。啲肉再上碟。Josep 成日話佢阿媽落多啲鹽。我從來唔落多。", "Olla grande. Pollo, un hueso de jamón, hueso de ternera, garbanzos de la noche antes. Agua fría, despacio, quitar espuma. Dos horas. Luego zanahoria, patata, col, apio. La pilota: carne picada, huevo, ajo, perejil, pan rallado, una bola grande. Treinta minutos más. Primero la sopa con pasta grande, galets. Luego la carne en plato. Josep siempre decía su mamá ponía más sal. Yo nunca pongo más sal.", "Olla gran. Pollastre, un os de pernil, os de vedella i els cigrons en remull de la nit abans. Aigua freda, a poc a poc, i treu l'escuma. Dues hores. Després pastanaga, patata, col i api. La pilota: carn picada, ou, all, julivert i pa ratllat, una bola grossa. Mitja hora més. Primer la sopa amb galets, després la carn al plat. En Josep sempre deia que sa mare hi posava més sal. Jo no n'hi poso mai més."] }
   ];
   const POPO = () => POPO_RAW.map(r => ({ host: true, dish: X(r.dish), whose: X(r.whose), forwho: X(r.forwho), body: X(r.body), nick: L(lx(["Popo", "婆婆", "婆婆", "婆婆", "Popo", "la Popo"])) }));
   let sheetEl = null, q = '', timer = null;
@@ -5679,24 +5579,24 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
   var P = {
     head: M("POPO'S IN THE KITCHEN", "婆婆在厨房", "婆婆喺廚房", "POPO EN LA COCINA", "LA POPO ÉS A LA CUINA"),
     napHead: M("POPO'S ASLEEP", "婆婆睡着了", "婆婆瞓著咗", "POPO DUERME", "LA POPO DORM"),
-    hi: [M("*stirring a pot* Ah, you come! Sit. Wei is travelling. Coffee I don't know, but I have soup.", "*搅着锅* 啊，你来啦！坐。阿Wei去旅行了。咖啡我不懂，汤就有。", "*攪緊煲嘢* 啊，你嚟啦！坐低。阿Wei去咗旅行。咖啡我唔識，湯就有。", "*remueve la olla* ¡Ah, tú vienes! Siéntate. Wei de viaje. Café no sé, pero tengo sopa.", "*remena l'olla* Ah, ja ets aquí! Seu. En Wei és de viatge. De cafè no en sé, però tinc sopa."),
-      M("*wipes the counter with a tea towel* Sit, sit. You look hungry. Popo cooks.", "*用茶巾擦吧台* 坐，坐。你看起来饿了。婆婆煮给你吃。", "*用條毛巾抹吧枱* 坐啦坐啦。你個樣好肚餓喎。婆婆煮俾你食。", "*limpia la barra con un trapo* Siéntate, siéntate. Pareces hambre. Popo cocina.", "*eixuga la barra amb un drap* Seu, seu. Fas cara de gana. La Popo cuina."),
-      M("*tastes from a wooden spoon, nods* Good timing. Everything is hot now.", "*用木勺尝了一口，点点头* 来得正好。现在什么都是热的。", "*用木羹試咗啖，點點頭* 嚟得啱。而家樣樣都熱辣辣。", "*prueba de la cuchara, asiente* Buen momento. Todo caliente ahora.", "*tasta de la cullera de fusta i assenteix* Arribes a temps. Ara tot és calent.")],
+    hi: [M("*stirring a pot* Ah, you come! Sit. Wei is travelling. Coffee I don't know, but I have soup.", "*搅紧锅* 啊，你来啦！坐。阿Wei去旅行咯。咖啡我唔识，汤就有。", "*攪緊煲嘢* 啊，你嚟啦！坐低。阿Wei去咗旅行。咖啡我唔識，湯就有。", "*remueve la olla* ¡Ah, tú vienes! Siéntate. Wei de viaje. Café no sé, pero tengo sopa.", "*remena l'olla* Ah, ja ets aquí! Seu. En Wei és de viatge. De cafè no en sé, però tinc sopa."),
+      M("*wipes the counter with a tea towel* Sit, sit. You look hungry. Popo cooks.", "*用毛巾抹吧台* 坐，坐。你个样好肚饿喔。婆婆煮俾你食。", "*用條毛巾抹吧枱* 坐啦坐啦。你個樣好肚餓喎。婆婆煮俾你食。", "*limpia la barra con un trapo* Siéntate, siéntate. Pareces hambre. Popo cocina.", "*eixuga la barra amb un drap* Seu, seu. Fas cara de gana. La Popo cuina."),
+      M("*tastes from a wooden spoon, nods* Good timing. Everything is hot now.", "*用木勺试一啖，点点头* 来得啱。现在样样都热辣辣。", "*用木羹試咗啖，點點頭* 嚟得啱。而家樣樣都熱辣辣。", "*prueba de la cuchara, asiente* Buen momento. Todo caliente ahora.", "*tasta de la cullera de fusta i assenteix* Arribes a temps. Ara tot és calent.")],
     ask: M("Ask Popo what's cooking", "问婆婆煮了什么", "問婆婆煮咗乜", "Pregunta a Popo qué hay", "Pregunta-li a la Popo què hi ha"),
-    coffeeNo: M("Coffee? Aiya, too strong, bad for the heart. Have soup.", "咖啡？哎呀，太浓了，伤心脏。喝汤吧。", "咖啡？哎呀，太濃喇，傷心㗎。飲碗湯啦。", "¿Café? Ay, muy fuerte, malo para corazón. Toma sopa.", "Cafè? Ai, massa fort, no va bé per al cor. Pren sopa."),
-    boozeNo: M("Cocktail? I don't know these things. Wei comes back, you ask him. Now: eat.", "鸡尾酒？这些我不懂的。等阿Wei回来你问他。现在：吃饭。", "雞尾酒？呢啲嘢我唔識㗎。等阿Wei返嚟你問佢。而家：食飯。", "¿Cóctel? Yo no sabe de esto. Wei vuelve, tú preguntas. Ahora: comer.", "Un còctel? D'això no en sé res. Quan torni en Wei, li ho demanes. Ara: a menjar."),
-    served: M("*watches you take the first spoon* Good? Good. Eat slowly.", "*看着你吃第一口* 好吃吗？好。慢慢吃。", "*望住你食第一啖* 好唔好食？好。慢慢食。", "*te mira comer la primera cucharada* ¿Bueno? Bueno. Come despacio.", "*et mira menjar la primera cullerada* Bo? Bé. Menja a poc a poc."),
+    coffeeNo: M("Coffee? Aiya, too strong, bad for the heart. Have soup.", "咖啡？哎呀，太浓咯，伤心的。饮碗汤啦。", "咖啡？哎呀，太濃喇，傷心㗎。飲碗湯啦。", "¿Café? Ay, muy fuerte, malo para corazón. Toma sopa.", "Cafè? Ai, massa fort, no va bé per al cor. Pren sopa."),
+    boozeNo: M("Cocktail? I don't know these things. Wei comes back, you ask him. Now: eat.", "鸡尾酒？这些我唔识的。阿Wei返来，你问他。现在：食饭。", "雞尾酒？呢啲嘢我唔識㗎。等阿Wei返嚟你問佢。而家：食飯。", "¿Cóctel? Yo no sabe de esto. Wei vuelve, tú preguntas. Ahora: comer.", "Un còctel? D'això no en sé res. Quan torni en Wei, li ho demanes. Ara: a menjar."),
+    served: M("*watches you take the first spoon* Good? Good. Eat slowly.", "*望住你食第一啖* 好唔好食？好。慢慢食。", "*望住你食第一啖* 好唔好食？好。慢慢食。", "*te mira comer la primera cucharada* ¿Bueno? Bueno. Come despacio.", "*et mira menjar la primera cullerada* Bo? Bé. Menja a poc a poc."),
     nap: [M("*Popo asleep in the armchair by the stove, a blanket on her knees, the radio playing Cantonese opera very quietly. A pot is keeping warm.*", "*婆婆在炉边的扶手椅上睡着了，膝上盖着毯子，收音机小声放着粤曲。锅里的汤还温着。*", "*婆婆喺爐邊張梳化椅度瞓著咗，膝頭冚住張氈，收音機細細聲播緊粵曲。煲湯仲溫住。*", "*Popo duerme en el sillón junto a la cocina, con una manta en las rodillas y la radio con ópera cantonesa muy bajita. Una olla se mantiene caliente.*", "*La Popo dorm a la butaca vora els fogons, amb una manta als genolls i la ràdio amb òpera cantonesa molt fluixet. Una olla es manté calenta.*"),
-      M("*Popo dozes with her glasses on her head. A note on the counter, in three languages: 'SOUP ON THE STOVE. TAKE.'*", "*婆婆眼镜架在头上打瞌睡。吧台上有张三种语言写的纸条：“炉上有汤。自己拿。”*", "*婆婆副眼鏡擺咗喺頭頂，瞌緊眼瞓。吧枱有張三種文字嘅紙仔：「爐頭有湯。自己攞。」*", "*Popo dormita con las gafas en la cabeza. Una nota en la barra, en tres idiomas: 'SOPA EN EL FUEGO. COGE.'*", "*La Popo fa una becaina amb les ulleres al cap. Una nota a la barra, en tres llengües: 'HI HA SOPA AL FOC. AGAFA'N.'*")]
+      M("*Popo dozes with her glasses on her head. A note on the counter, in three languages: 'SOUP ON THE STOVE. TAKE.'*", "*婆婆眼镜架在头上打瞌睡。吧台上有张三种文字的纸仔：“炉头有汤。自己拎。”*", "*婆婆副眼鏡擺咗喺頭頂，瞌緊眼瞓。吧枱有張三種文字嘅紙仔：「爐頭有湯。自己攞。」*", "*Popo dormita con las gafas en la cabeza. Una nota en la barra, en tres idiomas: 'SOPA EN EL FUEGO. COGE.'*", "*La Popo fa una becaina amb les ulleres al cap. Una nota a la barra, en tres llengües: 'HI HA SOPA AL FOC. AGAFA'N.'*")]
   };
   var DISH = [
-    { k: "congee", ic: "bowl", name: M("Congee with ginger & scallion", "姜葱白粥", "薑蔥白粥", "Congee de jengibre y cebolleta", "Congee amb gingebre i ceba tendra"), sub: M("Rice, slowly, since six this morning", "大米，从早上六点慢慢熬", "由朝早六點慢慢煲", "Arroz, a fuego lento desde las seis", "Arròs a foc lent des de les sis del matí"), desc: M("\"Hot, hot. Blow first. Good for the stomach.\"", "\"烫，烫。先吹吹。对胃好。\"", "\"熱㗎，熱㗎。吹吓先。對個胃好。\"", "\"Caliente, caliente. Primero soplar. Bueno para estómago.\"", "\"Crema, crema. Bufa primer. Va bé per a l'estómac.\"") },
-    { k: "wonton", ic: "bowl", name: M("Wonton noodle soup", "云吞面", "雲吞麵", "Sopa de wonton con fideos", "Sopa de wonton amb fideus"), sub: M("Shrimp wontons, thin egg noodles", "鲜虾云吞，细蛋面", "鮮蝦雲吞，幼蛋麵", "Wontons de gamba, fideos finos de huevo", "Wontons de gamba, fideus fins d'ou"), desc: M("\"Noodles under, wontons on top, so noodles don't get soft. My mother's way.\"", "\"面在下面，云吞在上面，面才不会烂。我妈妈的做法。\"", "\"麵喺底，雲吞喺面，啲麵先唔會腍。我阿媽嘅做法。\"", "\"Fideos abajo, wontons arriba, así fideos no blandos. Manera de mi madre.\"", "\"Els fideus a sota i els wontons a sobre, perquè no s'estovin. Com ho feia ma mare.\"") },
-    { k: "pa", ic: "bread", name: M("Pa amb tomàquet", "番茄面包", "番茄麵包", "Pan con tomate", "Pa amb tomàquet"), sub: M("Toasted bread, ripe tomato, olive oil, salt", "烤面包，熟番茄，橄榄油，盐", "烘麵包，熟番茄，橄欖油，鹽", "Pan tostado, tomate maduro, aceite, sal", "Pa torrat, tomàquet madur, oli i sal"), desc: M("\"Rub the tomato hard. Oil, a lot. In Barcelona, everybody knows.\"", "\"番茄要用力擦。油，多一点。在巴塞罗那，大家都知道。\"", "\"番茄要大力擦。油，多啲。喺巴塞隆拿，個個都識。\"", "\"Frota el tomate fuerte. Aceite, mucho. En Barcelona, todos saben.\"", "\"Frega bé el tomàquet. Oli, que no en falti. A Barcelona ho sap tothom.\"") },
-    { k: "escudella", ic: "bowl", name: M("Escudella", "加泰罗尼亚杂烩汤", "加泰隆尼亞雜燴湯", "Escudella", "Escudella"), sub: M("Catalan winter stew, pasta shells in the broth", "加泰罗尼亚冬天的炖汤，汤里有贝壳面", "加泰隆尼亞冬天嘅燉湯，湯入面有貝殼粉", "Cocido catalán de invierno, con galets", "Escudella i carn d'olla, amb galets"), desc: M("\"Two days I cook this. Two days! You finish it.\"", "\"这个我煮了两天。两天呀！你要吃完。\"", "\"呢個我煲咗兩日。兩日呀！你要食晒。\"", "\"Dos días cocino esto. ¡Dos días! Tú terminas.\"", "\"Dos dies que la cuino. Dos dies! Te l'acabes.\"") },
-    { k: "tart", ic: "tart", name: M("Egg tart", "蛋挞", "蛋撻", "Tartaleta de huevo", "Pastisset d'ou"), sub: M("Flaky pastry, still warm", "酥皮的，还是热的", "酥皮嘅，仲係熱嘅", "Hojaldre, todavía caliente", "Full, encara calent"), desc: M("\"Take two. One for now, one for later. Nobody counts.\"", "\"拿两个。一个现在吃，一个等下吃。没人数的。\"", "\"攞兩個。一個而家食，一個陣間食。冇人數㗎。\"", "\"Coge dos. Uno ahora, uno después. Nadie cuenta.\"", "\"Agafa'n dos. Un ara i un per després. Ningú no els compta.\"") },
-    { k: "dumplings", ic: "dumpling", name: M("Dumplings, folded this morning", "今早包的饺子", "今朝包嘅餃子", "Dumplings de esta mañana", "Dumplings plegats aquest matí"), sub: M("Pork and cabbage, with black vinegar", "猪肉白菜，配黑醋", "豬肉白菜，點黑醋", "Cerdo y col, con vinagre negro", "Porc i col, amb vinagre negre"), desc: M("\"Next time you come early, you fold with me. I teach you.\"", "\"下次早点来，跟我一起包。我教你。\"", "\"下次早啲嚟，同我一齊包。我教你。\"", "\"Próxima vez tú vienes pronto, doblas conmigo. Yo enseño.\"", "\"La propera vegada vine d'hora i en pleguem junts. T'ensenyo.\"") },
-    { k: "water", ic: "cup", name: M("Hot water", "热水", "滾水", "Agua caliente", "Aigua calenta"), sub: M("Good for you", "对身体好", "對身體好", "Buena para ti", "Et fa bé"), desc: M("\"Cold drinks, no. Hot water. Trust Popo.\"", "\"冷饮不要。喝热水。相信婆婆。\"", "\"凍嘢唔好飲。飲滾水。信婆婆啦。\"", "\"Bebida fría, no. Agua caliente. Confía en Popo.\"", "\"Res de fred. Aigua calenta. Fes cas de la Popo.\"") }
+    { k: "congee", ic: "bowl", name: M("Congee with ginger & scallion", "姜葱白粥", "薑蔥白粥", "Congee de jengibre y cebolleta", "Congee amb gingebre i ceba tendra"), sub: M("Rice, slowly, since six this morning", "大米，从早上六点慢慢熬", "由朝早六點慢慢煲", "Arroz, a fuego lento desde las seis", "Arròs a foc lent des de les sis del matí"), desc: M("\"Hot, hot. Blow first. Good for the stomach.\"", "\"烫呀，烫呀。吹下先。对个胃好。\"", "\"熱㗎，熱㗎。吹吓先。對個胃好。\"", "\"Caliente, caliente. Primero soplar. Bueno para estómago.\"", "\"Crema, crema. Bufa primer. Va bé per a l'estómac.\"") },
+    { k: "wonton", ic: "bowl", name: M("Wonton noodle soup", "云吞面", "雲吞麵", "Sopa de wonton con fideos", "Sopa de wonton amb fideus"), sub: M("Shrimp wontons, thin egg noodles", "鲜虾云吞，细蛋面", "鮮蝦雲吞，幼蛋麵", "Wontons de gamba, fideos finos de huevo", "Wontons de gamba, fideus fins d'ou"), desc: M("\"Noodles under, wontons on top, so noodles don't get soft. My mother's way.\"", "\"面在底，云吞在上面，面先唔会腍。我阿妈的做法。\"", "\"麵喺底，雲吞喺面，啲麵先唔會腍。我阿媽嘅做法。\"", "\"Fideos abajo, wontons arriba, así fideos no blandos. Manera de mi madre.\"", "\"Els fideus a sota i els wontons a sobre, perquè no s'estovin. Com ho feia ma mare.\"") },
+    { k: "pa", ic: "bread", name: M("Pa amb tomàquet", "番茄面包", "番茄麵包", "Pan con tomate", "Pa amb tomàquet"), sub: M("Toasted bread, ripe tomato, olive oil, salt", "烤面包，熟番茄，橄榄油，盐", "烘麵包，熟番茄，橄欖油，鹽", "Pan tostado, tomate maduro, aceite, sal", "Pa torrat, tomàquet madur, oli i sal"), desc: M("\"Rub the tomato hard. Oil, a lot. In Barcelona, everybody knows.\"", "\"番茄要大力擦。油，多啲。在巴塞罗那，个个都识。\"", "\"番茄要大力擦。油，多啲。喺巴塞隆拿，個個都識。\"", "\"Frota el tomate fuerte. Aceite, mucho. En Barcelona, todos saben.\"", "\"Frega bé el tomàquet. Oli, que no en falti. A Barcelona ho sap tothom.\"") },
+    { k: "escudella", ic: "bowl", name: M("Escudella", "加泰罗尼亚杂烩汤", "加泰隆尼亞雜燴湯", "Escudella", "Escudella"), sub: M("Catalan winter stew, pasta shells in the broth", "加泰罗尼亚冬天的炖汤，汤里有贝壳面", "加泰隆尼亞冬天嘅燉湯，湯入面有貝殼粉", "Cocido catalán de invierno, con galets", "Escudella i carn d'olla, amb galets"), desc: M("\"Two days I cook this. Two days! You finish it.\"", "\"这个我煲咗两日。两日呀！你要食晒。\"", "\"呢個我煲咗兩日。兩日呀！你要食晒。\"", "\"Dos días cocino esto. ¡Dos días! Tú terminas.\"", "\"Dos dies que la cuino. Dos dies! Te l'acabes.\"") },
+    { k: "tart", ic: "tart", name: M("Egg tart", "蛋挞", "蛋撻", "Tartaleta de huevo", "Pastisset d'ou"), sub: M("Flaky pastry, still warm", "酥皮的，还是热的", "酥皮嘅，仲係熱嘅", "Hojaldre, todavía caliente", "Full, encara calent"), desc: M("\"Take two. One for now, one for later. Nobody counts.\"", "\"拎两个。一个现在食，一个等阵食。冇人数的。\"", "\"攞兩個。一個而家食，一個陣間食。冇人數㗎。\"", "\"Coge dos. Uno ahora, uno después. Nadie cuenta.\"", "\"Agafa'n dos. Un ara i un per després. Ningú no els compta.\"") },
+    { k: "dumplings", ic: "dumpling", name: M("Dumplings, folded this morning", "今早包的饺子", "今朝包嘅餃子", "Dumplings de esta mañana", "Dumplings plegats aquest matí"), sub: M("Pork and cabbage, with black vinegar", "猪肉白菜，配黑醋", "豬肉白菜，點黑醋", "Cerdo y col, con vinagre negro", "Porc i col, amb vinagre negre"), desc: M("\"Next time you come early, you fold with me. I teach you.\"", "\"下次早啲来，同我一齐包。我教你。\"", "\"下次早啲嚟，同我一齊包。我教你。\"", "\"Próxima vez tú vienes pronto, doblas conmigo. Yo enseño.\"", "\"La propera vegada vine d'hora i en pleguem junts. T'ensenyo.\"") },
+    { k: "water", ic: "cup", name: M("Hot water", "热水", "滾水", "Agua caliente", "Aigua calenta"), sub: M("Good for you", "对身体好", "對身體好", "Buena para ti", "Et fa bé"), desc: M("\"Cold drinks, no. Hot water. Trust Popo.\"", "\"冻嘢唔好饮。饮热水。信婆婆啦。\"", "\"凍嘢唔好飲。飲滾水。信婆婆啦。\"", "\"Bebida fría, no. Agua caliente. Confía en Popo.\"", "\"Res de fred. Aigua calenta. Fes cas de la Popo.\"") }
   ];
   var C = {
     head: M("MISO & YUZU ARE ON", "味噌和柚子值班", "味噌同柚子當值", "MISO Y YUZU DE TURNO", "LA MISO I LA YUZU DE TORN"),
@@ -5904,27 +5804,27 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
         A(S("The cool one", "酷的那张", "酷的那張", "La que molas", "La que moles"), S("see, you get it. Wei says I'm \"too much\". he's too little.", "看吧，你懂。Wei说我“太过了”。是他太不够了。", "看吧，你懂。Wei說我「太過了」。是他太不夠了。", "¿ves? lo pillas. Wei dice que soy \"demasiado\". él es demasiado poco.", "veus? ho entens. en Wei diu que sóc \"massa\". ell és massa poc.")))
     ],
     popo: [
-      Q(S("*taps a glass jar full of folded papers* This my jar. In my kitchen, outside town. Every time, I give one little thing. You do it, you write on paper, put back in.", "*敲敲一个装满折纸条的玻璃罐* 这个我的罐子。在我厨房，镇子外面。每次，我给一件小事。你去做，写在纸上，放回去。", "*敲吓個裝滿摺紙仔嘅玻璃罐* 呢個係我個罐。喺我廚房，鎮外面。每次我俾一件小事你。你去做，寫張紙仔，放返入去。", "*da golpecitos a un tarro lleno de papelitos doblados* Esto mi tarro. En mi cocina, fuera del pueblo. Cada vez, yo doy una cosa pequeña. Tú haces, tú escribes papel, pones dentro.", "*dona uns copets a un pot de vidre ple de paperets doblegats* Aquest és el meu pot. És a la meva cuina, fora del poble. Cada vegada et dono una coseta. La fas, l'escrius en un paper i el tornes a posar a dins."),
-        A(S("Give me one", "给我一个", "俾一件我", "Dame una", "Dona-me'n una"), S("*unfolds one* \"Call somebody you miss.\" Easy, no? Come my kitchen, I have more.", "*打开一张* “给你想念的人打个电话。”容易，是不是？来我厨房，我还有。", "*打開一張* 「打個電話俾你掛住嘅人。」好易啫，係咪？嚟我廚房，我仲有好多。", "*desdobla uno* \"Llama a alguien que echas de menos.\" Fácil, ¿no? Ven mi cocina, yo tengo más.", "*en desplega un* «Truca a algú que trobis a faltar.» Fàcil, oi? Vine a la meva cuina, que en tinc més."), [S("↗ Little Things", "↗ 小事", "↗ 小事", "↗ Cosas pequeñas", "↗ Petites coses"), "/little-things/"]),
-        A(S("Later, Popo", "等会儿，婆婆", "陣間先，婆婆", "Luego, Popo", "Després, Popo"), S("Okay. Jar not going anywhere. Like me.", "好。罐子不会跑的。跟我一样。", "好啦。個罐唔會走嘅。同我一樣。", "Vale. Tarro no se va. Como yo.", "D'acord. El pot no es mou d'aquí. Com jo."))),["Your {d}, somebody come take it. Good, good.", "你留的{d}，有人来拿了。好，好。", "你留低嗰杯{d}，有人嚟攞咗。好，好。", "你留低嗰杯{d}，有人嚟攞咗。好，好。", "El {d} que dejaste, alguien viene y lo coge. Bien, bien.", "El {d} que vas deixar, algú l'ha vingut a buscar. Molt bé, molt bé."],
-      Q(S("*puts a bowl down* You eat already? You look thin.", "*放下一个碗* 你吃了没有？你看起来瘦瘦的。", "*放低個碗* 食咗飯未呀？你睇落好瘦喎。", "*deja un cuenco* ¿Tú comer ya? Tú muy delgado.", "*deixa un bol* Ja has menjat? Fas cara de prim."),
-        A(S("I ate", "吃了", "食咗喇", "Ya comí", "Sí, he menjat"), S("Eat more. One more bowl never kill nobody.", "再吃。多吃一碗不会死人的。", "食多啲。多食一碗死唔去㗎。", "Come más. Un cuenco más no mata a nadie.", "Menja'n més. Un bol més no ha matat mai ningú.")),
-        A(S("Not yet", "还没", "未呀", "Todavía no", "Encara no"), S("Aiya! Sit, sit. Congee five minutes.", "哎呀！坐，坐。粥五分钟就好。", "哎呀！坐低坐低。粥五分鐘就得。", "¡Aiya! Siéntate, siéntate. Congee cinco minutos.", "Aiya! Seu, seu. El congee, cinc minuts."))),
-      Q(S("Outside cold. You wear jacket?", "外面冷。你有穿外套吗？", "出面凍呀。你有冇著褸？", "Fuera frío. ¿Tú llevar chaqueta?", "Fora fa fred. Portes jaqueta?"),
-        A(S("Yes, Popo", "穿了，婆婆", "有呀，婆婆", "Sí, Popo", "Sí, Popo"), S("Good. *pats your hand* Good.", "好。*拍拍你的手* 好。", "乖。*拍拍你隻手* 乖。", "Bien. *te da palmaditas en la mano* Bien.", "Molt bé. *et dona copets a la mà* Molt bé.")),
-        A(S("It's fine", "没事的", "冇事嘅", "Da igual", "No passa res"), S("Not fine! Wind go in your bones. Later you old like me, you know.", "不是没事！风会钻进骨头里。以后你老了像我一样你就知道。", "乜冇事呀！風會吹入骨㗎。第日你老咗好似我咁你就知。", "¡No da igual! El viento entra en huesos. Luego tú viejo como yo, ya verás.", "Sí que passa! El vent se't fica als ossos. Quan siguis vell com jo, ja ho veuràs."))),
-      Q(S("Your mama, she call you this week?", "你妈妈这个星期有打电话给你吗？", "你阿媽呢個禮拜有冇打俾你呀？", "Tu mamá, ¿te llama esta semana?", "La teva mare t'ha trucat aquesta setmana?"),
-        A(S("Yes", "有", "有呀", "Sí", "Sí"), S("Good. You call back also. Mama always waiting.", "好。你也要打回去。妈妈总是在等的。", "好。你都要打返俾佢。阿媽成日都喺度等㗎。", "Bien. Tú llamar también. Mamá siempre espera.", "Bé. Truca-li tu també. Les mares sempre esperen.")),
-        A(S("Not yet", "还没有", "未呀", "Todavía no", "Encara no"), S("You call her. Tonight. Say Popo say.", "你打给她。今晚。就说是婆婆说的。", "你打俾佢。今晚。話係婆婆叫你打嘅。", "Tú llamas. Esta noche. Di que Popo dice.", "Truca-li tu. Aquesta nit. Digues que ho diu la Popo."))),
-      Q(S("*takes a photo out of her apron pocket* This one Josep. Very handsome, no? Clock man.", "*从围裙口袋里拿出一张照片* 这个是Josep。很帅，对不对？修钟的。", "*喺圍裙袋攞咗張相出嚟* 呢個係Josep。好靚仔㗎，係咪？整鐘嘅。", "*saca una foto del bolsillo del delantal* Este Josep. Muy guapo, ¿no? Hombre del reloj.", "*treu una foto de la butxaca del davantal* Aquest és en Josep. Molt guapo, oi? El rellotger."),
-        A(S("Very handsome", "很帅", "好靚仔", "Muy guapo", "Molt guapo"), S("*laughs* He know it too. Too much.", "*笑了* 他自己也知道。太知道了。", "*笑* 佢自己都知㗎。知得滯。", "*se ríe* Él lo sabe también. Demasiado.", "*riu* Ell ja ho sabia. Massa i tot.")),
-        A(S("Tell me about him", "说说他吧", "講吓佢啦", "Háblame de él", "Parla'm d'ell"), S("Every night he fix the clock slow-slow, so the good hours stay longer. Silly man. *smiles at the photo*", "每天晚上他都把钟调得慢慢的，好让好时光留久一点。傻佬。*对着照片笑*", "佢晚晚都將個鐘校慢少少，等啲好時光留耐啲。傻佬嚟㗎。*對住張相笑*", "Cada noche arreglar reloj lento-lento, para horas buenas quedar más. Hombre tonto. *sonríe a la foto*", "Cada nit endarreria el rellotge una mica, perquè les hores bones duressin més. Quin ximple. *somriu a la foto*"))),
-      Q(S("You have somebody cook for you?", "有没有人做饭给你吃？", "有冇人煮飯俾你食呀？", "¿Tú tienes alguien que cocina para ti?", "Tens algú que et cuini?"),
-        A(S("Sometimes", "有时候", "有時啦", "A veces", "A vegades"), S("Sometimes not enough. You learn one dish. I teach you. Easy.", "有时候不够的。你学一个菜。我教你。容易的。", "有時唔夠㗎。你學一味餸。我教你。好易㗎。", "A veces no suficiente. Tú aprender un plato. Yo enseño. Fácil.", "A vegades no n'hi ha prou. Aprèn un plat. T'ensenyo jo. És fàcil.")),
-        A(S("I cook for others", "我做饭给别人吃", "我煮俾人食", "Yo cocino para otros", "Jo cuino per als altres"), S("*nods, very serious* Then you good person. Eat yourself also, ah.", "*很认真地点头* 那你是好人。自己也要吃啊。", "*好認真咁點頭* 咁你係好人。自己都要食呀。", "*asiente, muy seria* Entonces tú buena persona. Come tú también, ¿eh?", "*assenteix, molt seriosa* Doncs ets bona persona. Però menja tu també, eh."))),
-      Q(S("Hong Kong, Barcelona… everywhere same. People hungry, people lonely. Food fix both. Half-half.", "香港、巴塞罗那……哪里都一样。人会饿，人会寂寞。吃的两样都治。一半一半。", "香港、巴塞隆拿……邊度都一樣。人會肚餓，人會寂寞。食嘢兩樣都醫得。一半半啦。", "Hong Kong, Barcelona… todo igual. Gente hambre, gente sola. Comida arregla las dos. Mitad-mitad.", "Hong Kong, Barcelona… tot igual. La gent té gana, la gent està sola. El menjar arregla les dues coses. Meitat i meitat."),
-        A(S("*nod*", "*点头*", "*點頭*", "*asentir*", "*assentir*"), S("*squeezes your shoulder and goes back to the stove*", "*捏了捏你的肩膀，回到灶台边*", "*揑揑你膊頭，返去灶頭度*", "*te aprieta el hombro y vuelve al fogón*", "*et pren l'espatlla i torna als fogons*")),
-        A(S("Can I help you cook?", "我可以帮你做饭吗？", "我可唔可以幫你煮？", "¿Te ayudo a cocinar?", "T'ajudo a cuinar?"), S("*hands you a spoon* Stir. Slowly. No talking to the soup.", "*递给你一把勺子* 搅。慢慢的。不要跟汤讲话。", "*遞咗隻匙羹俾你* 攪。慢慢攪。唔好同碗湯講嘢。", "*te da una cuchara* Remueve. Despacio. No hablar a la sopa.", "*et dona una cullera* Remena. A poc a poc. No parlis amb la sopa.")))
+      Q(S("*taps a glass jar full of folded papers* This my jar. In my kitchen, outside town. Every time, I give one little thing. You do it, you write on paper, put back in.", "*敲下一个装满纸仔的玻璃罐* 这个系我的罐。在我厨房，镇外面。每次，我俾一件小事你。你去做，写张纸仔，放返入去。", "*敲吓個裝滿摺紙仔嘅玻璃罐* 呢個係我個罐。喺我廚房，鎮外面。每次我俾一件小事你。你去做，寫張紙仔，放返入去。", "*da golpecitos a un tarro lleno de papelitos doblados* Esto mi tarro. En mi cocina, fuera del pueblo. Cada vez, yo doy una cosa pequeña. Tú haces, tú escribes papel, pones dentro.", "*dona uns copets a un pot de vidre ple de paperets doblegats* Aquest és el meu pot. És a la meva cuina, fora del poble. Cada vegada et dono una coseta. La fas, l'escrius en un paper i el tornes a posar a dins."),
+        A(S("Give me one", "给我一个", "俾一件我", "Dame una", "Dona-me'n una"), S("*unfolds one* \"Call somebody you miss.\" Easy, no? Come my kitchen, I have more.", "*打开一张* “打个电话俾你挂住的人。”好容易啫，系咪？来我厨房，我还有好多。", "*打開一張* 「打個電話俾你掛住嘅人。」好易啫，係咪？嚟我廚房，我仲有好多。", "*desdobla uno* \"Llama a alguien que echas de menos.\" Fácil, ¿no? Ven mi cocina, yo tengo más.", "*en desplega un* «Truca a algú que trobis a faltar.» Fàcil, oi? Vine a la meva cuina, que en tinc més."), [S("↗ Little Things", "↗ 小事", "↗ 小事", "↗ Cosas pequeñas", "↗ Petites coses"), "/little-things/"]),
+        A(S("Later, Popo", "等会儿，婆婆", "陣間先，婆婆", "Luego, Popo", "Després, Popo"), S("Okay. Jar not going anywhere. Like me.", "好啦。个罐唔会走的。同我一样。", "好啦。個罐唔會走嘅。同我一樣。", "Vale. Tarro no se va. Como yo.", "D'acord. El pot no es mou d'aquí. Com jo."))),
+      Q(S("*puts a bowl down* You eat already? You look thin.", "*放低一个碗* 你食咗饭未呀？睇落好瘦喔。", "*放低個碗* 食咗飯未呀？你睇落好瘦喎。", "*deja un cuenco* ¿Tú comer ya? Tú muy delgado.", "*deixa un bol* Ja has menjat? Fas cara de prim."),
+        A(S("I ate", "吃了", "食咗喇", "Ya comí", "Sí, he menjat"), S("Eat more. One more bowl never kill nobody.", "食多啲。多食一碗，死唔去的。", "食多啲。多食一碗死唔去㗎。", "Come más. Un cuenco más no mata a nadie.", "Menja'n més. Un bol més no ha matat mai ningú.")),
+        A(S("Not yet", "还没", "未呀", "Todavía no", "Encara no"), S("Aiya! Sit, sit. Congee five minutes.", "哎呀！坐，坐。粥五分钟就得。", "哎呀！坐低坐低。粥五分鐘就得。", "¡Aiya! Siéntate, siéntate. Congee cinco minutos.", "Aiya! Seu, seu. El congee, cinc minuts."))),
+      Q(S("Outside cold. You wear jacket?", "外面好冻呀。你有冇穿褛？", "出面凍呀。你有冇著褸？", "Fuera frío. ¿Tú llevar chaqueta?", "Fora fa fred. Portes jaqueta?"),
+        A(S("Yes, Popo", "穿了，婆婆", "有呀，婆婆", "Sí, Popo", "Sí, Popo"), S("Good. *pats your hand* Good.", "乖。*拍拍你只手* 乖。", "乖。*拍拍你隻手* 乖。", "Bien. *te da palmaditas en la mano* Bien.", "Molt bé. *et dona copets a la mà* Molt bé.")),
+        A(S("It's fine", "没事的", "冇事嘅", "Da igual", "No passa res"), S("Not fine! Wind go in your bones. Later you old like me, you know.", "乜冇事呀！风会吹入骨头的。第日你老咗，好似我咁，你就知。", "乜冇事呀！風會吹入骨㗎。第日你老咗好似我咁你就知。", "¡No da igual! El viento entra en huesos. Luego tú viejo como yo, ya verás.", "Sí que passa! El vent se't fica als ossos. Quan siguis vell com jo, ja ho veuràs."))),
+      Q(S("Your mama, she call you this week?", "你阿妈这个礼拜，有冇打电话俾你呀？", "你阿媽呢個禮拜有冇打俾你呀？", "Tu mamá, ¿te llama esta semana?", "La teva mare t'ha trucat aquesta setmana?"),
+        A(S("Yes", "有", "有呀", "Sí", "Sí"), S("Good. You call back also. Mama always waiting.", "好。你都要打返俾她。阿妈成日都在等的。", "好。你都要打返俾佢。阿媽成日都喺度等㗎。", "Bien. Tú llamar también. Mamá siempre espera.", "Bé. Truca-li tu també. Les mares sempre esperen.")),
+        A(S("Not yet", "还没有", "未呀", "Todavía no", "Encara no"), S("You call her. Tonight. Say Popo say.", "你打俾她。今晚。话系婆婆叫你打的。", "你打俾佢。今晚。話係婆婆叫你打嘅。", "Tú llamas. Esta noche. Di que Popo dice.", "Truca-li tu. Aquesta nit. Digues que ho diu la Popo."))),
+      Q(S("*takes a photo out of her apron pocket* This one Josep. Very handsome, no? Clock man.", "*从围裙袋拎张相出来* 这个系Josep。好靓仔，系咪？整钟的。", "*喺圍裙袋攞咗張相出嚟* 呢個係Josep。好靚仔㗎，係咪？整鐘嘅。", "*saca una foto del bolsillo del delantal* Este Josep. Muy guapo, ¿no? Hombre del reloj.", "*treu una foto de la butxaca del davantal* Aquest és en Josep. Molt guapo, oi? El rellotger."),
+        A(S("Very handsome", "很帅", "好靚仔", "Muy guapo", "Molt guapo"), S("*laughs* He know it too. Too much.", "*笑* 他自己都知的。知得太多咯。", "*笑* 佢自己都知㗎。知得滯。", "*se ríe* Él lo sabe también. Demasiado.", "*riu* Ell ja ho sabia. Massa i tot.")),
+        A(S("Tell me about him", "说说他吧", "講吓佢啦", "Háblame de él", "Parla'm d'ell"), S("Every night he fix the clock slow-slow, so the good hours stay longer. Silly man. *smiles at the photo*", "他晚晚都把个钟校慢少少，等好时光留耐啲。傻佬来的。*对住张相笑*", "佢晚晚都將個鐘校慢少少，等啲好時光留耐啲。傻佬嚟㗎。*對住張相笑*", "Cada noche arreglar reloj lento-lento, para horas buenas quedar más. Hombre tonto. *sonríe a la foto*", "Cada nit endarreria el rellotge una mica, perquè les hores bones duressin més. Quin ximple. *somriu a la foto*"))),
+      Q(S("You have somebody cook for you?", "有冇人煮饭俾你食呀？", "有冇人煮飯俾你食呀？", "¿Tú tienes alguien que cocina para ti?", "Tens algú que et cuini?"),
+        A(S("Sometimes", "有时候", "有時啦", "A veces", "A vegades"), S("Sometimes not enough. You learn one dish. I teach you. Easy.", "有时，唔够的。你学一味餸。我教你。好易的。", "有時唔夠㗎。你學一味餸。我教你。好易㗎。", "A veces no suficiente. Tú aprender un plato. Yo enseño. Fácil.", "A vegades no n'hi ha prou. Aprèn un plat. T'ensenyo jo. És fàcil.")),
+        A(S("I cook for others", "我做饭给别人吃", "我煮俾人食", "Yo cocino para otros", "Jo cuino per als altres"), S("*nods, very serious* Then you good person. Eat yourself also, ah.", "*好认真点头* 咁你系好人。自己都要食呀。", "*好認真咁點頭* 咁你係好人。自己都要食呀。", "*asiente, muy seria* Entonces tú buena persona. Come tú también, ¿eh?", "*assenteix, molt seriosa* Doncs ets bona persona. Però menja tu també, eh."))),
+      Q(S("Hong Kong, Barcelona… everywhere same. People hungry, people lonely. Food fix both. Half-half.", "香港、巴塞罗那……边度都一样。人会肚饿，人会寂寞。食嘢两样都医得。一半半啦。", "香港、巴塞隆拿……邊度都一樣。人會肚餓，人會寂寞。食嘢兩樣都醫得。一半半啦。", "Hong Kong, Barcelona… todo igual. Gente hambre, gente sola. Comida arregla las dos. Mitad-mitad.", "Hong Kong, Barcelona… tot igual. La gent té gana, la gent està sola. El menjar arregla les dues coses. Meitat i meitat."),
+        A(S("*nod*", "*点头*", "*點頭*", "*asentir*", "*assentir*"), S("*squeezes your shoulder and goes back to the stove*", "*捏捏你膊头，返去灶头那边*", "*揑揑你膊頭，返去灶頭度*", "*te aprieta el hombro y vuelve al fogón*", "*et pren l'espatlla i torna als fogons*")),
+        A(S("Can I help you cook?", "我可以帮你做饭吗？", "我可唔可以幫你煮？", "¿Te ayudo a cocinar?", "T'ajudo a cuinar?"), S("*hands you a spoon* Stir. Slowly. No talking to the soup.", "*递只匙羹俾你* 搅。慢慢搅。唔好同碗汤讲话。", "*遞咗隻匙羹俾你* 攪。慢慢攪。唔好同碗湯講嘢。", "*te da una cuchara* Remueve. Despacio. No hablar a la sopa.", "*et dona una cullera* Remena. A poc a poc. No parlis amb la sopa.")))
     ],
     mantou: [
       Q(S("*Mantou leans over the counter and drops his ball by your glass. He stares at it. Then at you.*", "*馒头从吧台后探出身子，把球丢在你杯子旁边，盯着球，又盯着你。*", "*饅頭喺吧枱後面探出身，將個波掉喺你杯隔籬，望住個波，再望住你。*", "*Mantou se asoma por encima de la barra y deja la pelota junto a tu vaso. La mira. Luego a ti.*", "*En Mantou treu el cap per sobre la barra i et deixa la pilota al costat del got. La mira. Després et mira a tu.*"),
@@ -6105,22 +6005,22 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
       ]
     },
     popo: {
-      intro: [H("*sits down on the stool, slowly* Talk, talk. I listen. You eat also.", "*慢慢坐到高凳上* 讲，讲。我听。你也要吃。", "*慢慢坐上張高凳* 講啦講啦。我聽。你都要食嘢。", "*慢慢坐上張高凳* 講啦講啦。我聽。你都要食嘢。", "*se sienta despacio en el taburete* Habla, habla. Yo escucho. Tú come también.", "*s'asseu a poc a poc al tamboret* Parla, parla. Jo t'escolto. I tu menja.")],
+      intro: [H("*sits down on the stool, slowly* Talk, talk. I listen. You eat also.", "*慢慢坐上高凳* 讲啦，讲啦。我听。你都要食嘢。", "*慢慢坐上張高凳* 講啦講啦。我聽。你都要食嘢。", "*慢慢坐上張高凳* 講啦講啦。我聽。你都要食嘢。", "*se sienta despacio en el taburete* Habla, habla. Yo escucho. Tú come también.", "*s'asseu a poc a poc al tamboret* Parla, parla. Jo t'escolto. I tu menja.")],
       t: [
         { l: H("About you", "说说您", "講吓你", "講吓你", "Sobre ti", "Sobre vostè"), x: [
-          H("Popo. Hong Kong girl. 1968 come Barcelona. Nineteen. One suitcase, one dictionary.", "婆婆。香港女仔。一九六八年来巴塞罗那。十九岁。一个箱子，一本字典。", "婆婆。香港妹。一九六八年嚟巴塞隆拿。十九歲。一個喼，一本字典。", "婆婆。香港妹。一九六八年嚟巴塞隆拿。十九歲。一個喼，一本字典。", "Popo. Chica de Hong Kong. 1968 vengo Barcelona. Diecinueve. Una maleta, un diccionario.", "La Popo. Una noia de Hong Kong. El 1968 vaig arribar a Barcelona, amb dinou anys. Una maleta i un diccionari."),
-          H("Now old lady. Still cook every day. Who else will?", "现在老太婆了。还是天天煮饭。不然谁煮？", "而家老太婆囉。都係日日煮飯。唔係邊個煮？", "而家老太婆囉。都係日日煮飯。唔係邊個煮？", "Ahora señora vieja. Todavía cocino cada día. ¿Quién si no?", "Ara ja soc una vella. Encara cuino cada dia. Qui ho faria, si no?")] },
+          H("Popo. Hong Kong girl. 1968 come Barcelona. Nineteen. One suitcase, one dictionary.", "婆婆。香港女仔。一九六八年来巴塞罗那。十九岁。一个喼，一本字典。", "婆婆。香港妹。一九六八年嚟巴塞隆拿。十九歲。一個喼，一本字典。", "婆婆。香港妹。一九六八年嚟巴塞隆拿。十九歲。一個喼，一本字典。", "Popo. Chica de Hong Kong. 1968 vengo Barcelona. Diecinueve. Una maleta, un diccionario.", "La Popo. Una noia de Hong Kong. El 1968 vaig arribar a Barcelona, amb dinou anys. Una maleta i un diccionari."),
+          H("Now old lady. Still cook every day. Who else will?", "现在老太婆咯。都系日日煮饭。唔系，边个煮？", "而家老太婆囉。都係日日煮飯。唔係邊個煮？", "而家老太婆囉。都係日日煮飯。唔係邊個煮？", "Ahora señora vieja. Todavía cocino cada día. ¿Quién si no?", "Ara ja soc una vella. Encara cuino cada dia. Qui ho faria, si no?")] },
         { l: H("Josep", "Josep", "Josep", "Josep", "Josep", "En Josep"), x: [
-          H("Clock man. He fix my watch, I fix his dinner. Fifty years like this.", "修钟的。他修我的表，我管他的饭。五十年都这样。", "整鐘嘅。佢整我隻錶，我煮佢餐飯。五十年都係咁。", "整鐘嘅。佢整我隻錶，我煮佢餐飯。五十年都係咁。", "Hombre del reloj. Él arregla mi reloj, yo arreglo su cena. Cincuenta años así.", "El rellotger. Ell m'arreglava el rellotge i jo li feia el sopar. Cinquanta anys així."),
-          H("He sing very bad. I miss it every night.", "他唱歌很难听。我每天晚上都想念。", "佢唱歌好難聽。我晚晚都掛住。", "佢唱歌好難聽。我晚晚都掛住。", "Él canta muy mal. Lo echo de menos cada noche.", "Cantava molt malament. Ho trobo a faltar cada nit.")] },
+          H("Clock man. He fix my watch, I fix his dinner. Fifty years like this.", "整钟的。他整我只表，我煮他餐饭。五十年都系咁。", "整鐘嘅。佢整我隻錶，我煮佢餐飯。五十年都係咁。", "整鐘嘅。佢整我隻錶，我煮佢餐飯。五十年都係咁。", "Hombre del reloj. Él arregla mi reloj, yo arreglo su cena. Cincuenta años así.", "El rellotger. Ell m'arreglava el rellotge i jo li feia el sopar. Cinquanta anys així."),
+          H("He sing very bad. I miss it every night.", "他唱歌好难听。我晚晚都挂住。", "佢唱歌好難聽。我晚晚都掛住。", "佢唱歌好難聽。我晚晚都掛住。", "Él canta muy mal. Lo echo de menos cada noche.", "Cantava molt malament. Ho trobo a faltar cada nit.")] },
         { l: H("What's cooking?", "煮什么呀？", "煮緊乜呀？", "煮緊乜呀？", "¿Qué cocinas?", "Què cuines?"), x: [
-          H("Congee. Always congee. Rice, water, time. Like people.", "粥。永远是粥。米、水、时间。跟人一样。", "粥。梗係粥。米、水、時間。同人一樣。", "粥。梗係粥。米、水、時間。同人一樣。", "Congee. Siempre congee. Arroz, agua, tiempo. Como la gente.", "Congee. Sempre congee. Arròs, aigua i temps. Com les persones."),
-          H("Today escudella. Josep's mama teach me. My recipe box is there, take one home.", "今天 escudella。Josep 的妈妈教我的。我的食谱盒在那边，拿一张回家。", "今日 escudella。Josep 阿媽教我嘅。我個食譜盒喺嗰度，攞張返屋企。", "今日 escudella。Josep 阿媽教我嘅。我個食譜盒喺嗰度，攞張返屋企。", "Hoy escudella. La mamá de Josep me enseña. Mi caja de recetas está ahí, llévate una.", "Avui escudella. Me la va ensenyar la mare d'en Josep. La capsa de receptes és allà: emporta-te'n una.")] },
+          H("Congee. Always congee. Rice, water, time. Like people.", "粥。梗系粥啦。米、水、时间。同人一样。", "粥。梗係粥。米、水、時間。同人一樣。", "粥。梗係粥。米、水、時間。同人一樣。", "Congee. Siempre congee. Arroz, agua, tiempo. Como la gente.", "Congee. Sempre congee. Arròs, aigua i temps. Com les persones."),
+          H("Today escudella. Josep's mama teach me. My recipe box is there, take one home.", "今日 escudella。Josep 阿妈教我的。我个食谱盒在那边，拎一张返屋企。", "今日 escudella。Josep 阿媽教我嘅。我個食譜盒喺嗰度，攞張返屋企。", "今日 escudella。Josep 阿媽教我嘅。我個食譜盒喺嗰度，攞張返屋企。", "Hoy escudella. La mamá de Josep me enseña. Mi caja de recetas está ahí, llévate una.", "Avui escudella. Me la va ensenyar la mare d'en Josep. La capsa de receptes és allà: emporta-te'n una.")] },
         { l: H("Wei and Mei", "Wei 和 Mei", "阿Wei同阿Mei", "阿Wei同阿Mei", "Wei y Mei", "En Wei i la Mei"), x: [
-          H("Wei too serious, Mei too loud. Together, perfect. Don't tell them.", "阿Wei太认真，阿Mei太吵。放一起，刚刚好。别告诉他们。", "阿Wei太認真，阿Mei太嘈。擺埋一齊，啱啱好。唔好話佢哋知。", "阿Wei太認真，阿Mei太嘈。擺埋一齊，啱啱好。唔好話佢哋知。", "Wei muy serio, Mei muy ruidosa. Juntos, perfecto. No les digas.", "En Wei massa seriós, la Mei massa sorollosa. Junts, perfectes. No els ho diguis."),
-          H("When small, they fight for the last egg tart. Now they fight for the music.", "小时候抢最后一个蛋挞。现在抢放什么歌。", "細個爭最後一個蛋撻。而家爭播咩歌。", "細個爭最後一個蛋撻。而家爭播咩歌。", "De pequeños se pelean por la última tarta de huevo. Ahora por la música.", "De petits es barallaven per l'última tarteta d'ou. Ara, per la música.")] },
+          H("Wei too serious, Mei too loud. Together, perfect. Don't tell them.", "阿Wei太认真，阿Mei太嘈。摆埋一齐，啱啱好。唔好话俾他们知。", "阿Wei太認真，阿Mei太嘈。擺埋一齊，啱啱好。唔好話佢哋知。", "阿Wei太認真，阿Mei太嘈。擺埋一齊，啱啱好。唔好話佢哋知。", "Wei muy serio, Mei muy ruidosa. Juntos, perfecto. No les digas.", "En Wei massa seriós, la Mei massa sorollosa. Junts, perfectes. No els ho diguis."),
+          H("When small, they fight for the last egg tart. Now they fight for the music.", "细个抢最后一个蛋挞。现在抢放乜歌。", "細個爭最後一個蛋撻。而家爭播咩歌。", "細個爭最後一個蛋撻。而家爭播咩歌。", "De pequeños se pelean por la última tarta de huevo. Ahora por la música.", "De petits es barallaven per l'última tarteta d'ou. Ara, per la música.")] },
         { l: H("Your songs", "您的歌", "你啲歌", "你啲歌", "Tus canciones", "Les seves cançons"), x: [
-          H("Same Song have my two. One for after closing, Josep and me. One for congee at six. Go listen.", "「同一首歌」有我两首。一首是关门以后，我跟 Josep。一首是六点的粥。去听。", "「同一首歌」有我兩首。一首係收舖之後，我同 Josep。一首係六點鐘嘅粥。去聽吓。", "「同一首歌」有我兩首。一首係收舖之後，我同 Josep。一首係六點鐘嘅粥。去聽吓。", "La Misma Canción tiene dos mías. Una para después de cerrar, Josep y yo. Una para el congee de las seis. Ve a escuchar.", "A La Mateixa Cançó n'hi ha dues de meves. Una de després de tancar, en Josep i jo. I una del congee de les sis. Ves a escoltar-les.")] }
+          H("Same Song have my two. One for after closing, Josep and me. One for congee at six. Go listen.", "「同一首歌」有我两首。一首系收铺之后，我同 Josep。一首系六点钟的粥。去听下。", "「同一首歌」有我兩首。一首係收舖之後，我同 Josep。一首係六點鐘嘅粥。去聽吓。", "「同一首歌」有我兩首。一首係收舖之後，我同 Josep。一首係六點鐘嘅粥。去聽吓。", "La Misma Canción tiene dos mías. Una para después de cerrar, Josep y yo. Una para el congee de las seis. Ve a escuchar.", "A La Mateixa Cançó n'hi ha dues de meves. Una de després de tancar, en Josep i jo. I una del congee de les sis. Ves a escoltar-les.")] }
       ]
     },
     cats: {
@@ -6281,7 +6181,7 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
   const LAMPSAY = {
     wei: [H("*squints up at the lamp* Better. Or worse. I'll get used to it.", "*眯眼看了看灯* 好些了。或者更糟。我会习惯的。", "*瞇眼看了看燈* 好些了。或者更糟。我會習慣的。", "*瞇埋眼望吓盞燈* 好啲喇。或者差啲。我會慣㗎。", "*mira la lámpara entornando los ojos* Mejor. O peor. Ya me acostumbraré.", "*mira el llum arrufant els ulls* Millor. O pitjor. Ja m'hi acostumaré.")],
     mei: [H("*looks up from her phone* ooh. moody. keep it.", "*从手机上抬起头* 哦。有氛围。就这样。", "*從手機上抬起頭* 哦。有氛圍。就這樣。", "*擰起頭離開部手機* 哦。好有feel。就咁啦。", "*levanta la vista del móvil* uh. ambiente. déjalo así.", "*aixeca la vista del mòbil* uh. ambient. deixa-ho així.")],
-    popo: [P5("Aiya, too dark, you ruin your eyes! …Ok, ok, nice also.", "哎呀，太暗了，眼睛会坏的！……好啦好啦，也挺好看。", "哎呀，咁暗，眼都盲埋！……好啦好啦，都幾靚。", "¡Ay, muy oscuro, tú rompes los ojos! …Vale, vale, bonito también.", "Ai, massa fosc, que et faràs malbé els ulls! …Bé, bé, també és bonic.")],
+    popo: [P5("Aiya, too dark, you ruin your eyes! …Ok, ok, nice also.", "哎呀，咁暗，眼都盲埋！……好啦好啦，都几靓。", "哎呀，咁暗，眼都盲埋！……好啦好啦，都幾靚。", "¡Ay, muy oscuro, tú rompes los ojos! …Vale, vale, bonito también.", "Ai, massa fosc, que et faràs malbé els ulls! …Bé, bé, també és bonic.")],
     cats: [H("*Yuzu follows the swinging lamp with her whole head.*", "*柚子整个脑袋跟着晃动的吊灯转。*", "*柚子整個腦袋跟著晃動的吊燈轉。*", "*柚子成個頭跟住盞燈擺嚟擺去。*", "*Yuzu sigue la lámpara que se balancea con toda la cabeza.*", "*La Yuzu segueix el llum que es gronxa amb tot el cap.*")],
     mantou: [H("*Mantou barks once at the lamp, to be safe.* Woof.", "*馒头为了保险起见，冲吊灯叫了一声。* 汪。", "*饅頭為了保險起見，衝吊燈叫了一聲。* 汪。", "*饅頭為咗穩陣，對住盞燈吠咗一聲。* 汪。", "*Mantou le ladra una vez a la lámpara, por si acaso.* Guau.", "*En Mantou borda un cop al llum, per si de cas.* Bup.")]
   };
@@ -6333,16 +6233,16 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
       z: [H("*Mei, still asleep:* …don't touch my stuff…", "*Mei 还在睡：* ……别碰我的东西……", "*Mei 還在睡：* ……別碰我的東西……", "*Mei 仲瞓緊：* ……唔好掂我啲嘢……", "*Mei, todavía dormida:* …no toques mis cosas…", "*La Mei, encara adormida:* …no toquis les meves coses…")]
     },
     popo: {
-      jar: [P5("Pickles. Nineteen ninety-eight! Still good. You take one jar home.", "咸菜。一九九八年的！还能吃。你带一瓶回家。", "鹹菜。一九九八年㗎！仲食得。你攞一樽返屋企。", "Encurtidos. ¡Mil novecientos noventa y ocho! Todavía bueno. Tú llevas un bote a casa.", "Escabetx. Del noranta-vuit! Encara és bo. T'enduus un pot a casa.")],
-      steamer: [P5("*lifts the lid, steam everywhere* Char siu bao. Hot! Wait two minutes.", "*掀开盖子，满是蒸汽* 叉烧包。烫！等两分钟。", "*揭開個蓋，成屋蒸氣* 叉燒包。熱㗎！等兩分鐘。", "*levanta la tapa, vapor por todas partes* Bollos de cerdo. ¡Caliente! Espera dos minutos.", "*aixeca la tapa, vapor per tot arreu* Panets de porc. Cremen! Espera dos minuts.")],
-      orange: [P5("Take, take. Orange is good luck. Two, one for your mama.", "拿，拿。橙子好意头。拿两个，一个给你妈妈。", "攞啦攞啦。橙好意頭。攞兩個，一個俾你阿媽。", "Coge, coge. Naranja buena suerte. Dos, una para tu mamá.", "Agafa, agafa. La taronja porta sort. Dues, una per a ta mare.")],
-      bowl: [P5("That bowl from the noodle shop. Josep carry the whole box home on the tram.", "那个碗是面店的。Josep 坐电车把整箱抱回家的。", "隻碗係麵舖嘅。Josep 坐電車成箱抱返屋企。", "Ese cuenco de la tienda de fideos. Josep lleva la caja entera a casa en tranvía.", "Aquest bol és de la botiga de fideus. En Josep va dur tota la caixa a casa amb el tramvia.")],
-      cup: [P5("Hot water. Always I have hot water. You want?", "热水。我一直有热水。你要不要？", "滾水。我時時都有滾水。你要唔要？", "Agua caliente. Siempre tengo agua caliente. ¿Tú quieres?", "Aigua calenta. Sempre en tinc. En vols?")],
-      thermos: [P5("Soup inside. For later. For you, if you sit longer.", "里面是汤。留着等下喝。你多坐一会儿就给你。", "入面係湯。留陣間飲。你坐耐啲就俾你。", "Sopa dentro. Para luego. Para ti, si te sientas más.", "Hi ha sopa a dins. Per a després. Per a tu, si et quedes una mica més.")],
-      radio: [P5("*turns the dial* Cantonese opera. Josep like the drums, not the singing. Hahaha.", "*拧了拧旋钮* 粤剧。Josep 喜欢锣鼓，不喜欢唱。哈哈哈。", "*扭吓個掣* 粵劇。Josep 鍾意啲鑼鼓，唔鍾意唱。哈哈哈。", "*gira el dial* Ópera cantonesa. A Josep le gusta los tambores, no el canto. Jajaja.", "*gira el dial* Òpera cantonesa. A en Josep li agradaven els tambors, no el cant. Ha, ha, ha.")],
-      garden: [P5("Baby lemon tree. From the big one. You water it, ok?", "小柠檬树。从大的那棵来的。你浇水，好不好？", "細檸檬樹。由大嗰棵嚟㗎。你淋水，好唔好？", "Limonero bebé. Del grande. Tú riegas, ¿vale?", "Un llimoner petit. Ve del gran. El regues tu, d'acord?")],
-      restaurant: [P5("*taps the old shop sign* Thirty years noodle shop. Every day open.", "*拍拍面店的旧招牌* 开了三十年面店。天天开门。", "*拍吓麵舖個舊招牌* 開咗三十年麵舖。日日開門。", "*da golpecitos al letrero viejo* Treinta años tienda de fideos. Todos los días abierta.", "*toca el rètol vell de la botiga* Trenta anys de botiga de fideus. Oberta cada dia.")],
-      x: [P5("Aiya, careful! …Ok, ok, you look. Looking is free.", "哎呀，小心！……好啦好啦，你看。看不要钱。", "哎呀，小心啲！……好啦好啦，你睇。睇唔使錢。", "¡Ay, cuidado! …Vale, vale, tú mira. Mirar es gratis.", "Ai, compte! …Bé, bé, mira. Mirar no costa res.")],
+      jar: [P5("Pickles. Nineteen ninety-eight! Still good. You take one jar home.", "咸菜。一九九八年的！还食得。你拎一樽返屋企。", "鹹菜。一九九八年㗎！仲食得。你攞一樽返屋企。", "Encurtidos. ¡Mil novecientos noventa y ocho! Todavía bueno. Tú llevas un bote a casa.", "Escabetx. Del noranta-vuit! Encara és bo. T'enduus un pot a casa.")],
+      steamer: [P5("*lifts the lid, steam everywhere* Char siu bao. Hot! Wait two minutes.", "*揭开盖，成屋蒸气* 叉烧包。烫呀！等两分钟。", "*揭開個蓋，成屋蒸氣* 叉燒包。熱㗎！等兩分鐘。", "*levanta la tapa, vapor por todas partes* Bollos de cerdo. ¡Caliente! Espera dos minutos.", "*aixeca la tapa, vapor per tot arreu* Panets de porc. Cremen! Espera dos minuts.")],
+      orange: [P5("Take, take. Orange is good luck. Two, one for your mama.", "拎啦，拎啦。橙，好意头。拎两个，一个俾你阿妈。", "攞啦攞啦。橙好意頭。攞兩個，一個俾你阿媽。", "Coge, coge. Naranja buena suerte. Dos, una para tu mamá.", "Agafa, agafa. La taronja porta sort. Dues, una per a ta mare.")],
+      bowl: [P5("That bowl from the noodle shop. Josep carry the whole box home on the tram.", "只碗系面铺的。Josep 坐电车，成箱抱返屋企。", "隻碗係麵舖嘅。Josep 坐電車成箱抱返屋企。", "Ese cuenco de la tienda de fideos. Josep lleva la caja entera a casa en tranvía.", "Aquest bol és de la botiga de fideus. En Josep va dur tota la caixa a casa amb el tramvia.")],
+      cup: [P5("Hot water. Always I have hot water. You want?", "热水。我时时都有热水。你要唔要？", "滾水。我時時都有滾水。你要唔要？", "Agua caliente. Siempre tengo agua caliente. ¿Tú quieres?", "Aigua calenta. Sempre en tinc. En vols?")],
+      thermos: [P5("Soup inside. For later. For you, if you sit longer.", "里面系汤。留等阵饮。你坐耐啲，就俾你。", "入面係湯。留陣間飲。你坐耐啲就俾你。", "Sopa dentro. Para luego. Para ti, si te sientas más.", "Hi ha sopa a dins. Per a després. Per a tu, si et quedes una mica més.")],
+      radio: [P5("*turns the dial* Cantonese opera. Josep like the drums, not the singing. Hahaha.", "*扭下个掣* 粤剧。Josep 钟意啲锣鼓，唔钟意唱。哈哈哈。", "*扭吓個掣* 粵劇。Josep 鍾意啲鑼鼓，唔鍾意唱。哈哈哈。", "*gira el dial* Ópera cantonesa. A Josep le gusta los tambores, no el canto. Jajaja.", "*gira el dial* Òpera cantonesa. A en Josep li agradaven els tambors, no el cant. Ha, ha, ha.")],
+      garden: [P5("Baby lemon tree. From the big one. You water it, ok?", "细柠檬树。从大那棵来的。你淋水，好唔好？", "細檸檬樹。由大嗰棵嚟㗎。你淋水，好唔好？", "Limonero bebé. Del grande. Tú riegas, ¿vale?", "Un llimoner petit. Ve del gran. El regues tu, d'acord?")],
+      restaurant: [P5("*taps the old shop sign* Thirty years noodle shop. Every day open.", "*拍下面铺的旧招牌* 开咗三十年面铺。日日开门。", "*拍吓麵舖個舊招牌* 開咗三十年麵舖。日日開門。", "*da golpecitos al letrero viejo* Treinta años tienda de fideos. Todos los días abierta.", "*toca el rètol vell de la botiga* Trenta anys de botiga de fideus. Oberta cada dia.")],
+      x: [P5("Aiya, careful! …Ok, ok, you look. Looking is free.", "哎呀，小心啲！……好啦好啦，你睇。睇唔使钱。", "哎呀，小心啲！……好啦好啦，你睇。睇唔使錢。", "¡Ay, cuidado! …Vale, vale, tú mira. Mirar es gratis.", "Ai, compte! …Bé, bé, mira. Mirar no costa res.")],
       z: [P5("*Popo, asleep, pats the blanket twice. The cats look at you.*", "*婆婆睡着，拍了拍毯子两下。猫看着你。*", "*婆婆瞓著，拍咗兩下張氈。啲貓望住你。*", "*Popo, dormida, da dos palmaditas a la manta. Los gatos te miran.*", "*La Popo, adormida, dona dos copets a la manta. Els gats et miren.*")]
     },
     cats: {
@@ -6428,12 +6328,12 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
         a: () => [[H("📖 Go on then", "📖 那就做吧", "📖 那就做吧", "📖 咁煮啦", "📖 Venga, va", "📖 Som-hi"), () => PopoRecipes.cook()], [H("I'll leave ours", "我留一道我家的", "我留一道我家的", "我留低我屋企嗰味", "Dejo la nuestra", "Deixo la nostra"), () => PopoRecipes.write()], [LOOK, () => PopoRecipes.open()]] }
     ],
     popo: [
-      { id: 'recipe', q: P5("Your family, what they cook at home? Popo has a box of recipes from people. I cook one for you, ok?", "你家里，平时煮什么？婆婆有一盒大家的食谱。我煮一道给你，好不好？", "你屋企平時煮乜？婆婆有一盒人哋嘅食譜。我煮一味俾你，好唔好？", "¿Tu familia, qué cocina en casa? Popo tiene una caja de recetas de la gente. Yo cocino una para ti, ¿vale?", "I a casa teva, què cuineu? La Popo té una capsa de receptes de la gent. Te'n cuino una, d'acord?"),
-        a: () => [[P5("📖 Yes please", "📖 好呀", "📖 好呀", "📖 Sí, por favor", "📖 Sí, si us plau"), () => PopoRecipes.cook()], [P5("I'll leave ours", "我留一道我家的", "我留低我屋企嗰味", "Dejo la nuestra", "Deixo la nostra"), () => PopoRecipes.write()], [LOOK, () => PopoRecipes.open()], [P5("Next time", "下次吧", "下次先", "La próxima vez", "La propera vegada"), () => reply(P5("Next time you come, I cook. Promise.", "下次你来，我煮。说好了。", "下次你嚟，我煮。講好咗。", "Próxima vez tú vienes, yo cocino. Promesa.", "La propera vegada que vinguis, cuino jo. Promès."))]] },
-      { id: 'picks', q: P5("Where you eat near your home? Good place? Not expensive? Tell Popo.", "你家附近在哪儿吃饭？好不好吃？贵不贵？告诉婆婆。", "你屋企附近喺邊度食飯？好唔好食？貴唔貴？話俾婆婆知。", "¿Dónde comes cerca de tu casa? ¿Sitio bueno? ¿No caro? Dile a Popo.", "On menges a prop de casa? Un bon lloc? No gaire car? Explica-li a la Popo."),
+      { id: 'recipe', q: P5("Your family, what they cook at home? Popo has a box of recipes from people. I cook one for you, ok?", "你屋企，平时煮乜？婆婆有一盒人家的食谱。我煮一味俾你，好唔好？", "你屋企平時煮乜？婆婆有一盒人哋嘅食譜。我煮一味俾你，好唔好？", "¿Tu familia, qué cocina en casa? Popo tiene una caja de recetas de la gente. Yo cocino una para ti, ¿vale?", "I a casa teva, què cuineu? La Popo té una capsa de receptes de la gent. Te'n cuino una, d'acord?"),
+        a: () => [[P5("📖 Yes please", "📖 好呀", "📖 好呀", "📖 Sí, por favor", "📖 Sí, si us plau"), () => PopoRecipes.cook()], [P5("I'll leave ours", "我留一道我家的", "我留低我屋企嗰味", "Dejo la nuestra", "Deixo la nostra"), () => PopoRecipes.write()], [LOOK, () => PopoRecipes.open()], [P5("Next time", "下次吧", "下次先", "La próxima vez", "La propera vegada"), () => reply(P5("Next time you come, I cook. Promise.", "下次你来，我煮。讲好咗。", "下次你嚟，我煮。講好咗。", "Próxima vez tú vienes, yo cocino. Promesa.", "La propera vegada que vinguis, cuino jo. Promès."))]] },
+      { id: 'picks', q: P5("Where you eat near your home? Good place? Not expensive? Tell Popo.", "你屋企附近，去边度食饭？好唔好食？贵唔贵？话俾婆婆知。", "你屋企附近喺邊度食飯？好唔好食？貴唔貴？話俾婆婆知。", "¿Dónde comes cerca de tu casa? ¿Sitio bueno? ¿No caro? Dile a Popo.", "On menges a prop de casa? Un bon lloc? No gaire car? Explica-li a la Popo."),
         a: () => [[P5("📍 Tell her", "📍 告诉她", "📍 話俾佢知", "📍 Díselo", "📍 Digues-li-ho"), () => BarPicks.add()], [P5("📍 Where do people eat?", "📍 大家都在哪儿吃？", "📍 啲人喺邊度食？", "📍 ¿Dónde come la gente?", "📍 On menja la gent?"), () => BarPicks.open()]] },
-      { id: 'dish', q: () => { const m = window.NDPopoMenu ? NDPopoMenu() : []; O.popo.d = m.length ? one(m.slice(0, 6)) : null; return O.popo.d ? L(P5("*puts down a bowl before you ask* {d}. You eat. Then you talk.", "*你还没开口就放下一碗* {d}。你吃。吃完再说话。", "*你未開口就擺低一碗* {d}。你食先。食完先講。", "*pone un cuenco antes de que pidas* {d}. Tú comes. Luego hablas.", "*deixa un bol abans que demanis res* {d}. Menja. Després parles.")).replace('{d}', O.popo.d.name) : ''; },
-        ok: () => !!window.NDPopoMenu, a: () => [[P5("🥢 Thank you, Popo", "🥢 谢谢婆婆", "🥢 多謝婆婆", "🥢 Gracias, Popo", "🥢 Gràcies, Popo"), () => { if (O.popo.d) O.popo.d.go(); }], [P5("I'm full", "我饱了", "我飽喇", "Estoy lleno", "Estic ple"), () => reply(P5("Full? You eat like a bird. Half then.", "饱了？你吃得像小鸟。那就半碗。", "飽？你食嘢好似隻雀仔。咁就半碗。", "¿Lleno? Comes como pajarito. Medio, entonces.", "Ple? Menges com un ocellet. Doncs mig bol."))]] }
+      { id: 'dish', q: () => { const m = window.NDPopoMenu ? NDPopoMenu() : []; O.popo.d = m.length ? one(m.slice(0, 6)) : null; return O.popo.d ? L(P5("*puts down a bowl before you ask* {d}. You eat. Then you talk.", "*你未开口就摆低一碗* {d}。你食先。食完先讲。", "*你未開口就擺低一碗* {d}。你食先。食完先講。", "*pone un cuenco antes de que pidas* {d}. Tú comes. Luego hablas.", "*deixa un bol abans que demanis res* {d}. Menja. Després parles.")).replace('{d}', O.popo.d.name) : ''; },
+        ok: () => !!window.NDPopoMenu, a: () => [[P5("🥢 Thank you, Popo", "🥢 谢谢婆婆", "🥢 多謝婆婆", "🥢 Gracias, Popo", "🥢 Gràcies, Popo"), () => { if (O.popo.d) O.popo.d.go(); }], [P5("I'm full", "我饱了", "我飽喇", "Estoy lleno", "Estic ple"), () => reply(P5("Full? You eat like a bird. Half then.", "饱？你食嘢好似只雀仔。咁就半碗。", "飽？你食嘢好似隻雀仔。咁就半碗。", "¿Lleno? Comes como pajarito. Medio, entonces.", "Ple? Menges com un ocellet. Doncs mig bol."))]] }
     ],
     cats: [
       { id: 'recipe', q: H("*Yuzu bats a folded recipe card across the counter with one paw. It stops by your hand.*", "*柚子用一只爪把一张折好的食谱卡拨过吧台，正好停在你手边。*", "*柚子用一隻爪把一張摺好的食譜卡撥過吧檯，正好停在你手邊。*", "*柚子用一隻爪將張摺好嘅食譜卡撥過吧枱，啱啱停喺你隻手隔籬。*", "*Yuzu empuja con la pata una ficha de receta doblada por la barra. Se para junto a tu mano.*", "*La Yuzu empeny amb la pota una fitxa de recepta plegada per la barra. S'atura al costat de la teva mà.*"),
