@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=6a4a3973df"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=a98184fb82"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Common Ground</title>
 <meta name="description" content="Build your team's town together: each place is a way you meet and look after each other, and asks one honest question. Then take it to the table. Lives in its link; nothing stored.">
@@ -142,6 +142,8 @@
   footer a { color:inherit; display:inline-flex; align-items:center; gap:5px; }
   footer svg { width:14px; height:14px; }
   footer .line { width:100%; }
+footer .fb-mk { width:16px; height:16px; }   /* the pixel marks from the kit (FBC.logo): one row of links on a phone */
+@media (max-width:600px) { footer .mw { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; } footer .mw + a { margin-left:.3em; } footer { gap:4px 12px; } }
   .langmenu { position:absolute; right:16px; top:56px; z-index:40; background:var(--panel); border:3px solid var(--line); box-shadow:4px 4px 0 var(--shadow); display:flex; flex-direction:column; min-width:150px; }
   .langmenu button { font:20px/1.2 var(--pix); color:var(--ink); background:none; border:0; text-align:left; padding:10px 14px; min-height:44px; cursor:pointer; }
   .langmenu button[aria-checked="true"] { background:var(--amber); color:#1a1410; }
@@ -1000,8 +1002,8 @@ function chrome() {
   var i = li(); document.documentElement.lang = LANGS[i];
   $("appName").textContent = sg(T(W.app)); document.title = TOWN && TOWN.n ? TOWN.n + " · " + T(W.app) : T(W.app);
   $("langLbl").textContent = SHORT[i]; $("langIco").innerHTML = icon("globe"); $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + NAMES[i]);
-  $("foot").innerHTML = '<span class="line">' + esc(T(W.device)) + '</span><a href="/#services">‹ ' + esc(T(W.lab)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + '</a><a href="https://www.wei-meng.org/">' + esc(T(W.by)) + "</a><span>" +
-    F(esc(T(W.made)), { ai: '<a href="/notes/ai-use/" style="display:inline">AI</a>', h: '<a href="https://www.wei-meng.org/after-hours/" style="display:inline" aria-label="After hours">♥</a>' }) + "</span>";
+  $("foot").innerHTML = '<span class="line">' + esc(T(W.device)) + '</span><a href="/#services">‹ ' + (window.FBC && FBC.logo ? FBC.logo("fb", 1) + '<span class="mw">' + esc(T(W.lab)) + "</span>" : esc(T(W.lab))) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + '</a><a href="https://www.wei-meng.org/">' + (window.FBC && FBC.logo ? FBC.logo("wm", 1) + '<span class="mw">' + esc(T(W.by)) + "</span>" : esc(T(W.by))) + "</a><span>" +
+    F(esc(T(W.made)), { ai: '<a href="/notes/ai-use/" style="display:inline">AI</a>', h: '<a href="https://www.wei-meng.org/after-hours/" style="display:inline" aria-label="After hours">♥</a>' }).replace(/(^|<\/a>)([^<]+)/g, '$1<span class="mw">$2</span>') + "</span>";   // "Made with … &" hidden on a phone: AI ♥
 }
 var paintT = 0;
 function paint() {
