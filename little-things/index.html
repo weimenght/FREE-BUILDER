@@ -44,6 +44,8 @@
   .btn:focus-visible { outline:3px solid var(--amber); outline-offset:3px; }
   .btn.pri { background:var(--amber); color:#1a1410; }
   .btn.quiet { background:var(--panel); }
+  .acts .btn.lg { flex-basis:100%; min-height:60px; font-size:26px; }
+  html:lang(zh) .btn.lg, html:lang(zh-Hant) .btn.lg { font-size:21px; }
   .btn.sm { min-height:40px; padding:6px 10px; font-size:18px; }
   .btn svg.fbpx, .pxi svg { width:18px; height:18px; image-rendering:pixelated; }
   .scene { position:relative; border:3px solid var(--line); box-shadow:4px 4px 0 var(--shadow); background:#3a2414; }
@@ -122,6 +124,7 @@
   @keyframes fade { from { opacity:0; } }
   @media (prefers-reduced-motion: reduce) { .say, .paper, .sheet { animation:none; } }
   @media (min-width:900px) { .wrap { max-width:620px; } }
+  [hidden] { display:none !important; }
   .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
 </style>
 </head>
@@ -160,12 +163,15 @@ function $(id) { return document.getElementById(id); }
 var W = {
   app: ["Little Things", "小事", "小事", "Cosas pequeñas", "Petites coses"],
   did: ["I did it", "我做了", "我做了", "Lo hice", "Ho he fet"],
-  another: ["Another", "换一个", "換一個", "Otra", "Una altra"],
+  another: ["Another paper", "换一张", "換一張", "Otro papel", "Un altre paper"],
+  first: ["Take the first paper", "拿第一张纸条", "拿第一張紙條", "Coger el primer papel", "Agafar el primer paper"],
+  takeOne: ["Take a paper", "拿一张纸条", "拿一張紙條", "Coger un papel", "Agafar un paper"],
   notToday: ["Not today", "今天不了", "今天不了", "Hoy no", "Avui no"],
   fold: ["Into the jar", "放进罐子", "放進罐子", "Al tarro", "Al pot"],
   line: ["A line of your own for the paper, if you like", "想的话，在纸条上写一句自己的话", "想的話，在紙條上寫一句自己的話", "Una línea tuya para el papel, si quieres", "Una línia teva per al paper, si vols"],
   tomorrow: ["See you tomorrow, Popo", "明天见，婆婆", "明天見，婆婆", "Hasta mañana, Popo", "Fins demà, Popo"],
-  more: ["One more", "再来一个", "再來一個", "Una más", "Una més"],
+  tomorrowK: ["See you tomorrow, {k}", "明天见，{k}", "明天見，{k}", "Hasta mañana, {k}", "Fins demà, {k}"],
+  more: ["One more paper", "再来一张", "再來一張", "Otro papel más", "Un paper més"],
   give: ["A little thing, Popo", "婆婆，给我一件小事", "婆婆，給我一件小事", "Una cosita, Popo", "Una coseta, Popo"],
   look: ["Look in the jar", "看看罐子里", "看看罐子裡", "Mirar el tarro", "Mirar el pot"],
   next: ["›", "›", "›", "›", "›"],
@@ -194,11 +200,11 @@ var W = {
   lang: ["Language", "语言", "語言", "Idioma", "Idioma"],
   kitchen: ["Popo's kitchen", "婆婆的厨房", "婆婆的廚房", "La cocina de Popo", "La cuina de la Popo"],
   deviceSync: ["Kept on this device, with a copy on Nearby's server that only your key opens.", "保存在这台设备上，近邻的服务器上另有一份，只有你的钥匙能打开。", "保存在這台裝置上，近鄰的伺服器上另有一份，只有你的鑰匙能打開。", "Se guarda en este dispositivo, con una copia en el servidor de Cerca que solo abre tu llave.", "Es guarda en aquest dispositiu, amb una còpia al servidor d'A Prop que només obre la teva clau."],
-  bCopy: ["Keep a copy", "留一份", "留一份", "Guardar una copia", "Guardar-ne una còpia"],
+  bCopy: ["Keep a safe copy", "留一份备份", "留一份備份", "Guardar una copia", "Guardar-ne una còpia"],
   bCopyOn: ["A copy is kept ✓", "已留一份 ✓", "已留一份 ✓", "Copia guardada ✓", "Còpia guardada ✓"],
-  bKey: ["Another device", "换台设备", "換部裝置", "Otro dispositivo", "Un altre dispositiu"],
-  bPush: ["A nudge each day", "每天提醒一下", "每天提醒一下", "Un toque cada día", "Un toc cada dia"],
-  bPushOn: ["A nudge at {t} ✓", "每天 {t} 提醒 ✓", "每天 {t} 提醒 ✓", "Un toque a las {t} ✓", "Un toc a les {t} ✓"],
+  bKey: ["Open it on another device", "在另一台设备上打开", "在另一部裝置上打開", "Abrirlo en otro dispositivo", "Obrir-lo en un altre dispositiu"],
+  bPush: ["A knock each day", "每天提醒一下", "每天提醒一下", "Un toque cada día", "Un toc cada dia"],
+  bPushOn: ["A knock at {t} ✓", "每天 {t} 提醒 ✓", "每天 {t} 提醒 ✓", "Un toque a las {t} ✓", "Un toc a les {t} ✓"],
   yesCopy: ["Yes, keep a copy", "好，留一份", "好，留一份", "Sí, guarda una copia", "Sí, guarda'n una còpia"],
   noCopy: ["No, only here", "不用，只放这里", "不用，只放這裡", "No, solo aquí", "No, només aquí"],
   stopCopy: ["Stop and delete the copy", "停止并删除那份", "停止並刪除那份", "Parar y borrar la copia", "Parar i esborrar la còpia"],
@@ -252,19 +258,18 @@ var WHO = {
 };
 /* Popo's own lines: en (broken), zh (broken), zh-Hant (her Cantonese), es (broken), ca (her own, fluent) */
 var P = {
-  intro: [
-    ["*wipes her hands on her apron* Ah, you come! Sit, sit. You eat already?", "*在围裙上擦擦手* 哎，你来啦！坐，坐。食饭了没有呀？", "*喺條圍裙度抹抹手* 哎，你嚟喇！坐，坐低先。食咗飯未呀？", "*se seca las manos en el delantal* ¡Ah, vienes! Siéntate, siéntate. ¿Comido ya?", "*s'eixuga les mans al davantal* Ah, ja ets aquí! Seu, seu. Ja has menjat?"],
-    ["Look, my jar. *taps the glass* Inside, little things. Small, small things to do. Not on the phone! Out there, in your life.", "看，我的罐子。*敲敲玻璃* 里面，小事。好小好小的事，去做。不是在手机上！是外面，你的生活里。", "睇，我個樽。*篤一篤個玻璃* 入面係啲小事，細細件嘅事。唔係喺部電話度做㗎！係出面，喺你自己嘅生活度。", "Mira, mi tarro. *da golpecitos al cristal* Dentro, cositas. Cosas pequeñas, pequeñas para hacer. ¡No en el móvil! Fuera, en tu vida.", "Mira, el meu pot. *dona copets al vidre* A dins hi ha coses petites, petitíssimes, per fer. Al mòbil, no! A fora, a la teva vida."],
-    ["I give you one. You go do it. Then you come back, tell me, and the paper goes in the jar. Simple.", "我给你一件。你去做。做完回来告诉我，纸条就放进罐子。好简单。", "我俾一件你，你去做。做完返嚟話我知，張紙就放入個樽。好簡單啫。", "Te doy una. Tú vas, la haces. Luego vuelves, me cuentas, y el papel va al tarro. Fácil.", "Te'n dono una, tu la vas a fer, i després tornes i m'ho expliques. I el paper, al pot. Així de fàcil."],
-    ["Small jar, middle jar, big jar. Small is good for start. No hurry. Nobody is counting.", "小罐，中罐，大罐。刚开始，挑小的好。不用急。冇人数的。", "細樽、中樽、大樽。啱啱開始揀細嘅好。唔使急，冇人數㗎。", "Tarro pequeño, mediano, grande. Pequeño es bueno para empezar. Sin prisa. Nadie cuenta.", "Pot petit, mitjà o gran. Per començar, el petit va bé. No hi ha pressa. Ningú no compta res."]
-  ],
+  /* a newcomer's whole first minute: one line, one button */
+  intro1: ["*pats the jar* One paper, one little thing. Not on the phone: out there. Do it, come back, put it in.", "*拍拍罐子* 一张纸条，一件小事。不是在手机上，是外面。做完回来，放进去。", "*拍拍個樽* 一張紙仔，一件小事。唔係喺電話度，係出面。做完返嚟，放入去。", "*da palmaditas al tarro* Un papel, una cosita. No en el móvil: fuera. La haces, vuelves, al tarro.", "*dona copets al pot* Un paper, una coseta. No al mòbil: a fora. La fas, tornes, i cap al pot."],
+  first: ["*unscrews the lid, digs around* Here. Small one, for start.", "*拧开盖子，翻一翻* 来，这件。小小的，先开始。", "*扭開個蓋，撈下撈下* 嚟，呢件。細細件，開始先。", "*desenrosca la tapa, rebusca* Toma. Pequeñita, para empezar.", "*descargola la tapa i remena* Té. Una de petita, per començar."],
+  /* once, when the jar has a few papers: the pocket (a copy, a key, a knock) is there if wanted */
+  pocket: ["Now many papers! Look in the jar sometime. There's my pocket: a copy, a key. Only if you want.", "纸条多起来啦！有空看看罐子。里面有我的口袋：留一份、钥匙。你想要才用喔。", "啲紙仔多起嚟喇！得閒睇下個樽，入面有我個袋：留一份、鎖匙。你想先用㗎。", "¡Ya muchos papeles! Mira el tarro alguna vez. Ahí mi bolsillo: copia, llave. Solo si quieres.", "Ja tens uns quants papers! Mira el pot quan vulguis. Hi ha la meva butxaca: una còpia, una clau. Només si vols."],
   chose: [["*unscrews the lid* Good choice. Let me see what's inside…", "*拧开盖子* 挑得好。我看看里面有什么……", "*扭開個蓋* 揀得好。等我睇下入面有乜……", "*desenrosca la tapa* Buena elección. A ver qué hay dentro…", "*descargola la tapa* Bona tria. A veure què hi ha a dins…"]],
   hi: {
-    morn: [["*stirring a pot of congee* Morning! You sleep OK? Here, today's little thing.", "*搅着一锅粥* 早上好！睡得好不好呀？来，今天的小事。", "*攪緊煲粥* 早晨！瞓得好唔好呀？嚟，今日件小事。", "*remueve el congee* ¡Buenos días! ¿Dormiste bien? Toma, la cosita de hoy.", "*remena el congee* Bon dia! Has dormit bé? Té, la coseta d'avui."],
+    morn: [["*ties her apron strings* Morning! You sleep OK? Here, today's little thing.", "*系好围裙带子* 早上好！睡得好不好呀？来，今天的小事。", "*綁好條圍裙帶* 早晨！瞓得好唔好呀？嚟，今日件小事。", "*se ata el delantal* ¡Buenos días! ¿Dormiste bien? Toma, la cosita de hoy.", "*es lliga el davantal* Bon dia! Has dormit bé? Té, la coseta d'avui."],
       ["*opens the window a crack* Morning, morning. Fresh air! And one little thing for you.", "*把窗推开一点* 早上好，早上好。新鲜空气！还有件小事给你。", "*將個窗推開少少* 早晨早晨！吸啖新鮮空氣先！仲有件小事俾你。", "*abre un poco la ventana* Buenos días, buenos días. ¡Aire fresco! Y una cosita para ti.", "*obre una mica la finestra* Bon dia, bon dia. Aire fresc! I una coseta per a tu."]],
     aft: [["*peeling an orange* Afternoon. Sit. Take a piece. *reaches into the jar*", "*剥着一个橙子* 来，坐下。先食片橙。*伸手进罐子*", "*擘緊個橙* 嚟，坐低，食片橙先。*伸手入個樽度*", "*pela una naranja* Buenas tardes. Siéntate. Toma un gajo. *mete la mano en el tarro*", "*pela una taronja* Bona tarda. Seu. Agafa un grill. *fica la mà al pot*"],
       ["*folding laundry* Ah, you. Good timing. Hold this. *hands you a towel and a paper*", "*叠着衣服* 哎，是你呀。来得正好。帮我拿着。*递一条毛巾和一张纸条给你*", "*摺緊衫* 哎，係你呀。嚟得啱，幫我拎住。*遞條毛巾同張紙仔俾你*", "*doblando ropa* Ah, tú. Buen momento. Sujeta. *te da una toalla y un papel*", "*plegant roba* Ah, ets tu. Arribes en bon moment. Aguanta això. *et dona una tovallola i un paper*"]],
-    eve: [["*the soup is on* Evening! Wear socks, the floor is cold. Here, one little thing.", "*煲着汤* 晚上咯！先穿双袜子，地上好冷的。来，一件小事。", "*煲緊湯* 夜喇！著對襪先，地下好凍㗎。嚟，件小事俾你。", "*la sopa al fuego* ¡Buenas noches! Ponte calcetines, suelo frío. Toma, una cosita.", "*la sopa al foc* Bon vespre! Posa't mitjons, que el terra és fred. Té, una coseta."],
+    eve: [["*turns the fire down* Evening! Wear socks, the floor is cold. Here, one little thing.", "*把火调小* 晚上咯！先穿双袜子，地上好冷的。来，一件小事。", "*將個火較細* 夜喇！著對襪先，地下好凍㗎。嚟，件小事俾你。", "*baja el fuego* ¡Buenas noches! Ponte calcetines, suelo frío. Toma, una cosita.", "*abaixa el foc* Bon vespre! Posa't mitjons, que el terra és fred. Té, una coseta."],
       ["*turns on the little lamp* You come in the evening, OK. Something small, before bed.", "*开了一盏小灯* 晚上才来，也好。睡觉之前，做件小事啦。", "*開咗盞小燈* 夜晚先嚟，都好。瞓覺之前，做件小事啦。", "*enciende la lamparita* Vienes en la noche, vale. Algo pequeño, antes de cama.", "*encén el llumet* Vens al vespre, d'acord. Una cosa petita, abans d'anar a dormir."]]
   },
   night: [["*Popo is asleep in her armchair, knitting in her lap. Miso paws a folded paper out of her apron pocket and pushes it towards you.*", "*婆婆在扶手椅上睡着了，毛线还在腿上。味噌从她围裙口袋里扒出一张折好的纸条，推到你面前。*", "*婆婆在扶手椅上睡著了，毛線還在腿上。味噌從她圍裙口袋裡扒出一張摺好的紙條，推到你面前。*", "*Popo duerme en su butaca, con el punto en el regazo. Miso saca con la pata un papel doblado del bolsillo de su delantal y te lo acerca.*", "*La Popo dorm a la butaca, amb la mitja a la falda. Miso treu amb la pota un paper doblegat de la butxaca del davantal i te l'acosta.*"]],
@@ -283,7 +288,7 @@ var P = {
   later: [["OK. Not today. Tomorrow is also a day. *puts the paper in her apron pocket*", "好啦。今天不做。明天又是新的一天。*把纸条放回围裙口袋*", "好啦，今日唔做。聽日又係新一日。*將張紙袋返入圍裙袋*", "Vale. Hoy no. Mañana también es día. *se guarda el papel en el delantal*", "D'acord. Avui no. Demà també és un dia. *es guarda el paper a la butxaca del davantal*"],
     ["No problem. Go rest. *pats your hand* Rest is also a little thing.", "没问题。去休息一下啦。*拍拍你的手* 休息也是一件小事。", "冇問題，去唞下啦。*拍拍你隻手* 唞下都係一件小事嚟㗎。", "No problema. Ve descansar. *te da palmaditas en la mano* Descansar también es cosita.", "Cap problema. Vés a descansar. *et dona copets a la mà* Descansar també és una coseta."]],
   rest: [["*knitting* I'm here. Come back when you want.", "*织着毛衣* 我在这里。想来就来。", "*織緊冷* 我喺度。想嚟就嚟。", "*tejiendo* Aquí estoy. Vuelve cuando quieras.", "*fent mitja* Soc aquí. Torna quan vulguis."],
-    ["*tasting the soup* More salt? No. Perfect. Oh, you're still here! Go, go outside.", "*尝尝汤* 加点盐？不用。刚刚好。哎，你还在？去啦，出去走走。", "*試下啲湯* 加啲鹽？唔使喇，啱啱好。哎，你仲喺度？去啦，出去行下啦。", "*prueba la sopa* ¿Más sal? No. Perfecta. ¡Oh, sigues aquí! Ve, ve fuera.", "*tasta la sopa* Més sal? No. Perfecta. Ai, encara ets aquí! Vés, surt a fora."]],
+    ["*tasting from the pot* More salt? No. Perfect. Oh, you're still here! Go, go outside.", "*尝尝锅里的* 加点盐？不用。刚刚好。哎，你还在？去啦，出去走走。", "*試下煲入面啲嘢* 加啲鹽？唔使喇，啱啱好。哎，你仲喺度？去啦，出去行下啦。", "*prueba de la olla* ¿Más sal? No. Perfecta. ¡Oh, sigues aquí! Ve, ve fuera.", "*tasta de l'olla* Més sal? No. Perfecta. Ai, encara ets aquí! Vés, surt a fora."]],
   full: [["The jar is full! Look, all the papers. Every one is a real thing you did. *wipes her eyes with the apron* Onions. It's onions.", "罐子满了！你看，全是纸条。每一张都是你真的做过的事。*用围裙擦擦眼睛* 洋葱。是洋葱啦。", "個樽滿咗喇！睇下，咁多張紙，每一張都係你真係做過嘅事。*用圍裙抹抹眼* 洋蔥嚟啫，係洋蔥。", "¡El tarro está lleno! Mira, todos los papeles. Cada uno es una cosa de verdad que hiciste. *se seca los ojos con el delantal* Cebolla. Es cebolla.", "El pot és ple! Mira tots els papers. Cadascun és una cosa de debò que has fet. *s'eixuga els ulls amb el davantal* Ceba. És la ceba."]],
   restartQ: [["All the papers in the bin? *holds the jar tight* You are sure?", "纸条全都倒掉？*抱紧罐子* 你确定？", "啲紙全部掉晒？*攬實個樽* 你肯定？", "¿Todos los papeles a la basura? *abraza el tarro* ¿Seguro?", "Tots els papers a les escombraries? *abraça el pot* N'estàs segur?"]],
   restarted: [["*empties the jar, very slowly, and sighs* OK. A clean jar. We start again.", "*慢慢倒空罐子，叹口气* 好啦。干干净净一个罐子。从头来过。", "*慢慢倒清個樽，嘆一啖氣* 好啦，乾乾淨淨個樽，由頭嚟過。", "*vacía el tarro, muy despacio, y suspira* Vale. Tarro limpio. Empezamos otra vez.", "*buida el pot, molt a poc a poc, i sospira* D'acord. Un pot net. Tornem a començar."]]
@@ -305,6 +310,149 @@ var DROP = [
   ["cats", ["*Yuzu tries to fit inside the jar. Does not fit. Tries again.*", "*柚子想钻进罐子。钻不进去。再试一次。*", "*柚子想鑽進罐子。鑽不進去。再試一次。*", "*Yuzu intenta meterse en el tarro. No cabe. Lo vuelve a intentar.*", "*Yuzu prova de ficar-se dins del pot. No hi cap. Ho torna a provar.*"]]
 ];
 
+/* ---------------- the day's kitchen: Popo's clothes, what's on the stove, and who's minding the jar ----------------
+   All seeded by the date (?d=2026-12-24 tries another day), so it holds all day. Popo keeps her bun, jade pin and jade
+   glasses; the cardigan, apron, a scarf in the cold and her shoes change. Now and then (one visit in about seven, never a
+   newcomer's) she's out and Mei or Wei hands out the papers, only in their own waking hours; she leaves a paper saying where. */
+var DAYKEY = (function () { var m = /[?&]d=(\d{4})-(\d{1,2})-(\d{1,2})/.exec(location.search); return m ? +m[1] + "-" + +m[2] + "-" + +m[3] : null; })();
+function dayKey() { if (DAYKEY) return DAYKEY; var d = new Date(); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
+function weekday() { var k = dayKey().split("-"); return new Date(+k[0], k[1] - 1, +k[2]).getDay(); }
+function dh(salt) { var s = dayKey() + ":" + salt, h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967296; }
+function dpick(a, salt) { return a[Math.floor(dh(salt) * a.length)]; }
+var CARDI = { red: ["#8a2a3a", "#7a2232"], plum: ["#6a2a5a", "#58204a"], moss: ["#5a6a2e", "#4a5824"], navy: ["#2a3a6a", "#203058"], mustard: ["#c0902e", "#a47a22"] };
+var SCARF = [["#c8303a", "#9a2028"], ["#e8d070", "#c0a040"], ["#4a7ec0", "#2e5a92"], ["#f3ead8", "#cfc4ac"]];
+var SHOES = { slippers: ["slippers", "拖鞋", "拖鞋", "zapatillas", "sabatilles"], shoes: ["house shoes", "布鞋", "布鞋", "zapatos de casa", "sabates de casa"] };
+function season() { if (DAYKEY) { var m = +DAYKEY.split("-")[1] - 1; return m === 11 || m < 2 ? "winter" : m < 5 ? "spring" : m < 8 ? "summer" : "autumn"; } try { if (FW.season) return FW.season(); } catch (e) {} return realSeason(); }
+function popoLook() {
+  var sn = season(), cold = sn === "winter" ? .75 : sn === "autumn" ? .4 : 0;
+  var cardi = dpick(Object.keys(CARDI), "popo-cardi");
+  return { cardi: cardi, apron: dpick(["plain", "gingham", "flowers"], "popo-apron"),
+    scarf: dh("popo-scarf") < cold ? SCARF.filter(function (c, i) { return !(i === 0 && /red|plum/.test(cardi)) && !(i === 2 && cardi === "navy") && !(i === 1 && cardi === "mustard"); })[Math.floor(dh("popo-scarf-c") * 3)] : null, shoes: dh("popo-shoes") < .5 ? "slippers" : "shoes" };
+}
+/* the town's Popo (FBWorld.drawPopo), dressed for the day: her clothes redrawn over the town's, her face untouched */
+function popoDraw(g, x, y, o) {
+  o = o || {}; if (FW.drawPopo) FW.drawPopo(g, x, y, 1, { asleep: !!o.asleep }); else return rect(g, x + 4, y + 4, 24, 28, "#8a2a3a");
+  var L = o.look || popoLook(), C = CARDI[L.cardi] || CARDI.red, R = function (a, b, w, h, c) { rect(g, x + a, y + b, w, h, c); };
+  var AP = L.apron === "gingham" ? "#f6f2ea" : L.apron === "flowers" ? "#f4ead4" : "#efe4c8";
+  R(7, 22, 18, 10, C[0]); R(6, 25, 2, 7, C[1]); R(24, 25, 2, 7, C[1]); R(12, 21, 8, 2, "#f3ead8");
+  R(11, 24, 10, 8, AP); R(11, 23, 1, 2, AP); R(20, 23, 1, 2, AP);
+  if (L.apron === "gingham") for (var i = 11; i < 21; i++) for (var j = 24; j < 32; j++) if ((i + j) % 2 === 0 || i % 3 === 0 && j % 3 === 0) R(i, j, 1, 1, (i % 3 === 0 && j % 3 === 0) ? "#5a8ac0" : "#a8c4e4");
+  if (L.apron === "flowers") [[12, 25, "#e86a8a"], [17, 25, "#e8b830"], [14, 27, "#6a9ad8"], [19, 28, "#e86a8a"], [12, 30, "#e8b830"], [16, 30, "#e86a8a"]].forEach(function (f) { R(f[0], f[1], 1, 1, f[2]); R(f[0] + 1, f[1] + 1, 1, 1, "#5aa04a"); });
+  R(13, 28, 6, 2, L.apron === "plain" ? "#dccba4" : "#e2d4b4"); R(15, 22, 2, 1, "#c8a040"); R(14, 20, 4, 2, "#f2cfa8");
+  if (L.scarf) { R(9, 20, 14, 3, L.scarf[0]); R(9, 22, 14, 1, L.scarf[1]); R(17, 22, 3, 3, L.scarf[0]); R(18, 25, 2, 4, L.scarf[1]); R(18, 29, 1, 1, L.scarf[0]); R(19, 29, 1, 1, L.scarf[1]); }
+}
+/* Wei, the drawing of Next Door's svg-wei-avatar (round amber glasses, black hair, waistcoat) */
+function weiDraw(g, x, y) { WEI.forEach(function (r) { rect(g, x + r[0], y + r[1] - 1, r[2], r[3], r[4]); }); }
+
+/* what's cooking: v is the vessel, fire whether the ring is lit; p is Popo's line (en/zh broken, zh-Hant Cantonese, es broken, ca fluent) */
+var DISH = {
+  congee: { v: "clay", fire: 1, n: ["Congee", "粥", "粥", "Congee", "Congee"],
+    p: ["*stirs the congee* Almost ready. Warm the stomach first, then go out.", "*搅一搅粥* 快好啦。先暖暖肚子，再出去。", "*攪下煲粥* 就快得喇。暖下個胃先，至好出去。", "*remueve el congee* Casi listo. Primero estómago caliente, luego sales.", "*remena el congee* Gairebé és a punt. Primer la panxa calenta, i després surts."] },
+  siumai: { v: "steamer", fire: 1, n: ["Siu mai", "烧卖", "燒賣", "Siu mai", "Siu mai"],
+    p: ["*lifts the steamer lid, steam everywhere* Siu mai! You take two. Take three.", "*掀开蒸笼盖，到处是蒸汽* 烧卖！拿两个。拿三个啦。", "*揭開個蒸籠蓋，成屋都係煙* 燒賣！攞兩粒。攞三粒啦。", "*levanta la tapa de la vaporera, vapor por todas partes* ¡Siu mai! Coge dos. Coge tres.", "*aixeca la tapa de la vaporera i tot s'omple de vapor* Siu mai! Agafa'n dos. Agafa'n tres."] },
+  wonton: { v: "pot", fire: 1, c: "#e8c47a", bits: "#fbf3e6", n: ["Wonton soup", "云吞汤", "雲吞湯", "Sopa de wonton", "Sopa de wonton"],
+    p: ["*drops wontons in the pot* Forty I wrap this morning. Too many? Never too many.", "*把云吞放进锅里* 今天早上包了四十个。太多？不会太多的啦。", "*將啲雲吞放落煲* 我今朝包咗四十隻。太多？點會多呀。", "*echa wontons a la olla* Cuarenta hago esta mañana. ¿Demasiados? Nunca demasiados.", "*tira wontons a l'olla* N'he fet quaranta aquest matí. Massa? Mai no són massa."] },
+  fish: { v: "fish", fire: 1, n: ["Steamed fish", "清蒸鱼", "清蒸魚", "Pescado al vapor", "Peix al vapor"],
+    p: ["*checks the clock* Fish in the steamer. Eight minutes, not nine. Josep always say nine. Josep was wrong.", "*看看钟* 鱼在蒸着。八分钟，不是九分钟。Josep 老说九分钟。他错啦。", "*望下個鐘* 條魚蒸緊。八分鐘，唔係九分鐘。Josep 成日話九分鐘，佢錯㗎。", "*mira el reloj* Pescado al vapor. Ocho minutos, no nueve. Josep siempre dice nueve. Josep se equivoca.", "*mira el rellotge* Peix al vapor. Vuit minuts, no nou. En Josep sempre deia nou. S'equivocava."] },
+  escudella: { v: "big", fire: 1, c: "#b07a3a", n: ["Escudella", "加泰罗尼亚炖汤", "加泰隆尼亞燉湯", "Escudella", "Escudella"],
+    p: ["*lifts the big lid* Escudella. Josep's mother teach me. Winter needs it.", "*掀开大锅盖* Escudella，加泰罗尼亚的炖汤。Josep 的妈妈教我的。冬天要饮汤啦。", "*揭開個大煲蓋* Escudella，加泰隆尼亞嘅大鍋湯。Josep 阿媽教我煮嘅。冬天要飲返碗先得。", "*levanta la tapa grande* Escudella. La madre de Josep me enseña. El invierno la necesita.", "*aixeca la tapa grossa* Escudella. Me la va ensenyar la mare d'en Josep. L'hivern la demana."] },
+  pa: { v: "board", fire: 0, n: ["Pa amb tomàquet", "番茄面包", "番茄麵包", "Pan con tomate", "Pa amb tomàquet"],
+    p: ["*rubs a tomato on the toast, hard* Pa amb tomàquet. Bread, tomato, oil, salt. Easy, but you rub hard.", "*用力把番茄擦在面包上* Pa amb tomàquet。面包、番茄、油、盐。简单，但要用力擦喔。", "*大力將個蕃茄擦落多士度* Pa amb tomàquet。麵包、蕃茄、油、鹽。好簡單，不過要大力擦。", "*frota un tomate en la tostada, fuerte* Pa amb tomàquet. Pan, tomate, aceite, sal. Fácil, pero frotas fuerte.", "*frega un tomàquet al pa torrat, fort* Pa amb tomàquet. Pa, tomàquet, oli i sal. És fàcil, però s'ha de fregar fort."] },
+  tarts: { v: "tray", fire: 0, n: ["Egg tarts", "蛋挞", "蛋撻", "Tartas de huevo", "Pastissets d'ou"],
+    p: ["*blows on the tray* Egg tarts, just out of the oven. Hot! Wait five minutes.", "*对着烤盘吹一吹* 蛋挞刚出炉。好烫！等五分钟啦。", "*對住個焗盤吹下* 蛋撻啱啱出爐，好熱㗎！等五分鐘先食。", "*sopla la bandeja* Tartas de huevo, recién del horno. ¡Quema! Esperas cinco minutos.", "*bufa la safata* Pastissets d'ou acabats de sortir del forn. Cremen! Espera't cinc minuts."] },
+  soup: { v: "big", fire: 1, c: "#c8843a", n: ["Sunday soup", "星期天的老火汤", "禮拜日嘅老火湯", "Sopa de domingo", "Sopa de diumenge"],
+    p: ["*skims the soup* Sunday soup. Four hours on the fire. You drink a bowl, then you call your mama.", "*撇一撇汤面* 星期天的汤，煲了四个钟头。饮一碗，然后打电话给妈妈啦。", "*撇下啲湯面* 禮拜日嘅老火湯，煲咗四個鐘。飲碗湯，跟住打個電話俾你阿媽啦。", "*espuma la sopa* Sopa de domingo. Cuatro horas al fuego. Tomas un tazón, luego llamas a tu mamá.", "*escuma la sopa* Sopa de diumenge. Quatre hores al foc. Te'n prens un bol i després truques a la teva mare."] },
+  lemon: { v: "jug", fire: 0, n: ["Lemon water", "柠檬水", "檸檬水", "Agua de limón", "Aigua de llimona"],
+    p: ["*drops ice in the jug* Too hot to cook. Lemon water. Drink! You look dry.", "*往壶里放冰块* 太热了，不煮了。柠檬水。饮啦！你看起来好干。", "*放冰落個水壺* 咁熱，唔煮喇。檸檬水，飲啦！你個樣好乾呀。", "*echa hielo en la jarra* Mucho calor para cocinar. Agua de limón. ¡Bebe! Pareces seco.", "*posa gel a la gerra* Fa massa calor per cuinar. Aigua de llimona. Beu, que se't veu sec!"] },
+  tomegg: { v: "wok", fire: 1, n: ["Tomato and egg", "番茄炒蛋", "蕃茄炒蛋", "Tomate con huevo", "Tomàquet amb ou"],
+    p: ["*tosses the wok* Tomato and egg. First thing I cook for my girls. Still they like it.", "*翻一翻锅* 番茄炒蛋。我给两个女儿煮的第一道菜。现在还是爱食。", "*兜下個鑊* 蕃茄炒蛋。我第一味煮俾兩個女嘅餸，到而家佢哋都仲鍾意。", "*saltea en el wok* Tomate con huevo. Lo primero que cocino para mis hijas. Todavía les gusta.", "*salta el wok* Tomàquet amb ou. El primer que vaig cuinar per a les meves filles. Encara els agrada."] },
+  /* Mei's, when she's minding the kitchen: she can't cook */
+  burnt: { v: "pot", fire: 0, c: "#2a1a10", bits: "#4a3020", smoke: 1 },
+  noodles: { v: "pot", fire: 1, c: "#e8c060", bits: "#f4d880", sticks: 1 }
+};
+function dishPart() { var h = hour(); return h < 11 ? "morn" : h < 17 ? "aft" : "eve"; }
+function dishKey() {   /* Popo's stove today: by the hour, the season and Sunday */
+  var pt = dishPart(), sn = season(), sun = weekday() === 0, a;
+  if (sun && pt !== "morn") return "soup";
+  if (pt === "morn") a = ["congee", "congee", "siumai", "pa"];
+  else if (pt === "aft") a = ["wonton", "tarts", "pa", "fish"].concat(sn === "summer" ? ["lemon", "lemon"] : sn === "winter" ? ["escudella", "escudella"] : []);
+  else a = ["wonton", "fish", "tomegg"].concat(sn === "winter" ? ["escudella", "escudella"] : sn === "summer" ? ["lemon"] : []);
+  return dpick(a, "dish-" + pt);
+}
+function potKey() {   /* what's actually on the stove now: nothing while Popo sleeps, Mei's own disaster while she minds it */
+  if (asleep()) return null; var k = keeper();
+  if (k === "mei") return weekday() === 0 && dishPart() !== "morn" ? "soup" : dh("mei-pot") < .5 ? "burnt" : "noodles";
+  return dishKey();
+}
+var KN = { mei: ["Mei", "Mei", "Mei", "Mei", "la Mei"], wei: ["Wei", "Wei", "Wei", "Wei", "en Wei"] };
+/* Popo's paper on the stove, saying where she went ({K}: who's minding the jar) */
+var AWAY = {
+  market: ["Gone to market. Early fish is best fish. {K} gives you the paper. Eat something! — Popo", "去市场了。早上的鱼最新鲜。{K}给你纸条。要食东西喔！——婆婆", "去咗街市。朝早啲魚至新鮮。{K}俾紙仔你。記得食嘢呀！——婆婆", "Fui al mercado. Pescado temprano, mejor pescado. {K} te da el papel. ¡Come algo! — Popo", "Soc al mercat: el peix del matí és el millor. {K} et donarà el paper. Menja alguna cosa! — Popo"],
+  mahjong: ["Mahjong with Señora Pilar. I win, I come back. {K} gives you the paper. — Popo", "跟 Pilar 太太打麻将去了。赢了就回来。{K}给你纸条。——婆婆", "同 Pilar 太打緊麻雀，贏咗就返嚟。{K}俾紙仔你。——婆婆", "Mahjong con la señora Pilar. Gano, vuelvo. {K} te da el papel. — Popo", "Soc al mahjong amb la senyora Pilar. Quan guanyi, torno. {K} et donarà el paper. — Popo"],
+  neighbour: ["Gone up to Mrs Roca. Her knee is bad, I bring her soup. {K} gives you the paper. — Popo", "去楼上看 Roca 太太。她膝盖不好，我送汤去。{K}给你纸条。——婆婆", "上咗樓上睇下 Roca 太，佢隻膝頭唔好，我拎啲湯上去。{K}俾紙仔你。——婆婆", "Fui a ver a la señora Roca de arriba. Rodilla mala, le llevo sopa. {K} te da el papel. — Popo", "He pujat a veure la senyora Roca, que té el genoll fotut. Li porto sopa. {K} et donarà el paper. — Popo"],
+  cabin: ["Sunday: I go up to the cabin, like always. Soup on the stove. {K} gives you the paper. — Popo", "星期天，我上山去小屋，老规矩。汤在炉子上。{K}给你纸条。——婆婆", "禮拜日，我照舊上山去間屋仔。湯喺爐頭。{K}俾紙仔你。——婆婆", "Domingo: subo a la cabaña, como siempre. Sopa en el fuego. {K} te da el papel. — Popo", "Diumenge: pujo a la cabana, com sempre. Hi ha sopa al foc. {K} et donarà el paper. — Popo"]
+};
+function awayKey() { if (weekday() === 0) return "cabin"; var pt = dishPart(); return pt === "morn" ? "market" : dpick(pt === "aft" ? ["mahjong", "mahjong", "neighbour"] : ["neighbour", "mahjong"], "away-" + pt); }
+function awayNote(k) { var n = T(KN[k]); return T(AWAY[awayKey()]).split("{K}").join(n.charAt(0).toUpperCase() + n.slice(1)); }
+/* Mei and Wei minding the jar: Mei (sixteen, New York, witty) and Wei (warm, dry, small acts); standard Mandarin */
+var H = {
+  mei: {
+    hi: [["*feet up on Popo's stool* Popo's out. I'm in charge. Of the jar. Not the stove. Never the stove.", "*脚翘在婆婆的凳子上* 婆婆出去了。现在我负责。负责罐子，不是炉子。绝对不是炉子。", "*腳翹在婆婆的凳子上* 婆婆出去了。現在我負責。負責罐子，不是爐子。絕對不是爐子。", "*con los pies en el taburete de Popo* Popo ha salido. Mando yo. En el tarro. No en el fuego. Nunca en el fuego.", "*amb els peus al tamboret de la Popo* La Popo ha sortit. Mano jo. Del pot. No dels fogons. Mai dels fogons."],
+      ["*looks up from her phone, slowly* Oh. A customer. Fine. One paper, coming up.", "*慢慢从手机上抬头* 哦，有客人。行吧。一张纸条，马上来。", "*慢慢從手機上抬頭* 哦，有客人。好吧。一張紙條，馬上來。", "*levanta la vista del móvil, despacio* Ah. Un cliente. Vale. Un papel, marchando.", "*aixeca la vista del mòbil, a poc a poc* Ah. Un client. Vinga. Un paper, marxant."]],
+    back: [["You're back. Popo told me to ask if you did the thing. So. Did you do the thing?", "你回来了。婆婆让我问你做了没有。所以，做了没？", "你回來了。婆婆叫我問你做了沒有。所以，做了沒？", "Has vuelto. Popo me dijo que te preguntara si lo hiciste. Así que… ¿lo hiciste?", "Has tornat. La Popo m'ha dit que et pregunti si ho has fet. Doncs… ho has fet?"]],
+    done: [["*drops it in the jar like a three-pointer* Nice. Popo's going to be insufferable about this.", "*像投三分球一样把纸条丢进罐子* 漂亮。婆婆知道了又要得意好几天。", "*像投三分球一樣把紙條丟進罐子* 漂亮。婆婆知道了又要得意好幾天。", "*la encesta en el tarro como un triple* Bien. Popo se va a poner insoportable con esto.", "*l'encistella al pot com un triple* Bé. La Popo n'estarà insuportable de cofoia."],
+      ["Wait, you actually did it? *folds it, drops it in* Respect.", "等等，你真的做了？*折好丢进去* 服了。", "等等，你真的做了？*摺好丟進去* 服了。", "Espera, ¿lo hiciste de verdad? *lo dobla y lo echa* Respeto.", "Espera, de debò que ho has fet? *el doblega i el deixa caure* Respecte."]],
+    enough: [["That's today's. Go do something with your face that isn't a screen.", "今天的就这些。去干点不用看屏幕的事吧。", "今天的就這些。去做點不用看螢幕的事吧。", "Esa es la de hoy. Ve a hacer algo que no sea mirar una pantalla.", "Aquesta és la d'avui. Vés a fer alguna cosa que no sigui mirar una pantalla."]],
+    another: [["Picky. I respect it. *rummages* This one?", "挑剔。我尊重。*翻了翻* 这张？", "挑剔。我尊重。*翻了翻* 這張？", "Exigente. Lo respeto. *rebusca* ¿Esta?", "Exigent. Ho respecto. *remena* Aquesta?"],
+      ["*shakes the jar like a snow globe* Okay, try this.", "*像摇雪花球一样摇罐子* 好，试试这张。", "*像搖雪花球一樣搖罐子* 好，試試這張。", "*agita el tarro como una bola de nieve* Vale, prueba esta.", "*sacseja el pot com una bola de neu* Vinga, prova aquesta."]],
+    picky: [["Last one. After this I'm telling Popo you were difficult.", "最后一张。再挑我就告诉婆婆你很难搞。", "最後一張。再挑我就告訴婆婆你很難搞。", "La última. Después le digo a Popo que fuiste difícil.", "L'última. Després li diré a la Popo que has estat difícil."]],
+    later: [["Not today. Same, honestly. *puts the paper back in Popo's apron on the hook*", "今天不了。说实话，我也是。*把纸条塞回挂钩上婆婆的围裙口袋*", "今天不了。說實話，我也是。*把紙條塞回掛鉤上婆婆的圍裙口袋*", "Hoy no. Te entiendo, la verdad. *devuelve el papel al delantal de Popo, en el gancho*", "Avui no. T'entenc, de debò. *torna el paper al davantal de la Popo, al penjador*"]],
+    rest: [["*scrolling* I'm here. Technically.", "*刷着手机* 我在呢。理论上。", "*滑著手機* 我在呢。理論上。", "*deslizando el móvil* Aquí estoy. Técnicamente.", "*fent scroll* Soc aquí. Tècnicament."],
+      ["*paints one nail, blows on it* Take your time. I've got nine more.", "*涂了一片指甲，吹一吹* 不急。我还有九片。", "*塗了一片指甲，吹一吹* 不急。我還有九片。", "*se pinta una uña y sopla* Tranquilo. Me quedan nueve.", "*es pinta una ungla i hi bufa* Amb calma. Me'n queden nou."]],
+    full: [["The jar's full. Okay, that's actually kind of beautiful. Don't tell anyone I said that.", "罐子满了。好吧，这还真有点美。别跟别人说是我说的。", "罐子滿了。好吧，這還真有點美。別跟別人說是我說的。", "El tarro está lleno. Vale, es un poco bonito. No digas que lo dije yo.", "El pot és ple. D'acord, és una mica bonic. No diguis que ho he dit jo."]],
+    chose: [["*unscrews the lid* Let's see what Popo put in here…", "*拧开盖子* 看看婆婆放了什么……", "*扭開蓋子* 看看婆婆放了什麼……", "*desenrosca la tapa* A ver qué metió Popo aquí…", "*descargola la tapa* A veure què hi va posar la Popo…"]],
+    restartQ: [["Empty the whole jar? Popo will literally cry. Sure?", "整罐倒掉？婆婆真的会哭。确定？", "整罐倒掉？婆婆真的會哭。確定？", "¿Vaciar el tarro entero? Popo va a llorar, literal. ¿Seguro?", "Buidar tot el pot? La Popo plorarà, literalment. Segur?"]],
+    restarted: [["*empties it, slowly* Okay. Fresh start. I won't tell her.", "*慢慢倒空* 好吧。重新开始。我不会告诉她的。", "*慢慢倒空* 好吧。重新開始。我不會告訴她的。", "*lo vacía, despacio* Vale. Desde cero. No se lo diré.", "*el buida, a poc a poc* D'acord. De zero. No li ho diré."]],
+    tap: [["*holds up one finger, finishes a text* Yes?", "*竖起一根手指，打完一条消息* 什么事？", "*豎起一根手指，打完一條訊息* 什麼事？", "*levanta un dedo, termina un mensaje* ¿Sí?", "*aixeca un dit, acaba un missatge* Sí?"],
+      ["*shows you her nails* Glitter. Popo hates it. I love it.", "*给你看她的指甲* 闪粉。婆婆讨厌，我超爱。", "*給你看她的指甲* 亮粉。婆婆討厭，我超愛。", "*te enseña las uñas* Purpurina. Popo la odia. Yo la amo.", "*t'ensenya les ungles* Purpurina. La Popo l'odia. Jo l'adoro."]],
+    pot: { burnt: ["Don't look at the pot. I was making rice. Rice is hard, okay?", "别看那个锅。我在煮饭。煮饭很难的好吗？", "別看那個鍋。我在煮飯。煮飯很難的好嗎？", "No mires la olla. Estaba haciendo arroz. El arroz es difícil, ¿vale?", "No miris l'olla. Feia arròs. L'arròs és difícil, eh?"],
+      noodles: ["Instant noodles. Gourmet. Popo would faint. Don't tell her.", "泡面。米其林级别。婆婆看到会晕倒。别告诉她。", "泡麵。米其林等級。婆婆看到會暈倒。別告訴她。", "Fideos instantáneos. Alta cocina. Popo se desmayaría. No le digas.", "Fideus instantanis. Alta cuina. La Popo es desmaiaria. No li diguis."],
+      soup: ["Popo's soup. I'm not allowed near it. Fair, after the rice.", "婆婆的汤。我不准靠近。上次煮饭之后，也算公平。", "婆婆的湯。我不准靠近。上次煮飯之後，也算公平。", "La sopa de Popo. No me dejan acercarme. Justo, después de lo del arroz.", "La sopa de la Popo. No m'hi deixen acostar. Just, després de l'arròs."] }
+  },
+  wei: {
+    hi: [["*ties Popo's apron on, slightly too short for him* She's out. I'm minding the jar. And the pot.", "*系上婆婆的围裙，有点短* 她出去了。我帮她看着罐子。还有锅。", "*繫上婆婆的圍裙，有點短* 她出去了。我幫她看著罐子。還有鍋。", "*se ata el delantal de Popo, un poco corto para él* Ha salido. Cuido yo el tarro. Y la olla.", "*es lliga el davantal de la Popo, una mica curt per a ell* Ha sortit. Jo vigilo el pot. I l'olla."],
+      ["*slides a stool out for you* Popo's out. Sit. I'll find you a paper.", "*给你拉出一张凳子* 婆婆出去了。坐。我给你找一张纸条。", "*給你拉出一張凳子* 婆婆出去了。坐。我給你找一張紙條。", "*te acerca un taburete* Popo ha salido. Siéntate. Te busco un papel.", "*t'acosta un tamboret* La Popo ha sortit. Seu. Et busco un paper."]],
+    back: [["*wipes his hands* You're back. How did it go?", "*擦擦手* 你回来了。怎么样？", "*擦擦手* 你回來了。怎麼樣？", "*se seca las manos* Has vuelto. ¿Qué tal fue?", "*s'eixuga les mans* Has tornat. Com ha anat?"]],
+    done: [["*folds it the way she does, twice, and drops it in* She'll see it when she's back.", "*像她那样折两折，放进去* 她回来会看到的。", "*像她那樣摺兩摺，放進去* 她回來會看到的。", "*lo dobla como ella, dos veces, y lo echa* Lo verá cuando vuelva.", "*el doblega com ella, dues vegades, i el deixa caure* Ho veurà quan torni."],
+      ["*slides the jar over so you can drop it in yourself* Good. That's a real one.", "*把罐子推到你面前，让你自己放进去* 很好。这是真的一件。", "*把罐子推到你面前，讓你自己放進去* 很好。這是真的一件。", "*te acerca el tarro para que lo eches tú* Bien. Esa es de verdad.", "*t'acosta el pot perquè l'hi deixis tu* Bé. Aquesta és de debò."]],
+    enough: [["One's plenty. Go on. Tell me about it next time.", "一件就够了。去吧。下次讲给我听。", "一件就夠了。去吧。下次講給我聽。", "Con una basta. Venga. La próxima me lo cuentas.", "Amb una n'hi ha prou. Vinga. La propera vegada m'ho expliques."]],
+    another: [["*puts it back, picks another without looking* Fair.", "*放回去，不看就再抽一张* 也对。", "*放回去，不看就再抽一張* 也對。", "*la devuelve y saca otra sin mirar* Justo.", "*la torna i n'agafa una altra sense mirar* Just."],
+      ["Not that one? *draws another* She'd say picky. I'll just say: here.", "不要那张？*又抽一张* 她会说你挑剔。我只说：给。", "不要那張？*又抽一張* 她會說你挑剔。我只說：給。", "¿Esa no? *saca otra* Ella diría exigente. Yo solo digo: toma.", "Aquesta no? *n'agafa una altra* Ella diria llepafils. Jo només dic: té."]],
+    picky: [["Last one, or she'll know I let you shop around.", "最后一张了，不然她会知道我让你挑来挑去。", "最後一張了，不然她會知道我讓你挑來挑去。", "La última, o sabrá que te dejé elegir a tu gusto.", "L'última, o sabrà que t'he deixat triar a plaer."]],
+    later: [["Not today is an answer too. *pockets the paper for tomorrow*", "今天不做，也是一种回答。*把纸条收进口袋，明天再说*", "今天不做，也是一種回答。*把紙條收進口袋，明天再說*", "Hoy no también es una respuesta. *se guarda el papel para mañana*", "Avui no també és una resposta. *es guarda el paper per a demà*"]],
+    rest: [["*stirs the pot, slowly* I'm here till she's back.", "*慢慢搅着锅* 她回来之前我都在。", "*慢慢攪著鍋* 她回來之前我都在。", "*remueve la olla, despacio* Estoy aquí hasta que vuelva.", "*remena l'olla, a poc a poc* Soc aquí fins que torni."],
+      ["*leaves a glass of water by your elbow*", "*在你手边放了一杯水*", "*在你手邊放了一杯水*", "*te deja un vaso de agua junto al codo*", "*et deixa un got d'aigua al costat del colze*"]],
+    full: [["*holds the jar up to the window* Full. Every one of these happened. She's going to cry. Blame the onions.", "*把罐子举到窗前* 满了。每一张都是真的发生过的。她会哭的。就说是洋葱。", "*把罐子舉到窗前* 滿了。每一張都是真的發生過的。她會哭的。就說是洋蔥。", "*levanta el tarro hacia la ventana* Lleno. Todas pasaron de verdad. Va a llorar. Culpa a la cebolla.", "*aixeca el pot cap a la finestra* Ple. Totes han passat de debò. Plorarà. La culpa, a la ceba."]],
+    chose: [["*unscrews the lid* Let's see.", "*拧开盖子* 我看看。", "*扭開蓋子* 我看看。", "*desenrosca la tapa* A ver.", "*descargola la tapa* A veure."]],
+    restartQ: [["Empty it? *holds the jar a little closer* You're sure?", "倒空？*把罐子抱近了一点* 你确定？", "倒空？*把罐子抱近了一點* 你確定？", "¿Vaciarlo? *acerca un poco el tarro* ¿Seguro?", "Buidar-lo? *s'acosta una mica el pot* Segur?"]],
+    restarted: [["*empties it, carefully* A clean jar. Start where you are.", "*小心地倒空* 干净的罐子。从现在开始。", "*小心地倒空* 乾淨的罐子。從現在開始。", "*lo vacía con cuidado* Un tarro limpio. Empieza donde estás.", "*el buida amb compte* Un pot net. Comença on ets."]],
+    tap: [["*slides a coaster under your cup* Habit.", "*在你杯子下面塞了个杯垫* 职业习惯。", "*在你杯子下面塞了個杯墊* 職業習慣。", "*te pone un posavasos bajo la taza* Costumbre.", "*et posa un sotagot sota la tassa* Costum."],
+      ["*tastes from the pot, adds nothing* She'd know.", "*尝了一口锅里的，什么也没加* 加了她会知道的。", "*嚐了一口鍋裡的，什麼也沒加* 加了她會知道的。", "*prueba de la olla, no añade nada* Se daría cuenta.", "*tasta de l'olla i no hi afegeix res* Se n'adonaria."]],
+    potHot: ["{d}. She left it on low. My job is not to touch it.", "{d}。她开着小火。我的任务就是别碰它。", "{d}。她開著小火。我的任務就是別碰它。", "{d}. Lo dejó a fuego lento. Mi trabajo es no tocarlo.", "{d}. L'ha deixat a foc lent. La meva feina és no tocar-ho."],
+    potCold: ["{d}. She left it for whoever comes. That's you.", "{d}。她留给来的人的。就是你。", "{d}。她留給來的人的。就是你。", "{d}. Lo dejó para quien venga. O sea, tú.", "{d}. Ho ha deixat per a qui vingui. És a dir, tu."]
+  }
+};
+var POPO_SHOES = ["*wiggles her feet in her {s}* Comfortable. At my age, comfortable is everything.", "*在{s}里动动脚趾* 舒服。我这个年纪，舒服最重要啦。", "*喺對{s}入面郁下啲腳趾* 舒服。我呢個年紀，舒服至緊要。", "*mueve los pies en sus {s}* Cómodo. A mi edad, cómodo es todo.", "*belluga els peus dins les {s}* Comoditat. A la meva edat, la comoditat ho és tot."];
+var POPO_SCARF = ["*tightens her scarf* Cold today. You wear a scarf? No? Aiya.", "*把围巾拉紧一点* 今天好冷。你有没有戴围巾？没有？哎呀。", "*拉實條頸巾* 今日好凍。你有冇戴頸巾呀？冇？哎呀。", "*se ajusta la bufanda* Hoy frío. ¿Llevas bufanda? ¿No? Aiya.", "*s'estreny la bufanda* Avui fa fred. Portes bufanda? No? Aiya."];
+/* any server's line for a moment: Popo, Mei, Wei, or the cats */
+function line(s, key) { if (s === "popo") return pick(P[key]); if (H[s]) return pick(H[s][key] || P[key]); return catLine(s, key); }
+function potLine() {   /* a tap on the stove: whoever's minding it says what's in it */
+  var pk = potKey(); if (!pk) return null; var k = keeper();
+  if (k === "popo") return ["popo", DISH[pk].p];
+  if (k === "mei") return ["mei", H.mei.pot[pk] || H.mei.pot.noodles];
+  return ["wei", T(DISH[pk].fire ? H.wei.potHot : H.wei.potCold).split("{d}").join(T(DISH[pk].n))];
+}
+
 /* one cat on its own (woken at night): {c} is its name */
 var CATN = { miso: ["Miso", "味噌", "味噌", "Miso", "Miso"], yuzu: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"] };
 var SOLO = {
@@ -317,7 +465,7 @@ var SOLO = {
 };
 /* the dark kitchen (23–5): a paper Popo left on the jar, in her voice */
 var NOTE = ["Go sleep! Little things tomorrow. Can't sleep? OK, take one paper. Only one. — Popo", "去睡觉啦！小事明天再做。睡不着？好啦，拿一张纸条。一张就好喔。——婆婆", "去瞓啦！小事聽日先做。瞓唔著？好啦，攞一張紙仔，一張就夠喇。——婆婆", "¡Ve a dormir! Cositas mañana. ¿No duermes? Vale, coge un papel. Solo uno. — Popo", "Vés a dormir! Les cosetes, demà. No pots dormir? Bé, agafa un paper. Només un, eh. — Popo"];
-var NOTE_INTRO = ["For who comes at night: this is my jar. Inside, little things to do. Not on the phone, in your life. Take one paper, go do it, put it in the jar. Small jar for start. Then go sleep! — Popo", "给晚上来的人：这是我的罐子。里面是小事，不是在手机上做，是在你的生活里做。拿一张纸条，去做，做完放进罐子。刚开始挑小罐。然后去睡觉啦！——婆婆", "俾夜晚嚟嘅人：呢個係我個樽。入面係啲小事，唔係喺部電話度做，係喺你嘅生活度做。攞一張紙仔，去做，做完放入個樽。啱啱開始揀細樽。跟住去瞓啦！——婆婆", "Para quien viene de noche: este es mi tarro. Dentro, cositas para hacer. No en el móvil, en tu vida. Coges un papel, lo haces, lo pones en el tarro. Pequeño para empezar. ¡Y luego a dormir! — Popo", "Per a qui vingui de nit: aquest és el meu pot. A dins hi ha coses petites per fer, no al mòbil, a la teva vida. Agafes un paper, la fas i el poses al pot. Per començar, el pot petit. I després, a dormir! — Popo"];
+var NOTE_INTRO = ["For who comes at night: one paper, one little thing. Not on the phone: out there. Do it, come back, put it in. Then go sleep! — Popo", "给晚上来的人：一张纸条，一件小事。不是在手机上，是外面。做完回来，放进罐子。然后去睡觉啦！——婆婆", "俾夜晚嚟嘅人：一張紙仔，一件小事。唔係喺電話度，係出面。做完返嚟，放入個樽。跟住去瞓啦！——婆婆", "Para quien viene de noche: un papel, una cosita. No en el móvil: fuera. La haces, vuelves, al tarro. ¡Luego a dormir! — Popo", "Per a qui vingui de nit: un paper, una coseta. No al mòbil: a fora. La fas, tornes i cap al pot. I després, a dormir! — Popo"];
 var CAT_POINT = ["*Miso pats the note with one paw: read this.*", "*味噌用一只爪子拍拍纸条：看这个。*", "*味噌用一隻爪子拍拍紙條：看這個。*", "*Miso le da a la nota con una pata: lee esto.*", "*Miso toca la nota amb una pota: llegeix això.*"];
 var FRIEND_NOTE = ["{f} sends you this paper. Do it together. Better. — Popo", "{f}送这张纸条给你。一起做，更好。——婆婆", "{f}送呢張紙仔俾你。一齊做，仲好。——婆婆", "{f} te manda este papel. Hacedlo juntos. Mejor. — Popo", "{f} t'envia aquest paper. Feu-lo junts, que és millor. — Popo"];
 /* a tap on someone in the kitchen */
@@ -337,7 +485,7 @@ var TAP = {
 /* only someone who is in the kitchen right now, and awake, drops a line (Mei and Wei only while Popo is up, in their own hours) */
 function awakeHere(k) { for (var i = 0; i < PETZ.length; i++) if (PETZ[i].k === k) return PETZ[i].st !== "away" && PETZ[i].st !== "sleep" && (k === "dog" ? dogUp() : catUp(k)); return false; }
 function canSpeak(w) { return w === "mantou" ? awakeHere("dog") : w === "cats" ? awakeHere("miso") || awakeHere("yuzu") : true; }
-function drop() { var a = DROP.filter(function (d) { return d[0] === "mantou" ? awakeHere("dog") : d[0] === "cats" ? awakeHere("yuzu") : !asleep() && !sleeps(d[0]); }); return a.length ? pick(a) : null; }
+function drop() { var a = DROP.filter(function (d) { return d[0] === "mantou" ? awakeHere("dog") : d[0] === "cats" ? awakeHere("yuzu") : !asleep() && !sleeps(d[0]) && keeper() === "popo"; });   /* with Popo out, only the animals drop by */ return a.length ? pick(a) : null; }
 
 /* ---------------- state (this device only) ---------------- */
 var KEY = "lt_jar";
@@ -376,9 +524,22 @@ function dogUp() { return !sleeps("mantou"); }
 function deep() { return asleep() && sleeps("cats"); }             /* 23–5: the lamp is off, the kitchen is dark and quiet */
 /* who hands out the jar right now: Popo, both cats, one woken cat, or nobody (the visitor takes a paper themselves) */
 function catServes(k) { return catUp(k) && petHere(k); }
-function srv() { if (!asleep()) return "popo"; var m = catServes("miso"), y = catServes("yuzu"); return m && y ? "cats" : m ? "miso" : y ? "yuzu" : null; }
+/* who minds the jar this visit while Popo is up: Popo, or now and then (about one visit in seven, never a newcomer's) Mei or
+   Wei, only in their own waking hours (?k=mei / ?k=wei forces it for testing). At night Popo's asleep and the night is as it was. */
+var KEEPER = (function () {
+  var f = /[?&]k=(mei|wei|popo)/.exec(location.search); if (f) return f[1];
+  var k = null; try { k = sessionStorage.getItem("lt_keeper"); } catch (e) {}
+  if (["popo", "mei", "wei"].indexOf(k) < 0) {
+    k = "popo";
+    if (S.size && (S.done.length || S.old.length) && Math.random() < .15) { var up = ["mei", "wei"].filter(function (w) { return !sleeps(w); }); if (up.length) k = pick(up); }
+    try { sessionStorage.setItem("lt_keeper", k); } catch (e) {}
+  }
+  return k;
+})();
+function keeper() { return KEEPER !== "popo" && !asleep() && !sleeps(KEEPER) ? KEEPER : "popo"; }
+function srv() { if (!asleep()) return keeper(); var m = catServes("miso"), y = catServes("yuzu"); return m && y ? "cats" : m ? "miso" : y ? "yuzu" : null; }
 function catLine(s, key) { return s === "cats" ? pick(CATS[key]) : T(pick(SOLO[key])).split("{c}").join(T(CATN[s])); }
-function chose() { var s = srv(); return s === "popo" ? ["popo", P.chose[0]] : s ? [s, catLine(s, "another")] : null; }
+function chose() { var s = srv(); return s === "popo" ? ["popo", P.chose[0]] : s ? [s, H[s] ? line(s, "chose") : catLine(s, "another")] : null; }
 function part() { var h = hour(); return h < 12 ? "morn" : h < 18 ? "aft" : "eve"; }
 var noteShown = false;   /* in the dark, Popo's paper on the jar is read once; after that the jar works without a word */
 function darkNote() { if (noteShown) return false; noteShown = true; say("note", NOTE); return true; }
@@ -392,7 +553,7 @@ var WEI = [[9,3,14,4,"#1c1917"],[7,5,4,5,"#1c1917"],[21,5,4,5,"#1c1917"],[11,2,1
 function rect(g, x, y, w, h, c) { g.fillStyle = c; g.fillRect(x, y, w, h); }
 function face(cv, who, o) {
   o = o || {}; var g = cv.getContext("2d"); cv.width = 32; cv.height = 32; rect(g, 0, 0, 32, 32, who === "note" ? "#f6ecd4" : "#3a2414");
-  if (who === "popo" && FW.drawPopo) return FW.drawPopo(g, 0, 0, 1, { asleep: !!o.asleep });
+  if (who === "popo") return popoDraw(g, 0, 0, { asleep: !!o.asleep });
   if (who === "mei" && FW.drawMei) return FW.drawMei(g, 0, 0, 1, { phone: Math.random() < .3 });
   if (who === "cats" && FW.drawCatsFace) return FW.drawCatsFace(g, 0, 0, 1, { asleep: !!o.asleep });
   if (who === "mantou" && FW.drawDogFace) return FW.drawDogFace(g, 0, 0, 1, { asleep: !!o.asleep });
@@ -438,7 +599,7 @@ function jar(g, x, y, w, h, n, cap, drop) {
 
 /* ---------------- the window: the browser's own clock, and a sky of its own each visit ---------------- */
 function realSeason() { try { if (FW.realSeason) return FW.realSeason(); } catch (e) {} var m = new Date().getMonth(); return m === 11 || m < 2 ? "winter" : m < 5 ? "spring" : m < 8 ? "summer" : "autumn"; }
-var SEASON = realSeason();
+var SEASON = season();
 var SUNT = { winter: [8.25, 17.75], spring: [6.75, 20.25], summer: [6.25, 21.5], autumn: [7.75, 19] };   /* sunrise and sunset by season */
 var WXS = { winter: ["clear", "clear", "cloudy", "snow", "snow", "fog", "rain"], spring: ["clear", "clear", "clear", "cloudy", "rain", "rain", "fog"],
   summer: ["clear", "clear", "clear", "clear", "cloudy", "rain", "fog"], autumn: ["clear", "clear", "cloudy", "cloudy", "rain", "rain", "fog"] };
@@ -498,7 +659,7 @@ function stays(p) { return asleep() && p.k !== "dog"; }                         
 function homeOf(p) { var h = hourF(); return p.k === "miso" ? { lane: 57, x: 153 } : p.k === "yuzu" ? { lane: 84, x: 96 } : (h >= 22 || h < 6) ? { lane: 84, x: 62 } : { lane: 84, x: 150 }; }   /* Mantou: at Popo's feet by night, by the door after lunch */
 var PETZ = Object.keys(PZ).map(function (k) {
   var c = PZ[k], now = performance.now(), p = { k: k, tx: 0, step: 0 }, ms = mustSleep(p), home = ms || stays(p), here = home || Math.random() < c.p;
-  p.lane = pick(c.lanes); p.x = 14 + Math.random() * 132; p.dir = Math.random() < .5 ? 1 : -1; p.st = here ? "sit" : "away"; p.until = now + (here ? 1500 + Math.random() * 5000 : 20000 + Math.random() * 70000);
+  p.lane = pick(c.lanes); p.x = (p.lane === 57 ? 26 : 14) + Math.random() * 120; p.dir = Math.random() < .5 ? 1 : -1; p.st = here ? "sit" : "away"; p.until = now + (here ? 1500 + Math.random() * 5000 : 20000 + Math.random() * 70000);
   if (home) { var hs = homeOf(p); p.lane = hs.lane; p.x = hs.x; }
   p.y = p.lane;
   if (ms) { p.st = "sleep"; p.until = now + 30000; } else if (here && napTime(p) && Math.random() < .8) p.st = "sleep";
@@ -520,6 +681,7 @@ function petNext(p, now) {
   if (r < .58 && !z && !st) { p.st = "sleep"; p.until = now + 8000 + Math.random() * 20000; return; }
   var c = PZ[p.k]; if (c.lanes.length > 1 && Math.random() < .25) p.lane = c.lanes[p.lane === c.lanes[0] ? 1 : 0];   /* a hop up onto the table, or down */
   p.tx = 8 + Math.random() * 144; if (p.lane === 57 && p.tx > span[0] && p.tx < span[1]) p.tx = Math.random() < .5 ? span[0] - 4 : span[1] + 4;
+  if (p.lane === 57 && p.tx < 24) p.tx = 24 + Math.random() * 20;   /* not across the stove */
   p.st = "walk"; p.leave = 0; p.dir = p.tx < p.x ? -1 : 1;
 }
 function petTick(now) {
@@ -546,6 +708,64 @@ function petDraw(g, t) {
   });
 }
 
+/* ---------------- the stove at the end of the counter: today's pot, lid rattling, steam; cold while Popo sleeps ---------------- */
+function steam(g, t, x, y, n, a) {
+  for (var i = 0; i < n; i++) { var ph = (t / 90 + i * 37) % 40, yy = Math.round(y - ph * .45), xx = Math.round(x + i * 3 + Math.sin(t / 400 + i * 2 + ph / 6) * 1.5);
+    rect(g, xx, yy, ph > 22 ? 1 : 2, 1, "rgba(255,255,255," + (a * (1 - ph / 40)).toFixed(2) + ")"); }
+}
+function stove(g, t) {
+  var k = potKey(), D = k ? DISH[k] : null, cold = !D, fire = D && D.fire, i;
+  /* the ring and its stand, on the counter */
+  rect(g, 1, 52, 19, 4, "#2a2a30"); rect(g, 1, 52, 19, 1, "#000"); rect(g, 2, 53, 17, 1, "#4a4a52"); rect(g, 4, 55, 2, 1, "#c8c4bc"); rect(g, 15, 55, 2, 1, "#c8c4bc");
+  if (fire) for (i = 0; i < 5; i++) { var fl = ((t / 120 + i * 3) | 0) % 3; rect(g, 5 + i * 2.4 | 0, 51 - fl, 1, 1 + fl, fl === 2 ? "#f8b040" : "#5aa0f0"); }
+  var x = 3, v = cold ? "big" : D.v, rattle = !cold && fire && ((t / 160) | 0) % 9 < 2 ? 1 : 0;
+  if (v === "clay") {   /* a clay pot for congee */
+    rect(g, x + 1, 43, 13, 8, "#000"); rect(g, x + 2, 44, 11, 6, "#8a4a2a"); rect(g, x + 2, 44, 11, 1, "#a8603a"); rect(g, x, 46, 2, 2, "#000"); rect(g, x + 13, 46, 2, 2, "#000");
+    rect(g, x + 1, 41 - rattle, 13, 2, "#000"); rect(g, x + 2, 41 - rattle, 11, 1, "#9a5a34"); rect(g, x + 6, 39 - rattle, 3, 2, "#000"); rect(g, x + 7, 39 - rattle, 1, 1, "#a8603a");
+    if (rattle) rect(g, x + 2, 42, 11, 1, "#f3ecdc");   /* the congee, white, as the lid lifts */
+    steam(g, t, x + 3, 39, 4, .7);
+  } else if (v === "big" || v === "pot") {   /* a steel pot: soups with the lid on (rattling), the rest open */
+    var w = v === "big" ? 16 : 14, xx = v === "big" ? 2 : x;
+    rect(g, xx, 42, w, 9, "#000"); rect(g, xx + 1, 43, w - 2, 7, cold ? "#7a828a" : "#a8b0b8"); rect(g, xx + 1, 43, 1, 7, "#d8dee4"); rect(g, xx - 1, 44, 1, 2, "#000"); rect(g, xx + w, 44, 1, 2, "#000");
+    if (v === "big") {
+      rect(g, xx, 40 - rattle, w, 2, "#000"); rect(g, xx + 1, 40 - rattle, w - 2, 1, cold ? "#8a929a" : "#c8ced4"); rect(g, xx + (w >> 1) - 1, 38 - rattle, 3, 2, "#000");
+      if (rattle && D) rect(g, xx + 1, 42, w - 2, 1, D.c);
+      if (!cold) steam(g, t, xx + 3, 38, 4, .75);
+    } else {
+      rect(g, xx + 1, 43, w - 2, 2, D.c); for (i = 0; i < 4; i++) rect(g, xx + 2 + i * 3 + ((t / 500 + i) | 0) % 2, 43, 2, 1, D.bits);
+      if (D.sticks) { rect(g, xx + 9, 36, 1, 8, "#c8a060"); rect(g, xx + 11, 35, 1, 9, "#c8a060"); }
+      if (D.smoke) for (i = 0; i < 4; i++) { var sp = (t / 70 + i * 25) % 34; rect(g, Math.round(xx + 3 + i * 2 + Math.sin(t / 300 + i) * 2), Math.round(41 - sp * .55), sp > 18 ? 3 : 2, 2, "rgba(60,56,60," + (.8 * (1 - sp / 34)).toFixed(2) + ")"); }
+      else steam(g, t, xx + 3, 41, 4, .7);
+    }
+  } else if (v === "steamer") {   /* a bamboo steamer, two baskets */
+    for (i = 0; i < 2; i++) { rect(g, x, 44 + i * 3, 15, 3, "#000"); rect(g, x + 1, 44 + i * 3, 13, 2, "#d0a868"); rect(g, x + 1, 45 + i * 3, 13, 1, "#a8844a"); }
+    rect(g, x + 1, 41 - rattle, 13, 3, "#000"); rect(g, x + 2, 41 - rattle, 11, 2, "#e0bc78"); rect(g, x + 4, 41 - rattle, 7, 1, "#c8a060");
+    steam(g, t, x + 1, 41, 5, .8);
+  } else if (v === "fish" || v === "wok") {   /* a wok: the fish on its plate, or tomato and egg tossed */
+    rect(g, x - 1, 46, 17, 1, "#000"); rect(g, x, 47, 15, 2, "#3a3a40"); rect(g, x + 2, 49, 11, 1, "#2a2a30"); rect(g, x + 15, 45, 4, 1, "#000");
+    if (v === "fish") {
+      rect(g, x + 1, 45, 13, 1, "#f3ead8"); rect(g, x + 3, 43, 8, 2, "#b8c4cc"); rect(g, x + 3, 43, 8, 1, "#d8e0e4"); rect(g, x + 11, 43, 2, 2, "#8a96a0"); rect(g, x + 4, 44, 1, 1, "#000");
+      rect(g, x + 5, 42, 1, 1, "#5aa04a"); rect(g, x + 8, 42, 1, 1, "#5aa04a"); steam(g, t, x + 2, 41, 4, .7);
+    } else {
+      var up = ((t / 220) | 0) % 6 === 0 ? 4 : 0;
+      [[2, "#d83a2a"], [5, "#f4d04a"], [8, "#d83a2a"], [11, "#f4d04a"]].forEach(function (b, j) { rect(g, x + b[0], 45 - (up ? up - (j % 2) : 0), 2, 2, b[1]); });
+      steam(g, t, x + 3, 42, 3, .55);
+    }
+  } else if (v === "tray") {   /* egg tarts cooling on a tray */
+    rect(g, x - 1, 50, 17, 2, "#000"); rect(g, x, 50, 15, 1, "#8a929a");
+    for (i = 0; i < 4; i++) { rect(g, x + i * 4, 47, 3, 3, "#c8843a"); rect(g, x + i * 4 + 1, 47, 1, 2, "#f4d04a"); rect(g, x + i * 4, 47, 3, 1, "#a8642a"); }
+    steam(g, t, x + 2, 45, 4, .45);
+  } else if (v === "board") {   /* pa amb tomàquet: bread rubbed red, half a tomato, the oil */
+    rect(g, x - 1, 50, 14, 2, "#000"); rect(g, x, 50, 12, 1, "#c88a4a");
+    rect(g, x, 47, 5, 3, "#d8a860"); rect(g, x + 1, 47, 3, 2, "#c8483a"); rect(g, x + 6, 47, 5, 3, "#d8a860"); rect(g, x + 7, 47, 3, 1, "#c8483a");
+    rect(g, x + 3, 45, 3, 2, "#d83a2a"); rect(g, x + 4, 45, 1, 1, "#f08a6a");
+    rect(g, x + 13, 41, 3, 10, "#000"); rect(g, x + 14, 42, 1, 8, "#c8c040"); rect(g, x + 14, 39, 1, 2, "#000");
+  } else if (v === "jug") {   /* lemon water, ice, a drop running down the glass */
+    rect(g, x + 2, 39, 11, 12, "#000"); rect(g, x + 3, 40, 9, 10, "rgba(220,240,230,.85)"); rect(g, x + 3, 42, 9, 8, "rgba(250,240,170,.7)");
+    rect(g, x + 4, 44, 3, 3, "#f4d04a"); rect(g, x + 5, 45, 1, 1, "#fffbe0"); rect(g, x + 8, 46, 3, 3, "#f4d04a"); rect(g, x + 9, 47, 1, 1, "#fffbe0"); rect(g, x + 7, 42, 2, 2, "#ffffff");
+    rect(g, x + 13, 42, 2, 1, "#000"); rect(g, x + 14, 43, 1, 4, "#000"); rect(g, x + 4, 40 + ((t / 300) | 0) % 9, 1, 1, "rgba(255,255,255,.9)");
+  }
+}
 var anim = { drop: -1, t0: 0 }, blink = 0, cv = $("scene"), sg = cv.getContext("2d");
 function scene(t) {
   var g = sg, h = hourF(), night = asleep(), dark = deep(), ph = phaseAt(h), dim = !night && (ph === "night" || ph === "dusk");
@@ -566,11 +786,14 @@ function scene(t) {
   /* Popo (or Popo asleep in her armchair) */
   if (night) {
     rect(g, 14, 24, 40, 30, "#7a2232"); rect(g, 14, 24, 40, 2, "#000"); rect(g, 12, 34, 6, 22, "#8a2a3a"); rect(g, 50, 34, 6, 22, "#8a2a3a");
-    if (FW.drawPopo) FW.drawPopo(g, 18, 26, 1, { asleep: true });
+    popoDraw(g, 18, 26, { asleep: true });
     var zt = (t / 700 | 0) % 3; g.fillStyle = "#f3ead8"; g.font = "8px monospace"; g.fillText("z", 48 + zt * 2, 24 - zt * 3);
   } else {
-    if (FW.drawPopo) FW.drawPopo(g, 20, 24, 1, {}); else rect(g, 24, 28, 24, 28, "#8a2a3a");
-    if (blink) { rect(g, 31, 37, 3, 1, "#3a2418"); rect(g, 38, 37, 3, 1, "#3a2418"); rect(g, 32, 38, 1, 1, "#fbf3e6"); rect(g, 39, 38, 1, 1, "#fbf3e6"); }
+    var kp = keeper();
+    if (kp === "mei" && FW.drawMei) FW.drawMei(g, 20, 24, 1, { phone: ((t / 5000) | 0) % 3 === 0 });
+    else if (kp === "wei") weiDraw(g, 20, 24);
+    else popoDraw(g, 20, 24);
+    if (blink && kp === "popo") { rect(g, 31, 37, 3, 1, "#3a2418"); rect(g, 38, 37, 3, 1, "#3a2418"); rect(g, 32, 38, 1, 1, "#fbf3e6"); rect(g, 39, 38, 1, 1, "#fbf3e6"); }
   }
   /* the table */
   rect(g, 0, 56, 160, 3, "#a0683a"); rect(g, 0, 56, 160, 1, "#c88a4a"); rect(g, 0, 59, 160, 1, "#000"); rect(g, 0, 60, 160, 24, "#7a4a28");
@@ -579,6 +802,7 @@ function scene(t) {
   rect(g, 50, 51, 10, 5, "#f3ead8"); rect(g, 49, 51, 12, 1, "#000"); rect(g, 52, 55, 6, 1, "#4a7ec0");
   if (!night) { var s = (t / 260 | 0) % 4; rect(g, 53 + (s % 2), 46 - s, 1, 2, "rgba(255,255,255,.7)"); rect(g, 56 - (s % 2), 44 - s, 1, 2, "rgba(255,255,255,.55)"); }
   rect(g, 66, 49, 12, 7, "#4aa07a"); rect(g, 68, 47, 8, 2, "#4aa07a"); rect(g, 71, 46, 2, 1, "#000"); rect(g, 78, 51, 3, 2, "#4aa07a"); rect(g, 63, 50, 3, 2, "#3a8a64"); rect(g, 66, 49, 12, 1, "#000");
+  stove(g, t);
   /* the jar, sized 20 / 50 / 100, filling with papers */
   var n = S.done.length, dy = 0, jd = jarDims(S.size), jx = 125 - (jd[0] >> 1), jy = 56 - jd[1];
   if (anim.drop >= 0) { var p = (t - anim.t0) / 900; if (p >= 1) anim.drop = -1; else { dy = Math.round(jy - 10 + p * (jd[1] - 4)); n--; } }
@@ -628,15 +852,16 @@ function paper(t, writing) {
 var mode = "", anotherN = 0;
 function show(t, opener) {
   clear(); var night = asleep(), quiet = !srv();
-  if (opener) say(opener[0], opener[1], { asleep: opener[0] === "popo" && night });
+  if (opener) (Array.isArray(opener[0]) ? opener : [opener]).forEach(function (o) { say(o[0], o[1], { asleep: o[0] === "popo" && night }); });
   paper(t);
   if (quiet) {}   /* the dark kitchen: nobody chimes in */
+  else if (!S.done.length && !S.old.length) {}   /* a newcomer's first paper: nobody else chimes in yet */
   else if (t.c && canSpeak(t.c[0]) && Math.random() < .55) say(t.c[0], t.c[1], { small: true });
   else if (Math.random() < .12) { var d = drop(); if (d) say(d[0], d[1], { small: true }); }
   btn(icon("heart") + esc(T(W.did)), function () { didIt(t); }, "pri");
   btn(esc(T(W.another)), function () { another(t); });
   btn(esc(T(W.notToday)), function () { notToday(t); }, "quiet");
-  var ws = btn(esc(T(W.withSomeone)), function () { shareIt(T(W.doText), doLink(t), ws); }, "quiet sm"); ws.style.flexBasis = "100%";
+  if (S.done.length || S.old.length) { var ws = btn(esc(T(W.withSomeone)), function () { shareIt(T(W.doText), doLink(t), ws); }, "quiet sm"); ws.style.flexBasis = "100%"; }   /* not on the very first paper */
   mode = "thing";
 }
 function present(opener) {
@@ -654,10 +879,13 @@ function didIt(t) {
     S.done.push({ id: t.id, at: Date.now(), w: w || undefined }); if (S.cur === t.id || !BY[S.cur]) S.cur = null; delete S.later[t.id]; anotherN = 0; save();
     anim.drop = 1; anim.t0 = performance.now();
     clear(); var s = srv();   /* whoever is up says so; in the dark the paper just goes in */
-    if (isFull()) { if (s) say(s, s === "popo" ? pick(P.done) : catLine(s, "done")); setTimeout(full, 900); return; }
-    if (s) say(s, s === "popo" ? T(pick(P.done)) + " " + T(P.enough[0]) : catLine(s, "done"));
+    if (isFull()) { if (s) say(s, line(s, "done")); setTimeout(full, 900); return; }
+    var pk = !S.pk && s === "popo" && S.done.length + S.old.length >= 3;   /* once, in passing: her pocket is in the jar */
+    if (pk) { S.pk = 1; save(); }
+    if (s) say(s, H[s] || s === "popo" ? T(line(s, "done")) + " " + T((pk ? P.pocket : null) || (H[s] ? pick(H[s].enough) : P.enough[0])) : catLine(s, "done"));
+    if (pk) { btn(esc(T(W.look)), openJar, "pri"); btn(esc(bye()), function () { rest(); }); btn(esc(T(W.more)), function () { present(); }, "quiet"); return; }
     if (!S.size) { btn(esc(T(W.next)), function () { intro(0); }, "pri"); return; }
-    btn(esc(T(W.tomorrow)), function () { rest(); }, "pri");
+    btn(esc(bye()), function () { rest(); }, "pri");
     btn(esc(T(W.more)), function () { present(); });
     btn(esc(T(W.look)), openJar, "quiet");
   };
@@ -668,12 +896,13 @@ function didIt(t) {
 }
 function another(t) {
   anotherN++; var s = srv(), id = draw(t.id);
-  var op = s === "popo" ? ["popo", anotherN >= 4 && id ? pick(P.picky) : pick(P.another)] : s ? [s, catLine(s, "another")] : null;
+  var op = s === "popo" || H[s] ? [s, anotherN >= 4 && id ? line(s, "picky") : line(s, "another")] : s ? [s, catLine(s, "another")] : null;
   if (!id) return show(t, op);
   S.cur = id; S.at = Date.now(); save();
   show(BY[id], op);
 }
-function laterLine() { var s = srv(); return s === "popo" ? ["popo", pick(P.later)] : s ? [s, catLine(s, "later")] : null; }
+function bye() { var k = keeper(); return asleep() || k === "popo" ? T(W.tomorrow) : T(W.tomorrowK).split("{k}").join(T(WHO[k])); }
+function laterLine() { var s = srv(); return s ? [s, line(s, "later")] : null; }
 function notToday(t) {
   S.later[t.id] = day(); if (S.cur === t.id) S.cur = null; anotherN = 0; save();
   if (!S.size) { clear(); var op = laterLine(); if (op) say(op[0], op[1]); btn(esc(T(W.next)), function () { intro(0); }, "pri"); return; }
@@ -682,7 +911,7 @@ function notToday(t) {
 function rest(opener) {
   clear(); var s = srv();
   if (opener) say(opener[0], opener[1]);
-  else if (s) say(s, s === "popo" ? pick(P.rest) : catLine(s, "rest"));
+  else if (s) say(s, line(s, "rest"));
   else if (deep()) darkNote();
   if (!opener && s && Math.random() < .35) { var d = drop(); if (d) say(d[0], d[1], { small: true }); }
   btn(esc(T(W.give)), function () { present(); }, "pri");
@@ -691,7 +920,7 @@ function rest(opener) {
 }
 function full() {
   clear(); var s = srv();
-  if (s === "popo") say("popo", pick(P.full)); else if (s) say(s, catLine(s, "done"));
+  if (s === "popo" || H[s]) say(s, line(s, "full")); else if (s) say(s, catLine(s, "done"));
   if (S.size < 100) btn(esc(T(W.bigger)), function () { S.size = S.size < 50 ? 50 : 100; S.cur = null; save(); present(chose()); }, "pri");
   btn(esc(T(W.newJar)), function () { S.old.unshift({ size: S.size, done: S.done, end: Date.now() }); S.done = []; S.cur = null; S.later = {}; save(); present(chose()); }, S.size < 100 ? "" : "pri");
   btn(esc(T(W.look)), openJar, "quiet");
@@ -708,20 +937,19 @@ function jarButtons(onPick) {
   });
   return row;
 }
-function intro(i) {
-  i = i || 0; clear();
+/* a newcomer's first minute: Popo (always Popo; at night her paper) says it in one line, and one big button takes the first
+   paper. The small jar is the start; bigger jars, a copy, a key and a knock come later, in passing. */
+function intro() {
+  clear();
   if (asleep()) {   /* a newcomer at night: Popo left a paper on the jar for whoever comes; the cats point at it if they're up */
     noteShown = true; say("note", NOTE_INTRO);
     if (srv()) say(srv() === "yuzu" ? "yuzu" : srv() === "cats" ? "cats" : "miso", srv() === "yuzu" ? T(CAT_POINT).replace(T(CATN.miso), T(CATN.yuzu)) : CAT_POINT, { small: true });
-    acts.appendChild(jarButtons(function (n) { S.size = n; S.met = 1; save(); present(chose()); }));
-    mode = "intro"; return;
-  }
-  say("popo", P.intro[i]);
-  if (i === 1) say("mei", ["*not looking up from her phone* She means real life. It's like an app, but you leave it.", "*头也不抬地看着手机* 她说的是现实生活。像个 app，但你得退出来。", "*頭也不抬地看著手機* 她說的是現實生活。像個 app，但你得退出來。", "*sin levantar la vista del móvil* Se refiere a la vida real. Es como una app, pero te sales.", "*sense aixecar els ulls del mòbil* Vol dir la vida real. És com una app, però en surts."], { small: true });
-  if (i < P.intro.length - 1) { btn(esc(T(W.next)), function () { intro(i + 1); }, "pri"); return; }
-  acts.appendChild(jarButtons(function (n) { S.size = n; S.met = 1; save(); present(chose()); }));
+  } else say("popo", P.intro1);
+  var b = btn(icon("jar") + esc(T(asleep() ? W.takeOne : W.first)), begin, "pri lg");
   mode = "intro";
+  setTimeout(function () { try { if (matchMedia("(hover:hover)").matches) b.focus(); } catch (e) {} }, 50);
 }
+function begin() { S.size = 20; S.met = 1; save(); present(srv() === "popo" ? ["popo", P.first] : chose()); }
 
 /* ---------------- Popo's safe box (a copy on Nearby's server, only if asked), a key for another device, a daily knock ----------------
    Nothing leaves the device until the visitor says yes here, and the privacy card (FBC, "lt") asks once before the first send.
@@ -864,13 +1092,15 @@ function pushCheck() {   /* a knock that's on: keep its address and language fre
 /* ---------------- the pocket: three quiet buttons under the jar ---------------- */
 function pocket(box) {
   box.innerHTML = "";
-  var who = function () { return asleep() ? "note" : "popo"; };
+  var who = function () { return asleep() || keeper() !== "popo" ? "note" : "popo"; };   /* Popo out or asleep: her own words, on paper */
   var row = function () { var r = document.createElement("div"); r.className = "row"; box.appendChild(r); return r; };
   var mk = function (r, label, fn, cls) { var b = document.createElement("button"); b.className = "btn sm " + (cls || ""); b.textContent = label; b.addEventListener("click", fn); r.appendChild(b); return b; };
   var speak = function (line, o) { box.innerHTML = ""; var q = say(o && o.who || who(), typeof line === "string" ? line : T(line), o); box.appendChild(q); setTimeout(function () { try { box.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (e) {} }, 30); return q; };
   var back = function (r) { mk(r || row(), T(W.backJar), function () { pocket(box); }, "quiet"); };
   var busy = function () { box.querySelectorAll("button,input").forEach(function (b) { b.disabled = true; }); };
-  var r0 = row(), P = pushState();
+  var P = pushState();
+  if (!S.pk && !syncOn() && !P && S.done.length + S.old.length < 5) { box.hidden = true; return; }   /* the pocket comes later, once there are papers */
+  box.hidden = false; var r0 = row();
   mk(r0, syncOn() ? T(W.bCopyOn) : T(W.bCopy), copyView);
   mk(r0, T(W.bKey), keyView);
   var ib = mk(r0, T(W.invite), function () { shareIt(T(W.inviteText), inviteLink(), ib); });
@@ -938,7 +1168,7 @@ function doLink(t) { var n = nick(); return location.origin + "/little-things/#d
 var lastFriend = null;
 function friendThing(t, from) {
   lastFriend = [t, from]; clear(); var f = String(from || "").replace(/[*<>]/g, "").trim().slice(0, 24) || T(W.someone);
-  say(asleep() ? "note" : "popo", T(asleep() ? FRIEND_NOTE : PP.fromFriend).split("{f}").join(f));
+  var away = asleep() || keeper() !== "popo"; say(away ? "note" : "popo", T(away ? FRIEND_NOTE : PP.fromFriend).split("{f}").join(f));
   paper(t);
   if (!asleep() && !sleeps("mei") && Math.random() < .5) say("mei", MEI_DUO, { small: true });
   btn(icon("heart") + esc(T(W.did)), function () { didIt(t); }, "pri");
@@ -962,9 +1192,9 @@ function jarBody() {
   if (S.size) mk(T(W.other), function () { tools.innerHTML = ""; tools.appendChild(jarButtons(function (n) { S.size = n; if (S.cur && BY[S.cur] && BY[S.cur].t > tierMax(n)) S.cur = null; save(); closeJar(); present(chose()); })); });
   if (S.done.length || S.old.length) mk(T(W.restart), function () {
     tools.innerHTML = ""; var d = document.createElement("div"); d.style.width = "100%"; tools.appendChild(d);
-    if (!asleep()) { var q = say("popo", P.restartQ[0]); d.appendChild(q); }   /* asleep, she asks nothing: the buttons say it */
+    var rs = srv(); if (rs === "popo" || H[rs]) { var q = say(rs, line(rs, "restartQ")); d.appendChild(q); }   /* asleep, she asks nothing: the buttons say it */
     mk(T(W.keep), function () { jarBody(); }, "pri");
-    mk(T(W.restart), function () { S = { v: 1, size: S.size, cur: null, at: 0, done: [], later: {}, old: [], met: 1, reset: Date.now() }; save(); closeJar(); present(asleep() ? chose() : ["popo", P.restarted[0]]); }, "quiet");
+    mk(T(W.restart), function () { S = { v: 1, size: S.size, cur: null, at: 0, done: [], later: {}, old: [], met: 1, reset: Date.now() }; save(); closeJar(); present(asleep() ? chose() : [srv(), line(srv(), "restarted")]); }, "quiet");
   }, "quiet");
 }
 function drawBig() { var c = $("bigJar"); if (!c) return; var d = jarDims(S.size); c.width = d[0]; c.height = d[1]; c.style.height = d[1] * 3 + "px"; jar(c.getContext("2d"), 0, 0, d[0], d[1], S.done.length, S.size || 20, 0); }
@@ -1007,7 +1237,8 @@ function paint(again) {
 function start() {
   if (isFull()) return full();
   var s = srv(), back = S.cur && BY[S.cur];
-  var op = s === "popo" ? ["popo", back ? pick(P.back) : pick(P.hi[part()])] : s === "cats" ? ["cats", P.night[0]] : s ? [s, catLine(s, "another")] : (noteShown = true, ["note", NOTE]);
+  var op = s === "popo" ? ["popo", back ? pick(P.back) : potKey() && Math.random() < .5 ? DISH[potKey()].p : pick(P.hi[part()])]
+    : H[s] ? [["note", awayNote(s)], [s, back ? line(s, "back") : line(s, "hi")]] : s === "cats" ? ["cats", P.night[0]] : s ? [s, catLine(s, "another")] : (noteShown = true, ["note", NOTE]);
   if (back) return show(BY[S.cur], op);
   present(op);
 }
@@ -1019,10 +1250,16 @@ function tapAt(x, y) {
   var hit = null, best = 99;
   PETZ.forEach(function (p) { if (p.st === "away") return; var dx = Math.abs(x - p.x), dy = y - p.y; if (dx < 11 && dy > -16 && dy < 3 && dx < best) { best = dx; hit = p; } });
   if (hit) return tapPet(hit);
+  if (x <= 20 && y >= 34 && y <= 58) { var pl = potLine(); if (pl) return react(pl[0], pl[1]); }   /* the stove */
   if (x >= 12 && x <= 56 && y >= 22 && y <= 58) return tapPopo();
 }
 function tapPopo() {
-  if (!asleep()) return react("popo", pick(TAP.popo));
+  var k = keeper();
+  if (!asleep() && k !== "popo") return react(k, line(k, "tap"));
+  if (!asleep()) { var L = popoLook(), r = Math.random();   /* now and then her own day: the scarf, the slippers */
+    if (L.scarf && r < .3) return react("popo", POPO_SCARF);
+    if (r > .75) return react("popo", T(POPO_SHOES).split("{s}").join(T(SHOES[L.shoes])));
+    return react("popo", pick(TAP.popo)); }
   var c = ["miso", "yuzu"].filter(awakeHere);   /* nobody wakes Popo: someone awake keeps watch, or she just sleeps on */
   if (c.length) { var k = pick(c); return react(k, nm(k, pick(TAP.guardCat))); }
   if (awakeHere("dog")) return react("mantou", pick(TAP.guardDog));
@@ -1042,7 +1279,7 @@ function tapPet(p) {
 }
 cv.addEventListener("click", function (e) { var r = cv.getBoundingClientRect(); tapAt((e.clientX - r.left) / r.width * 160, (e.clientY - r.top) / r.height * 84); });
 /* test hook: who is up and who serves */
-window.LT = { hour: hourF, serves: srv, dark: deep, pets: function () { return PETZ.map(function (p) { return { k: p.k, st: p.st, x: Math.round(p.x), y: p.y }; }); }, tap: tapAt };
+window.LT = { keeper: keeper, look: popoLook, dish: dishKey, pot: potKey, day: dayKey, hour: hourF, serves: srv, dark: deep, pets: function () { return PETZ.map(function (p) { return { k: p.k, st: p.st, x: Math.round(p.x), y: p.y }; }); }, tap: tapAt };
 addEventListener("fbl:lang", function () { paint(true); });
 addEventListener("storage", function (e) { if (e.key === KEY) { S = load(); paint(true); } });
 chrome();
@@ -1055,7 +1292,7 @@ if (friend && BY[friend[1]] && !arriving) friendThing(BY[friend[1]], from);
 else if (!S.size) intro(0); else start();
 requestAnimationFrame(loop);
 if (arriving) takeKey(arriving[1]).then(function (x) {   /* opened with a key from another device */
-  clear(); say(asleep() ? "note" : "popo", x === "ok" ? PP.keyDone : x === "empty" ? PP.keyEmpty : x === "bad" ? PP.keyBad : x === "no" ? PP.onlyHere : PP.fail);
+  clear(); say(asleep() || keeper() !== "popo" ? "note" : "popo", x === "ok" ? PP.keyDone : x === "empty" ? PP.keyEmpty : x === "bad" ? PP.keyBad : x === "no" ? PP.onlyHere : PP.fail);
   chrome();
   if (S.size) { btn(esc(T(W.give)), function () { present(); }, "pri"); btn(esc(T(W.look)), openJar, "quiet"); mode = "rest"; }
   else btn(esc(T(W.next)), function () { intro(0); }, "pri");
