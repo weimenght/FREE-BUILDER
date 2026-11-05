@@ -461,6 +461,7 @@ details.card summary { cursor:pointer; font-weight:600; color:var(--muted); }
     <section class="view" id="v-cards-study">
       <div class="row between wrap">
         <select class="sel" id="thSel" aria-label="Thema"></select>
+        <select class="sel" id="lvSel" aria-label="Lefel"></select>
         <div class="row">
           <button class="btn sm ghost" data-act="dir" aria-label="Cyfeiriad"><svg class="ic sm"><use href="#i-languages"/></svg><span id="dirTxt">CY → EN</span></button>
           <button class="btn sm square" data-act="shuffle" aria-label="Cymysgu"><svg class="ic sm"><use href="#i-shuffle"/></svg></button>
@@ -731,6 +732,410 @@ Hawdd|easy|howth|Mae Cymraeg yn hawdd!|Welsh is easy!|Disgrifio
 Anodd|difficult|AN-oth|Mae'r gwaith yn anodd.|The work is difficult.|Disgrifio
 Cyflym|fast|KUV-lim|Mae'r trên yn gyflym.|The train is fast.|Disgrifio
 `;
+const WORDS_A2 = `
+Pris|price|PREES|Beth yw'r pris?|What is the price?|Siopa
+Rhad|cheap|RHAD|Mae'r crys yn rhad.|The shirt is cheap.|Siopa
+Drud|expensive|DRID|Mae'r sgidiau yn ddrud.|The shoes are expensive.|Siopa
+Crys|shirt|KRIS|Mae crys newydd gen i.|I have a new shirt.|Siopa
+Esgid|shoe|ES-gid|Mae'r esgid yn fach.|The shoe is small.|Siopa
+Maint|size|MAINT|Mae'r maint yn iawn.|The size is fine.|Siopa
+Bag|bag|BAG|Dw i angen bag newydd.|I need a new bag.|Siopa
+Pwrs|purse|PURS|Mae'r pwrs yn drwm.|The purse is heavy.|Siopa
+Bil|bill|BIL|Y bil, os gwelwch yn dda.|The bill, please.|Siopa
+Derbynneb|receipt|der-BUN-eb|Dw i angen derbynneb.|I need a receipt.|Siopa
+Gostyngiad|discount|gos-TUNG-yad|Oes gostyngiad?|Is there a discount?|Siopa
+Ar gau|closed|ar GAI|Mae'r siop ar gau.|The shop is closed.|Siopa
+Costio|to cost|KOS-tyo|Faint mae hwn yn costio?|How much does this cost?|Siopa
+Bws|bus|BOOS|Mae'r bws yn hwyr.|The bus is late.|Teithio
+Taith|journey|TIETH|Mae'r daith yn hir.|The journey is long.|Teithio
+Beic|bicycle|BAYK|Dw i'n reidio beic.|I ride a bicycle.|Teithio
+Tacsi|taxi|TAK-see|Mae tacsi yma!|There's a taxi here!|Teithio
+Tocyn|ticket|TOK-in|Mae tocyn gen i.|I have a ticket.|Teithio
+Platfform|platform|PLAT-form|Dw i ar y platfform.|I'm on the platform.|Teithio
+Maes awyr|airport|MICE OW-eer|Mae'r maes awyr yn bell.|The airport is far away.|Teithio
+Ffordd|road|FORTH|Ble mae'r ffordd i Gaerdydd?|Where is the road to Cardiff?|Teithio
+Sedd|seat|SETH|Mae'r sedd yn wag.|The seat is empty.|Teithio
+Arhosfan|bus stop|ar-HOS-van|Ble mae'r arhosfan?|Where is the bus stop?|Teithio
+Maes parcio|car park|MICE PAR-kyo|Mae'r maes parcio y tu ôl i'r siop.|The car park is behind the shop.|Teithio
+Hedfan|to fly|HED-van|Dw i'n hedfan i Sbaen.|I'm flying to Spain.|Teithio
+Hwyr|late|HOO-ir|Dw i'n hwyr!|I'm late!|Teithio
+Swyddfa|office|SWITH-va|Mae'r swyddfa ar y llawr cyntaf.|The office is on the first floor.|Gwaith
+Cyflog|pay|KUH-vlog|Mae'r cyflog yn uchel.|The pay is high.|Gwaith
+Bos|boss|BOSS|Mae'r bos yn y swyddfa.|The boss is in the office.|Gwaith
+Cyfarfod|meeting|kuh-VAR-vod|Mae gen i gyfarfod am naw.|I have a meeting at nine.|Gwaith
+Cydweithiwr|colleague|kid-WAY-thyoor|Mae fy nghydweithiwr yn garedig.|My colleague is kind.|Gwaith
+Swydd|job|SOOTH|Mae gen i swydd newydd.|I have a new job.|Gwaith
+Cwmni|company|KOOM-nee|Mae'r cwmni yn fawr.|The company is big.|Gwaith
+Cyfrifiadur|computer|kuh-vrif-YAH-dir|Mae'r cyfrifiadur yn y swyddfa.|The computer is in the office.|Gwaith
+Ffurflen|form|FIR-flen|Dw i'n llenwi'r ffurflen.|I'm filling in the form.|Gwaith
+Cyfweliad|interview|kuh-vweh-LEE-ad|Mae gen i gyfweliad ddydd Llun.|I have an interview on Monday.|Gwaith
+Gwyliau|holiday|GWIL-yai|Dw i ar wyliau.|I'm on holiday.|Gwaith
+Ymddeol|to retire|um-THEH-ol|Mae fy nhad yn ymddeol.|My dad is retiring.|Gwaith
+Dolur|ache|DOH-lir|Mae gen i ddolur gwddf.|I have a sore throat.|Iechyd
+Poen|pain|POIN|Mae poen yn fy nghefn.|There's pain in my back.|Iechyd
+Peswch|cough|PES-ookh|Mae peswch arna i.|I have a cough.|Iechyd
+Annwyd|cold (illness)|AN-ood|Mae annwyd arna i heddiw.|I have a cold today.|Iechyd
+Tabled|tablet|TAB-led|Dw i'n cymryd tabled bob dydd.|I take a tablet every day.|Iechyd
+Fferyllfa|chemist's|fer-UHL-va|Ble mae'r fferyllfa?|Where is the chemist's?|Iechyd
+Nyrs|nurse|NEERS|Mae'r nyrs yn garedig.|The nurse is kind.|Iechyd
+Deintydd|dentist|dayn-TIDH|Mae'r deintydd yng Nghaerdydd.|The dentist is in Cardiff.|Iechyd
+Ambiwlans|ambulance|am-BEW-lans|Ffoniwch am ambiwlans!|Call an ambulance!|Iechyd
+Cyffur|medicine|KUF-ir|Dw i'n cymryd y gyffur.|I'm taking the medicine.|Iechyd
+Iach|well|EE-akh|Dw i'n iach.|I'm well.|Iechyd
+Gwella|to get better|GWEL-la|Gobeithio dy fod yn gwella.|I hope you get better.|Iechyd
+Stumog|stomach|STUM-og|Mae fy stumog yn brifo.|My stomach hurts.|Iechyd
+Gwynt|wind|GWINT|Mae'r gwynt yn gryf.|The wind is strong.|Tywydd
+Cymylog|cloudy|kum-UL-og|Mae'n gymylog heddiw.|It's cloudy today.|Tywydd
+Cwmwl|cloud|KOOM-ool|Mae cwmwl yn yr awyr.|There's a cloud in the sky.|Tywydd
+Sych|dry|SIKH|Mae'n sych heddiw.|It's dry today.|Tywydd
+Niwl|fog|NEE-ool|Mae niwl ar y mynydd.|There's fog on the mountain.|Tywydd
+Gwlyb|wet|GWLIB|Dw i'n wlyb!|I'm wet!|Tywydd
+Tymheredd|temperature|tum-HEH-reth|Beth yw'r tymheredd?|What is the temperature?|Tywydd
+Stormus|stormy|STOR-mis|Mae'n stormus heddiw.|It's stormy today.|Tywydd
+Gwres|heat|GWRESS|Mae'r gwres yn y gegin.|The heat is in the kitchen.|Tywydd
+Enfys|rainbow|EN-vis|Mae enfys yn yr awyr.|There's a rainbow in the sky.|Tywydd
+Braf|fine (weather)|BRAHV|Mae'n braf heddiw!|It's nice weather today!|Tywydd
+Mellt|lightning|MELT|Mae mellt yn y gorwel.|There's lightning on the horizon.|Tywydd
+Ystafell|room|us-TAV-ell|Mae'r ystafell yn fawr.|The room is big.|Cartref
+Cegin|kitchen|KEG-in|Dw i yn y gegin.|I'm in the kitchen.|Cartref
+Gwely|bed|GWEL-ee|Mae'r gwely'n feddal.|The bed is soft.|Cartref
+Lolfa|lounge|LOL-va|Mae'r teledu yn y lolfa.|The TV is in the lounge.|Cartref
+Teledu|television|teh-LEH-di|Mae'r teledu ymlaen.|The TV is on.|Cartref
+Ffenestr|window|FEN-estr|Mae'r ffenestr yn fudr.|The window is dirty.|Cartref
+Llawr|floor|LOWR|Mae'r llawr yn lân.|The floor is clean.|Cartref
+Nenfwd|ceiling|NEN-vood|Mae'r nenfwd yn uchel.|The ceiling is high.|Cartref
+Soffa|sofa|SOF-a|Dw i'n eistedd ar y soffa.|I'm sitting on the sofa.|Cartref
+Sinc|sink|SINK|Mae'r sinc yn llawn.|The sink is full.|Cartref
+Golchi|to wash|GOL-chee|Dw i'n golchi'r llestri.|I'm washing the dishes.|Cartref
+Gardd|garden|GARTH|Mae coeden yn yr ardd.|There's a tree in the garden.|Cartref
+Athro|teacher (man)|A-throh|Mae'r athro'n glyfar.|The teacher is clever.|Ysgol
+Gwers|lesson|GWERS|Mae gwers Gymraeg gen i heddiw.|I have a Welsh lesson today.|Ysgol
+Dosbarth|class|DOS-barth|Dw i yn y dosbarth.|I'm in the class.|Ysgol
+Papur|paper|PAP-ir|Dw i angen papur.|I need paper.|Ysgol
+Ysgrifennu|to write|us-grif-EN-ee|Dw i'n ysgrifennu llythyr.|I'm writing a letter.|Ysgol
+Geiriadur|dictionary|gair-YAH-dir|Dw i'n defnyddio geiriadur.|I'm using a dictionary.|Ysgol
+Prawf|test|PRAHV|Mae prawf ddydd Llun.|There's a test on Monday.|Ysgol
+Myfyriwr|student|muh-VUR-ee-oor|Dw i'n fyfyriwr.|I'm a student.|Ysgol
+Coleg|college|KOL-eg|Dw i'n astudio yn y coleg.|I study at college.|Ysgol
+Astudio|to study|ah-STID-yo|Dw i'n astudio Cymraeg.|I'm studying Welsh.|Ysgol
+Ateb|answer|AH-teb|Beth yw'r ateb?|What is the answer?|Ysgol
+Cwestiwn|question|kwes-TYOON|Mae gen i gwestiwn.|I have a question.|Ysgol
+Adolygu|to revise|ad-oh-LUH-gee|Dw i'n adolygu ar gyfer yr arholiad.|I'm revising for the exam.|Ysgol
+Ffilm|film|FILM|Mae ffilm yn y sinema heno.|There's a film at the cinema tonight.|Hamdden
+Cerddoriaeth|music|ker-THOR-yayth|Mae cerddoriaeth yn y bar.|There's music in the bar.|Hamdden
+Paentiad|painting|pa-EN-tyad|Mae paentiad ar y wal.|There's a painting on the wall.|Hamdden
+Gêm|game|GAYM|Mae'r gêm yn ddiddorol.|The game is interesting.|Hamdden
+Rygbi|rugby|RUG-bee|Mae rygbi ar y teledu.|There's rugby on TV.|Hamdden
+Nofio|to swim|NO-vyo|Dw i'n nofio yn y môr.|I swim in the sea.|Hamdden
+Dawnsio|to dance|DOWN-syo|Dw i'n dawnsio heno.|I'm dancing tonight.|Hamdden
+Cyngerdd|concert|kung-GERTH|Mae cyngerdd heno.|There's a concert tonight.|Hamdden
+Mwynhau|to enjoy|MWIN-hai|Dw i'n mwynhau'r sioe.|I'm enjoying the show.|Hamdden
+Cân|song|KAN|Mae cân newydd gen i.|I have a new song.|Hamdden
+Theatr|theatre|THEE-atr|Dw i'n mynd i'r theatr heno.|I'm going to the theatre tonight.|Hamdden
+Gwylio|to watch|GWIL-yo|Dw i'n gwylio'r ffilm.|I'm watching the film.|Hamdden
+Gobaith|hope|GOH-baith|Mae gobaith gen i.|I have hope.|Pobl a theimladau
+Falch|proud, glad|falkh|Dw i'n falch ohonot ti.|I'm proud of you.|Pobl a theimladau
+Cyfeillgar|friendly|kuh-VAYL-gar|Mae hi'n gyfeillgar iawn.|She's very friendly.|Pobl a theimladau
+Diolchgar|grateful|DYOLKH-gar|Dw i'n ddiolchgar iawn.|I'm very grateful.|Pobl a theimladau
+Synnu|to surprise|SUN-ee|Mae hynny'n fy synnu i.|That surprises me.|Pobl a theimladau
+Gwenu|to smile|GWEH-noo|Mae hi'n gwenu.|She's smiling.|Pobl a theimladau
+Chwerthin|to laugh|KHWER-thin|Dw i'n chwerthin.|I'm laughing.|Pobl a theimladau
+Crio|to cry|KREE-oh|Mae'r babi'n crio.|The baby is crying.|Pobl a theimladau
+Dychryn|to frighten|duh-KHRIN|Dw i wedi dychryn.|I've been frightened.|Pobl a theimladau
+Anghofio|to forget|an-HOH-vyo|Dw i wedi anghofio.|I've forgotten.|Pobl a theimladau
+Ofnadwy|terrible|ov-NAD-oo-ee|Dw i'n teimlo'n ofnadwy.|I feel terrible.|Pobl a theimladau
+Hael|generous|HAIL|Mae hi'n hael iawn.|She's very generous.|Pobl a theimladau
+Diddordeb|interest|did-DOR-deb|Mae gen i ddiddordeb mewn hanes.|I'm interested in history.|Pobl a theimladau
+Swil|shy|SWEEL|Mae hi'n swil.|She's shy.|Pobl a theimladau
+Pryderu|to worry|pruh-DEH-ree|Dw i'n pryderu amdanat ti.|I'm worried about you.|Pobl a theimladau
+Cynnes|warm (of people)|KUN-es|Mae hi'n gynnes iawn.|She's very warm.|Pobl a theimladau
+Cenfigen|jealousy|ken-VEE-gen|Dw i'n teimlo cenfigen.|I feel jealous.|Pobl a theimladau
+Wedyn|then, afterwards|WED-in|Wedyn, dw i'n mynd adref.|Then I'm going home.|Amser a chysylltwyr
+Yna|then|UH-na|Yna, dyma'r bws!|Then, here's the bus!|Amser a chysylltwyr
+Cyn|before|kin|Cyn mynd i'r gwaith, dw i'n yfed coffi.|Before going to work, I drink coffee.|Amser a chysylltwyr
+Ar ôl|after|ar OHL|Ar ôl gwaith, dw i'n mynd i'r parc.|After work, I go to the park.|Amser a chysylltwyr
+Wrth|while, as|oorth|Wrth fynd adref, dw i'n gwrando ar y radio.|While going home, I listen to the radio.|Amser a chysylltwyr
+Ers|since|airs|Dw i wedi bod yma ers dydd Llun.|I've been here since Monday.|Amser a chysylltwyr
+Yn y diwedd|in the end|un uh dee-WETH|Yn y diwedd, daeth hi.|In the end, she came.|Amser a chysylltwyr
+Ond|but|ond|Dw i eisiau mynd, ond mae hi'n hwyr.|I want to go, but it's late.|Amser a chysylltwyr
+Neu|or|nay|Wyt ti eisiau te neu ddŵr?|Do you want tea or water?|Amser a chysylltwyr
+Hefyd|also, too|HEV-id|Dw i'n yfed te hefyd.|I drink tea too.|Amser a chysylltwyr
+Weithiau|sometimes|WAY-thyay|Weithiau dw i'n cerdded i'r gwaith.|Sometimes I walk to work.|Amser a chysylltwyr
+Bob|every|bob|Bob dydd, dw i'n dysgu Cymraeg.|Every day I learn Welsh.|Amser a chysylltwyr
+Yn aml|often|un AH-ml|Dw i'n mynd yno'n aml.|I go there often.|Amser a chysylltwyr
+Eto|again|EH-toh|Dw i'n dod eto.|I'm coming again.|Amser a chysylltwyr
+Erbyn|by (a time)|ER-bin|Bydda i adref erbyn pump.|I'll be home by five.|Amser a chysylltwyr
+Tan|until|tahn|Dw i'n aros tan ddydd Llun.|I'm waiting until Monday.|Amser a chysylltwyr
+Eisoes|already|eye-SOY-ess|Dw i wedi bwyta eisoes.|I've already eaten.|Amser a chysylltwyr
+Cwstard|custard|KOO-stard|Dw i eisiau cwstard.|I want custard.|Bwyd
+Bisgedi|biscuit|bis-GEH-dee|Dw i'n bwyta bisgedi.|I'm eating biscuits.|Bwyd
+Menyn|butter|MEN-in|Mae menyn ar y bara.|There's butter on the bread.|Bwyd
+Jam|jam|jam|Mae jam mefus gen i.|I've got strawberry jam.|Bwyd
+Halen|salt|HAL-en|Mae angen halen.|It needs some salt.|Bwyd
+Pupur|pepper|PEE-pir|Mae pupur ar y bwrdd.|There's pepper on the table.|Bwyd
+Reis|rice|reess|Dw i'n coginio reis.|I'm cooking rice.|Bwyd
+Tatws|potatoes|TAT-oos|Mae tatws yn y pot.|There are potatoes in the pot.|Bwyd
+Pasta|pasta|PAS-ta|Dw i'n coginio pasta heno.|I'm cooking pasta tonight.|Bwyd
+Pitsa|pizza|PIT-sa|Wyt ti eisiau pitsa heno?|Do you want pizza tonight?|Bwyd
+Cnau|nuts|knai|Mae cnau yn y cwpwrdd.|There are nuts in the cupboard.|Bwyd
+Pei|pie|pay|Mae pei afal gen i.|I've got an apple pie.|Bwyd
+Ffa|beans|fah|Mae ffa ar y plât.|There are beans on the plate.|Bwyd
+Llwy|spoon|LOO-ee|Rho'r llwy yn y cwpan.|Put the spoon in the cup.|Bwyd
+Fforc|fork|fork|Mae'r fforc ar y bwrdd.|The fork's on the table.|Bwyd
+Cyllell|knife|kuh-THELL|Mae'r gyllell yn finiog.|The knife is sharp.|Bwyd
+Cwpan|cup|KOOP-an|Mae cwpan glân ar y bwrdd.|There's a clean cup on the table.|Bwyd
+Tal|tall|tahl|Mae e'n dal iawn.|He's very tall.|Disgrifio
+Byr|short|beer|Mae hi'n fyr.|She's short.|Disgrifio
+Denau|thin|DEH-nai|Mae'r wal yn ddenau.|The wall is thin.|Disgrifio
+Ifanc|young|IV-ank|Mae hi'n ifanc.|She's young.|Disgrifio
+Golau|light, bright|GOH-lai|Mae'r ystafell yn olau.|The room is bright.|Disgrifio
+Tywyll|dark|TUH-wil|Mae hi'n dywyll heno.|It's dark tonight.|Disgrifio
+Llydan|wide|LUH-dan|Mae'r ffordd yn llydan.|The road is wide.|Disgrifio
+Trwm|heavy|troom|Mae'r bag yn drwm.|The bag is heavy.|Disgrifio
+Ysgafn|light (not heavy)|US-gavn|Mae'r bag yn ysgafn.|The bag is light.|Disgrifio
+Glân|clean|glahn|Mae'r tŷ'n lân.|The house is clean.|Disgrifio
+Brwnt|dirty|broonth|Mae'r sgidiau'n frwnt.|The shoes are dirty.|Disgrifio
+Llawn|full|THLOWN|Mae'r bws yn llawn.|The bus is full.|Disgrifio
+Gwag|empty|GWAHG|Mae'r botel yn wag.|The bottle is empty.|Disgrifio
+Hardd|beautiful|hahrth|Mae'r golygfa yn hardd.|The view is beautiful.|Disgrifio
+Dwfn|deep|doovn|Mae'r môr yn ddwfn.|The sea is deep.|Disgrifio
+Uchel|high|IH-khel|Mae'r mynydd yn uchel.|The mountain is high.|Disgrifio
+Caled|hard|KAH-led|Mae'r bara'n galed.|The bread is hard.|Disgrifio
+Banc|bank|bank|Mae'r banc ar agor.|The bank is open.|Lle
+Post|post office|post|Dw i'n mynd i'r post.|I'm going to the post office.|Lle
+Llyfrgell|library|THLUH-vr-gel|Dw i'n mynd i'r llyfrgell.|I'm going to the library.|Lle
+Marchnad|market|MARKH-nad|Dw i'n siopa yn y farchnad.|I'm shopping at the market.|Lle
+Archfarchnad|supermarket|ark-VARKH-nad|Dw i'n mynd i'r archfarchnad.|I'm going to the supermarket.|Lle
+Amgueddfa|museum|am-GETH-va|Dw i'n mynd i'r amgueddfa.|I'm going to the museum.|Lle
+Neuadd|hall|NAY-adth|Mae'r cyngerdd yn y neuadd.|The concert is in the hall.|Lle
+Gwesty|hotel|GWES-tee|Dw i'n aros mewn gwesty.|I'm staying in a hotel.|Lle
+Sinema|cinema|SIN-eh-ma|Dw i'n mynd i'r sinema heno.|I'm going to the cinema tonight.|Lle
+Canolfan|centre|kan-OL-van|Mae'r ganolfan ar agor.|The centre is open.|Lle
+Pont|bridge|pont|Mae'r bont dros yr afon.|The bridge goes over the river.|Lle
+Cyngor|council|KUN-gor|Mae'r cyngor yn y dref.|The council is in town.|Lle
+Clwb|club|kloob|Dw i'n mynd i'r clwb.|I'm going to the club.|Lle
+Ysgwydd|shoulder|US-gooth|Mae poen yn fy ysgwydd.|I have pain in my shoulder.|Corff
+Cefn|back|kevn|Mae poen yn fy nghefn.|I have back pain.|Corff
+Penelin|elbow|pen-EL-in|Dw i wedi brifo fy mhenelin.|I've hurt my elbow.|Corff
+Pen-glin|knee|pen-GLEEN|Mae fy mhen-glin yn brifo.|My knee is hurting.|Corff
+Gwddf|neck|GOOTHV|Mae poen yn fy ngwddf.|I have a sore neck.|Corff
+Bys|finger|bees|Dw i wedi torri fy mys.|I've cut my finger.|Corff
+Trwyn|nose|TROO-in|Mae gen i drwyn coch.|I have a red nose.|Corff
+Gwefus|lip|GWEH-vis|Mae fy ngwefus yn sych.|My lip is dry.|Corff
+Dant|tooth|dant|Mae'r dant yn brifo.|The tooth hurts.|Corff
+Asgwrn|bone|ASG-oorn|Dw i wedi torri asgwrn.|I've broken a bone.|Corff
+Croen|skin|KROH-en|Mae'r croen yn sych.|The skin is dry.|Corff
+Gwaed|blood|gwaid|Mae gwaed ar fy llaw.|There's blood on my hand.|Corff
+Dwylo|hands|DOO-ee-loh|Golcha dy ddwylo.|Wash your hands.|Corff
+Clun|hip|klin|Mae poen yn fy nghlun.|I have hip pain.|Corff
+Traed|feet|traid|Mae fy nhraed yn oer.|My feet are cold.|Corff
+Ymbarél|umbrella|um-BAR-ell|Cymer ymbarél! Mae'n bwrw glaw.|Take an umbrella! It's raining.|Tywydd
+Cadair|chair|KAH-dire|Mae'r gadair yn gyfforddus.|The chair is comfortable.|Cartref
+Awyren|aeroplane|ah-WIR-en|Mae'r awyren yn glanio.|The plane is landing.|Teithio
+Bwrdd|table|BOORD|Mae'r bwrdd yn y gegin.|The table is in the kitchen.|Cartref
+`;
+const WORDS_B1 = `
+Cyflogwr|employer|kuh-VLOG-oor|Mae'r cyflogwr yn talu'n dda.|The employer pays well.|Gwaith
+Cytundeb|contract|kuh-TIN-deb|Dw i wedi arwyddo'r cytundeb.|I've signed the contract.|Gwaith
+Hyfforddiant|training|huh-vor-THYANT|Mae hyfforddiant ar gael heddiw.|Training is available today.|Gwaith
+Cyflwyno|to present|kuh-VLOO-no|Dw i'n cyflwyno'r adroddiad heddiw.|I'm presenting the report today.|Gwaith
+Adroddiad|report|ad-ROTH-yad|Mae'r adroddiad yn barod.|The report is ready.|Gwaith
+Llwyddo|to succeed|LLOO-idh-oh|Dw i'n llwyddo yn y gwaith.|I'm succeeding at work.|Gwaith
+Gyrfa|career|GUR-va|Dw i eisiau gyrfa newydd.|I want a new career.|Gwaith
+Cyflogaeth|employment|kuh-vlo-GAY-th|Mae hi'n chwilio am gyflogaeth.|She's looking for employment.|Gwaith
+Addysg|education|ad-VUS-ug|Mae addysg yn bwysig.|Education is important.|Addysg
+Arholiad|exam|ar-HOL-yad|Mae'r arholiad ddydd Iau.|The exam is on Thursday.|Addysg
+Prifysgol|university|prih-FUS-gol|Dw i'n mynd i'r brifysgol.|I'm going to university.|Addysg
+Gradd|degree|grath|Mae ganddi radd mewn hanes.|She has a degree in history.|Addysg
+Tystysgrif|certificate|tuh-STUS-grif|Dw i wedi cael tystysgrif.|I've got a certificate.|Addysg
+Pwnc|subject|poonk|Beth yw dy hoff bwnc?|What's your favourite subject?|Addysg
+Athrawes|female teacher|ath-RAH-wes|Mae fy athrawes yn garedig.|My teacher is kind.|Addysg
+Pasio|to pass|PAH-syo|Dw i wedi pasio'r prawf.|I've passed the test.|Addysg
+Methu|to fail|MEH-thi|Mae hi wedi methu'r prawf.|She has failed the test.|Addysg
+Ymarfer|to practise|um-AR-ver|Dw i'n ymarfer bob dydd.|I practise every day.|Addysg
+Cwrs|course|koors|Mae'r cwrs yn dechrau mis nesaf.|The course starts next month.|Addysg
+Tiwtor|tutor|TEE-tor|Mae'r tiwtor yn esbonio'r gwaith.|The tutor is explaining the work.|Addysg
+Newyddion|news|new-IDH-yon|Dw i'n gwylio'r newyddion bob nos.|I watch the news every night.|Newyddion
+Cylchgrawn|magazine|kul-KHGRAWN|Dw i'n prynu cylchgrawn bob mis.|I buy a magazine every month.|Newyddion
+Erthygl|article|er-THIG-il|Dw i wedi darllen yr erthygl.|I've read the article.|Newyddion
+Pennawd|headline|PEN-ow-idh|Mae'r pennawd yn fawr.|The headline is big.|Newyddion
+Hysbyseb|advert|hus-BUS-ib|Mae hysbyseb ar y teledu.|There's an advert on the TV.|Newyddion
+Cyfryngau|media|kuh-VREN-gai|Mae'r cyfryngau'n bwysig iawn.|The media is very important.|Newyddion
+Sianel|channel|SHAN-el|Pa sianel?|Which channel?|Newyddion
+Darlledu|to broadcast|dar-LED-ee|Mae'r sianel yn darlledu'r gêm.|The channel is broadcasting the match.|Newyddion
+Golygydd|editor|go-LUG-idh|Mae hi'n olygydd.|She's an editor.|Newyddion
+Rhaglen|programme|HRAH-glen|Mae rhaglen newydd ar y radio.|There's a new programme on the radio.|Newyddion
+Radio|radio|RAH-dyo|Dw i'n gwrando ar y radio.|I'm listening to the radio.|Newyddion
+Bwletin|bulletin|boo-LET-in|Mae'r bwletin ar y radio am saith.|The bulletin is on the radio at seven.|Newyddion
+Cyhoeddi|to publish; to announce|kuh-HOY-thee|Maen nhw'n cyhoeddi'r canlyniadau heddiw.|They're announcing the results today.|Newyddion
+Canlyniadau|results|kan-lun-YAH-dye|Mae'r canlyniadau'n dod heno.|The results are coming tonight.|Newyddion
+Ffynhonnell|source|fin-ON-hell|Beth yw'r ffynhonnell?|What's the source?|Newyddion
+Technoleg|technology|tekh-NOL-eg|Dw i'n hoffi technoleg.|I like technology.|Technoleg
+Rhyngrwyd|internet|HRIN-groo-id|Mae'r rhyngrwyd yn araf heddiw.|The internet is slow today.|Technoleg
+Ap|app|ap|Dw i wedi lawrlwytho ap newydd.|I've downloaded a new app.|Technoleg
+Cyfrinair|password|kuh-VREE-nire|Beth yw dy gyfrinair?|What's your password?|Technoleg
+Negeseuon|messages|neh-geh-SEE-on|Dw i'n darllen fy negeseuon.|I'm reading my messages.|Technoleg
+Ffeil|file|file|Mae'r ffeil yn y ffolder.|The file is in the folder.|Technoleg
+Sgrin|screen|skreen|Mae'r sgrin yn fawr.|The screen is big.|Technoleg
+Llwytho|to load; to upload|HLOO-ee-tho|Mae'r llun yn llwytho.|The picture is loading.|Technoleg
+Cysylltu|to connect|kuh-SUL-tee|Dw i ddim yn gallu cysylltu.|I can't connect.|Technoleg
+Gwefan|website|GWEH-van|Mae'r wefan newydd yn barod.|The new website is ready.|Technoleg
+Cyfrif|account|kuh-VREEF|Dw i'n agor cyfrif newydd.|I'm opening a new account.|Technoleg
+E-bost|email|EE-bost|Dw i wedi anfon e-bost.|I've sent an email.|Technoleg
+Llais|voice|hlice|Dw i'n clywed dy lais di.|I can hear your voice.|Technoleg
+Lawrlwytho|to download|lowr-LOO-tho|Dw i'n lawrlwytho'r ap.|I'm downloading the app.|Technoleg
+Batri|battery|BAT-ree|Mae'r batri yn isel.|The battery is low.|Technoleg
+Chwilio|to search|KHWIL-yo|Dw i'n chwilio ar y we.|I'm searching online.|Technoleg
+Straen|stress|STRAH-en|Mae llawer o straen yn y gwaith.|There's a lot of stress at work.|Iechyd
+Teimlo|to feel|TAYM-lo|Dw i'n teimlo'n well heddiw.|I'm feeling better today.|Iechyd
+Ymlacio|to relax|um-LAH-kyo|Dw i'n hoffi ymlacio gyda'r nos.|I like relaxing in the evenings.|Iechyd
+Corff|body|korf|Mae'r corff angen cwsg.|The body needs sleep.|Iechyd
+Maeth|nutrition|myth|Mae maeth yn bwysig.|Nutrition is important.|Iechyd
+Diet|diet|dyet|Dw i ddim ar ddiet.|I'm not on a diet.|Iechyd
+Pwysau|weight|POOI-sigh|Dw i wedi colli pwysau.|I've lost weight.|Iechyd
+Anadlu|to breathe|an-AD-loo|Anadlwch yn ddwfn.|Breathe deeply.|Iechyd
+Brechdan|sandwich|BREKH-dan|Dw i eisiau brechdan ham.|I want a ham sandwich.|Iechyd
+Pwdin|pudding, dessert|POOD-in|Beth yw'r pwdin?|What's the pudding?|Iechyd
+Meddyginiaeth|medicine|meh-dih-GIN-eye-th|Dw i'n cymryd meddyginiaeth.|I'm taking medicine.|Iechyd
+Presgripsiwn|prescription|pres-GRIP-shoon|Mae angen presgripsiwn arna i.|I need a prescription.|Iechyd
+Beicio|to cycle|BAY-kyo|Dw i'n beicio i'r gwaith.|I cycle to work.|Iechyd
+Llesiant|wellbeing|hle-SHYANT|Mae llesiant yn bwysig.|Wellbeing is important.|Iechyd
+Ymgynghori|to consult|um-gun-HOR-ee|Dw i'n ymgynghori â'r meddyg.|I'm consulting the doctor.|Iechyd
+Amgylchedd|environment|am-GUL-ched|Mae'r amgylchedd yn bwysig.|The environment is important.|Yr amgylchedd
+Ailgylchu|to recycle|eye-GUL-khee|Dw i'n ailgylchu popeth.|I recycle everything.|Yr amgylchedd
+Llygredd|pollution|hlih-GREDH|Mae llygredd yn broblem fawr.|Pollution is a big problem.|Yr amgylchedd
+Newid hinsawdd|climate change|NEW-id HIN-sow-dh|Mae newid hinsawdd yn bwysig iawn.|Climate change is very important.|Yr amgylchedd
+Coedwig|forest|KOY-dwig|Mae'r goedwig yn dawel.|The forest is quiet.|Yr amgylchedd
+Coeden|tree|KOY-den|Mae coeden fawr yn yr ardd.|There's a big tree in the garden.|Yr amgylchedd
+Planhigyn|plant|PLAN-hig-in|Dw i'n dyfrio'r planhigion.|I'm watering the plants.|Yr amgylchedd
+Gwastraff|waste|GWAS-traff|Mae gwastraff ym mhob man.|There's waste everywhere.|Yr amgylchedd
+Sbwriel|rubbish, litter|SBOO-ree-el|Taflwch y sbwriel yn y bin.|Put the rubbish in the bin.|Yr amgylchedd
+Bin|bin|been|Mae'r bin yn llawn.|The bin is full.|Yr amgylchedd
+Ynni|energy|UN-ee|Dw i eisiau ynni glân.|I want clean energy.|Yr amgylchedd
+Solar|solar|SOH-lar|Mae paneli solar ar y tŷ.|There are solar panels on the house.|Yr amgylchedd
+Cadwraeth|conservation|kad-WRY-eth|Mae cadwraeth yn bwysig.|Conservation is important.|Yr amgylchedd
+Tanwydd|fuel|TAN-with|Mae tanwydd yn ddrud.|Fuel is expensive.|Yr amgylchedd
+Cae|field|kye|Mae'r cae yn wlyb.|The field is wet.|Yr amgylchedd
+Llyn|lake|hlin|Mae'r llyn yn dawel.|The lake is calm.|Yr amgylchedd
+Perthynas|relationship|per-THIN-as|Mae perthynas dda gyda nhw.|They have a good relationship.|Perthynas
+Teimlad|feeling|TAYM-lad|Dw i'n cael teimlad da.|I'm getting a good feeling.|Perthynas
+Ymddiried|to trust|um-THRED-ree|Dw i'n ymddiried ynddo fe.|I trust him.|Perthynas
+Parchu|to respect|PAR-khee|Mae hi'n parchu pawb.|She respects everyone.|Perthynas
+Gwerthfawrogi|to appreciate|gwerth-vrow-ROG-ee|Dw i'n gwerthfawrogi dy help.|I appreciate your help.|Perthynas
+Ymddiheuro|to apologise|um-thee-HEH-ro|Dw i'n ymddiheuro.|I'm sorry; I apologise.|Perthynas
+Maddau|to forgive|MAH-dye|Dw i'n maddau iddi.|I forgive her.|Perthynas
+Gofidio|to worry|go-VEE-dyo|Dw i'n gofidio amdani.|I'm worried about her.|Perthynas
+Gwrthdaro|conflict|goorth-DAH-ro|Dw i ddim eisiau gwrthdaro.|I don't want conflict.|Perthynas
+Anghytuno|to disagree|an-GHIH-tee-no|Dw i'n anghytuno â ti.|I disagree with you.|Perthynas
+Cefnogi|to support|kev-NO-gee|Dw i'n cefnogi'r tîm.|I support the team.|Perthynas
+Gofalu|to look after|go-VAH-lee|Mae hi'n gofalu am ei mam.|She looks after her mum.|Perthynas
+Caredig|kind|kah-REH-dig|Mae hi'n garedig iawn.|She's very kind.|Perthynas
+Unig|lonely|EE-nig|Dw i'n teimlo'n unig weithiau.|I sometimes feel lonely.|Perthynas
+Siomedig|disappointed|shom-EH-dig|Roeddwn i'n siomedig.|I was disappointed.|Perthynas
+Balch|proud|balkh|Dw i'n falch ohonot ti.|I'm proud of you.|Perthynas
+Ffyddlon|loyal|FITH-lon|Mae hi'n ffyddlon iawn.|She's very loyal.|Perthynas
+Cartref|home|KAR-trev|Dw i'n hoffi fy nghartref.|I like my home.|Tai
+Fflat|flat|flat|Dw i'n byw mewn fflat.|I live in a flat.|Tai
+Rhent|rent|hrent|Mae'r rhent yn uchel.|The rent is high.|Tai
+Ystafell ymolchi|bathroom|uh-STAV-ell um-OHL-khee|Mae'r ystafell ymolchi i fyny'r grisiau.|The bathroom is upstairs.|Tai
+Wal|wall|wal|Mae llun ar y wal.|There's a picture on the wall.|Tai
+Ffenest|window|FEN-est|Agorwch y ffenest, os gwelwch yn dda.|Open the window, please.|Tai
+Perchennog|owner, landlord|per-KHEN-og|Mae'r perchennog yn garedig.|The landlord is kind.|Tai
+Ardal|area|AR-dal|Dw i'n byw mewn ardal dawel.|I live in a quiet area.|Tai
+Cyfeiriad|address|kuh-VAY-ree-ad|Beth yw dy gyfeiriad?|What's your address?|Tai
+Ystafell fyw|living room|uh-STAV-ell VEE-oo|Mae'r ystafell fyw yn oer.|The living room is cold.|Tai
+Tân|fire|tahn|Dw i'n cynnau tân.|I'm lighting a fire.|Tai
+Teithio|to travel|tay-THEE-oh|Dw i'n teithio i Lundain bob wythnos.|I travel to London every week.|Teithio
+Oedi|to delay; to wait|OY-dee|Mae'r trên wedi oedi.|The train has been delayed.|Teithio
+Canslo|to cancel|KAN-slo|Mae'r gwasanaeth wedi cael ei ganslo.|The service has been cancelled.|Teithio
+Gwasanaeth|service|gwas-AH-naith|Mae'r gwasanaeth yn wael.|The service is poor.|Teithio
+Cerdyn|card|KER-din|Dw i wedi colli fy ngherdyn.|I've lost my card.|Teithio
+Diffyg|lack|DIF-ig|Mae diffyg cadeiriau yma.|There's a lack of chairs here.|Teithio
+Cwyn|complaint|koo-in|Dw i eisiau gwneud cwyn.|I want to make a complaint.|Teithio
+Gohirio|to postpone|go-HIR-yo|Mae'r cyfarfod wedi cael ei ohirio.|The meeting has been postponed.|Teithio
+Dychwelyd|to return|duhkh-WEL-id|Dw i'n dychwelyd heddiw.|I'm returning today.|Teithio
+Lori|lorry|LOR-ee|Mae lori ar y ffordd.|There's a lorry on the road.|Teithio
+Gŵyl|festival|GOO-eel|Mae gŵyl fawr yn yr haf.|There's a big festival in the summer.|Traddodiadau
+Eisteddfod|eisteddfod (Welsh arts festival)|eye-STETH-vod|Dw i'n mynd i'r Eisteddfod.|I'm going to the Eisteddfod.|Traddodiadau
+Gorymdaith|parade|gor-UM-dayth|Mae'r orymdaith yn dod.|The parade is coming.|Traddodiadau
+Dathlu|to celebrate|DATH-lee|Dyn ni'n dathlu heno.|We're celebrating tonight.|Traddodiadau
+Dathliad|celebration|dath-LEE-ad|Mae'r dathliad yn fawr.|The celebration is big.|Traddodiadau
+Nadolig|Christmas|na-DOH-lig|Hapus Nadolig!|Merry Christmas!|Traddodiadau
+Dydd Gŵyl Dewi|St David's Day|deedh GOO-eel DEH-wee|Dyn ni'n gwisgo cenhinen ar Ddydd Gŵyl Dewi.|We wear a leek on St David's Day.|Traddodiadau
+Cenhinen|leek|ken-HIN-en|Mae cenhinen yn y cawl.|There's a leek in the soup.|Traddodiadau
+Cofio|to remember|kuh-VEE-o|Dw i'n cofio'r haf hwnnw.|I remember that summer.|Traddodiadau
+Traddodiad|tradition|trad-ODH-yad|Mae hwn yn draddodiad hen iawn.|This is a very old tradition.|Traddodiadau
+Addurno|to decorate|ad-EER-no|Dw i'n addurno'r tŷ.|I'm decorating the house.|Traddodiadau
+Llusern|lantern|hlis-ERN|Dw i'n cynnau llusern.|I'm lighting a lantern.|Traddodiadau
+Rhodd|present, gift|hroth|Dw i wedi prynu rhodd.|I've bought a present.|Traddodiadau
+Gwledd|feast|GWLETH|Mae gwledd fawr heno.|There's a big feast tonight.|Traddodiadau
+Bedydd|christening, baptism|BED-idh|Mae bedydd y babi ddydd Sul.|The baby's christening is on Sunday.|Traddodiadau
+Barn|opinion|bahrn|Yn fy marn i, mae hi'n iawn.|In my opinion, it's fine.|Barn
+Credu|to believe|KRED-ee|Dw i'n credu bod hi'n iawn.|I believe it's fine.|Barn
+Meddwl|to think|MEDH-ool|Dw i'n meddwl bod hi'n iawn.|I think it's fine.|Barn
+Dadlau|to argue|DAD-lye|Dw i ddim eisiau dadlau.|I don't want to argue.|Barn
+Anghydfod|disagreement|an-guh-DIV-od|Mae anghydfod rhwng y ddau.|There's a disagreement between the two.|Barn
+Efallai|maybe|eh-VAL-eye|Efallai y bydd hi'n dod.|Maybe she'll come.|Barn
+Rhaid|must, to have to|hride|Rhaid i mi fynd nawr.|I have to go now.|Barn
+Dylai|should|DUH-lye|Dylet ti fynd.|You should go.|Barn
+Gwir|true|gweer|Mae hynny'n wir.|That's true.|Barn
+Cywir|correct, right|KUH-weer|Ti'n gywir.|You're right.|Barn
+Anghywir|wrong|an-GHUH-weer|Mae hynny'n anghywir.|That's wrong.|Barn
+Pwysig|important|POO-sig|Mae hyn yn bwysig iawn.|This is very important.|Barn
+Dadansoddi|to analyse|dad-an-SOD-dee|Dw i'n dadansoddi'r sefyllfa.|I'm analysing the situation.|Barn
+Sefyllfa|situation|sev-UHL-va|Mae'r sefyllfa'n anodd.|The situation is difficult.|Barn
+Esgus|excuse|ES-gis|Dim esgus, plîs!|No excuses, please!|Barn
+Hyderus|confident|huh-DEH-rus|Dw i'n hyderus.|I'm confident.|Barn
+Siŵr|sure|shoor|Dw i'n siŵr.|I'm sure.|Barn
+Oherwydd|because|oh-EHR-with|Dw i'n aros oherwydd y glaw.|I'm staying because of the rain.|Cysylltwyr
+Felly|so, therefore|VEL-ee|Mae hi'n oer, felly dw i'n gwisgo cot.|It's cold, so I'm wearing a coat.|Cysylltwyr
+Achos|because|AH-khos|Dw i'n hapus achos mae hi'n braf.|I'm happy because it's nice.|Cysylltwyr
+Fodd bynnag|however|vodh BUN-ag|Mae'n oer. Fodd bynnag, mae'n braf.|It's cold. However, it's nice.|Cysylltwyr
+Er|although|air|Er ei fod yn oer, mae hi'n hapus.|Although it's cold, she's happy.|Cysylltwyr
+Tra|while|trah|Dw i'n coginio tra bod ti'n darllen.|I'm cooking while you're reading.|Cysylltwyr
+Yn ogystal â|as well as|un og-USS-tal ah|Yn ogystal â'r bwyd, mae'r gwin yn dda.|As well as the food, the wine is good.|Cysylltwyr
+Ar y llaw arall|on the other hand|ar uh HLOW AR-all|Mae'r trên yn hwyr. Ar y llaw arall, mae'n gyflym.|The train is late. On the other hand, it's fast.|Cysylltwyr
+Yn olaf|finally|un OH-live|Yn olaf, dw i wedi cyrraedd!|Finally, I've arrived!|Cysylltwyr
+Yn gyntaf|firstly|un GUN-taf|Yn gyntaf, dw i eisiau diolch i chi.|First, I want to thank you.|Cysylltwyr
+Er enghraifft|for example|air en-GRIFT|Er enghraifft, mae Caerdydd yn ddinas dda.|For example, Cardiff is a good city.|Cysylltwyr
+Yn enwedig|especially|un en-WEH-dig|Dw i'n hoffi bwyd, yn enwedig pizza.|I like food, especially pizza.|Cysylltwyr
+Hynny yw|that is|HUN-ee oo|Dw i'n dod o'r gogledd, hynny yw, o Fangor.|I'm from the north, that is, from Bangor.|Cysylltwyr
+Rheolwr|manager|rheh-OL-oor|Mae rheolwr yn gweithio yma.|A manager works here.|Gwaith
+Cyfle|opportunity|kuh-VLEH|Mae hwn yn gyfle da.|This is a good opportunity.|Gwaith
+Adran|department|AD-ran|Mae hi yn yr adran newydd.|She's in the new department.|Gwaith
+Cynhadledd|conference|kun-HAD-eth|Mae'r gynhadledd yn dechrau heddiw.|The conference starts today.|Gwaith
+Prosiect|project|pro-SHEKT|Dw i'n gweithio ar brosiect newydd.|I'm working on a new project.|Gwaith
+Ysgoloriaeth|scholarship|us-goh-LOR-yayth|Mae hi wedi cael ysgoloriaeth.|She's got a scholarship.|Addysg
+Cyfnod|period|KUV-nod|Roedd yn gyfnod anodd.|It was a difficult period.|Addysg
+Gramadeg|grammar|gruh-MAH-deg|Dw i'n dysgu gramadeg.|I'm learning grammar.|Addysg
+Ynganu|to pronounce|uhn-GAH-nee|Sut mae ynganu'r gair hwn?|How do you pronounce this word?|Addysg
+Llywodraeth|government|luh-WOH-drayth|Mae Llywodraeth Cymru wedi penderfynu.|The Welsh Government has decided.|Newyddion
+Ymchwiliad|investigation|um-khwee-LEE-ad|Mae'r heddlu'n gwneud ymchwiliad.|The police are carrying out an investigation.|Newyddion
+Damwain|accident|DAM-wine|Bu damwain ar y ffordd.|There was an accident on the road.|Newyddion
+Meddalwedd|software|meth-AL-wedth|Dw i'n defnyddio meddalwedd newydd.|I'm using new software.|Technoleg
+Caledwedd|hardware|kah-LED-wedth|Mae caledwedd yn ddrud.|Hardware is expensive.|Technoleg
+Anaf|injury|AH-nav|Cafodd e anaf difrifol.|He had a serious injury.|Iechyd
+Iselder|depression|ih-SEL-der|Mae hi'n dioddef o iselder.|She suffers from depression.|Iechyd
+Diogel|safe|dee-OH-gel|Dw i'n teimlo'n ddiogel.|I feel safe.|Iechyd
+Cynaliadwy|sustainable|kun-al-YAD-wee|Mae'r cwmni'n gynaliadwy.|The company is sustainable.|Yr amgylchedd
+Anifail|animal|AN-ih-vile|Mae anifail anwes gen i.|I have a pet.|Yr amgylchedd
+Bywyd gwyllt|wildlife|BUH-wid GWILT|Mae bywyd gwyllt yn yr ardd.|There's wildlife in the garden.|Yr amgylchedd
+Priodas|wedding|pree-OH-dass|Dw i'n mynd i briodas heddiw.|I'm going to a wedding today.|Perthynas
+Gwahanu|to separate|gwuh-HAH-nee|Maen nhw wedi gwahanu.|They've separated.|Perthynas
+Mabwysiadu|to adopt|mab-oo-SHAH-dee|Maen nhw eisiau mabwysiadu plentyn.|They want to adopt a child.|Perthynas
+Atgyweirio|to repair|at-guh-way-REE-oh|Dw i'n atgyweirio'r drws.|I'm repairing the door.|Tai
+Cyrraedd|to arrive|kuh-RYE-eth|Dw i'n cyrraedd erbyn saith.|I'll arrive by seven.|Teithio
+Gadael|to leave|gah-DYE-el|Dw i'n gadael nawr.|I'm leaving now.|Teithio
+Pasbort|passport|PAHS-bort|Dw i wedi anghofio fy mhasbort.|I've forgotten my passport.|Teithio
+Telyn|harp|TEH-lin|Mae hi'n chwarae'r delyn.|She plays the harp.|Traddodiadau
+Hanes|history|HAH-ness|Mae hanes Cymru yn hir.|Welsh history is long.|Traddodiadau
+Safbwynt|point of view|SAHV-boo-int|Dw i'n deall eich safbwynt.|I understand your point of view.|Barn
+Annheg|unfair|AN-heg|Roedd hynny'n annheg iawn.|That was very unfair.|Barn
+Serch hynny|nevertheless|SERCH HUHN-ee|Roedd hi'n bwrw glaw. Serch hynny, aethon ni allan.|It was raining. Nevertheless, we went out.|Cysylltwyr
+Gan fod|since, because|gan VOD|Gan fod hi'n bwrw glaw, arhosais i gartref.|As it was raining, I stayed home.|Cysylltwyr
+Er mwyn|in order to|er MOO-in|Dw i'n dysgu Cymraeg er mwyn siarad.|I'm learning Welsh in order to speak.|Cysylltwyr
+Heblaw|except, apart from|heh-BLOW|Mae pawb yma heblaw fi.|Everyone is here except me.|Cysylltwyr
+`;
 'use strict';
 /* Cymraeg bob dydd · the same way of learning as the other rooms:
    Geiriau (cards with familiarity, the word list, your own words) · Seiniau (letters and how they sound, say it yourself)
@@ -744,13 +1149,16 @@ const dayKey = (d = new Date()) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}
 const ico = n => `<svg class="ic"><use href="#i-${n}"/></svg>`;
 const MIC = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg>';
 const SRS_DAYS = [0, 1, 3, 7, 16, 35, 80], DAY = 86400000;
-const THEMES = ['Cyfarch', 'Pob dydd', 'Berfau', 'Hwyl', 'Bwyd', 'Teulu', 'Lle', 'Amser', 'Corff', 'Disgrifio'];
-const THEME_EN = { 'Cyfarch': 'Greetings', 'Pob dydd': 'Every day', 'Berfau': 'Verbs', 'Hwyl': 'Fun & feelings', 'Bwyd': 'Food & drink', 'Teulu': 'Family & people', 'Lle': 'Places', 'Amser': 'Time & weather', 'Corff': 'Body', 'Disgrifio': 'Describing', 'Fy ngeiriau': 'My words', 'Pob un': 'All' };
-const ALL_B = WORDS_A1.trim().split('\n').map(l => { const f = l.split('|').map(x => x.trim()); return { key: 'w:' + f[0], src: 'b', th: f[5], cy: f[0], en: f[1], say: f[2], ex: f[3], exEn: f[4] }; });
+const THEMES = ['Cyfarch', 'Pob dydd', 'Berfau', 'Hwyl', 'Bwyd', 'Teulu', 'Lle', 'Amser', 'Corff', 'Disgrifio', 'Siopa', 'Teithio', 'Gwaith', 'Iechyd', 'Tywydd', 'Cartref', 'Ysgol', 'Hamdden', 'Pobl a theimladau', 'Amser a chysylltwyr', 'Addysg', 'Newyddion', 'Technoleg', 'Yr amgylchedd', 'Perthynas', 'Tai', 'Traddodiadau', 'Barn', 'Cysylltwyr'];
+const THEME_EN = { 'Cyfarch': 'Greetings', 'Pob dydd': 'Every day', 'Berfau': 'Verbs', 'Hwyl': 'Fun & feelings', 'Bwyd': 'Food & drink', 'Teulu': 'Family & people', 'Lle': 'Places', 'Amser': 'Time & weather', 'Corff': 'Body', 'Disgrifio': 'Describing', 'Fy ngeiriau': 'My words', 'Pob un': 'All', 'Siopa': 'Shopping', 'Teithio': 'Travel', 'Gwaith': 'Work', 'Iechyd': 'Health', 'Tywydd': 'Weather', 'Cartref': 'Home', 'Ysgol': 'School', 'Hamdden': 'Leisure', 'Pobl a theimladau': 'People & feelings', 'Amser a chysylltwyr': 'Time & linking words', 'Addysg': 'Education', 'Newyddion': 'News & media', 'Technoleg': 'Technology', 'Yr amgylchedd': 'Environment', 'Perthynas': 'Relationships', 'Tai': 'Housing', 'Traddodiadau': 'Customs', 'Barn': 'Opinions', 'Cysylltwyr': 'Linking words' };
+const LV_ORDER = ['A1', 'A2', 'B1'], LV_NAME = { A1: 'Mynediad', A2: 'Sylfaen', B1: 'Canolradd' };
+const ALL_B = [['A1', WORDS_A1], ['A2', WORDS_A2], ['B1', WORDS_B1]].flatMap(([lv, txt]) => txt.trim().split('\n').map(l => { const f = l.split('|').map(x => x.trim()); return { key: 'w:' + f[0], src: 'b', lv, th: f[5], cy: f[0], en: f[1], say: f[2], ex: f[3], exEn: f[4] }; }));
+const levelItems = () => ALL_B.filter(x => LV_ORDER.indexOf(x.lv) <= LV_ORDER.indexOf(S.lv || 'A1'));
+const themesFor = () => THEMES.filter(t => levelItems().some(x => x.th === t));
 
 /* ---------- store (old progress from the first version carries over) ---------- */
 const STORE_KEY = 'cymraeg_v2';
-const DEF = () => ({ th: 'Pob un', dir: 'cy', meta: {}, days: {}, scores: {}, mine: [] });
+const DEF = () => ({ th: 'Pob un', lv: 'A1', dir: 'cy', meta: {}, days: {}, scores: {}, mine: [] });
 let S = DEF();
 try { const r = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); if (r) S = Object.assign(DEF(), r); else {
   const o = JSON.parse(localStorage.getItem('cymraeg_v1') || 'null');
@@ -760,7 +1168,7 @@ try { const r = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); if (r) S 
 } } catch (e) {}
 let saveT; function save() { clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} }, 200); }
 const mineItems = () => S.mine.map(m => ({ key: 'm:' + m.id, src: 'm', th: 'Fy ngeiriau', cy: m.cy, en: m.en, say: m.say || '', ex: m.ex || '', exEn: m.exEn || '' }));
-const allItems = () => ALL_B.concat(mineItems());
+const allItems = () => levelItems().concat(mineItems());
 const byKey = k => allItems().find(x => x.key === k);
 const meta = k => S.meta[k] || (S.meta[k] = { box: 0, due: 0 });
 const peek = k => S.meta[k] || {};
@@ -807,8 +1215,9 @@ function buildDeck() {
 }
 function thName(t) { return `${t} · ${THEME_EN[t] || ''}`; }
 function renderCard() {
-  const opts = ['Pob un'].concat(THEMES, S.mine.length ? ['Fy ngeiriau'] : []);
+  const opts = ['Pob un'].concat(themesFor(), S.mine.length ? ['Fy ngeiriau'] : []);
   $('thSel').innerHTML = opts.map(t => `<option value="${esc(t)}" ${S.th === t ? 'selected' : ''}>${esc(thName(t))}</option>`).join('');
+  $('lvSel').innerHTML = LV_ORDER.map(l => `<option value="${l}" ${S.lv === l ? 'selected' : ''}>${l} · ${LV_NAME[l]}</option>`).join('');
   $('dirTxt').textContent = S.dir === 'cy' ? 'CY → EN' : 'EN → CY';
   if (!App.deck.length) buildDeck();
   const src = deckSource(), mastered = src.filter(x => peek(x.key).status === 'mastered').length, review = src.filter(x => peek(x.key).status === 'review').length;
@@ -969,7 +1378,7 @@ function renderStats() {
   const pct = k => { const s = S.scores[k]; return s && s[1] ? Math.round(s[0] / s[1] * 100) : 0; };
   $('v-stats').innerHTML = `<div class="kpis"><div class="card kpi"><div class="v">${mastered}</div><div class="l">Wedi dysgu</div></div><div class="card kpi"><div class="v">${review}</div><div class="l">Wrthi</div></div><div class="card kpi"><div class="v">${Object.keys(S.days).filter(k => S.days[k] && S.days[k].n).length}</div><div class="l">Diwrnodau o ymarfer</div></div><div class="card kpi"><div class="v">${Math.round(mins / 60000)}</div><div class="l">Munudau</div></div></div>
     <div class="card pad"><div class="label">Yr wythnos hon</div><div class="bars7">${week.map(w => `<div class="b7 ${w.today ? 'today' : ''}"><span class="val">${w.n || ''}</span><div class="bar ${w.n ? '' : 'zero'}" style="height:${w.n / max * 100}%"></div><span class="d">${w.d}</span></div>`).join('')}</div></div>
-    <div class="card pad stack">${THEMES.concat(S.mine.length ? ['Fy ngeiriau'] : []).map(t => { const a = all.filter(x => x.th === t), m = a.filter(x => peek(x.key).status === 'mastered').length; return `<div><div class="row between"><b>${esc(thName(t))}</b><span class="meta">${m} / ${a.length}</span></div><div class="progress"><i style="width:${a.length ? m / a.length * 100 : 0}%"></i></div></div>`; }).join('')}</div>
+    <div class="card pad stack">${themesFor().concat(S.mine.length ? ['Fy ngeiriau'] : []).map(t => { const a = all.filter(x => x.th === t), m = a.filter(x => peek(x.key).status === 'mastered').length; return `<div><div class="row between"><b>${esc(thName(t))}</b><span class="meta">${m} / ${a.length}</span></div><div class="progress"><i style="width:${a.length ? m / a.length * 100 : 0}%"></i></div></div>`; }).join('')}</div>
     <div class="card pad">${[['tr', 'Cyfieithu'], ['listen', 'Gwrando'], ['mut', 'Treiglo'], ['num', 'Rhifau']].map(([k, l]) => `<div class="hbar"><span>${l}</span><div class="track"><i style="width:${pct(k)}%"></i></div><span class="pct">${pct(k)}%<small>${(S.scores[k] || [0, 0])[1]} cwestiwn</small></span></div>`).join('')}</div>
     <div class="card pad stack"><div class="setting"><div><div class="t">Darllen yn araf</div><div class="d">Llais arafach</div></div><label class="switch"><input type="checkbox" id="sSlow" ${S.slow ? 'checked' : ''}><span></span></label></div>
     <div class="setting"><div><div class="t">Darllen yn awtomatig</div><div class="d">Dweud pob cerdyn wrth iddo ymddangos</div></div><label class="switch"><input type="checkbox" id="sAuto" ${S.auto ? 'checked' : ''}><span></span></label></div>
@@ -1001,6 +1410,7 @@ document.addEventListener('click', e => { const b = e.target.closest('[data-act]
 document.addEventListener('keydown', e => { if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return; if (App.tab === 'cards' && App.sub.cards === 'study') { if (e.key === ' ') { e.preventDefault(); flip(); } else if (e.key === 'ArrowRight') step(1); else if (e.key === 'ArrowLeft') step(-1); else if (e.key === '1') rate('again'); else if (e.key === '2') rate('good'); else if (e.key === '3') rate('mastered'); } });
 $('listQ').addEventListener('input', renderList);
 $('thSel').addEventListener('change', e => { S.th = e.target.value; save(); App.deck = []; renderCard(); });
+$('lvSel').addEventListener('change', e => { S.lv = e.target.value; if (S.th !== 'Pob un' && S.th !== 'Fy ngeiriau' && !themesFor().includes(S.th)) S.th = 'Pob un'; save(); App.deck = []; renderCard(); });
 setupSwipe(); go('cards');
 
 /* ☁ your own words and how well you know each card, on your other devices too */
