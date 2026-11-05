@@ -16,6 +16,8 @@
     app: ["Nearby Station", "近邻站", "近鄰站", "Estación Cerca", "Estació A Prop"],
     lead: ["A window seat, a cup of something warm, and the world going by. Get off wherever you like.", "靠窗的座位，一杯热饮，窗外世界慢慢经过。想在哪站下车都可以。", "靠窗的座位，一杯熱飲，窗外世界慢慢經過。想在哪站下車都可以。", "Un asiento junto a la ventana, algo caliente para beber y el mundo pasando. Bájate donde quieras.", "Un seient a la finestra, alguna cosa calenta per beure i el món passant. Baixa on vulguis."],
     car: ["Car No. {c}", "{c} 号车厢", "{c} 號車廂", "Coche n.º {c}", "Cotxe núm. {c}"],
+    big: ["Bigger window", "放大窗口", "放大窗口", "Ventana más grande", "Finestra més gran"],
+    ctl: ["Show the controls", "显示控制按钮", "顯示控制按鈕", "Muestra los controles", "Mostra els controls"],
     music: ["Change the record", "换一张唱片", "換一張唱片", "Cambia el disco", "Canvia el disc"],
     records: ["Records", "唱片", "唱片", "Discos", "Discos"],
     recLead: ["The little player by the window. Pick one.", "窗边的小唱机，挑一张吧。", "窗邊的小唱機，挑一張吧。", "El tocadiscos junto a la ventana. Elige uno.", "El tocadiscos de la finestra. Tria'n un."],
@@ -145,10 +147,18 @@
   function dockUp() {
     var D = document.querySelector(".cb-dock"); if (!D || D.querySelector("[data-j]")) return;
     var sh = D.querySelector('[data-a="shuffle"]');
-    [["music", "🎵", records], ["drink", "☕", function () { trolley(false); }]].forEach(function (b) {
+    [["music", "🎵", records], ["drink", "☕", function () { trolley(false); }], ["win", "⛶", zen]].forEach(function (b) {
       var x = document.createElement("button"); x.type = "button"; x.dataset.j = b[0]; x.textContent = b[1]; x.setAttribute("aria-label", w(b[0])); x.title = w(b[0]);
       x.addEventListener("click", function (e) { e.stopPropagation(); b[2](); }); D.insertBefore(x, sh);
     });
+  }
+  function zen() { try { toggleZenMode(); } catch (e) {} setTimeout(function () { dispatchEvent(new Event("resize")); }, 40); setTimeout(paintZen, 60); }
+  function paintZen() { var b = document.querySelector('.cb-dock [data-j="win"]'); if (!b) return; var z = !!(window.state && state.zenMode); b.textContent = z ? "🎛" : "⛶"; b.setAttribute("aria-label", w(z ? "ctl" : "big")); b.title = w(z ? "ctl" : "big"); }
+  var zenOff = false;
+  function controlsFirst() {   /* boarding makes the window big; in the app the controls stay until the visitor asks */
+    if (zenOff || !FBCabin.S.boarded) return; zenOff = true;
+    try { if (state.zenMode && innerHeight >= 560) toggleZenMode(); } catch (e) {}   /* a short screen (a phone on its side) keeps the big window; ⛶/🎛 in the dock switches */
+    setTimeout(function () { dispatchEvent(new Event("resize")); paintZen(); }, 700);
   }
   var bar = null, barIdle = 0;
   function barUp() {
@@ -168,6 +178,9 @@
     else if (ts === "STOPPED") h = '<button type="button" data-b="off" class="pri">🚪 ' + w("off", { s: n }) + "</button>";
     else h = "<span>🚃 " + w("leaving") + "</span>";
     if (bar._h !== h) { bar._h = h; bar.innerHTML = h; }
+    var hd = document.querySelector("header"), vpe = $("windowViewport"), z = state.zenMode, top = "";
+    if (!z && hd && vpe) { var hb = hd.getBoundingClientRect().bottom, vt = vpe.getBoundingClientRect().top; top = Math.round(vt - hb >= 52 ? hb + (vt - hb - 40) / 2 : Math.max(hb, vt) + 34) + "px"; }   /* in the gap under the header, or just inside the glass */
+    bar.style.top = top;
     bar.hidden = false; bar.classList.toggle("idle", ts !== "STOPPED" && Date.now() - barIdle > 5000);
     if (ts === "STOPPED") { try { var dn = FBCabin.director.next; if (dn.depart && dn.depart - Date.now() < 35e3) dn.depart = Date.now() + 35e3; } catch (x) {} }   /* time to decide */
   }
@@ -585,7 +598,7 @@
     setTimeout(ticket, 0);
     var iv = setInterval(function () {
       if (!window.FBCabin) return;
-      if (FBCabin.S.boarded) { dockUp(); paintCup(); }
+      if (FBCabin.S.boarded) { controlsFirst(); dockUp(); paintCup(); paintZen(); }
       barUp();
     }, 600);
   });

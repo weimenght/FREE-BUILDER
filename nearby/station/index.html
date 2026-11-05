@@ -2122,7 +2122,7 @@
 
       ctx.fillStyle = "#475569";
       ctx.font = "500 11px 'JetBrains Mono', monospace";
-      ctx.fillText(`${state.station.jp}  •  ${state.station.code}`, signX + signW * 0.5, signY + 37);
+      ctx.fillText(`${state.station.jp || state.station.sub || state.station.region}  •  ${state.station.code}`, signX + signW * 0.5, signY + 37);
 
       const vmX = platX + platW * 0.16;
       const vmY = platY - 64;
@@ -3176,7 +3176,7 @@
 
     function syncHUDAndButtons() {
       document.getElementById("hudStationTitle").textContent = state.station.name;
-      document.getElementById("hudRegionSubtitle").textContent = `— ${state.station.region} (${state.station.jp})`;
+      document.getElementById("hudRegionSubtitle").textContent = `— ${state.station.region}` + ((state.station.jp || state.station.sub) && (state.station.jp || state.station.sub) !== state.station.region ? ` (${state.station.jp || state.station.sub})` : "");
       document.getElementById("hudLineCode").textContent = `CAR ${String(window.FB_CAR || 4).padStart(2, "0")} • ${state.station.code}`;
 
       const timePretty = { dawn: "Dawn", afternoon: "Afternoon", sunset: "Sunset", night: "2:00 AM" }[state.timeOfDay];

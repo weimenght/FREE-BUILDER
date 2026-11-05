@@ -130,6 +130,7 @@
   function fit() {
     if (!document.body.classList.contains("cb-on")) return;
     var el = $("windowViewport"); if (!el) return;
+    if (document.documentElement.classList.contains("cb-app") && !document.body.classList.contains("zen-mode")) { el.style.removeProperty("height"); setTimeout(function () { try { resizeCanvas(); } catch (e) {} }, 60); return; }   /* the app: all controls showing, the page's own size */
     var bezel = el.closest(".window-bezel") || el.parentElement;
     var chrome = bezel.getBoundingClientRect().height - el.getBoundingClientRect().height;   /* frame + sill around the glass */
     var h = Math.min(innerHeight - chrome - 20, el.getBoundingClientRect().width * (innerHeight > innerWidth ? 1.9 : 0.68));   /* upright: a tall window; sideways: a wide one */
