@@ -626,5 +626,8 @@ window.FB_EMO={
  "Name it, chalk the board, show someone": "✏️🪧 → 👀👥",
  "Put out what you have too much of (lemons, books, a spare chair) with a note: free to a neighbour.": "🍋📚🪑 → 🚪📝 🎁🏘️",
  "I set up a stall at Set Up Shop: “{n}”. Come and see what's on the counter.": "🏪✨ → 👀🪵🍋📚",
- "New below the railway, left of Town Hall: Set Up Shop. A market stall that's yours: the awning, what's on the counter, the chalkboard. Show it to someone.": "🆕🛤️⬇️🏛️⬅️ 🏪: ⛱️🍋🪧 → 👀👥"
+ "New below the railway, left of Town Hall: Set Up Shop. A market stall that's yours: the awning, what's on the counter, the chalkboard. Show it to someone.": "🆕🛤️⬇️🏛️⬅️ 🏪: ⛱️🍋🪧 → 👀👥",
+ "Also after hours:": "🌙➕",
+ "All of it →": "🌙🌙🌙 →",
+ "new": "🆕"
 };
