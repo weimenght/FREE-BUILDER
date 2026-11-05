@@ -1,0 +1,15 @@
+{
+  "name": "Ask Popo",
+  "short_name": "Ask Popo",
+  "description": "One question a week to ask an older relative in person, and two lines to keep the answer. Kept on your own device.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#14101e",
+  "theme_color": "#14101e",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
