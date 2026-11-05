@@ -193,7 +193,111 @@ window.PCScenes = (function () {
   function cloud(p, x, y, s, c) { p.r(x, y + 2 * s, 12 * s, 3 * s, c); p.r(x + 2 * s, y, 5 * s, 3 * s, c); p.r(x + 6 * s, y + s, 4 * s, 2 * s, c); }
   function ridge(p, R, y, amp, c, step) { var h = y; for (var x = 0; x < W; x += step) { h += (R() - .5) * amp; h = Math.max(y - amp * 2, Math.min(y + amp, h)); p.r(x, h, step, H - h, c); } }
   function ell(p, cx, cy, rx, ry, c, top) { for (var y = -ry; y <= ry; y++) { if (top === 1 && y < 0) continue; var w = Math.round(rx * Math.sqrt(1 - (y * y) / (ry * ry))); p.r(cx - w, cy + y, w * 2, 1, c); } }
+  /* small people for the pictures where two are together: standing, sitting (dir 1 faces right, -1 left, 0 front) and lying */
+  function head(p, x, y, o) { p.r(x + 1, y, 5, 5, o.s); p.r(x + 1, y - 1, 5, 2, o.h); p.r(x, y, 1, 3, o.h); p.r(x + 6, y, 1, 2, o.h); if (o.hl) { p.r(x, y, 1, 7, o.h); p.r(x + 6, y, 1, 7, o.h); } if (o.bun) p.r(x + 2, y - 3, 3, 2, o.h);
+    if (o.hood) { p.r(x, y - 2, 7, 3, o.c); p.r(x, y, 1, 4, o.c); p.r(x + 6, y, 1, 4, o.c); } p.r(x + 2, y + 2, 1, 1, "#2a1a14"); p.r(x + 4, y + 2, 1, 1, "#2a1a14"); }
+  function stand(p, x, y, o) { var pt = "#2a2a3a";
+    if (o.k) { p.r(x, y - 10, 7, 4, o.k); p.r(x + 1, y - 6, 2, 6, "#3a2a2a"); p.r(x + 4, y - 6, 2, 6, "#3a2a2a"); } else { p.r(x + 1, y - 9, 2, 9, pt); p.r(x + 4, y - 9, 2, 9, pt); }
+    p.r(x, y - 1, 3, 1, "#1a1010"); p.r(x + 4, y - 1, 3, 1, "#1a1010"); p.r(x, y - 18, 7, o.k ? 8 : 9, o.c); if (o.sc) p.r(x, y - 18, 7, 2, o.sc); if (o.apr) p.r(x + 1, y - 16, 5, 8, o.apr); head(p, x, y - 23, o); }
+  function sit(p, x, y, dir, o) { var pt = "#2a2a3a"; p.r(x, y - 10, 7, 9, o.c);
+    if (dir > 0) { p.r(x + 4, y - 2, 8, 3, pt); p.r(x + 10, y + 1, 3, 8, pt); p.r(x + 10, y + 8, 4, 1, "#1a1010"); p.r(x + 6, y - 7, 5, 2, o.c); }
+    else if (dir < 0) { p.r(x - 5, y - 2, 8, 3, pt); p.r(x - 6, y + 1, 3, 8, pt); p.r(x - 7, y + 8, 4, 1, "#1a1010"); p.r(x - 4, y - 7, 5, 2, o.c); }
+    else { p.r(x + 1, y - 1, 2, 9, pt); p.r(x + 4, y - 1, 2, 9, pt); p.r(x, y + 7, 3, 1, "#1a1010"); p.r(x + 4, y + 7, 3, 1, "#1a1010"); }
+    head(p, x, y - 15, o); }
+  function lie(p, x, y, o) { p.r(x + 5, y - 3, 10, 4, o.c); p.r(x + 15, y - 2, 9, 2, "#2a2a3a"); p.r(x + 24, y - 3, 1, 3, "#1a1010"); p.r(x, y - 4, 5, 5, o.s); p.r(x - 1, y - 4, 2, 5, o.h); if (o.hl) p.r(x - 3, y - 3, 3, 6, o.h); p.r(x + 2, y - 3, 1, 1, "#2a1a14"); }
   var S = {
+    /* people together, off the screen (Nov 6): the after-hours idea in eight pictures */
+    table: function (p, R) {
+      p.r(0, 0, W, 74, "#3b2a24"); for (var x = 4; x < W; x += 8) p.r(x, 0, 1, 74, "#43302a");
+      p.r(12, 12, 40, 34, "#2a1e1a"); p.r(14, 14, 36, 30, "#1c2a4a"); p.r(31, 14, 2, 30, "#2a1e1a"); p.r(14, 28, 36, 2, "#2a1e1a");
+      ell(p, 42, 20, 3, 3, "#fff2c8"); for (var s = 0; s < 6; s++) p.r(16 + R() * 32, 15 + R() * 12, 1, 1, "#a8b4ff");
+      for (var d = 0; d < 9; d++) p.r(15 + R() * 34, 16 + R() * 26, 1, 2, "rgba(170,190,255,.5)");
+      p.r(116, 20, 26, 22, "#5a3a26"); p.r(118, 22, 22, 18, "#e8d8b0"); p.r(120, 24, 8, 6, "#c4a070"); p.r(130, 26, 8, 10, "#8aa0b8");
+      ell(p, 80, 30, 40, 20, "rgba(246,183,60,.10)"); ell(p, 80, 34, 26, 14, "rgba(246,183,60,.12)");
+      p.r(79, 0, 2, 20, "#1a1210"); p.r(70, 20, 20, 6, "#e8a03a"); p.r(72, 26, 16, 2, "#ffd27a");
+      p.r(0, 80, W, 30, "#4a3226"); for (var f = 82; f < 110; f += 6) p.r(0, f, W, 1, "#3e2a20");
+      sit(p, 26, 80, 1, { c: "#2c6a8a", h: "#2a1a14", s: "#e8b48a" }); sit(p, 126, 80, -1, { c: "#b3261e", h: "#4a2a1a", s: "#c88a5a", hl: 1 });
+      p.r(34, 70, 92, 4, "#9a6a3a"); p.r(34, 74, 92, 3, "#7a4f2c"); p.r(38, 77, 3, 20, "#6a4224"); p.r(119, 77, 3, 20, "#6a4224");
+      [[58, 66], [100, 66]].forEach(function (b) { ell(p, b[0], b[1] + 2, 8, 3, "#e8dccb", 1); p.r(b[0] - 8, b[1] + 1, 16, 2, "#f4ecdc"); p.r(b[0] - 6, b[1], 12, 2, "#c8702a");
+        for (var k = 0; k < 4; k++) p.r(b[0] - 3 + k * 2, b[1] - 4 - (k % 2) * 3, 1, 3, "rgba(255,255,255,.55)"); });
+      p.r(76, 63, 8, 7, "#c8402a"); p.r(77, 61, 6, 2, "#e8e0d0");
+      p.r(44, 69, 6, 1, "#1a1a22"); p.r(110, 69, 6, 1, "#1a1a22");
+    },
+    bench: function (p, R) {
+      bands(p, ["#4a3a6e", "#8a4a6a", "#d46a4a", "#f2a04a", "#f8c878"], 0, 70);
+      ell(p, 120, 66, 10, 10, "#ffe3a0"); ridge(p, R, 70, 2, "#6a7a4a", 4); p.r(0, 78, W, 32, "#7a8a4a");
+      for (var g = 0; g < 50; g++) p.r(R() * W, 80 + R() * 30, 1, 2, R() < .5 ? "#6a7a3a" : "#8a9a52");
+      p.r(18, 30, 6, 52, "#4a2e1e"); ell(p, 21, 26, 20, 16, "#c8642a"); ell(p, 14, 20, 10, 8, "#e08a3a"); ell(p, 30, 32, 10, 7, "#b04a20");
+      for (var l = 0; l < 12; l++) p.r(R() * 80, 30 + R() * 60, 2, 1, R() < .5 ? "#e08a3a" : "#c8402a");
+      p.r(140, 34, 2, 52, "#2a2a30"); p.r(136, 30, 10, 5, "#2a2a30"); p.r(137, 35, 8, 3, "#ffd27a"); ell(p, 141, 40, 12, 9, "rgba(255,210,120,.18)");
+      p.r(52, 74, 56, 3, "#7a4f2c"); p.r(52, 68, 56, 2, "#8a5a33"); p.r(52, 64, 56, 2, "#8a5a33"); p.r(55, 77, 2, 10, "#3a2a1e"); p.r(103, 77, 2, 10, "#3a2a1e");
+      sit(p, 66, 75, 0, { c: "#26467f", h: "#2a1a14", s: "#e8b48a" }); sit(p, 75, 75, 0, { c: "#c8a03a", h: "#7a3a1a", s: "#d8a070", hl: 1 });
+          },
+    walk: function (p, R) {
+      bands(p, ["#f2b07a", "#f6c88a", "#f8daa0", "#fbe8c0"], 0, 54);
+      ell(p, 40, 50, 12, 12, "#fff0c0"); ridge(p, R, 52, 3, "#a8a06a", 4); ridge(p, R, 62, 3, "#7a8a4a", 3); p.r(0, 70, W, 40, "#5f7a3a");
+      for (var y = 70; y < 110; y++) { var w = 6 + (y - 70) * .9, cx = 80 + Math.sin(y / 9) * 14; p.r(cx - w / 2, y, w, 1, "#c8b088"); }
+      for (var b = 0; b < 4; b++) { var bx = 96 + b * 9, by = 18 + (b % 2) * 4; p.r(bx, by, 2, 1, "#4a3a2a"); p.r(bx + 2, by - 1, 2, 1, "#4a3a2a"); }
+      stand(p, 70, 92, { c: "#2c6a8a", h: "#2a1a14", s: "#e8b48a", sc: "#e8d8a0" }); stand(p, 82, 92, { c: "#b3261e", h: "#3a2418", s: "#c88a5a", hl: 1, k: "#5a2a4a" });
+      p.r(78, 77, 4, 2, "#e8b48a");
+      p.r(96, 86, 8, 4, "#8a5a3a"); p.r(102, 83, 4, 4, "#8a5a3a"); p.r(97, 90, 1, 3, "#6a4228"); p.r(102, 90, 1, 3, "#6a4228"); p.r(95, 85, 2, 1, "#8a5a3a"); p.r(103, 86, 2, 1, "#26467f");
+      p.r(89, 82, 8, 1, "#c8402a");
+    },
+    door: function (p, R) {
+      bands(p, ["#0e1430", "#1a2248", "#26305a"], 0, 60);
+      for (var s = 0; s < 22; s++) p.r(R() * W, R() * 40, 1, 1, "#e8ecff");
+      p.r(26, 22, 108, 74, "#6a4a3a"); for (var by = 24; by < 96; by += 5) for (var bx = (by / 5 % 2) * 6; bx < 108; bx += 12) p.r(26 + bx, by, Math.min(11, 108 - bx), 1, "#5a3e30");
+      p.r(22, 18, 116, 6, "#2a1a14"); p.r(18, 14, 124, 4, "#e8eef8");
+      [[36, 34], [104, 34]].forEach(function (w) { p.r(w[0], w[1], 20, 18, "#2a1a14"); p.r(w[0] + 2, w[1] + 2, 16, 14, "#ffcf6a"); p.r(w[0] + 9, w[1] + 2, 2, 14, "#2a1a14"); p.r(w[0] + 2, w[1] + 8, 16, 1, "#2a1a14"); p.r(w[0] - 1, w[1] + 17, 22, 2, "#e8eef8"); });
+      p.r(68, 50, 24, 46, "#2a1a14"); p.r(70, 52, 20, 44, "#ffd890"); p.r(70, 52, 5, 44, "#9c2418");
+      ell(p, 80, 96, 30, 6, "rgba(255,210,120,.25)");
+      stand(p, 78, 95, { c: "#7a3a4a", h: "#9a9a9a", s: "#e8b48a", bun: 1, apr: "#f4ecdc" }); p.r(75, 79, 2, 4, "#7a3a4a"); p.r(86, 79, 3, 4, "#7a3a4a");
+      p.r(0, 96, W, 14, "#e8eef8"); for (var t = 0; t < 10; t++) p.r(100 + t * 5, 99 + (t % 2) * 4, 2, 1, "#c8d0e0");
+      stand(p, 104, 100, { c: "#f08aa0", h: "#f070a0", s: "#f0c8a0", hl: 1, k: "#3a4a8a" }); p.r(114, 92, 8, 7, "#3a7a9a"); p.r(116, 90, 4, 2, "#2a5a7a");
+      for (var f = 0; f < 34; f++) p.r(R() * W, R() * 96, 1, 1, "#ffffff");
+    },
+    picnic: function (p, R) {
+      bands(p, ["#7fc0ec", "#9ad0f0", "#b8def4", "#d4ecf8"], 0, 60);
+      cloud(p, 14, 12, 2, "#ffffff"); cloud(p, 66, 22, 2, "#ffffff");
+      ridge(p, R, 58, 2, "#8ac06a", 4); p.r(0, 64, W, 46, "#6aa84a");
+      for (var g = 0; g < 60; g++) { var x = R() * W, y = 66 + R() * 44; p.r(x, y, 1, 2, "#4f8c3a"); if (R() < .15) p.r(x, y - 1, 2, 2, R() < .5 ? "#ffffff" : "#f6d84a"); }
+      p.r(130, 22, 6, 50, "#5a3a22"); ell(p, 133, 18, 26, 18, "#3f8a3a"); ell(p, 122, 12, 12, 9, "#4f9a44"); ell(p, 146, 24, 12, 9, "#357a32"); ell(p, 133, 74, 22, 4, "rgba(0,0,0,.15)");
+      for (var cy = 0; cy < 6; cy++) for (var cx = 0; cx < 12; cx++) p.r(32 + cx * 6, 84 + cy * 3, 6, 3, (cx + cy) % 2 ? "#e84a3a" : "#f8f0e8");
+      p.r(84, 78, 14, 8, "#b0783a"); p.r(84, 78, 14, 2, "#8a5a2a"); p.r(86, 74, 10, 2, "#8a5a2a"); p.r(84, 74, 2, 4, "#8a5a2a"); p.r(96, 74, 2, 4, "#8a5a2a"); p.r(88, 76, 3, 2, "#c8402a");
+      p.r(66, 80, 4, 4, "#f8f0e8"); p.r(66, 79, 4, 1, "#c8402a"); p.r(72, 82, 6, 2, "#f6c84a");
+      sit(p, 40, 86, 1, { c: "#f6c84a", h: "#2a1a14", s: "#c88a5a", hl: 1 }); sit(p, 104, 86, -1, { c: "#2c6a8a", h: "#6a3a1a", s: "#e8b48a" });
+      p.r(60, 20, 1, 1, "#2a1a14"); p.r(62, 19, 1, 1, "#2a1a14"); p.r(64, 20, 1, 1, "#2a1a14");
+    },
+    stars: function (p, R) {
+      bands(p, ["#05061a", "#0a0c28", "#111538", "#1a1e48"], 0, 110);
+      for (var m = 0; m < 160; m++) { var t = R(); p.r(10 + t * 140 + (R() - .5) * 22, 4 + t * 60 + (R() - .5) * 18, 1, 1, R() < .5 ? "rgba(200,200,255,.35)" : "rgba(255,240,220,.25)"); }
+      for (var s = 0; s < 60; s++) p.r(R() * W, R() * 74, 1, 1, R() < .2 ? "#fff6c0" : "#c8d0ff");
+      p.r(118, 14, 1, 1, "#ffffff"); p.r(117, 14, 3, 1, "rgba(255,255,255,.6)"); p.r(118, 13, 1, 3, "rgba(255,255,255,.6)");
+      for (var k = 0; k < 14; k++) p.r(30 + k * 2, 18 + k, 2, 1, "rgba(255,255,255," + (k / 16).toFixed(2) + ")");
+      for (var x = 0; x < W; x++) { var h = 78 + Math.round(Math.sin(x / 30) * 5 + Math.cos(x / 11) * 1.5); p.r(x, h, 1, H - h, "#26304a"); if (R() < .3) p.r(x, h, 1, 1, "#3a4668"); }
+      p.r(0, 94, W, 16, "#1e2640");
+      lie(p, 58, 80, { c: "#7a3a4a", h: "#3a2418", s: "#c88a5a", hl: 1 }); lie(p, 80, 81, { c: "#2c6a8a", h: "#2a1a14", s: "#e8b48a" });
+      p.r(106, 76, 4, 6, "#2a1a14"); p.r(107, 77, 2, 3, "#f6b73c"); ell(p, 108, 79, 8, 5, "rgba(246,183,60,.18)");
+    },
+    postbox: function (p, R) {
+      bands(p, ["#8a98a8", "#9aa6b4", "#aab4c0"], 0, 60);
+      [[0, 30, 34, "#6a6070"], [36, 18, 30, "#7a6a5a"], [96, 24, 28, "#6a7280"], [126, 14, 34, "#7a6a60"]].forEach(function (b) { p.r(b[0], b[1], b[2], 80 - b[1], b[3]); for (var wy = b[1] + 4; wy < 70; wy += 9) for (var wx = b[0] + 4; wx < b[0] + b[2] - 4; wx += 8) p.r(wx, wy, 4, 5, R() < .3 ? "#f6d88a" : "#4a5260"); });
+      p.r(0, 80, W, 30, "#5a5e66"); p.r(0, 80, W, 2, "#7a7e86"); for (var q = 0; q < 6; q++) p.r(10 + R() * 140, 88 + R() * 18, 10 + R() * 12, 1, "rgba(200,210,230,.45)");
+      p.r(70, 64, 16, 22, "#c8261a"); ell(p, 78, 64, 8, 4, "#c8261a"); p.r(70, 70, 16, 2, "#a81e14"); p.r(73, 74, 10, 2, "#1a1010"); p.r(74, 78, 8, 5, "#f4ecdc"); p.r(68, 85, 20, 2, "#8a1a10");
+      stand(p, 94, 96, { c: "#f6c83a", h: "#2a1a14", s: "#c88a5a", hood: 1 }); p.r(86, 76, 8, 2, "#f6c83a"); p.r(82, 72, 5, 4, "#fffaf0"); p.r(83, 73, 2, 1, "#c8402a");
+      for (var r = 0; r < 70; r++) { var rx = R() * W, ry = R() * 100; p.r(rx, ry, 1, 3, "rgba(220,230,255,.45)"); }
+    },
+    tea: function (p, R) {
+      p.r(0, 0, W, H, "#e8dcc4"); p.r(20, 6, 120, 74, "#5a4030"); p.r(24, 10, 112, 66, "#9ab8a8");
+      for (var t = 0; t < 7; t++) { var tx = 30 + t * 16 + R() * 6; ell(p, tx, 52 + R() * 8, 10, 12, R() < .5 ? "#5a8a5a" : "#4a7a4a"); }
+      p.r(24, 64, 112, 12, "#7a9a72"); p.r(78, 10, 4, 66, "#5a4030"); p.r(24, 40, 112, 3, "#5a4030");
+      for (var d = 0; d < 46; d++) p.r(26 + R() * 108, 12 + R() * 60, 1, 3, "rgba(255,255,255,.55)");
+      p.r(12, 78, 136, 6, "#f4ecdc"); p.r(12, 84, 136, 4, "#d8ccb4"); p.r(0, 88, W, 22, "#c8b89c");
+      [[60, "#c8402a"], [92, "#26467f"]].forEach(function (c) { p.r(c[0], 66, 12, 12, c[1]); p.r(c[0] + 12, 69, 3, 6, c[1]); p.r(c[0] + 1, 67, 10, 2, "#6a3a1a");
+        for (var k = 0; k < 3; k++) { p.r(c[0] + 3 + k * 3, 58 - k * 2, 1, 4, "rgba(255,255,255,.75)"); p.r(c[0] + 4 + k * 3, 54 - k * 2, 1, 3, "rgba(255,255,255,.5)"); } });
+      p.r(118, 68, 12, 10, "#b0683a"); ell(p, 124, 62, 8, 7, "#4f8a44"); ell(p, 120, 58, 4, 4, "#5f9a50");
+      p.r(30, 74, 18, 4, "#f8f0e0"); p.r(30, 72, 18, 2, "#e8dcc4"); p.r(32, 70, 14, 2, "#c8402a");
+    },
     hutong: function (p, R) {
       bands(p, ["#3b2a5a", "#5b3a6e", "#8a4a6a", "#c46a5a", "#e8996a"], 0, 60);
       p.r(0, 60, W, 50, "#6e6a66");
@@ -278,7 +382,7 @@ window.PCScenes = (function () {
   };
   function draw(cv, scene, seed) { var g = cv.getContext("2d"); cv.width = W; cv.height = H; g.imageSmoothingEnabled = false; (S[scene] || S.hutong)(mk(g), rng(scene + (seed || ""))); }
   return { W: W, H: H, LIST: Object.keys(S), draw: draw,
-    ICON: { hutong: "🏮", sky: "☁️", peak: "⛰️", sea: "🌊", train: "🚃", bowl: "🍵", bar: "🍸", night: "🌙" },
+    ICON: { table: "🍲", bench: "🪑", walk: "🐕", door: "🚪", picnic: "🧺", stars: "✨", postbox: "📮", tea: "☕", hutong: "🏮", sky: "☁️", peak: "⛰️", sea: "🌊", train: "🚃", bowl: "🍵", bar: "🍸", night: "🌙" },
     STAMPS: { cat: ["🐈", "#c8402a"], cocktail: ["🍸", "#2c6a8a"], train: ["🚃", "#3a7a4a"], peak: ["🏔️", "#5a5a9a"], cloud: ["☁️", "#4a8ac8"], bowl: ["🍵", "#a8782a"], record: ["💿", "#6a2a5a"], book: ["📖", "#8a4a24"], lantern: ["🏮", "#b3261e"] },
     INK: { blue: "#2c4a86", black: "#2a2420", red: "#a8321e", green: "#2a6a4a" } };
 })();
@@ -331,7 +435,7 @@ window.PCScenes = (function () {
     handoff: ["Next counter: Handoff, for two people apart", "隔壁窗口：Handoff，给相隔两地的两个人", "隔壁窗口：Handoff，給相隔兩地的兩個人", "Siguiente ventanilla: Handoff, para dos personas lejos", "Següent finestreta: Handoff, per a dues persones lluny"],
     lang: ["Language", "语言", "語言", "Idioma", "Idioma"], close: ["Close", "关闭", "關閉", "Cerrar", "Tanca"],
     day: ["d", "天", "天", "d", "d"],
-    scenes: { hutong: ["Hutong", "胡同", "胡同", "Hutong", "Hutong"], sky: ["Lie Back Park", "看云坡", "看雲坡", "Parque Panza Arriba", "Parc Panxa Enlaire"], peak: ["Hold On", "抓稳", "抓穩", "Agárrate", "Agafa't"], sea: ["Sea", "海", "海", "Mar", "Mar"], train: ["Train window", "车窗", "車窗", "Ventanilla", "Finestra del tren"], bowl: ["Mended", "金缮坊", "金繕坊", "Remendado", "Adobat"], bar: ["Next Door", "“隔壁”", "“隔壁”", "Al Lado", "Al Costat"], night: ["City night", "城市夜景", "城市夜景", "Noche en la ciudad", "Nit a la ciutat"] }
+    scenes: { table: ["Dinner for two", "两个人的晚饭", "兩個人的晚飯", "Cena para dos", "Sopar per a dos"], bench: ["The bench", "长椅", "長椅", "El banco", "El banc"], walk: ["A long walk", "走一段长路", "走一段長路", "Un paseo largo", "Una passejada llarga"], door: ["Coming home", "回家", "回家", "Volver a casa", "Tornar a casa"], picnic: ["Picnic", "野餐", "野餐", "Pícnic", "Pícnic"], stars: ["Under the stars", "星空下", "星空下", "Bajo las estrellas", "Sota les estrelles"], postbox: ["The post box", "邮筒", "郵筒", "El buzón", "La bústia"], tea: ["Two cups", "两杯茶", "兩杯茶", "Dos tazas", "Dues tasses"], hutong: ["Hutong", "胡同", "胡同", "Hutong", "Hutong"], sky: ["Lie Back Park", "看云坡", "看雲坡", "Parque Panza Arriba", "Parc Panxa Enlaire"], peak: ["Hold On", "抓稳", "抓穩", "Agárrate", "Agafa't"], sea: ["Sea", "海", "海", "Mar", "Mar"], train: ["Train window", "车窗", "車窗", "Ventanilla", "Finestra del tren"], bowl: ["Mended", "金缮坊", "金繕坊", "Remendado", "Adobat"], bar: ["Next Door", "“隔壁”", "“隔壁”", "Al Lado", "Al Costat"], night: ["City night", "城市夜景", "城市夜景", "Noche en la ciudad", "Nit a la ciutat"] }
   };
   var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }, LOC = ["en-GB", "zh-CN", "zh-TW", "es-ES", "ca-ES"];
   function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
@@ -375,7 +479,7 @@ window.PCScenes = (function () {
   /* ---------- the card on the desk ---------- */
   var q = new URLSearchParams(location.search), reading = q.get("c");
   var d = {}; try { d = JSON.parse(ls("postcard_draft") || "{}"); } catch (e) {}
-  var card = { scene: P.ICON[q.get("scene")] ? q.get("scene") : (d.scene || "hutong"), stamp: P.STAMPS[q.get("stamp")] ? q.get("stamp") : (d.stamp || "cat"), ink: d.ink || "blue",
+  var card = { scene: P.ICON[q.get("scene")] ? q.get("scene") : (d.scene || "table"), stamp: P.STAMPS[q.get("stamp")] ? q.get("stamp") : (d.stamp || "cat"), ink: d.ink || "blue",
     place: q.get("place") != null ? q.get("place").slice(0, 40) : (d.place || ""), msg: d.msg || "", to: q.get("to") != null ? q.get("to").slice(0, 32) : (d.to || ""), from: d.from || ls("postcard_name") || "" };
   var when = "now", at = new Date();
   function save() { ls("postcard_draft", JSON.stringify(card)); }
