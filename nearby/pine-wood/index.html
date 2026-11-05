@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=f3aad758aa"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=9ac068970c" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=f3aad758aa"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=3b720d5e4b" data-fbb><script data-fbg src="/fbkit/fbg.js?v=a7fd877408" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Pine Wood · Nearby</title>
 <meta name="description" content="A slow walk under the pines. Stone lanterns, mist, fireflies, and sometimes a cat on the path. Alone, or with a friend somewhere else on the same path.">
@@ -14,7 +14,9 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
 .bar{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));display:flex;gap:8px;z-index:5}
 .bar>*{display:grid;place-items:center}
 #pocket{position:fixed;right:12px;top:64px;z-index:20;max-width:min(300px,calc(100vw - 24px));padding:10px 12px;background:#2a1d14;color:#fbeedd;border:3px solid #000;box-shadow:4px 4px 0 #000;font:20px/1.25 'VT323',monospace}
-#pocket ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}#pocket li{display:flex;gap:8px;align-items:center}#pocket b{display:block;font:400 9px/1.4 'Press Start 2P',monospace;color:#f6b73c;margin-bottom:6px}
+#pocket ul,#rest ul{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:4px}#pocket li,#rest li{display:flex;gap:8px;align-items:center}#pocket b,#rest b{display:block;font:400 9px/1.4 'Press Start 2P',monospace;color:#f6b73c;margin:0 0 6px}#pocket b+ul+b{margin-top:8px}
+#rest{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:30;width:min(360px,calc(100vw - 24px));max-height:calc(100vh - 80px);overflow:auto;padding:12px 14px;background:#2a1d14;color:#fbeedd;border:3px solid #000;box-shadow:5px 5px 0 #000;font:20px/1.25 'VT323',monospace}
+#rest p{margin:0 0 8px}#rest .row{display:grid;gap:8px;margin-top:6px}#rest .fbb{min-height:44px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
@@ -26,11 +28,17 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   <button type="button" class="duo fbb fbb-glass fbb-icon" id="duo" aria-label="With a friend">👥</button>
 </div>
 <div id="pocket" role="dialog" aria-label="Your pocket" hidden></div>
+<div id="rest" role="dialog" hidden></div>
 <script src="/nearby/duo.js"></script>
 <script>
 /* Pine Wood: hold the left or right half of the screen (or the arrow keys) and walk. The path goes on as long as
    you do. Stone lanterns glow as you pass them at dusk and night; Mantou or the cats, when they wandered into
-   the wood today, fall in step beside you. With a friend: you walk the same path and see each other when near. */
+   the wood today, fall in step beside you. With a friend: you walk the same path and see each other when near.
+   An exploration (Nov 5): things along the path show themselves when you stop beside them (a well, a hollow oak,
+   a woodcutter's hut, a bench, a shrine, stepping stones, a log with a hedgehog, a clearing with a deer or a fox);
+   signposts offer side paths (the birch grove, the pond, the mossy hollow) that rejoin the main path; what you saw
+   goes in the pocket card, never counted. Your legs last three to five minutes of walking a visit (fb_wood_leg):
+   you slow, you yawn, and then you sit on a log and the walk is over: a card with what you saw and the way home. */
 (function () {
   "use strict";
   var WD = window.FBWorld || { phase: function () { return "night"; }, weather: function () { return "clear"; }, cats: function () { return {}; }, dog: function () { return ""; } };
@@ -64,11 +72,11 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   var stars = []; for (var i = 0; i < 45; i++) stars.push({ x: hash(i * 10), y: hash(i * 10 + 1), ph: hash(i * 10 + 2) * 6.3, sp: .8 + hash(i * 10 + 3) * 1.5 });
   var parts = []; for (i = 0; i < 28; i++) parts.push({ x: Math.random() * 400, y: 35 + Math.random() * 100, vx: -4 - Math.random() * 6, vy: 1.5 + Math.random() * 3, fly: i < 12, ph: Math.random() * 6.3 });
   var keys = { l: false, r: false }, pdir = 0, prompt = 1;
-  addEventListener("keydown", function (e) { audio(); if (/^(ArrowLeft|a|A)$/.test(e.key)) keys.l = true; if (/^(ArrowRight|d|D)$/.test(e.key)) keys.r = true; });
+  addEventListener("keydown", function (e) { audio(); if (/^(ArrowLeft|a|A)$/.test(e.key)) keys.l = true; if (/^(ArrowRight|d|D)$/.test(e.key)) keys.r = true; if (/^(ArrowUp|w|W)$/.test(e.key)) { var fk = forkNear(); if (fk) takeFork(fk); } });
   addEventListener("keyup", function (e) { if (/^(ArrowLeft|a|A)$/.test(e.key)) keys.l = false; if (/^(ArrowRight|d|D)$/.test(e.key)) keys.r = false; });
   /* the nearer the edge your finger is, the faster you walk: an amble near the middle, a brisk pace at the edge */
   function aim(e) { var r = cv.getBoundingClientRect(), f = ((e.clientX - r.left) / r.width - .5) * 2; f = Math.max(-1, Math.min(1, f)); pdir = (f < 0 ? -1 : 1) * (.55 + 1.45 * Math.pow(Math.abs(f), 1.6)); }
-  cv.addEventListener("pointerdown", function (e) { audio(); aim(e); try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
+  cv.addEventListener("pointerdown", function (e) { audio(); if (done) return; var fk = forkNear(); if (fk) { var r0 = cv.getBoundingClientRect(); if ((e.clientY - r0.top) / r0.height < .45) { takeFork(fk); return; } } aim(e); try { cv.setPointerCapture(e.pointerId); } catch (x) {} });
   cv.addEventListener("pointermove", function (e) { if (pdir) aim(e); });
   ["pointerup", "pointercancel"].forEach(function (ev) { cv.addEventListener(ev, function () { pdir = 0; }); });
 
@@ -107,9 +115,9 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   }
 
   function update(dt) {
-    time += dt; meet(dt); finds(dt); var dir = 0; if (keys.l) dir--; if (keys.r) dir++; if (pdir) dir = pdir;
-    if (dir) { var pace = Math.abs(dir); me.face = dir < 0 ? -1 : 1; me.moving = true; camX += dir * me.sp * dt; me.frame += dt * 6.5 * Math.sqrt(pace); prompt = Math.max(0, prompt - dt * 1.5); me.stepT += dt; if (me.stepT > .31 / Math.sqrt(pace)) { me.stepT = 0; step(); } }
-    else { me.moving = false; me.frame = 0; me.stepT = .25; }
+    time += dt; meet(dt); finds(dt); marks(dt); tire(dt); var dir = 0; if (keys.l) dir--; if (keys.r) dir++; if (pdir) dir = pdir; if (done) dir = 0;
+    if (dir) { var pace = Math.abs(dir), st = stamina(); me.face = dir < 0 ? -1 : 1; me.moving = true; camX += dir * me.sp * st * dt; me.frame += dt * 6.5 * Math.sqrt(pace) * st; prompt = Math.max(0, prompt - dt * 1.5); me.stepT += dt; if (me.stepT > .31 / Math.sqrt(pace) / st) { me.stepT = 0; step(); } leg.walked += dt; dwell = 0; }
+    else { me.moving = false; me.frame = 0; me.stepT = .25; dwell += dt; }
     if (wf) wf.frequency.setTargetAtTime(260 + Math.sin(time * .4) * 90 + (me.moving ? 60 : 0), A.currentTime, .2);
     if (A && Math.random() < dt * .12) note();
     parts.forEach(function (p) { if (p.fly) { p.x += Math.sin(time * 1.2 + p.ph) * 6 * dt - dir * me.sp * .85 * dt; p.y += Math.cos(time * 1.5 + p.ph) * 4 * dt; } else { p.x += p.vx * dt - dir * me.sp * .9 * dt; p.y += p.vy * dt + Math.sin(time * 2 + p.ph) * 1.5 * dt; } if (p.x < -10) p.x += W + 20; if (p.x > W + 10) p.x -= W + 20; if (p.y > GY - 2) p.y = 30; if (p.y < 25) p.y = GY - 10; });
@@ -183,7 +191,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   var DRESS = [["#c84a6a", "#f4c0d0"], ["#d8a030", "#fbe8b0"], ["#2f7a7a", "#bfe8e0"], ["#6a3a7a", "#e0c0f0"], ["#3a5a9a", "#f6f0d8"], ["#a83a2a", "#f6d860"]], TIGHTS = ["#2a1a20", "#4a2a3a", "#1e2a3a", "#7a5a4a"];   /* …and hair (short, long, a ponytail, a bun) and sometimes a long coat that flares like a skirt */
   var HAIR = ["#2a1a10", "#4a2e1a", "#7a4a2a", "#c89a5a", "#1a1a1e", "#8a3a22", "#d8d0c8"];
   var MY_LOOK = pickLook(), MATE_LOOK = pickLook();
-  function walker(x, y, face, moving, frame, cloak, cloakD, scarf, hat, ht, lk) {
+  function walker(x, y, face, moving, frame, cloak, cloakD, scarf, hat, ht, lk, yawn) {
     var hs = (lk && lk[5]) || 0, hc = (lk && lk[6]) || "#2a1a10", flare = lk && lk[7];
     var f = moving ? Math.floor(frame) % 4 : 0, bob = f === 1 || f === 3 ? -1 : 0;
     ctx.fillStyle = "rgba(5,8,12,.45)"; ctx.fillRect(x - 3, y - 1, 7, 1);
@@ -203,6 +211,16 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     else { ctx.fillStyle = hc; ctx.fillRect(x - 1, y - 13 + bob, 3, 1); if (hs) ctx.fillRect(back, y - 13 + bob, 1, 2); }   /* no hat, just hair */
     ctx.fillStyle = scarf; ctx.fillRect(x - 2, y - 9 + bob, 5, 1); var tx = face === 1 ? x - 3 : x + 3; ctx.fillRect(tx, y - 9 + bob + (moving && f % 2 ? -1 : 0), 2, 1); ctx.fillRect(tx - face, y - 8 + bob, 1, 1);
     ctx.fillStyle = "#8c6d53"; var sx = x + face * 3, lift = f === 1 ? -1 : 0; ctx.fillRect(sx, y - 11 + bob + lift, 1, 11 - lift);
+    if (yawn) { ctx.fillStyle = "#f2d3ab"; ctx.fillRect(x - face * 3, y - 14 + bob, 1, 3); ctx.fillRect(x - face * 3, y - 15 + bob, 1, 1); ctx.fillStyle = cloak; ctx.fillRect(x - face * 2, y - 11 + bob, 1, 2); }   /* one arm up: a stretch and a yawn */
+  }
+  /* sat down on a log at the end of the walk: legs out, hat tipped back */
+  function sitter(x, y) {
+    var lk = MY_LOOK, bark = WD.phase() === "night" ? "#2a2420" : "#6a4a30"; ctx.fillStyle = bark; ctx.fillRect(x - 9, y - 4, 18, 4); ctx.fillStyle = shade("#6a4a30", .25); ctx.fillRect(x - 9, y - 4, 18, 1);
+    var f = me.face, y0 = y - 4; ctx.fillStyle = "#151c24"; ctx.fillRect(x + f * 2, y0 - 2, 3, 1); ctx.fillRect(x + f * 4, y0 - 2, 1, 2);
+    ctx.fillStyle = lk[0]; ctx.fillRect(x - 2, y0 - 8, 5, 6); ctx.fillStyle = lk[1]; ctx.fillRect(f === 1 ? x - 2 : x + 1, y0 - 8, 2, 6);
+    ctx.fillStyle = "#f2d3ab"; ctx.fillRect(x - 1, y0 - 11, 3, 3); ctx.fillStyle = lk[3]; ctx.fillRect(x - 2, y0 - 13, 5, 2); ctx.fillStyle = lk[2]; ctx.fillRect(x - 2, y0 - 8, 5, 1);
+    ctx.fillStyle = "#8c6d53"; ctx.fillRect(x - f * 4, y0 - 7, 1, 7);   /* the stick leans on the log */
+    var z = (time * 1.1) % 3; ctx.fillStyle = "rgba(220,230,235," + (.6 - z * .18).toFixed(2) + ")"; ctx.fillRect(x + f * 4, y0 - 15 - Math.round(z * 3), 1, 1);   /* a slow breath */
   }
   function render() {
     ctx.setTransform(2, 0, 0, 2, 0, 0);
@@ -216,16 +234,18 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     layer(.18, 12, 34, 54, P.t1, 0, .85); mist(P, GY - 14, 10, .05, .22);
     deer(P);
     layer(.42, 20, 52, 85, P.t2, 0, .78); mist(P, GY - 8, 8, .06, .48);
-    layer(.75, 34, 76, 118, P.t3, 0, .72);
+    var tr = trailHere(); if (tr === "pond") pond(P);
+    if (tr === "birch") birches(P); else layer(.75, 34, 76, 118, P.t3, 0, .72);
     lanterns(P);
-    ctx.fillStyle = P.ground; ctx.fillRect(0, GY, W, H - GY); ctx.fillStyle = P.rim; ctx.fillRect(0, GY, W, 1);
-    floor(P); season(P); drawFinds();
+    ctx.fillStyle = tr === "birch" ? shade(P.ground, .12) : tr === "hollow" ? "#0e1a16" : P.ground; ctx.fillRect(0, GY, W, H - GY); ctx.fillStyle = P.rim; ctx.fillRect(0, GY, W, 1);
+    floor(P); season(P); drawFinds(); drawMarks(P); drawForks(P);
     for (var c = Math.floor((camX - 20) / 6); c <= Math.floor((camX + W + 20) / 6); c++) { var r = hash(c * 43.1), gx = Math.round(c * 6 - camX); if (r < .45) { ctx.fillStyle = P.tuft; ctx.fillRect(gx, GY - 1, 2, 1); if (r < .2) ctx.fillRect(gx + 1, GY - 2, 1, 1); } }
     if (mate) { var mxs = Math.round(W / 2 + (mate.x - camX)); if (mxs > -10 && mxs < W + 10) walker(mxs, GY, mate.f, mate.m, time * 6.5, MATE_LOOK[0], MATE_LOOK[1], MATE_LOOK[2], MATE_LOOK[3], MATE_LOOK[4], MATE_LOOK); else { ctx.fillStyle = "#f0c34a"; var ex = mxs < 0 ? 3 : W - 5; ctx.fillRect(ex, GY + 6, 2, 2); } }
     var asleep = WD.phase() === "night";
     drawMeet(asleep);
     pals.forEach(function (a) { if (WD.drawPet) pet(a.k, Math.round(W / 2 + a.x), GY, { flip: me.face < 0, step: me.moving ? Math.floor(a.step) : 0, asleep: asleep && !me.moving }); });
-    walker(Math.floor(W / 2), GY, me.face, me.moving, me.frame, MY_LOOK[0], MY_LOOK[1], MY_LOOK[2], MY_LOOK[3], MY_LOOK[4], MY_LOOK);
+    if (done) sitter(Math.floor(W / 2), GY); else walker(Math.floor(W / 2), GY, me.face, me.moving, me.frame, MY_LOOK[0], MY_LOOK[1], MY_LOOK[2], MY_LOOK[3], MY_LOOK[4], MY_LOOK, yawnT > 0);
+    if (trailHere() === "hollow") { ctx.fillStyle = "rgba(6,16,12,.22)"; ctx.fillRect(0, 0, W, H); }
     parts.forEach(function (p) { if (p.fly) { if (!P.flies) return; var gl = Math.sin(time * 3 + p.ph); if (gl > -.1) { ctx.fillStyle = gl > .5 ? "#e8f59d" : "#9ab865"; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); } } else { ctx.fillStyle = P.tuft; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); } });
     layer(1.35, 135, 135, 175, P.fg, 14, .42);
     shafts();
@@ -296,9 +316,107 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
     for (var c = c0; c <= c1; c++) { var f = findAt(c); if (!f || taken[c]) continue; var sx = Math.round(f.x - camX); if (sx > -6 && sx < W + 6) drawFind(f.k, sx, GY + 3, night); }
     glints.forEach(function (g) { var sx = Math.round(g.x - camX), a = 1 - g.t / 1.2; ctx.fillStyle = "rgba(255,240,180," + a.toFixed(2) + ")"; var yy = GY - 6 - g.t * 14; ctx.fillRect(sx, yy, 1, 1); ctx.fillRect(sx - 2, yy + 2, 1, 1); ctx.fillRect(sx + 2, yy + 1, 1, 1); });
   }
+  /* ---------- the exploration: things along the path, side paths, and tired legs ---------- */
+  var leg = { max: 180 + Math.random() * 120, walked: 0, seen: [] }, dwell = 0, done = false, yawnT = 0, told = {}, anims = [], trail = null;
+  try { var lg = JSON.parse(sessionStorage.getItem("fb_wood_leg") || "null"); if (lg && lg.max) leg = lg; } catch (e) {}
+  function saveLeg() { try { sessionStorage.setItem("fb_wood_leg", JSON.stringify(leg)); } catch (e) {} }
+  function stamina() { var t = leg.walked / leg.max; return t < .7 ? 1 : Math.max(.45, 1 - (t - .7) / .3 * .55); }
+  var TIRED = ["Legs getting heavy.", "腿有点沉了。", "腿有點沉了。", "Las piernas pesan.", "Les cames pesen."];
+  function tire(dt) {
+    if (yawnT > 0) yawnT -= dt;
+    var t = leg.walked / leg.max;
+    if (t > .8 && !told.yawn) { told.yawn = 1; yawnT = 1.8; sigh(); if (window.FBG && FBG.note) FBG.note({ icon: "🌲", text: TIRED[li5()], ms: 5000 }); }
+    if (t >= 1 && !done) { done = true; me.moving = false; pdir = 0; keys.l = keys.r = false; sigh(); setTimeout(rest, 1600); }
+    if (me.moving && ((time * 10) | 0) % 50 === 0) saveLeg();
+  }
+  function sigh() { if (!A) return; var n = A.currentTime, o = A.createOscillator(), g = A.createGain(); o.type = "triangle"; o.frequency.setValueAtTime(330, n); o.frequency.exponentialRampToValueAtTime(190, n + 1.1); g.gain.setValueAtTime(.0001, n); g.gain.linearRampToValueAtTime(.025, n + .25); g.gain.exponentialRampToValueAtTime(.0001, n + 1.2); o.connect(g); g.connect(A.destination); o.start(n); o.stop(n + 1.3); }
+  function plink(delay, f, v) { if (!A) return; var n = A.currentTime + delay, o = A.createOscillator(), g = A.createGain(); o.frequency.value = f; g.gain.setValueAtTime(.0001, n); g.gain.linearRampToValueAtTime(v, n + .01); g.gain.exponentialRampToValueAtTime(.0001, n + .5); o.connect(g); g.connect(A.destination); o.start(n); o.stop(n + .55); }
+
+  /* things along the path, every so often; stop beside one and it shows itself */
+  var MK = ["well", "hollow", "hut", "bench", "shrine", "stones", "log", "clearing"];
+  var SEEN = {
+    well: ["🪨", ["An old well. You drop a pebble and listen for it.", "一口老井。你丢进一颗石子，听它落下去。", "一口老井。你丟進一顆石子，聽它落下去。", "Un pozo viejo. Tiras una piedrecita y escuchas.", "Un pou vell. Hi tires una pedreta i escoltes."]],
+    hollow: ["🌰", ["A hollow oak. A squirrel's whole pantry inside.", "一棵空心橡树。里面是松鼠的整个粮仓。", "一棵空心橡樹。裡面是松鼠的整個糧倉。", "Un roble hueco. Dentro, la despensa entera de una ardilla.", "Un roure buit. A dins, tot el rebost d'un esquirol."]],
+    owl: ["🦉", ["A hollow oak. Two eyes blink back at you.", "一棵空心橡树。两只眼睛朝你眨了眨。", "一棵空心橡樹。兩隻眼睛朝你眨了眨。", "Un roble hueco. Dos ojos te devuelven el parpadeo.", "Un roure buit. Dos ulls et tornen el parpelleig."]],
+    hut: ["🛖", ["A woodcutter's hut. A note on the door: back by dusk.", "樵夫的小屋。门上一张纸条：黄昏前回来。", "樵夫的小屋。門上一張紙條：黃昏前回來。", "La cabaña de un leñador. Una nota en la puerta: vuelvo al anochecer.", "La cabana d'un llenyataire. Una nota a la porta: torno al capvespre."]],
+    bench: ["🐦", ["A bench for two. A robin takes the other half.", "一张双人长椅。一只知更鸟占了另一半。", "一張雙人長椅。一隻知更鳥佔了另一半。", "Un banco para dos. Un petirrojo ocupa la otra mitad.", "Un banc per a dos. Un pit-roig s'agafa l'altra meitat."]],
+    shrine: ["🍊", ["A little stone shrine. Someone left a mandarin.", "一座小石龛。有人留下了一个橘子。", "一座小石龕。有人留下了一個橘子。", "Una ermita de piedra. Alguien dejó una mandarina.", "Una capelleta de pedra. Algú hi ha deixat una mandarina."]],
+    stones: ["🐸", ["Stepping stones. A frog goes in before you can.", "几块踏脚石。你还没下脚，一只青蛙先跳进了水里。", "幾塊踏腳石。你還沒下腳，一隻青蛙先跳進了水裡。", "Pasaderas. Una rana se tira antes que tú.", "Passeres. Una granota s'hi llança abans que tu."]],
+    log: ["🦔", ["A fallen log. Something snuffles underneath: a hedgehog.", "一根倒下的树干。底下有东西在哼哼：一只刺猬。", "一根倒下的樹幹。底下有東西在哼哼：一隻刺蝟。", "Un tronco caído. Algo resopla debajo: un erizo.", "Un tronc caigut. Alguna cosa esbufega a sota: un eriçó."]],
+    deer: ["🦌", ["A clearing. A deer crosses, in no hurry.", "一片林中空地。一头鹿慢慢走过。", "一片林中空地。一頭鹿慢慢走過。", "Un claro. Un ciervo lo cruza, sin prisa.", "Una clariana. Un cérvol la travessa, sense pressa."]],
+    fox: ["🦊", ["A clearing. A fox looks at you, then not.", "一片林中空地。一只狐狸看了你一眼，又不看了。", "一片林中空地。一隻狐狸看了你一眼，又不看了。", "Un claro. Un zorro te mira, y luego no.", "Una clariana. Una guineu et mira, i després no."]],
+    heron: ["🪶", ["The pond. A heron stands so still you doubt it.", "池塘。一只苍鹭站得那么静，你都怀疑它是真的。", "池塘。一隻蒼鷺站得那麼靜，你都懷疑牠是真的。", "El estanque. Una garza tan quieta que dudas.", "L'estany. Un bernat tan quiet que en dubtes."]]
+  };
+  var TRAILN = { birch: ["The birch grove.", "白桦林。", "白樺林。", "El bosque de abedules.", "El bedollar."], pond: ["The pond.", "池塘。", "池塘。", "El estanque.", "L'estany."], hollow: ["The mossy hollow.", "长满苔藓的洼地。", "長滿苔蘚的窪地。", "La hondonada de musgo.", "La fondalada de molsa."] };
+  var ST = ["SEEN TODAY", "今天看到的", "今天看到的", "VISTO HOY", "VIST AVUI"];
+  function markAt(c) { if (hash(c * 61.3 + 5) > .55) return null; var t = trailAt(c * 520); return { k: t === "pond" ? "heron" : MK[Math.floor(hash(c * 7.7 + 1) * MK.length)], x: c * 520 + 120 + hash(c * 3.3) * 280, c: c }; }
+  function seenKey(m) { var ph = WD.phase(); return m.k === "hollow" && ph === "night" ? "owl" : m.k === "clearing" ? (ph === "night" || ph === "dusk" ? "fox" : "deer") : m.k; }
+  function marks(dt) {
+    var me0 = camX + W / 2, c = Math.floor(me0 / 520);
+    for (var cc = c - 1; cc <= c + 1; cc++) { var m = markAt(cc); if (!m || told["m" + cc]) continue;
+      if (Math.abs(m.x - me0) < 14 && dwell > 1.1 && !done) { told["m" + cc] = 1; var k = seenKey(m); if (leg.seen.indexOf(k) < 0) leg.seen.push(k); saveLeg(); anims.push({ k: k, x: m.x, t: 0 }); paintBag();
+        if (k === "well") { plink(.7, 1800, .03); plink(1.0, 900, .015); } else if (k === "stones") plink(.3, 500, .02); else plink(.1, NOTES[3], .015);
+        if (window.FBG && FBG.note) FBG.note({ icon: SEEN[k][0], text: SEEN[k][1][li5()], ms: 6000 }); } }
+    anims.forEach(function (a) { a.t += dt; }); anims = anims.filter(function (a) { return a.t < 6; });
+  }
+  function drawMarks(P) {
+    var night = WD.phase() === "night", c0 = Math.floor((camX - 40) / 520), c1 = Math.floor((camX + W + 40) / 520);
+    for (var c = c0; c <= c1; c++) { var m = markAt(c); if (!m) continue; var x = Math.round(m.x - camX), y = GY; if (x < -30 || x > W + 30) continue; var an = null; anims.forEach(function (a) { if (Math.abs(a.x - m.x) < 1) an = a; });
+      var R2 = function (col, a, b, w, h) { ctx.fillStyle = col; ctx.fillRect(x + a, y + b, w, h); }, stone = night ? "#2a3036" : "#7a7e80", wood = night ? "#2a2420" : "#6a4a30", near = Math.abs(m.x - (camX + W / 2)) < 14 && !told["m" + c];
+      if (m.k === "well") { R2(stone, -5, -4, 11, 4); R2(night ? "#1a2026" : "#5a5e60", -4, -5, 9, 1); R2(wood, -5, -12, 1, 8); R2(wood, 5, -12, 1, 8); R2(wood, -6, -13, 13, 1); R2(night ? "#0a0e12" : "#2a2a30", -3, -3, 7, 2); R2(night ? "#3a4248" : "#a89a86", 0, -9, 2, 2); if (an && an.t < 1) { R2("#c8c0b0", 0, -8 + Math.round(an.t * 6), 1, 1); } }
+      else if (m.k === "hollow") { R2(wood, -5, -24, 10, 24); R2(shade(wood, .2), -5, -24, 2, 24); R2("#0a0c0e", -2, -12, 4, 6); R2(night ? "#1e3a32" : "#3a6a3a", -8, -26, 16, 4); if (an) { if (night) { var bl = Math.sin(an.t * 3) > -.7; if (bl) { R2("#f6d84a", -1, -10, 1, 1); R2("#f6d84a", 1, -10, 1, 1); } } else { R2("#a8582a", -1, -10, 2, 2); R2("#111", 0, -10, 1, 1); if (an.t > 2.5) R2("#6a3a1a", -1, -8, 2, 1); } } }
+      else if (m.k === "hut") { R2(wood, -11, -12, 22, 12); R2(shade(wood, .25), -11, -12, 22, 1); R2(night ? "#3a3028" : "#8a6a44", -13, -16, 26, 4); R2(night ? "#2a221c" : "#5e4a36", -12, -13, 24, 1); R2("#1a1410", -2, -8, 4, 8); R2(night ? "#f6b73c" : "#6a8aa8", 4, -9, 3, 3); R2(stone, 6, -21, 2, 5); R2("#f4e8d8", -1, -7, 2, 2); if (an) { var k2 = (an.t * 2) | 0; for (var q = 0; q < 3; q++) { ctx.fillStyle = "rgba(220,220,230," + (.5 - q * .14).toFixed(2) + ")"; ctx.fillRect(x + 6 + q + ((k2 + q) % 2), y - 23 - q * 3 - ((an.t * 4) | 0) % 2, 2, 2); } } }
+      else if (m.k === "bench") { R2(wood, -7, -5, 14, 1); R2(wood, -7, -8, 14, 1); R2(wood, -6, -4, 1, 4); R2(wood, 5, -4, 1, 4); R2(wood, -6, -7, 1, 2); R2(wood, 5, -7, 1, 2); if (an) { var hop = an.t < 1 ? Math.round((1 - an.t) * 8) : 0; R2("#6a4a30", 2, -10 - hop, 3, 2); R2("#d84a3a", 2, -9 - hop, 2, 1); R2("#111", 4, -10 - hop, 1, 1); } }
+      else if (m.k === "shrine") { R2(stone, -3, -4, 7, 4); R2(stone, -2, -10, 5, 6); R2(night ? "#1a2026" : "#5a5e60", -4, -11, 9, 1); R2(stone, -3, -12, 7, 1); R2("#0e1216", -1, -8, 3, 3); R2("#f08a2a", 5, -1, 2, 2); R2(night ? "#22402e" : "#5a8a3a", -4, -5, 3, 1); if (an) { R2(Math.sin(an.t * 9) > 0 ? "#ffcf6b" : "#e6a845", 0, -7, 1, 1); ctx.fillStyle = "rgba(255,207,107,.12)"; ctx.fillRect(x - 3, y - 10, 7, 6); } }
+      else if (m.k === "stones") { var wc = night ? "#1e3448" : "#5a9ac0"; for (var yy = GY; yy < H; yy++) { var bx = x + Math.round(Math.sin(yy * .3 + c) * 2); ctx.fillStyle = wc; ctx.fillRect(bx - 9, yy, 19, 1); if ((yy + ((time * 8) | 0)) % 5 === 0) { ctx.fillStyle = night ? "#3a5a78" : "#cfe8f4"; ctx.fillRect(bx - 4 + (yy % 3) * 3, yy, 2, 1); } } [-6, -2, 2, 6].forEach(function (o) { R2(stone, o - 1, -1, 3, 2); }); if (an) { if (an.t < .5) { R2("#4a8a3a", 7, -3 - Math.round(Math.sin(an.t * 6) * 4), 2, 2); } else if (an.t < 1.6) { ctx.fillStyle = "rgba(220,240,250," + (1.6 - an.t).toFixed(2) + ")"; var rr = Math.round((an.t - .5) * 6); ctx.fillRect(x + 8 - rr, y + 1, rr * 2 + 1, 1); } } }
+      else if (m.k === "log") { R2(wood, -10, -4, 20, 4); R2(shade(wood, .25), -10, -4, 20, 1); R2(night ? "#4a3e32" : "#c8a070", 9, -4, 2, 4); R2(night ? "#22402e" : "#5a8a3a", -6, -5, 6, 1); if (an) { var out = Math.min(4, an.t * 4); R2("#5a4a3a", -4 - Math.round(out), 0 - 2, 4, 2); R2("#2a2420", -3 - Math.round(out), -3, 3, 1); R2("#e8c8a8", -5 - Math.round(out), -1, 1, 1); R2("#111", -5 - Math.round(out), -2, 1, 1); } }
+      else if (m.k === "clearing") { if (an) { var dk = seenKey(m) === "fox", dx = dk ? x + 14 : x - 30 + Math.round(an.t * 12), dy = y - (dk ? 3 : 0); ctx.fillStyle = dk ? (night ? "#8a4a2a" : "#c86a32") : (night ? "#3a3028" : "#7a5a3a"); ctx.fillRect(dx - 4, dy - 6, 8, 3); ctx.fillRect(dx - 4, dy - 3, 1, 3); ctx.fillRect(dx + 3, dy - 3, 1, 3); if (dk) { ctx.fillRect(dx + 4, dy - 8, 3, 3); ctx.fillRect(dx - 8, dy - 5, 4, 2); ctx.fillStyle = "#f6d84a"; if (an.t < 3) ctx.fillRect(dx + 5, dy - 7, 1, 1); } else { ctx.fillRect(dx + 4, dy - 9, 2, 3); ctx.fillRect(dx + 5, dy - 11, 1, 2); ctx.fillRect(dx + 3, dy - 11, 1, 1); } } }
+      else if (m.k === "heron") { var hx = x, hy = GY - 22; ctx.fillStyle = night ? "#3a4a5a" : "#8a9aa8"; ctx.fillRect(hx, hy, 1, 9); ctx.fillRect(hx - 2, hy - 1, 5, 3); ctx.fillRect(hx + 1, hy - 5, 1, 5); ctx.fillRect(hx + 1, hy - 6, 2, 1); ctx.fillStyle = "#f0c34a"; ctx.fillRect(hx + 3, hy - 6, 2, 1); if (an && an.t > 2 && an.t < 3) { ctx.fillStyle = night ? "#3a4a5a" : "#8a9aa8"; ctx.fillRect(hx - 5, hy - 3, 11, 1); } }
+      if (near && !done) { ctx.fillStyle = "rgba(210,225,230," + (.35 + Math.sin(time * 4) * .2).toFixed(2) + ")"; ctx.fillRect(x, y - 30 - Math.round(Math.sin(time * 3) * 1.5), 1, 2); }   /* a faint mark: stop here */
+    }
+  }
+  /* side paths: a signpost now and then; take it and the path changes for a stretch, then rejoins */
+  var TRAILS = ["birch", "pond", "hollow"];
+  function forkAt(c) { if (hash(c * 23.7 + 11) > .6) return null; return { x: c * 1100 + 300 + hash(c * 9.1) * 400, k: TRAILS[Math.floor(hash(c * 4.4 + 2) * 3)], c: c }; }
+  function trailAt(wx) { var c = Math.floor((wx - 60) / 1100); var f = forkAt(c); if (f && told["f" + c] && wx > f.x + 20 && wx < f.x + 760) return f.k; return null; }
+  function trailHere() { return trailAt(camX + W / 2); }
+  function forkNear() { var me0 = camX + W / 2, c = Math.floor(me0 / 1100), f = forkAt(c); return f && !told["f" + c] && Math.abs(f.x - me0) < 34 ? f : null; }
+  function takeFork(f) { told["f" + f.c] = 1; anims.push({ k: "fork", x: f.x, t: 0 }); plink(.05, NOTES[5], .02); plink(.25, NOTES[7], .02); if (window.FBG && FBG.note) FBG.note({ icon: "🌲", text: TRAILN[f.k][li5()], ms: 4000 }); }
+  function drawForks(P) {
+    var c0 = Math.floor((camX - 40) / 1100), c1 = Math.floor((camX + W + 40) / 1100), night = WD.phase() === "night";
+    for (var c = c0; c <= c1; c++) { var f = forkAt(c); if (!f) continue; var x = Math.round(f.x - camX); if (x < -20 || x > W + 20) continue; var taken = told["f" + c], wood = night ? "#2a2420" : "#6a4a30";
+      ctx.fillStyle = wood; ctx.fillRect(x, GY - 16, 1, 16); ctx.fillRect(x - 5, GY - 15, 11, 3); ctx.fillStyle = night ? "#c8c0b0" : "#efe6d4"; ctx.fillRect(x + 3, GY - 14, 2, 1); ctx.fillRect(x + 1, GY - 14, 1, 1);
+      if (!taken && Math.abs(f.x - (camX + W / 2)) < 34 && !done) { ctx.fillStyle = "rgba(226,232,240," + (.35 + Math.sin(time * 4) * .2).toFixed(2) + ")"; var ay = GY - 24 - Math.round(Math.sin(time * 3) * 1.5); ctx.fillRect(x, ay, 1, 5); ctx.fillRect(x - 1, ay + 1, 3, 1); ctx.fillRect(x - 2, ay + 2, 5, 1); }   /* an arrow up the side path */
+      if (taken) { ctx.fillStyle = night ? "#1e2228" : "#7a6248"; for (var q = 0; q < 10; q++) ctx.fillRect(x + 4 + q * 3, GY - 1 - q * 2, 3, 2); }   /* the side path climbing away */
+    }
+  }
+  function birches(P) {
+    var par = .75, cell = 30, L = camX * par - 60, R0 = camX * par + W + 60, night = WD.phase() === "night";
+    for (var c = Math.floor(L / cell); c <= Math.floor(R0 / cell); c++) { if (hash(c * 19.3 + 75) > .8) continue; var wx = c * cell + hash(c * 37.7 + 150) * cell * .8, h = Math.floor(70 + hash(c * 73.1 + 225) * 50), x = Math.round(wx - camX * par);
+      ctx.fillStyle = night ? "#b8bcc0" : "#f0ece4"; ctx.fillRect(x, GY - h, 2, h); ctx.fillStyle = "#2a2a2a"; for (var m = 0; m < h; m += 9 + (c % 4)) ctx.fillRect(x + (m % 2), GY - m - 3, 1, 1);
+      var se = WD.season ? WD.season() : "summer", crown = se === "autumn" ? (night ? "#6a5a22" : "#e8c040") : se === "winter" ? null : (night ? "#2a4a3a" : "#7ab858"), top = GY - h - 14, WS = [4, 8, 11, 13, 14, 14, 13, 11, 8, 5];
+      if (crown) { ctx.fillStyle = crown; for (var r = 0; r < WS.length; r++) ctx.fillRect(x + 1 - (WS[r] >> 1) + Math.round(Math.sin(c * 1.7 + r) * 1), top + r * 2, WS[r], 2); ctx.fillStyle = shade(crown, .2); for (r = 1; r < 5; r++) ctx.fillRect(x + 1 - (WS[r] >> 1) + 1 + (r % 2), top + r * 2, 2, 1); }
+      else { ctx.fillStyle = night ? "#8a8e92" : "#c8c4bc"; ctx.fillRect(x - 4, top + 8, 10, 1); ctx.fillRect(x - 2, top + 4, 1, 5); ctx.fillRect(x + 3, top + 5, 1, 4); ctx.fillRect(x - 5, top + 2, 1, 7); } }
+  }
+  function pond(P) {
+    var y0 = GY - 30, par = .6, night = WD.phase() === "night"; ctx.fillStyle = night ? "#152838" : "#6aa8c8"; ctx.fillRect(0, y0, W, 14); ctx.fillStyle = night ? "#1e3448" : "#8ac0d8";
+    for (var x = 0; x < W; x += 7) { var off = Math.round(Math.sin((x + camX * par) * .08 + time * 1.2) * 2); ctx.fillRect(x + off, y0 + 3 + ((x / 7) | 0) % 4 * 3, 3, 1); }
+    ctx.fillStyle = night ? "#22402e" : "#5a8a3a"; for (x = 0; x < W; x += 3) if (hash((Math.floor((x + camX * par) / 3)) * 2.2) < .5) ctx.fillRect(x, y0 + 12 + (hash(x * 1.1) > .5 ? 1 : 0), 1, 3);
+  }
+  /* the walk ends: sat on a log, a card with what you saw and the way home */
+  var RESTW = { t: ["Good tired.", "累得刚刚好。", "累得剛剛好。", "Un cansancio bueno.", "Un bon cansament."], p: ["Your legs say that's enough wood for one day.", "你的腿说，今天的林子走够了。", "你的腿說，今天的林子走夠了。", "Tus piernas dicen que ya hay bastante bosque por hoy.", "Les cames diuen que ja n'hi ha prou de bosc per avui."], lie: ["Lie back under the pines", "在松树下躺一会儿", "在松樹下躺一會兒", "Túmbate bajo los pinos", "Estira't sota els pins"], home: ["Back to town ›", "回镇上 ›", "回鎮上 ›", "Volver al pueblo ›", "Tornar al poble ›"] };
+  function rest() {
+    var i = li5(), d = document.getElementById("rest"), seen = leg.seen; d.innerHTML = "<b>" + RESTW.t[i] + "</b><p>" + RESTW.p[i] + "</p>" + (seen.length ? "<ul>" + seen.map(function (k) { return "<li><span>" + SEEN[k][0] + "</span><span>" + SEEN[k][1][i] + "</span></li>"; }).join("") + "</ul>" : "") + '<div class="row"><button type="button" class="fbb" id="restLie">' + RESTW.lie[i] + '</button><button type="button" class="fbb fbb-pri" id="restHome">' + RESTW.home[i] + "</button></div>";
+    d.hidden = false;
+    document.getElementById("restLie").onclick = function () { try { if (parent !== window && parent.FBShell) return parent.FBShell.open("/nearby/lie-back/"); } catch (e) {} location.href = "/nearby/lie-back/"; };
+    document.getElementById("restHome").onclick = function () { try { if (parent !== window && parent.FBShell) return parent.FBShell.close(); } catch (e) {} location.href = "/nearby/"; };
+  }
+  if (leg.walked >= leg.max) { done = true; setTimeout(rest, 600); }
+  window.FBWood = { markAt: markAt, forkAt: forkAt, trail: trailHere, go: function (x) { camX = x - W / 2; dwell = 0; }, seen: function () { return leg.seen.slice(); } };   /* for tests */
+
   var bag = document.getElementById("bag"), pkt = document.getElementById("pocket");
-  function paintBag() { var pk = pocket(); bag.hidden = !pk.length; bag.setAttribute("aria-label", PK[li5()]); bag.title = PK[li5()]; }
-  bag.onclick = function () { if (!pkt.hidden) { pkt.hidden = true; return; } var i = li5(); pkt.innerHTML = "<b>" + PK[i] + "</b><ul>" + pocket().map(function (k) { return "<li><span>" + FIND[k][0] + "</span><span>" + FIND[k][1][i] + "</span></li>"; }).join("") + "</ul>"; pkt.hidden = false; };
+  function paintBag() { var pk = pocket(); bag.hidden = !pk.length && !leg.seen.length; bag.setAttribute("aria-label", PK[li5()]); bag.title = PK[li5()]; }
+  bag.onclick = function () { if (!pkt.hidden) { pkt.hidden = true; return; } var i = li5(), pk = pocket(); pkt.innerHTML = (pk.length ? "<b>" + PK[i] + "</b><ul>" + pk.map(function (k) { return "<li><span>" + FIND[k][0] + "</span><span>" + FIND[k][1][i] + "</span></li>"; }).join("") + "</ul>" : "") + (leg.seen.length ? "<b>" + ST[i] + "</b><ul>" + leg.seen.map(function (k) { return "<li><span>" + SEEN[k][0] + "</span><span>" + SEEN[k][1][i] + "</span></li>"; }).join("") + "</ul>" : ""); pkt.hidden = false; };
   pkt.onclick = function () { pkt.hidden = true; };
   paintBag();
   function mist(P, y, h, a, sp) { ctx.fillStyle = "rgba(" + P.mist + "," + (WD.weather() === "fog" ? a * 2.5 : a) + ")"; for (var x = 0; x < W; x += 2) ctx.fillRect(x, Math.round(y + Math.sin((x + camX * sp + time * 8) * .04) * 2), 2, h); }
@@ -306,7 +424,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;im
   (function loop(now) { now = now || performance.now(); var dt = Math.min(.1, (now - last) / 1000); last = now; update(dt); render(); requestAnimationFrame(loop); })();
 
   var L5 = { cv: ["A path through a pine wood", "穿过松林的小路", "穿過松林的小路", "Un sendero por un pinar", "Un camí per una pineda"], duo: ["With a friend", "和朋友一起", "和朋友一起", "Con un amigo", "Amb un amic"], lie: ["Lie back under the pines", "在松树下躺一会儿", "在松樹下躺一會兒", "Túmbate bajo los pinos", "Estira't sota els pins"] };
-  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); if (!e) return; e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("forest") : "Pine Wood"; }
+  function words() { var i = ({ en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 })[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; cv.setAttribute("aria-label", L5.cv[i]); ["duo", "lie"].forEach(function (k) { var e = document.getElementById(k); if (!e) return; e.setAttribute("aria-label", L5[k][i]); e.title = L5[k][i]; }); document.getElementById("h1").textContent = window.FBWorld && FBWorld.name ? FBWorld.name("forest") : "Pine Wood"; var rd = document.getElementById("rest"); if (rd && !rd.hidden) rest(); }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; }; window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
   words();
 })();
