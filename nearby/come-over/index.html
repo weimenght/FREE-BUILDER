@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b5222205d2"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0ff08a9306" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8be590540d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=83d46e9e04" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Come Over · Nearby</title>
 <meta name="description" content="Plan a real get-together: write the invitation, send the link, and see who's coming and what they'll bring. Only people with the link can see it.">
@@ -87,12 +87,13 @@
     gone: ["This invitation has ended or was called off.", "这个邀请已经结束或取消了。", "這個邀請已經結束或取消了。", "Esta invitación ya pasó o se canceló.", "Aquesta invitació ja ha passat o s'ha cancel·lat."],
     rest: ["Five invitations a day is plenty.", "一天发五个邀请就够啦。", "一天發五個邀請就夠啦。", "Cinco invitaciones al día bastan.", "Cinc invitacions al dia ja n'hi ha prou."],
     off: ["The invitation can't be reached just now. Try again in a moment.", "暂时打不开邀请，稍后再试。", "暫時打不開邀請，稍後再試。", "Ahora no se puede abrir la invitación. Prueba en un momento.", "Ara no es pot obrir la invitació. Torna-ho a provar d'aquí a un moment."],
-    close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"]
+    close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"],
+    app: ["Open as an app", "用 App 打开", "用 App 開啟", "Abrir como app", "Obre com a app"]
   };
   function $(id) { return document.getElementById(id); }
   var code = (/[#&]p=([A-Za-z0-9]{6,16})/.exec(location.hash) || [])[1] || null, ev = null, editing = false, picked = [], extra = [], ans = { going: true, items: [] };
   function mineList() { try { return JSON.parse(localStorage.getItem("fb_party") || "[]") || []; } catch (e) { return []; } }
-  function remember(c, title, host) { var l = mineList().filter(function (x) { return x.c !== c; }); l.unshift({ c: c, t: title, h: !!host }); try { localStorage.setItem("fb_party", JSON.stringify(l.slice(0, 20))); } catch (e) {} }
+  function remember(c, title, host, day) { var l = mineList().filter(function (x) { return x.c !== c; }); l.unshift({ c: c, t: title, h: !!host, d: day || null }); try { localStorage.setItem("fb_party", JSON.stringify(l.slice(0, 20))); } catch (e) {} }
   function forgetLocal(c) { try { localStorage.setItem("fb_party", JSON.stringify(mineList().filter(function (x) { return x.c !== c; }))); } catch (e) {} }
   function words() {
     $("h1").textContent = t(T.h1); $("planL").textContent = t(T.plan); $("planQ").textContent = t(T.planQ);
@@ -141,13 +142,13 @@
   function load() {
     if (!code) { paint(); return Promise.resolve(); }
     return K.secret("party").then(function (s) { return K.rpc("party_get", { p_secret: s, p_code: code }); })
-      .then(function (d) { ev = d || false; if (d) { remember(code, d.title, d.host); var me = (d.guests || []).filter(function (g2) { return g2.mine; })[0]; if (me) ans = { going: me.going, items: me.items || [], note: me.note || "", name: me.name, had: 1 }; } else forgetLocal(code); paint(); })
+      .then(function (d) { ev = d || false; if (d) { remember(code, d.title, d.host, d.date); var me = (d.guests || []).filter(function (g2) { return g2.mine; })[0]; if (me) ans = { going: me.going, items: me.items || [], note: me.note || "", name: me.name, had: 1 }; } else forgetLocal(code); paint(); })
       .catch(function () { ev = null; paint(true); });
   }
   function paint(off) {
     panel.innerHTML = ""; $("dock").hidden = !!code || !$("plan").hidden;
     if (!code) {
-      panel.appendChild(el("div", "tk-card", t(T.home)));
+      panel.appendChild(el("div", "tk-card", t(T.home))); panel.appendChild(appLink(""));
       var mine = mineList(); if (mine.length) { panel.appendChild(el("p", "tk-k", t(T.yours))); mine.forEach(function (m) { var a = el("a", "tk-card"); a.style.display = "block"; a.style.color = "inherit"; a.style.textDecoration = "none"; a.href = "#p=" + m.c; a.appendChild(el("h3", "tk-h", m.t)); a.appendChild(el("p", "tk-dim", t(m.h ? T.hosting : T.invited))); panel.appendChild(a); }); }
       return;
     }
@@ -165,7 +166,7 @@
     if (ev.date) { var cb = el("button", "fbb", t(T.cal)); cb.type = "button"; cb.onclick = ics; row.appendChild(cb); }
     c.appendChild(row);
     if (ev.host) { var dx = el("button", "tk-link", t(T.del)); dx.type = "button"; dx.style.color = "#8a5a3a"; dx.onclick = function () { if (!confirm(t(T.delSure))) return; K.secret("party").then(function (s) { return K.rpc("party_forget", { p_secret: s, p_code: code }); }).then(function () { forgetLocal(code); location.hash = ""; code = null; ev = null; paint(); }).catch(function () {}); }; c.appendChild(dx); }
-    panel.appendChild(c);
+    panel.appendChild(c); panel.appendChild(appLink("#p=" + code));
     if (!ev.host) { rsvpCard(); if (ans.had && ans.going === false) instead(); }
     /* who's coming, and what nobody has said they'll bring yet */
     panel.appendChild(el("p", "tk-k", t(T.who)));
@@ -183,6 +184,9 @@
     var d = el("button", "fbb", "🕯️ " + t(T.tbl)); d.type = "button"; d.onclick = function () { FBApps.go("table"); }; r.appendChild(d);
     c.appendChild(r); panel.appendChild(c);
   }
+  function appLink(h) { var a = el("a", "tk-link", "↗ " + t(T.app)); a.href = "/come-over/" + h; a.target = "_top"; a.style.display = "inline-block"; a.style.margin = "0 0 12px"; return a; }
+  /* the host's time zone, so a guest elsewhere sees their own time in the app (party_tz, migration 20261106090000; harmless before it) */
+  function setTz(c) { var z = ""; try { z = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {} if (!z) return Promise.resolve(); return K.secret("party").then(function (s) { return K.rpc("party_tz", { p_secret: s, p_code: c, p_tz: z }); }).catch(function () {}); }
   function rsvpCard() {
     var c = el("div", "tk-card"); c.appendChild(el("h3", "tk-h", t(T.coming)));
     var nm = el("input"); nm.maxLength = 24; nm.placeholder = t(T.name); nm.setAttribute("aria-label", t(T.name)); nm.value = ans.name || K.nick(); nm.autocomplete = "nickname"; c.appendChild(nm);
@@ -219,7 +223,8 @@
     var btn = this; btn.disabled = true;
     var body = { p_hosts: $("eHosts").value.trim(), p_title: ti, p_about: $("eAbout").value.trim(), p_date: $("eDate").value || null, p_time: $("eTime").value.trim(), p_place: $("ePlace").value.trim(), p_items: picked };
     K.secret("party").then(function (s) { body.p_secret = s; if (editing && code) { body.p_code = code; return K.rpc("party_edit", body).then(function () { return code; }); } return K.rpc("party_create", body); })
-      .then(function (c) { btn.disabled = false; show(null); if (!editing) { code = c; remember(c, ti, true); history.replaceState(null, "", location.pathname + location.search + "#p=" + c); } return load(); })
+      .then(function (c) { return setTz(c).then(function () { return c; }); })
+      .then(function (c) { btn.disabled = false; show(null); if (!editing) { code = c; remember(c, ti, true, body.p_date); history.replaceState(null, "", location.pathname + location.search + "#p=" + c); } return load(); })
       .catch(function (e) { btn.disabled = false; show(null); K.note(t(e && e.rest ? T.rest : T.off), "🎈"); });
   };
   addEventListener("hashchange", function () { code = (/[#&]p=([A-Za-z0-9]{6,16})/.exec(location.hash) || [])[1] || null; ev = null; ans = { going: true, items: [] }; load(); });
