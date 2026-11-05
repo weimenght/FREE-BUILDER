@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8b759b7c8f"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=007f835ed3" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b5222205d2"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=0ff08a9306" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Two Candles · Nearby</title>
 <meta name="description" content="A candlelit table for two people who live apart. Sit down together from anywhere, cook the same dinner step by step, raise a glass, and talk until the candles go out.">
@@ -63,6 +63,7 @@ main{max-width:760px;margin:0 auto;padding:4px 16px 120px}
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(16px);opacity:0;transition:.25s;z-index:9600;background:#000;color:#ffe8b0;border:3px solid var(--a);padding:8px 14px;font-size:19px;pointer-events:none;max-width:calc(100vw - 32px);text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .out{margin:4px 2px 12px;font-size:18px;opacity:.85}.out a{color:inherit;text-underline-offset:3px}
+.applink{margin:12px 0 0!important;text-align:center;font:15px/1.4 var(--ui)}.applink a{color:var(--dim);text-decoration:underline;text-underline-offset:3px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit .fit-panel .seats{margin-top:0}
@@ -85,6 +86,7 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
       <p data-t="resText">For someone far away. Send the link, stay on the call.</p>
       <input class="field" id="myName" maxlength="20" autocomplete="nickname">
       <button class="big" type="button" id="reserve">🕯️ <span data-t="reserve">Book a table for two</span></button>
+      <p class="applink"><a href="/two-candles/" target="_top"><span data-t="appLink">Two Candles on your phone: book a day, shop for the same dinner</span> ↗</a></p>
     </div>
     <p class="out"><a href="/handoff/" data-app="handoff" data-t="hoff">Between dinners, Handoff keeps you two in step ↗</a></p>
     <div class="panel" id="pastBox" hidden><h2>📜 <span data-t="past">OUR EVENINGS</span></h2><div id="past"></div></div>
@@ -149,11 +151,14 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
 (function () {
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
+  /* app=1: the standalone app (freebuilder.net/two-candles/ frames this page; app.js draws its own screens and uses this one's table, line and recipes) */
+  var APP = /[?&]app=1/.test(location.search), LIS = [];
+  function emit(ev, d) { LIS.forEach(function (f) { try { f(ev, d); } catch (e) {} }); }
   var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 };
   function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
   function tr(a) { return (a && (a[L()] || a[0])) || ""; }
   function t(k) { return W[k] ? tr(W[k]) : k; }
-  function toast(m) { var e = $("toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 3200); }
+  function toast(m) { if (APP) { emit("toast", m); return; } var e = $("toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 3200); }
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
   var W = {
     hoff: ["Between dinners, Handoff keeps you two in step ↗", "两顿饭之间，用 Handoff 保持同步 ↗", "兩頓飯之間，用 Handoff 保持同步 ↗", "Entre cenas, Handoff os mantiene al compás ↗", "Entre sopars, Handoff us manté al compàs ↗"],
@@ -187,32 +192,33 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
     breakfast: ["breakfast", "早餐", "早餐", "desayuno", "esmorzar"], lunch: ["lunch", "午饭", "午飯", "comida", "dinar"], dinner: ["dinner", "晚饭", "晚飯", "cena", "sopar"], late: ["late supper", "夜宵", "宵夜", "cena tardía", "sopar tard"],
     you2: ["you", "你", "你", "tú", "tu"], noTimes: ["Your mealtimes don't overlap in the next two days. Try breakfast with their dinner?", "接下来两天你们的饭点没有重叠。试试你的早餐配对方的晚饭？", "接下來兩天你們的飯點沒有重疊。試試你的早餐配對方的晚飯？", "Vuestras comidas no coinciden en dos días. ¿Tu desayuno con su cena?", "Els vostres àpats no coincideixen en dos dies. El teu esmorzar amb el seu sopar?"],
     full: ["This table already has two people.", "这张桌子已经坐满两个人了。", "這張桌子已經坐滿兩個人了。", "Esta mesa ya tiene dos personas.", "Aquesta taula ja té dues persones."],
+    appLink: ["Two Candles on your phone: book a day, shop for the same dinner", "手机上的双烛小馆：约好日子，买同一顿饭的菜", "手機上的雙燭小館：約好日子，買同一頓飯的菜", "Dos Velas en tu móvil: elegid un día, comprad para la misma cena", "Dues Espelmes al mòbil: trieu un dia, compreu per al mateix sopar"],
     privacy: ["Kept on this device (your privacy choice).", "按你的隐私选择，只留在这台设备上。", "按你的隱私選擇，只留在這台裝置上。", "Se queda en este dispositivo (tu elección de privacidad).", "Es queda en aquest dispositiu (la teva elecció de privadesa)."]
   };
   var VIEWS = { harbour: ["Harbour lights", "港湾灯火", "港灣燈火", "Luces del puerto", "Llums del port"], rooftops: ["Paris rooftops", "巴黎屋顶", "巴黎屋頂", "Tejados de París", "Teulades de París"], hutong: ["Snow on the hutong", "胡同落雪", "胡同落雪", "Nieve en el hutong", "Neu al hutong"], seaside: ["Sunset by the sea", "海边日落", "海邊日落", "Atardecer en el mar", "Posta de sol al mar"], stars: ["A field of stars", "满天星", "滿天星", "Un campo de estrellas", "Un camp d'estels"] };
   var DISH = {
-    tomato: { n: ["Tomato & egg", "番茄炒蛋", "番茄炒蛋", "Tomate con huevo", "Tomàquet amb ou"], c: "#e8502a", s: [
+    tomato: { n: ["Tomato & egg", "番茄炒蛋", "番茄炒蛋", "Tomate con huevo", "Tomàquet amb ou"], i: [["3 eggs", "3 个鸡蛋", "3 顆雞蛋", "3 huevos", "3 ous"], ["2 ripe tomatoes", "2 个熟番茄", "2 顆熟番茄", "2 tomates maduros", "2 tomàquets madurs"], ["Rice", "米饭", "米飯", "Arroz", "Arròs"], ["Cooking oil", "食用油", "食用油", "Aceite", "Oli"], ["Salt and a little sugar", "盐和一点糖", "鹽和一點糖", "Sal y un poco de azúcar", "Sal i una mica de sucre"]], c: "#e8502a", s: [
       [["Beat 3 eggs with a pinch of salt.", "3 个鸡蛋加一小撮盐打散。", "3 顆雞蛋加一小撮鹽打散。", "Bate 3 huevos con una pizca de sal.", "Bat 3 ous amb un pessic de sal."]],
       [["Cut 2 ripe tomatoes into wedges.", "2 个熟番茄切块。", "2 顆熟番茄切塊。", "Corta 2 tomates maduros en gajos.", "Talla 2 tomàquets madurs a grills."]],
       [["Scramble the eggs softly in hot oil, then lift them out.", "热油下蛋液，炒到刚凝固就盛出。", "熱油下蛋液，炒到剛凝固就盛出。", "Cuaja los huevos suaves en aceite caliente y sácalos.", "Quallа els ous suaus en oli calent i treu-los."], 60],
       [["Cook the tomatoes until saucy, with a little sugar.", "番茄炒出汁，加一点糖。", "番茄炒出汁，加一點糖。", "Cocina el tomate hasta que suelte salsa, con un poco de azúcar.", "Cou el tomàquet fins que faci salsa, amb una mica de sucre."], 180],
       [["Eggs back in, stir once, serve over rice.", "鸡蛋回锅翻一下，盖在米饭上。", "雞蛋回鍋翻一下，蓋在米飯上。", "Devuelve el huevo, remueve una vez y sirve con arroz.", "Torna-hi l'ou, remena un cop i serveix amb arròs."]]] },
-    pasta: { n: ["Spaghetti aglio e olio", "蒜香橄榄油意面", "蒜香橄欖油義大利麵", "Espaguetis aglio e olio", "Espaguetis aglio e olio"], c: "#f0d080", s: [
+    pasta: { n: ["Spaghetti aglio e olio", "蒜香橄榄油意面", "蒜香橄欖油義大利麵", "Espaguetis aglio e olio", "Espaguetis aglio e olio"], i: [["Spaghetti (about 100 g)", "意面（约 100 克）", "義大利麵（約 100 克）", "Espaguetis (unos 100 g)", "Espaguetis (uns 100 g)"], ["3 garlic cloves", "3 瓣蒜", "3 瓣蒜", "3 dientes de ajo", "3 grans d'all"], ["Olive oil", "橄榄油", "橄欖油", "Aceite de oliva", "Oli d'oliva"], ["A little dried chilli", "一点干辣椒", "一點乾辣椒", "Un poco de guindilla", "Una mica de bitxo"], ["Parsley", "欧芹", "歐芹", "Perejil", "Julivert"], ["Salt", "盐", "鹽", "Sal", "Sal"]], c: "#f0d080", s: [
       [["Boil well-salted water and cook the spaghetti.", "水里多放点盐，煮意面。", "水裡多放點鹽，煮義大利麵。", "Hierve agua con bastante sal y cuece los espaguetis.", "Bull aigua amb força sal i cou els espaguetis."], 540],
       [["Meanwhile, slice 3 garlic cloves thin.", "同时把 3 瓣蒜切薄片。", "同時把 3 瓣蒜切薄片。", "Mientras, lamina 3 dientes de ajo.", "Mentrestant, talla 3 grans d'all a làmines."]],
       [["Warm olive oil with the garlic and a little chilli until golden.", "橄榄油小火煸蒜片和一点辣椒，到金黄。", "橄欖油小火煸蒜片和一點辣椒，到金黃。", "Calienta aceite con el ajo y un poco de guindilla hasta dorar.", "Escalfa oli amb l'all i una mica de bitxo fins que es dauri."], 120],
       [["Toss the pasta in with a splash of its water and parsley.", "意面下锅，加一勺煮面水和欧芹拌匀。", "義大利麵下鍋，加一勺煮麵水和歐芹拌勻。", "Saltea la pasta con un chorrito de su agua y perejil.", "Salta la pasta amb un raig de la seva aigua i julivert."]]] },
-    pan: { n: ["Pan con tomate", "番茄面包", "番茄麵包", "Pan con tomate", "Pa amb tomàquet"], c: "#c8662a", s: [
+    pan: { n: ["Pan con tomate", "番茄面包", "番茄麵包", "Pan con tomate", "Pa amb tomàquet"], i: [["A good loaf of bread", "一条好面包", "一條好麵包", "Una buena barra de pan", "Una bona barra de pa"], ["1 garlic clove", "1 瓣蒜", "1 瓣蒜", "1 diente de ajo", "1 gra d'all"], ["1 ripe tomato", "1 个熟番茄", "1 顆熟番茄", "1 tomate maduro", "1 tomàquet madur"], ["Olive oil", "橄榄油", "橄欖油", "Aceite de oliva", "Oli d'oliva"], ["Salt", "盐", "鹽", "Sal", "Sal"], ["Ham or cheese, if you like", "火腿或奶酪（随意）", "火腿或起司（隨意）", "Jamón o queso, si quieres", "Pernil o formatge, si vols"]], c: "#c8662a", s: [
       [["Toast thick slices of bread.", "把厚片面包烤一下。", "把厚片麵包烤一下。", "Tuesta rebanadas gruesas de pan.", "Torra llesques gruixudes de pa."], 120],
       [["Rub them with a cut garlic clove.", "用切开的蒜瓣在面包上抹一抹。", "用切開的蒜瓣在麵包上抹一抹。", "Frótalas con un diente de ajo cortado.", "Frega-les amb un gra d'all tallat."]],
       [["Grate a ripe tomato and spread it on.", "把熟番茄擦成泥，抹上去。", "把熟番茄擦成泥，抹上去。", "Ralla un tomate maduro y úntalo.", "Ratlla un tomàquet madur i unta-ho."]],
       [["Olive oil, a pinch of salt. Add ham or cheese if you like.", "淋橄榄油，撒一小撮盐。喜欢的话加火腿或奶酪。", "淋橄欖油，撒一小撮鹽。喜歡的話加火腿或起司。", "Aceite, una pizca de sal. Jamón o queso si quieres.", "Oli, un pessic de sal. Pernil o formatge si vols."]]] },
-    ramen: { n: ["Late-night noodles", "深夜拉面", "深夜拉麵", "Fideos de medianoche", "Fideus de mitjanit"], c: "#e8c070", s: [
+    ramen: { n: ["Late-night noodles", "深夜拉面", "深夜拉麵", "Fideos de medianoche", "Fideus de mitjanit"], i: [["Noodles", "面条", "麵條", "Fideos", "Fideus"], ["1 egg", "1 个鸡蛋", "1 顆雞蛋", "1 huevo", "1 ou"], ["Spring onion", "葱", "蔥", "Cebolleta", "Ceba tendra"], ["Sesame oil", "麻油", "麻油", "Aceite de sésamo", "Oli de sèsam"], ["Something green (pak choi, spinach)", "一点青菜（小白菜、菠菜）", "一點青菜（小白菜、菠菜）", "Algo verde (pak choi, espinacas)", "Alguna cosa verda (pak choi, espinacs)"], ["Stock or soy sauce", "高汤或酱油", "高湯或醬油", "Caldo o salsa de soja", "Brou o salsa de soja"]], c: "#e8c070", s: [
       [["Soft-boil an egg.", "煮一个溏心蛋。", "煮一顆溏心蛋。", "Cuece un huevo mollet.", "Cou un ou mollet."], 390],
       [["Cook the noodles.", "煮面。", "煮麵。", "Cuece los fideos.", "Cou els fideus."], 180],
       [["Add spring onion, a drop of sesame oil and something green.", "加葱花、几滴麻油和一点青菜。", "加蔥花、幾滴麻油和一點青菜。", "Añade cebolleta, unas gotas de aceite de sésamo y algo verde.", "Afegeix ceba tendra, unes gotes d'oli de sèsam i alguna cosa verda."]],
       [["Halve the egg. Slurp at the same time.", "鸡蛋对半切开。一起嗦面。", "雞蛋對半切開。一起吸麵。", "Parte el huevo. Sorbed a la vez.", "Parteix l'ou. Xarrupeu alhora."]]] },
-    cake: { n: ["Mug cake for dessert", "马克杯蛋糕（甜点）", "馬克杯蛋糕（甜點）", "Bizcocho en taza de postre", "Pastís de tassa per postres"], c: "#5a2a14", s: [
+    cake: { n: ["Mug cake for dessert", "马克杯蛋糕（甜点）", "馬克杯蛋糕（甜點）", "Bizcocho en taza de postre", "Pastís de tassa per postres"], i: [["Flour", "面粉", "麵粉", "Harina", "Farina"], ["Sugar", "糖", "糖", "Azúcar", "Sucre"], ["Cocoa powder", "可可粉", "可可粉", "Cacao en polvo", "Cacau en pols"], ["Milk", "牛奶", "牛奶", "Leche", "Llet"], ["Oil", "油", "油", "Aceite", "Oli"], ["Ice cream or fruit", "冰淇淋或水果", "冰淇淋或水果", "Helado o fruta", "Gelat o fruita"]], c: "#5a2a14", s: [
       [["In a mug: 4 spoons flour, 2 sugar, 2 cocoa, 3 milk, 2 oil. Stir.", "马克杯里：4 勺面粉、2 勺糖、2 勺可可粉、3 勺牛奶、2 勺油，搅匀。", "馬克杯裡：4 匙麵粉、2 匙糖、2 匙可可粉、3 匙牛奶、2 匙油，攪勻。", "En una taza: 4 cucharadas de harina, 2 de azúcar, 2 de cacao, 3 de leche, 2 de aceite. Remueve.", "En una tassa: 4 cullerades de farina, 2 de sucre, 2 de cacau, 3 de llet, 2 d'oli. Remena."]],
       [["Microwave it.", "放进微波炉。", "放進微波爐。", "Al microondas.", "Al microones."], 75],
       [["Top with ice cream or fruit. Two spoons.", "放上冰淇淋或水果。两把勺子。", "放上冰淇淋或水果。兩支湯匙。", "Ponle helado o fruta. Dos cucharas.", "Posa-hi gelat o fruita. Dues culleres."]]] }
@@ -243,7 +249,7 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   ls("fb_table_me", ME.id);
   try { ME.tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
   var S = { v: "harbour", m: 0, d: "", s: 0, sa: 0, k: -1, r: 0 };   // view, music, dish, step, step started at, card, revision
-  var them = null, net = null, code = "", hand = null, doneMe = -1, doneThem = -1, blowMe = 0, blowThem = 0, started = 0, stats = { clinks: 0, cards: 0, notes: 0 }, clinkAt = 0, slideAt = 0, flameOut = 0;
+  var them = null, net = null, code = "", hand = null, doneMe = -1, doneThem = -1, blowMe = 0, blowThem = 0, started = 0, stats = { clinks: 0, cards: 0, notes: 0 }, clinkAt = 0, slideAt = 0, flameOut = 0, lit = { me: APP ? 0 : 1, them: 0 }, litAt = 0;
 
   /* ---------- the keys for the line between two tables (no sign-in: the link is the table) ---------- */
   var cfg = { url: "", key: "", rt: "" };
@@ -276,7 +282,7 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
     return { send: function (ev, p) { if (joined) raw({ topic: topic, event: "broadcast", ref: String(++ref), payload: { type: "broadcast", event: ev, payload: p } }); }, close: function () { closed = true; clearInterval(hb); try { ws && ws.close(); } catch (e) {} } };
   }
   function tx(ev, p) { if (net) net.send(ev, Object.assign({ from: ME.id }, p || {})); }
-  function hello(q) { tx("hi", { name: ME.name, tz: ME.tz, city: ME.city, q: q ? 1 : 0 }); }
+  function hello(q) { tx("hi", { name: ME.name, tz: ME.tz, city: ME.city, q: q ? 1 : 0, l: lit.me }); }
   function push() { S.r = Date.now(); tx("st", { s: S }); }
   function onMsg(ev, p) {
     if (ev === "_ready") { hello(true); return; }
@@ -287,8 +293,9 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
       var fresh = !them || them.id !== p.from || Date.now() - them.seen > 45000;
       them = { id: p.from, name: (hand && hand.partner && hand.partner.name) || String(p.name || "").slice(0, 20) || t("date"), tz: String(p.tz || ""), city: (hand && hand.partner && hand.partner.city) || String(p.city || ""), seen: Date.now() };
       if (fresh) { toast(t("sat").replace("{p}", them.name)); chime(); if (!started) started = Date.now(); }
+      if (p.l && !lit.them) { lit.them = 1; if (lit.me) { litAt = Date.now(); emit("lit"); } }
       if (p.q) { hello(false); push(); }
-      seats(); times(); return;
+      seats(); times(); emit("hi", them); return;
     }
     if (!them || them.id !== p.from) return;
     them.seen = Date.now();
@@ -296,8 +303,10 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
     else if (ev === "done") { doneThem = p.s; maybeNext(); cook(); }
     else if (ev === "clink") { clink(false); }
     else if (ev === "note") { napkin(String(p.text || "").slice(0, 160)); }
-    else if (ev === "blow") { blowThem = 1; if (blowMe) goodnight(); else toast(t("blowAsk").replace("{p}", them.name)); }
-    else if (ev === "bye") { them.seen = 0; toast(t("left").replace("{p}", them.name)); seats(); }
+    else if (ev === "blow") { blowThem = 1; if (blowMe) goodnight(); else toast(t("blowAsk").replace("{p}", them.name)); emit("blow"); }
+    else if (ev === "bye") { them.seen = 0; toast(t("left").replace("{p}", them.name)); seats(); emit("bye"); }
+    else if (ev === "light") { if (!lit.them) { lit.them = 1; if (lit.me) { litAt = Date.now(); chime(); emit("lit"); } else emit("light"); } }
+    else emit("msg", { ev: ev, p: p });   /* the app's own words between two tables (the next booking) */
   }
 
   /* ---------- sitting down ---------- */
@@ -306,8 +315,8 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
     $("lobby").hidden = true; $("table").hidden = false;
     var link = window.FBApps ? FBApps.link("table", "?t=" + c) : location.origin + "/nearby/two-candles/?t=" + c; $("link").textContent = link;
     $("invite").hidden = c.charAt(0) === "h";
-    if (c.charAt(0) !== "h") { try { history.replaceState(null, "", "?t=" + c); } catch (e) {} }
-    ready().then(function () { net = transport(c, onMsg, function (st) { $("netDot").className = "dot " + (st === "ok" ? "ok" : st === "bad" ? "bad" : ""); }); });
+    if (c.charAt(0) !== "h" && !APP) { try { history.replaceState(null, "", "?t=" + c); } catch (e) {} }
+    ready().then(function () { if (code !== c || net) return; net = transport(c, onMsg, function (st) { $("netDot").className = "dot " + (st === "ok" ? "ok" : st === "bad" ? "bad" : ""); emit("net", st); }); });
     seats(); apply(); times();
   }
   setInterval(function () { if (net) hello(false); if (them && them.seen && Date.now() - them.seen > 45000) { them.seen = 0; seats(); } seats(); }, 15000);
@@ -315,7 +324,8 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   function here() { return them && them.seen && Date.now() - them.seen < 45000; }
   function clock(tz) { try { return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: tz || undefined }); } catch (e) { return new Date().toTimeString().slice(0, 5); } }
   function place(city, tz) { return city || (tz ? tz.split("/").pop().replace(/_/g, " ") : ""); }
-  function seats() {
+  function seats() { seats0(); emit("seats"); }
+  function seats0() {
     $("meName").textContent = "🕯️ " + (ME.name || t("you")); $("meClock").textContent = clock(ME.tz); $("meWhere").textContent = place(ME.city, ME.tz);
     if (here()) { $("themName").textContent = "🕯️ " + them.name; $("themClock").textContent = clock(them.tz); $("themWhere").textContent = place(them.city, them.tz); $("invite").hidden = true; }
     else { var hn = hand && hand.partner; $("themName").textContent = hn ? hn.name : t("date"); $("themClock").textContent = hn && hn.tz ? clock(hn.tz) : "—"; $("themWhere").textContent = t("empty"); $("invite").hidden = code.charAt(0) === "h"; }
@@ -347,7 +357,8 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   function chip(box, label, on, fn) { var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = label; b.setAttribute("aria-pressed", !!on); b.onclick = fn; box.appendChild(b); return b; }
 
   /* cook the same dinner: the next step comes when you're both done */
-  function cook() {
+  function cook() { cook0(); emit("state"); }
+  function cook0() {
     $("dishes").innerHTML = ""; Object.keys(DISH).forEach(function (k) { chip($("dishes"), tr(DISH[k].n), S.d === k, function () { S.d = k; S.s = 0; S.sa = Date.now(); doneMe = doneThem = -1; push(); apply(); }); });
     var d = DISH[S.d]; $("cookStep").hidden = !d; if (!d) return;
     if (S.s >= d.s.length) { $("stepN").textContent = "🍽️"; $("stepT").textContent = t("serve"); $("timer").hidden = true; $("done").hidden = true; $("tickMe").textContent = ""; $("tickThem").textContent = ""; return; }
@@ -365,18 +376,20 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   $("noteSend").onclick = function () { var v = $("noteT").value.trim(); if (!v) return; tx("note", { text: v }); stats.notes++; slideAt = Date.now(); $("noteT").value = ""; toast(t("noteSent")); };
   function napkin(text) {
     stats.notes++; slideAt = -Date.now();
+    if (APP) { chime(); emit("note", { text: text, from: them ? them.name : t("date") }); return; }
     var d = document.createElement("div"); d.className = "napkin"; d.setAttribute("role", "dialog");
     var p = document.createElement("div"); p.textContent = text; var s = document.createElement("small"); s.textContent = "— " + t("noteFrom").replace("{p}", them ? them.name : t("date"));
     var b = document.createElement("button"); b.type = "button"; b.textContent = t("keep"); b.onclick = function () { d.remove(); };
     d.appendChild(p); d.appendChild(s); d.appendChild(b); document.body.appendChild(d); chime();
   }
-  function clink(mine) { clinkAt = Date.now(); stats.clinks++; if (mine) tx("clink", {}); try { var A = ac(), n = A.currentTime; [2093, 2637, 3136].forEach(function (q, i) { var o = A.createOscillator(), g = A.createGain(); o.type = "sine"; o.frequency.value = q * (mine ? 1 : 1.01); g.gain.setValueAtTime(.05, n + .45 + i * .015); g.gain.exponentialRampToValueAtTime(.0001, n + 1.6); o.connect(g); g.connect(A.destination); o.start(n + .45); o.stop(n + 1.7); }); } catch (e) {} }
+  function clink(mine) { emit("clink", { mine: mine }); clinkAt = Date.now(); stats.clinks++; if (mine) tx("clink", {}); try { var A = ac(), n = A.currentTime; [2093, 2637, 3136].forEach(function (q, i) { var o = A.createOscillator(), g = A.createGain(); o.type = "sine"; o.frequency.value = q * (mine ? 1 : 1.01); g.gain.setValueAtTime(.05, n + .45 + i * .015); g.gain.exponentialRampToValueAtTime(.0001, n + 1.6); o.connect(g); g.connect(A.destination); o.start(n + .45); o.stop(n + 1.7); }); } catch (e) {} }
   $("blow").onclick = function () { blowMe = 1; tx("blow", {}); if (!here() || blowThem) goodnight(); else { $("blow").disabled = true; toast(t("blowWait").replace("{p}", them.name)); } };
   /* links to the other after-hours apps go through FBApps: the whole window goes (out of the town's frame too) */
   function wireApps(root) { [].forEach.call((root || document).querySelectorAll("a[data-app]"), function (a) { if (!window.FBApps) return; a.href = FBApps.href(a.dataset.app); a.onclick = function (e) { e.preventDefault(); FBApps.go(a.dataset.app); }; }); }
   wireApps();
   function goodnight() {
     flameOut = Date.now(); music(false);
+    if (APP) { emit("goodnight", { with: here() ? them.name : "", dish: DISH[S.d] ? S.d : "" }); return; }   /* no receipt, nothing counted: the app says goodnight its own way */
     var mins = started ? Math.max(1, Math.round((Date.now() - started) / 60000)) : 0, dish = DISH[S.d] ? tr(DISH[S.d].n) : "";
     var rec = { at: Date.now(), with: here() ? them.name : "", mins: mins, dish: dish, clinks: stats.clinks, cards: stats.cards, notes: stats.notes };
     var past = []; try { past = JSON.parse(ls("fb_table_evenings") || "[]"); } catch (e) {} past.unshift(rec); ls("fb_table_evenings", JSON.stringify(past.slice(0, 30)));
@@ -459,7 +472,8 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
     // a napkin sliding across
     if (slideAt) { var dt = (Date.now() - Math.abs(slideAt)) / 1200; if (dt < 1.4) { var p = Math.min(1, dt), nx = slideAt > 0 ? 40 + p * 78 : 118 - p * 78; R(nx, 63, 7, 2, "#fbfbf6"); } }
     // two candles: yours, and theirs once they've sat down
-    [[74, 1], [86, both]].forEach(function (cd) { R(cd[0] - 1, 50, 3, 12, "#fbf1de"); R(cd[0] - 2, 61, 5, 1, "#c8a050"); if (cd[1] && !out) { var fh = 3 + Math.sin(f / 3 + cd[0]) * 1 + hash(f + cd[0]) * .8; R(cd[0], 50 - fh, 1, fh, "#f6b73c"); R(cd[0], 50 - fh * .6, 1, fh * .5, "#fff3c0"); g.fillStyle = "rgba(246,183,60,.07)"; g.beginPath(); g.arc(cd[0] + .5, 47, 22 + Math.sin(f / 5) * 1.5, 0, 6.3); g.fill(); } else if (out && Date.now() - flameOut < 4000) { var sm = (Date.now() - flameOut) / 400; R(cd[0] + Math.sin(sm) * 2, 48 - sm * 2, 1, 2, "rgba(220,220,220," + Math.max(0, .6 - sm / 12) + ")"); } });
+    var together = !APP || (lit.me && lit.them); [[74, together], [86, both && together]].forEach(function (cd) { R(cd[0] - 1, 50, 3, 12, "#fbf1de"); R(cd[0] - 2, 61, 5, 1, "#c8a050"); if (cd[1] && !out) { var fh = 3 + Math.sin(f / 3 + cd[0]) * 1 + hash(f + cd[0]) * .8; R(cd[0], 50 - fh, 1, fh, "#f6b73c"); R(cd[0], 50 - fh * .6, 1, fh * .5, "#fff3c0"); g.fillStyle = "rgba(246,183,60,.07)"; g.beginPath(); g.arc(cd[0] + .5, 47, 22 + Math.sin(f / 5) * 1.5, 0, 6.3); g.fill(); } else if (out && Date.now() - flameOut < 4000) { var sm = (Date.now() - flameOut) / 400; R(cd[0] + Math.sin(sm) * 2, 48 - sm * 2, 1, 2, "rgba(220,220,220," + Math.max(0, .6 - sm / 12) + ")"); } });
+    if (APP && litAt && Date.now() - litAt < 900 && !out) { var la = 1 - (Date.now() - litAt) / 900; g.fillStyle = "rgba(255,214,120," + (.35 * la) + ")"; g.beginPath(); g.arc(80, 46, 10 + (1 - la) * 26, 0, 6.3); g.fill(); }   /* the moment both candles catch */
     if (out) { g.fillStyle = "rgba(0,0,20,.35)"; g.fillRect(0, 0, 160, 96); }
     if (both && !out && f % 240 < 60) { var hy = 44 - (f % 240) / 4; R(79, hy, 1, 1, "#ff8fa0"); R(81, hy, 1, 1, "#ff8fa0"); R(78, hy + 1, 5, 1, "#ff8fa0"); R(79, hy + 2, 3, 1, "#ff8fa0"); R(80, hy + 3, 1, 1, "#ff8fa0"); }
     requestAnimationFrame(draw);
@@ -487,7 +501,30 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   ME.name = (ls("fb_nick") || "").slice(0, 20); $("myName").value = ME.name;
   var inv = (/[?&]t=([a-z0-9]{6,24})/.exec(location.search) || [])[1];
   words(); requestAnimationFrame(draw);
-  if (inv) { ready().then(function () { if (ME.name) return sit(inv);
+  /* the standalone app's handle on this table: the same line, recipes and cards, one source of truth (app.js) */
+  window.FBTable = {
+    app: APP, W: W, DISH: DISH, Q: Q, VIEWS: VIEWS, tr: tr, t: t, me: ME,
+    on: function (f) { LIS.push(f); },
+    st: function () { return { S: S, them: them, here: here(), code: code, doneMe: doneMe, doneThem: doneThem, blowMe: blowMe, blowThem: blowThem, lit: lit, net: !!net }; },
+    sit: function (c) { if (code === c && net) return; sit(c); },
+    leave: function () { tx("bye", {}); try { net && net.close(); } catch (e) {} net = null; code = ""; them = null; doneMe = doneThem = -1; blowMe = blowThem = 0; lit.me = APP ? 0 : 1; lit.them = 0; litAt = 0; flameOut = 0; S = { v: S.v, m: 0, d: "", s: 0, sa: 0, k: -1, r: 0 }; music(false); },
+    name: function (n) { ME.name = String(n || "").slice(0, 20); if (ME.name) ls("fb_nick", ME.name); if (net) hello(false); seats(); },
+    view: function (k) { S.v = k; push(); apply(); },
+    music: function (on) { S.m = on ? 1 : 0; push(); apply(); },
+    dish: function (k) { if (S.d === k) return; S.d = k; S.s = 0; S.sa = Date.now(); doneMe = doneThem = -1; push(); apply(); },
+    done: function () { if (doneMe !== S.s) $("done").onclick(); },
+    left: function () { var d = DISH[S.d]; if (!d || S.s >= d.s.length || !d.s[S.s][1]) return -1; return Math.max(0, d.s[S.s][1] - Math.floor((Date.now() - S.sa) / 1000)); },
+    card: function () { $("nextQ").onclick(); },
+    note: function (v) { v = String(v || "").trim().slice(0, 160); if (!v) return false; tx("note", { text: v }); stats.notes++; slideAt = Date.now(); return true; },
+    clink: function () { clink(true); },
+    light: function () { if (lit.me) return; lit.me = 1; tx("light", {}); if (lit.them) { litAt = Date.now(); chime(); emit("lit"); } emit("light"); },
+    blow: function () { if (!blowMe) $("blow").onclick(); },
+    send: function (ev, p) { tx(ev, p); },
+    chime: chime,
+    stage: document.querySelector(".stage")
+  };
+  if (APP) { var sc = document.createElement("script"); sc.src = "./app.js?v=4a1f519e"; document.body.appendChild(sc); }
+  if (inv && !APP) { ready().then(function () { if (ME.name) return sit(inv);
     /* invited, no name yet: just ask for one, then sit down */
     $("pastBox").hidden = true; $("reserve").lastElementChild.setAttribute("data-t", "sitDown"); $("reserve").lastElementChild.textContent = t("sitDown");
     $("reserve").onclick = function () { ME.name = $("myName").value.trim().slice(0, 20); if (!ME.name) { $("myName").focus(); return; } ls("fb_nick", ME.name); sit(inv); }; }); }
