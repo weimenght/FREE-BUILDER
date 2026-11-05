@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>/* a page of the town: opened on its own (a shared link, a bookmark, another site), it opens inside Nearby instead */(function(){try{if(window.self===window.top&&!/[?&]solo=1/.test(location.search))location.replace("/nearby/?at="+encodeURIComponent(location.pathname+location.search+location.hash))}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Why Nearby · FREE//BUILDER</title>
 <meta name="description" content="Why Nearby exists: people aren't the means, people are the point. A small pixel town by FREE//BUILDER that sends you back to the people you love.">
@@ -155,6 +156,7 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
 .rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}.rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.stars i{animation:none}.frame img{transition:none}}
 @media (hover:none),(pointer:coarse){.kb{display:none}}
+html.inshell .top,html.inshell footer.fbf{display:none}
 </style>
 </head>
 <body>
@@ -280,10 +282,20 @@ h1{overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}h1 em{font-style:n
 <footer class="fbf">
   <div class="wrap">
     <span>© <span id="yr">2026</span> <a href="/">FREE//BUILDER</a> L&amp;D Solutions</span>
-    <nav aria-label="Footer"><a href="/privacy/" data-k="fPriv">Privacy</a><a href="https://www.wei-meng.org/" data-x data-k="fBy">A practice by Wei</a><span id="made">Made with <a class="ai" href="/notes/ai-use/">AI</a> &amp; <a class="h" href="/nearby/" aria-label="Nearby">♥</a></span></nav>
+    <nav aria-label="Footer"><a href="/privacy/" data-k="fPriv">Privacy</a><a href="https://www.wei-meng.org/" data-x data-k="fBy">A practice by Wei</a><span id="made">Made with <a class="ai" href="/notes/ai-use/">AI</a> &amp; <a class="h" href="https://www.wei-meng.org/after-hours/" data-x aria-label="After hours">♥</a></span></nav>
   </div>
 </footer>
 
+<script>
+/* inside the town: the shell's top bar names the page; town links go through the shell, everything else opens in the top window */
+(function () { var sh = null; try { sh = window.parent !== window && window.parent.FBShell; } catch (e) {} if (!sh) return;
+  document.documentElement.classList.add("inshell");
+  document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("a[href]"); if (!a) return; var h = a.getAttribute("href") || "";
+    if (h.charAt(0) === "#") return;
+    if (/^\/nearby\//.test(h)) { e.preventDefault(); if (h === "/nearby/") sh.close(); else sh.open(h); return; }
+    a.target = "_top"; }, true);
+})();
+</script>
 <script>
 (function () {
   "use strict";

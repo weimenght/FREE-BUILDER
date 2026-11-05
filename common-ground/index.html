@@ -897,7 +897,7 @@ function chrome() {
   $("appName").textContent = sg(T(W.app)); document.title = TOWN && TOWN.n ? TOWN.n + " · " + T(W.app) : T(W.app);
   $("langLbl").textContent = SHORT[i]; $("langIco").innerHTML = icon("globe"); $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + NAMES[i]);
   $("foot").innerHTML = '<span class="line">' + esc(T(W.device)) + '</span><a href="/">FREE//BUILDER · ' + esc(T(W.fb)) + '</a><a href="/nearby/">' + icon("heart") + " " + esc(T(W.nearby)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a><span>" +
-    F(esc(T(W.made)), { ai: '<a href="/notes/ai-use/" style="display:inline">AI</a>', h: "♥" }) + "</span>";
+    F(esc(T(W.made)), { ai: '<a href="/notes/ai-use/" style="display:inline">AI</a>', h: '<a href="https://www.wei-meng.org/after-hours/" style="display:inline">♥</a>' }) + "</span>";
 }
 var paintT = 0;
 function paint() {
