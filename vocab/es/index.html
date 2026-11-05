@@ -483,7 +483,7 @@
     <!-- ===================== TARJETAS: AÑADIR ===================== -->
     <section class="view" id="v-cards-add" hidden>
       <form class="card pad narrow stack" id="addForm" autocomplete="off">
-        <div class="row between"><span class="h2">Nueva palabra</span><span class="tag ok"><svg class="ic sm"><use href="#i-cloud"/></svg><span id="addSyncTag">D1</span></span></div>
+        <div class="row between"><span class="h2">Nueva palabra</span><span class="tag ok"><svg class="ic sm"><use href="#i-cloud"/></svg><span id="addSyncTag">En este dispositivo</span></span></div>
         <label class="field"><span class="label">Palabra / término (español)</span><input class="input" id="newWord" required placeholder="Ej.: el reto, desarrollar…" autocapitalize="none"></label>
         <label class="field"><span class="label">Traducción / significado</span><input class="input" id="newMeaning" required placeholder="Ej.: challenge, to develop…" autocapitalize="none"></label>
         <label class="field"><span class="label">Frase de contexto (opcional)</span><input class="input" id="newSentence" placeholder="Ej.: Aceptó el reto con entusiasmo."></label>
@@ -6241,7 +6241,7 @@ const Api = {
     this.status = st;
     const dot = $('syncDot'); if (!dot) return;
     dot.className = 'dot ' + (st === 'ok' ? 'ok' : st === 'offline' ? 'off' : st === 'error' ? 'err' : '');
-    const tag = $('addSyncTag'); if (tag) tag.textContent = st === 'ok' ? 'D1 sincronizado' : this.enabled ? `Sin conexión · ${S.queue.length} en cola` : 'Solo local';
+    const tag = $('addSyncTag'); if (tag) tag.textContent = st === 'ok' ? 'D1 sincronizado' : this.enabled ? `Sin conexión · ${S.queue.length} en cola` : (window.VK && VK.syncing() ? 'Se sincroniza con ☁' : 'En este dispositivo');
   }
 };
 
@@ -7218,7 +7218,7 @@ function resetStats() {
    ============================================================== */
 function openSettings() {
   const st = S.settings; const sel = st.tenses;
-  const sync = !Api.enabled ? 'Solo local (sin API configurada)' : Api.status === 'ok' ? '✓ Conectado a Cloudflare D1' : Api.status === 'offline' ? `Sin conexión · ${S.queue.length} cambios en cola` : 'Conectando…';
+  const sync = !Api.enabled ? (window.VK && VK.syncing() ? '☁ Sincronizado entre tus dispositivos' : 'Solo en este dispositivo (activa ☁ para sincronizar)') : Api.status === 'ok' ? '✓ Conectado a Cloudflare D1' : Api.status === 'offline' ? `Sin conexión · ${S.queue.length} cambios en cola` : 'Conectando…';
   openSheet(`
     <div class="sheet-head"><span class="h2">Ajustes</span><button class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ico('x')}</button></div>
     <div class="stack">
@@ -7246,8 +7246,7 @@ function openSettings() {
     </div>
     <div class="stack" style="margin-top:14px">
       <span class="label">Sincronización</span>
-      <div class="row between"><span style="font-size:14px">${sync}</span><button class="btn sm" data-act="resync">${ico('rotate-ccw', 'sm')}Sincronizar</button></div>
-      <p class="meta" style="margin:0;word-break:break-all">API: ${esc(API_BASE)}</p>
+      <div class="row between"><span style="font-size:14px">${sync}</span><button class="btn sm" data-act="cloud">☁ Sincronización</button></div>
     </div>`);
   const sh = document.querySelector('.sheet');
   sh.addEventListener('change', ev => {
@@ -7372,6 +7371,7 @@ const ACTIONS = {
   cellInfo: a => { const d = S.days[a] || { xp: 0, n: 0, ok: 0 }; toast(`${new Date(a + 'T12:00').toLocaleDateString(VK.locale('es-ES'), { weekday: 'long', day: 'numeric', month: 'long' })}: ${d.n} respuestas`); },
   exportJson, importJson: () => $('jsonFile').click(), resetStats,
   tensesAuto: () => { S.settings.tenses = null; save(); Drill.cur = Choice.cur = null; openSettingsKeepScroll(); },
+  cloud: () => { closeSheet(); const b = document.querySelector('[data-vk=cloud]'); if (b) b.click(); },
   resync: async () => { toast('Sincronizando…'); await fullSync(); openSettingsKeepScroll(); toast(Api.status === 'ok' ? 'Sincronizado ✓' : 'Sin conexión con D1'); }
 };
 

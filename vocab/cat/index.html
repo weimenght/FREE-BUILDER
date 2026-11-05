@@ -2269,7 +2269,7 @@ const Api = {
     this.status = st;
     const dot = $('syncDot'); if (!dot) return;
     dot.className = 'dot ' + (st === 'ok' ? 'ok' : st === 'offline' ? 'off' : st === 'error' ? 'err' : '');
-    const tag = $('addSyncTag'); if (tag) tag.textContent = st === 'ok' ? 'D1 sincronitzat' : this.enabled ? `Sense connexió · ${S.queue.length} en cua` : 'Desat en aquest dispositiu';
+    const tag = $('addSyncTag'); if (tag) tag.textContent = st === 'ok' ? 'D1 sincronitzat' : this.enabled ? `Sense connexió · ${S.queue.length} en cua` : (window.VK && VK.syncing() ? 'Se sincronitza amb ☁' : 'Desat en aquest dispositiu');
   }
 };
 
@@ -3246,7 +3246,7 @@ function resetStats() {
    ============================================================== */
 function openSettings() {
   const st = S.settings; const sel = st.tenses;
-  const sync = !Api.enabled ? 'Mode local: tot es desa en aquest dispositiu' : Api.status === 'ok' ? '✓ Connectat a Cloudflare D1' : Api.status === 'offline' ? `Sense connexió · ${S.queue.length} canvis en cua` : 'Connectant…';
+  const sync = !Api.enabled ? (window.VK && VK.syncing() ? '☁ Sincronitzat entre els teus dispositius' : 'Només en aquest dispositiu (activa ☁ per sincronitzar)') : Api.status === 'ok' ? '✓ Connectat a Cloudflare D1' : Api.status === 'offline' ? `Sense connexió · ${S.queue.length} canvis en cua` : 'Connectant…';
   const vs = Audio.voices();
   openSheet(`
     <div class="sheet-head"><span class="h2">Configuració</span><button class="icon-btn" data-act="closeSheet" aria-label="Tanca">${ico('x')}</button></div>
@@ -3274,8 +3274,7 @@ function openSettings() {
     </div>
     <div class="stack" style="margin-top:14px">
       <span class="label">Emmagatzematge</span>
-      <div class="row between"><span style="font-size:14px">${sync}</span>${Api.enabled ? `<button class="btn sm" data-act="resync">${ico('rotate-ccw', 'sm')}Sincronitza</button>` : ''}</div>
-      ${Api.enabled ? `<p class="meta" style="margin:0;word-break:break-all">API: ${esc(API_BASE)}</p>` : '<p class="meta" style="margin:0">Per sincronitzar entre dispositius, configura <span class="mono">API_BASE</span> al codi amb el teu Worker de Cloudflare.</p>'}
+      <div class="row between"><span style="font-size:14px">${sync}</span>${Api.enabled ? `<button class="btn sm" data-act="resync">${ico('rotate-ccw', 'sm')}Sincronitza</button>` : `<button class="btn sm" data-act="cloud">☁ Sincronització</button>`}</div>
     </div>`);
   const sh = document.querySelector('.sheet');
   sh.addEventListener('change', ev => {
@@ -3400,6 +3399,7 @@ const ACTIONS = {
   cellInfo: a => { const d = S.days[a] || { xp: 0, n: 0, ok: 0 }; toast(`${new Date(a + 'T12:00').toLocaleDateString(VK.locale('ca-ES'), { weekday: 'long', day: 'numeric', month: 'long' })}: ${d.n} respostes`); },
   exportJson, importJson: () => $('jsonFile').click(), resetStats,
   tensesAuto: () => { S.settings.tenses = null; save(); Drill.cur = Choice.cur = null; openSettingsKeepScroll(); },
+  cloud: () => { closeSheet(); const b = document.querySelector('[data-vk=cloud]'); if (b) b.click(); },
   resync: async () => { toast('Sincronitzant…'); await fullSync(); openSettingsKeepScroll(); toast(Api.status === 'ok' ? 'Sincronitzat ✓' : 'Sense connexió amb D1'); }
 };
 
