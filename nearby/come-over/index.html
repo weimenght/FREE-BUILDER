@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=27bd3ece48"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=7e46218c2d" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8b759b7c8f"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=007f835ed3" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Come Over · Nearby</title>
 <meta name="description" content="Plan a real get-together: write the invitation, send the link, and see who's coming and what they'll bring. Only people with the link can see it.">
@@ -179,7 +179,7 @@
   function instead() {
     if (!window.FBApps) return;
     var c = el("div", "tk-card"); c.appendChild(el("p", "tk-dim", t(T.insteadH))); var r = el("div", "tk-row");
-    var f = el("button", "fbb", "🌼 " + (ev.hosts ? t(T.flw, { n: ev.hosts }) : t(T.flw0))); f.type = "button"; f.onclick = function () { FBApps.go("flowers", { to: ev.hosts || "" }); }; r.appendChild(f);
+    var f = el("button", "fbb", "🌼 " + (ev.hosts ? t(T.flw, { n: ev.hosts }) : t(T.flw0))); f.type = "button"; f.onclick = function () { var to = String(ev.hosts || "").slice(0, 24), day = /^\d{4}-\d{2}-\d{2}$/.test(ev.date || "") ? ev.date : ""; FBApps.go("flowers", FBApps.live("flowers") ? { hash: "#to=" + encodeURIComponent(to) + (day ? "&day=" + day : "") } : { to: to }); };   /* A Few Stems: written to the hosts, opening on the day */ r.appendChild(f);
     var d = el("button", "fbb", "🕯️ " + t(T.tbl)); d.type = "button"; d.onclick = function () { FBApps.go("table"); }; r.appendChild(d);
     c.appendChild(r); panel.appendChild(c);
   }

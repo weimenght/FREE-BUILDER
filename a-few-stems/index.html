@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=8b759b7c8f"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A Few Stems · flowers for someone, in a link</title>
+<meta name="description" content="Tie a few stems for someone you love and send them in a link or a picture. Nothing is kept anywhere.">
+<meta name="theme-color" content="#f5eee3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141815" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="A Few Stems">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+/* A Few Stems: a florist's counter in the evening. Warm paper by day, the shop after closing in dark mode.
+   Fraunces for the shop's sign, Figtree for everything you press, Caveat for what's written on the card. */
+:root{
+  --bg:#f5eee3;--bg2:#ece2d2;--card:#fffaf2;--ink:#2b2420;--ink2:#6e6156;--line:#dccfbb;--rose:#a8323e;--rose2:#c4515c;--leaf:#4f6b3f;--leaf2:#6d8c58;
+  --shadow:0 1px 0 rgba(255,255,255,.7) inset,0 20px 44px -26px rgba(60,35,20,.45);--glow:rgba(255,236,200,.0);
+  --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,"Songti SC","Noto Serif SC","Noto Serif TC",serif;
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI","PingFang SC","PingFang TC","Microsoft YaHei",sans-serif;
+  --hand:"Caveat","Bradley Hand","Kaiti SC","STKaiti","KaiTi","Kaiti TC",cursive;
+  --r:16px;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#141815;--bg2:#1c211d;--card:#212722;--ink:#efe6d8;--ink2:#b3a998;--line:#343c35;--rose:#e88a90;--rose2:#f2a5aa;--leaf:#9cbf86;--leaf2:#b6d39f;
+  --shadow:0 20px 44px -26px #000;--glow:rgba(255,214,150,.10);color-scheme:dark}}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(60% 40% at 30% 0%,var(--glow),transparent 70%),radial-gradient(rgba(120,90,50,.07) 1px,transparent 1.2px);background-size:auto,5px 5px}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}
+a{color:var(--rose)}
+:focus-visible{outline:3px solid var(--rose2);outline-offset:2px;border-radius:8px}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-right))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:8px;min-height:58px;padding-top:env(safe-area-inset-top)}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit}
+.brand svg{flex:none;width:32px;height:32px}
+.brand b{font:600 clamp(19px,4.6vw,23px)/1.1 var(--serif);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand b i{font-style:italic;font-weight:500;color:var(--rose)}
+.ib{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;min-width:44px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:600 14px var(--sans);white-space:nowrap}
+.ib svg{width:18px;height:18px;flex:none}
+.rel{position:relative}
+.langm{position:absolute;right:0;top:calc(100% + 6px);display:grid;min-width:160px;padding:6px;border-radius:14px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);z-index:30}
+.langm button{text-align:left;min-height:42px;padding:0 12px;border:0;border-radius:10px;background:none;font:500 15px var(--sans)}
+.langm button[aria-current=true]{background:var(--bg2);font-weight:700}
+
+/* the counter: the bouquet on the left (or on top), what you pick on the right */
+.make{display:grid;gap:18px;padding:16px 0 8px}
+.stage{position:relative;display:grid;justify-items:center;gap:6px}
+.cvbox{position:relative;width:min(100%,440px,calc((100svh - 280px) * .94));min-width:220px;aspect-ratio:400/424}
+.cvbox canvas{position:absolute;inset:0;width:100%;height:100%}
+.hint{position:absolute;left:0;right:0;top:26%;margin:0;text-align:center;font:500 italic 18px/1.3 var(--serif);color:var(--ink2);pointer-events:none;padding:0 18%}
+.tools{display:flex;gap:8px;justify-content:center}
+.lnk{border:0;background:none;color:var(--ink2);font:600 14px var(--sans);min-height:40px;padding:0 10px;border-radius:999px}
+.lnk:hover{color:var(--ink)}
+.lnk:disabled{opacity:.35;cursor:default}
+.ctrl{display:grid;gap:16px;align-content:start}
+h1.tagline{margin:0;font:500 clamp(24px,5.6vw,36px)/1.12 var(--serif);letter-spacing:-.015em}
+h1.tagline em{font-style:italic;color:var(--rose)}
+.lab{margin:0 0 8px;font:700 12px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.stems{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.stem{display:grid;justify-items:center;gap:2px;padding:6px 0 7px;border-radius:14px;border:1px solid var(--line);background:var(--card);min-height:76px;transition:transform .12s,border-color .12s}
+.stem:hover{border-color:var(--rose2)}
+.stem:active{transform:scale(.95)}
+.stem canvas{width:44px;height:44px}
+.stem span{font:600 11.5px/1.15 var(--sans);text-align:center;padding:0 2px;color:var(--ink2);overflow-wrap:anywhere}
+.hop{animation:hop .35s}
+@keyframes hop{30%{transform:translateY(-6px)}60%{transform:translateY(2px)}}
+@media (max-width:420px){.stems{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.papers{display:flex;gap:10px;flex-wrap:wrap}
+.pp{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 8px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:600 14px var(--sans)}
+.pp i{width:26px;height:26px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.pp[aria-checked=true]{border-color:var(--rose);box-shadow:0 0 0 2px var(--rose) inset}
+
+/* the gift card */
+.gcard{position:relative;background:var(--card);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:16px 18px 14px;transform:rotate(-.6deg)}
+.gcard::before{content:"";position:absolute;top:12px;right:14px;width:10px;height:10px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line)}
+.fl{display:flex;align-items:baseline;gap:8px;border-bottom:1px dashed var(--line);padding:4px 0}
+.fl label{flex:none;font:600 13px var(--sans);color:var(--ink2);min-width:3.2em}
+.fl input,.gcard textarea{flex:1;min-width:0;border:0;background:none;outline:none;font:500 24px/1.25 var(--hand);color:var(--ink);padding:2px 0}
+.gcard textarea{width:100%;resize:none;display:block;min-height:64px;border-bottom:1px dashed var(--line);margin:4px 0 2px}
+.fl input::placeholder,.gcard textarea::placeholder{color:var(--ink2);opacity:.55}
+.day{display:grid;gap:8px}
+.sw{display:flex;align-items:center;gap:10px;min-height:44px;font:600 15px var(--sans);cursor:pointer;width:max-content;max-width:100%}
+.sw input{appearance:none;-webkit-appearance:none;margin:0;flex:none;width:44px;height:26px;border-radius:999px;background:var(--line);position:relative;transition:background .15s;cursor:pointer}
+.sw input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .15s}
+.sw input:checked{background:var(--rose)}
+.sw input:checked::after{transform:translateX(18px)}
+.dayrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.dayrow input{min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);font:600 15px var(--sans)}
+.small{margin:0;font:14px/1.4 var(--sans);color:var(--ink2)}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:600 15px var(--sans);text-decoration:none;color:var(--ink);transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn.pri{background:var(--rose);border-color:var(--rose);color:#fff}
+@media (prefers-color-scheme:dark){.btn.pri{color:#1a1416}}
+.btn svg{width:18px;height:18px;flex:none}
+
+@media (min-width:880px){
+  .make{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:start;padding-top:28px}
+  .stage{position:sticky;top:76px}
+  .cvbox{width:min(100%,500px,calc((100vh - 170px) * .94))}
+}
+
+/* arrival */
+.got{display:grid;gap:18px;padding:18px 0 8px;max-width:980px;margin:0 auto}
+.got h1{margin:0;text-align:center;font:500 clamp(28px,7vw,44px)/1.1 var(--serif);letter-spacing:-.02em}
+.got h1 em{font-style:italic;color:var(--rose)}
+.gstage{display:grid;justify-items:center;gap:10px}
+.gside{display:grid;gap:16px;align-content:start;max-width:520px;width:100%;margin:0 auto}
+.gcard.read{transform:rotate(.8deg);padding:18px 20px 16px}
+.gcard.read .msg{margin:0;font:500 clamp(26px,6.4vw,32px)/1.2 var(--hand);overflow-wrap:anywhere}
+.gcard.read .who{margin:8px 0 0;text-align:right;font:500 24px/1.2 var(--hand);color:var(--ink2)}
+.wrapped{text-align:center;display:grid;gap:10px;justify-items:center}
+.wrapped p{margin:0;max-width:30em}
+.wrapped .big{font:500 italic clamp(20px,5vw,24px)/1.3 var(--serif)}
+.means{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.means li{font:15px/1.4 var(--sans);color:var(--ink2)}
+.means li b{color:var(--ink);font-weight:600}
+.call{margin:6px 0 0;padding:16px 0 0;border-top:1px solid var(--line);text-align:center;font:500 italic clamp(20px,5vw,24px)/1.3 var(--serif)}
+.fade{animation:fade .6s both}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+@media (min-width:880px){.got{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;padding-top:32px}.got h1{grid-column:1/-1}}
+
+/* the sheet for real ones */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(20,14,10,.38);display:grid;align-items:end;justify-items:center;padding:16px}
+@media (min-width:640px){.scrim{align-items:center}}
+.sheet{width:min(100%,460px);background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:grid;gap:12px;position:relative;max-height:calc(100dvh - 32px);overflow:auto}
+.sheet h2{margin:0;font:500 26px/1.15 var(--serif)}
+.sheet .x{position:absolute;top:10px;right:10px}
+.sheet .row{display:flex;gap:8px}
+.sheet .row input{flex:1;min-width:0;min-height:48px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font:16px var(--sans)}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(14px);opacity:0;transition:.25s;z-index:60;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font:600 14px var(--sans);pointer-events:none;max-width:calc(100vw - 32px);text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.foot{position:relative;z-index:1;padding:28px 0 calc(24px + env(safe-area-inset-bottom));color:var(--ink2);font-size:14px}
+.foot a{color:var(--ink2)}
+.foot.fbf-k a{text-decoration:none}.foot.fbf-k .fbf-x a{text-decoration:underline}   /* the suite's one footer row sets the size (the owner, Nov 6) */
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./" id="home"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="24" cy="18" r="8" fill="#c8303a"/><circle cx="24" cy="18" r="4" fill="#8a1a2a"/><circle cx="40" cy="15" r="7.5" fill="#f4c84a"/><circle cx="40" cy="15" r="3.4" fill="#6b3f1e"/><circle cx="33" cy="27" r="7" fill="#f6c0d0"/><circle cx="33" cy="27" r="3" fill="#e890b0"/><path d="M14 30h36L36 58h-8z" fill="#c8a070"/><path d="M14 30h36l-3 4H17z" fill="#a07a4a"/><path d="M27 44h10" stroke="#a8323e" stroke-width="3" stroke-linecap="round"/></svg><b id="nameB">A Few Stems</b></a>
+  <div class="rel"><button class="ib" id="langB" type="button" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg><span id="langL">EN</span></button></div>
+</div></header>
+
+<main class="wrap" id="main">
+  <!-- making a bouquet -->
+  <section class="make" id="make">
+    <div class="stage">
+      <div class="cvbox" id="cvbox"><canvas id="cv" role="img"></canvas><p class="hint" id="hint" data-i="hint">Tap a flower to add a stem.</p></div>
+      <div class="tools"><button class="lnk" type="button" id="undo" data-i="undo">Take one out</button><button class="lnk" type="button" id="clear" data-i="clear">Start again</button></div>
+    </div>
+    <div class="ctrl">
+      <h1 class="tagline" id="tagH">A few stems for someone you love.</h1>
+      <div><p class="lab" data-i="stems">Flowers</p><div class="stems" id="stems"></div></div>
+      <div><p class="lab" id="paperL" data-i="paper">Paper</p><div class="papers" id="papers" role="radiogroup" aria-labelledby="paperL"></div></div>
+      <div class="gcard">
+        <div class="fl"><label for="to" data-i="forL">For</label><input id="to" maxlength="24" autocomplete="off" data-ph="forPh"></div>
+        <label class="sr" for="msg" data-i="lineL">On the card</label>
+        <textarea id="msg" maxlength="80" rows="2" data-ph="linePh"></textarea>
+        <div class="fl"><label for="by" data-i="fromL">From</label><input id="by" maxlength="24" autocomplete="nickname" data-ph="fromPh"></div>
+      </div>
+      <div class="day">
+        <label class="sw"><input type="checkbox" id="dayOn"><span data-i="dayL">Open on a day</span></label>
+        <div class="dayrow" id="dayRow" hidden><input type="date" id="dayIn" aria-labelledby="dayHint"><p class="small" id="dayHint" data-i="dayHint">Until then they'll see it wrapped, with a tag.</p></div>
+      </div>
+      <div class="acts">
+        <button class="btn pri" type="button" id="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg><span data-i="send">Send the link</span></button>
+        <button class="btn" type="button" id="pic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg><span data-i="pic">Send as a picture</span></button>
+        <button class="btn" type="button" id="realB"><span aria-hidden="true">🌷</span><span data-i="real">Give real ones</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- someone sent you flowers -->
+  <section class="got" id="got" hidden>
+    <h1 id="gotH">Flowers for you</h1>
+    <div class="gstage">
+      <div class="cvbox" id="gbox"><canvas id="gcv" role="img"></canvas></div>
+      <button class="btn pri" type="button" id="untie"><span aria-hidden="true">🎀</span><span data-i="untie">Untie the ribbon</span></button>
+    </div>
+    <div class="gside">
+      <div class="wrapped" id="wrapped" hidden>
+        <p class="big" id="wrappedT"></p>
+        <p class="small" data-i="wrappedP">Someone wants you to open these on the day. Come back to this link then.</p>
+        <div class="acts" style="justify-content:center"><button class="btn" type="button" id="remind"><span aria-hidden="true">📅</span><span data-i="remind">Remind me on the day</span></button><button class="btn" type="button" id="mine"><span data-i="mine">Make your own</span></button></div>
+      </div>
+      <div id="opened" hidden>
+        <div class="gcard read" id="readCard"><p class="msg" id="gMsg"></p><p class="who" id="gFrom"></p></div>
+        <div style="margin-top:14px"><button class="lnk" type="button" id="meanB" aria-expanded="false" style="padding-left:0"><span aria-hidden="true">✿</span> <span data-i="meanB">What they mean</span></button><ul class="means" id="means" hidden></ul></div>
+        <div class="acts" style="margin-top:14px">
+          <button class="btn pri" type="button" id="backB"><span data-i="back">Make one back</span></button>
+          <button class="btn" type="button" id="realB2"><span aria-hidden="true">🌷</span><span data-i="real">Give real ones</span></button>
+          <button class="btn" type="button" id="keep"><span data-i="keepPic">Keep a picture</span></button>
+        </div>
+        <p class="call" id="call"></p>
+      </div>
+      <p class="small" id="broken" hidden data-i="broken"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap" id="foot"><span data-i="note">Nothing is sent anywhere: the flowers live only in the link.</span> <a class="ah" id="ahA" href="https://www.wei-meng.org/after-hours/" target="_blank" rel="noopener"><span data-i="ah">After hours</span> ↗</a></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+  var STR = {"name":["A Few Stems","几枝花","幾枝花","Cuatro Flores","Quatre Flors"],"docTitle":["A Few Stems · flowers for someone, in a link","几枝花 · 扎一束花，放进链接里送人","幾枝花 · 扎一束花，放進連結裡送人","Cuatro Flores · flores para alguien, en un enlace","Quatre Flors · flors per a algú, en un enllaç"],"desc":["Tie a few stems for someone you love and send them in a link or a picture. Nothing is kept anywhere.","给你在乎的人扎几枝花，用链接或图片送出去。哪儿都不保存。","給你在乎的人扎幾枝花，用連結或圖片送出去。哪兒都不儲存。","Ata unas flores para alguien que quieres y envíalas en un enlace o una foto. No se guarda nada en ningún sitio.","Lliga unes flors per a algú que estimes i envia-les en un enllaç o una foto. No es guarda res enlloc."],"tag":["A few stems for someone you love.","几枝花，给你在乎的人。","幾枝花，給你在乎的人。","Unas flores para alguien que quieres.","Unes flors per a algú que estimes."],"lang":["Language","语言","語言","Idioma","Idioma"],"hint":["Tap a flower to add a stem.","点一朵花，加一枝。","點一朵花，加一枝。","Toca una flor para añadir un tallo.","Toca una flor per afegir-hi una tija."],"stems":["Flowers","花","花","Flores","Flors"],"paper":["Paper","包装纸","包裝紙","Papel","Paper"],"p0":["Kraft","牛皮纸","牛皮紙","Kraft","Kraft"],"p1":["Pink","粉色","粉色","Rosa","Rosa"],"p2":["Cream","米色","米色","Crema","Crema"],"p3":["Blue","蓝色","藍色","Azul","Blau"],"undo":["Take one out","拿掉一枝","拿掉一枝","Quitar una","Treure'n una"],"clear":["Start again","重新扎","重新紮","Empezar de nuevo","Tornar a començar"],"forL":["For","送给","送給","Para","Per a"],"forPh":["your sister, a friend, your grandmother","姐妹、朋友、外婆","姐妹、朋友、外婆","tu hermana, una amiga, tu abuela","la teva germana, una amiga, la teva àvia"],"lineL":["On the card","卡片上写","卡片上寫","En la tarjeta","A la targeta"],"linePh":["A line for them","写一句给 TA 的话","寫一句給 TA 的話","Una línea para esa persona","Una línia per a aquesta persona"],"fromL":["From","来自","來自","De","De"],"fromPh":["Your name","你的名字","你的名字","Tu nombre","El teu nom"],"dayL":["Open on a day","到某一天再打开","到某一天再開啟","Abrir un día concreto","Obrir un dia concret"],"dayHint":["Until then they'll see it wrapped, with a tag.","那天之前，TA 只会看到包好的花和一张小吊牌。","那天之前，TA 只會看到包好的花和一張小吊牌。","Hasta entonces lo verán envuelto, con una etiqueta.","Fins llavors el veuran embolicat, amb una etiqueta."],"send":["Send the link","发送链接","傳送連結","Enviar el enlace","Envia l'enllaç"],"pic":["Send as a picture","作为图片发送","作為圖片傳送","Enviar como foto","Envia com a foto"],"real":["Give real ones","送真的花","送真的花","Regala flores de verdad","Regala flors de debò"],"shareT":["I tied you a few flowers. Open them here:","我给你扎了几枝花，在这里打开：","我給你紮了幾枝花，在這裡開啟：","Te he atado unas flores. Ábrelas aquí:","T'he lligat unes flors. Obre-les aquí:"],"shareTd":["I tied you a few flowers. They open on {d}:","我给你扎了几枝花，{d}才能打开：","我給你紮了幾枝花，{d}才能開啟：","Te he atado unas flores. Se abren el {d}:","T'he lligat unes flors. S'obren el {d}:"],"picT":["A few flowers for you.","几枝花，给你。","幾枝花，給你。","Unas flores para ti.","Unes flors per a tu."],"copied":["Link copied. Send it to them.","链接已复制，发给 TA 吧。","連結已複製，發給 TA 吧。","Enlace copiado. Envíaselo.","Enllaç copiat. Envia-l'hi."],"saved":["Picture saved. Send it to them.","图片已保存，发给 TA 吧。","圖片已儲存，發給 TA 吧。","Foto guardada. Envíasela.","Foto desada. Envia-l'hi."],"empty":["A bouquet needs at least one stem.","至少要有一枝花。","至少要有一枝花。","Un ramo necesita al menos una flor.","Un ram necessita com a mínim una flor."],"full":["That's an armful. Take one out to add another.","已经一大把了。拿掉一枝才能再加。","已經一大把了。拿掉一枝才能再加。","Ya es un buen ramo. Quita una para añadir otra.","Ja és un bon ram. Treu-ne una per afegir-ne una altra."],"gotH":["Flowers for you","给你的花","給你的花","Flores para ti","Flors per a tu"],"gotFor":["For {n}","给 {n}","給 {n}","Para {n}","Per a {n}"],"from":["from {n}","来自 {n}","來自 {n}","de {n}","de {n}"],"untie":["Untie the ribbon","解开丝带","解開絲帶","Desata la cinta","Deslliga la cinta"],"wrapped":["Wrapped until {d}.","包好了，{d}才能打开。","包好了，{d}才能開啟。","Envuelto hasta el {d}.","Embolicat fins al {d}."],"wrappedP":["Someone wants you to open these on the day. Come back to this link then.","有人希望你在那一天打开。到时再点开这个链接吧。","有人希望你在那一天開啟。到時再點開這個連結吧。","Alguien quiere que lo abras ese día. Vuelve a este enlace entonces.","Algú vol que l'obris aquell dia. Torna a aquest enllaç llavors."],"remind":["Remind me on the day","那天提醒我","那天提醒我","Recuérdamelo ese día","Recorda-m'ho aquell dia"],"remindT":["Open the flowers from {n}","打开 {n} 送的花","開啟 {n} 送的花","Abrir las flores de {n}","Obrir les flors de {n}"],"remindAnon":["Open the flowers someone sent you","打开别人送你的花","開啟別人送你的花","Abrir las flores que te enviaron","Obrir les flors que t'han enviat"],"opens":["Opens {d}","{d} 打开","{d} 開啟","Se abre el {d}","S'obre el {d}"],"meanB":["What they mean","这些花的意思","這些花的意思","Qué significan","Què volen dir"],"back":["Make one back","也扎一束送回去","也扎一束送回去","Haz uno de vuelta","Fes-ne un de tornada"],"keepPic":["Keep a picture","存一张图片","存一張圖片","Guardar una foto","Desar una foto"],"call":["Call {n} and say you got it.","给 {n} 打个电话，说你收到了。","給 {n} 打個電話，說你收到了。","Llama a {n} y dile que te ha llegado.","Truca a {n} i digues-li que t'ha arribat."],"callAnon":["Call them and say you got it.","给 TA 打个电话，说你收到了。","給 TA 打個電話，說你收到了。","Llámale y dile que te ha llegado.","Truca-li i digues-li que t'ha arribat."],"mine":["Make your own","自己也扎一束","自己也扎一束","Haz el tuyo","Fes-ne un"],"broken":["This link has lost its flowers somewhere on the way. Ask them to send it again.","这个链接里的花在路上掉了。请 TA 再发一次吧。","這個連結裡的花在路上掉了。請 TA 再發一次吧。","Este enlace ha perdido las flores por el camino. Pide que te lo vuelvan a enviar.","Aquest enllaç ha perdut les flors pel camí. Demana que te'l tornin a enviar."],"realH":["Real ones","真的花","真的花","Flores de verdad","Flors de debò"],"realP":["A shop that will make them up, in your own maps app. Carry them over yourself if you can.","用你自己的地图应用找一家花店。能亲手送过去就更好。","用你自己的地圖應用找一家花店。能親手送過去就更好。","Una floristería que te los prepare, en tu propia app de mapas. Llévalas tú si puedes.","Una floristeria que te les prepari, a la teva pròpia app de mapes. Porta-les tu si pots."],"nearThem":["Florists near them","TA 附近的花店","TA 附近的花店","Floristerías cerca de esa persona","Floristeries a prop d'aquesta persona"],"nearThemPh":["Where do they live? A town or a street","TA 住在哪儿？城市或街道","TA 住在哪兒？城市或街道","¿Dónde vive? Un pueblo o una calle","On viu? Un poble o un carrer"],"nearMe":["Florists near me","我附近的花店","我附近的花店","Floristerías cerca de mí","Floristeries a prop meu"],"look":["Look","找一找","找一找","Buscar","Cerca"],"florist":["florist","花店","花店","floristería","floristeria"],"florist_near":["florist near {p}","{p} 花店","{p} 花店","floristería cerca de {p}","floristeria a prop de {p}"],"close":["Close","关闭","關閉","Cerrar","Tanca"],"note":["Nothing is sent anywhere: the flowers live only in the link.","什么都不会发到任何地方：花只在链接里。","什麼都不會發到任何地方：花只在連結裡。","No se envía nada a ningún sitio: las flores solo viven en el enlace.","No s'envia res enlloc: les flors només viuen a l'enllaç."],"ah":["After hours","下班以后","下班以後","Fuera de horario","Fora d'hores"],"fl0":["Rose","玫瑰","玫瑰","Rosa","Rosa"],"fl1":["Tulip","郁金香","鬱金香","Tulipán","Tulipa"],"fl2":["Daisy","雏菊","雛菊","Margarita","Margarida"],"fl3":["Sunflower","向日葵","向日葵","Girasol","Gira-sol"],"fl4":["Lavender","薰衣草","薰衣草","Lavanda","Espígol"],"fl5":["Peony","牡丹","牡丹","Peonía","Peònia"],"fl6":["Greenery","绿叶","綠葉","Verde","Verd"],"mn0":["love, said plainly.","把爱说出口。","把愛說出口。","el amor, dicho sin rodeos.","l'amor, dit sense embuts."],"mn1":["glad you're in my life.","很高兴有你在。","很高興有你在。","me alegra tenerte en mi vida.","m'alegra tenir-te a la meva vida."],"mn2":["something simple and true; a fresh start.","简单又真心；一个新的开始。","簡單又真心；一個新的開始。","algo sencillo y sincero; un nuevo comienzo.","una cosa senzilla i sincera; un nou començament."],"mn3":["you make every room warmer.","有你在，屋里都暖了。","有你在，屋裡都暖了。","contigo cualquier sitio es más cálido.","amb tu qualsevol lloc és més càlid."],"mn4":["rest well; I'm thinking of you.","好好休息，我在想你。","好好休息，我在想你。","descansa; pienso en ti.","descansa; penso en tu."],"mn5":["good fortune, and a full, happy home.","花开富贵，家里热热闹闹。","花開富貴，家裡熱熱鬧鬧。","buena suerte, y una casa llena y feliz.","bona sort, i una casa plena i feliç."],"mn6":["to growing, and to your health.","愿你慢慢长，身体好好的。","願你慢慢長，身體好好的。","por crecer, y por tu salud.","per créixer, i per la teva salut."]};
+  var LANGS = ["en", "zh", "zh-Hant", "es", "ca"], NAMES = ["English", "简体中文", "繁體中文", "Español", "Català"], SHORT = ["EN", "简中", "繁中", "ES", "CA"];
+  var LOCALE = { en: "en-GB", zh: "zh-CN", "zh-Hant": "zh-TW", es: "es-ES", ca: "ca-ES" };
+  function $(s) { return document.getElementById(s); }
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  var REDUCE = false; try { REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+
+  /* ---------- five languages (the same choice as the rest of FREE//BUILDER) ---------- */
+  function lang() { var l = (window.FBL && FBL.get && FBL.get()) || lsGet("wm_preferred_lang") || (navigator.language || "en"); if (/^zh-(tw|hk|mo|hant)/i.test(l)) l = "zh-Hant"; else if (/^zh/i.test(l)) l = "zh"; else l = l.slice(0, 2); return LANGS.indexOf(l) >= 0 ? l : "en"; }
+  function t(k, v) { var row = STR[k], s = row ? (row[LANGS.indexOf(lang())] || row[0]) : k; if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]); return s; }
+  function zh() { return lang().indexOf("zh") === 0; }
+
+  /* ---------- the bouquet: the town's own format, exactly ----------
+     { f: "0350", w: 0-3, t: for (≤24), m: the card (≤80), n: from (≤24) } as base64url JSON after #bq=, the same as the
+     Plaza's flower stall in Nearby (nearby/plaza/), so a bouquet made in either opens in the other. One optional field is
+     added: d = "YYYY-MM-DD", the day it opens. The Plaza reads d too; any older reader just ignores it.
+     Flowers: 0 rose, 1 tulip, 2 daisy, 3 sunflower, 4 lavender, 5 peony, 6 greenery. Paper: 0 kraft, 1 pink, 2 cream, 3 blue. */
+  var KINDS = 7, PAPERS = 4, MAX = 9;
+  function b64(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+  function unb64(s) { try { return JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, "+").replace(/_/g, "/"))))); } catch (e) { return null; } }
+  function clean(o) {
+    if (!o || typeof o.f !== "string") return null;
+    var b = { f: o.f.split("").map(Number).filter(function (k) { return k >= 0 && k < KINDS; }).slice(0, MAX), w: Math.abs(+o.w || 0) % PAPERS,
+      t: String(o.t || "").slice(0, 24), m: String(o.m || "").slice(0, 80), n: String(o.n || "").slice(0, 24), d: /^\d{4}-\d{2}-\d{2}$/.test(o.d || "") ? o.d : "" };
+    return b.f.length ? b : null;
+  }
+  function pack(b) { var o = { f: b.f.join(""), w: b.w, t: b.t, m: b.m, n: b.n }; if (b.d) o.d = b.d; return o; }
+  function linkFor(b) { return location.origin + location.pathname.replace(/index\.html$/, "") + "#bq=" + b64(pack(b)); }
+
+  /* ---------- open on a day: a gentle, honest lock, NOT a secure one ----------
+     The whole bouquet, card and all, is in the link; the date only decides what this page shows first. Anyone who decodes
+     the link (or changes the clock on their phone) can read it early. That's fine: it's wrapping paper, not a safe, and
+     the sender is told only that it'll arrive wrapped. Dates are compared on the recipient's own calendar. */
+  function today() { var d = new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function addDays(s, n) { var p = s.split("-"), d = new Date(+p[0], p[1] - 1, +p[2] + n); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function dayName(s, short) { var p = s.split("-"), d = new Date(+p[0], p[1] - 1, +p[2]); try { return d.toLocaleDateString(LOCALE[lang()], short ? { day: "numeric", month: "short" } : { weekday: "long", day: "numeric", month: "long" }); } catch (e) { return s; } }
+
+  /* ---------- drawing: soft painted flowers in a paper cone, in a 400×500 box ---------- */
+  var FC = [["#c8303a", "#8a1a2a", "#ea6a74"], ["#f48fb8", "#d0507a", "#fcc8dc"], ["#fbf6ec", "#e0d2ba", "#ffffff"], ["#f4c84a", "#d99a22", "#fbe08a"],
+            ["#a07ad8", "#6a4aa8", "#c8b0ee"], ["#f6c0d0", "#e08aaa", "#fde6ee"], ["#8fb09a", "#5f8571", "#bcd4c2"]];
+  var WR = [["#c8a070", "#a07a4a", "#dcbb8e"], ["#f4c0d0", "#d890a8", "#fad8e2"], ["#f3ead8", "#cfc2a8", "#fffaf0"], ["#a8c8e0", "#7aa0c0", "#cfe2ef"]];
+  var RIB = [["#a8323e", "#7a1e28"], ["#fdf6ee", "#d8c8b8"], ["#6b8a4e", "#4a6636"], ["#f3e2c4", "#c8b08a"]];
+  function hashS(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+  function rng(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) | 0; var x = Math.imul(a ^ (a >>> 15), 1 | a); x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; }; }
+  var SIZE = [31, 29, 25, 37, 60, 39, 66];
+  function layout(b) {
+    var n = b.f.length, R = rng(hashS(b.f.join("") + "|" + b.w)), rx = n <= 1 ? 0 : 34 + Math.min(n, 9) * 10, ry = rx * .55, out = [];
+    for (var i = 0; i < n; i++) {
+      var k = b.f[i], r = n === 1 ? 0 : Math.sqrt((i + .5) / n), th = i * 2.39996 + 2.1 + (R() - .5) * .35;
+      var x = 200 + Math.cos(th) * r * rx + (R() - .5) * 6, y = 214 + Math.sin(th) * r * ry + (R() - .5) * 6;
+      if (k === 4) y -= 6; if (k === 6) y += 8;
+      out.push({ k: k, x: x, y: y, s: SIZE[k] * (.9 + R() * .18), a: (x - 200) / 260 + (R() - .5) * .3, r: R() });
+    }
+    return out;
+  }
+  function petal(c, len, wid) { c.beginPath(); c.moveTo(0, 0); c.bezierCurveTo(wid, -len * .28, wid * .85, -len * .9, 0, -len); c.bezierCurveTo(-wid * .85, -len * .9, -wid, -len * .28, 0, 0); c.closePath(); }
+  function ell(c, x, y, rx, ry, rot) { c.beginPath(); c.ellipse(x, y, Math.max(.1, rx), Math.max(.1, ry), rot || 0, 0, Math.PI * 2); }
+  function rad(c, r, a, b) { var g = c.createRadialGradient(0, 0, 0, 0, 0, r); g.addColorStop(0, a); g.addColorStop(1, b); return g; }
+  var HEAD = [
+    function rose(c, s, C, r) {
+      for (var i = 0; i < 5; i++) { c.save(); c.rotate(i * 1.2566 + r * 6); petal(c, s * 1.02, s * .72); c.fillStyle = rad(c, s, C[0], C[1]); c.fill(); c.strokeStyle = "rgba(60,0,10,.18)"; c.lineWidth = .8; c.stroke(); c.restore(); }
+      ell(c, 0, 0, s * .66, s * .62); c.fillStyle = rad(c, s * .66, C[2], C[0]); c.fill();
+      c.lineCap = "round"; var a0 = r * 6;
+      for (var j = 0; j < 4; j++) { c.beginPath(); c.arc(s * .05 * j, -s * .03 * j, s * (.55 - .12 * j), a0 + j * 1.4, a0 + j * 1.4 + 3.7); c.strokeStyle = C[1]; c.lineWidth = s * .075; c.stroke(); }
+      c.beginPath(); c.arc(-s * .08, -s * .1, s * .42, 3.5, 4.5); c.strokeStyle = "rgba(255,210,215,.55)"; c.lineWidth = s * .06; c.stroke();
+    },
+    function tulip(c, s, C) {
+      var g = c.createLinearGradient(0, -s * .9, 0, s * .5); g.addColorStop(0, C[2]); g.addColorStop(.45, C[0]); g.addColorStop(1, C[1]);
+      c.beginPath(); c.moveTo(-s * .52, -s * .15); c.bezierCurveTo(-s * .62, s * .55, s * .62, s * .55, s * .52, -s * .15); c.lineTo(s * .48, -s * .78); c.quadraticCurveTo(s * .32, -s * .42, s * .22, -s * .4); c.lineTo(0, -s * .9); c.lineTo(-s * .22, -s * .4); c.quadraticCurveTo(-s * .32, -s * .42, -s * .48, -s * .78); c.closePath();
+      c.fillStyle = g; c.fill(); c.strokeStyle = "rgba(120,20,60,.2)"; c.lineWidth = .9; c.stroke();
+      c.strokeStyle = "rgba(150,30,80,.35)"; c.lineWidth = 1.2; c.beginPath(); c.moveTo(-s * .22, -s * .4); c.quadraticCurveTo(-s * .06, s * .1, 0, s * .42); c.moveTo(s * .22, -s * .4); c.quadraticCurveTo(s * .06, s * .1, 0, s * .42); c.stroke();
+      c.fillStyle = "rgba(255,255,255,.28)"; ell(c, -s * .26, -s * .12, s * .07, s * .26, .2); c.fill();
+    },
+    function daisy(c, s, C, r) {
+      for (var i = 0; i < 16; i++) { c.save(); c.rotate(i * Math.PI / 8 + r); ell(c, 0, -s * .56, s * .13, s * .46); c.fillStyle = i % 2 ? C[0] : C[2]; c.fill(); c.strokeStyle = C[1]; c.lineWidth = .7; c.stroke(); c.restore(); }
+      ell(c, 0, 0, s * .3, s * .3); c.fillStyle = rad(c, s * .3, "#fbe07a", "#d99a22"); c.fill();
+      c.fillStyle = "rgba(150,90,10,.55)"; for (var k = 0; k < 12; k++) { var a = k * 2.4, q = s * .22 * Math.sqrt(k / 12); ell(c, Math.cos(a) * q, Math.sin(a) * q, 1, 1); c.fill(); }
+    },
+    function sunflower(c, s, C, r) {
+      for (var ring = 0; ring < 2; ring++) for (var i = 0; i < 20; i++) { c.save(); c.rotate(i * Math.PI / 10 + r + ring * Math.PI / 20); c.translate(0, -s * .38); petal(c, s * (ring ? .62 : .7), s * .17); c.fillStyle = ring ? C[0] : C[1]; c.fill(); c.strokeStyle = "rgba(140,80,0,.25)"; c.lineWidth = .6; c.stroke(); c.restore(); }
+      ell(c, 0, 0, s * .48, s * .48); c.fillStyle = rad(c, s * .48, "#7a4a22", "#3a2210"); c.fill();
+      for (var k = 0; k < 46; k++) { var a = k * 2.39996, q = s * .43 * Math.sqrt(k / 46); ell(c, Math.cos(a) * q, Math.sin(a) * q, 1.1, 1.1); c.fillStyle = k % 3 ? "#24140a" : "#a06a30"; c.fill(); }
+    },
+    function lavender(c, s, C, r) {   /* a spike: s is its height */
+      c.strokeStyle = "#5f7d48"; c.lineWidth = 1.6; c.beginPath(); c.moveTo(0, 0); c.quadraticCurveTo(r * 4 - 2, -s * .5, 0, -s); c.stroke();
+      for (var i = 0; i < 13; i++) { var q = i / 12, y = -s * .22 - q * s * .8, x = (r * 4 - 2) * Math.sin(q * 3) * .5, z = 1 - q * .55;
+        for (var sd = -1; sd <= 1; sd++) { ell(c, x + sd * 3.1 * z, y + Math.abs(sd) * 1.6, 2.7 * z, 4 * z, sd * .5); c.fillStyle = C[(i + sd + 3) % 3]; c.fill(); } }
+    },
+    function peony(c, s, C, r) {
+      var L = [[1, C[1], 8], [.84, C[0], 8], [.64, C[2], 7], [.42, C[0], 6]];
+      for (var l = 0; l < L.length; l++) for (var i = 0; i < L[l][2]; i++) {
+        c.save(); c.rotate(i * Math.PI * 2 / L[l][2] + r * 5 + l * .45); var len = s * L[l][0], w = s * .58 * L[l][0];
+        c.beginPath(); c.moveTo(0, 0); c.bezierCurveTo(w, -len * .2, w * 1.05, -len * .82, w * .42, -len * .98); c.quadraticCurveTo(w * .15, -len * .9, 0, -len * 1.04); c.quadraticCurveTo(-w * .15, -len * .9, -w * .42, -len * .98); c.bezierCurveTo(-w * 1.05, -len * .82, -w, -len * .2, 0, 0);
+        c.fillStyle = L[l][1]; c.fill(); c.strokeStyle = "rgba(160,60,100,.2)"; c.lineWidth = .8; c.stroke(); c.restore(); }
+      c.fillStyle = "#f2d27a"; for (var k = 0; k < 7; k++) { var a = k * .9 + r, q = s * .12; ell(c, Math.cos(a) * q, Math.sin(a) * q, 1.4, 1.4); c.fill(); }
+    },
+    function greenery(c, s, C, r) {   /* a eucalyptus sprig: s is its height */
+      var bend = (r - .5) * 16; c.strokeStyle = "#6f8a6a"; c.lineWidth = 1.6; c.beginPath(); c.moveTo(0, 0); c.quadraticCurveTo(bend, -s * .5, bend * .4, -s); c.stroke();
+      for (var i = 0; i < 8; i++) { var q = (i + 1) / 9, x = bend * 2 * q * (1 - q) + bend * .4 * q * q, y = -s * q, z = 7.5 * (1 - q * .5);
+        for (var sd = -1; sd <= 1; sd += 2) { ell(c, x + sd * z * .95, y + sd * 1.5, z, z * .82, 0); c.fillStyle = (i + sd) % 2 ? C[0] : C[2]; c.fill(); c.strokeStyle = C[1]; c.lineWidth = .7; c.stroke(); } }
+    }
+  ];
+  function deckle(c, x0, y0, x1, y1, amp, R) { var n = 9; for (var i = 1; i <= n; i++) { var q = i / n, x = x0 + (x1 - x0) * q, y = y0 + (y1 - y0) * q; c.lineTo(x, y + (i < n ? (R() - .35) * amp : 0)); } }
+  function lerp(a, b, q) { return a + (b - a) * q; }
+  function paint(c, b, o) {
+    o = o || {}; var open = o.open == null ? 1 : o.open, W = WR[b.w % PAPERS], Rb = RIB[b.w % PAPERS], P = layout(b);
+    if (o.prev && o.lt < 1) P = P.map(function (p, i) { var q = o.prev[i]; return q ? { k: p.k, x: lerp(q.x, p.x, o.lt), y: lerp(q.y, p.y, o.lt), s: p.s, a: lerp(q.a, p.a, o.lt), r: p.r } : p; });
+    if (open < 1) { var sq = lerp(.36, 1, open), sy = lerp(.6, 1, open), sz = lerp(.85, 1, open); P = P.map(function (p) { return { k: p.k, x: 200 + (p.x - 200) * sq, y: lerp(250, p.y, sy), s: p.s * sz, a: p.a * sq, r: p.r }; }); }   /* wrapped, the flowers are gathered in */
+    var BX = 200, BY = 400, R = rng(77 + b.w), topY = lerp(150, 304, open), topW = lerp(50, 128, open), bulge = (1 - open) * 74;
+    /* a soft shadow on the counter */
+    c.save(); c.translate(200, 486); c.scale(1, .14); c.beginPath(); c.arc(0, 0, 84, 0, Math.PI * 2); c.fillStyle = rad(c, 84, "rgba(60,35,15,.22)", "rgba(60,35,15,0)"); c.fill(); c.restore();
+    /* the back of the paper */
+    var bW = lerp(46, 162, open), bY = lerp(150, 214, open);
+    c.beginPath(); c.moveTo(BX - 26, 476); c.quadraticCurveTo(BX - bW - bulge, lerp(330, 320, open), BX - bW, bY); deckle(c, BX - bW, bY, BX, bY - lerp(6, 30, open), 8, R); deckle(c, BX, bY - lerp(6, 30, open), BX + bW, bY, 8, R); c.quadraticCurveTo(BX + bW + bulge, lerp(330, 320, open), BX + 26, 476); c.closePath();
+    var gb = c.createLinearGradient(0, bY, 0, 476); gb.addColorStop(0, W[1]); gb.addColorStop(1, W[0]); c.fillStyle = gb; c.fill(); c.strokeStyle = "rgba(60,40,20,.18)"; c.lineWidth = 1; c.stroke();
+    /* stems, then leaves, then the heads from the back of the dome to the front */
+    c.lineCap = "round";
+    P.forEach(function (p) { c.beginPath(); c.moveTo(p.x, p.y + (p.k === 4 || p.k === 6 ? 0 : p.s * .3)); c.quadraticCurveTo(lerp(p.x, BX, .55), lerp(p.y, BY, .45), BX + (p.x - BX) * .06, BY); c.lineTo(BX + (p.x - BX) * .1, 480); c.strokeStyle = p.k === 6 ? "#6f8a6a" : "#4e7a3a"; c.lineWidth = 3; c.stroke(); });
+    if (open > .5) P.forEach(function (p, i) { if (p.k === 4 || p.k === 6) return; var sd = (i % 2 ? 1 : -1); c.save(); c.translate(p.x + sd * p.s * .45, p.y + p.s * .95); c.rotate(sd * (1.05 + p.r * .4)); petal(c, p.s * .95, p.s * .3); var gl = c.createLinearGradient(0, 0, 0, -p.s); gl.addColorStop(0, "#3f6a30"); gl.addColorStop(1, "#7aa25a"); c.fillStyle = gl; c.fill(); c.strokeStyle = "rgba(30,60,20,.4)"; c.lineWidth = .8; c.beginPath(); c.moveTo(0, 0); c.lineTo(0, -p.s * .85); c.stroke(); c.restore(); });
+    var order = P.map(function (p, i) { return i; }).sort(function (a, z) { var A = P[a], Z = P[z], la = A.k === 6 ? 0 : A.k === 4 ? 1 : 2, lz = Z.k === 6 ? 0 : Z.k === 4 ? 1 : 2; return la - lz || A.y - Z.y; });
+    order.forEach(function (i) {
+      var p = P[i], g = o.grow && o.grow.i === i ? o.grow.e : 1; if (g <= 0) return;
+      c.save(); c.translate(p.x, p.y); c.rotate(p.a); c.scale(g, g);
+      if (p.k !== 4 && p.k !== 6) { c.save(); c.translate(2, 4); ell(c, 0, 0, p.s * 1.05, p.s * 1.0); c.fillStyle = rad(c, p.s * 1.1, "rgba(50,25,10,.22)", "rgba(50,25,10,0)"); c.fill(); c.restore(); }
+      HEAD[p.k](c, p.s, FC[p.k], p.r); c.restore();
+    });
+    if (open < .35) { var pk = (.35 - open) / .35; b.f.slice(0, 4).forEach(function (k, i) { var px = BX + (i - 1.5) * 13, py = topY - 2 - (i % 2) * 5; c.globalAlpha = pk; ell(c, px, py, 7, 6); c.fillStyle = FC[k][0]; c.fill(); ell(c, px - 1.5, py - 1.5, 3, 2.5); c.fillStyle = FC[k][2]; c.fill(); c.globalAlpha = 1; }); }   /* wrapped: just the tips peeking out of the paper */
+    /* the front of the paper: two panels that fold over each other; closed, they gather above the flowers */
+    var tip = 486, R2 = rng(91 + b.w);
+    function panel(x0, y0, x1, y1, bx, fill, shade) {
+      c.beginPath(); c.moveTo(bx, tip); c.quadraticCurveTo(x0 - bulge * .9, lerp(330, (y0 + tip) / 2, open), x0, y0); deckle(c, x0, y0, x1, y1, lerp(10, 7, open), R2); c.quadraticCurveTo(x1 + bulge * .4, lerp(330, (y1 + tip) / 2, open), bx + 30, tip); c.closePath();
+      var g2 = c.createLinearGradient(x0, 0, x1, 0); g2.addColorStop(0, fill); g2.addColorStop(1, shade); c.fillStyle = g2; c.fill(); c.strokeStyle = "rgba(60,40,20,.22)"; c.lineWidth = 1; c.stroke();
+    }
+    panel(BX - topW * .2, topY + 6, BX + topW, topY - 4, BX - 14, W[0], W[1]);
+    panel(BX - topW, topY - 2, BX + topW * .35, topY + 8, BX - 30, W[2], W[0]);
+    if (b.w === 0) { c.fillStyle = "rgba(90,60,30,.18)"; for (var k = 0; k < 70; k++) { var sx = BX + (R2() - .5) * topW * 1.6, sy = lerp(topY + 10, tip - 10, R2()); if (Math.abs(sx - BX) < (tip - sy) * topW / (tip - topY) * .9) { ell(c, sx, sy, .9, .9); c.fill(); } } }
+    /* the ribbon and its bow */
+    var ry = lerp(372, 404, open), hw = (tip - ry) * topW / (tip - topY) * .8 + 6;
+    c.fillStyle = Rb[0]; c.strokeStyle = Rb[1]; c.lineWidth = 1;
+    c.beginPath(); c.moveTo(BX - hw, ry - 4); c.quadraticCurveTo(BX, ry + 3, BX + hw, ry - 4); c.lineTo(BX + hw, ry + 4); c.quadraticCurveTo(BX, ry + 11, BX - hw, ry + 4); c.closePath(); c.fill(); c.stroke();
+    [-1, 1].forEach(function (sd) { c.save(); c.translate(BX, ry + 3); c.rotate(sd * .5); ell(c, sd * 15, -4, 16, 8, sd * -.2); c.fill(); c.stroke(); c.restore();
+      c.beginPath(); c.moveTo(BX, ry + 5); c.quadraticCurveTo(BX + sd * 8, ry + 30, BX + sd * 16, ry + 50); c.lineTo(BX + sd * 22, ry + 46); c.quadraticCurveTo(BX + sd * 12, ry + 26, BX + sd * 3, ry + 5); c.closePath(); c.fill(); c.stroke(); });
+    ell(c, BX, ry + 4, 6, 6); c.fill(); c.stroke();
+    if (o.tag) {   /* a small tag on a string from the bow */
+      c.strokeStyle = "rgba(90,70,50,.7)"; c.lineWidth = 1.2; c.beginPath(); c.moveTo(BX + 3, ry + 6); c.quadraticCurveTo(BX + 30, ry + 40, BX + 58, ry + 32); c.stroke();
+      c.save(); c.translate(BX + 58, ry + 32); c.rotate(.16); c.font = "600 12px Figtree, system-ui, sans-serif"; var tw = Math.max(70, c.measureText(o.tag).width + 26);
+      c.beginPath(); c.moveTo(0, 0); c.lineTo(10, -13); c.lineTo(tw, -13); c.lineTo(tw, 13); c.lineTo(10, 13); c.closePath(); c.fillStyle = "#fbf3e2"; c.fill(); c.strokeStyle = "#b89a74"; c.stroke();
+      ell(c, 8, 0, 2.6, 2.6); c.fillStyle = "#b89a74"; c.fill(); c.fillStyle = "#3a2a1e"; c.textBaseline = "middle"; c.fillText(o.tag, 16, 1); c.restore();
+    }
+  }
+  var OY = 66, BH = 424;   /* the part of the 400×500 box that holds the bouquet */
+  function sizeCanvas(cv) { var r = cv.getBoundingClientRect(), d = Math.min(3, window.devicePixelRatio || 1); cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d); return cv.getContext("2d"); }
+  function draw(cv, b, o) { var c = cv.getContext("2d"); c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height); var k = cv.width / 400; c.setTransform(k, 0, 0, cv.height / BH, 0, -OY * cv.height / BH); paint(c, b, o); }
+  function iconFor(cv, k) {
+    var d = Math.min(3, window.devicePixelRatio || 1); cv.width = 44 * d; cv.height = 44 * d; var c = cv.getContext("2d"); c.scale(d, d);
+    if (k === 4 || k === 6) { c.translate(22, 41); HEAD[k](c, 36, FC[k], .5); }
+    else { c.translate(22, 22); var s = 15; c.save(); c.translate(1.5, 2.5); ell(c, 0, 0, s, s); c.fillStyle = rad(c, s * 1.1, "rgba(50,25,10,.2)", "rgba(50,25,10,0)"); c.fill(); c.restore(); HEAD[k](c, k === 3 || k === 5 ? 14 : 16, FC[k], .3); }
+  }
+  function describe(b) { var names = b.f.map(function (k) { return t("fl" + k); }); return names.join(", ") + " · " + t("paper") + ": " + t("p" + b.w); }
+
+  /* ---------- the picture: a canvas PNG for chats that don't open links ---------- */
+  function picture(b, wrapped) {
+    var W = 1080, H = 1350, cv = document.createElement("canvas"); cv.width = W; cv.height = H; var c = cv.getContext("2d");
+    var g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#f7f0e5"); g.addColorStop(1, "#efe4d2"); c.fillStyle = g; c.fillRect(0, 0, W, H);
+    var R = rng(5); c.fillStyle = "rgba(120,90,50,.06)"; for (var i = 0; i < 2600; i++) { c.fillRect(R() * W, R() * H, 2, 2); }
+    c.save(); c.translate(140, 20 - 2 * OY + 60); c.scale(2, 2); paint(c, b, { open: wrapped ? 0 : 1, tag: wrapped ? t("opens", { d: dayName(b.d, true) }) : "" }); c.restore();
+    c.textAlign = "center"; c.fillStyle = "#2b2420";
+    var head = wrapped ? t("wrapped", { d: dayName(b.d) }) : b.t ? t("gotFor", { n: b.t }) : t("gotH");
+    c.font = "500 54px Fraunces, Georgia, serif"; c.fillText(head, W / 2, 1080, W - 120);
+    var y = 1150;
+    if (!wrapped && b.m) { c.font = "500 58px Caveat, 'Bradley Hand', cursive"; wrapText(c, b.m, W / 2, y, W - 180, 62).forEach(function (ln, j) { c.fillText(ln, W / 2, y + j * 62); }); y += 62 * Math.min(2, Math.ceil(c.measureText(b.m).width / (W - 180))) + 10; }
+    if (b.n) { c.fillStyle = "#6e6156"; c.font = "500 46px Caveat, 'Bradley Hand', cursive"; c.fillText("— " + b.n, W / 2, Math.min(y + 8, 1290)); }
+    c.fillStyle = "rgba(110,97,86,.75)"; c.font = "600 24px Figtree, system-ui, sans-serif"; c.fillText(t("name") + " · freebuilder.net/a-few-stems", W / 2, H - 22);
+    return cv;
+  }
+  function wrapText(c, s, x, y, max) { var words = zh() ? s.split("") : s.split(" "), lines = [], cur = ""; words.forEach(function (w) { var tst = cur ? cur + (zh() ? "" : " ") + w : w; if (c.measureText(tst).width > max && cur) { lines.push(cur); cur = w; } else cur = tst; }); if (cur) lines.push(cur); return lines.slice(0, 2); }
+  function sendPicture(b, wrapped, keepOnly) {
+    var go = function () {
+      picture(b, wrapped).toBlob(function (blob) {
+        if (!blob) return; var name = "a-few-stems-" + today() + ".png", file = null; try { file = new File([blob], name, { type: "image/png" }); } catch (e) {}
+        if (!keepOnly && file && navigator.canShare && navigator.canShare({ files: [file] })) { navigator.share({ files: [file], text: t("picT") }).catch(function () {}); return; }
+        var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500); if (!keepOnly) toast(t("saved"));
+      }, "image/png");
+    };
+    if (document.fonts && document.fonts.load) Promise.all([document.fonts.load("500 54px Fraunces"), document.fonts.load("500 58px Caveat"), document.fonts.load("600 24px Figtree")]).then(go, go); else go();
+  }
+
+  /* ---------- making one ---------- */
+  var B = { f: [], w: 0, t: "", m: "", n: "", d: "" }, cv = $("cv"), anim = 0;
+  function redraw(o) { draw(cv, B, o); $("hint").hidden = B.f.length > 0; $("undo").disabled = $("clear").disabled = !B.f.length; cv.setAttribute("aria-label", B.f.length ? describe(B) : t("hint")); }
+  function animate(prev, growI) {
+    cancelAnimationFrame(anim); if (REDUCE) { redraw(); return; }
+    var t0 = performance.now(), D = 360;
+    (function step(now) { var q = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - q, 3); redraw({ prev: prev, lt: e, grow: growI == null ? null : { i: growI, e: Math.min(1, e * 1.15) } }); if (q < 1) anim = requestAnimationFrame(step); })(t0);
+  }
+  function hop(el) { el.classList.remove("hop"); void el.offsetWidth; el.classList.add("hop"); }
+  function add(k) { if (B.f.length >= MAX) { hop($("stems")); toast(t("full")); return; } var prev = layout(B); B.f.push(k); animate(prev, B.f.length - 1); }
+  $("undo").onclick = function () { if (!B.f.length) return; var prev = layout(B); B.f.pop(); animate(prev.slice(0, B.f.length)); };
+  $("clear").onclick = function () { B.f = []; redraw(); };
+  function buildStems() {
+    var box = $("stems"); box.innerHTML = "";
+    for (var k = 0; k < KINDS; k++) (function (k) { var b = document.createElement("button"); b.type = "button"; b.className = "stem"; var ic = document.createElement("canvas"); ic.setAttribute("aria-hidden", "true"); b.appendChild(ic); var sp = document.createElement("span"); sp.textContent = t("fl" + k); b.appendChild(sp); b.onclick = function () { add(k); }; box.appendChild(b); iconFor(ic, k); })(k);
+    var pp = $("papers"); pp.innerHTML = "";
+    for (var w = 0; w < PAPERS; w++) (function (w) { var b = document.createElement("button"); b.type = "button"; b.className = "pp"; b.setAttribute("role", "radio"); b.setAttribute("aria-checked", String(B.w === w)); b.innerHTML = '<i style="background:linear-gradient(135deg,' + WR[w][2] + "," + WR[w][0] + " 55%," + WR[w][1] + ')"></i>'; b.appendChild(document.createTextNode(t("p" + w))); b.onclick = function () { B.w = w; [].forEach.call(pp.children, function (x, i) { x.setAttribute("aria-checked", String(i === w)); }); redraw(); }; pp.appendChild(b); })(w);
+  }
+  $("dayOn").onchange = function () { $("dayRow").hidden = !this.checked; if (this.checked && !$("dayIn").value) $("dayIn").value = addDays(today(), 1); };
+  function collect() {
+    B.t = $("to").value.trim().slice(0, 24); B.m = $("msg").value.trim().replace(/\s+/g, " ").slice(0, 80); B.n = $("by").value.trim().slice(0, 24);
+    var d = $("dayOn").checked ? $("dayIn").value : ""; B.d = /^\d{4}-\d{2}-\d{2}$/.test(d) && d > today() ? d : "";
+    return B;
+  }
+  function ready() { if (B.f.length) return true; hop($("stems")); toast(t("empty")); return false; }
+  $("send").onclick = function () {
+    if (!ready()) return; collect(); var url = linkFor(B), text = B.d ? t("shareTd", { d: dayName(B.d) }) : t("shareT");
+    if (navigator.share) navigator.share({ title: t("name"), text: text, url: url }).catch(function () {});
+    else if (navigator.clipboard) navigator.clipboard.writeText(text + " " + url).then(function () { toast(t("copied")); }, function () { prompt(text, url); });
+    else prompt(text, url);
+  };
+  $("pic").onclick = function () { if (!ready()) return; collect(); sendPicture(B, !!B.d); };
+
+  /* ---------- real ones: a florist in the visitor's own maps app (the same rule as the town's townkit.js) ---------- */
+  function mapsUrl(q) {
+    var ua = navigator.userAgent || "";
+    if (/iPhone|iPad/.test(ua) || (/Macintosh/.test(ua) && "ontouchend" in document)) return "https://maps.apple.com/?q=" + encodeURIComponent(q);
+    if (/Android/.test(ua)) return "geo:0,0?q=" + encodeURIComponent(q);
+    return "https://www.openstreetmap.org/search?query=" + encodeURIComponent(q);
+  }
+  function realSheet(place) {
+    closeSheet(); var s = document.createElement("div"); s.className = "scrim";
+    s.innerHTML = '<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rH"><button class="lnk x" type="button" aria-label="' + esc(t("close")) + '">✕</button><h2 id="rH">🌷 ' + esc(t("realH")) + '</h2><p class="small">' + esc(t("realP")) + '</p>'
+      + '<p class="lab" style="margin:6px 0 0">' + esc(t("nearThem")) + '</p><form class="row" id="rF"><input id="rIn" maxlength="80" autocomplete="off" placeholder="' + esc(t("nearThemPh")) + '" aria-label="' + esc(t("nearThemPh")) + '"><button class="btn pri" type="submit">' + esc(t("look")) + "</button></form>"
+      + '<a class="btn" id="rMe" target="_blank" rel="noopener">' + esc(t("nearMe")) + " ↗</a></div>";
+    document.body.appendChild(s); var inp = s.querySelector("#rIn"); if (place) inp.value = place;
+    s.querySelector("#rMe").href = mapsUrl(t("florist"));
+    s.querySelector("#rF").onsubmit = function (e) { e.preventDefault(); var p = inp.value.trim(); if (!p) { hop(inp); inp.focus(); return; } window.open(mapsUrl(t("florist_near", { p: p })), "_blank", "noopener"); };
+    s.querySelector(".x").onclick = closeSheet; s.onclick = function (e) { if (e.target === s) closeSheet(); };
+    setTimeout(function () { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 60);
+  }
+  function closeSheet() { var s = document.querySelector(".scrim"); if (s) s.remove(); }
+  $("realB").onclick = $("realB2").onclick = function () { realSheet(""); };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  /* ---------- someone sent you flowers ---------- */
+  var G = null, gopen = 0;
+  function showGot(b) {
+    G = b; $("make").hidden = true; $("got").hidden = false; var gcv = $("gcv"); sizeCanvas(gcv);
+    var early = b.d && today() < b.d;
+    $("gotH").innerHTML = b.t ? esc(t("gotFor", { n: b.t })).replace(esc(b.t), "<em>" + esc(b.t) + "</em>") : esc(t("gotH"));
+    gcv.setAttribute("aria-label", early ? t("wrapped", { d: dayName(b.d) }) : describe(b));
+    if (early) {   /* still wrapped: the tag, the day, a reminder; the card stays inside */
+      draw(gcv, b, { open: 0, tag: t("opens", { d: dayName(b.d, true) }) });
+      $("untie").hidden = true; $("wrapped").hidden = false; $("wrappedT").textContent = t("wrapped", { d: dayName(b.d) }) + (b.n ? " — " + b.n : "");
+      return;
+    }
+    draw(gcv, b, { open: 0 }); $("untie").hidden = false; $("wrapped").hidden = true;
+    if (REDUCE) untie();
+  }
+  function untie() {
+    if (!G || gopen) return; gopen = 1; $("untie").hidden = true; var gcv = $("gcv"), t0 = performance.now(), D = REDUCE ? 0 : 1300;
+    (function step(now) { var q = D ? Math.min(1, (now - t0) / D) : 1, e = q < .5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2; draw(gcv, G, { open: e }); if (q < 1) requestAnimationFrame(step); else opened(); })(t0);
+  }
+  $("untie").onclick = untie; $("gcv").addEventListener("click", function () { if (G && !(G.d && today() < G.d)) untie(); });
+  function opened() {
+    var b = G; $("opened").hidden = false; $("opened").classList.add("fade");
+    $("gMsg").textContent = b.m; $("gMsg").hidden = !b.m; $("gFrom").textContent = b.n ? "— " + b.n : ""; $("gFrom").hidden = !b.n; $("readCard").hidden = !b.m && !b.n;
+    var seen = {}, ul = $("means"); ul.innerHTML = "";
+    b.f.forEach(function (k) { if (seen[k]) return; seen[k] = 1; var li = document.createElement("li"); li.innerHTML = "<b>" + esc(t("fl" + k)) + "</b>: " + esc(t("mn" + k)); ul.appendChild(li); });
+    $("call").textContent = b.n ? t("call", { n: b.n }) : t("callAnon");
+  }
+  $("meanB").onclick = function () { var on = $("means").hidden; $("means").hidden = !on; this.setAttribute("aria-expanded", String(on)); };
+  $("keep").onclick = function () { if (G) sendPicture(G, false, true); };
+  $("remind").onclick = function () {
+    var b = G, link = location.href.split("#")[0] + "#bq=" + b64(pack(b)), d0 = b.d.replace(/-/g, ""), d1 = addDays(b.d, 1).replace(/-/g, ""), now = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+    var x = function (s) { return String(s).replace(/\\/g, "\\\\").replace(/[,;]/g, function (c) { return "\\" + c; }).replace(/\n/g, "\\n"); };
+    var ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FREE//BUILDER//A Few Stems//EN", "BEGIN:VEVENT", "UID:stems-" + Math.random().toString(36).slice(2) + "@freebuilder.net", "DTSTAMP:" + now, "DTSTART;VALUE=DATE:" + d0, "DTEND;VALUE=DATE:" + d1,
+      "SUMMARY:" + x(b.n ? t("remindT", { n: b.n }) : t("remindAnon")), "DESCRIPTION:" + x(link), "URL:" + link, "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + x(t("name")), "TRIGGER:PT9H", "END:VALARM", "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+    var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" })); a.download = "a-few-stems.ics"; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  };
+  function toMake(pre) {
+    G = null; gopen = 0; history.replaceState(null, "", location.pathname + location.search.replace(/[?&](to|day)=[^&]*/g, "").replace(/^&/, "?"));   /* the address goes back to plain: a bouquet, an #edit= or #to= is read once */
+    $("got").hidden = true; $("make").hidden = false; $("opened").hidden = true;
+    B = { f: [], w: (Math.random() * PAPERS) | 0, t: "", m: "", n: "", d: "" };
+    if (pre) { if (pre.f) B.f = pre.f.slice(); if (pre.w != null) B.w = pre.w; }
+    $("to").value = pre && pre.t || ""; $("msg").value = pre && pre.m || ""; $("by").value = pre && pre.n || nick();
+    $("dayOn").checked = !!(pre && pre.d && pre.d > today()); $("dayRow").hidden = !$("dayOn").checked; $("dayIn").value = $("dayOn").checked ? pre.d : "";
+    buildStems(); sizeCanvas(cv); redraw(); scrollTo(0, 0);
+  }
+  $("backB").onclick = function () { var b = G; toMake({ t: b.n, n: b.t }); };
+  $("mine").onclick = function () { toMake(null); };
+  function nick() { return (lsGet("fb_nick") || "").slice(0, 24); }   /* the suite's one name, read only: nothing here writes it */
+
+  /* ---------- words and the language menu ---------- */
+  function paintWords() {
+    document.documentElement.lang = lang(); document.title = t("docTitle");
+    [].forEach.call(document.querySelectorAll("[data-i]"), function (e) { e.textContent = t(e.getAttribute("data-i")); });
+    [].forEach.call(document.querySelectorAll("[data-ph]"), function (e) { e.placeholder = t(e.getAttribute("data-ph")); });
+    $("to").setAttribute("aria-label", t("forL")); $("by").setAttribute("aria-label", t("fromL")); $("msg").setAttribute("aria-label", t("lineL"));
+    $("nameB").textContent = t("name"); $("langB").setAttribute("aria-label", t("lang"));
+    var tg = t("tag"); $("tagH").innerHTML = zh() ? esc(tg) : esc(tg).replace(/^(\S+\s\S+\s\S+)/, "<em>$1</em>");
+    $("langL").textContent = SHORT[LANGS.indexOf(lang())];
+    $("ahA").href = "https://www.wei-meng.org/after-hours/?fbl=" + lang();
+    var fx = $("foot"); if (window.FBC && FBC.foot) { if (!fx._x) fx._x = fx.innerHTML; fx.innerHTML = fx._x; [].forEach.call(fx.querySelectorAll("[data-i]"), function (e) { e.textContent = t(e.getAttribute("data-i")); }); fx.querySelector("#ahA").href = "https://www.wei-meng.org/after-hours/?fbl=" + lang(); var inner = fx.innerHTML; fx.innerHTML = ""; FBC.foot(fx, { extra: inner }); }   // the suite's one footer; the app's note and ♥ After hours on the line under it
+    if (!$("make").hidden) { buildStems(); redraw(); }
+    if (G) { var keep = gopen; showGot(G); if (keep) { gopen = 1; $("untie").hidden = true; draw($("gcv"), G, { open: 1 }); opened(); } }
+  }
+  function setLang(l) { if (window.FBL && FBL.set) FBL.set(l); else lsSet("wm_preferred_lang", l); paintWords(); }
+  addEventListener("fbl:lang", paintWords);
+  function closeLang() { var m = document.querySelector(".langm"); if (m) m.remove(); $("langB").setAttribute("aria-expanded", "false"); }
+  $("langB").onclick = function (e) {
+    e.stopPropagation(); if (document.querySelector(".langm")) return closeLang();
+    var m = document.createElement("div"); m.className = "langm"; m.setAttribute("role", "menu");
+    m.innerHTML = LANGS.map(function (l, i) { return '<button type="button" role="menuitem" data-l="' + l + '" aria-current="' + (l === lang()) + '" lang="' + l + '">' + NAMES[i] + "</button>"; }).join("");
+    m.onclick = function (ev) { var b = ev.target.closest("button"); if (!b) return; closeLang(); setLang(b.getAttribute("data-l")); };
+    this.parentNode.appendChild(m); this.setAttribute("aria-expanded", "true"); var f = m.querySelector("[aria-current=true]"); if (f) f.focus();
+  };
+  document.addEventListener("click", function (e) { if (!e.target.closest(".langm,#langB")) closeLang(); });
+  addEventListener("keydown", function (e) { if (e.key === "Escape") { closeLang(); closeSheet(); } });
+  var toastT = 0; function toast(s) { var el = $("toast"); el.textContent = s; el.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(function () { el.classList.remove("on"); }, 2600); }
+  var rz = 0; addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(function () { if (!$("make").hidden) { sizeCanvas(cv); redraw(); } if (G) { sizeCanvas($("gcv")); var early = G.d && today() < G.d; draw($("gcv"), G, early ? { open: 0, tag: t("opens", { d: dayName(G.d, true) }) } : { open: gopen ? 1 : 0 }); } }, 120); });
+
+  /* ---------- arrive: #bq= is someone's bouquet; #edit= (from the Plaza) or ?to=&day= (from Come Over, Two Candles) starts one ---------- */
+  function start() {
+    var h = location.hash, m = /[#&]bq=([A-Za-z0-9_-]+)/.exec(h), e = /[#&]edit=([A-Za-z0-9_-]+)/.exec(h), q = new URLSearchParams(location.search);
+    paintWords();
+    if (m) { var b = clean(unb64(m[1])); if (b) { showGot(b); return; } toMake(null); $("broken").hidden = false; toast(t("broken")); return; }
+    if (e) { var p = clean(unb64(e[1])); toMake(p); history.replaceState(null, "", location.pathname); return; }
+    var hq = new URLSearchParams(h.replace(/^#/, "")), to = hq.get("to") || q.get("to") || "", day = hq.get("day") || q.get("day") || "";   /* FBApps.go("flowers") sends #to=…&day=… */
+    var pre = { t: to.slice(0, 24), d: /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : "" };
+    toMake(pre.t || pre.d ? pre : null);
+  }
+  addEventListener("hashchange", function () { closeSheet(); G = null; gopen = 0; start(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (!$("make").hidden) redraw(); });
+  window.FBStems = { layout: layout, pack: pack, clean: clean, b64: b64, unb64: unb64, linkFor: linkFor, picture: picture, state: function () { return B; } };   /* test hook */
+  start();
+})();
+</script>
+</body>
+</html>

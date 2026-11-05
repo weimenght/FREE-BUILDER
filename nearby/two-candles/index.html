@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=27bd3ece48"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=7e46218c2d" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8b759b7c8f"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=007f835ed3" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Two Candles · Nearby</title>
 <meta name="description" content="A candlelit table for two people who live apart. Sit down together from anywhere, cook the same dinner step by step, raise a glass, and talk until the candles go out.">
@@ -181,6 +181,7 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
     endText: ["Blow out both candles together. The evening goes into your little book.", "一起吹灭两支蜡烛。这个夜晚会记进你们的小本子。", "一起吹熄兩支蠟燭。這個夜晚會記進你們的小本子。", "Apagad las dos velas juntos. La noche queda en vuestro librito.", "Bufeu les dues espelmes junts. La nit queda al vostre llibret."],
     blow: ["Blow out the candles", "吹灭蜡烛", "吹熄蠟燭", "Apagar las velas", "Bufar les espelmes"], blowWait: ["Waiting for {p} to blow too…", "等{p}也一起吹…", "等{p}也一起吹…", "Esperando a que {p} sople también…", "Esperant que {p} bufi també…"], blowAsk: ["{p} is ready to say goodnight 🌬️", "{p} 准备说晚安了 🌬️", "{p} 準備說晚安了 🌬️", "{p} quiere dar las buenas noches 🌬️", "{p} vol dir bona nit 🌬️"],
     rTable: ["TABLE FOR TWO", "双人桌", "雙人桌", "MESA PARA DOS", "TAULA PER A DOS"], rTime: ["together", "相处", "相處", "juntos", "junts"], rClinks: ["clinks", "碰杯", "碰杯", "brindis", "brindis"], rCards: ["cards", "话题", "話題", "cartas", "cartes"], rNotes: ["napkins", "餐巾", "餐巾", "servilletas", "tovallons"], rThanks: ["Thank you, come again.", "谢谢光临，欢迎再来。", "謝謝光臨，歡迎再來。", "Gracias, volved pronto.", "Gràcies, torneu aviat."],
+    flowers: ["Send {p} flowers for tomorrow ↗", "给{p}送几枝花，明天打开 ↗", "給{p}送幾枝花，明天打開 ↗", "Mándale a {p} flores para mañana ↗", "Envia a {p} flors per a demà ↗"],
     again: ["🕯️ Another evening", "🕯️ 再约一晚", "🕯️ 再約一晚", "🕯️ Otra noche", "🕯️ Una altra nit"],
     on: ["on", "开", "開", "sí", "sí"], off: ["off", "关", "關", "no", "no"], music: ["Music {s}", "音乐{s}", "音樂{s}", "Música: {s}", "Música: {s}"],
     breakfast: ["breakfast", "早餐", "早餐", "desayuno", "esmorzar"], lunch: ["lunch", "午饭", "午飯", "comida", "dinar"], dinner: ["dinner", "晚饭", "晚飯", "cena", "sopar"], late: ["late supper", "夜宵", "宵夜", "cena tardía", "sopar tard"],
@@ -381,6 +382,8 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
     var past = []; try { past = JSON.parse(ls("fb_table_evenings") || "[]"); } catch (e) {} past.unshift(rec); ls("fb_table_evenings", JSON.stringify(past.slice(0, 30)));
     var box = $("p-end"); box.innerHTML = ""; var r = document.createElement("div"); r.className = "receipt"; r.textContent = receipt(rec); box.appendChild(r);
     var a = document.createElement("button"); a.type = "button"; a.className = "big"; a.textContent = t("again"); a.onclick = function () { location.reload(); }; box.appendChild(a); var o = document.querySelector(".out"); if (o) box.appendChild(o.cloneNode(true)), wireApps(box);
+    if (rec.with) { var tm = new Date(Date.now() + 864e5), td = tm.getFullYear() + "-" + ("0" + (tm.getMonth() + 1)).slice(-2) + "-" + ("0" + tm.getDate()).slice(-2), fh = "#to=" + encodeURIComponent(rec.with.slice(0, 24)) + "&day=" + td, fl = document.createElement("a");   /* flowers that open tomorrow (A Few Stems, through FBApps) */
+      fl.textContent = t("flowers").replace("{p}", rec.with); fl.href = window.FBApps ? FBApps.href("flowers", { hash: fh }) : "/a-few-stems/" + fh; fl.onclick = function (e) { if (!window.FBApps) return; e.preventDefault(); FBApps.go("flowers", { hash: fh }); }; fl.style.cssText = "display:block;text-align:center;margin-top:12px;color:inherit;opacity:.8"; box.appendChild(fl); }
     open = "end"; panels(); box.hidden = false;
   }
   function receipt(r) {

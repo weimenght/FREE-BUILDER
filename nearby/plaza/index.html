@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=27bd3ece48"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=7e46218c2d" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8b759b7c8f"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=007f835ed3" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Plaza · Nearby</title>
 <meta name="description" content="The square in the middle of Nearby: a fountain, benches, pigeons. Toss a coin and make a wish; keep it to yourself or let it float for the town to read.">
@@ -38,6 +38,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
 .stems.hop{animation:hop .35s steps(3)}@keyframes hop{50%{transform:translateY(-6px)}}
 .sheet input{display:block;width:100%;box-sizing:border-box;margin:0 0 8px;padding:6px 10px;border:3px solid #000;background:#fbf3e2;color:#1d130d;font:400 19px/1.2 var(--vt)}
 .sheet .two{display:flex;gap:8px}.sheet .two .fbb{flex:1}
+.sheet .bqApp{display:block;text-align:center;margin:12px 0 0;font-size:18px;color:inherit;opacity:.75}
 .bqrow .card{flex:1;min-width:0}
 #cartCv{width:96px;height:80px}#cart .wish{margin-right:0;font-size:20px}#coin .wish,#bqGot .q{margin-right:0}
 @media (max-width:360px){.stems{grid-template-columns:repeat(3,44px)}.bqrow canvas{width:84px;height:112px}}
@@ -70,6 +71,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     <button class="fbb fbb-pri" type="button" id="bqSend"><span aria-hidden="true">↗</span> <span id="bqSendL">Send it</span></button>
     <div class="two"><button class="fbb" type="button" id="bqWrap"></button><button class="fbb" type="button" id="bqClear"></button></div>
   </div>
+  <a class="bqApp" id="bqApp" href="/a-few-stems/" target="_top"></a>
 </section>
 <section class="sheet bq" id="bqGot" hidden role="dialog" aria-labelledby="bqGotH">
   <p class="q" id="bqGotH">Flowers for you</p>
@@ -123,6 +125,8 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     gotH: ["Flowers for you", "给你的花", "給你的花", "Flores para ti", "Flors per a tu"],
     gotFor: ["For {n}", "给 {n}", "給 {n}", "Para {n}", "Per a {n}"],
     from: ["from {n}", "来自 {n}", "來自 {n}", "de {n}", "de {n}"],
+    bqApp: ["The stall has its own shop now: a day to open it, a picture, real ones ↗", "花摊现在有自己的小店了：定一天打开、发成图片、送真的花 ↗", "花攤現在有自己的小店了：定一天打開、傳成圖片、送真的花 ↗", "El puesto tiene ahora su propia tienda: un día para abrirlo, una foto, flores de verdad ↗", "La parada té ara la seva pròpia botiga: un dia per obrir-lo, una foto, flors de debò ↗"],
+    wrapUntil: ["Wrapped until {d}. Come back to this link on the day.", "包好了，{d}才能打开。到那天再点开这个链接吧。", "包好了，{d}才能打開。到那天再點開這個連結吧。", "Envuelto hasta el {d}. Vuelve a este enlace ese día.", "Embolicat fins al {d}. Torna a aquest enllaç aquell dia."],
     bqBack: ["Make one back", "也扎一束送回去", "也紮一束送回去", "Haz uno de vuelta", "Fes-ne un de tornada"],
     nutsH: ["Hot chestnuts", "糖炒栗子", "糖炒栗子", "Castañas asadas", "Castanyes torrades"],
     nuts: ["*turns them over the coals* Twelve in a paper cone.", "*在炭火上翻着栗子* 一个纸筒十二颗。", "*在炭火上翻著栗子* 一個紙筒十二顆。", "*les da la vuelta sobre las brasas* Doce en un cucurucho de papel.", "*les gira sobre les brases* Dotze en un cucurutxo de paper."],
@@ -143,7 +147,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     $("h1").textContent = t("h1"); $("wishL").textContent = t("wish"); $("askQ").textContent = t("q");
     $("keepL").textContent = t("keep"); $("floatL").textContent = t("float"); $("bqL").textContent = t("bq"); $("bqQ").textContent = t("bqQ");
     $("bqTo").placeholder = t("bqTo"); $("bqMsg").placeholder = t("bqMsg"); $("bqSendL").textContent = t("send"); $("bqWrap").textContent = t("wrap"); $("bqClear").textContent = t("clear");
-    $("bqGotH").textContent = t("gotH"); $("bqBack").textContent = t("bqBack");
+    $("bqGotH").textContent = t("gotH"); $("bqBack").textContent = t("bqBack"); $("bqApp").textContent = t("bqApp");
     [].forEach.call(document.querySelectorAll("[data-close]"), function (b) { b.setAttribute("aria-label", t("close")); });
     if (sheetFor === "cart" && cartK) cartWords(cartK, false);
   }
@@ -499,6 +503,10 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
   $("bqBtn").onclick = openBouquet;
   $("bqWrap").onclick = function () { BQ.w = (BQ.w + 1) % WRAPS.length; paintBq($("bqCv"), BQ); };
   $("bqClear").onclick = function () { BQ.f = []; paintBq($("bqCv"), BQ); };
+  $("bqApp").onclick = function () {   /* A Few Stems (freebuilder.net/a-few-stems/): the stall as its own app, same #bq= format; #edit= carries what's on the counter */
+    var from = ""; try { from = localStorage.getItem("fb_nick") || ""; } catch (e) {}
+    this.href = "/a-few-stems/" + (BQ.f.length ? "#edit=" + b64({ f: BQ.f.join(""), w: BQ.w, t: $("bqTo").value.trim().slice(0, 24), m: $("bqMsg").value.trim().slice(0, 80), n: from.slice(0, 24) }) : "");
+  };
   function b64(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
   function unb64(s2) { try { return JSON.parse(decodeURIComponent(escape(atob(s2.replace(/-/g, "+").replace(/_/g, "/"))))); } catch (e) { return null; } }
   $("bqSend").onclick = function () {
@@ -516,8 +524,11 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
   if (got) { var o = unb64(got[1]); if (o && typeof o.f === "string") {
     var B2 = { f: o.f.split("").map(Number).filter(function (k) { return k >= 0 && k < FLC.length; }).slice(0, 9), w: (+o.w || 0) % WRAPS.length };
     if (B2.f.length) setTimeout(function () {
-      paintBq($("bqGotCv"), B2);
+      /* d (from A Few Stems): the day it opens. Only wrapping paper: the card is in the link either way. */
+      var dd = /^\d{4}-\d{2}-\d{2}$/.test(o.d || "") ? o.d : "", nw = new Date(), td = nw.getFullYear() + "-" + ("0" + (nw.getMonth() + 1)).slice(-2) + "-" + ("0" + nw.getDate()).slice(-2), early = dd && td < dd;
+      paintBq($("bqGotCv"), early ? { f: [], w: B2.w } : B2);
       var to = String(o.t || "").slice(0, 24), m = String(o.m || "").slice(0, 80), n = String(o.n || "").slice(0, 24);
+      if (early) { var dp = dd.split("-"), dn = dd; try { dn = new Date(+dp[0], dp[1] - 1, +dp[2]).toLocaleDateString(["en-GB", "zh-CN", "zh-TW", "es-ES", "ca-ES"][L()] || "en-GB", { weekday: "long", day: "numeric", month: "long" }); } catch (e) {} m = t("wrapUntil").replace("{d}", dn); }
       $("bqGotH").textContent = to ? t("gotFor").replace("{n}", to) : t("gotH");
       $("bqGotMsg").textContent = m; $("bqGotFrom").textContent = n ? t("from").replace("{n}", n) : "";
       show("bqGot");
