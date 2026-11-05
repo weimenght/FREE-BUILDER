@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=1d3880e09c"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=891c02cc3a"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Little Things</title>
 <meta name="description" content="Popo's jar of little offline things: one at a time, in her kitchen, for a fuller life away from the screen. Kept on your own device.">
@@ -116,6 +116,11 @@
   .pocket input:focus-visible { outline:3px solid var(--amber); outline-offset:2px; }
   .pocket label { font-size:18px; color:var(--muted); display:block; }
   .pocket .hint { font-size:17px; color:var(--muted); margin:0; }
+  /* taking the jar to another device: the square to scan stays black on white in any light */
+  .pocket .qr { display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .pocket .qr svg { display:block; max-width:100%; height:auto; background:#fff; border:3px solid var(--line); box-shadow:3px 3px 0 var(--shadow); image-rendering:pixelated; }
+  .pocket .qr p { margin:0; font-size:17px; color:var(--muted); text-align:center; }
+  .pocket .qr:empty { display:none; }
   .langmenu { position:absolute; right:16px; top:58px; z-index:30; background:var(--panel); border:3px solid var(--line); box-shadow:4px 4px 0 var(--shadow); display:flex; flex-direction:column; min-width:150px; }
   .langmenu button { font:20px/1.2 var(--pix); color:var(--ink); background:none; border:0; text-align:left; padding:10px 14px; min-height:44px; cursor:pointer; }
   .langmenu button[aria-checked="true"] { background:var(--amber); color:#1a1410; }
@@ -145,6 +150,7 @@
 <footer id="foot"></footer>
 <div class="sheet" id="sheet" hidden><div class="in" role="dialog" aria-modal="true" aria-labelledby="jarTitle"><div class="top"><h2 id="jarTitle">Popo's jar</h2><button class="btn sm" id="sheetClose">✕</button></div><div id="sheetBody"></div></div></div>
 <script src="./things.js?v=1"></script>
+<script src="./take.js?v=1"></script>
 <script>
 (function () {
 "use strict";
@@ -226,7 +232,21 @@ var W = {
   inviteText: ["Popo says: one little thing a day, away from the phone. Do it with me?", "婆婆说：每天一件小事，离开手机。跟我一起做？", "婆婆話：每日一件小事，放低部電話。同我一齊做吖？", "Popo dice: una cosita cada día, lejos del móvil. ¿La hacemos juntos?", "La Popo diu: una coseta cada dia, lluny del mòbil. La fem junts?"],
   doText: ["Popo gave me a little thing to do today. Do it with me?", "婆婆给了我今天的一件小事。跟我一起做？", "婆婆俾咗今日件小事我。同我一齊做吖？", "Popo me dio una cosita para hoy. ¿La hacemos juntos?", "La Popo m'ha donat una coseta per avui. La fem junts?"],
   someone: ["A friend", "一个朋友", "有個朋友", "Alguien", "Algú"],
-  backJar: ["‹ Back", "‹ 返回", "‹ 返回", "‹ Volver", "‹ Tornar"]
+  backJar: ["‹ Back", "‹ 返回", "‹ 返回", "‹ Volver", "‹ Tornar"],
+  /* taking the jar to another device: a link, a square to scan, a file; made here, sent nowhere */
+  bTake: ["Take my jar to another device", "把罐子带到另一台设备", "把罐子帶到另一部裝置", "Llevar mi tarro a otro dispositivo", "Endur-me el pot a un altre dispositiu"],
+  bBring: ["Bring my jar from another device", "从另一台设备把罐子拿过来", "從另一部裝置把罐子拿過來", "Traer mi tarro de otro dispositivo", "Portar el pot d'un altre dispositiu"],
+  sendLink: ["↗ Send the link", "↗ 发送链接", "↗ 傳送連結", "↗ Enviar el enlace", "↗ Enviar l'enllaç"],
+  saveFile: ["Save a file", "存成文件", "存成檔案", "Guardar un archivo", "Desar un fitxer"],
+  openFile: ["Open a file", "打开文件", "打開檔案", "Abrir un archivo", "Obrir un fitxer"],
+  scan: ["Or scan this square with the other phone's camera.", "或者用另一台手机的相机扫一扫这个码。", "或者用另一部手機的相機掃一掃這個碼。", "O escanea este cuadro con la cámara del otro móvil.", "O escaneja aquest quadre amb la càmera de l'altre mòbil."],
+  tooBig: ["Too much for one square to scan. Send the link or save a file instead.", "内容太多，一个码装不下。发送链接或存成文件吧。", "內容太多，一個碼裝不下。傳送連結或存成檔案吧。", "Demasiado para un solo cuadro. Envía el enlace o guarda un archivo.", "És massa per a un sol quadre. Envia l'enllaç o desa un fitxer."],
+  nothingSent: ["Made on this device. Nothing is sent anywhere: the link and the file stay with you.", "在这台设备上做好，什么都不会发送：链接和文件都只在你手里。", "在這部裝置上做好，什麼都不會傳送：連結和檔案都只在你手裡。", "Hecho en este dispositivo. No se envía nada: el enlace y el archivo se quedan contigo.", "Fet en aquest dispositiu. No s'envia res: l'enllaç i el fitxer es queden amb tu."],
+  bring: ["Bring them here", "放到这里", "放到這裡", "Traerlos aquí", "Portar-los aquí"],
+  notNow: ["Not now", "先不用", "先不用", "Ahora no", "Ara no"],
+  safeWay: ["The safe box way: a key ›", "用保险箱的办法：一把钥匙 ›", "用保險箱的辦法：一把鑰匙 ›", "Con la caja fuerte: una llave ›", "Amb la caixa forta: una clau ›"],
+  takeText: ["My jar from Popo's kitchen, for my other device.", "我在婆婆厨房的罐子，带去我的另一台设备。", "我在婆婆廚房的罐子，帶去我的另一部裝置。", "Mi tarro de la cocina de Popo, para mi otro dispositivo.", "El meu pot de la cuina de la Popo, per a l'altre dispositiu."],
+  takeCopied: ["Link copied. Open it on the other device.", "链接已复制，到另一台设备上打开。", "連結已複製，到另一部裝置上打開。", "Enlace copiado. Ábrelo en el otro dispositivo.", "Enllaç copiat. Obre'l a l'altre dispositiu."]
 };
 /* Popo about the safe box, the key and the knock (en broken, zh broken, zh-Hant her Cantonese, es broken, ca fluent) */
 var PP = {
@@ -247,6 +267,15 @@ var PP = {
   pushOff: ["OK, no more knocking. Come when you want, the door is open.", "好，不敲咯。想来就来，门开着的。", "好，唔敲喇。想嚟就嚟，度門開住㗎。", "Vale, no más toc toc. Ven cuando quieras, puerta abierta.", "D'acord, prou tocs. Vine quan vulguis, la porta és oberta."],
   pushNo: ["Your phone says no knocking. It's OK. You know where I am.", "你的手机说不准敲门喔。没关系。你知道我在哪里。", "你部電話話唔准敲門喎。唔緊要，你知我喺邊㗎喇。", "Tu móvil dice no toc toc. Está bien. Sabes dónde estoy.", "El teu mòbil diu que res de tocs. No passa res. Ja saps on soc."]
 };
+/* Popo about taking the jar along (same voices as above) */
+PP.takeQ = ["New phone? Take your jar with you. A link, a square to scan, or a file. Nothing goes to anybody: you carry it yourself, like a lunchbox.", "换新手机呀？罐子也带走啦。一个链接，一个码扫一扫，或者一个文件。不发给任何人，你自己带着，像饭盒一样。", "換新電話呀？個樽都帶埋走啦。一條連結、一個碼掃一掃，或者一個檔案。唔會傳俾任何人，你自己拎住，好似個飯盒咁。", "¿Móvil nuevo? Llévate tu tarro. Un enlace, un cuadrito para escanear, o un archivo. No va a nadie: lo llevas tú, como fiambrera.", "Mòbil nou? Emporta't el pot. Un enllaç, un quadret per escanejar o un fitxer. No s'envia a ningú: el portes tu, com una carmanyola."];
+PP.bringQ = ["Your jar is on the other phone? There: “{a}”, then “{b}”. Then open the link here, or the file.", "罐子在另一台手机上？在那台：“{a}”，再按“{b}”。然后在这里打开链接，或者文件。", "個樽喺第二部電話度？喺嗰部：「{a}」，再㩒「{b}」。跟住喺呢度開條連結，或者個檔案。", "¿El tarro está en el otro móvil? Allí: «{a}», luego «{b}». Después abres el enlace aquí, o el archivo.", "El pot és a l'altre mòbil? Allà: «{a}» i després «{b}». Llavors obre aquí l'enllaç, o el fitxer."];
+PP.takeArrive = ["*holds up a jar* From your other phone? {p} inside. Put them in this jar?", "*举起一个罐子* 另一台手机来的？里面有{p}。放进这个罐子，好不好？", "*舉起個樽* 第二部電話嚟㗎？入面有{p}。倒入呢個樽，好唔好？", "*levanta un tarro* ¿De tu otro móvil? Dentro hay {p}. ¿Al tarro de aquí?", "*aixeca un pot* De l'altre mòbil? Hi ha {p} a dins. Ho poso tot en aquest pot?"];
+PP.papers = ["{n} papers", "{n}张纸条", "{n}張紙仔", "{n} papeles", "{n} papers"];
+PP.paper1 = ["one paper", "一张纸条", "一張紙仔", "un papel", "un paper"];
+PP.takeDone = ["*tips them in, one by one* All in. Nothing lost, nothing twice.", "*一张一张倒进去* 全部进去了。一张没丢，也没有重复。", "*一張一張倒入去* 全部入晒喇，一張都冇唔見，又冇重複。", "*los echa uno a uno* Todo dentro. Nada perdido, nada dos veces.", "*els hi tira un per un* Tot a dins. No s'ha perdut res, i res no hi és dues vegades."];
+PP.takeSame = ["*looks in both jars* Same papers. This jar has them already.", "*看看两个罐子* 一样的纸条。这个罐子都有了。", "*睇下兩個樽* 啲紙仔一樣嘅，呢個樽早就有晒喇。", "*mira los dos tarros* Mismos papeles. Este tarro ya los tiene.", "*mira els dos pots* Són els mateixos papers. Aquest pot ja els té."];
+PP.takeBad = ["*turns it over* This is not my jar. Maybe from somewhere else?", "*翻过来看看* 这个不是我的罐子喔。是别的地方的吧？", "*反轉嚟睇下* 呢個唔係我個樽嚟喎，係咪第二度嚟㗎？", "*le da la vuelta* Esto no es mi tarro. ¿De otro sitio, quizás?", "*li dona la volta* Això no és el meu pot. Potser és d'algun altre lloc?"];
 PP.fromFriend = ["*holds out a folded paper* {f} sends you this one. Same paper, two people. Better.", "*递一张折好的纸条过来* {f}送这件给你。同一张纸，两个人。更好。", "*遞張摺好嘅紙仔俾你* {f}送呢件俾你。同一張紙，兩個人做，仲好。", "*te da un papel doblado* {f} te manda esta. Mismo papel, dos personas. Mejor.", "*t'allarga un paper doblegat* {f} t'envia aquesta. El mateix paper, dues persones. Millor."];
 var MEI_DUO = ["*looks up* Group project, but the good kind.", "*抬头* 小组作业，但是好的那种。", "*抬頭* 小組作業，但是好的那種。", "*levanta la vista* Trabajo en grupo, pero del bueno.", "*aixeca la vista* Treball en grup, però del bo."];
 var MEI_KEY = ["*leaning over* Send it to yourself. Not the family group chat. Popo.", "*凑过来* 发给你自己。别发家族群。婆婆。", "*湊過來* 傳給你自己。別傳家族群組。婆婆。", "*asomándose* Mándatela a ti. No al grupo de la familia. Popo.", "*traient el cap* Envia-te-la a tu. No al grup de la família. Popo."];
@@ -262,7 +291,7 @@ var P = {
   intro1: ["*pats the jar* One paper, one little thing. Not on the phone: out there. Do it, come back, put it in.", "*拍拍罐子* 一张纸条，一件小事。不是在手机上，是外面。做完回来，放进去。", "*拍拍個樽* 一張紙仔，一件小事。唔係喺電話度，係出面。做完返嚟，放入去。", "*da palmaditas al tarro* Un papel, una cosita. No en el móvil: fuera. La haces, vuelves, al tarro.", "*dona copets al pot* Un paper, una coseta. No al mòbil: a fora. La fas, tornes, i cap al pot."],
   first: ["*unscrews the lid, digs around* Here. Small one, for start.", "*拧开盖子，翻一翻* 来，这件。小小的，先开始。", "*扭開個蓋，撈下撈下* 嚟，呢件。細細件，開始先。", "*desenrosca la tapa, rebusca* Toma. Pequeñita, para empezar.", "*descargola la tapa i remena* Té. Una de petita, per començar."],
   /* once, when the jar has a few papers: the pocket (a copy, a key, a knock) is there if wanted */
-  pocket: ["Now many papers! Look in the jar sometime. There's my pocket: a copy, a key. Only if you want.", "纸条多起来啦！有空看看罐子。里面有我的口袋：留一份、钥匙。你想要才用喔。", "啲紙仔多起嚟喇！得閒睇下個樽，入面有我個袋：留一份、鎖匙。你想先用㗎。", "¡Ya muchos papeles! Mira el tarro alguna vez. Ahí mi bolsillo: copia, llave. Solo si quieres.", "Ja tens uns quants papers! Mira el pot quan vulguis. Hi ha la meva butxaca: una còpia, una clau. Només si vols."],
+  pocket: ["First paper in! *taps the lid* In the jar is my pocket too: take your jar to another phone, keep a copy. Only if you want.", "第一张放进去啦！*敲敲盖子* 罐子里还有我的口袋：可以把罐子带去另一台手机，也可以留一份。你想要才用喔。", "第一張入咗喇！*敲下個蓋* 個樽入面仲有我個袋：可以將個樽帶去第二部電話，又可以留返一份。你想先用㗎。", "¡Primer papel dentro! *toca la tapa* En el tarro está también mi bolsillo: llevar tu tarro a otro móvil, guardar copia. Solo si quieres.", "El primer paper ja hi és! *toca la tapa* Al pot també hi ha la meva butxaca: endur-te el pot a un altre mòbil, guardar-ne una còpia. Només si vols."],
   chose: [["*unscrews the lid* Good choice. Let me see what's inside…", "*拧开盖子* 挑得好。我看看里面有什么……", "*扭開個蓋* 揀得好。等我睇下入面有乜……", "*desenrosca la tapa* Buena elección. A ver qué hay dentro…", "*descargola la tapa* Bona tria. A veure què hi ha a dins…"]],
   hi: {
     morn: [["*ties her apron strings* Morning! You sleep OK? Here, today's little thing.", "*系好围裙带子* 早上好！睡得好不好呀？来，今天的小事。", "*綁好條圍裙帶* 早晨！瞓得好唔好呀？嚟，今日件小事。", "*se ata el delantal* ¡Buenos días! ¿Dormiste bien? Toma, la cosita de hoy.", "*es lliga el davantal* Bon dia! Has dormit bé? Té, la coseta d'avui."],
@@ -880,7 +909,7 @@ function didIt(t) {
     anim.drop = 1; anim.t0 = performance.now();
     clear(); var s = srv();   /* whoever is up says so; in the dark the paper just goes in */
     if (isFull()) { if (s) say(s, line(s, "done")); setTimeout(full, 900); return; }
-    var pk = !S.pk && s === "popo" && S.done.length + S.old.length >= 3;   /* once, in passing: her pocket is in the jar */
+    var pk = !S.pk && s === "popo" && S.done.length + S.old.length >= 1;   /* once, at the first paper: her pocket is in the jar */
     if (pk) { S.pk = 1; save(); }
     if (s) say(s, H[s] || s === "popo" ? T(line(s, "done")) + " " + T((pk ? P.pocket : null) || (H[s] ? pick(H[s].enough) : P.enough[0])) : catLine(s, "done"));
     if (pk) { btn(esc(T(W.look)), openJar, "pri"); btn(esc(bye()), function () { rest(); }); btn(esc(T(W.more)), function () { present(); }, "quiet"); return; }
@@ -1089,8 +1118,26 @@ function pushCheck() {   /* a knock that's on: keep its address and language fre
   }).catch(function () {});
 }
 
+/* ---------------- taking the jar along (take.js): the whole jar in a link's # or in a file; nothing is sent anywhere ----------------
+   It arrives as { app: "little-things", v: 1, jar: { v, size, done, old, reset } } and goes in through merge(), paper by paper. */
+function takeObj() { return { app: "little-things", v: 1, made: new Date().toISOString(), jar: pack() }; }
+function takeLink() { return FBTake.pack({ app: "little-things", v: 1, jar: pack() }).then(function (z) { return location.origin + "/little-things/#take=" + z; }); }
+function readTake(o) { return o && o.app === "little-things" && o.jar && typeof o.jar === "object" && Array.isArray(o.jar.done) ? o.jar : null; }
+function paperCount(j) { var n = j.done.length; (Array.isArray(j.old) ? j.old : []).forEach(function (o) { if (o && Array.isArray(o.done)) n += o.done.length; }); return n; }
+function arriveLine(j) { var n = paperCount(j); return T(PP.takeArrive).replace("{p}", n === 1 ? T(PP.paper1) : T(PP.papers).replace("{n}", n)); }
+function bringIn(j) { var ch = merge(j); if (ch) save(); chrome(); return ch; }
+
+var takeJ = null;
+function takeAsk(j) {   /* opened with a jar from another device: Popo shows it and asks once */
+  var who = asleep() || keeper() !== "popo" ? "note" : "popo";
+  takeJ = j; clear(); say(who, arriveLine(j)); mode = "take";
+  btn(esc(T(W.bring)), function () { var ch = bringIn(j); takeJ = null; clear(); say(who, ch ? PP.takeDone : PP.takeSame); refresh(); takeAfter(); }, "pri");
+  btn(esc(T(W.notNow)), function () { takeJ = null; if (!S.size) intro(0); else start(); }, "quiet");
+}
+function takeAfter() { if (S.size) { btn(esc(T(W.give)), function () { present(); }, "pri"); btn(esc(T(W.look)), openJar, "quiet"); mode = "rest"; } else { btn(esc(T(W.next)), function () { intro(0); }, "pri"); mode = "rest"; } }
+
 /* ---------------- the pocket: three quiet buttons under the jar ---------------- */
-function pocket(box) {
+function pocket(box, first) {
   box.innerHTML = "";
   var who = function () { return asleep() || keeper() !== "popo" ? "note" : "popo"; };   /* Popo out or asleep: her own words, on paper */
   var row = function () { var r = document.createElement("div"); r.className = "row"; box.appendChild(r); return r; };
@@ -1098,11 +1145,13 @@ function pocket(box) {
   var speak = function (line, o) { box.innerHTML = ""; var q = say(o && o.who || who(), typeof line === "string" ? line : T(line), o); box.appendChild(q); setTimeout(function () { try { box.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (e) {} }, 30); return q; };
   var back = function (r) { mk(r || row(), T(W.backJar), function () { pocket(box); }, "quiet"); };
   var busy = function () { box.querySelectorAll("button,input").forEach(function (b) { b.disabled = true; }); };
-  var P = pushState();
-  if (!S.pk && !syncOn() && !P && S.done.length + S.old.length < 5) { box.hidden = true; return; }   /* the pocket comes later, once there are papers */
-  box.hidden = false; var r0 = row();
+  var P = pushState(), papers = S.done.length + S.old.length;
+  box.hidden = false;
+  if (first) { speak(first); back(); return; }   /* after bringing a jar in: Popo says how it went */
+  var r0 = row();
+  if (!papers && !S.pk && !syncOn() && !P) { mk(r0, T(W.bBring), bringView); return; }   /* an empty jar: only a way to bring one in; the rest comes with the first paper */
+  mk(r0, papers ? T(W.bTake) : T(W.bBring), papers ? takeView : bringView, "pri");
   mk(r0, syncOn() ? T(W.bCopyOn) : T(W.bCopy), copyView);
-  mk(r0, T(W.bKey), keyView);
   var ib = mk(r0, T(W.invite), function () { shareIt(T(W.inviteText), inviteLink(), ib); });
   var pb = mk(r0, P ? T(W.bPushOn).replace("{t}", hm(P.h, P.m)) : T(W.bPush), pushView); pb.hidden = !P;
   if (!P) probePush().then(function (k) { if (k && pb.isConnected) pb.hidden = false; });
@@ -1133,6 +1182,34 @@ function pocket(box) {
       var v = inp.value; busy();
       takeKey(v).then(function (x) { speak(x === "ok" ? PP.keyDone : x === "empty" ? PP.keyEmpty : x === "bad" ? PP.keyBad : x === "no" ? PP.onlyHere : PP.fail); back(); chrome(); refresh(); });
     });
+  }
+  /* taking the jar along: the link (also as a square to scan) and a file, made here; the safe box and its key stay one tap further */
+  function takeView() {
+    speak(PP.takeQ);
+    var r = row(), url = "", hint = document.createElement("p"), qr = document.createElement("div");
+    var sb = mk(r, T(W.sendLink), function () { if (url) FBTake.send({ title: T(W.app), text: T(W.takeText), url: url, done: function (h) { if (h === "copied") hint.textContent = T(W.takeCopied); } }); }, "pri");
+    mk(r, T(W.saveFile), function () { FBTake.save("little-things", takeObj()); });
+    sb.disabled = true; qr.className = "qr"; box.appendChild(qr);
+    hint.className = "hint"; hint.textContent = T(W.nothingSent); box.appendChild(hint);
+    takeLink().then(function (u) {
+      url = u; sb.disabled = false; var svg = FBTake.qrSvg(u, T(W.scan));
+      qr.innerHTML = svg ? svg + "<p>" + esc(T(W.scan)) + "</p>" : "<p>" + esc(T(W.tooBig)) + "</p>";
+    });
+    var r2 = row(); mk(r2, T(W.openFile), openFile, "quiet"); mk(r2, T(W.safeWay), keyView, "quiet");
+    back();
+  }
+  function bringView() {
+    speak(T(PP.bringQ).replace("{a}", T(W.look)).replace("{b}", T(W.bTake)));
+    var r = row(); mk(r, T(W.openFile), openFile, "pri"); mk(r, T(W.safeWay), keyView, "quiet");
+    back();
+  }
+  function openFile() {
+    FBTake.open().then(function (o) { if (o === undefined) return; var j = readTake(o); if (!j) { speak(PP.takeBad); back(); return; } confirmIn(j); });
+  }
+  function confirmIn(j) {
+    speak(arriveLine(j)); var r = row();
+    mk(r, T(W.bring), function () { var ch = bringIn(j); jarBody(ch ? PP.takeDone : PP.takeSame); refresh(); }, "pri");
+    mk(r, T(W.notNow), function () { pocket(box); }, "quiet");
   }
   function pushView() {
     var P = pushState();
@@ -1181,12 +1258,12 @@ var sheet = $("sheet"), sbody = $("sheetBody"), lastFocus = null;
 var DF = null;
 function when(t) { try { return new Intl.DateTimeFormat(LANGS[li()] === "zh-Hant" ? "zh-HK" : LANGS[li()], { day: "numeric", month: "short", year: new Date(t).getFullYear() === new Date().getFullYear() ? undefined : "numeric" }).format(new Date(t)); } catch (e) { return new Date(t).toDateString(); } }
 function slips(list) { return '<div class="slips">' + list.slice().reverse().map(function (d) { var t = BY[d.id]; if (!t) return ""; return '<div class="slip">' + esc(T(t.n)) + (d.w ? '<span class="own">' + esc(d.w) + "</span>" : "") + '<time datetime="' + new Date(d.at).toISOString() + '">' + esc(when(d.at)) + "</time></div>"; }).join("") + "</div>"; }
-function jarBody() {
+function jarBody(first) {
   var h = S.done.length ? slips(S.done) : '<p class="empty">' + esc(T(W.empty)) + "</p>";
   S.old.forEach(function (o) { h += '<details class="older"><summary>' + esc(T(W.older)) + " · " + esc(when(o.end)) + "</summary>" + slips(o.done) + "</details>"; });
   h += '<div class="tools" id="tools"></div><div class="pocket" id="pocket"></div>';
   sbody.innerHTML = '<canvas class="bigjar" id="bigJar" aria-hidden="true"></canvas>' + h;
-  drawBig(); pocket($("pocket"));
+  drawBig(); pocket($("pocket"), first);
   var tools = $("tools");
   var mk = function (label, fn, cls) { var b = document.createElement("button"); b.className = "btn sm " + (cls || ""); b.textContent = label; b.addEventListener("click", fn); tools.appendChild(b); return b; };
   if (S.size) mk(T(W.other), function () { tools.innerHTML = ""; tools.appendChild(jarButtons(function (n) { S.size = n; if (S.cur && BY[S.cur] && BY[S.cur].t > tierMax(n)) S.cur = null; save(); closeJar(); present(chose()); })); });
@@ -1227,6 +1304,7 @@ function chrome() {
 function paint(again) {
   chrome();
   if (!sheet.hidden) { $("jarTitle").textContent = T(W.jar); jarBody(); }
+  if (again && mode === "take" && takeJ) return takeAsk(takeJ);
   if (!S.size) return intro(0);
   if (again && mode === "thing" && S.cur && BY[S.cur]) return show(BY[S.cur]);
   if (again && mode === "friend" && lastFriend) return friendThing(lastFriend[0], lastFriend[1]);
@@ -1285,6 +1363,7 @@ addEventListener("storage", function (e) { if (e.key === KEY) { S = load(); pain
 chrome();
 var arriving = /[#&]keys=(k1\.[A-Za-z0-9_-]+)/.exec(location.hash);
 if (arriving) try { history.replaceState(history.state, "", location.pathname + location.search); } catch (e) {}
+var taking = !arriving && window.FBTake ? FBTake.fromHash() : null;   /* a jar from another device (#take=…) */
 var friend = /[#&]do=([A-Za-z0-9_-]{1,40})/.exec(location.hash), fromM = /[#&]from=([^&]*)/.exec(location.hash), from = "";
 try { from = fromM ? decodeURIComponent(fromM[1]) : ""; } catch (e) {}
 if (friend) try { history.replaceState(history.state, "", location.pathname + location.search); } catch (e) {}
@@ -1297,7 +1376,11 @@ if (arriving) takeKey(arriving[1]).then(function (x) {   /* opened with a key fr
   if (S.size) { btn(esc(T(W.give)), function () { present(); }, "pri"); btn(esc(T(W.look)), openJar, "quiet"); mode = "rest"; }
   else btn(esc(T(W.next)), function () { intro(0); }, "pri");
 });
-else if (syncOn()) pull().then(function () { var had = S.size; chrome(); if (mode === "intro" && had) start(); LTSync.up(); refresh(); }).catch(function () {});
+else if (taking) taking.then(function (o) { var j = readTake(o); if (j) return takeAsk(j); clear(); say(asleep() || keeper() !== "popo" ? "note" : "popo", PP.takeBad); takeAfter(); });
+if (!arriving && syncOn()) pull().then(function () { var had = S.size; chrome(); if (mode === "intro" && had) start(); LTSync.up(); refresh(); }).catch(function () {});
+addEventListener("hashchange", function () {   /* a jar link opened while the app is already open here */
+  var tk = window.FBTake ? FBTake.fromHash() : null; if (tk) tk.then(function (o) { var j = readTake(o); if (!sheet.hidden) closeJar(); if (j) takeAsk(j); else { clear(); say(asleep() || keeper() !== "popo" ? "note" : "popo", PP.takeBad); takeAfter(); } });
+});
 setTimeout(pushCheck, 2500);
 })();
 </script>

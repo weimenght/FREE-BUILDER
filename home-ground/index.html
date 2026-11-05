@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=1d3880e09c"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=891c02cc3a"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Home Ground</title>
 <meta name="description" content="Build a little town with your family or friends: each place is a way you look after each other, and asks one honest question. Then take it to dinner. Lives in its link; nothing stored.">
@@ -195,6 +195,17 @@
     .who { font-size:16px; }
     .dock .fbb { min-height:40px; font-size:17px; padding:0 8px; }
   }
+  /* taking your towns to another device: one card over the page; the square to scan stays black on white in any light */
+  .tkbg { position:fixed; inset:0; z-index:55; background:rgba(20,12,10,.55); display:flex; align-items:center; justify-content:center; padding:16px; }
+  .tkbg .tk { width:100%; max-width:440px; max-height:calc(100vh - 32px); max-height:calc(100dvh - 32px); overflow:auto; }
+  .tk h2 { margin:0; font:10px/1.6 var(--sign); text-transform:uppercase; color:var(--muted); }
+  html:lang(zh) .tk h2, html:lang(zh-Hant) .tk h2 { font:700 16px/1.4 var(--pix); letter-spacing:.08em; }
+  .tk .d b { font-weight:400; color:var(--ink); }
+  .tk .qr { display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .tk .qr svg { display:block; max-width:100%; height:auto; background:#fff; border:3px solid var(--line); box-shadow:3px 3px 0 var(--shadow); }
+  .tk .qr p { margin:0; font-size:17px; color:var(--muted); text-align:center; }
+  .tk .qr:empty { display:none; }
+  .mine .small { margin-top:2px; }
   .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
   @media print {
     @page { margin:14mm; }
@@ -226,6 +237,7 @@
 <footer id="foot"></footer>
 <div class="sheet" id="sheet" hidden></div>
 <script src="./pieces.js?v=1"></script>
+<script src="./take.js?v=1"></script>
 <script>
 (function () {
 "use strict";
@@ -332,7 +344,31 @@ var W = {
   lang: ["Language", "语言", "語言", "Idioma", "Idioma"],
   mapL: ["The town. Arrow keys move, Enter opens.", "小镇地图。方向键移动，回车打开。", "小鎮地圖。方向鍵移動，Enter 打開。", "El pueblo. Flechas para moverse, Intro para abrir.", "El poble. Fletxes per moure's, Retorn per obrir."],
   grass: ["Grass", "草地", "草地", "Hierba", "Herba"],
-  bad: ["That link didn't open. Ask for it again?", "这个链接打不开。再要一次？", "這個連結打不開。再要一次？", "Ese enlace no se abrió. ¿Lo pides otra vez?", "Aquest enllaç no s'ha obert. El tornes a demanar?"]
+  bad: ["That link didn't open. Ask for it again?", "这个链接打不开。再要一次？", "這個連結打不開。再要一次？", "Ese enlace no se abrió. ¿Lo pides otra vez?", "Aquest enllaç no s'ha obert. El tornes a demanar?"],
+  /* taking your towns to another device (take.js): a link, a square to scan, a file; made here, sent nowhere */
+  takeAll: ["Take my towns to another device", "把我的小镇带到另一台设备", "把我的小鎮帶到另一部裝置", "Llevar mis pueblos a otro dispositivo", "Endur-me els pobles a un altre dispositiu"],
+  takeIn: ["Bring towns from another device", "从另一台设备把小镇拿过来", "從另一部裝置把小鎮拿過來", "Traer pueblos de otro dispositivo", "Portar pobles d'un altre dispositiu"],
+  takeLead: ["All your towns on this device go together: {n}.", "这台设备上的小镇会一起带走：{n}。", "這部裝置上的小鎮會一起帶走：{n}。", "Todos tus pueblos de este dispositivo van juntos: {n}.", "Tots els pobles d'aquest dispositiu hi van junts: {n}."],
+  takeInLead: ["On the other device, tap “{b}”. Then open that link here, scan its square with this phone's camera, or open the file it saved.", "在另一台设备上按“{b}”。然后在这里打开那个链接、用这台手机的相机扫码，或者打开存好的文件。", "在另一部裝置上按「{b}」。然後在這裡打開那個連結、用這部手機的相機掃碼，或者打開存好的檔案。", "En el otro dispositivo, toca «{b}». Luego abre ese enlace aquí, escanea su cuadro con la cámara de este móvil o abre el archivo que guardó.", "A l'altre dispositiu, toca «{b}». Després obre aquí aquell enllaç, escaneja'n el quadre amb la càmera d'aquest mòbil o obre el fitxer que hi has desat."],
+  sendLink: ["↗ Send the link", "↗ 发送链接", "↗ 傳送連結", "↗ Enviar el enlace", "↗ Enviar l'enllaç"],
+  saveFile: ["Save a file", "存成文件", "存成檔案", "Guardar un archivo", "Desar un fitxer"],
+  openFile: ["Open a file", "打开文件", "打開檔案", "Abrir un archivo", "Obrir un fitxer"],
+  scan: ["Or scan this square with the other phone's camera.", "或者用另一台手机的相机扫一扫这个码。", "或者用另一部手機的相機掃一掃這個碼。", "O escanea este cuadro con la cámara del otro móvil.", "O escaneja aquest quadre amb la càmera de l'altre mòbil."],
+  tooBig: ["Too much for one square to scan. Send the link or save a file instead.", "内容太多，一个码装不下。发送链接或存成文件吧。", "內容太多，一個碼裝不下。傳送連結或存成檔案吧。", "Demasiado para un solo cuadro. Envía el enlace o guarda un archivo.", "És massa per a un sol quadre. Envia l'enllaç o desa un fitxer."],
+  nothingSent: ["Made on this device. Nothing is sent anywhere: the link and the file stay with you.", "在这台设备上做好，什么都不会发送：链接和文件都只在你手里。", "在這部裝置上做好，什麼都不會傳送：連結和檔案都只在你手裡。", "Hecho en este dispositivo. No se envía nada: el enlace y el archivo se quedan contigo.", "Fet en aquest dispositiu. No s'envia res: l'enllaç i el fitxer es queden amb tu."],
+  oneTown: ["Just one town? Its own link carries it: “{s}”.", "只带一座小镇？它自己的链接就装着它：“{s}”。", "只帶一座小鎮？它自己的連結就裝著它：「{s}」。", "¿Solo un pueblo? Su propio enlace lo lleva: «{s}».", "Només un poble? El seu propi enllaç el porta: «{s}»."],
+  arrive: ["From another device", "从另一台设备来的", "從另一部裝置來的", "De otro dispositivo", "D'un altre dispositiu"],
+  nTowns: ["{n} towns: {t}.", "{n} 座小镇：{t}。", "{n} 座小鎮：{t}。", "{n} pueblos: {t}.", "{n} pobles: {t}."],
+  nTown1: ["One town: {t}.", "一座小镇：{t}。", "一座小鎮：{t}。", "Un pueblo: {t}.", "Un poble: {t}."],
+  arriveHow: ["A town you already have here loses nothing: its new places and lines are added.", "这里已有的小镇什么都不会少：只会添上新的地方和话。", "這裡已有的小鎮什麼都不會少：只會添上新的地方和話。", "Un pueblo que ya tienes aquí no pierde nada: solo se le añaden los lugares y las líneas nuevas.", "Un poble que ja tens aquí no perd res: només s'hi afegeixen els llocs i les línies noves."],
+  bring: ["Bring them here", "放到这里", "放到這裡", "Traerlos aquí", "Portar-los aquí"],
+  bring1: ["Bring it here", "放到这里", "放到這裡", "Traerlo aquí", "Portar-lo aquí"],
+  notNow: ["Not now", "先不用", "先不用", "Ahora no", "Ara no"],
+  brought: ["Here they are, next to what was already on this device.", "都到了，和这台设备上原有的放在一起。", "都到了，和這部裝置上原有的放在一起。", "Aquí están, junto a lo que ya había en este dispositivo.", "Aquí són, al costat del que ja hi havia en aquest dispositiu."],
+  same: ["Those were already here, just as they are.", "这些这里早就有了，一模一样。", "這些這裡早就有了，一模一樣。", "Eso ya estaba aquí, tal cual.", "Això ja hi era, tal com és."],
+  badTake: ["No towns in that one. Is it from the right app?", "这里面没有小镇。是不是别的应用的？", "這裡面沒有小鎮。是不是別的應用程式的？", "Ahí no hay pueblos. ¿Es de la app correcta?", "Aquí no hi ha cap poble. És de l'aplicació correcta?"],
+  takeText: ["My towns, for my other device.", "我的小镇，带去我的另一台设备。", "我的小鎮，帶去我的另一部裝置。", "Mis pueblos, para mi otro dispositivo.", "Els meus pobles, per a l'altre dispositiu."],
+  takeCopied: ["Link copied. Open it on the other device.", "链接已复制，到另一台设备上打开。", "連結已複製，到另一部裝置上打開。", "Enlace copiado. Ábrelo en el otro dispositivo.", "Enllaç copiat. Obre'l a l'altre dispositiu."]
 };
 
 /* ---------------- the pieces ---------------- */
@@ -568,6 +604,7 @@ function overview() {
     '<ul class="rows">' + [["pin", W.h1], ["thought", W.h2], ["friends", W.h3]].map(function (r) { return "<li><b>" + icon(r[0]) + "</b><span>" + esc(T(r[1])) + "</span></li>"; }).join("") + "</ul>"
   ]));
   if (hs.length) panel.appendChild(card(['<h2>' + esc(sg(T(W.people))) + "</h2>", '<div class="ppl">' + hs.map(function (h) { return '<span class="' + (pr[h.nm.toLowerCase()] ? "here" : "") + '">' + esc(h.nm) + "</span>"; }).join("") + "</div>"]));
+  panel.appendChild(row("small", [btn(T(W.takeAll), takeView, "sm quiet", "map")]));
 }
 function tray(x, y, kind) {
   kind = kind || tray.kind || "show"; tray.kind = kind;
@@ -828,6 +865,68 @@ function nextNote() {
   n.addEventListener("click", function () { n.remove(); setTimeout(nextNote, 250); }); setTimeout(gone, t);
 }
 
+/* ---------------- taking your towns to another device (take.js) ----------------
+   Every town on this device in one link's # (also drawn as a square to scan) or in one .json file, made here and sent nowhere.
+   It arrives as { app, v: 1, towns: [{ t: packed town, me, seen }] } and goes in town by town through merge(): the newest
+   version of each piece wins, lines only add, so nothing is lost and nothing comes twice. Each town's own #t= link still carries just that town. */
+var TKAPP = "home-ground", tkEl = null, tkCur = null;
+function tkClose() { if (tkEl) { tkEl.remove(); tkEl = null; tkCur = null; } }
+function tkOpen(parts, again) {
+  if (tkEl) tkEl.remove(); var bg = document.createElement("div"); bg.className = "tkbg"; var c = card(parts); c.classList.add("tk"); c.setAttribute("role", "dialog"); c.setAttribute("aria-modal", "true");
+  bg.appendChild(c); document.body.appendChild(bg); tkEl = bg; tkCur = again; var t0 = Date.now();
+  bg.addEventListener("click", function (e) { if (e.target === bg && Date.now() - t0 > 450) tkClose(); });
+  setTimeout(function () { var b = c.querySelector("button"); try { if (b) b.focus({ preventScroll: true }); } catch (e) {} }, 30);
+  return c;
+}
+document.addEventListener("keydown", function (e) { if (e.key === "Escape" && tkEl) tkClose(); });
+function allTowns() { var sv = shelf(); return Object.keys(sv).sort(function (a, b) { return sv[b].seen - sv[a].seen; }).map(function (id) { return { s: sv[id], t: unpack(sv[id].t) }; }).filter(function (x) { return x.t; }); }
+function tkTowns() { if (TOWN) keep(); return allTowns().map(function (x) { return { t: x.s.t, me: x.s.me || "", seen: x.s.seen || 0 }; }); }
+function tkRead(o) {
+  if (!o || o.app !== TKAPP || !Array.isArray(o.towns)) return null; var out = [], seen = {};
+  o.towns.slice(0, 24).forEach(function (r) { var t = r && unpack(r.t); if (t && !seen[t.i]) { seen[t.i] = 1; out.push({ t: t, me: clean(r.me, 24), seen: +r.seen || 0 }); } });
+  return out.length ? out : null;
+}
+function tkNames(list) { return list.map(function (x) { return x.t.n || T(W.untitled); }).join(" · "); }
+function takeView() {
+  var list = allTowns(); if (!list.length) return bringView();
+  var url = "", qr = document.createElement("div"); qr.className = "qr";
+  var hint = document.createElement("p"); hint.className = "d"; hint.textContent = T(W.nothingSent);
+  var sb = btn(T(W.sendLink), function () { if (url) FBTake.send({ title: T(W.app), text: T(W.takeText), url: url, done: function (h) { if (h === "copied") note(T(W.takeCopied)); } }); }, "fbb-pri");
+  var fb = btn(T(W.saveFile), function () { FBTake.save(TKAPP, { app: TKAPP, v: 1, made: new Date().toISOString(), towns: tkTowns() }); });
+  sb.disabled = true;
+  tkOpen(["<h2>" + esc(sg(T(W.takeAll))) + "</h2>", '<p class="d">' + F(esc(T(W.takeLead)), { n: "<b>" + esc(tkNames(list)) + "</b>" }) + "</p>", row("acts", [sb, fb]), qr, hint,
+    TOWN ? '<p class="d">' + esc(F(W.oneTown, { s: T(W.share) })) + "</p>" : "",
+    row("acts", [btn(T(W.openFile), tkFile, "sm quiet"), btn(T(W.back), tkClose, "sm quiet")])], takeView);
+  FBTake.pack({ app: TKAPP, v: 1, towns: tkTowns() }).then(function (z) {
+    url = location.origin + BASE + "#take=" + z; sb.disabled = false; var svg = FBTake.qrSvg(url, T(W.scan));
+    qr.innerHTML = svg ? svg + "<p>" + esc(T(W.scan)) + "</p>" : "<p>" + esc(T(W.tooBig)) + "</p>";
+  });
+}
+function bringView() {
+  tkOpen(["<h2>" + esc(sg(T(W.takeIn))) + "</h2>", '<p class="d">' + esc(F(W.takeInLead, { b: T(W.takeAll) })) + "</p>",
+    row("acts", [btn(T(W.openFile), tkFile, "fbb-pri"), btn(T(W.back), tkClose, "quiet")])], bringView);
+}
+function tkFile() { FBTake.open().then(function (o) { if (o === undefined) return; var l = tkRead(o); if (!l) { tkClose(); note(T(W.badTake)); return; } tkAsk(l); }); }
+function tkAsk(list) {
+  var one = list.length === 1, what = one ? F(W.nTown1, { t: tkNames(list) }) : F(W.nTowns, { n: list.length, t: tkNames(list) });
+  tkOpen(["<h2>" + esc(sg(T(W.arrive))) + "</h2>", '<p class="d"><b>' + esc(what) + "</b></p>", '<p class="d">' + esc(T(W.arriveHow)) + "</p>",
+    row("acts", [btn(T(one ? W.bring1 : W.bring), function () { var ch = tkMerge(list); tkClose(); note(T(ch ? W.brought : W.same)); if (!TOWN) startView(); }, "fbb-pri"), btn(T(W.notNow), tkClose, "quiet")])], function () { tkAsk(list); });
+}
+function tkMerge(list) {
+  var sv = shelf(), ch = false, isOpen = false;
+  list.forEach(function (x) {
+    var cur = sv[x.t.i], a = TOWN && TOWN.i === x.t.i ? TOWN : cur && unpack(cur.t);
+    if (a) {
+      var before = JSON.stringify(pack(a)); merge(a, x.t); if (JSON.stringify(pack(a)) !== before) { ch = true; if (a === TOWN) isOpen = true; }
+      sv[x.t.i] = { t: pack(a), me: (cur && cur.me) || x.me || "", seen: Math.max(cur && cur.seen || 0, x.seen) };
+    } else { ch = true; sv[x.t.i] = { t: pack(x.t), me: x.me, seen: x.seen || Date.now() }; }
+  });
+  var ids = Object.keys(sv).sort(function (a, b) { return sv[b].seen - sv[a].seen; }); ids.slice(12).forEach(function (k) { if (!TOWN || k !== TOWN.i) delete sv[k]; });
+  lsSet("hg_towns", JSON.stringify(sv));
+  if (isOpen) { changed(); refreshPanel(); }
+  return ch;
+}
+
 /* ---------------- the start: a little town to look at, and yours ---------------- */
 function demo() {
   var t = { i: "demo1", p: {}, l: {} }, add = function (k, x, y, nm) { var id = "d" + x + "_" + y; t.p[id] = { i: id, k: k, x: x, y: y, at: 1, nm: nm || "" }; };
@@ -856,8 +955,9 @@ function startView() {
   if (ids.length) {
     var m = document.createElement("div"); m.className = "mine"; m.innerHTML = "<h2>" + esc(sg(T(W.yours))) + "</h2>";
     ids.forEach(function (id) { var t = unpack(sv[id].t); if (!t) return; var b = btn("", function () { TOWN = t; ME = sv[id].me || null; enter(); }, "quiet row"); b.innerHTML = icon("map") + "<span>" + esc(t.n || T(W.untitled)) + "</span><small>" + esc(houses(t).map(function (h) { return h.nm; }).slice(0, 4).join(" · ")) + "</small>"; m.appendChild(b); });
+    m.appendChild(row("small", [btn(T(W.takeAll), takeView, "sm quiet", "map")]));
     col2.appendChild(m);
-  }
+  } else col2.appendChild(row("small", [btn(T(W.takeIn), bringView, "sm quiet", "map")]));
   s.appendChild(col1); s.appendChild(col2);
 }
 function enter() {
@@ -905,6 +1005,7 @@ function chrome() {
 var paintT = 0;
 function paint() {
   chrome();
+  if (tkEl && tkCur) tkCur();
   if (!TOWN) return startView();
   paintTown(); draw();
   if (!sh.hidden) sheet();
@@ -922,8 +1023,10 @@ setInterval(function () { if (TOWN && !document.hidden && !WALK) draw(); }, 6000
 
 /* ---------------- boot ---------------- */
 chrome();
-var m = /[#&]t=([zj][A-Za-z0-9_-]+)/.exec(location.hash);
-if (m) dec(m[1]).then(function (t) {
+addEventListener("hashchange", function () { var tk = window.FBTake ? FBTake.fromHash() : null; if (tk) tk.then(function (o) { var l = tkRead(o); if (l) tkAsk(l); else note(T(W.bad)); }); });   /* opened while already open */
+var taking = window.FBTake ? FBTake.fromHash() : null, m = !taking && /[#&]t=([zj][A-Za-z0-9_-]+)/.exec(location.hash);
+if (taking) { startView(); taking.then(function (o) { var l = tkRead(o); if (l) tkAsk(l); else note(T(W.bad)); }); }
+else if (m) dec(m[1]).then(function (t) {
   if (!t) { startView(); note(T(W.bad)); return; }
   var s = shelf()[t.i], mine = s && unpack(s.t); if (mine) merge(t, mine);
   TOWN = t; ME = (s && s.me) || null; chrome(); enter();
