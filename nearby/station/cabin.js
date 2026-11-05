@@ -51,7 +51,7 @@
     ".cb-note{position:absolute;z-index:6;max-width:46%;transform:translate(-50%,-50%) rotate(-3deg);font:italic 22px/1.2 'Segoe Print','Bradley Hand','Comic Sans MS',cursive;color:rgba(255,255,255,.78);text-shadow:0 0 6px rgba(255,255,255,.35),0 0 1px rgba(0,0,0,.6);pointer-events:none;transition:opacity 4s;white-space:pre-wrap;text-align:center}" +
     ".cb-ink{position:absolute;z-index:7;transform:translate(-50%,-50%);width:min(70%,22rem)}.cb-ink input{width:100%;font:italic 20px 'Segoe Print','Bradley Hand',cursive;background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.5);color:#fff;border-radius:10px;padding:8px 12px;outline:none}" +
     ".cb-ring{position:absolute;z-index:7;width:14px;height:14px;margin:-7px 0 0 -7px;border:2px solid rgba(255,255,255,.8);border-radius:50%;pointer-events:none;animation:cbRing 1s ease-out forwards}@keyframes cbRing{to{transform:scale(7);opacity:0}}" +
-    ".cb-sheet{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(8,6,5,.6);padding:16px}.cb-card{width:min(26rem,100%);background:#f8efe0;color:#2a1a10;border-radius:22px;padding:22px;font:15px/1.55 system-ui,-apple-system,sans-serif;box-shadow:0 30px 80px -30px #000}" +
+    ".cb-sheet{position:fixed;inset:0;z-index:90;display:grid;place-items:center;place-items:safe center;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch;background:rgba(8,6,5,.6);padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}.cb-sheet>.cb-card{margin:auto;width:min(26rem,calc(100vw - 24px));max-width:calc(100vw - 24px);box-sizing:border-box}.cb-card{width:min(26rem,100%);background:#f8efe0;color:#2a1a10;border-radius:22px;padding:22px;font:15px/1.55 system-ui,-apple-system,sans-serif;box-shadow:0 30px 80px -30px #000}" +
     ".cb-card h2{font:400 24px Georgia,serif;margin:0 0 8px}.cb-card .code{font:600 30px/1 ui-monospace,Menlo,monospace;letter-spacing:.3em;margin:14px 0;text-align:center}.cb-card .row{display:flex;gap:8px;margin-top:14px}.cb-card button{flex:1;min-height:44px;border-radius:999px;border:1.5px solid #2a1a10;background:transparent;font:600 14px system-ui,sans-serif;cursor:pointer;color:inherit}.cb-card button.pri{background:#2a1a10;color:#f8efe0}.cb-card .mut{font-size:13px;opacity:.7}" +
     ".cb-join{margin-top:18px;padding-top:14px;border-top:1px dashed rgba(42,26,16,.3)}.cb-join label{font:600 13px system-ui,sans-serif;opacity:.8}.cb-join .row{margin-top:8px}.cb-join input{flex:1.4;min-width:0;min-height:44px;border-radius:999px;border:1.5px solid currentColor;background:transparent;color:inherit;font:600 20px ui-monospace,Menlo,monospace;letter-spacing:.35em;text-align:center;text-transform:uppercase}.cb-jerr{min-height:1em;margin:6px 0 0}" +
     ".cb-dock .fbg{position:static;opacity:.75;margin-left:2px}.cb-dock .fbg:hover,.cb-dock .fbg:focus-within{opacity:1}.cb-dock .fbg-mini{flex-direction:row}.cb-dock .fbg button,.cb-dock .fbg a{background:none;border:0;padding:4px 6px}" +
@@ -63,6 +63,8 @@
     ".cb-heart{position:absolute;left:60%;top:-30%;color:#ff8fa0;font:700 18px system-ui;animation:cbUp 1.2s ease-out forwards;pointer-events:none}@keyframes cbUp{to{transform:translateY(-34px);opacity:0}}" +
     ".cb-rotate{display:none!important}" +   /* upright phones ride too: the window just grows tall */
     "@media (orientation:portrait){body.cb-on #cabinContainer{padding:4px}body.cb-on .windowsill-ledge{flex-wrap:wrap}}" +
+    "@media (max-height:560px){.cb-card{padding:14px 16px;border-radius:18px}.cb-card h2{font-size:19px;margin:0 0 2px}.cb-card .code{font-size:22px;margin:6px 0}.cb-card .row{margin-top:8px}.cb-card button{min-height:40px}.cb-join{margin-top:10px;padding-top:8px}.cb-join .row{margin-top:6px}.cb-join input{min-height:40px;font-size:18px}}" +   /* a phone on its side: the card fits, and the sheet scrolls if it still doesn't */
+    "@media (max-width:360px){.cb-card{padding:16px}.cb-card .row{gap:6px}.cb-card button{font-size:13px}}" +
     "@media (prefers-color-scheme:dark){.cb-card{background:#1f1915;color:#f2e8d8}.cb-card button{border-color:#f2e8d8}.cb-card button.pri{background:#f2e8d8;color:#1f1915}}";
   var st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
@@ -130,10 +132,10 @@
   function fit() {
     if (!document.body.classList.contains("cb-on")) return;
     var el = $("windowViewport"); if (!el) return;
-    if (document.documentElement.classList.contains("cb-app") && !document.body.classList.contains("zen-mode")) { el.style.removeProperty("height"); setTimeout(function () { try { resizeCanvas(); } catch (e) {} }, 60); return; }   /* the app: all controls showing, the page's own size */
+    var res = 20; try { if (window.FBJourney && FBJourney.reserve) res = FBJourney.reserve(); } catch (e) {}   /* the app: room for its top bar and bottom bar */
     var bezel = el.closest(".window-bezel") || el.parentElement;
     var chrome = bezel.getBoundingClientRect().height - el.getBoundingClientRect().height;   /* frame + sill around the glass */
-    var h = Math.min(innerHeight - chrome - 20, el.getBoundingClientRect().width * (innerHeight > innerWidth ? 1.9 : 0.68));   /* upright: a tall window; sideways: a wide one */
+    var h = Math.min(innerHeight - chrome - res, el.getBoundingClientRect().width * (innerHeight > innerWidth ? 1.9 : 0.68));   /* upright: a tall window; sideways: a wide one */
     el.style.setProperty("height", Math.max(170, Math.round(h)) + "px", "important");
     setTimeout(function () { try { resizeCanvas(); } catch (e) {} }, 60);
   }
@@ -586,6 +588,6 @@
     /* (no "turn your phone" screen: the train runs upright too) */
   });
   /* the standalone app (/station/, journey.js) steers the same train: getting off, another train, a new seat */
-  window.FBCabin = { director: director, S: S, toast: toast, leave: leave, somewhereElse: somewhereElse, paintDock: paintDock, unlockAudio: unlockAudio,
+  window.FBCabin = { director: director, S: S, toast: toast, leave: leave, somewhereElse: somewhereElse, paintDock: paintDock, unlockAudio: unlockAudio, share: shareSheet, sync: function () { try { if (S.code) sync(); } catch (e) {} }, fit: fit,
     seat: function (c, s) { CAR = window.FB_CAR = c; SEAT = s; plate(); }, where: function () { return { car: CAR, seat: SEAT }; } };
 })();
