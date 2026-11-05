@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=94ef37d575"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=e47cad56c6" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=f6145f761a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=e47cad56c6" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Come Over · Nearby</title>
 <meta name="description" content="Plan a real get-together: write the invitation, send the link, and see who's coming and what they'll bring. Only people with the link can see it.">
@@ -73,6 +73,9 @@
     coming: ["Can you come?", "你能来吗？", "你能來嗎？", "¿Puedes venir?", "Pots venir?"],
     name: ["Your name", "你的称呼", "你的稱呼", "Tu nombre", "El teu nom"],
     yes: ["I'll be there", "我会来", "我會來", "Allí estaré", "Hi seré"], no: ["Can't make it", "来不了", "來不了", "No puedo", "No puc"],
+    insteadH: ["Can't be there? Send something instead.", "来不了？送点别的过去吧。", "來不了？送點別的過去吧。", "¿No puedes ir? Manda algo en tu lugar.", "No hi pots anar? Envia-hi alguna cosa."],
+    flw: ["Flowers for {n}", "给{n}送花", "給{n}送花", "Flores para {n}", "Flors per a {n}"], flw0: ["Send flowers", "送花", "送花", "Manda flores", "Envia flors"],
+    tbl: ["Dinner for two, from afar", "隔着距离，两人一桌", "隔著距離，兩人一桌", "Una cena para dos, a distancia", "Un sopar per a dos, a distància"],
     bring: ["I'll bring", "我带", "我帶", "Llevo", "Porto"],
     note: ["A note for the host", "给主人留句话", "給主人留句話", "Una nota para quien organiza", "Una nota per a qui organitza"],
     answer: ["Send my answer", "发送回复", "傳送回覆", "Enviar mi respuesta", "Envia la meva resposta"],
@@ -157,13 +160,13 @@
     if (ev.place) { dl.appendChild(el("dt", "", t(T.where))); var dd = el("dd"), a = el("a", "", ev.place); a.href = K.mapsUrl(ev.place); a.target = "_blank"; a.rel = "noopener"; a.style.color = "#a8302a"; dd.appendChild(a); dl.appendChild(dd); }
     c.appendChild(dl);
     var row = el("div", "tk-row");
-    if (ev.host) { var s1 = el("button", "fbb fbb-pri", "↗ " + t(T.send)); s1.type = "button"; s1.onclick = function () { K.share(ev.title, t(T.shareT, { t: ev.title }), location.origin + "/nearby/come-over/#p=" + code); }; row.appendChild(s1);
+    if (ev.host) { var s1 = el("button", "fbb fbb-pri", "↗ " + t(T.send)); s1.type = "button"; s1.onclick = function () { K.share(ev.title, t(T.shareT, { t: ev.title }), (window.FBApps ? FBApps.link("party", "#p=" + code) : location.origin + "/nearby/come-over/#p=" + code)); }; row.appendChild(s1);
       var e1 = el("button", "fbb", "✎ " + t(T.edit)); e1.type = "button"; e1.onclick = function () { openForm(true); }; row.appendChild(e1); }
     if (ev.date) { var cb = el("button", "fbb", t(T.cal)); cb.type = "button"; cb.onclick = ics; row.appendChild(cb); }
     c.appendChild(row);
     if (ev.host) { var dx = el("button", "tk-link", t(T.del)); dx.type = "button"; dx.style.color = "#8a5a3a"; dx.onclick = function () { if (!confirm(t(T.delSure))) return; K.secret("party").then(function (s) { return K.rpc("party_forget", { p_secret: s, p_code: code }); }).then(function () { forgetLocal(code); location.hash = ""; code = null; ev = null; paint(); }).catch(function () {}); }; c.appendChild(dx); }
     panel.appendChild(c);
-    if (!ev.host) rsvpCard();
+    if (!ev.host) { rsvpCard(); if (ans.had && ans.going === false) instead(); }
     /* who's coming, and what nobody has said they'll bring yet */
     panel.appendChild(el("p", "tk-k", t(T.who)));
     var gs = ev.guests || [];
@@ -171,6 +174,14 @@
     else { var gc = el("div", "tk-card"); gs.forEach(function (x) { var p = el("p", "guest"); p.appendChild(el("b", "", x.name)); p.appendChild(document.createTextNode(" · " + t(x.going ? T.going : T.notGoing) + (x.items && x.items.length ? " · " + x.items.join(", ") : ""))); if (x.note) { p.appendChild(document.createElement("br")); p.appendChild(el("i", "", "“" + x.note + "”")); } gc.appendChild(p); }); panel.appendChild(gc); }
     var claimed = {}; gs.forEach(function (x) { if (x.going) (x.items || []).forEach(function (i) { claimed[i] = 1; }); });
     var still = (ev.items || []).filter(function (i) { return !claimed[i]; }); if (still.length && ev.items.length) panel.appendChild(el("p", "tk-dim", t(T.still, { i: still.join(", ") })));
+  }
+  /* a guest who can't come gets one gentle way to be there anyway: flowers for the hosts, or a table for two from afar (FBApps: the app when it's out, the town place till then) */
+  function instead() {
+    if (!window.FBApps) return;
+    var c = el("div", "tk-card"); c.appendChild(el("p", "tk-dim", t(T.insteadH))); var r = el("div", "tk-row");
+    var f = el("button", "fbb", "🌼 " + (ev.hosts ? t(T.flw, { n: ev.hosts }) : t(T.flw0))); f.type = "button"; f.onclick = function () { FBApps.go("flowers", { to: ev.hosts || "" }); }; r.appendChild(f);
+    var d = el("button", "fbb", "🕯️ " + t(T.tbl)); d.type = "button"; d.onclick = function () { FBApps.go("table"); }; r.appendChild(d);
+    c.appendChild(r); panel.appendChild(c);
   }
   function rsvpCard() {
     var c = el("div", "tk-card"); c.appendChild(el("h3", "tk-h", t(T.coming)));
@@ -186,7 +197,7 @@
   function ics() {
     var d = (ev.date || "").replace(/-/g, ""), m = /^(\d{1,2})[:.h](\d{2})/.exec(ev.time || ""), start = m ? d + "T" + ("0" + m[1]).slice(-2) + m[2] + "00" : d;
     var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Nearby//Come Over//EN", "BEGIN:VEVENT", "UID:" + code + "@nearby", "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, ""),
-      (m ? "DTSTART:" : "DTSTART;VALUE=DATE:") + start, "SUMMARY:" + ev.title.replace(/[,;\n]/g, " "), ev.place ? "LOCATION:" + ev.place.replace(/[,;\n]/g, " ") : "", "URL:" + location.origin + "/nearby/come-over/#p=" + code, "END:VEVENT", "END:VCALENDAR"].filter(Boolean);
+      (m ? "DTSTART:" : "DTSTART;VALUE=DATE:") + start, "SUMMARY:" + ev.title.replace(/[,;\n]/g, " "), ev.place ? "LOCATION:" + ev.place.replace(/[,;\n]/g, " ") : "", "URL:" + (window.FBApps ? FBApps.link("party", "#p=" + code) : location.origin + "/nearby/come-over/#p=" + code), "END:VEVENT", "END:VCALENDAR"].filter(Boolean);
     var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([lines.join("\r\n")], { type: "text/calendar" })); a.download = "come-over.ics"; document.body.appendChild(a); a.click(); setTimeout(function () { a.remove(); }, 500);
   }
 

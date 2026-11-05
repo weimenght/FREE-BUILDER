@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt fbfit">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=94ef37d575"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=e47cad56c6" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=f6145f761a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=e47cad56c6" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Two Candles · Nearby</title>
 <meta name="description" content="A candlelit table for two people who live apart. Sit down together from anywhere, cook the same dinner step by step, raise a glass, and talk until the candles go out.">
@@ -62,6 +62,7 @@ main{max-width:760px;margin:0 auto;padding:4px 16px 120px}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#7a6a5a;margin-right:6px;vertical-align:middle}.dot.ok{background:#7affc1}.dot.bad{background:#e8705a}
 .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(16px);opacity:0;transition:.25s;z-index:9600;background:#000;color:#ffe8b0;border:3px solid var(--a);padding:8px 14px;font-size:19px;pointer-events:none;max-width:calc(100vw - 32px);text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%)}
+.out{margin:4px 2px 12px;font-size:18px;opacity:.85}.out a{color:inherit;text-underline-offset:3px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit .fit-panel .seats{margin-top:0}
@@ -85,6 +86,7 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
       <input class="field" id="myName" maxlength="20" autocomplete="nickname">
       <button class="big" type="button" id="reserve">🕯️ <span data-t="reserve">Book a table for two</span></button>
     </div>
+    <p class="out"><a href="/handoff/" data-app="handoff" data-t="hoff">Between dinners, Handoff keeps you two in step ↗</a></p>
     <div class="panel" id="pastBox" hidden><h2>📜 <span data-t="past">OUR EVENINGS</span></h2><div id="past"></div></div>
   </section>
 
@@ -154,6 +156,7 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   function toast(m) { var e = $("toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 3200); }
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
   var W = {
+    hoff: ["Between dinners, Handoff keeps you two in step ↗", "两顿饭之间，用 Handoff 保持同步 ↗", "兩頓飯之間，用 Handoff 保持同步 ↗", "Entre cenas, Handoff os mantiene al compás ↗", "Entre sopars, Handoff us manté al compàs ↗"],
     title: ["TWO CANDLES", "双烛小馆", "雙燭小館", "DOS VELAS", "DUES ESPELMES"],
     resTitle: ["RESERVE A TABLE", "订一张桌子", "訂一張桌子", "RESERVA UNA MESA", "RESERVA UNA TAULA"],
     resText: ["For someone far away. Send the link, stay on the call.", "给远方的那个人。发个链接，通话别挂。", "給遠方的那個人。傳個連結，通話別掛。", "Para alguien lejos. Mándale el enlace y seguid en la llamada.", "Per a algú lluny. Envia-li l'enllaç i seguiu a la trucada."],
@@ -300,7 +303,7 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   function sit(c) {
     code = c; started = 0; stats = { clinks: 0, cards: 0, notes: 0 };
     $("lobby").hidden = true; $("table").hidden = false;
-    var link = location.origin + "/nearby/two-candles/?t=" + c; $("link").textContent = link;
+    var link = window.FBApps ? FBApps.link("table", "?t=" + c) : location.origin + "/nearby/two-candles/?t=" + c; $("link").textContent = link;
     $("invite").hidden = c.charAt(0) === "h";
     if (c.charAt(0) !== "h") { try { history.replaceState(null, "", "?t=" + c); } catch (e) {} }
     ready().then(function () { net = transport(c, onMsg, function (st) { $("netDot").className = "dot " + (st === "ok" ? "ok" : st === "bad" ? "bad" : ""); }); });
@@ -368,13 +371,16 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   }
   function clink(mine) { clinkAt = Date.now(); stats.clinks++; if (mine) tx("clink", {}); try { var A = ac(), n = A.currentTime; [2093, 2637, 3136].forEach(function (q, i) { var o = A.createOscillator(), g = A.createGain(); o.type = "sine"; o.frequency.value = q * (mine ? 1 : 1.01); g.gain.setValueAtTime(.05, n + .45 + i * .015); g.gain.exponentialRampToValueAtTime(.0001, n + 1.6); o.connect(g); g.connect(A.destination); o.start(n + .45); o.stop(n + 1.7); }); } catch (e) {} }
   $("blow").onclick = function () { blowMe = 1; tx("blow", {}); if (!here() || blowThem) goodnight(); else { $("blow").disabled = true; toast(t("blowWait").replace("{p}", them.name)); } };
+  /* links to the other after-hours apps go through FBApps: the whole window goes (out of the town's frame too) */
+  function wireApps(root) { [].forEach.call((root || document).querySelectorAll("a[data-app]"), function (a) { if (!window.FBApps) return; a.href = FBApps.href(a.dataset.app); a.onclick = function (e) { e.preventDefault(); FBApps.go(a.dataset.app); }; }); }
+  wireApps();
   function goodnight() {
     flameOut = Date.now(); music(false);
     var mins = started ? Math.max(1, Math.round((Date.now() - started) / 60000)) : 0, dish = DISH[S.d] ? tr(DISH[S.d].n) : "";
     var rec = { at: Date.now(), with: here() ? them.name : "", mins: mins, dish: dish, clinks: stats.clinks, cards: stats.cards, notes: stats.notes };
     var past = []; try { past = JSON.parse(ls("fb_table_evenings") || "[]"); } catch (e) {} past.unshift(rec); ls("fb_table_evenings", JSON.stringify(past.slice(0, 30)));
     var box = $("p-end"); box.innerHTML = ""; var r = document.createElement("div"); r.className = "receipt"; r.textContent = receipt(rec); box.appendChild(r);
-    var a = document.createElement("button"); a.type = "button"; a.className = "big"; a.textContent = t("again"); a.onclick = function () { location.reload(); }; box.appendChild(a);
+    var a = document.createElement("button"); a.type = "button"; a.className = "big"; a.textContent = t("again"); a.onclick = function () { location.reload(); }; box.appendChild(a); var o = document.querySelector(".out"); if (o) box.appendChild(o.cloneNode(true)), wireApps(box);
     open = "end"; panels(); box.hidden = false;
   }
   function receipt(r) {

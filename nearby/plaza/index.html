@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=94ef37d575"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=e47cad56c6" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=f6145f761a"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=e47cad56c6" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Plaza · Nearby</title>
 <meta name="description" content="The square in the middle of Nearby: a fountain, benches, pigeons. Toss a coin and make a wish; keep it to yourself or let it float for the town to read.">
@@ -505,7 +505,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     if (!BQ.f.length) { stemsBox.classList.remove("hop"); void stemsBox.offsetWidth; stemsBox.classList.add("hop"); return; }
     var from = ""; try { from = localStorage.getItem("fb_nick") || ""; } catch (e) {}
     var o = { f: BQ.f.join(""), w: BQ.w, t: $("bqTo").value.trim().slice(0, 24), m: $("bqMsg").value.trim().slice(0, 80), n: from.slice(0, 24) };
-    var url = location.origin + "/nearby/plaza/#bq=" + b64(o), text = t("shareT");
+    var url = window.FBApps ? FBApps.link("flowers", "#bq=" + b64(o)) : location.origin + "/nearby/plaza/#bq=" + b64(o), text = t("shareT");
     show(null);
     if (navigator.share) navigator.share({ title: t("h1"), text: text, url: url }).catch(function () {});
     else if (navigator.clipboard) navigator.clipboard.writeText(text + " " + url).then(function () { note(t("copied"), "↗"); }).catch(function () {});
@@ -524,6 +524,13 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     }, 900);
   } }
   $("bqBack").onclick = openBouquet;
+  /* sent here to make one (FBApps.go("flowers", {to}) from Come Over or another app): the stall opens with who it's for written in */
+  function flowersFor() {
+    var m = /[#&]flowers(?:=([^&]*))?(?:&|$)/.exec(location.hash); if (!m) return;
+    var to = ""; try { to = decodeURIComponent(m[1] || "").slice(0, 24); } catch (e) {}
+    setTimeout(function () { openBouquet(); $("bqTo").value = to; }, 600);
+  }
+  flowersFor(); addEventListener("hashchange", flowersFor);
   /* a cart's card: what it is, and where the real one is */
   var cartK = null;
   function paintCart(k, had) {
