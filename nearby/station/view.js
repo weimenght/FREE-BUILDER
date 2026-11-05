@@ -900,7 +900,21 @@
   function spoken(st) { return st.say || (st.name === "Gulou Hutong" ? "鼓楼胡同" : st.jp && !st.look ? st.jp.replace(/駅$/, "") : st.name); }
   var voices = []; function loadVoices() { try { voices = speechSynthesis.getVoices() || []; } catch (e) {} }
   if (window.speechSynthesis) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
-  function voiceFor(tag) { var l = tag.toLowerCase(), base = l.split("-")[0], best = null; voices.forEach(function (v) { var vl = (v.lang || "").toLowerCase().replace("_", "-"); if (vl === l) best = best && best.l === 2 ? best : { v: v, l: 2 }; else if (!best && vl.split("-")[0] === base) best = { v: v, l: 1 }; }); return best && best.v; }
+  /* macOS (Safari, Firefox) lists Apple's novelty voices alongside the real ones, and some of them beep, sing or buzz instead of
+     speaking (the owner heard "a noisy beep" after the arrival, Nov 5): never pick those; prefer the system's own voice for the
+     language, then a natural or enhanced one, then a local one */
+  var ODD = /^(albert|bad news|bahh|bells|boing|bubbles|cellos|deranged|good news|hysterical|jester|junior|organ|pipe organ|princess|ralph|superstar|trinoids|whisper|wobble|zarvox|fred|kathy|grandma|grandpa|rocko|shelley|eddy|flo|reed|sandy)\b/i;
+  function voiceFor(tag) {
+    var l = tag.toLowerCase(), base = l.split("-")[0], best = null, bs = -1;
+    voices.forEach(function (v) {
+      var vl = (v.lang || "").toLowerCase().replace("_", "-"), nm = (v.name || "").replace(/^(microsoft|google|apple)\s+/i, "");
+      if (ODD.test(nm)) return;
+      var sc = vl === l ? 20 : vl.split("-")[0] === base ? 10 : -1; if (sc < 0) return;
+      if (v["default"]) sc += 4; if (/enhanced|premium|natural|neural/i.test(v.name || "")) sc += 3; if (v.localService) sc += 1;
+      if (sc > bs) { bs = sc; best = v; }
+    });
+    return best;
+  }
   var NEXT = { jp: "次は、{n}です。", cn: "下一站，{n}。", fr: "Prochain arrêt : {n}.", de: "Nächster Halt: {n}.", ch: "Nächster Halt: {n}.", es: "Próxima parada: {n}.", ca: "Propera parada: {n}.", us: "Next stop, {n}.", uk: "The next station is {n}.", it: "Prossima fermata: {n}.", hk: "下一站：{n}。", cy: "Yr orsaf nesaf yw {n}." };
   /* say it in the station's own language; if this phone has no such voice, say it in English rather than not at all */
   function speak(st, line) {
@@ -912,7 +926,7 @@
     var lk = lookOf(st), vo = VOICE[lk], v = vo ? voiceFor(vo[0]) : null, text;
     if (!v && lk === "ch") v = voiceFor("de-DE");
     if (v) text = (line === "next" ? NEXT[lk] : vo[1]).replace(/\{n\}/g, spoken(st));
-    else { v = voiceFor("en-GB") || voiceFor("en-US") || voices[0] || null; text = (line === "next" ? "The next stop is {n}." : "We are now arriving at {n}.").replace(/\{n\}/g, st.name); }
+    else { v = voiceFor("en-GB") || voiceFor("en-US") || null; if (!v) return; text = (line === "next" ? "The next stop is {n}." : "We are now arriving at {n}.").replace(/\{n\}/g, st.name); }
     try { if (typeof isAudioPlaying !== "undefined" && !isAudioPlaying) return; speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(text); if (v) { u.voice = v; u.lang = v.lang; } else u.lang = vo ? vo[0] : "en-GB"; u.rate = lk === "jp" || lk === "cn" ? 0.92 : 0.95; u.pitch = lk === "jp" ? 1.1 : 1; u.volume = 0.9; speechSynthesis.speak(u); } catch (e) {}
   }
   function announce(st) {
