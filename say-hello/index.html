@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=35d3a9106b"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Say Hello · a postcard that opens on its day</title>
+<meta name="description" content="Write a postcard today and seal it until the day it matters. Send the link with a line that says why, or print it and post it by hand. No account.">
+<meta name="theme-color" content="#efe9dd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14161f" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Say Hello">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+:root{
+  --bg:#efe9dd;--bg2:#e5ddcc;--panel:#fbf8f1;--ink:#1d2436;--ink2:#5d6475;--line:#d8cfbd;--red:#c23b26;--blue:#26467f;--gold:#b8862e;
+  --paper:#fcf8ef;--paper2:#f3ecdc;--kraft:#ead9b8;--pen:#26467f;--shadow:0 1px 0 rgba(255,255,255,.7) inset,0 22px 44px -26px rgba(29,36,54,.55);
+  --serif:"Instrument Serif","Iowan Old Style",Georgia,"Songti SC","Noto Serif SC","Noto Serif TC",serif;
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI","PingFang SC","PingFang TC","Microsoft YaHei",sans-serif;
+  --hand:"Caveat","Bradley Hand","Kaiti SC","STKaiti","KaiTi","Kaiti TC",cursive;
+  --type:"Special Elite","Courier New",monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#14161f;--bg2:#1b1e2a;--panel:#1e2230;--ink:#ece6d8;--ink2:#a9abb6;--line:#30364a;--red:#e2674f;--blue:#8fb0ec;--gold:#d9ad5c;
+  --shadow:0 24px 48px -24px #000;color-scheme:dark}}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.5;background-image:radial-gradient(rgba(90,80,60,.07) 1px,transparent 1.3px);background-size:6px 6px;z-index:0}
+button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}
+a{color:var(--red)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:8px}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-right))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* top bar: airmail stripe under it */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:repeating-linear-gradient(-45deg,var(--red) 0 10px,transparent 10px 16px,var(--blue) 16px 26px,transparent 26px 32px);opacity:.85}
+.top .wrap{display:flex;align-items:center;gap:8px;min-height:62px;padding-top:env(safe-area-inset-top)}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit}
+.brand svg{flex:none;width:36px;height:36px}
+.brand b{font:400 clamp(24px,5.4vw,30px)/1 var(--serif);letter-spacing:.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;min-width:44px;padding:0 13px;border-radius:999px;border:1px solid var(--line);background:var(--panel);font:600 14px var(--sans);white-space:nowrap}
+.ib:hover{border-color:var(--gold)}
+.ib svg{width:18px;height:18px;flex:none}
+.ib .dot{position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px var(--panel)}
+@media (max-width:560px){.ib .lbl{display:none}.ib{padding:0}}
+.rel{position:relative}
+.langm{position:absolute;right:0;top:calc(100% + 6px);display:grid;min-width:160px;padding:6px;border-radius:14px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);z-index:30}
+.langm button{text-align:left;min-height:42px;padding:0 12px;border:0;border-radius:10px;background:none;font:500 15px var(--sans)}
+.langm button[aria-current=true]{background:var(--bg2);font-weight:700}
+
+/* hero */
+.hero{padding:26px 0 6px}
+.hero h1{margin:0;font:400 clamp(30px,6.6vw,52px)/1.04 var(--serif);letter-spacing:-.01em;max-width:17em}
+.hero h1 em{font-style:italic;color:var(--red)}
+.hero .popo{margin:10px 0 0;max-width:40em;color:var(--ink2);font:400 15.5px/1.5 var(--sans)}
+.hero .popo::before{content:"";display:inline-block;width:18px;height:12px;margin:0 8px -1px 0;border-radius:2px;background:repeating-linear-gradient(-45deg,var(--red) 0 3px,var(--paper) 3px 5px,var(--blue) 5px 8px,var(--paper) 8px 10px);box-shadow:0 0 0 1px var(--line)}
+.due{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:14px 0 0;padding:10px 14px;border-radius:14px;background:var(--panel);border:1px solid var(--line)}
+.due span{flex:1;min-width:12em}
+
+/* desk: the card beside the steps */
+.desk{display:grid;gap:22px;padding:18px 0 30px;align-items:start}
+@media (min-width:920px){.desk{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:40px}.stage{position:sticky;top:86px}}
+.stage{display:grid;gap:12px;justify-items:center}
+.flipbar{display:flex;gap:6px;justify-content:center}
+.seg{display:inline-flex;padding:4px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+.seg button{min-height:38px;padding:0 16px;border:0;border-radius:999px;background:none;font:600 14px var(--sans);color:var(--ink2)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+
+/* the postcard: 148 × 105, like A6 */
+.pc{position:relative;width:min(100%,560px);aspect-ratio:148/105;perspective:1400px;container-type:inline-size}
+.pc .in{position:absolute;inset:0;transition:transform .8s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d}
+.pc.flip .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:6px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 18px 38px -18px rgba(20,22,32,.55),0 2px 6px rgba(20,22,32,.18)}
+.face.back{transform:rotateY(180deg)}
+@media (prefers-reduced-motion:reduce){.pc .in{transition:none}}
+.front{background:#222}
+.front canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+.front .greet{position:absolute;left:4cqw;bottom:3.4cqw;max-width:78%;padding:1.4cqw 2.6cqw 1.6cqw;background:rgba(252,248,239,.92);border-radius:1cqw;color:#1d2436;box-shadow:0 .6cqw 1.6cqw rgba(0,0,0,.25);transform:rotate(-1.2deg)}
+.front .greet small{display:block;font:600 1.9cqw/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#7a5a3a}
+.front .greet b{display:block;font:italic 400 5.6cqw/1.05 var(--serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.front .greet b.ph{opacity:.38}
+.back{background:var(--paper);color:#1d2436}
+.back::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,#c23b26 0 2.2cqw,transparent 2.2cqw 3.4cqw,#26467f 3.4cqw 5.6cqw,transparent 5.6cqw 6.8cqw);-webkit-mask:linear-gradient(#000,#000) content-box exclude,linear-gradient(#000,#000);mask:linear-gradient(#000,#000) content-box exclude,linear-gradient(#000,#000);padding:1.3cqw;opacity:.9}
+.back .msg{position:absolute;left:5cqw;top:6cqw;width:44cqw;bottom:6cqw;font:500 4.3cqw/1.28 var(--hand);color:var(--pen);white-space:pre-wrap;overflow-wrap:anywhere;overflow:hidden}
+.back .msg.ph{opacity:.35}
+.back .div{position:absolute;left:52cqw;top:9cqw;bottom:9cqw;width:.25cqw;background:#cbbfa6}
+.back .right{position:absolute;left:56cqw;right:5cqw;top:6cqw;bottom:6cqw}
+.back .stp{position:absolute;right:0;top:0;width:15cqw;transform:rotate(3deg)}
+.back .pm{position:absolute;right:9.5cqw;top:6.5cqw;width:19cqw;opacity:.82;transform:rotate(-12deg);pointer-events:none}
+.back .lines{position:absolute;left:0;right:0;top:28cqw;display:grid;gap:3.6cqw}
+.back .ln{display:flex;align-items:flex-end;gap:1.4cqw;min-height:5.6cqw;border-bottom:.22cqw solid #cbbfa6;font:500 4.1cqw/1 var(--hand);color:var(--pen);white-space:nowrap;overflow:hidden}
+.back .ln small{font:600 1.8cqw/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#8a7f6a;padding-bottom:.6cqw}
+.back .ln .ph{opacity:.35}
+
+/* the envelope a sealed card arrives in */
+.env{position:absolute;inset:0;border-radius:6px;background:var(--kraft);color:#2a2418;overflow:hidden;box-shadow:0 18px 38px -18px rgba(20,22,32,.55),0 2px 6px rgba(20,22,32,.18);transition:transform .7s cubic-bezier(.5,0,.2,1),opacity .6s}
+.env::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-45deg,#c23b26 0 2.2cqw,#fbf6ea 2.2cqw 3.4cqw,#26467f 3.4cqw 5.6cqw,#fbf6ea 5.6cqw 6.8cqw);-webkit-mask:linear-gradient(#000,#000) content-box exclude,linear-gradient(#000,#000);mask:linear-gradient(#000,#000) content-box exclude,linear-gradient(#000,#000);padding:1.6cqw}
+.env::after{content:"";position:absolute;inset:1.6cqw;background:radial-gradient(120% 90% at 30% 20%,rgba(255,255,255,.35),transparent 60%),repeating-linear-gradient(90deg,rgba(120,90,40,.035) 0 2px,transparent 2px 5px);pointer-events:none}
+.env .stp{position:absolute;right:6cqw;top:6cqw;width:15cqw;transform:rotate(3deg);z-index:1}
+.env .pm{position:absolute;right:15cqw;top:10cqw;width:21cqw;opacity:.85;transform:rotate(-10deg);z-index:2}
+.env .addr{position:absolute;left:12cqw;right:28cqw;top:34cqw;z-index:1;font:500 5.4cqw/1.2 var(--hand);color:#1d2436}
+.env .addr small{display:block;font:500 3.6cqw/1.3 var(--hand);color:#5a4a30}
+.env .when{position:absolute;left:12cqw;bottom:9cqw;z-index:1;font:400 2.5cqw/1.2 var(--type);letter-spacing:.06em;text-transform:uppercase;color:#7a2a1a}
+.env .seal{position:absolute;right:9cqw;bottom:8cqw;width:15cqw;aspect-ratio:1;z-index:3;border:0;padding:0;background:none}
+.env .seal svg{width:100%;height:100%;filter:drop-shadow(0 .6cqw .8cqw rgba(60,10,0,.35))}
+.env .seal:disabled{cursor:default}
+.env .seal.ready{animation:glint 3.2s ease-in-out 1}
+@keyframes glint{0%,100%{filter:none}40%{filter:drop-shadow(0 0 2.4cqw rgba(246,183,60,.9))}}
+.env.gone{transform:translateY(16%) rotate(-3deg);opacity:0;pointer-events:none}
+
+/* steps */
+.steps{display:grid;gap:14px}
+.step{padding:16px 16px 18px;border-radius:18px;background:var(--panel);border:1px solid var(--line)}
+.step h2{display:flex;align-items:baseline;gap:10px;margin:0 0 12px;font:400 23px/1.1 var(--serif)}
+.step h2 i{font:600 12px/1 var(--sans);font-style:normal;letter-spacing:.12em;color:var(--red);padding:5px 7px;border:1px solid currentColor;border-radius:999px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.thumb{position:relative;padding:0;border:2px solid transparent;border-radius:8px;background:none;aspect-ratio:160/110;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.thumb canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+.thumb[aria-pressed=true]{border-color:var(--red);box-shadow:0 0 0 2px var(--panel),0 0 0 4px var(--red)}
+.stamps{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
+@media (max-width:520px){.stamps{grid-template-columns:repeat(5,1fr)}}
+.sbtn{padding:4px;border:2px solid transparent;border-radius:8px;background:none;min-height:44px}
+.sbtn svg{width:100%;height:auto;display:block}
+.sbtn[aria-pressed=true]{border-color:var(--red);background:var(--bg2)}
+label.f{display:grid;gap:4px;font:600 13px var(--sans);color:var(--ink2);letter-spacing:.02em}
+.f input,.f textarea,.f select,.why input{width:100%;min-height:46px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font:400 16px/1.4 var(--sans);color:var(--ink)}
+.f textarea{min-height:118px;resize:vertical;font:500 21px/1.3 var(--hand);color:var(--pen)}
+@media (prefers-color-scheme:dark){.f textarea{color:#b9cdf3}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fields{display:grid;gap:10px}
+.left{min-height:1.2em;font-size:13px;color:var(--ink2);text-align:right}
+.inks{display:flex;gap:8px;align-items:center}
+.inks b{font:600 13px var(--sans);color:var(--ink2);margin-right:4px}
+.inkb{width:34px;height:34px;border-radius:50%;border:3px solid var(--panel);box-shadow:0 0 0 1px var(--line);background:var(--c)}
+.inkb[aria-pressed=true]{box-shadow:0 0 0 2px var(--ink)}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:42px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);font:500 14.5px var(--sans);color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:hover{border-color:var(--gold)}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.opens{margin:10px 0 0;font:400 13px/1.3 var(--type);letter-spacing:.04em;color:var(--red)}
+.why{display:grid;gap:8px}
+.hint{margin:0;font-size:13.5px;color:var(--ink2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:999px;border:1px solid var(--line);background:var(--panel);font:600 15.5px var(--sans);text-decoration:none;color:var(--ink);transition:transform .12s}
+.btn:active{transform:translateY(1px)}
+.btn.pri{background:var(--red);border-color:var(--red);color:#fff8ef}
+.btn.sm{min-height:42px;padding:0 16px;font-size:14px}
+.btn svg{width:18px;height:18px;flex:none}
+.btn:disabled{opacity:.55;cursor:default}
+@media (prefers-color-scheme:dark){.btn.pri{color:#1a0e0a}}
+.sendrow{display:grid;gap:10px}
+.sendrow .btn.pri{min-height:56px;font-size:17px}
+.quiet{border:0;background:none;padding:6px 0;font:500 14.5px var(--sans);color:var(--ink2);text-decoration:underline;text-underline-offset:3px;text-align:left}
+.quiet:hover{color:var(--ink)}
+.small{font-size:13.5px;color:var(--ink2)}
+
+/* reading */
+.read{display:grid;justify-items:center;gap:16px;padding:28px 0 34px}
+.read .pc{width:min(100%,600px)}
+.read .note{margin:0;text-align:center;max-width:32em;font:400 clamp(22px,4.6vw,30px)/1.2 var(--serif)}
+.read .sub{margin:0;text-align:center;max-width:34em;color:var(--ink2)}
+.acts{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* the town */
+.town{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin:8px 0 34px;padding:16px 18px;border-radius:18px;background:#1d1526;color:#efe7ff}
+.town svg{width:42px;height:42px}
+.town b{display:block;font:400 21px/1.15 var(--serif)}
+.town span{font-size:14.5px;opacity:.85}
+.town a{color:#1d1526;background:#f6b73c;border-color:#f6b73c}
+@media (max-width:520px){.town{grid-template-columns:auto 1fr}.town a{grid-column:1/-1}}
+.foot{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:center;padding:22px 0 calc(28px + env(safe-area-inset-bottom));border-top:1px solid var(--line);color:var(--ink2);font-size:14px}
+.foot a{color:var(--ink2);text-underline-offset:3px}
+.foot .ah{color:var(--red)}
+
+/* sheets */
+.scrim{position:fixed;inset:0;z-index:60;display:grid;place-items:end center;background:rgba(14,14,22,.5);animation:fi .2s}
+@media (min-width:700px){.scrim{place-items:center}}
+@keyframes fi{from{opacity:0}}
+.sheet{position:relative;width:min(100%,560px);max-height:min(92vh,880px);overflow:auto;padding:22px 20px calc(22px + env(safe-area-inset-bottom));border-radius:22px 22px 0 0;background:var(--panel);box-shadow:var(--shadow);animation:up .25s cubic-bezier(.2,.8,.2,1)}
+@media (min-width:700px){.sheet{border-radius:22px}}
+.sheet.wide{width:min(100%,760px)}
+@keyframes up{from{transform:translateY(24px);opacity:0}}
+.sheet h3{margin:0 44px 6px 0;font:400 28px/1.1 var(--serif)}
+.sheet h3:focus{outline:none}
+.sheet .x{position:absolute;right:12px;top:12px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);font-size:18px}
+.sheet .sub{margin:0 0 14px;color:var(--ink2)}
+.linkbox{display:flex;gap:8px;margin:8px 0 12px}
+.linkbox input{flex:1;min-width:0;min-height:46px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font:500 14px var(--sans)}
+.stack{display:grid;gap:10px}
+.stack .btn{width:100%}
+.ws{display:grid;gap:12px;margin:12px 0 18px;padding:0;list-style:none}
+.ws li{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:center}
+.ws svg{width:52px;height:52px}
+.ws b{display:block;font:400 21px/1.15 var(--serif)}
+.ws span{color:var(--ink2);font-size:15px}
+.tabs{display:flex;margin:6px 0 12px}
+.list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.it{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;padding:8px;border-radius:14px;border:1px solid var(--line);background:var(--bg)}
+.it canvas{width:62px;height:43px;border-radius:4px;image-rendering:pixelated;display:block}
+.it a{color:var(--ink);text-decoration:none;font-weight:600}
+.it .s{display:block;font:400 12.5px/1.3 var(--type);letter-spacing:.03em;color:var(--ink2)}
+.it .s.r{color:var(--red)}
+.it .ops{display:flex;gap:4px}
+.ib.mini{min-height:38px;min-width:38px;padding:0}
+.sec{margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+.sec h4{margin:0 0 6px;font:400 22px/1.1 var(--serif)}
+.qr{display:grid;place-items:center;padding:12px;background:#fff;border-radius:10px;margin-top:10px}
+.qr svg{max-width:100%;height:auto}
+details summary{cursor:pointer;margin-top:10px;color:var(--ink2);font-size:14px}
+.ir{display:flex;gap:8px;margin-top:8px}
+.ir input{flex:1;min-width:0;min-height:44px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-size:16px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));z-index:90;max-width:min(92vw,460px);transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:12px 18px;border-radius:14px;background:var(--ink);color:var(--bg);font:500 15px/1.4 var(--sans);box-shadow:0 12px 30px -10px rgba(0,0,0,.5);transition:.25s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* print preview + the printed card itself (148 × 105 mm, front then back) */
+.ppv{display:grid;gap:12px;margin:12px 0}
+.ppw{position:relative;width:100%;aspect-ratio:148/105;overflow:hidden;border-radius:4px;box-shadow:0 8px 20px -10px rgba(0,0,0,.4),0 0 0 1px var(--line)}
+.ppw .pp{position:absolute;left:0;top:0;transform-origin:0 0}
+.pp{width:148mm;height:105mm;position:relative;overflow:hidden;background:#fff;color:#1d2436;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pp .img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.pp .greet{position:absolute;left:6mm;bottom:5mm;max-width:100mm;padding:2mm 4mm 2.4mm;background:rgba(252,248,239,.94);border-radius:1.4mm;transform:rotate(-1.2deg)}
+.pp .greet small{display:block;font:600 2.7mm/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#7a5a3a}
+.pp .greet b{display:block;font:italic 400 8mm/1.05 var(--serif)}
+.pp.bk{background:#fcf8ef}
+.pp .bmsg{position:absolute;left:7mm;top:8mm;width:64mm;bottom:8mm;font:500 6mm/1.3 var(--hand);white-space:pre-wrap;overflow-wrap:anywhere;overflow:hidden}
+.pp .bseal{position:absolute;left:7mm;top:14mm;width:62mm;font:500 9mm/1.15 var(--hand)}
+.pp .bseal small{display:block;margin-top:3mm;font:400 3mm/1.3 var(--type);letter-spacing:.05em;text-transform:uppercase;color:#7a2a1a}
+.pp .bdiv{position:absolute;left:76mm;top:10mm;bottom:10mm;width:.35mm;background:#cbbfa6}
+.pp .bstp{position:absolute;right:7mm;top:7mm;width:21mm;height:25mm;border:.4mm dashed #b4a88f;border-radius:1mm;display:grid;place-items:center;font:600 2.3mm/1.2 var(--sans);letter-spacing:.1em;color:#b4a88f;text-transform:uppercase;text-align:center}
+.pp .bstp svg{width:19mm;height:auto}
+.pp .bpm{position:absolute;right:20mm;top:10mm;width:26mm;opacity:.8;transform:rotate(-12deg)}
+.pp .baddr{position:absolute;left:81mm;right:7mm;top:42mm;display:grid;gap:6.2mm}
+.pp .baddr i{display:block;height:6mm;border-bottom:.3mm solid #b4a88f;font:500 5.4mm/1 var(--hand);font-style:normal;white-space:nowrap;overflow:hidden}
+.pp .baddr small{display:block;font:600 2.2mm var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#8a7f6a;margin-bottom:-3mm}
+.pp .bqr{position:absolute;left:81mm;bottom:6mm;display:flex;gap:2.4mm;align-items:center}
+.pp .bqr svg{width:17mm;height:17mm;display:block}
+.pp .bqr span{font:400 2.4mm/1.3 var(--type);letter-spacing:.04em;color:#5d6475;max-width:36mm}
+.pp .bfrom{position:absolute;left:7mm;bottom:6mm;font:400 2.4mm var(--type);letter-spacing:.06em;color:#8a7f6a;text-transform:uppercase}
+#printArea{display:none}
+@media print{
+  @page{size:148mm 105mm;margin:0}
+  html,body{background:#fff!important;margin:0}
+  body::before{display:none}
+  body>*:not(#printArea){display:none!important}
+  #printArea{display:block}
+  #printArea .pp{page-break-after:always;break-after:page}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./" aria-label="Say Hello"><svg viewBox="0 0 36 36" aria-hidden="true"><g transform="rotate(-6 18 18)"><rect x="4" y="7" width="28" height="21" rx="2" fill="#fcf8ef" stroke="#1d2436" stroke-width="1.6"/><path d="M4.8 8.2 18 18.5 31.2 8.2" fill="none" stroke="#1d2436" stroke-width="1.6" stroke-linejoin="round"/><rect x="22" y="10" width="7" height="8" rx=".6" fill="#c23b26"/></g><circle cx="11" cy="27" r="5" fill="#c23b26"/><path d="M8.6 26.6c.9-1.6 3.4-1.6 4.4.1" fill="none" stroke="#fcf8ef" stroke-width="1.3" stroke-linecap="round"/></svg><b data-i="name">Say Hello</b></a>
+  <button class="ib" id="howB" type="button" data-ia="how"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14"/><circle cx="12" cy="17.5" r=".6" fill="currentColor"/></svg></button>
+  <div class="rel"><button class="ib" id="langB" type="button" data-ia="lang" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg><span class="lbl" id="langL">EN</span></button></div>
+  <button class="ib" id="mineB" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="1.5"/><path d="m3.5 7 8.5 6.5L20.5 7"/></svg><span class="lbl" data-i="mine">My postcards</span><span class="dot" id="mineDot" hidden></span></button>
+</div></header>
+
+<main class="wrap" id="main">
+  <!-- writing -->
+  <div id="writeV">
+    <section class="hero">
+      <h1 id="tagH">Write it today. It opens on the day it matters.</h1>
+      <p class="popo" data-i="popo"></p>
+      <div class="due" id="due" hidden></div>
+    </section>
+    <div class="desk">
+      <div class="stage">
+        <div class="pc" id="card" role="img"><div class="in">
+          <div class="face front"><canvas id="scene" width="160" height="110"></canvas><div class="greet"><small data-i="greet">Greetings from</small><b id="gPlace"></b></div></div>
+          <div class="face back"><div class="msg" id="bMsg"></div><div class="div"></div><div class="right"><div class="stp" id="bStamp"></div><div class="pm" id="bPm"></div>
+            <div class="lines"><div class="ln"><small data-i="to">To</small><span id="bTo"></span></div><div class="ln"></div><div class="ln"><small data-i="from">From</small><span id="bFrom"></span></div></div></div></div>
+        </div></div>
+        <div class="flipbar"><div class="seg" role="group"><button type="button" id="sideF" aria-pressed="true" data-i="front">Front</button><button type="button" id="sideB" aria-pressed="false" data-i="back">Back</button></div></div>
+      </div>
+      <div class="steps">
+        <section class="step"><h2><i>1</i><span data-i="s1">The picture</span></h2><div class="thumbs" id="thumbs" role="group"></div>
+          <label class="f" style="margin-top:12px"><span data-i="greet">Greetings from</span><input id="place" maxlength="40" autocomplete="off" data-ip="placePh"></label></section>
+        <section class="step"><h2><i>2</i><span data-i="s2">The stamp</span></h2><div class="stamps" id="stamps" role="group"></div></section>
+        <section class="step"><h2><i>3</i><span data-i="s3">On the back</span></h2>
+          <div class="fields">
+            <label class="f"><span class="sr" data-i="s3"></span><textarea id="msg" maxlength="300" data-ip="msgPh"></textarea></label><div class="left" id="left"></div>
+            <div class="grid2"><label class="f"><span data-i="to">To</span><input id="to" maxlength="32" autocomplete="off" data-ip="toPh"></label><label class="f"><span data-i="from">From</span><input id="from" maxlength="32" autocomplete="nickname" data-ip="fromPh"></label></div>
+            <div class="inks" id="inks"><b data-i="ink">Ink</b></div>
+          </div></section>
+        <section class="step"><h2><i>4</i><span data-i="s4">When it opens</span></h2><div class="row" id="whens" role="group"></div>
+          <div class="pick" id="pickRow" hidden><label class="f"><span data-i="dayL">Day</span><input type="date" id="pickD"></label><label class="f"><span data-i="timeL">Time</span><input type="time" id="pickT" step="900"></label></div>
+          <p class="opens" id="opens"></p></section>
+        <section class="step"><h2><i>5</i><span data-i="s5">Why you're sending it</span></h2>
+          <div class="why"><input id="why" maxlength="120" autocomplete="off" data-ip="whyPh"><div class="row" id="whys"></div><p class="hint" data-i="whyHint"></p></div></section>
+        <div class="sendrow">
+          <button class="btn pri" id="sendB" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11.5 21 4l-6.5 17-3.2-7.3z"/><path d="m11.3 13.7 4.2-4.2"/></svg><span id="sendL">Seal it and send</span></button>
+          <button class="quiet" id="wallB" type="button"><span data-i="wallOr"></span> ↗</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- a card someone sent -->
+  <section class="read" id="readV" hidden>
+    <div class="pc" id="rcard"><div class="in">
+      <div class="face front"><canvas id="rscene" width="160" height="110"></canvas><div class="greet"><small data-i="greet">Greetings from</small><b id="rPlace"></b></div></div>
+      <div class="face back"><div class="msg" id="rMsg"></div><div class="div"></div><div class="right"><div class="stp" id="rStamp"></div><div class="pm" id="rPm"></div>
+        <div class="lines"><div class="ln"><small data-i="to">To</small><span id="rTo"></span></div><div class="ln"></div><div class="ln"><small data-i="from">From</small><span id="rFrom"></span></div></div></div></div>
+    </div></div>
+    <div class="flipbar" id="rFlip" hidden><div class="seg" role="group"><button type="button" id="rsideF" aria-pressed="true" data-i="front">Front</button><button type="button" id="rsideB" aria-pressed="false" data-i="back">Back</button></div></div>
+    <p class="note" id="rNote"></p>
+    <p class="sub" id="rSub"></p>
+    <div class="acts" id="rActs"></div>
+  </section>
+
+  <section class="town" id="town">
+    <svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="6" width="12" height="9" fill="#8a2a1e"/><rect x="1" y="5" width="14" height="2" fill="#4a1a12"/><rect x="3" y="3" width="10" height="2" fill="#4a1a12"/><rect x="4" y="8" width="8" height="4" fill="#fcf8ef"/><rect x="4" y="8" width="8" height="1" fill="#26467f"/><rect x="10" y="9" width="1" height="2" fill="#c23b26"/><rect x="7" y="13" width="2" height="2" fill="#2a1a10"/></svg>
+    <div><b data-i="inTown"></b><span data-i="same"></span></div>
+    <a class="btn sm" id="walkA" href="/nearby/?at=%2Fnearby%2Fsay-hello%2F" data-i="walk">Walk there</a>
+  </section>
+</main>
+<footer class="foot wrap" id="foot">
+  <a href="/nearby/" data-i="nearbyLink">Nearby</a>
+  <a class="ah" id="ahA" href="https://www.wei-meng.org/after-hours/" target="_blank" rel="noopener"><span data-i="ah">After hours</span> ↗</a>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="printArea" aria-hidden="true"></div>
+
+<script>
+/* Postcard pictures, drawn as pixels: the same drawings as Say Hello in Nearby (nearby/say-hello, the pc-scenes block), so a card
+   looks the same wherever it's opened. Keep the two copies identical. */
+window.PCScenes = (function () {
+  var W = 160, H = 110;
+  function rng(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return function () { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 10000) / 10000; }; }
+  function mk(g) { return { r: function (x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); } }; }
+  function bands(p, cols, y0, y1) { var n = cols.length, hh = (y1 - y0) / n; cols.forEach(function (c, i) { p.r(0, y0 + i * hh, W, hh + 1, c); }); }
+  function cloud(p, x, y, s, c) { p.r(x, y + 2 * s, 12 * s, 3 * s, c); p.r(x + 2 * s, y, 5 * s, 3 * s, c); p.r(x + 6 * s, y + s, 4 * s, 2 * s, c); }
+  function ridge(p, R, y, amp, c, step) { var h = y; for (var x = 0; x < W; x += step) { h += (R() - .5) * amp; h = Math.max(y - amp * 2, Math.min(y + amp, h)); p.r(x, h, step, H - h, c); } }
+  function ell(p, cx, cy, rx, ry, c, top) { for (var y = -ry; y <= ry; y++) { if (top === 1 && y < 0) continue; var w = Math.round(rx * Math.sqrt(1 - (y * y) / (ry * ry))); p.r(cx - w, cy + y, w * 2, 1, c); } }
+  var S = {
+    hutong: function (p, R) {
+      bands(p, ["#3b2a5a", "#5b3a6e", "#8a4a6a", "#c46a5a", "#e8996a"], 0, 60);
+      p.r(0, 60, W, 50, "#6e6a66");
+      for (var y = 62; y < 108; y += 5) for (var x = (y / 5 % 2) * 6; x < W; x += 12) p.r(x, y, 11, 4, R() < .5 ? "#7d7873" : "#75706b");
+      p.r(0, 42, 52, 68, "#8a8580"); p.r(108, 42, 52, 68, "#8a8580");
+      for (var i = 0; i < 52; i += 6) { p.r(i, 36, 5, 8, "#3a3a40"); p.r(108 + i, 36, 5, 8, "#3a3a40"); }
+      p.r(0, 34, 54, 3, "#2a2a30"); p.r(106, 34, 54, 3, "#2a2a30");
+      for (var yy = 46; yy < 110; yy += 6) for (var xx = (yy / 6 % 2) * 5; xx < 52; xx += 10) { p.r(xx, yy, 9, 5, "#96918b"); p.r(108 + xx, yy, 9, 5, "#96918b"); }
+      p.r(64, 52, 32, 58, "#2a1a14"); p.r(66, 54, 13, 56, "#9c2418"); p.r(81, 54, 13, 56, "#9c2418"); p.r(77, 78, 2, 3, "#f6b73c"); p.r(81, 78, 2, 3, "#f6b73c");
+      p.r(60, 46, 40, 6, "#3a3a40"); p.r(58, 44, 44, 3, "#2a2a30");
+      [[24, 50], [134, 50]].forEach(function (l) { p.r(l[0], l[1] - 6, 1, 6, "#2a1a14"); p.r(l[0] - 5, l[1], 11, 12, "#e0402a"); p.r(l[0] - 4, l[1] + 1, 9, 10, "#ff6a4a"); p.r(l[0] - 2, l[1] + 12, 5, 3, "#f6b73c"); p.r(l[0] - 9, l[1] - 3, 19, 18, "rgba(255,160,90,.12)"); });
+      p.r(118, 28, 8, 6, "#111"); p.r(119, 26, 2, 2, "#111"); p.r(124, 26, 2, 2, "#111"); p.r(126, 31, 6, 2, "#111");
+      for (var s = 0; s < 14; s++) p.r(R() * W, R() * 26, 1, 1, "rgba(255,255,230,.7)");
+    },
+    sky: function (p, R) {
+      bands(p, ["#7fb8e8", "#93c6ee", "#a8d4f2", "#c0e2f6", "#d8eef8"], 0, 82);
+      ell(p, 128, 22, 9, 9, "#fff2b0"); ell(p, 128, 22, 7, 7, "#fff8d8");
+      cloud(p, 14, 18, 2, "#ffffff"); cloud(p, 70, 34, 3, "#f4fbff"); cloud(p, 104, 56, 2, "#ffffff");
+      ridge(p, R, 84, 3, "#7fb46a", 4); ridge(p, R, 92, 2, "#5f9c50", 3);
+      for (var i = 0; i < 26; i++) { var x = R() * W, y = 90 + R() * 18; p.r(x, y, 1, 4, "#3f7a3a"); if (R() < .45) { p.r(x - 1, y - 2, 3, 3, "#ffffff"); } else p.r(x, y - 1, 2, 2, R() < .5 ? "#f6d84a" : "#f4a0b8"); }
+      for (var j = 0; j < 7; j++) p.r(30 + R() * 100, 40 + R() * 40, 1, 1, "#ffffff");
+    },
+    peak: function (p, R) {
+      bands(p, ["#2a3e7a", "#3d5a9a", "#5a7ab8", "#87a4d0", "#c4d6ea"], 0, 70);
+      p.r(26, 12, 2, 2, "#fff"); p.r(110, 8, 1, 1, "#fff"); p.r(70, 16, 1, 1, "#fff");
+      for (var x = 0; x < W; x++) { var h = 30 + Math.abs(x - 92) * .9 + (R() - .5) * 3; p.r(x, h, 1, H - h, "#5a6680"); if (h < 46) p.r(x, h, 1, Math.max(2, 46 - h), "#eef4fa"); }
+      for (var x2 = 0; x2 < W; x2++) { var h2 = 56 + Math.abs(x2 - 30) * .6 + (R() - .5) * 2; p.r(x2, h2, 1, H - h2, "#3e4a62"); if (h2 < 62) p.r(x2, h2, 1, 2, "#d8e4f0"); }
+      ridge(p, R, 92, 3, "#2a3a2e", 3);
+      for (var t = 0; t < 16; t++) { var tx = R() * W, ty = 88 + R() * 16; p.r(tx, ty - 6, 1, 8, "#1a2a1e"); p.r(tx - 2, ty - 3, 5, 4, "#1f3a26"); p.r(tx - 1, ty - 6, 3, 3, "#1f3a26"); }
+      p.r(84, 38, 2, 3, "#e0402a"); p.r(84, 36, 2, 2, "#f5d49a");
+      for (var k = 0; k < 10; k++) p.r(86 + k * 1.2, 41 + k * 1.6, 1, 1, "#f6b73c");
+    },
+    sea: function (p, R) {
+      bands(p, ["#2a2050", "#5a2a6a", "#a83a5a", "#e8604a", "#f6a04a", "#ffd07a"], 0, 66);
+      ell(p, 80, 66, 16, 12, "#ffe7a0"); p.r(0, 66, W, 44, "#1e3a6a");
+      bands(p, ["#2a4a7a", "#244272", "#1e3a6a", "#1a3460", "#162e56"], 66, 110);
+      for (var i = 0; i < 18; i++) { var y = 68 + i * 2.3, w = 30 - i * 1.2; if (w > 2) p.r(80 - w / 2 + (R() - .5) * 4, y, w, 1, "rgba(255,210,140,.7)"); }
+      for (var j = 0; j < 30; j++) p.r(R() * W, 70 + R() * 40, 3 + R() * 6, 1, "rgba(200,220,255,.35)");
+      p.r(118, 60, 1, 10, "#2a1a14"); p.r(119, 60, 7, 8, "#fbeedd"); p.r(112, 70, 16, 3, "#2a1a14");
+      p.r(30, 30, 3, 1, "#2a1a14"); p.r(33, 29, 3, 1, "#2a1a14"); p.r(44, 24, 3, 1, "#2a1a14"); p.r(47, 23, 3, 1, "#2a1a14");
+    },
+    train: function (p, R) {
+      bands(p, ["#9ccbe8", "#b6d9ee", "#d2e8f2"], 0, 60);
+      cloud(p, 30, 14, 2, "#fff"); cloud(p, 100, 22, 2, "#fff");
+      ridge(p, R, 56, 3, "#7a9a7a", 4); ridge(p, R, 66, 2, "#9cbc6a", 3); p.r(0, 74, W, 36, "#c8b45a");
+      for (var r = 76; r < 110; r += 4) p.r(0, r, W, 1, "#b4a04a");
+      for (var x = 6; x < W; x += 34) { p.r(x, 40, 2, 36, "#4a3a2a"); p.r(x - 4, 42, 10, 1, "#4a3a2a"); }
+      p.r(0, 46, W, 1, "rgba(40,30,20,.6)");
+      p.r(0, 0, W, 8, "#5a2a1e"); p.r(0, 0, 10, H, "#5a2a1e"); p.r(150, 0, 10, H, "#5a2a1e"); p.r(0, 92, W, 18, "#6e3424"); p.r(0, 90, W, 3, "#8a4a30");
+      p.r(78, 0, 4, 92, "#5a2a1e"); p.r(10, 8, 68, 2, "rgba(255,255,255,.25)");
+      p.r(110, 82, 9, 9, "#f6ecd2"); p.r(119, 84, 3, 4, "#f6ecd2"); p.r(111, 83, 7, 3, "#8a4a24"); p.r(112, 77, 1, 3, "rgba(255,255,255,.6)"); p.r(115, 75, 1, 4, "rgba(255,255,255,.6)");
+      p.r(26, 84, 22, 6, "#2c4a86"); p.r(27, 85, 20, 1, "#f6ecd2");
+    },
+    bowl: function (p, R) {
+      p.r(0, 0, W, H, "#1e2238");
+      for (var i = 0; i < 40; i++) p.r(R() * W, R() * H, 2, 1, "rgba(255,255,255,.04)");
+      p.r(0, 78, W, 32, "#2a2e48"); p.r(0, 78, W, 2, "#353a58");
+      ell(p, 80, 92, 34, 6, "rgba(0,0,0,.35)");
+      for (var y = 0; y < 34; y++) { var w = Math.round(44 * Math.sqrt(1 - Math.pow(y / 36, 2))); p.r(80 - w, 54 + y, w * 2, 1, y < 3 ? "#e6dccb" : (y % 7 === 0 ? "#cfc2ac" : "#d8ccb6")); }
+      ell(p, 80, 54, 44, 6, "#3a2a20"); ell(p, 80, 54, 41, 4, "#5a3a26");
+      p.r(66, 88, 28, 4, "#c8baa2");
+      var x = 58, yy = 56; for (var k = 0; k < 20; k++) { x += 1.3; yy += (k % 4 < 2 ? 1.6 : -.4); p.r(x, yy, 2, 2, "#f6c84a"); if (k === 9) for (var m = 0; m < 6; m++) p.r(x + m, yy + m * 1.4, 2, 2, "#e8b030"); }
+      for (var s = 0; s < 6; s++) p.r(60 + R() * 40, 60 + R() * 20, 1, 1, "#fff6c0");
+    },
+    bar: function (p, R) {
+      p.r(0, 0, W, H, "#3a2216");
+      for (var x = 0; x < W; x += 10) p.r(x, 0, 1, 70, "#2e1a10");
+      ell(p, 80, 0, 46, 30, "rgba(246,183,60,.14)"); p.r(79, 0, 2, 8, "#111"); p.r(72, 8, 16, 5, "#2a2a2a"); p.r(74, 13, 12, 2, "#ffd27a");
+      p.r(8, 40, 144, 3, "#5a3420"); p.r(8, 22, 144, 3, "#5a3420");
+      var cols = ["#2f6a3a", "#8a2a1e", "#d8b45a", "#2a4a7a", "#6a2a5a", "#c8c8c8", "#3a6a6a"];
+      for (var b = 12; b < 150; b += 9) { var c = cols[Math.floor(R() * cols.length)], h = 10 + R() * 6; p.r(b, 40 - h, 6, h, c); p.r(b + 2, 40 - h - 4, 2, 4, c); p.r(b + 1, 40 - h + 3, 1, h - 5, "rgba(255,255,255,.3)"); if (R() < .6) { var h2 = 8 + R() * 6; p.r(b, 22 - h2, 6, h2, cols[Math.floor(R() * cols.length)]); } }
+      p.r(0, 78, W, 32, "#5a2e1a"); p.r(0, 76, W, 4, "#8a4a2a");
+      p.r(64, 56, 20, 2, "#e8f0f4"); for (var i = 0; i < 9; i++) p.r(65 + i, 58 + i, 18 - i * 2, 1, i < 6 ? "#f6a04a" : "#e8f0f4"); p.r(73, 67, 2, 8, "#e8f0f4"); p.r(68, 75, 12, 1, "#e8f0f4"); p.r(80, 52, 4, 4, "#7aba4a");
+      p.r(112, 66, 12, 9, "#231b17"); p.r(112, 62, 3, 4, "#231b17"); p.r(121, 62, 3, 4, "#231b17"); p.r(124, 72, 8, 2, "#231b17"); p.r(114, 68, 2, 1, "#f2c94c"); p.r(120, 68, 2, 1, "#f2c94c"); p.r(117, 70, 2, 1, "#c98272");
+    },
+    night: function (p, R) {
+      bands(p, ["#0a0a1e", "#121232", "#1a1a44", "#24245a"], 0, 110);
+      for (var s = 0; s < 40; s++) p.r(R() * W, R() * 60, 1, 1, R() < .3 ? "#fff6c0" : "#a8b4ff");
+      ell(p, 122, 20, 8, 8, "#fff2c8"); ell(p, 126, 18, 7, 7, "#121232");
+      var x = 0; while (x < W) { var w = 10 + R() * 18, h = 30 + R() * 50; p.r(x, H - h, w, h, "#0a0a14"); for (var wy = H - h + 4; wy < H - 4; wy += 5) for (var wx = x + 2; wx < x + w - 2; wx += 4) if (R() < .35) p.r(wx, wy, 2, 2, R() < .8 ? "#f6c84a" : "#7affc1"); x += w + 1; }
+    }
+  };
+  function draw(cv, scene, seed) { var g = cv.getContext("2d"); cv.width = W; cv.height = H; g.imageSmoothingEnabled = false; (S[scene] || S.hutong)(mk(g), rng(scene + (seed || ""))); }
+  return { W: W, H: H, LIST: Object.keys(S), draw: draw,
+    ICON: { hutong: "🏮", sky: "☁️", peak: "⛰️", sea: "🌊", train: "🚃", bowl: "🍵", bar: "🍸", night: "🌙" },
+    STAMPS: { cat: ["🐈", "#c8402a"], cocktail: ["🍸", "#2c6a8a"], train: ["🚃", "#3a7a4a"], peak: ["🏔️", "#5a5a9a"], cloud: ["☁️", "#4a8ac8"], bowl: ["🍵", "#a8782a"], record: ["💿", "#6a2a5a"], book: ["📖", "#8a4a24"], lantern: ["🏮", "#b3261e"] },
+    INK: { blue: "#2c4a86", black: "#2a2420", red: "#a8321e", green: "#2a6a4a" } };
+})();
+</script>
+<script>
+/* Say Hello, the app: the same postcards as Say Hello in Nearby (town_postcards on Nearby's server through postcard_send / _get /
+   _mine; the sender's key is this browser's fb_device_key, which the database only keeps as a one-way fingerprint). A card sent
+   here opens in town and the other way round: the same id, either address (?c=). What you sent and received is listed on this
+   device only (postcard_sent / postcard_box / postcard_waiting, shared with the town), never counted. The reminder (.ics) and the
+   printed card are made on the device. */
+(function () {
+  "use strict";
+  var STR = {"name":["Say Hello","问个好","問個好","Di Hola","Digues Hola"],"docTitle":["Say Hello · a postcard that opens on its day","问个好 · 到了那天才拆开的明信片","問個好 · 到了那天才拆開的明信片","Di Hola · una postal que se abre en su día","Digues Hola · una postal que s'obre el seu dia"],"tag":["Write it today. It opens on the day it matters.","今天写好，到了要紧的那天才拆开。","今天寫好，到了要緊的那天才拆開。","Escríbela hoy. Se abre el día que importa.","Escriu-la avui. S'obre el dia que importa."],"popo":["Popo keeps thirty years of postcards from New York in her tin. The newest, in pink pen, says: coming for the holidays.","婆婆的饼干罐里有三十年来从纽约寄来的明信片。最新的一张是粉色的笔写的：放假要来。","婆婆的曲奇罐裡有三十年來從紐約寄來的明信片。最新的一張是粉色的筆寫的：放假要來。","Popo guarda en su lata treinta años de postales de Nueva York. La más nueva, en boli rosa, dice: voy en vacaciones.","La Popo guarda a la llauna trenta anys de postals de Nova York. La més nova, amb boli rosa, diu: vinc per vacances."],"how":["How it works","怎么用","怎麼用","Cómo funciona","Com funciona"],"lang":["Language","语言","語言","Idioma","Idioma"],"mine":["My postcards","我的明信片","我的明信片","Mis postales","Les meves postals"],"close":["Close","关闭","關閉","Cerrar","Tanca"],"s1":["The picture","图案","圖案","La imagen","La imatge"],"s2":["The stamp","邮票","郵票","El sello","El segell"],"s3":["On the back","背面","背面","Por detrás","Al darrere"],"s4":["When it opens","什么时候拆开","什麼時候拆開","Cuándo se abre","Quan s'obre"],"s5":["Why you're sending it","为什么寄","為什麼寄","Por qué la envías","Per què l'envies"],"front":["Front","正面","正面","Delante","Davant"],"back":["Back","背面","背面","Detrás","Darrere"],"flip":["Turn it over","翻过来","翻過來","Darle la vuelta","Girar-la"],"greet":["Greetings from","寄自","寄自","Saludos desde","Records des de"],"placePh":["somewhere","某个地方","某個地方","algún lugar","algun lloc"],"msgPh":["Write a few lines…","写几句话……","寫幾句話……","Escribe unas líneas…","Escriu unes línies…"],"to":["To","致","致","Para","Per a"],"toPh":["a friend","朋友","朋友","una amiga, un amigo","una amiga, un amic"],"from":["From","署名","署名","De","De"],"fromPh":["your name","你的名字","你的名字","tu nombre","el teu nom"],"ink":["Ink","墨水","墨水","Tinta","Tinta"],"ink_blue":["Blue","蓝","藍","Azul","Blau"],"ink_black":["Black","黑","黑","Negra","Negra"],"ink_red":["Red","红","紅","Roja","Vermella"],"ink_green":["Green","绿","綠","Verde","Verda"],"left":["{n} letters left","还能写 {n} 个字","還能寫 {n} 個字","Quedan {n} letras","Queden {n} lletres"],"w_now":["As soon as it arrives","收到就能拆","收到就能拆","En cuanto llegue","Tan bon punt arribi"],"w_tomorrow":["Tomorrow morning","明天早上","明天早上","Mañana por la mañana","Demà al matí"],"w_week":["In a week","一周后","一週後","En una semana","D'aquí a una setmana"],"w_month":["In a month","一个月后","一個月後","En un mes","D'aquí a un mes"],"w_year":["In a year","一年后","一年後","En un año","D'aquí a un any"],"w_pick":["On a day I choose","我来选日子","我來選日子","El día que yo elija","El dia que jo triï"],"dayL":["Day","日期","日期","Día","Dia"],"timeL":["Time","时间","時間","Hora","Hora"],"rightAway":["Opens as soon as it arrives.","收到就能拆开。","收到就能拆開。","Se abre en cuanto llegue.","S'obre tan bon punt arribi."],"sealedTill":["Sealed until {d}.","封存到 {d}。","封存到 {d}。","Cerrada hasta el {d}.","Tancada fins al {d}."],"whyPh":["Why now? A line for them","为什么是现在？写一句给对方","為什麼是現在？寫一句給對方","¿Por qué ahora? Una línea para quien la recibe","Per què ara? Una línia per a qui la rep"],"whyHint":["It goes with the link, not on the card.","这句话跟链接一起发出去，不写在明信片上。","這句話跟連結一起發出去，不寫在明信片上。","Va con el enlace, no en la postal.","Va amb l'enllaç, no a la postal."],"why1":["Because I miss you","因为想你了","因為想你了","Porque te echo de menos","Perquè et trobo a faltar"],"why2":["For your birthday","给你的生日","給你的生日","Para tu cumpleaños","Pel teu aniversari"],"why3":["For the day you land","等你落地那天拆","等你落地那天拆","Para el día que aterrices","Per al dia que aterris"],"why4":["Open it on a hard day","难熬的那天拆开","難熬的那天拆開","Ábrela un día difícil","Obre-la un dia difícil"],"why5":["Just because","没什么，就是想写","沒什麼，就是想寫","Porque sí","Perquè sí"],"send":["Seal it and send","封好，寄出","封好，寄出","Sellarla y enviar","Segella-la i envia"],"sendNow":["Send it","寄出","寄出","Enviarla","Envia-la"],"wallOr":["Or hang it on the Wall at Next Door, in Nearby","或者挂到近邻 “隔壁”的墙上","或者掛到近鄰 “隔壁”的牆上","O cuélgala en la pared de Al Lado, en Cerca","O penja-la a la paret d'Al Costat, a A Prop"],"wallNote":["Anyone who visits the Wall can read it once its day comes.","到了那天，来看墙的人都能读到。","到了那天，來看牆的人都能讀到。","Cuando llegue su día, quien visite la pared podrá leerla.","Quan arribi el seu dia, qui visiti la paret la podrà llegir."],"needMsg":["Write a few words on the back first.","先在背面写几句话吧。","先在背面寫幾句話吧。","Escribe antes unas palabras por detrás.","Escriu abans unes paraules al darrere."],"needFrom":["Sign it on the back.","在背面署个名。","在背面署個名。","Fírmala por detrás.","Signa-la al darrere."],"pastDay":["That day has already gone. Pick one ahead.","那天已经过去了，选个以后的日子。","那天已經過去了，選個以後的日子。","Ese día ya pasó. Elige uno más adelante.","Aquell dia ja ha passat. Tria'n un més endavant."],"sending":["To the post box…","正在投进邮筒……","正在投進郵筒……","Al buzón…","A la bústia…"],"offline":["The post office can't be reached right now. Try again soon.","现在连不上邮局，稍后再试。","現在連不上郵局，稍後再試。","Ahora no se llega a la oficina de correos. Prueba pronto.","Ara no s'arriba a l'oficina de correus. Torna-ho a provar aviat."],"rest":["The post office needs a short rest. Try again in a moment.","邮局要歇一会儿，稍后再试。","郵局要歇一會兒，稍後再試。","Correos necesita un respiro. Prueba en un momento.","Correus necessita un respir. Prova-ho d'aquí a un moment."],"privacy":["Kept on this device (your privacy choice). Sending needs a yes.","按你的隐私选择留在这台设备上。寄出需要你同意。","按你的隱私選擇留在這臺裝置上。寄出需要你同意。","Se queda en este dispositivo (tu elección de privacidad). Enviar necesita un sí.","Es queda en aquest dispositiu (la teva elecció de privadesa). Enviar necessita un sí."],"posted":["Posted.","寄出了。","寄出了。","Enviada.","Enviada."],"giveLink":["Give them this link:","把这个链接给对方：","把這個連結給對方：","Dale este enlace:","Dona-li aquest enllaç:"],"copy":["Copy","复制","複製","Copiar","Copia"],"copied":["Copied","已复制","已複製","Copiado","Copiat"],"share":["Send the link","发送链接","傳送連結","Enviar el enlace","Envia l'enllaç"],"shareText":["A postcard for you, from {n}.","{n} 给你寄了一张明信片。","{n} 給你寄了一張明信片。","Una postal para ti, de {n}.","Una postal per a tu, de {n}."],"shareSealed":["It opens on {d}.","{d} 才能拆开。","{d} 才能拆開。","Se abre el {d}.","S'obre el {d}."],"remind":["Remind me when it opens","拆开那天提醒我","拆開那天提醒我","Recuérdamelo cuando se abra","Recorda-m'ho quan s'obri"],"remindHint":["A calendar reminder, made on this device.","在这台设备上生成的日历提醒。","在這臺裝置上生成的日曆提醒。","Un recordatorio de calendario, hecho en este dispositivo.","Un recordatori de calendari, fet en aquest dispositiu."],"printIt":["Send it for real","真的寄出去","真的寄出去","Envíala de verdad","Envia-la de debò"],"printKeep":["Print it","打印出来","打印出來","Imprimirla","Imprimeix-la"],"another":["Write another","再写一张","再寫一張","Escribir otra","Escriu-ne una altra"],"onWall":["It's on the Wall at Next Door.","已经挂在 “隔壁”的墙上了。","已經掛在 “隔壁”的牆上了。","Ya está en la pared de Al Lado.","Ja és a la paret d'Al Costat."],"seeWall":["See it in Nearby","去近邻看看","去近鄰看看","Verla en Cerca","Veure-la a A Prop"],"opensOn":["Opens {d}","{d} 拆开","{d} 拆開","Se abre el {d}","S'obre el {d}"],"forYou":["For {n}","致 {n}","致 {n}","Para {n}","Per a {n}"],"fromW":["from {n}","来自 {n}","來自 {n}","de {n}","de {n}"],"sealedOn":["It opens on {d}.","{d} 才能拆开。","{d} 才能拆開。","Se abre el {d}.","S'obre el {d}."],"stays":["Until then it stays sealed. This link opens it on the day.","在那之前一直封着。到了那天，用这个链接就能拆开。","在那之前一直封著。到了那天，用這個連結就能拆開。","Hasta entonces sigue cerrada. Este enlace la abre ese día.","Fins aleshores queda tancada. Aquest enllaç l'obre aquell dia."],"ready":["It's the day. It's yours to open.","就是今天。拆开吧。","就是今天。拆開吧。","Es el día. Ábrela.","És el dia. Obre-la."],"breakSeal":["Break the seal","拆开火漆","拆開火漆","Romper el sello","Trenca el segell"],"reply":["Write one back","回一张","回一張","Responder con otra","Respon amb una altra"],"own":["Write your own","自己写一张","自己寫一張","Escribe la tuya","Escriu la teva"],"lost":["This postcard can't be found. It may have been taken back.","找不到这张明信片，可能已经被收回了。","找不到這張明信片，可能已經被收回了。","No se encuentra esta postal. Quizá la retiraron.","No es troba aquesta postal. Potser l'han retirada."],"kept":["Kept in My postcards on this device.","已收进这台设备上的“我的明信片”。","已收進這臺裝置上的“我的明信片”。","Guardada en Mis postales, en este dispositivo.","Desada a Les meves postals, en aquest dispositiu."],"dueNote":["{n}'s postcard can be opened now.","{n} 的明信片可以拆开了。","{n} 的明信片可以拆開了。","Ya puedes abrir la postal de {n}.","Ja pots obrir la postal de {n}."],"openIt":["Open it","拆开","拆開","Abrirla","Obre-la"],"someone":["someone","某人","某人","alguien","algú"],"pTitle":["Send it for real","真的寄出去","真的寄出去","Envíala de verdad","Envia-la de debò"],"pSub":["A6, front and back. Print both sides, write the address, add a real stamp and post it.","A6 尺寸，正反两面。打印出来，写上地址，贴一张真邮票，投进邮筒。","A6 尺寸，正反兩面。打印出來，寫上地址，貼一張真郵票，投進郵筒。","A6, por delante y por detrás. Imprímela, escribe la dirección, ponle un sello de verdad y al buzón.","A6, per davant i per darrere. Imprimeix-la, escriu l'adreça, posa-hi un segell de debò i a la bústia."],"pWords":["Print the words","印上留言","印上留言","Imprimir las palabras","Imprimir les paraules"],"pSeal":["Keep the words for the day","留言等到那天","留言等到那天","Guardar las palabras para el día","Guardar les paraules per al dia"],"pSealHint":["The card says when to open it; the code opens the words.","卡上只写哪天拆，扫码才能看到留言。","卡上只寫哪天拆，掃碼才能看到留言。","La postal dice cuándo abrirla; el código abre las palabras.","La postal diu quan obrir-la; el codi obre les paraules."],"pGo":["Print","打印","列印","Imprimir","Imprimeix"],"pOpenOn":["Open me on {d}","请在 {d} 拆开","請在 {d} 拆開","Ábreme el {d}","Obre'm el {d}"],"pScan":["Scan to read it","扫码阅读","掃碼閱讀","Escanea para leerla","Escaneja per llegir-la"],"pScanSealed":["Scan on the day","到那天再扫","到那天再掃","Escanea ese día","Escaneja aquell dia"],"pAddr":["Address","地址","地址","Dirección","Adreça"],"pTip":["Tip: print on card at actual size, both sides.","提示：用卡纸按实际大小双面打印。","提示：用卡紙按實際大小雙面列印。","Consejo: imprime en cartulina a tamaño real, a doble cara.","Consell: imprimeix en cartolina a mida real, a doble cara."],"calSender":["Your postcard to {n} opens today","你寄给 {n} 的明信片今天可以拆开了","你寄給 {n} 的明信片今天可以拆開了","Hoy se abre tu postal para {n}","Avui s'obre la teva postal per a {n}"],"calSender0":["Your postcard opens today","你寄的明信片今天可以拆开了","你寄的明信片今天可以拆開了","Hoy se abre tu postal","Avui s'obre la teva postal"],"calRecv":["A postcard from {n} can be opened","{n} 的明信片可以拆开了","{n} 的明信片可以拆開了","Ya puedes abrir la postal de {n}","Ja pots obrir la postal de {n}"],"calBody":["Open it here:","在这里拆开：","在這裡拆開：","Ábrela aquí:","Obre-la aquí:"],"sent":["Sent","寄出的","寄出的","Enviadas","Enviades"],"got":["Received","收到的","收到的","Recibidas","Rebudes"],"noneSent":["Nothing sent from this device yet.","这台设备还没寄过。","這臺裝置還沒寄過。","Aún no has enviado nada desde este dispositivo.","Encara no has enviat res des d'aquest dispositiu."],"noneGot":["Nothing here yet. A card someone sends you lands here once you open its link.","这里还空着。别人寄给你的明信片，打开链接后就会收在这里。","這裡還空著。別人寄給你的明信片，開啟連結後就會收在這裡。","Aún no hay nada. Una postal que te envíen llega aquí en cuanto abras su enlace.","Encara no hi ha res. Una postal que t'enviïn arriba aquí tan bon punt n'obris l'enllaç."],"toW":["To {n}","致 {n}","致 {n}","Para {n}","Per a {n}"],"wallW":["On the Wall at Next Door","挂在 “隔壁”的墙上","掛在 “隔壁”的牆上","En la pared de Al Lado","A la paret d'Al Costat"],"openedW":["Opened","已拆开","已拆開","Abierta","Oberta"],"canOpen":["Ready to open","可以拆了","可以拆了","Lista para abrir","A punt per obrir"],"remove":["Take it off this list","从列表里拿掉","從列表裡拿掉","Quitarla de la lista","Treure-la de la llista"],"onDevice":["These lists stay on this device.","这些列表只留在这台设备上。","這些列表只留在這臺裝置上。","Estas listas se quedan en este dispositivo.","Aquestes llistes es queden en aquest dispositiu."],"fetchMine":["Bring back the cards this key sent","找回这把钥匙寄出的明信片","找回這把鑰匙寄出的明信片","Recuperar las postales que envió esta llave","Recuperar les postals que va enviar aquesta clau"],"fetched":["Your sent cards are back on the list.","寄出的明信片回到列表里了。","寄出的明信片回到列表裡了。","Tus postales enviadas vuelven a estar en la lista.","Les postals enviades tornen a ser a la llista."],"fetchNone":["This key hasn't sent a card yet.","这把钥匙还没寄过明信片。","這把鑰匙還沒寄過明信片。","Esta llave aún no ha enviado ninguna postal.","Aquesta clau encara no ha enviat cap postal."],"keysH":["Your keychain","你的钥匙串","你的鑰匙串","Tu llavero","El teu clauer"],"keysP":["The cards you send belong to this device's key, the same key as in Nearby. Take it to another phone or computer and they come with you.","你寄出的明信片属于这台设备的钥匙，和近邻用的是同一把。把它带到另一台手机或电脑上，明信片也跟着过去。","你寄出的明信片屬於這臺裝置的鑰匙，和近鄰用的是同一把。把它帶到另一臺手機或電腦上，明信片也跟著過去。","Las postales que envías son de la llave de este dispositivo, la misma que en Cerca. Llévala a otro móvil u ordenador y vienen contigo.","Les postals que envies són de la clau d'aquest dispositiu, la mateixa que a A Prop. Porta-la a un altre mòbil o ordinador i vénen amb tu."],"copyLink":["Copy the link","复制链接","複製連結","Copiar el enlace","Copia l'enllaç"],"showQr":["Show a QR code","显示二维码","顯示二維碼","Mostrar un código QR","Mostra un codi QR"],"keysWarn":["Anyone with this link can act as you. Keep it like a house key.","拿到这个链接的人就能以你的身份操作，像家门钥匙一样收好。","拿到這個連結的人就能以你的身份操作，像家門鑰匙一樣收好。","Quien tenga este enlace puede actuar como tú. Guárdalo como la llave de casa.","Qui tingui aquest enllaç pot actuar com tu. Guarda'l com la clau de casa."],"haveKey":["I have a keychain link","我有钥匙串链接","我有鑰匙串連結","Tengo un enlace de llavero","Tinc un enllaç de clauer"],"keyPh":["Paste the link","粘贴链接","貼上連結","Pega el enlace","Enganxa l'enllaç"],"open":["Open","打开","開啟","Abrir","Obre"],"keyHere":["Your keychain is on this device now.","钥匙串已经在这台设备上了。","鑰匙串已經在這臺裝置上了。","Tu llavero ya está en este dispositivo.","El teu clauer ja és en aquest dispositiu."],"badKey":["That doesn't look like a keychain link.","这不像是钥匙串链接。","這不像是鑰匙串連結。","Eso no parece un enlace de llavero.","Això no sembla un enllaç de clauer."],"w_h":["A postcard that waits for its day","一张等到那天才拆开的明信片","一張等到那天才拆開的明信片","Una postal que espera su día","Una postal que espera el seu dia"],"w_1h":["Write","写","寫","Escribe","Escriu"],"w_1":["Pick a picture and a stamp. Write on the back.","选一张图、一枚邮票，在背面写几句。","選一張圖、一枚郵票，在背面寫幾句。","Elige una imagen y un sello. Escribe por detrás.","Tria una imatge i un segell. Escriu al darrere."],"w_2h":["Seal it","封好","封好","Séllala","Segella-la"],"w_2":["Choose the day it opens: tomorrow, a birthday, next year.","选好拆开的日子：明天、一个生日、明年。","選好拆開的日子：明天、一個生日、明年。","Elige el día que se abre: mañana, un cumpleaños, el año que viene.","Tria el dia que s'obre: demà, un aniversari, l'any que ve."],"w_3h":["Send it","寄出","寄出","Envíala","Envia-la"],"w_3":["A link with a line that says why. Or print it and post it by hand.","发一个链接，附一句为什么。或者打印出来，亲手投进邮筒。","發一個連結，附一句為什麼。或者打印出來，親手投進郵筒。","Un enlace con una línea que dice por qué. O imprímela y échala al buzón.","Un enllaç amb una línia que diu per què. O imprimeix-la i tira-la a la bústia."],"w_go":["Write one","写一张","寫一張","Escribir una","Escriure'n una"],"inTown":["Say Hello is a shop in Nearby too.","近邻小镇里也有一家 “问个好”。","近鄰小鎮裡也有一家 “問個好”。","Di Hola también es una tienda en Cerca.","Digues Hola també és una botiga a A Prop."],"same":[" The same postcards: a card sent from either opens in both.","同样的明信片：从哪边寄出，两边都能拆开。","同樣的明信片：從哪邊寄出，兩邊都能拆開。"," Las mismas postales: una postal enviada desde cualquiera se abre en las dos."," Les mateixes postals: una postal enviada des de qualsevol s'obre a totes dues."],"walk":["Walk there","走过去","走過去","Ir andando","Anar-hi"],"nearbyLink":["Nearby","近邻","近鄰","Cerca","A Prop"],"ah":["After hours","下班以后","下班以後","Fuera de horario","Fora d'hores"],"sc_hutong":["Hutong","胡同","衚衕","Hutong","Hutong"],"sc_sky":["A sky to lie under","躺着看的天","躺著看的天","Un cielo para tumbarse","Un cel per estirar-se"],"sc_peak":["The peak","山顶","山頂","La cumbre","El cim"],"sc_sea":["Sea at dusk","黄昏的海","黃昏的海","Mar al atardecer","Mar al capvespre"],"sc_train":["Train window","车窗","車窗","Ventanilla del tren","Finestra del tren"],"sc_bowl":["The mended bowl","金缮的碗","金繕的碗","El cuenco remendado","El bol adobat"],"sc_bar":["Next Door","“隔壁”","“隔壁”","Al Lado","Al Costat"],"sc_night":["City night","城市夜景","城市夜景","Noche en la ciudad","Nit a la ciutat"],"st_cat":["Cat","猫","貓","Gato","Gat"],"st_cocktail":["Cocktail","鸡尾酒","雞尾酒","Cóctel","Còctel"],"st_train":["Train","火车","火車","Tren","Tren"],"st_peak":["Mountain","山","山","Montaña","Muntanya"],"st_cloud":["Cloud","云","雲","Nube","Núvol"],"st_bowl":["Tea bowl","茶碗","茶碗","Cuenco de té","Bol de te"],"st_record":["Record","唱片","唱片","Disco","Disc"],"st_book":["Book","书","書","Libro","Llibre"],"st_lantern":["Lantern","灯笼","燈籠","Farolillo","Fanalet"]};
+  var P = window.PCScenes;
+  var LANGS = ["en", "zh", "zh-Hant", "es", "ca"], NAMES = ["English", "简体中文", "繁體中文", "Español", "Català"], SHORT = ["EN", "简中", "繁中", "ES", "CA"];
+  var LOCALE = { en: "en-GB", zh: "zh-CN", "zh-Hant": "zh-TW", es: "es-ES", ca: "ca-ES" };
+  var KEYS = { d: "fb_device_key", b: "dogeared_key" }, KOK = /^[A-Za-z0-9_-]{32,128}$/;
+  var STAMP_V = ["1", "2", "3", "5", "8"];
+  var $ = function (s, r) { return (r || document).querySelector(s); }, $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+  function jget(k) { try { var v = JSON.parse(lsGet(k) || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+  function jset(k, v, n) { lsSet(k, JSON.stringify(v.slice(0, n || 60))); }
+  function toast(m, ms) { var t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(t._t); t._t = setTimeout(function () { t.classList.remove("on"); }, ms || 3600); }
+
+  /* ---------- five languages (the same choice as the rest of FREE//BUILDER) ---------- */
+  function lang() { var l = (window.FBL && FBL.get && FBL.get()) || lsGet("wm_preferred_lang") || (navigator.language || "en"); if (/^zh-(tw|hk|mo|hant)/i.test(l)) l = "zh-Hant"; else if (/^zh/i.test(l)) l = "zh"; else l = l.slice(0, 2); return LANGS.indexOf(l) >= 0 ? l : "en"; }
+  function t(k, v) { var row = STR[k], s = row ? (row[LANGS.indexOf(lang())] || row[0]) : k; if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]); return s; }
+  function fmt(d, short) { try { return new Intl.DateTimeFormat(LOCALE[lang()], short ? { day: "numeric", month: "short", year: d.getFullYear() !== new Date().getFullYear() ? "numeric" : undefined } : { weekday: "long", day: "numeric", month: "long", year: d.getFullYear() !== new Date().getFullYear() ? "numeric" : undefined, hour: "2-digit", minute: "2-digit" }).format(d); } catch (e) { return d.toLocaleString(); } }
+  function pmDate(d) { try { return new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(d).toUpperCase(); } catch (e) { return d.toDateString(); } }
+
+  /* ---------- keys: the same keychain as Nearby ---------- */
+  function newKey() { var a = new Uint8Array(32); crypto.getRandomValues(a); return btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+  function key(create) { var k = lsGet(KEYS.d); if ((!k || !KOK.test(k)) && create) { k = newKey(); lsSet(KEYS.d, k); } return k && KOK.test(k) ? k : null; }
+  function b64u(s) { return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+  function unb64u(s) { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return decodeURIComponent(escape(atob(s))); }
+  function keyLink() { key(true); var o = {}; for (var k in KEYS) { var v = lsGet(KEYS[k]); if (v) o[k] = v; } return location.origin + "/say-hello/#keys=k1." + b64u(JSON.stringify(o)); }
+  function keyImport(text) {   /* a keychain link from Nearby, Borrowed Pages or here (k1), or a bare key */
+    text = String(text || "").trim();
+    var m = /k1\.([A-Za-z0-9_-]{20,600})/.exec(text), o = null;
+    if (m) { try { o = JSON.parse(unb64u(m[1])); } catch (e) { return false; } if (!o || !o.d || !KOK.test(o.d)) return false; }
+    else { var k = /(?:key=)?([A-Za-z0-9_-]{32,128})$/.exec(text); if (!k) return false; o = { d: k[1] }; }
+    var old = jget("fb_keys_old"), cur = {};
+    for (var x in KEYS) { var v = lsGet(KEYS[x]); if (v) cur[x] = v; }
+    if ((cur.d && o.d && cur.d !== o.d) || (cur.b && o.b && cur.b !== o.b)) { old.unshift(cur); jset("fb_keys_old", old, 5); }
+    for (var y in KEYS) if (o[y] && KOK.test(o[y])) lsSet(KEYS[y], o[y]);
+    ["fb_my_pets", "fb_pets_v"].forEach(function (z) { try { localStorage.removeItem(z); sessionStorage.removeItem(z); } catch (e) {} });
+    return true;
+  }
+
+  /* ---------- data ---------- */
+  var cfg = { url: "", key: "" }, cfgP = null;
+  function ready() {
+    return cfgP = cfgP || new Promise(function (res) {
+      if (window.FB_SUPABASE && FB_SUPABASE.url) { cfg.url = FB_SUPABASE.url; cfg.key = FB_SUPABASE.anonKey; return res(); }
+      var sc = document.createElement("script"); sc.src = "/config.js";
+      sc.onload = sc.onerror = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; res(); };
+      document.head.appendChild(sc);
+    });
+  }
+  function api(fn, args, get) {
+    return ready().then(function () {
+      if (!cfg.url) throw new Error("offline");
+      var u = cfg.url + "/rest/v1/rpc/" + fn, h = { apikey: cfg.key, Authorization: "Bearer " + cfg.key, "Content-Type": "application/json" };
+      if (get) u += "?" + Object.keys(args).map(function (k) { return k + "=" + encodeURIComponent(args[k]); }).join("&");
+      return fetch(u, get ? { headers: h } : { method: "POST", headers: h, body: JSON.stringify(args) }).then(function (r) {
+        return r.text().then(function (x) { var j = null; try { j = x ? JSON.parse(x) : null; } catch (e) {} if (!r.ok) throw new Error((j && j.message) || "HTTP " + r.status); return j; });
+      });
+    });
+  }
+  function link(id) { return location.origin + "/say-hello/?c=" + encodeURIComponent(id); }
+  function friendly(e) { var m = String(e && e.message || e); return /privacy|FREE\/\/BUILDER/i.test(m) ? t("privacy") : /rest|too fast|a day/i.test(m) ? t("rest") : t("offline"); }
+
+  /* ---------- drawings: stamps, the postmark, the wax seal ---------- */
+  var GLYPH = {
+    cat: '<path d="M6 21v-8.5L7.6 5l3.6 4.6h1.6L16.4 5 18 12.5V21z" fill="#fcf3e2"/><circle cx="10" cy="14.4" r="1.1" fill="C"/><circle cx="14" cy="14.4" r="1.1" fill="C"/><path d="M11.2 17h1.6l-.8.9z" fill="C"/>',
+    cocktail: '<path d="M4.5 5h15L12 13z" fill="#fcf3e2"/><path d="M11.2 12.6h1.6V19h-1.6z M8 19.2h8V21H8z" fill="#fcf3e2"/><circle cx="16" cy="6.8" r="1.6" fill="#d8e86a"/><path d="M16 6.8 19 3" stroke="#fcf3e2" stroke-width="1"/>',
+    train: '<rect x="5" y="4" width="14" height="13.5" rx="3" fill="#fcf3e2"/><rect x="7" y="6.5" width="10" height="5" rx="1" fill="C"/><circle cx="8.6" cy="14.6" r="1.1" fill="C"/><circle cx="15.4" cy="14.6" r="1.1" fill="C"/><path d="M7.5 21 9 17.5M16.5 21 15 17.5" stroke="#fcf3e2" stroke-width="1.6"/>',
+    peak: '<path d="M2.5 20 9.5 7l3.6 6.4 2.4-3.4L21.5 20z" fill="#fcf3e2"/><path d="M9.5 7 7.4 10.9l1.6-.8 1 1.2 1-1.1 1.2.6z" fill="C"/>',
+    cloud: '<path d="M6.5 18a3.6 3.6 0 0 1-.4-7.2 5 5 0 0 1 9.6-1.5A3.9 3.9 0 0 1 17.8 18z" fill="#fcf3e2"/><circle cx="18" cy="6" r="2" fill="#f6d84a"/>',
+    bowl: '<path d="M3.5 12h17a8.5 7.5 0 0 1-17 0z" fill="#fcf3e2"/><path d="M8.4 19.4h7.2v1.4H8.4z" fill="#fcf3e2"/><path d="M9 9.5c-.8-1.4.8-2.2 0-3.6M12.5 9.5c-.8-1.4.8-2.2 0-3.6M16 9.5c-.8-1.4.8-2.2 0-3.6" stroke="#fcf3e2" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M6.5 14.6 10 13.4l3.4 1.8 3.8-1.6" stroke="#e8b030" stroke-width=".9" fill="none"/>',
+    record: '<circle cx="12" cy="12.5" r="8.5" fill="#fcf3e2"/><circle cx="12" cy="12.5" r="5.6" fill="none" stroke="C" stroke-width=".5" opacity=".6"/><circle cx="12" cy="12.5" r="2.6" fill="C"/><circle cx="12" cy="12.5" r=".7" fill="#fcf3e2"/>',
+    book: '<path d="M3 6.5c3-1.2 6-1 9 .8 3-1.8 6-2 9-.8V19c-3-1.2-6-1-9 .8-3-1.8-6-2-9-.8z" fill="#fcf3e2"/><path d="M12 7.3v12.5" stroke="C" stroke-width="1"/><path d="M5 10h4.5M5 12.5h4.5M14.5 10H19M14.5 12.5H19" stroke="C" stroke-width=".7" opacity=".6"/>',
+    lantern: '<rect x="9" y="3" width="6" height="2" rx=".6" fill="#3a2418"/><ellipse cx="12" cy="12" rx="6.5" ry="6.6" fill="#fcf3e2"/><path d="M12 5.4v13.2M8.4 6.6c-1.6 3.6-1.6 7.2 0 10.8M15.6 6.6c1.6 3.6 1.6 7.2 0 10.8" stroke="C" stroke-width=".8" fill="none"/><rect x="9" y="18.4" width="6" height="1.8" rx=".6" fill="#3a2418"/><path d="M12 20.2V23" stroke="#f6b73c" stroke-width="1.4"/>'
+  };
+  var uid = 0;
+  function stampSvg(k) {
+    var s = P.STAMPS[k] || P.STAMPS.cat, c = s[1], id = "sm" + (++uid), holes = "";
+    for (var x = 3; x <= 57; x += 6) holes += '<circle cx="' + x + '" cy="0" r="2.2"/><circle cx="' + x + '" cy="72" r="2.2"/>';
+    for (var y = 3; y <= 69; y += 6) holes += '<circle cx="0" cy="' + y + '" r="2.2"/><circle cx="60" cy="' + y + '" r="2.2"/>';
+    return '<svg viewBox="0 0 60 72" role="img" aria-label="' + esc(t("st_" + k)) + '"><defs><mask id="' + id + '"><rect width="60" height="72" fill="#fff"/><g fill="#000">' + holes + '</g></mask></defs>' +
+      '<g mask="url(#' + id + ')"><rect width="60" height="72" fill="#fffaf0"/><rect x="5" y="5" width="50" height="62" fill="' + c + '"/>' +
+      '<rect x="5" y="5" width="50" height="62" fill="url(#' + id + 'g)" opacity=".18"/></g>' +
+      '<defs><linearGradient id="' + id + 'g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient></defs>' +
+      '<g transform="translate(12 14) scale(1.5)">' + GLYPH[k].replace(/"C"/g, '"' + c + '"') + '</g>' +
+      '<text x="49" y="62" text-anchor="end" font-family="Figtree,sans-serif" font-weight="700" font-size="9" fill="#fcf3e2">' + STAMP_V[k.length % 5] + '</text></svg>';
+  }
+  function pmSvg(date, place) {
+    var id = "pm" + (++uid), top = String(place || "SAY HELLO").toUpperCase().slice(0, 18);
+    return '<svg viewBox="0 0 120 80" aria-hidden="true"><defs><path id="' + id + '" d="M22 40a28 28 0 0 1 56 0"/></defs><g fill="none" stroke="#3a3f55" stroke-width="1.6">' +
+      '<circle cx="50" cy="40" r="34"/><circle cx="50" cy="40" r="25"/><path d="M86 22c8-4 16 4 24 0M86 34c8-4 16 4 24 0M86 46c8-4 16 4 24 0M86 58c8-4 16 4 24 0"/></g>' +
+      '<text font-family="\'Special Elite\',monospace" font-size="8.4" fill="#3a3f55" letter-spacing="1.2"><textPath href="#' + id + '" startOffset="50%" text-anchor="middle">' + esc(top) + '</textPath></text>' +
+      '<text x="50" y="44" text-anchor="middle" font-family="\'Special Elite\',monospace" font-size="9" fill="#3a3f55">' + esc(date) + '</text>' +
+      '<text x="50" y="62" text-anchor="middle" font-family="\'Special Elite\',monospace" font-size="6" fill="#3a3f55" letter-spacing="1">SAY HELLO</text></svg>';
+  }
+  var SEAL = '<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 3c4 0 5 3 9 3.6s7-1.2 9.6 1.8 1 6.4 3 9.8 5.4 4.6 5.4 8.8-3.4 5.6-4.2 9.4 1.4 7.2-1.4 10-6.6 1-10 3S34 57 30 57s-6.2-4-10-5.6-7.6.6-10-2.6-.4-6.8-1.8-10.4S3 33.4 3 29.6s3.4-5.2 4.6-8.8-.6-7.4 2.2-10.2 6.6-.8 10-2.4S26 3 30 3z" fill="#a8261a"/><circle cx="30" cy="30" r="17" fill="#8e1d12"/><circle cx="30" cy="30" r="17" fill="none" stroke="#c9483a" stroke-width="1.2" opacity=".7"/><path d="M30 39.5s-9.5-5.6-9.5-11.6a5 5 0 0 1 9.5-2.4 5 5 0 0 1 9.5 2.4c0 6-9.5 11.6-9.5 11.6z" fill="#c9483a"/><path d="M14 16c3-4 8-6 12-6" stroke="#e07a6a" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/></svg>';
+
+  /* ---------- the card on the desk (a draft shared with the town's Say Hello) ---------- */
+  var q = new URLSearchParams(location.search), reading = q.get("c");
+  (function () { var m = /[#&]to=([^&]+)/.exec(location.hash); if (m && !q.get("to")) { try { q.set("to", decodeURIComponent(m[1]).slice(0, 32)); } catch (e) {} try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} } })();   /* FBApps.go("postcard", {to}) sends the name in the hash */
+  var d = {}; try { d = JSON.parse(lsGet("postcard_draft") || "{}") || {}; } catch (e) {}
+  var card = { scene: P.ICON[q.get("scene")] ? q.get("scene") : (P.ICON[d.scene] ? d.scene : "hutong"), stamp: P.STAMPS[q.get("stamp")] ? q.get("stamp") : (P.STAMPS[d.stamp] ? d.stamp : "cat"), ink: P.INK[d.ink] ? d.ink : "blue",
+    place: q.get("place") != null ? q.get("place").slice(0, 40) : (d.place || ""), msg: d.msg || "", to: q.get("to") != null && q.get("to") !== "bar" ? q.get("to").slice(0, 32) : (d.to || ""),
+    from: d.from || lsGet("postcard_name") || lsGet("fb_nick") || "" };
+  var when = "now", at = new Date(), why = "";
+  function save() { lsSet("postcard_draft", JSON.stringify({ scene: card.scene, stamp: card.stamp, ink: card.ink, place: card.place, msg: card.msg, to: card.to, from: card.from })); }
+
+  function paintFace(pre, c, opts) {   /* pre: "" for the desk, "r" for a card you're reading */
+    opts = opts || {};
+    var cv = $(pre ? "#rscene" : "#scene"); P.draw(cv, c.scene, c.id || "");
+    var pl = $(pre ? "#rPlace" : "#gPlace"); pl.textContent = c.place || t("placePh"); pl.className = c.place ? "" : "ph";
+    var root = $(pre ? "#rcard" : "#card"); root.style.setProperty("--pen", P.INK[c.ink] || P.INK.blue);
+    var m = $(pre ? "#rMsg" : "#bMsg"); m.textContent = c.msg || (pre ? "" : t("msgPh")); m.className = "msg" + (c.msg ? "" : " ph");
+    $(pre ? "#rStamp" : "#bStamp").innerHTML = stampSvg(c.stamp);
+    $(pre ? "#rPm" : "#bPm").innerHTML = pmSvg(pmDate(c.sent ? new Date(c.sent) : new Date()), c.place);
+    var to = $(pre ? "#rTo" : "#bTo"), fr = $(pre ? "#rFrom" : "#bFrom");
+    to.textContent = c.wall ? t("wallW") : (c.to || (pre ? "" : t("toPh"))); to.className = c.to || c.wall ? "" : "ph";
+    fr.textContent = c.from || (pre ? "" : t("fromPh")); fr.className = c.from ? "" : "ph";
+    root.setAttribute("aria-label", [t("greet") + " " + (c.place || ""), c.msg, c.to ? t("toW", { n: c.to }) : "", c.from ? t("fromW", { n: c.from }) : ""].filter(Boolean).join(". "));
+  }
+  function side(pre, back) {
+    $(pre ? "#rcard" : "#card").classList.toggle("flip", !!back);
+    $(pre ? "#rsideF" : "#sideF").setAttribute("aria-pressed", String(!back)); $(pre ? "#rsideB" : "#sideB").setAttribute("aria-pressed", String(!!back));
+  }
+
+  function buildWrite() {
+    P.LIST.forEach(function (k) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "thumb"; b.dataset.k = k;
+      var cv = document.createElement("canvas"); b.appendChild(cv); P.draw(cv, k, "");
+      b.onclick = function () { card.scene = k; save(); paintFace("", card); paintChoices(); side("", false); };
+      $("#thumbs").appendChild(b);
+    });
+    Object.keys(P.STAMPS).forEach(function (k) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "sbtn"; b.dataset.k = k; b.innerHTML = stampSvg(k);
+      b.onclick = function () { card.stamp = k; save(); paintFace("", card); paintChoices(); side("", true); };
+      $("#stamps").appendChild(b);
+    });
+    Object.keys(P.INK).forEach(function (k) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "inkb"; b.dataset.k = k; b.style.setProperty("--c", P.INK[k]);
+      b.onclick = function () { card.ink = k; save(); paintFace("", card); paintChoices(); side("", true); };
+      $("#inks").appendChild(b);
+    });
+    ["now", "tomorrow", "week", "month", "year", "pick"].forEach(function (w) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.dataset.k = w; b.onclick = function () { setWhen(w); };
+      $("#whens").appendChild(b);
+    });
+    ["why1", "why2", "why3", "why4", "why5"].forEach(function (k) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.dataset.k = k; b.onclick = function () { why = t(k); $("#why").value = why; paintChoices(); };
+      $("#whys").appendChild(b);
+    });
+    $("#place").value = card.place; $("#msg").value = card.msg; $("#to").value = card.to; $("#from").value = card.from;
+    $("#place").oninput = function () { card.place = this.value; save(); paintFace("", card); side("", false); };
+    $("#msg").oninput = function () { card.msg = this.value; save(); paintFace("", card); left(); };
+    $("#msg").onfocus = $("#to").onfocus = $("#from").onfocus = function () { side("", true); };
+    $("#place").onfocus = function () { side("", false); };
+    $("#to").oninput = function () { card.to = this.value; save(); paintFace("", card); };
+    $("#from").oninput = function () { card.from = this.value; lsSet("postcard_name", this.value.trim()); save(); paintFace("", card); };
+    $("#why").oninput = function () { why = this.value; paintChoices(); };
+    $("#pickD").onchange = $("#pickT").onchange = function () { var v = new Date($("#pickD").value + "T" + ($("#pickT").value || "09:00")); if (!isNaN(v)) { at = v; paintWhen(); } };
+    $("#card").addEventListener("click", function () { side("", !$("#card").classList.contains("flip")); });
+    $("#sideF").onclick = function () { side("", false); }; $("#sideB").onclick = function () { side("", true); };
+    $("#sendB").onclick = function () { send(false); };
+    $("#wallB").onclick = function () { send(true); };
+    if (q.get("wall") || q.get("to") === "bar") $("#wallB").style.color = "var(--red)";
+    if (q.get("to") && q.get("to") !== "bar") setTimeout(function () { side("", true); }, 400);
+    left(); setWhen("now");
+  }
+  function left() { var n = card.msg.length; $("#left").textContent = n > 220 ? t("left", { n: 300 - n }) : ""; }
+  function paintChoices() {
+    $$("#thumbs .thumb").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.k === card.scene)); b.setAttribute("aria-label", t("sc_" + b.dataset.k)); b.title = t("sc_" + b.dataset.k); });
+    $$("#stamps .sbtn").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.k === card.stamp)); b.setAttribute("aria-label", t("st_" + b.dataset.k)); b.title = t("st_" + b.dataset.k); b.innerHTML = stampSvg(b.dataset.k); });
+    $$("#inks .inkb").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.k === card.ink)); b.setAttribute("aria-label", t("ink_" + b.dataset.k)); b.title = t("ink_" + b.dataset.k); });
+    $$("#whens .chip").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.k === when)); b.textContent = t("w_" + b.dataset.k); });
+    $$("#whys .chip").forEach(function (b) { b.textContent = t(b.dataset.k); b.setAttribute("aria-pressed", String(!!why && why === t(b.dataset.k))); });
+  }
+  function pad(x) { return String(x).padStart(2, "0"); }
+  function setWhen(w) {
+    when = w; var n = new Date();
+    if (w === "now") at = n;
+    else if (w === "tomorrow") { at = new Date(n); at.setDate(at.getDate() + 1); at.setHours(9, 0, 0, 0); }
+    else if (w === "week") { at = new Date(n); at.setDate(at.getDate() + 7); at.setHours(9, 0, 0, 0); }
+    else if (w === "month") { at = new Date(n); at.setMonth(at.getMonth() + 1); at.setHours(9, 0, 0, 0); }
+    else if (w === "year") { at = new Date(n); at.setFullYear(at.getFullYear() + 1); at.setHours(9, 0, 0, 0); }
+    else if (w === "pick") {
+      if (at <= n) { at = new Date(n); at.setDate(at.getDate() + 3); at.setHours(9, 0, 0, 0); }
+      $("#pickD").value = at.getFullYear() + "-" + pad(at.getMonth() + 1) + "-" + pad(at.getDate()); $("#pickT").value = pad(at.getHours()) + ":" + pad(at.getMinutes());
+      $("#pickD").min = n.getFullYear() + "-" + pad(n.getMonth() + 1) + "-" + pad(n.getDate());
+      var mx = new Date(n); mx.setFullYear(mx.getFullYear() + 5); mx.setDate(mx.getDate() - 1); $("#pickD").max = mx.getFullYear() + "-" + pad(mx.getMonth() + 1) + "-" + pad(mx.getDate());
+    }
+    $("#pickRow").hidden = w !== "pick"; paintWhen(); paintChoices();
+  }
+  function sealedNow() { return when !== "now" && at > new Date(Date.now() + 6e4); }
+  function paintWhen() { $("#opens").textContent = sealedNow() ? t("sealedTill", { d: fmt(at) }) : t("rightAway"); $("#sendL").textContent = sealedNow() ? t("send") : t("sendNow"); }
+
+  function send(wall, again) {
+    if (!card.msg.trim()) { side("", true); $("#msg").focus(); toast(t("needMsg")); return; }
+    if (!card.from.trim()) { side("", true); $("#from").focus(); toast(t("needFrom")); return; }
+    if (when === "pick" && at <= new Date()) { toast(t("pastDay")); return; }
+    var btns = [$("#sendB"), $("#wallB")]; btns.forEach(function (b) { b.disabled = true; }); toast(t("sending"), 9000);
+    var openAt = when === "now" ? new Date() : at;
+    var body = { scene: card.scene, stamp: card.stamp, ink: card.ink, msg: card.msg.trim(), from: card.from.trim(), to: wall ? "" : card.to.trim(), place: card.place.trim(), lang: lang(), open_at: openAt.toISOString(), wall: !!wall };
+    api("postcard_send", { p_secret: key(true), p_card: body }).then(function (id) {
+      var sentAt = new Date().toISOString(), l = jget("postcard_sent").filter(function (x) { return x && x.id !== id; });
+      l.unshift({ id: id, to: body.to, wall: !!wall, open_at: body.open_at, scene: body.scene, stamp: body.stamp, ink: body.ink, place: body.place, msg: body.msg, from: body.from, sent: sentAt });
+      jset("postcard_sent", l);
+      $("#toast").classList.remove("on");
+      var done = Object.assign({ id: id, sent: sentAt }, body);
+      card.msg = ""; card.to = ""; $("#msg").value = ""; $("#to").value = ""; save(); paintFace("", card); left(); side("", false);
+      posted(done, why.trim());
+      why = ""; $("#why").value = ""; setWhen("now");
+    }).catch(function (e) {
+      var m = String(e && e.message || e);
+      if (/privacy|FREE\/\/BUILDER/i.test(m) && !again && window.FBC && FBC.reask && FBC.choice && FBC.choice("postcard") === false) { FBC.reask("postcard"); btns.forEach(function (b) { b.disabled = false; }); return send(wall, true); }   /* pressing Send means they want it sent: ask once more */
+      toast(friendly(e), 5000);
+    }).then(function () { btns.forEach(function (b) { b.disabled = false; }); });
+  }
+
+  /* ---------- sheets (a form or list over the page; ✕, Esc or a tap outside closes it) ---------- */
+  function close() { var s = $$(".scrim").pop(); if (s) { s.remove(); if (s._back && s._back.focus) try { s._back.focus({ preventScroll: true }); } catch (e) {} } }
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && $(".scrim")) close(); });
+  function sheet(html, cls, redo) {
+    var s = document.createElement("div"), t0 = Date.now(); s.className = "scrim"; s._back = document.activeElement; s._redo = redo;
+    s.innerHTML = '<div class="sheet ' + (cls || "") + '" role="dialog" aria-modal="true"><button class="x" type="button" aria-label="' + esc(t("close")) + '">✕</button>' + html + "</div>";
+    s.onclick = function (e) { if (e.target === s && Date.now() - t0 > 450) close(); };
+    $(".x", s).onclick = close;
+    document.body.appendChild(s); var h = $("h3", s); if (h) { h.tabIndex = -1; try { h.focus({ preventScroll: true }); } catch (e) {} }
+    return s;
+  }
+  function copyText(text, btn) {
+    var ok = function () { if (btn) btn.textContent = t("copied") + " ✓"; toast(t("copied") + " ✓"); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fb); else fb();
+    function fb() { var i = document.createElement("textarea"); i.value = text; document.body.appendChild(i); i.select(); try { document.execCommand("copy"); ok(); } catch (e) { prompt("", text); } i.remove(); }
+  }
+
+  /* after sending: the link with its line, the reminder, the print */
+  function shareLine(c, whyLine) {
+    var sealed = new Date(c.open_at) > new Date(Date.now() + 6e4);
+    return (whyLine ? whyLine + "\n" : "") + t("shareText", { n: c.from }) + (sealed ? " " + t("shareSealed", { d: fmt(new Date(c.open_at)) }) : "");
+  }
+  function posted(c, whyLine) {
+    var sealed = new Date(c.open_at) > new Date(Date.now() + 6e4);
+    if (c.wall) {
+      var s0 = sheet("<h3>" + esc(t("onWall")) + "</h3>" + (sealed ? '<p class="sub">' + esc(t("opensOn", { d: fmt(new Date(c.open_at)) })) + "</p>" : '<p class="sub">' + esc(t("wallNote")) + "</p>") +
+        '<div class="stack"><a class="btn pri" href="/nearby/next-door/#wall-cards">' + esc(t("seeWall")) + ' ↗</a>' +
+        (sealed ? '<button class="btn" type="button" data-cal>📅 ' + esc(t("remind")) + "</button>" : "") + '<button class="btn" type="button" data-again>' + esc(t("another")) + "</button></div>", "narrow");
+      var cb0 = $("[data-cal]", s0); if (cb0) cb0.onclick = function () { ics(c, "sender"); };
+      $("[data-again]", s0).onclick = close;
+      return;
+    }
+    var text = shareLine(c, whyLine), u = link(c.id);
+    var s = sheet("<h3>" + esc(t("posted")) + "</h3>" + (sealed ? '<p class="sub">' + esc(t("sealedTill", { d: fmt(new Date(c.open_at)) })) + "</p>" : "") +
+      '<p class="small" style="margin:0">' + esc(t("giveLink")) + '</p><div class="linkbox"><input readonly value="' + esc(u) + '"><button class="btn sm" type="button" data-cp>' + esc(t("copy")) + "</button></div>" +
+      '<div class="stack">' + (navigator.share ? '<button class="btn pri" type="button" data-sh>↗ ' + esc(t("share")) + "</button>" : "") +
+      (sealed ? '<button class="btn" type="button" data-cal>📅 ' + esc(t("remind")) + "</button>" : "") +
+      '<button class="btn" type="button" data-pr>🖨 ' + esc(t("printIt")) + '</button><button class="quiet" type="button" data-again style="text-align:center">' + esc(t("another")) + "</button></div>" +
+      (sealed ? '<p class="small" style="margin:12px 0 0;text-align:center">' + esc(t("remindHint")) + "</p>" : ""), "narrow");
+    var inp = $("input", s); inp.onclick = function () { inp.select(); };
+    $("[data-cp]", s).onclick = function () { copyText(text + "\n" + u, this); };
+    var sh = $("[data-sh]", s); if (sh) sh.onclick = function () { navigator.share({ title: t("name"), text: text, url: u }).catch(function () {}); };
+    var cb = $("[data-cal]", s); if (cb) cb.onclick = function () { ics(c, "sender"); };
+    $("[data-pr]", s).onclick = function () { printSheet(c); };
+    $("[data-again]", s).onclick = close;
+  }
+
+  /* 📅 a reminder for the day it opens, made here and handed to the calendar: nothing goes to a server */
+  function icsEsc(s) { return String(s).replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/([,;])/g, "\\$1"); }
+  function icsFold(line) { var out = [], s = line; while (s.length > 72) { out.push(s.slice(0, 72)); s = " " + s.slice(72); } out.push(s); return out.join("\r\n"); }
+  function ics(c, who) {
+    var o = new Date(c.open_at), z = function (x) { return x.toISOString().replace(/[-:]/g, "").replace(/\.\d+/, ""); }, u = link(c.id);
+    var title = who === "sender" ? (c.wall ? t("calSender0") : c.to ? t("calSender", { n: c.to }) : t("calSender0")) : t("calRecv", { n: c.from || t("someone") });
+    var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FREE//BUILDER//Say Hello//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "BEGIN:VEVENT",
+      "UID:" + c.id + "-" + who + "@freebuilder.net", "DTSTAMP:" + z(new Date()), "DTSTART:" + z(o), "DTEND:" + z(new Date(o.getTime() + 9e5)),
+      "SUMMARY:" + icsEsc("📮 " + title), "DESCRIPTION:" + icsEsc(t("calBody") + " " + (c.wall ? location.origin + "/nearby/next-door/" : u)), "URL:" + (c.wall ? location.origin + "/nearby/next-door/" : u), "TRANSP:TRANSPARENT",
+      "BEGIN:VALARM", "TRIGGER:PT0M", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc(title), "END:VALARM", "END:VEVENT", "END:VCALENDAR"];
+    var txt = lines.map(icsFold).join("\r\n") + "\r\n";
+    var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([txt], { type: "text/calendar;charset=utf-8" }));
+    a.download = "say-hello-" + o.getFullYear() + pad(o.getMonth() + 1) + pad(o.getDate()) + ".ics"; document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 800);
+  }
+
+  /* 🖨 send it for real: an A6 card, front and back, with a small code to the link */
+  function qr(text, cb) {
+    var draw = function () { cb(window.FBTake && FBTake.qrSvg ? FBTake.qrSvg(text, t("pScan")) : ""); };
+    if (window.FBTake) return draw(); var sc = document.createElement("script"); sc.src = "/little-things/take.js?v=1"; sc.onload = draw; sc.onerror = function () { cb(""); }; document.head.appendChild(sc);
+  }
+  function pages(c, words, qrSvg) {
+    var cv = document.createElement("canvas"); P.draw(cv, c.scene, c.id || ""); var img = cv.toDataURL();
+    var sealed = new Date(c.open_at) > new Date(Date.now() + 6e4);
+    var front = '<div class="pp"><img class="img" alt="" src="' + img + '"><div class="greet"><small>' + esc(t("greet")) + "</small><b>" + esc(c.place || "") + "</b></div></div>";
+    var left = words && c.msg ? '<div class="bmsg" style="color:' + (P.INK[c.ink] || P.INK.blue) + '">' + esc(c.msg) + "</div>"
+      : '<div class="bseal">' + esc(t("pOpenOn", { d: fmt(new Date(c.open_at), true) })) + "<small>" + esc(t("fromW", { n: c.from || "" })) + "</small></div>";
+    var back = '<div class="pp bk">' + left + '<div class="bdiv"></div><div class="bstp">' + stampSvg(c.stamp) + '</div><div class="bpm">' + pmSvg(pmDate(c.sent ? new Date(c.sent) : new Date()), c.place) + "</div>" +
+      '<div class="baddr"><small>' + esc(t("pAddr")) + "</small><i>" + esc(c.wall ? "" : c.to || "") + "</i><i></i><i></i><i></i></div>" +
+      (qrSvg ? '<div class="bqr">' + qrSvg + "<span>" + esc(sealed && !words ? t("pScanSealed") : t("pScan")) + "<br>freebuilder.net/say-hello</span></div>" : "") +
+      (words && c.msg ? '<div class="bfrom">' + esc(t("fromW", { n: c.from || "" })) + "</div>" : "") + "</div>";
+    return front + back;
+  }
+  function printSheet(c) {
+    var sealed = new Date(c.open_at) > new Date(Date.now() + 6e4), canWords = !!c.msg, words = canWords && !sealed;
+    var s = sheet("<h3>🖨 " + esc(t("pTitle")) + '</h3><p class="sub">' + esc(t("pSub")) + "</p>" +
+      (canWords && sealed ? '<div class="seg" role="group" style="margin-bottom:6px"><button type="button" data-w="0">' + esc(t("pSeal")) + '</button><button type="button" data-w="1">' + esc(t("pWords")) + '</button></div><p class="small" style="margin:4px 0 0">' + esc(t("pSealHint")) + "</p>" : "") +
+      '<div class="ppv" id="ppv"></div><div class="stack"><button class="btn pri" type="button" data-go>' + esc(t("pGo")) + '</button></div><p class="small" style="margin:10px 0 0;text-align:center">' + esc(t("pTip")) + "</p>", "wide");
+    var code = "";
+    function paint() {
+      $$("[data-w]", s).forEach(function (b) { b.setAttribute("aria-pressed", String((b.dataset.w === "1") === words)); });
+      var html = pages(c, words, code), v = $("#ppv", s);
+      v.innerHTML = html.split('<div class="pp').slice(1).map(function (p) { return '<div class="ppw"><div class="pp' + p + "</div>"; }).join("");
+      fit(); $("#printArea").innerHTML = html;
+    }
+    function fit() { $$(".ppw", s).forEach(function (w) { var pp = $(".pp", w); if (pp) pp.style.transform = "scale(" + (w.clientWidth / pp.offsetWidth) + ")"; }); }
+    $$("[data-w]", s).forEach(function (b) { b.onclick = function () { words = b.dataset.w === "1"; paint(); }; });
+    $("[data-go]", s).onclick = function () { $("#printArea").innerHTML = pages(c, words, code); setTimeout(function () { window.print(); }, 60); };
+    addEventListener("resize", fit);
+    paint(); qr(link(c.id), function (svg) { code = svg; paint(); });
+  }
+
+  /* ---------- reading a card someone sent ---------- */
+  var got = null, wakeT = 0;
+  function buildRead() {
+    $("#writeV").hidden = true; $("#readV").hidden = false;
+    $("#rsideF").onclick = function () { side("r", false); }; $("#rsideB").onclick = function () { side("r", true); };
+    $("#rcard").addEventListener("click", function (e) { if (e.target.closest(".env") || !got || got.sealed || $(".env")) return; side("r", !$("#rcard").classList.contains("flip")); });
+    $("#rNote").textContent = "…";
+    api("postcard_get", { p_id: reading }, true).then(function (c) {
+      if (!c) { lost(); return; }
+      got = c; paintRead();
+    }).catch(function () { $("#rNote").textContent = t("offline"); $("#rActs").innerHTML = ""; addAct("✉️ " + t("own"), "./"); });
+  }
+  function lost() { $("#rcard").hidden = true; $("#rNote").textContent = t("lost"); $("#rSub").textContent = ""; $("#rActs").innerHTML = ""; addAct("✉️ " + t("own"), "./", "btn pri"); }
+  function addAct(label, href, cls, fn) {
+    var e = document.createElement(href ? "a" : "button"); e.className = cls || "btn sm"; e.textContent = label;
+    if (href) e.href = href; else { e.type = "button"; e.onclick = fn; }
+    $("#rActs").appendChild(e); return e;
+  }
+  function mineSent(id) { return jget("postcard_sent").some(function (x) { return x && x.id === id; }); }
+  function paintRead() {
+    var c = got, o = new Date(c.open_at);
+    var view = { id: c.id, scene: c.scene, stamp: c.stamp, ink: c.ink, place: c.place || "", msg: c.msg || "", to: c.to || "", from: c.from, sent: c.sent, wall: c.wall };
+    paintFace("r", view); side("r", false);
+    var env = $(".env"), acts = $("#rActs"); acts.innerHTML = "";
+    var inBox = jget("postcard_box").some(function (x) { return x && x.id === c.id; });
+    if (!c.sealed && (inBox || mineSent(c.id))) $("#rcard").dataset.opened = "1";   /* opened before on this device, or your own: no seal to break again */
+    if (c.sealed || !$("#rcard").dataset.opened) {
+      if (!env) { env = document.createElement("div"); env.className = "env"; $("#rcard").appendChild(env); env.addEventListener("click", function (e) { e.stopPropagation(); }); }
+      env.innerHTML = '<div class="stp">' + stampSvg(c.stamp) + '</div><div class="pm">' + pmSvg(pmDate(new Date(c.sent)), c.place) + "</div>" +
+        '<div class="addr">' + (c.wall ? esc(t("wallW")) : c.to ? esc(t("forYou", { n: c.to })) : "") + "<small>" + esc(t("fromW", { n: c.from })) + "</small></div>" +
+        '<div class="when">' + esc(t("opensOn", { d: fmt(o, true) })) + '</div><button class="seal" type="button">' + SEAL + "</button>";
+      var seal = $(".seal", env);
+      $("#rFlip").hidden = true;
+      if (c.sealed) {
+        seal.disabled = true; seal.setAttribute("aria-label", t("sealedOn", { d: fmt(o) }));
+        $("#rNote").textContent = t("sealedOn", { d: fmt(o) }); $("#rSub").textContent = t("stays");
+        addAct("📅 " + t("remind"), null, "btn pri", function () { ics(c, mineSent(c.id) ? "sender" : "recv"); });
+        addAct("✉️ " + t("own"), "./");
+        if (!mineSent(c.id)) remember("postcard_waiting", { id: c.id, from: c.from, open_at: c.open_at, scene: c.scene });
+        clearTimeout(wakeT); var ms = o - new Date() + 1500;
+        if (ms < 2147000000) wakeT = setTimeout(function () { api("postcard_get", { p_id: reading }, true).then(function (n) { if (n) { got = n; paintRead(); } }); }, ms);   /* quietly ready on the day if the page is still open; no ticking clock */
+      } else {
+        seal.disabled = false; seal.classList.add("ready"); seal.setAttribute("aria-label", t("breakSeal")); seal.title = t("breakSeal"); seal.onclick = openIt;
+        $("#rNote").textContent = t("ready"); $("#rSub").textContent = "";
+        addAct(t("breakSeal"), null, "btn pri", openIt);
+      }
+    } else opened();
+  }
+  function remember(k, entry) { var l = jget(k).filter(function (x) { return x && x.id !== entry.id; }); l.unshift(entry); jset(k, l, 60); paintDot(); }
+  function openIt() {
+    if (!got || got.sealed) return;
+    var env = $(".env"); $("#rcard").dataset.opened = "1"; swish();
+    if (env) { env.classList.add("gone"); setTimeout(function () { env.remove(); }, 700); }
+    setTimeout(function () { side("r", true); }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1400);
+    jset("postcard_waiting", jget("postcard_waiting").filter(function (x) { return x && x.id !== got.id; }), 40);
+    if (!mineSent(got.id)) remember("postcard_box", { id: got.id, from: got.from, scene: got.scene, open_at: got.open_at, to: got.to || "", place: got.place || "", stamp: got.stamp, ink: got.ink, msg: got.msg || "", sent: got.sent });
+    opened();
+  }
+  function opened() {
+    var c = got; $("#rFlip").hidden = false; $("#rNote").textContent = ""; $("#rSub").textContent = mineSent(c.id) ? "" : t("kept");
+    var acts = $("#rActs"); acts.innerHTML = "";
+    if (!mineSent(c.id)) addAct("✍️ " + t("reply"), "./?to=" + encodeURIComponent(c.from) + "&scene=" + encodeURIComponent(c.scene), "btn pri");
+    addAct("🖨 " + t("printKeep"), null, "btn sm", function () { printSheet({ id: c.id, scene: c.scene, stamp: c.stamp, ink: c.ink, place: c.place || "", msg: c.msg || "", to: c.to || "", from: c.from, sent: c.sent, open_at: c.open_at, wall: c.wall }); });
+    addAct("✉️ " + t("own"), "./");
+  }
+  var ac = null;
+  function swish() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); var len = ac.sampleRate * .3, b = ac.createBuffer(1, len, ac.sampleRate), dd = b.getChannelData(0); for (var i = 0; i < len; i++) dd[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / len) * .12; var s = ac.createBufferSource(), f = ac.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 1600; s.buffer = b; s.connect(f); f.connect(ac.destination); s.start(); } catch (e) {} }
+
+  /* ---------- my postcards: what you sent and what came to you, on this device, never counted ---------- */
+  var tab = "sent";
+  function due() { var n = new Date(); return jget("postcard_waiting").filter(function (x) { return x && new Date(x.open_at) <= n; }); }
+  function paintDot() { $("#mineDot").hidden = !due().length; }
+  function mine() {
+    var sent = jget("postcard_sent"), recv = jget("postcard_waiting").concat(jget("postcard_box")), now = new Date();
+    var seen = {}; recv = recv.filter(function (x) { if (!x || seen[x.id]) return false; seen[x.id] = 1; return true; });
+    recv.sort(function (a, b) { return new Date(b.open_at) - new Date(a.open_at); });
+    function row(x, kind) {
+      var o = new Date(x.open_at), sealed = o > now, opened = kind === "got" && jget("postcard_box").some(function (b) { return b.id === x.id; });
+      var who = kind === "sent" ? (x.wall ? t("wallW") : x.to ? t("toW", { n: x.to }) : t("toPh")) : t("fromW", { n: x.from || t("someone") });
+      var st = sealed ? t("opensOn", { d: fmt(o, true) }) : kind === "got" && !opened ? t("canOpen") : kind === "got" ? t("openedW") : fmt(new Date(x.sent || x.open_at), true);
+      var href = x.wall ? "/nearby/next-door/#wall-cards" : "./?c=" + encodeURIComponent(x.id);
+      return '<li class="it" data-id="' + esc(x.id) + '" data-kind="' + kind + '"><canvas data-scene="' + esc(x.scene || "hutong") + '" data-seed="' + esc(x.id) + '"></canvas><div><a href="' + esc(href) + '">' + esc(who) + '</a><span class="s' + (kind === "got" && !sealed && !opened ? " r" : "") + '">' + esc(st) + '</span></div><div class="ops">' +
+        (kind === "sent" && !x.wall ? '<button class="ib mini" type="button" data-cp aria-label="' + esc(t("copy")) + '" title="' + esc(t("copy")) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button>' : "") +
+        (sealed ? '<button class="ib mini" type="button" data-cal aria-label="' + esc(t("remind")) + '" title="' + esc(t("remind")) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></button>' : "") +
+        (kind === "sent" && x.msg ? '<button class="ib mini" type="button" data-pr aria-label="' + esc(t("printIt")) + '" title="' + esc(t("printIt")) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 9V3h10v6M7 17H4v-7h16v7h-3"/><rect x="7" y="14" width="10" height="7"/></svg></button>' : "") +
+        '<button class="ib mini" type="button" data-rm aria-label="' + esc(t("remove")) + '" title="' + esc(t("remove")) + '">✕</button></div></li>';
+    }
+    var list = tab === "sent" ? sent : recv;
+    var s = sheet("<h3>" + esc(t("mine")) + '</h3><div class="tabs"><div class="seg" role="group"><button type="button" data-tab="sent" aria-pressed="' + (tab === "sent") + '">' + esc(t("sent")) + '</button><button type="button" data-tab="got" aria-pressed="' + (tab === "got") + '">' + esc(t("got")) + "</button></div></div>" +
+      (list.length ? '<ul class="list">' + list.map(function (x) { return row(x, tab); }).join("") + "</ul>" : '<p class="sub">' + esc(t(tab === "sent" ? "noneSent" : "noneGot")) + "</p>") +
+      '<p class="small" style="margin:12px 0 0">' + esc(t("onDevice")) + "</p>" + keysBlock(), "", mine);
+    $$("canvas[data-scene]", s).forEach(function (cv) { P.draw(cv, cv.dataset.scene, cv.dataset.seed); });
+    $$("[data-tab]", s).forEach(function (b) { b.onclick = function () { tab = b.dataset.tab; close(); mine(); }; });
+    $(".list", s) && ($(".list", s).onclick = function (e) {
+      var li = e.target.closest(".it"); if (!li) return; var id = li.dataset.id, kind = li.dataset.kind;
+      var x = (kind === "sent" ? sent : recv).filter(function (y) { return y.id === id; })[0]; if (!x) return;
+      if (e.target.closest("[data-cp]")) copyText(link(id), null);
+      else if (e.target.closest("[data-cal]")) ics(x, kind === "sent" ? "sender" : "recv");
+      else if (e.target.closest("[data-pr]")) printSheet(x);
+      else if (e.target.closest("[data-rm]")) {
+        if (kind === "sent") jset("postcard_sent", jget("postcard_sent").filter(function (y) { return y.id !== id; }));
+        else { jset("postcard_waiting", jget("postcard_waiting").filter(function (y) { return y.id !== id; }), 40); jset("postcard_box", jget("postcard_box").filter(function (y) { return y.id !== id; })); }
+        li.remove(); paintDot();
+      }
+    });
+    bindKeys(s);
+  }
+  function keysBlock() {
+    return '<div class="sec"><h4>🗝️ ' + esc(t("keysH")) + '</h4><p class="small" style="margin:0 0 10px">' + esc(t("keysP")) + '</p><div class="acts" style="justify-content:flex-start"><button class="btn sm" type="button" id="kc">' + esc(t("copyLink")) + '</button><button class="btn sm" type="button" id="kq">' + esc(t("showQr")) + '</button></div><div id="qrb"></div><p class="small" style="margin:10px 0 0">' + esc(t("keysWarn")) + "</p>" +
+      '<details><summary>' + esc(t("haveKey")) + '</summary><div class="ir"><input id="pk" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="' + esc(t("keyPh")) + '"><button class="btn sm" type="button" id="pkb">' + esc(t("open")) + "</button></div></details>" +
+      '<button class="quiet" type="button" id="kf" style="margin-top:10px">' + esc(t("fetchMine")) + "</button></div>";
+  }
+  function bindKeys(s) {
+    $("#kc", s).onclick = function () { copyText(keyLink(), this); };
+    $("#kq", s).onclick = function () { var box = $("#qrb", s); qr(keyLink(), function (svg) { box.innerHTML = svg ? '<div class="qr">' + svg + "</div>" : ""; }); };
+    $("#pkb", s).onclick = function () { var inp = $("#pk", s); if (keyImport(inp.value)) { toast("🗝️ " + t("keyHere")); bringBack(true); } else toast(t("badKey")); };
+    $("#kf", s).onclick = function () { bringBack(true); };
+  }
+  function bringBack(reopen) {   /* the cards this key sent, back onto this device's list (from the server, under this key's fingerprint) */
+    var k = key(false); if (!k) { toast(t("fetchNone")); return; }
+    api("postcard_mine", { p_secret: k }).then(function (rows) {
+      rows = rows || []; if (!rows.length) { toast(t("fetchNone")); return; }
+      var l = jget("postcard_sent"), have = {}; l.forEach(function (x) { if (x) have[x.id] = x; });
+      rows.forEach(function (c) { if (have[c.id]) return; l.push({ id: c.id, to: c.to || "", wall: !!c.wall, open_at: c.open_at, scene: c.scene, stamp: c.stamp, ink: c.ink, place: c.place || "", msg: c.msg || "", from: c.from, sent: c.sent }); });
+      l.sort(function (a, b) { return new Date(b.sent || b.open_at) - new Date(a.sent || a.open_at); }); jset("postcard_sent", l);
+      toast(t("fetched")); if (reopen && $(".scrim")) { close(); tab = "sent"; mine(); }
+    }).catch(function (e) { toast(friendly(e)); });
+  }
+
+  /* ---------- the welcome: three steps ---------- */
+  var WS = [
+    '<svg viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="14" fill="#f3d9cf"/><rect x="9" y="15" width="38" height="27" rx="2" fill="#fcf8ef" stroke="#1d2436" stroke-width="1.6"/><path d="M28 18v21" stroke="#cbbfa6" stroke-width="1.4"/><path d="M12 22h12M12 27h10M12 32h11" stroke="#26467f" stroke-width="1.6" stroke-linecap="round"/><rect x="36" y="18" width="8" height="9" fill="#c23b26"/></svg>',
+    '<svg viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="14" fill="#e9dcc0"/><rect x="9" y="15" width="38" height="27" rx="2" fill="#ead9b8" stroke="#1d2436" stroke-width="1.6"/><path d="m10 16 18 13 18-13" fill="none" stroke="#1d2436" stroke-width="1.6"/><circle cx="28" cy="33" r="6.5" fill="#a8261a"/><path d="M28 36.4s-3.4-2-3.4-4.2a1.8 1.8 0 0 1 3.4-.9 1.8 1.8 0 0 1 3.4.9c0 2.2-3.4 4.2-3.4 4.2z" fill="#e07a6a"/></svg>',
+    '<svg viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="14" fill="#dfe6d3"/><rect x="20" y="20" width="16" height="26" rx="3" fill="#26467f"/><rect x="16" y="14" width="24" height="9" rx="4.5" fill="#26467f"/><rect x="22" y="24" width="12" height="2.5" fill="#fcf8ef"/><path d="M25 10 31 4M31 4h-5M31 4v5" stroke="#c23b26" stroke-width="2" fill="none" stroke-linecap="round"/></svg>'
+  ];
+  function welcome() {
+    lsSet("sh_app_seen", "1");
+    var s = sheet("<h3>" + esc(t("w_h")) + '</h3><ol class="ws">' + [1, 2, 3].map(function (i) { return "<li>" + WS[i - 1] + "<div><b>" + esc(t("w_" + i + "h")) + "</b><span>" + esc(t("w_" + i)) + "</span></div></li>"; }).join("") +
+      '</ol><div class="stack"><button class="btn pri" type="button" data-go>' + esc(t("w_go")) + "</button></div>", "", welcome);
+    $("[data-go]", s).onclick = function () { close(); if (!reading) setTimeout(function () { $("#thumbs").scrollIntoView({ behavior: "smooth", block: "center" }); }, 80); else location.href = "./"; };
+  }
+
+  /* ---------- words on the page ---------- */
+  function paintWords() {
+    document.documentElement.lang = lang(); document.title = t("docTitle");
+    $$("[data-i]").forEach(function (e) { if (STR[e.dataset.i]) e.textContent = t(e.dataset.i); });
+    $$("[data-ia]").forEach(function (e) { e.setAttribute("aria-label", t(e.dataset.ia)); e.title = t(e.dataset.ia); });
+    $$("[data-ip]").forEach(function (e) { e.placeholder = t(e.dataset.ip); });
+    var tg = t("tag"), dot = tg.search(/[.。]/);
+    $("#tagH").innerHTML = dot > 0 && lang().indexOf("zh") !== 0 ? esc(tg.slice(0, dot + 1)) + " <em>" + esc(tg.slice(dot + 1).trim()) + "</em>" : esc(tg);
+    $("#langL").textContent = SHORT[LANGS.indexOf(lang())];
+    $("#mineB").setAttribute("aria-label", t("mine"));
+    $("#ahA").href = "https://www.wei-meng.org/after-hours/?fbl=" + lang();
+    var fx = $("#foot"); if (window.FBC && FBC.foot && !fx.querySelector(".fbf-row")) FBC.foot(fx, { extra: fx.innerHTML });   // the suite's one footer; Nearby and After hours on the line under it
+    paintDue();
+    if (!reading) { paintFace("", card); paintChoices(); paintWhen(); left(); } else if (got) paintRead();
+  }
+  function paintDue() {
+    var l = reading ? [] : due(), box = $("#due");
+    if (!l.length) { box.hidden = true; paintDot(); return; }
+    var c = l[0]; box.hidden = false;
+    box.innerHTML = "<span>📮 " + esc(t("dueNote", { n: c.from || t("someone") })) + '</span><a class="btn sm pri" href="./?c=' + encodeURIComponent(c.id) + '">' + esc(t("openIt")) + "</a>";
+    paintDot();
+  }
+  function setLang(l) { if (window.FBL && FBL.set) FBL.set(l); else lsSet("wm_preferred_lang", l); paintWords(); var s = $(".scrim"); if (s && s._redo) { var r = s._redo; close(); r(); } }
+  addEventListener("fbl:lang", paintWords);
+  function closeLang() { var m = $(".langm"); if (m) m.remove(); $("#langB").setAttribute("aria-expanded", "false"); }
+  $("#langB").onclick = function (e) {
+    e.stopPropagation(); if ($(".langm")) return closeLang();
+    var m = document.createElement("div"); m.className = "langm"; m.setAttribute("role", "menu");
+    m.innerHTML = LANGS.map(function (l, i) { return '<button type="button" role="menuitem" data-l="' + l + '" aria-current="' + (l === lang()) + '" lang="' + l + '">' + NAMES[i] + "</button>"; }).join("");
+    this.parentNode.appendChild(m); this.setAttribute("aria-expanded", "true"); m.querySelector("[aria-current=true]").focus();
+    m.onclick = function (ev) { var b = ev.target.closest("[data-l]"); if (b) { closeLang(); setLang(b.dataset.l); } };
+  };
+  document.addEventListener("click", function (e) { if (!e.target.closest(".langm,#langB")) closeLang(); });
+  $("#howB").onclick = welcome; $("#mineB").onclick = function () { tab = due().length ? "got" : tab; mine(); };
+
+  /* arriving with a keychain link: the keys go on this device, and what this key sent comes back to the list */
+  var keysIn = false;
+  (function arriving() {
+    var m = /[#&](keys=k1\.[A-Za-z0-9_-]+|key=[A-Za-z0-9_-]{32,128})/.exec(location.hash); if (!m) return;
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    if (keyImport(m[1].replace(/^keys?=/, ""))) { keysIn = true; setTimeout(function () { toast("🗝️ " + t("keyHere"), 5000); bringBack(false); }, 700); }
+  })();
+
+  if (reading) buildRead(); else buildWrite();
+  paintWords();
+  if (!lsGet("sh_app_seen") && !reading && !keysIn) setTimeout(welcome, 500);
+  window.SH = { card: card, send: send, ics: ics, printSheet: printSheet, mine: mine, keyLink: keyLink, keyImport: keyImport };   /* test hook */
+})();
+</script>
+</body>
+</html>

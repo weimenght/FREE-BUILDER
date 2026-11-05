@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=8be590540d"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=83d46e9e04" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=35d3a9106b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=4c8e5c5904" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Say Hello · Nearby</title>
 <meta name="description" content="Write a postcard, seal it until the day you choose, and send it to a friend or hang it on the wall in Next Door.">
@@ -179,7 +179,7 @@ html.fbsh-in #scenes{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start
     <div class="row" id="readBtns"></div>
   </section>
 
-  <p class="foot"><a href="/nearby/next-door/#wall-cards" data-t="seeWall">The Wall in Next Door →</a></p>
+  <p class="foot"><a href="/nearby/next-door/#wall-cards" data-t="seeWall">The Wall in Next Door →</a> · <a href="/say-hello/" target="_top" rel="noopener" data-t="app">Say Hello on its own ↗</a></p>
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -309,6 +309,7 @@ window.PCScenes = (function () {
     posted: ["Posted. Give them this link:", "寄出了。把这个链接给对方：", "寄出了。把這個連結給對方：", "Enviada. Dale este enlace:", "Enviada. Dona-li aquest enllaç:"],
     onWall: ["It's on the wall in Next Door.", "已经挂在 “隔壁”的墙上了。", "已經掛在 “隔壁”的牆上了。", "Ya está en la pared de Al Lado.", "Ja és a la paret d'Al Costat."],
     seeBar: ["See it in the bar →", "去酒吧看看 →", "去酒吧看看 →", "Verla en el bar →", "Veure-la al bar →"],
+    app: ["Say Hello on its own ↗", "“问个好”独立小应用 ↗", "「問個好」獨立小應用 ↗", "Di Hola, app propia ↗", "Digues Hola, app pròpia ↗"],
     seeWall: ["The Wall in Next Door →", "“隔壁”的明信片墙 →", "“隔壁”的明信片牆 →", "La pared de Al Lado →", "La paret d'Al Costat →"],
     copy: ["Copy", "复制", "複製", "Copiar", "Copia"], copied: ["Copied ✓", "已复制 ✓", "已複製 ✓", "Copiado ✓", "Copiat ✓"], share: ["Share", "分享", "分享", "Compartir", "Comparteix"],
     remind: ["Remind me", "提醒我", "提醒我", "Recuérdamelo", "Recorda-m'ho"],
@@ -454,7 +455,7 @@ window.PCScenes = (function () {
       toast(/privacy/i.test(m) ? t("privacy") : /rest|too fast|a day/i.test(m) ? t("rest") : t("offline"));
     }).then(function () { btns.forEach(function (b) { b.disabled = false; }); });
   }
-  function link(id) { return location.origin + "/nearby/say-hello/?c=" + id; }
+  function link(id) { return window.FBApps ? FBApps.link("postcard", "?c=" + id) : location.origin + "/nearby/say-hello/?c=" + id; }   /* the card goes out as the Say Hello app's address; the town's own ?c= still opens it */
   /* these cards are only to look at: a tap outside (or Esc) puts one away, no ✕; the tap that opened it never closes it */
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") { var l = document.querySelectorAll(".scrim"); if (l.length) l[l.length - 1].remove(); } });
   function sheet(html) {
@@ -486,7 +487,7 @@ window.PCScenes = (function () {
     var l = sentList(), now = new Date();
     var html = '<h2>📮 ' + esc(t("sent")) + '</h2>' + (l.length ? '<ul class="list">' + l.map(function (c) {
       var o = new Date(c.open_at), sealed = o > now;
-      return '<li><span>' + (P.ICON[c.scene] || "✉️") + '</span><a href="' + esc(c.wall ? "/nearby/next-door/#wall-cards" : link(c.id)) + '">' + (c.wall ? "🍸 " + esc(t("bar")) : "→ " + esc(c.to || t("toPh"))) + '</a><small>' + (sealed ? "🔒 " + esc(fmt(o)) : "🔓") + '</small>' + (c.wall ? "" : '<button class="pill" type="button" data-cp="' + esc(c.id) + '" aria-label="' + esc(t("copy")) + '">📋</button>') + '</li>';
+      return '<li><span>' + (P.ICON[c.scene] || "✉️") + '</span><a href="' + esc(c.wall ? "/nearby/next-door/#wall-cards" : "/nearby/say-hello/?c=" + c.id) + '">' + (c.wall ? "🍸 " + esc(t("bar")) : "→ " + esc(c.to || t("toPh"))) + '</a><small>' + (sealed ? "🔒 " + esc(fmt(o)) : "🔓") + '</small>' + (c.wall ? "" : '<button class="pill" type="button" data-cp="' + esc(c.id) + '" aria-label="' + esc(t("copy")) + '">📋</button>') + '</li>';
     }).join("") + '</ul>' : '<p class="when">' + esc(t("none")) + '</p>');
     var s = sheet(html);
     s.querySelectorAll("[data-cp]").forEach(function (b) { b.onclick = function () { copy(link(b.dataset.cp)); }; });
