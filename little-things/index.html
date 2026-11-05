@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=4844bd2557"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=f3aad758aa"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Little Things</title>
 <meta name="description" content="Popo's jar of little offline things: one at a time, in her kitchen, for a fuller life away from the screen. Kept on your own device.">
@@ -48,7 +48,7 @@
   .btn svg.fbpx, .pxi svg { width:18px; height:18px; image-rendering:pixelated; }
   .scene { position:relative; border:3px solid var(--line); box-shadow:4px 4px 0 var(--shadow); background:#3a2414; }
   .scene canvas { display:block; width:100%; height:auto; image-rendering:pixelated; image-rendering:crisp-edges; }
-  .scene button.jarhit { position:absolute; right:12%; top:28%; width:22%; height:48%; background:transparent; border:0; cursor:pointer; }
+  .scene button.jarhit { position:absolute; right:10%; top:18%; width:24%; height:50%; background:transparent; border:0; cursor:pointer; }
   .scene button.jarhit:focus-visible { outline:3px solid var(--amber); }
   .talk { display:flex; flex-direction:column; gap:10px; min-height:120px; }
   .say { display:flex; gap:10px; align-items:flex-start; animation:pop .22s ease-out both; }
@@ -76,7 +76,7 @@
   .acts .btn { flex:1 1 auto; }
   .jars { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
   .jarbtn { flex-direction:column; padding:10px 6px 12px; gap:6px; }
-  .jarbtn canvas { width:100%; max-width:64px; height:auto; image-rendering:pixelated; }
+  .jarbtn canvas { height:auto; image-rendering:pixelated; }
   .jarbtn b { font:9px/1.5 var(--sign); text-transform:uppercase; font-weight:400; }
   html:lang(zh) .jarbtn b, html:lang(zh-Hant) .jarbtn b { font:700 15px/1.3 var(--pix); }
   .jarbtn small { font-size:17px; color:inherit; opacity:.8; }
@@ -103,6 +103,17 @@
   .older summary { cursor:pointer; font-size:19px; color:var(--muted); padding:6px 0; }
   .older .slips { margin-top:8px; }
   .tools { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+  .bigjar { display:block; margin:0 auto 10px; height:120px; width:auto; image-rendering:pixelated; }
+  .pocket { margin-top:16px; border-top:3px dashed var(--wood2); padding-top:12px; display:flex; flex-direction:column; gap:10px; }
+  .pocket .row { display:flex; flex-wrap:wrap; gap:10px; }
+  .pocket .row .btn { flex:1 1 auto; }
+  .pocket .say .b { font-size:21px; }
+  html:lang(zh) .pocket .say .b, html:lang(zh-Hant) .pocket .say .b { font-size:17px; }
+  .pocket input { width:100%; font:22px/1.2 var(--pix); color:var(--ink); background:var(--panel); border:3px solid var(--line); padding:8px 10px; min-height:44px; border-radius:0; }
+  .pocket input[type=time] { width:auto; min-width:9em; }
+  .pocket input:focus-visible { outline:3px solid var(--amber); outline-offset:2px; }
+  .pocket label { font-size:18px; color:var(--muted); display:block; }
+  .pocket .hint { font-size:17px; color:var(--muted); margin:0; }
   .langmenu { position:absolute; right:16px; top:58px; z-index:30; background:var(--panel); border:3px solid var(--line); box-shadow:4px 4px 0 var(--shadow); display:flex; flex-direction:column; min-width:150px; }
   .langmenu button { font:20px/1.2 var(--pix); color:var(--ink); background:none; border:0; text-align:left; padding:10px 14px; min-height:44px; cursor:pointer; }
   .langmenu button[aria-checked="true"] { background:var(--amber); color:#1a1410; }
@@ -181,8 +192,58 @@ var W = {
   story: ["Popo's story", "婆婆的故事", "婆婆的故事", "La historia de Popo", "La història de la Popo"],
   goIn: ["{p}, in Nearby", "去近邻的“{p}”", "去近鄰的「{p}」", "{p}, en Cerca", "{p}, a A Prop"],
   lang: ["Language", "语言", "語言", "Idioma", "Idioma"],
-  kitchen: ["Popo's kitchen", "婆婆的厨房", "婆婆的廚房", "La cocina de Popo", "La cuina de la Popo"]
+  kitchen: ["Popo's kitchen", "婆婆的厨房", "婆婆的廚房", "La cocina de Popo", "La cuina de la Popo"],
+  deviceSync: ["Kept on this device, with a copy on Nearby's server that only your key opens.", "保存在这台设备上，近邻的服务器上另有一份，只有你的钥匙能打开。", "保存在這台裝置上，近鄰的伺服器上另有一份，只有你的鑰匙能打開。", "Se guarda en este dispositivo, con una copia en el servidor de Cerca que solo abre tu llave.", "Es guarda en aquest dispositiu, amb una còpia al servidor d'A Prop que només obre la teva clau."],
+  bCopy: ["Keep a copy", "留一份", "留一份", "Guardar una copia", "Guardar-ne una còpia"],
+  bCopyOn: ["A copy is kept ✓", "已留一份 ✓", "已留一份 ✓", "Copia guardada ✓", "Còpia guardada ✓"],
+  bKey: ["Another device", "换台设备", "換部裝置", "Otro dispositivo", "Un altre dispositiu"],
+  bPush: ["A nudge each day", "每天提醒一下", "每天提醒一下", "Un toque cada día", "Un toc cada dia"],
+  bPushOn: ["A nudge at {t} ✓", "每天 {t} 提醒 ✓", "每天 {t} 提醒 ✓", "Un toque a las {t} ✓", "Un toc a les {t} ✓"],
+  yesCopy: ["Yes, keep a copy", "好，留一份", "好，留一份", "Sí, guarda una copia", "Sí, guarda'n una còpia"],
+  noCopy: ["No, only here", "不用，只放这里", "不用，只放這裡", "No, solo aquí", "No, només aquí"],
+  stopCopy: ["Stop and delete the copy", "停止并删除那份", "停止並刪除那份", "Parar y borrar la copia", "Parar i esborrar la còpia"],
+  keepCopy: ["Keep it", "留着", "留著", "Déjala", "Deixa-la"],
+  sendKey: ["↗ Send the key to yourself", "↗ 把钥匙发给自己", "↗ 把鑰匙傳給自己", "↗ Envíate la llave", "↗ Envia't la clau"],
+  copied: ["Key copied", "钥匙已复制", "鑰匙已複製", "Llave copiada", "Clau copiada"],
+  paste: ["A key from another device? Paste it here", "有另一台设备的钥匙？贴在这里", "有另一台裝置的鑰匙？貼在這裡", "¿Una llave de otro dispositivo? Pégala aquí", "Una clau d'un altre dispositiu? Enganxa-la aquí"],
+  useKey: ["Use this key", "用这把钥匙", "用這把鑰匙", "Usar esta llave", "Fer servir aquesta clau"],
+  keyWarn: ["It's your Nearby keychain too: keep it to yourself.", "它也是你在近邻的钥匙串：自己留着。", "它也是你在近鄰的鑰匙串：自己留著。", "También es tu llavero de Cerca: guárdalo para ti.", "També és el teu clauer d'A Prop: guarda-te'l."],
+  keyText: ["My key to Popo's jar. Open it on my other device.", "我的婆婆罐子钥匙。在我的另一台设备上打开。", "我的婆婆罐子鑰匙。在我的另一台裝置上打開。", "Mi llave del tarro de Popo. Ábrela en mi otro dispositivo.", "La meva clau del pot de la Popo. Obre-la a l'altre dispositiu."],
+  time: ["What time?", "几点？", "幾點？", "¿A qué hora?", "A quina hora?"],
+  yesPush: ["Yes, at this time", "好，就这个时间", "好，就這個時間", "Sí, a esta hora", "Sí, a aquesta hora"],
+  noPush: ["No, thanks", "不用了，谢谢", "不用了，謝謝", "No, gracias", "No, gràcies"],
+  changePush: ["Change the time", "换个时间", "換個時間", "Cambiar la hora", "Canviar l'hora"],
+  stopPush: ["Stop the nudges", "不要再提醒了", "不要再提醒了", "Parar los toques", "Prou tocs"],
+  withSomeone: ["Do it with someone ↗", "找人一起做 ↗", "找人一起做 ↗", "Hazla con alguien ↗", "Fes-la amb algú ↗"],
+  invite: ["↗ Invite a friend", "↗ 邀请朋友", "↗ 邀請朋友", "↗ Invita a alguien", "↗ Convida algú"],
+  linkCopied: ["Link copied", "链接已复制", "連結已複製", "Enlace copiado", "Enllaç copiat"],
+  inviteText: ["Popo says: one little thing a day, away from the phone. Do it with me?", "婆婆说：每天一件小事，离开手机。跟我一起做？", "婆婆話：每日一件小事，放低部電話。同我一齊做吖？", "Popo dice: una cosita cada día, lejos del móvil. ¿La hacemos juntos?", "La Popo diu: una coseta cada dia, lluny del mòbil. La fem junts?"],
+  doText: ["Popo gave me a little thing to do today. Do it with me?", "婆婆给了我今天的一件小事。跟我一起做？", "婆婆俾咗今日件小事我。同我一齊做吖？", "Popo me dio una cosita para hoy. ¿La hacemos juntos?", "La Popo m'ha donat una coseta per avui. La fem junts?"],
+  someone: ["A friend", "一个朋友", "有個朋友", "Alguien", "Algú"],
+  backJar: ["‹ Back", "‹ 返回", "‹ 返回", "‹ Volver", "‹ Tornar"]
 };
+/* Popo about the safe box, the key and the knock (en broken, zh broken, zh-Hant her Cantonese, es broken, ca fluent) */
+var PP = {
+  copyQ: ["*pats her apron pocket* Phone gets lost, papers get lost? No good. I can keep a copy in Nearby's safe box. Only your key opens it. You want?", "*拍拍围裙口袋* 手机丢了，纸条也丢了？不好。我可以在近邻的保险箱里放一份。只有你的钥匙能开。你要吗？", "*拍拍個圍裙袋* 部電話唔見咗，啲紙仔咪冇埋？唔得㗎。我可以喺近鄰個夾萬度留返一份，淨係你條鎖匙先開到。你要唔要呀？", "*se toca el bolsillo del delantal* ¿Móvil se pierde, papeles se pierden? No bueno. Puedo guardar copia en la caja fuerte de Cerca. Solo tu llave abre. ¿Quieres?", "*es toca la butxaca del davantal* Si perds el mòbil, perds els papers? Això no pot ser. En puc guardar una còpia a la caixa forta d'A Prop, i només la teva clau l'obre. La vols?"],
+  copyOnQ: ["Your copy is in the safe box. Every new paper goes there too. Only your key opens it.", "你那份在保险箱里。每张新纸条也放进去。只有你的钥匙能开。", "你嗰份喺夾萬度，每張新紙仔都會放埋入去，淨係你條鎖匙開到。", "Tu copia está en la caja fuerte. Cada papel nuevo va también. Solo tu llave abre.", "La teva còpia és a la caixa forta. Cada paper nou també hi va. Només la teva clau l'obre."],
+  copyKept: ["*locks a little blue tin* Done. Safe like my wedding photo.", "*锁上一个蓝色小铁盒* 好了。跟我的结婚照一样安全。", "*鎖好個藍色小鐵罐* 搞掂，同我張結婚相一樣咁穩陣。", "*cierra una latita azul* Listo. Seguro como mi foto de boda.", "*tanca una llauneta blava* Fet. Ben guardat, com la foto del meu casament."],
+  copyGone: ["*tears the copy into small pieces* Gone. Now only here.", "*把那份撕成小碎片* 没了。现在只在这里。", "*將嗰份撕到碎晒* 冇咗喇，而家淨係喺呢度。", "*rompe la copia en trocitos* Ya no está. Ahora solo aquí.", "*esquinça la còpia a trossets* Ja no hi és. Ara només és aquí."],
+  onlyHere: ["OK. Papers stay here, with me.", "好。纸条留在这里，跟我一起。", "好啦，啲紙仔留喺度陪我。", "Vale. Los papeles se quedan aquí, conmigo.", "D'acord. Els papers es queden aquí, amb mi."],
+  fail: ["Aiya, the safe box is stuck today. Your papers are fine here. We try later.", "哎呀，保险箱今天卡住了。纸条在这里没事。以后再试。", "哎呀，個夾萬今日卡住咗。啲紙仔喺度冇事嘅，遲啲再試過啦。", "Aiya, la caja fuerte hoy se atasca. Tus papeles bien aquí. Probamos luego.", "Aiya, avui la caixa forta s'encalla. Els teus papers aquí estan bé. Ho tornarem a provar més tard."],
+  keyQ: ["New phone? Take this key. Open it on the other one, and the jar comes too. Don't give to strangers!", "新手机？拿着这把钥匙。在另一台上打开，罐子也跟着来。不要给陌生人！", "換新電話呀？攞住條鎖匙，喺第二部度打開，個樽就跟住過嚟。唔好俾啲唔識嘅人呀！", "¿Móvil nuevo? Toma esta llave. Ábrela en el otro y el tarro viene también. ¡No des a desconocidos!", "Un mòbil nou? Té, aquesta clau. Obre-la a l'altre i el pot també hi vindrà. No la donis a desconeguts!"],
+  keyNeed: ["First I keep a copy in the safe box. Then the key can bring the jar. OK?", "先在保险箱里留一份，钥匙才能把罐子带过去。好吗？", "要先喺夾萬度留一份，條鎖匙先至帶到個樽過去。好唔好？", "Primero guardo copia en la caja fuerte. Luego la llave trae el tarro. ¿Vale?", "Primer en guardo una còpia a la caixa forta, i aleshores la clau pot portar el pot. D'acord?"],
+  keyDone: ["*hands you the jar* Here. Same jar, new place. All your papers.", "*把罐子递给你* 给。同一个罐子，新地方。你的纸条都在。", "*將個樽遞俾你* 嗱，同一個樽，換咗個新地方，你啲紙仔全部喺度。", "*te da el tarro* Toma. Mismo tarro, sitio nuevo. Todos tus papeles.", "*et dona el pot* Té. El mateix pot, en un lloc nou. Tots els teus papers."],
+  keyEmpty: ["Hm. The safe box is empty for this key. Maybe the other one never kept a copy?", "嗯。这把钥匙的保险箱是空的。也许另一台从来没留过？", "嗯……呢條鎖匙個夾萬係空嘅喎。會唔會第二部從來都冇留過呀？", "Mm. La caja fuerte está vacía para esta llave. ¿Quizás el otro nunca guardó copia?", "Mm. Per a aquesta clau, la caixa forta és buida. Potser l'altre no en va guardar mai cap còpia?"],
+  keyBad: ["*squints* This is not a key. This is… a noodle?", "*眯起眼* 这不是钥匙。这是……面条？", "*瞇埋對眼* 呢條唔係鎖匙嚟㗎，係……麵嚟？", "*entorna los ojos* Esto no es llave. Esto es… ¿un fideo?", "*arruga els ulls* Això no és una clau. És… un fideu?"],
+  pushQ: ["I can give you one little knock a day. Small knock, not loud. What time is good?", "我可以每天轻轻敲你一下。小小声，不吵。几点好？", "我可以每日輕輕敲你一下，細細聲，唔嘈嘅。你幾點方便呀？", "Puedo darte un toquecito al día. Pequeño, no fuerte. ¿Qué hora va bien?", "Et puc fer un toquet cada dia. Fluixet, sense fer soroll. A quina hora et va bé?"],
+  pushOnQ: ["Every day at {t}, I knock. Small knock.", "每天 {t}，我敲一下。小小声。", "每日 {t}，我敲一下，細細聲。", "Cada día a las {t}, toco. Toquecito.", "Cada dia a les {t} faig un toquet. Fluixet."],
+  pushOn: ["OK! At {t}, knock knock. If you're busy, no problem, come later.", "好！{t} 我就敲敲门。忙的话没关系，晚点来。", "好！{t} 我就嚟敲門。你忙嘅話唔緊要，遲啲先嚟。", "¡Vale! A las {t}, toc toc. Si estás ocupado, no problema, vienes luego.", "Entesos! A les {t}, toc toc. Si estàs enfeinat, cap problema, ja vindràs després."],
+  pushOff: ["OK, no more knocking. Come when you want, the door is open.", "好，不敲了。想来就来，门开着。", "好，唔敲喇。想嚟就嚟，度門開住㗎。", "Vale, no más toc toc. Ven cuando quieras, puerta abierta.", "D'acord, prou tocs. Vine quan vulguis, la porta és oberta."],
+  pushNo: ["Your phone says no knocking. It's OK. You know where I am.", "你的手机说不能敲门。没关系。你知道我在哪里。", "你部電話話唔准敲門喎。唔緊要，你知我喺邊㗎喇。", "Tu móvil dice no toc toc. Está bien. Sabes dónde estoy.", "El teu mòbil diu que res de tocs. No passa res. Ja saps on soc."]
+};
+PP.fromFriend = ["*holds out a folded paper* {f} sends you this one. Same paper, two people. Better.", "*递过来一张折好的纸条* {f}给你这个。同一张纸，两个人。更好。", "*遞張摺好嘅紙仔俾你* {f}送呢件俾你。同一張紙，兩個人做，仲好。", "*te da un papel doblado* {f} te manda esta. Mismo papel, dos personas. Mejor.", "*t'allarga un paper doblegat* {f} t'envia aquesta. El mateix paper, dues persones. Millor."];
+var MEI_DUO = ["*looks up* Group project, but the good kind.", "*抬头* 小组作业，但是好的那种。", "*抬頭* 小組作業，但是好的那種。", "*levanta la vista* Trabajo en grupo, pero del bueno.", "*aixeca la vista* Treball en grup, però del bo."];
+var MEI_KEY = ["*leaning over* Send it to yourself. Not the family group chat. Popo.", "*凑过来* 发给你自己。别发家族群。婆婆。", "*湊過來* 傳給你自己。別傳家族群組。婆婆。", "*asomándose* Mándatela a ti. No al grupo de la familia. Popo.", "*traient el cap* Envia-te-la a tu. No al grup de la família. Popo."];
 var WHO = {
   popo: ["Popo", "婆婆", "婆婆", "Popo", "Popo"], mei: ["Mei", "Mei", "Mei", "Mei", "Mei"], wei: ["Wei", "Wei", "Wei", "Wei", "Wei"],
   cats: ["Miso & Yuzu", "味噌和柚子", "味噌和柚子", "Miso y Yuzu", "Miso i Yuzu"], mantou: ["Mantou", "馒头", "饅頭", "Mantou", "Mantou"],
@@ -243,11 +304,14 @@ var DROP = [
   ["cats", ["*Yuzu tries to fit inside the jar. Does not fit. Tries again.*", "*柚子想钻进罐子。钻不进去。再试一次。*", "*柚子想鑽進罐子。鑽不進去。再試一次。*", "*Yuzu intenta meterse en el tarro. No cabe. Lo vuelve a intentar.*", "*Yuzu prova de ficar-se dins del pot. No hi cap. Ho torna a provar.*"]]
 ];
 
+/* only someone who is in the kitchen right now drops a line */
+function drop() { var a = DROP.filter(function (d) { return d[0] === "mantou" ? petHere("dog") : d[0] === "cats" ? petHere("yuzu") : true; }); return a.length ? pick(a) : null; }
+
 /* ---------------- state (this device only) ---------------- */
 var KEY = "lt_jar";
 function load() { try { var s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s && s.v === 1) return s; } catch (e) {} return { v: 1, size: 0, cur: null, at: 0, done: [], later: {}, old: [] }; }
 var S = load();
-function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} if (window.LTSync) LTSync.up(); }
 function day(t) { var d = t ? new Date(t) : new Date(); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
 function tierMax(n) { return n >= 100 ? 3 : n >= 50 ? 2 : 1; }
 function pool() { var m = tierMax(S.size); return THINGS.filter(function (t) { return t.t <= m; }); }
@@ -282,38 +346,150 @@ function face(cv, who, o) {
   if (who === "note") { rect(g, 6, 6, 20, 22, "#fffdf6"); rect(g, 6, 6, 20, 1, "#000"); rect(g, 6, 27, 20, 1, "#000"); rect(g, 6, 6, 1, 22, "#000"); rect(g, 25, 6, 1, 22, "#000"); for (var i = 0; i < 4; i++) rect(g, 9, 11 + i * 4, i === 3 ? 8 : 14, 1, "#4a7ec0"); rect(g, 12, 4, 8, 4, "rgba(232,168,56,.8)"); return; }
   rect(g, 8, 8, 16, 16, "#d6d2ca");
 }
-/* the jar: glass, a red cloth lid tied with string, and the papers inside, one for every little thing done */
+/* the jar: glass, a red cloth lid tied with string, and inside one folded paper for every little thing done, piling up
+   from the bottom. A full jar is full whatever its size (20, 50 or 100 papers): the papers are smaller in the bigger jars. */
 var PAPER = ["#fffdf6", "#f4d04a", "#f48fb8", "#cfe7c4", "#bcd6f0", "#f6c89a", "#e8dcff"];
 function hash(n) { var h = 2166136261; n = String(n); for (var i = 0; i < n.length; i++) { h ^= n.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
-function jar(g, x, y, w, h, fill, papers, drop) {
-  /* outline */
+var JARS = { 20: [24, 28], 50: [28, 34], 100: [32, 40] };
+function jarDims(size) { return JARS[size] || JARS[20]; }
+function jar(g, x, y, w, h, n, cap, drop) {
+  /* lid */
   rect(g, x + 2, y, w - 4, 1, "#000"); rect(g, x + 1, y + 1, 1, 5, "#000"); rect(g, x + w - 2, y + 1, 1, 5, "#000");
   rect(g, x + 2, y + 1, w - 4, 4, "#c8303a"); rect(g, x + 3, y + 2, 2, 1, "#e85a5a"); rect(g, x + 1, y + 5, w - 2, 1, "#000"); rect(g, x + 2, y + 4, w - 4, 1, "#e8a838");
+  /* glass */
   rect(g, x, y + 6, 1, h - 7, "#000"); rect(g, x + w - 1, y + 6, 1, h - 7, "#000"); rect(g, x + 1, y + h - 1, w - 2, 1, "#000");
   rect(g, x + 1, y + 6, w - 2, h - 7, "rgba(200,232,240,.42)");
-  /* papers */
-  var inner = h - 9, n = papers.length, rows = Math.max(0, Math.round(inner * fill)), placed = 0;
-  for (var r = 0; r < rows && placed < Math.max(n, rows ? 1 : 0); r++) {
-    var yy = y + h - 3 - r; for (var c = 0; c < 3; c++) { var k = hash(r * 7 + c), col = PAPER[k % PAPER.length], xx = x + 2 + c * Math.floor((w - 4) / 3) + (k % 2); rect(g, xx, yy, Math.floor((w - 4) / 3) - 1, 1, col); if (k % 5 === 0) rect(g, xx + 1, yy, 1, 1, "rgba(0,0,0,.18)"); }
-    placed++;
+  /* the papers */
+  var ix = x + 1, iw = w - 2, top = y + 8, bot = y + h - 1, ih = bot - top;
+  n = Math.min(n || 0, cap || 0);
+  if (n > 0) {
+    var cols = Math.max(3, Math.min(Math.floor(iw / 3), Math.ceil(cap * 3 / ih))), rows = Math.ceil(cap / cols), rh = ih / rows, sw = iw / cols;
+    for (var i = 0; i < n; i++) {
+      var r = Math.floor(i / cols), k = hash("p" + i), c = (i + hash("r" + r)) % cols;
+      var ww = Math.max(3, Math.round(sw) + 1), hh = Math.max(2, Math.round(rh) + 1);
+      var sx = Math.round(ix + c * sw) + ((k >> 4) % 3) - 1, sy = Math.round(bot - (r + 1) * rh) - ((k >> 7) % 2);
+      sx = Math.max(ix, Math.min(ix + iw - ww, sx)); sy = Math.min(bot - hh, sy);
+      var col = PAPER[k % PAPER.length];
+      rect(g, sx, sy, ww, hh, col);
+      rect(g, sx, sy + hh - 1, ww, 1, "rgba(0,0,0,.18)");                         /* its shadow on the one below */
+      if (k % 3 === 0) rect(g, sx + 1 + (k >> 9) % Math.max(1, ww - 2), sy, 1, hh - 1, "rgba(0,0,0,.12)");   /* a fold */
+      else if (k % 3 === 1) rect(g, sx, sy, 1, 1, "rgba(0,0,0,.12)");               /* a dog-ear */
+    }
   }
   if (drop) rect(g, x + (w >> 1) - 2, drop, 4, 3, "#fffdf6");
   /* shine */
   rect(g, x + 2, y + 8, 1, h - 14, "rgba(255,255,255,.7)"); rect(g, x + 3, y + 9, 1, 3, "rgba(255,255,255,.5)");
 }
+
+/* ---------------- the window: the browser's own clock, and a sky of its own each visit ---------------- */
+function realSeason() { try { if (FW.realSeason) return FW.realSeason(); } catch (e) {} var m = new Date().getMonth(); return m === 11 || m < 2 ? "winter" : m < 5 ? "spring" : m < 8 ? "summer" : "autumn"; }
+var SEASON = realSeason();
+var SUNT = { winter: [8.25, 17.75], spring: [6.75, 20.25], summer: [6.25, 21.5], autumn: [7.75, 19] };   /* sunrise and sunset by season */
+var WXS = { winter: ["clear", "clear", "cloudy", "snow", "snow", "fog", "rain"], spring: ["clear", "clear", "clear", "cloudy", "rain", "rain", "fog"],
+  summer: ["clear", "clear", "clear", "clear", "cloudy", "rain", "fog"], autumn: ["clear", "clear", "cloudy", "cloudy", "rain", "rain", "fog"] };
+var WX = (function () {
+  var w = null; try { w = sessionStorage.getItem("lt_wx"); } catch (e) {}
+  if (["clear", "cloudy", "rain", "snow", "fog"].indexOf(w) < 0) { w = pick(WXS[SEASON] || WXS.spring); try { sessionStorage.setItem("lt_wx", w); } catch (e) {} }
+  return w === "snow" && SEASON !== "winter" ? "rain" : w;   /* snow only in winter */
+})();
+function hourF() { var d = new Date(); return d.getHours() + d.getMinutes() / 60; }
+function phaseAt(h) { var s = SUNT[SEASON] || SUNT.spring; return h < s[0] - .75 ? "night" : h < s[0] + .75 ? "dawn" : h < s[1] - .75 ? "day" : h < s[1] + .75 ? "dusk" : "night"; }
+var SKY = { night: ["#0b1130", "#1c2552"], dawn: ["#6a5a9a", "#f4a882"], day: ["#5aa8e0", "#bfe2f4"], dusk: ["#4a3a72", "#f08a5a"] };
+var WET = { night: ["#0c0e14", "#181c28"], dawn: ["#5a566a", "#8a8290"], day: ["#66727e", "#98a2ac"], dusk: ["#463e52", "#7a6670"] };
+var GREY = { night: ["#11141c", "#1f2433"], dawn: ["#77718a", "#b8a69e"], day: ["#8c9aa8", "#c6ced4"], dusk: ["#585066", "#a08478"] };
+function hx(c) { var n = parseInt(c.slice(1), 16); return [n >> 16, n >> 8 & 255, n & 255]; }
+function mix(a, b, p) { a = hx(a); b = hx(b); return "rgb(" + a.map(function (v, i) { return Math.round(v + (b[i] - v) * p); }).join(",") + ")"; }
+function moonAge() { return (((Date.now() / 1000 - 947182440) % 2551443) + 2551443) % 2551443 / 2551443; }   /* 0 new, .5 full */
+function drawWindow(g, t, h) {
+  var X = 64, Y = 8, Wd = 30, Ht = 24, ph = phaseAt(h), s = WX === "clear" ? SKY[ph] : WX === "rain" || WX === "snow" ? WET[ph] : GREY[ph], sn = SUNT[SEASON] || SUNT.spring, i, k;
+  g.save(); g.beginPath(); g.rect(X, Y, Wd, Ht); g.clip();
+  for (i = 0; i < Ht; i++) rect(g, X, Y + i, Wd, 1, mix(s[0], s[1], i / (Ht - 1)));
+  var open = WX === "clear" || WX === "cloudy";
+  if (ph === "night" && WX !== "fog" && WX !== "rain" && WX !== "snow") for (i = 0; i < 16; i++) {   /* stars */
+    k = hash("st" + i); if (WX === "cloudy" && k % 3) continue;
+    rect(g, X + k % Wd, Y + (k >> 5) % 15, 1, 1, ((t / 500 + (k >> 8)) | 0) % 7 === 0 ? "rgba(255,255,255,.3)" : "rgba(255,255,255,.95)");
+  }
+  if (open && ph !== "night") {   /* the sun, rising over the roofs and going down again */
+    var p = Math.max(-.08, Math.min(1.08, (h - sn[0]) / (sn[1] - sn[0]))), sx = Math.round(X + 1 + p * (Wd - 6)), sy = Math.round(Y + 18 - Math.sin(Math.PI * Math.max(0, Math.min(1, p))) * 14);
+    var sc = ph === "day" ? "#fff2a0" : "#f8b060";
+    rect(g, sx - 1, sy + 1, 6, 2, "rgba(255,230,150,.35)"); rect(g, sx, sy, 4, 4, sc); rect(g, sx + 1, sy - 1, 2, 6, sc); rect(g, sx - 1, sy + 1, 6, 2, sc);
+  } else if (open) {   /* the moon in its real phase */
+    var nh = h >= sn[1] ? h - sn[1] : h + 24 - sn[1], nl = 24 - sn[1] + sn[0], q = Math.max(0, Math.min(1, nh / nl)), mx = Math.round(X + 2 + q * (Wd - 8)), my = Math.round(Y + 12 - Math.sin(Math.PI * q) * 8), a = moonAge();
+    rect(g, mx + 1, my, 3, 5, "#f3ead8"); rect(g, mx, my + 1, 5, 3, "#f3ead8");
+    var lit = 1 - Math.abs(a - .5) * 2, off = Math.round(lit * 5);   /* how much is lit, and from which side */
+    if (off < 5) { var sh = mix(s[0], s[1], (my - Y) / Ht); if (a < .5) { rect(g, mx - off, my, 5, 5, sh); } else { rect(g, mx + off, my, 5, 5, sh); } }
+  }
+  var nc = WX === "clear" ? 1 : WX === "cloudy" ? 4 : WX === "fog" ? 0 : 3, cc = WX === "clear" || WX === "cloudy" ? (ph === "night" ? "#3a4060" : "rgba(255,255,255,.88)") : (ph === "night" ? "#2a2e3a" : "#7a828e");
+  for (i = 0; i < nc; i++) { var cx = Math.round(X - 12 + ((t / (700 + i * 260) + i * 13) % (Wd + 22))), cy = Y + 1 + (i * 5) % 12; rect(g, cx, cy + 1, 10, 2, cc); rect(g, cx + 2, cy, 5, 1, cc); rect(g, cx + 1, cy + 3, 7, 1, cc); }
+  /* the roofs across the street */
+  var dark = ph === "night" || ph === "dusk";
+  for (i = 0; i < 4; i++) { var rx = X - 1 + i * 8, rh = 4 + hash("rf" + i) % 3; rect(g, rx, Y + Ht - rh, 7, rh, ph === "night" ? "#3a2a30" : "#b0583a"); rect(g, rx + 1, Y + Ht - rh - 1, 5, 1, ph === "night" ? "#2a1a20" : "#8a3a2a");
+    if (WX === "snow") rect(g, rx + 1, Y + Ht - rh - 1, 5, 1, "#f4f6f8");
+    if (dark && hash("lw" + i) % 3) rect(g, rx + 2, Y + Ht - rh + 2, 2, 1, "#f8d070"); }
+  if (WX === "rain") for (i = 0; i < 22; i++) { k = hash("rn" + i); rect(g, X + k % Wd, Y + Math.round((t / 30 + (k >> 6)) % Ht), 1, 3, "rgba(214,230,246,.85)"); }
+  if (WX === "snow") for (i = 0; i < 24; i++) { k = hash("sn" + i); var fz = k % 4 ? 1 : 2; rect(g, Math.round(X + k % Wd + Math.sin(t / 700 + i) * 1.5), Y + Math.round((t / 140 + (k >> 6)) % Ht), fz, fz, "#fff"); }
+  if (WX === "fog") { rect(g, X, Y, Wd, Ht, "rgba(214,220,226,.55)"); rect(g, X, Y + 7 + ((t / 1600) | 0) % 3, Wd, 3, "rgba(240,242,244,.5)"); rect(g, X, Y + 16, Wd, 4, "rgba(240,242,244,.45)"); }
+  g.restore();
+  if (WX === "rain") { rect(g, X + 4, Y + 3, 1, 2, "rgba(255,255,255,.55)"); rect(g, X + 21, Y + 13, 1, 2, "rgba(255,255,255,.5)"); rect(g, X + 9, Y + 16, 1, 1, "rgba(255,255,255,.5)"); }
+  rect(g, 78, 8, 2, 24, "#000"); rect(g, 64, 19, 30, 2, "#000"); rect(g, 60, 34, 38, 3, "#8a5a34"); rect(g, 60, 37, 38, 1, "#000");
+  if (WX === "snow") rect(g, 60, 33, 38, 1, "#f4f6f8");
+}
+
+/* ---------------- the animals: they come and go as they like ---------------- */
+var PZ = { miso: { lanes: [57, 84], v: .5, p: .85 }, yuzu: { lanes: [57, 84], v: .55, p: .8 }, dog: { lanes: [84], v: .8, p: .35 } };
+function mantouNaps(h) { return h >= 22 || h < 6 || (h >= 14 && h < 15.5); }
+function sleepy(p) { var h = hourF(); return p.k === "dog" ? mantouNaps(h) : asleep() || (h >= 13 && h < 16); }
+var PETZ = Object.keys(PZ).map(function (k) {
+  var c = PZ[k], home = asleep() && k !== "dog", here = home || Math.random() < c.p, now = performance.now();
+  var p = { k: k, lane: pick(c.lanes), x: 14 + Math.random() * 132, dir: Math.random() < .5 ? 1 : -1, st: here ? "sit" : "away", until: now + (here ? 1500 + Math.random() * 5000 : 20000 + Math.random() * 70000), tx: 0, step: 0 };
+  p.y = p.lane; if (here && sleepy(p) && Math.random() < .8) p.st = "sleep";
+  if (k === "miso" && home) { p.lane = p.y = 57; p.x = 148; } if (k === "yuzu" && home) { p.lane = p.y = 84; p.x = 96; }
+  return p;
+});
+function petHere(k) { for (var i = 0; i < PETZ.length; i++) if (PETZ[i].k === k) return PETZ[i].st !== "away"; return false; }
+function jarSpan() { var d = jarDims(S.size); return [125 - (d[0] >> 1) - 10, 125 + (d[0] >> 1) + 10]; }
+function petNext(p, now) {
+  var r = Math.random(), z = sleepy(p), span = jarSpan();
+  if (z && r < .6) { p.st = "sleep"; p.until = now + 20000 + Math.random() * 40000; return; }
+  if (r < (asleep() && p.k !== "dog" ? 0 : .12)) { p.st = "walk"; p.leave = 1; p.tx = p.x < 80 ? -16 : 176; p.dir = p.tx < p.x ? -1 : 1; return; }
+  if (r < .45) { p.st = "sit"; p.until = now + 3000 + Math.random() * 8000; return; }
+  if (r < .58 && !z) { p.st = "sleep"; p.until = now + 8000 + Math.random() * 20000; return; }
+  var c = PZ[p.k]; if (c.lanes.length > 1 && Math.random() < .25) p.lane = c.lanes[p.lane === c.lanes[0] ? 1 : 0];   /* a hop up onto the table, or down */
+  p.tx = 8 + Math.random() * 144; if (p.lane === 57 && p.tx > span[0] && p.tx < span[1]) p.tx = Math.random() < .5 ? span[0] - 4 : span[1] + 4;
+  p.st = "walk"; p.leave = 0; p.dir = p.tx < p.x ? -1 : 1;
+}
+function petTick(now) {
+  PETZ.forEach(function (p) {
+    if (p.y !== p.lane) p.y += Math.max(-7, Math.min(7, p.lane - p.y));
+    if (p.st === "away") { if (now > p.until) { var c = PZ[p.k]; p.lane = p.y = pick(c.lanes); p.x = Math.random() < .5 ? -14 : 174; p.tx = 20 + Math.random() * 120; p.dir = p.tx < p.x ? -1 : 1; p.st = "walk"; p.leave = 0; } return; }
+    if (p.st === "walk") {
+      p.x += p.dir * PZ[p.k].v; p.step++;
+      if ((p.dir > 0 && p.x >= p.tx) || (p.dir < 0 && p.x <= p.tx)) {
+        if (p.leave) { p.st = "away"; p.until = now + (p.k === "dog" ? 30000 : 20000) + Math.random() * 90000; return; }
+        petNext(p, now);
+      }
+      return;
+    }
+    if (now > p.until) petNext(p, now);
+  });
+}
+function petDraw(g, t) {
+  if (!FW.drawPet) return;
+  PETZ.filter(function (p) { return p.st !== "away"; }).sort(function (a, b) { return a.y - b.y; }).forEach(function (p) {
+    var z = p.st === "sleep";
+    FW.drawPet(g, p.k, Math.round(p.x), Math.round(p.y), 1, { flip: p.dir < 0, asleep: z, step: p.st === "walk" ? (p.step >> 1) : 0 });
+    if (z) { var zt = ((t / 900) + p.x) | 0; if (zt % 3 !== 2) { g.fillStyle = "rgba(243,234,216,.85)"; g.font = "6px monospace"; g.fillText("z", Math.round(p.x) + 5 + zt % 3, Math.round(p.y) - 12 - zt % 3); } }
+  });
+}
+
 var anim = { drop: -1, t0: 0 }, blink = 0, cv = $("scene"), sg = cv.getContext("2d");
-function sky(h) { return h >= 21 || h < 5 ? ["#141a34", "#1e2648"] : h < 7 ? ["#e89a6a", "#f6c89a"] : h < 18 ? ["#7cc0e8", "#bfe2f4"] : h < 20 ? ["#e8805a", "#f4b07a"] : ["#3a3060", "#5a4a7a"]; }
 function scene(t) {
-  var g = sg, h = hour(), night = asleep(), sk = sky(h);
+  var g = sg, h = hourF(), night = asleep(), ph = phaseAt(h), dim = !night && (ph === "night" || ph === "dusk");
   g.imageSmoothingEnabled = false;
   /* wall, tiles, shelf */
   rect(g, 0, 0, 160, 84, night ? "#4a3424" : "#c9a46c"); for (var i = 0; i < 160; i += 8) rect(g, i, 0, 1, 52, "rgba(0,0,0,.06)");
   rect(g, 0, 40, 160, 12, night ? "#3e6a62" : "#6aa898"); for (i = 0; i < 160; i += 6) rect(g, i, 40, 1, 12, "rgba(0,0,0,.15)"); rect(g, 0, 46, 160, 1, "rgba(0,0,0,.15)");
-  /* window */
-  rect(g, 62, 6, 34, 28, "#000"); rect(g, 64, 8, 30, 24, sk[0]); rect(g, 64, 20, 30, 12, sk[1]);
-  if (night) { rect(g, 86, 11, 3, 3, "#f3ead8"); rect(g, 86, 11, 1, 1, sk[0]); rect(g, 70, 12, 1, 1, "#fff"); rect(g, 78, 16, 1, 1, "#fff"); rect(g, 90, 22, 1, 1, "#fff"); }
-  else { rect(g, 84, 11, 4, 4, h < 7 || h >= 18 ? "#f8d070" : "#fff2a0"); rect(g, 67 + ((t / 900) | 0) % 24, 14, 8, 2, "rgba(255,255,255,.85)"); rect(g, 69 + ((t / 900) | 0) % 24, 13, 4, 1, "rgba(255,255,255,.85)"); }
-  rect(g, 78, 8, 2, 24, "#000"); rect(g, 64, 19, 30, 2, "#000"); rect(g, 60, 34, 38, 3, "#8a5a34"); rect(g, 60, 37, 38, 1, "#000");
+  drawWindow(g, t, h);
   /* a pot of spring onion on the sill */
   rect(g, 88, 29, 6, 5, "#c0603a"); rect(g, 88, 29, 6, 1, "#000"); rect(g, 89, 24, 1, 5, "#5aa04a"); rect(g, 91, 22, 1, 7, "#5aa04a"); rect(g, 93, 25, 1, 4, "#2e6b34");
   /* a shelf with jars and a red tin */
@@ -321,6 +497,8 @@ function scene(t) {
   rect(g, 108, 8, 6, 6, "#e8d070"); rect(g, 108, 7, 6, 1, "#000"); rect(g, 117, 9, 5, 5, "#d6d2ca"); rect(g, 125, 6, 8, 8, "#4a7ec0"); rect(g, 126, 7, 6, 1, "#7cc8d8"); rect(g, 137, 9, 10, 5, "#f3ead8"); rect(g, 138, 10, 8, 1, "#c8303a");
   /* a calendar on the wall: paper, no numbers that count anything */
   rect(g, 10, 6, 18, 20, "#000"); rect(g, 11, 7, 16, 18, "#fffdf6"); rect(g, 11, 7, 16, 4, "#c8303a"); for (i = 0; i < 4; i++) rect(g, 13, 13 + i * 3, 12, 1, "#d6d2ca");
+  /* the lamp over the table */
+  rect(g, 47, 0, 1, 7, "#000"); rect(g, 43, 7, 9, 3, "#2e6b54"); rect(g, 43, 7, 9, 1, "#000"); rect(g, 45, 10, 5, 1, dim || night ? "#ffe08a" : "#d8c890");
   /* Popo (or Popo asleep in her armchair) */
   if (night) {
     rect(g, 14, 24, 40, 30, "#7a2232"); rect(g, 14, 24, 40, 2, "#000"); rect(g, 12, 34, 6, 22, "#8a2a3a"); rect(g, 50, 34, 6, 22, "#8a2a3a");
@@ -337,20 +515,22 @@ function scene(t) {
   rect(g, 50, 51, 10, 5, "#f3ead8"); rect(g, 49, 51, 12, 1, "#000"); rect(g, 52, 55, 6, 1, "#4a7ec0");
   if (!night) { var s = (t / 260 | 0) % 4; rect(g, 53 + (s % 2), 46 - s, 1, 2, "rgba(255,255,255,.7)"); rect(g, 56 - (s % 2), 44 - s, 1, 2, "rgba(255,255,255,.55)"); }
   rect(g, 66, 49, 12, 7, "#4aa07a"); rect(g, 68, 47, 8, 2, "#4aa07a"); rect(g, 71, 46, 2, 1, "#000"); rect(g, 78, 51, 3, 2, "#4aa07a"); rect(g, 63, 50, 3, 2, "#3a8a64"); rect(g, 66, 49, 12, 1, "#000");
-  /* the jar */
-  var fill = S.size ? Math.min(1, S.done.length / S.size) : 0, dy = -1;
-  if (anim.drop >= 0) { var p = (t - anim.t0) / 900; if (p >= 1) anim.drop = -1; else dy = Math.round(18 + p * 30); fill = S.size ? Math.min(1, (S.done.length - (p < 1 ? 1 : 0)) / S.size) : 0; }
-  jar(g, 112, 26, 26, 30, fill, S.done, dy >= 0 ? dy : 0);
-  /* Miso and Yuzu, wherever cats like to be */
-  if (FW.drawPet) {
-    FW.drawPet(g, "miso", 148, 56, 1, { asleep: night || h < 8, flip: true });
-    if (night || (h >= 13 && h < 17)) FW.drawPet(g, "yuzu", 96, 56, 1, { asleep: true });
-    else FW.drawPet(g, "yuzu", 92, 84, 1, { step: (t / 400 | 0) % 2 });
+  /* the jar, sized 20 / 50 / 100, filling with papers */
+  var n = S.done.length, dy = 0, jd = jarDims(S.size), jx = 125 - (jd[0] >> 1), jy = 56 - jd[1];
+  if (anim.drop >= 0) { var p = (t - anim.t0) / 900; if (p >= 1) anim.drop = -1; else { dy = Math.round(jy - 10 + p * (jd[1] - 4)); n--; } }
+  jar(g, jx, jy, jd[0], jd[1], n, S.size || 20, dy);
+  petDraw(g, t);
+  /* evening in the kitchen: the room dims and the lamp is on (the window keeps its own light) */
+  if (dim || night) {
+    g.save(); g.beginPath(); g.rect(0, 0, 160, 84); g.rect(64, 8, 30, 24); g.clip("evenodd");
+    rect(g, 0, 0, 160, 84, night ? "rgba(10,8,30,.28)" : "rgba(30,20,50,.22)");
+    g.restore();
+    for (var ly = 11; ly < 60; ly++) { var lw = 5 + (ly - 11) * .8; rect(g, Math.round(47.5 - lw / 2), ly, Math.round(lw), 1, "rgba(255,214,120," + (.16 - (ly - 11) * .0024).toFixed(3) + ")"); }   /* the lamp's light on the table */
   }
 }
 var lastT = 0;
 function loop(t) {
-  if (t - lastT > 110) { lastT = t; if (Math.random() < .012) { blink = 2; } else if (blink) blink--; scene(t); }
+  if (t - lastT > 110) { lastT = t; if (Math.random() < .012) { blink = 2; } else if (blink) blink--; petTick(t); scene(t); }
   requestAnimationFrame(loop);
 }
 
@@ -382,10 +562,11 @@ function show(t, opener) {
   if (opener) say(opener[0], opener[1], { asleep: opener[0] === "popo" && night });
   paper(t);
   if (t.c && Math.random() < .55) say(t.c[0], t.c[1], { small: true });
-  else if (Math.random() < .12) { var d = pick(DROP); say(d[0], d[1], { small: true }); }
+  else if (Math.random() < .12) { var d = drop(); if (d) say(d[0], d[1], { small: true }); }
   btn(icon("heart") + esc(T(W.did)), function () { didIt(t); }, "pri");
   btn(esc(T(W.another)), function () { another(t); });
   btn(esc(T(W.notToday)), function () { notToday(t); }, "quiet");
+  var ws = btn(esc(T(W.withSomeone)), function () { shareIt(T(W.doText), doLink(t), ws); }, "quiet sm"); ws.style.flexBasis = "100%";
   mode = "thing";
 }
 function present(opener) {
@@ -400,11 +581,12 @@ function didIt(t) {
   var inp = $("own");
   var go = function () {
     var w = (inp.value || "").trim().slice(0, 80);
-    S.done.push({ id: t.id, at: Date.now(), w: w || undefined }); S.cur = null; delete S.later[t.id]; anotherN = 0; save();
+    S.done.push({ id: t.id, at: Date.now(), w: w || undefined }); if (S.cur === t.id || !BY[S.cur]) S.cur = null; delete S.later[t.id]; anotherN = 0; save();
     anim.drop = 1; anim.t0 = performance.now();
     clear();
     if (isFull()) { say(night ? "cats" : "popo", night ? pick(CATS.done) : pick(P.done)); setTimeout(full, 900); return; }
     say(night ? "cats" : "popo", night ? pick(CATS.done) : T(pick(P.done)) + " " + T(P.enough[0]));
+    if (!S.size) { btn(esc(T(W.next)), function () { intro(0); }, "pri"); return; }
     btn(esc(T(W.tomorrow)), function () { rest(); }, "pri");
     btn(esc(T(W.more)), function () { present(); });
     btn(esc(T(W.look)), openJar, "quiet");
@@ -421,14 +603,15 @@ function another(t) {
   show(BY[id], night ? ["cats", pick(CATS.another)] : ["popo", anotherN >= 4 ? pick(P.picky) : pick(P.another)]);
 }
 function notToday(t) {
-  S.later[t.id] = day(); S.cur = null; anotherN = 0; save();
+  S.later[t.id] = day(); if (S.cur === t.id) S.cur = null; anotherN = 0; save();
+  if (!S.size) { clear(); say("popo", pick(P.later)); btn(esc(T(W.next)), function () { intro(0); }, "pri"); return; }
   rest(asleep() ? ["cats", pick(CATS.later)] : ["popo", pick(P.later)]);
 }
 function rest(opener) {
   clear(); var night = asleep();
   if (opener) say(opener[0], opener[1]);
   else say(night ? "cats" : "popo", night ? pick(CATS.rest) : pick(P.rest), { asleep: night });
-  if (!opener && Math.random() < .35) { var d = pick(DROP); say(d[0], d[1], { small: true }); }
+  if (!opener && Math.random() < .35) { var d = drop(); if (d) say(d[0], d[1], { small: true }); }
   btn(esc(T(W.give)), function () { present(); }, "pri");
   btn(esc(T(W.look)), openJar, "quiet");
   mode = "rest";
@@ -445,7 +628,7 @@ function jarButtons(onPick) {
   var row = document.createElement("div"); row.className = "jars";
   SIZES.forEach(function (z, i) {
     var b = document.createElement("button"); b.className = "btn jarbtn" + (S.size === z[0] ? " pri" : "");
-    var c = document.createElement("canvas"); c.width = 20 + i * 6; c.height = 24 + i * 8; var g = c.getContext("2d"); jar(g, 0, 0, c.width, c.height, 0, []);
+    var c = document.createElement("canvas"), jd = jarDims(z[0]); c.width = jd[0]; c.height = jd[1]; c.style.width = jd[0] * 2 + "px"; var g = c.getContext("2d"); jar(g, 0, 0, c.width, c.height, 0, z[0]);
     b.appendChild(c); b.insertAdjacentHTML("beforeend", "<b>" + esc(T(W[z[1]])) + "</b><small>" + esc(T(W[z[2]])) + "</small>");
     b.addEventListener("click", function () { onPick(z[0]); }); row.appendChild(b);
   });
@@ -460,6 +643,229 @@ function intro(i) {
   mode = "intro";
 }
 
+/* ---------------- Popo's safe box (a copy on Nearby's server, only if asked), a key for another device, a daily knock ----------------
+   Nothing leaves the device until the visitor says yes here, and the privacy card (FBC, "lt") asks once before the first send.
+   The key is the town's own device key (fb_device_key, so Nearby's keychain carries the jar too), hashed with the app on the
+   device: sha256("lt:" + key). The server keeps only a fingerprint of that (lt_save / lt_load / lt_forget). */
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+function syncOn() { return lsGet("lt_sync") === "1"; }
+var KOK = /^[A-Za-z0-9_-]{32,128}$/;
+function cfg() { return new Promise(function (res) { if (window.FB_SUPABASE && FB_SUPABASE.url) return res(FB_SUPABASE); var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { res(window.FB_SUPABASE || {}); }; document.head.appendChild(sc); }); }
+function rpc(fn, body) {
+  return cfg().then(function (c) {
+    if (!c.url) throw new Error("offline");
+    return fetch(c.url + "/rest/v1/rpc/" + fn, { method: "POST", headers: { apikey: c.anonKey, Authorization: "Bearer " + c.anonKey, "Content-Type": "application/json" }, body: JSON.stringify(body || {}) })
+      .then(function (r) { return r.text().then(function (x) { var j = null; try { j = x ? JSON.parse(x) : null; } catch (e) {} if (!r.ok) { var er = new Error((j && j.message) || "error"); er.rest = /rest:/.test((j && j.message) || ""); throw er; } return j; }); });
+  });
+}
+function newKey() { var a = new Uint8Array(32); crypto.getRandomValues(a); return btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+function devKey() { var k = lsGet("fb_device_key"); if (!k || !KOK.test(k)) { k = newKey(); lsSet("fb_device_key", k); } return k; }
+var secMemo = {};
+function secret() { var d = devKey(); return secMemo[d] || (secMemo[d] = crypto.subtle.digest("SHA-256", new TextEncoder().encode("lt:" + d)).then(function (b) { return Array.prototype.map.call(new Uint8Array(b), function (x) { return ("0" + x.toString(16)).slice(-2); }).join(""); })); }
+/* the privacy card, once (outside the town the full card); a "no" keeps everything here */
+function consent() { try { if (window.FBC && FBC.ask) { var d = (FBC.DATA || []).filter(function (x) { return x.k === "lt"; })[0]; if (d) return FBC.ask(d); } } catch (e) {} return Promise.resolve(true); }
+
+/* the jar as it travels: what was done, when, the visitor's own line; merged paper by paper, so two devices never lose one */
+function pkey(d) { return d.id + "@" + d.at; }
+function pack() { return { v: 1, size: S.size, done: S.done, old: S.old, reset: S.reset || 0 }; }
+function merge(R) {
+  if (!R || typeof R !== "object" || !Array.isArray(R.done)) return false;
+  var before = JSON.stringify(pack()), reset = Math.max(+S.reset || 0, +R.reset || 0), soon = Date.now() + 864e5;
+  var ok = function (d) { return d && (typeof d.id === "string" || typeof d.id === "number") && String(d.id).length < 40 && +d.at > reset && +d.at < soon; };   /* a paper whose thing is gone from the list is kept, just not shown */
+  var clean = function (d) { var o = { id: d.id, at: +d.at }; if (d.w) o.w = String(d.w).slice(0, 80); return o; };
+  var byAt = function (a, b) { return a.at - b.at; }, olds = {}, inOld = {};
+  (S.old || []).concat(Array.isArray(R.old) ? R.old : []).forEach(function (o) {
+    if (!o || !Array.isArray(o.done) || !(+o.end > reset)) return;
+    var e = olds[o.end] || (olds[o.end] = { size: +o.size || 20, done: {}, end: +o.end });
+    o.done.forEach(function (d) { if (ok(d)) { e.done[pkey(d)] = clean(d); inOld[pkey(d)] = 1; } });
+  });
+  var old = Object.keys(olds).map(function (k) { var o = olds[k]; return { size: o.size, done: Object.keys(o.done).map(function (x) { return o.done[x]; }).sort(byAt), end: o.end }; }).sort(function (a, b) { return b.end - a.end; }).slice(0, 40);
+  var done = {}; S.done.concat(R.done).forEach(function (d) { if (ok(d) && !inOld[pkey(d)]) done[pkey(d)] = clean(d); });
+  S.done = Object.keys(done).map(function (k) { return done[k]; }).sort(byAt); S.old = old; S.reset = reset;
+  if (!S.size && [20, 50, 100].indexOf(+R.size) >= 0) S.size = +R.size;
+  if (S.size) S.met = 1;
+  if (S.cur && doneIds()[S.cur]) S.cur = null;
+  return JSON.stringify(pack()) !== before;
+}
+var upT = 0, lastUp = "";
+window.LTSync = { up: function (soon) {
+  if (!syncOn()) return; clearTimeout(upT);
+  upT = setTimeout(function () {
+    var body = JSON.stringify(pack()); if (body === lastUp) return;
+    secret().then(function (k) { return rpc("lt_save", { p_secret: k, p_data: pack() }); }).then(function () { lastUp = body; })
+      .catch(function (e) { if (e && e.rest && /slow/.test(e.message)) setTimeout(function () { LTSync.up(true); }, 5000); });
+  }, soon ? 200 : 1500);
+} };
+function pull() {   /* the safe box → this jar */
+  return secret().then(function (k) { return rpc("lt_load", { p_secret: k }); }).then(function (r) {
+    var d = r && r.data, had = !!d; if (d && merge(d)) { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+    return had;
+  });
+}
+function copyOn() {
+  return consent().then(function (yes) {
+    if (!yes) return "no";
+    return pull().then(function () { lsSet("lt_sync", "1"); lastUp = ""; return secret(); }).then(function (k) { return rpc("lt_save", { p_secret: k, p_data: pack() }); })
+      .then(function () { lastUp = JSON.stringify(pack()); return "ok"; });
+  });
+}
+function copyOff() { return secret().then(function (k) { return rpc("lt_forget", { p_secret: k }); }).then(function () { lsSet("lt_sync", null); lastUp = ""; }); }
+
+/* the key: the same link the town's keychain makes (fb_device_key and Borrowed Pages' older key), opened here or pasted */
+var KEYS = { d: "fb_device_key", b: "dogeared_key" };
+function b64u(s) { return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+function unb64u(s) { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return decodeURIComponent(escape(atob(s))); }
+function keyLink() { devKey(); var o = {}; for (var k in KEYS) { var v = lsGet(KEYS[k]); if (v) o[k] = v; } return location.origin + "/little-things/#keys=k1." + b64u(JSON.stringify(o)); }
+function keyImport(text) {
+  var m = /k1\.([A-Za-z0-9_-]{20,600})/.exec(String(text || "")); if (!m) return false; var o; try { o = JSON.parse(unb64u(m[1])); } catch (e) { return false; }
+  if (!o || !o.d || !KOK.test(o.d)) return false;
+  try { var old = JSON.parse(lsGet("fb_keys_old") || "[]"), cur = {}; for (var k in KEYS) { var v = lsGet(KEYS[k]); if (v) cur[k] = v; }   /* the keys this device had are kept, as the town does */
+    if (cur.d && cur.d !== o.d) { old.unshift(cur); lsSet("fb_keys_old", JSON.stringify(old.slice(0, 5))); }
+    for (var k2 in KEYS) if (o[k2] && KOK.test(o[k2])) lsSet(KEYS[k2], o[k2]);
+    ["fb_my_pets", "fb_pets_v"].forEach(function (x) { try { localStorage.removeItem(x); sessionStorage.removeItem(x); } catch (e) {} });
+  } catch (e) { return false; }
+  return true;
+}
+/* a key arrives: take it, then bring the jar from the safe box (after the privacy card) and keep the copy going here too */
+function takeKey(code) {
+  if (!keyImport(code)) return Promise.resolve("bad");
+  return consent().then(function (yes) {
+    if (!yes) return "no";
+    return pull().then(function (had) { if (!had) return "empty"; lsSet("lt_sync", "1"); lastUp = ""; LTSync.up(true); return "ok"; });
+  }).catch(function () { return "fail"; });
+}
+
+/* the knock: Web Push, only once asked, only once the server side is there (lt_push_get gives the public key; otherwise hidden) */
+function pushCan() { try { return !!(window.isSecureContext && "serviceWorker" in navigator && "PushManager" in window && "Notification" in window); } catch (e) { return false; } }
+var pushProbe = null, pushKey = null;
+function probePush() {
+  if (!pushCan()) return Promise.resolve(null);
+  if (!pushProbe) pushProbe = rpc("lt_push_get", {}).then(function (k) { return typeof k === "string" && /^[A-Za-z0-9_-]{40,200}$/.test(k) ? (pushKey = k) : null; }).catch(function () { pushProbe = null; return null; });
+  return pushProbe;
+}
+function pushState() { try { var o = JSON.parse(lsGet("lt_push") || "null"); return o && typeof o.h === "number" ? o : null; } catch (e) { return null; } }
+function hm(h, m) { var d = new Date(); d.setHours(h, m, 0, 0); try { return new Intl.DateTimeFormat(LANGS[li()] === "zh-Hant" ? "zh-HK" : LANGS[li()], { hour: "numeric", minute: "2-digit" }).format(d); } catch (e) { return h + ":" + ("0" + m).slice(-2); } }
+function tz() { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; } catch (e) { return "UTC"; } }
+function keyBytes(b) { b = b.replace(/-/g, "+").replace(/_/g, "/"); while (b.length % 4) b += "="; var r = atob(b), a = new Uint8Array(r.length); for (var i = 0; i < r.length; i++) a[i] = r.charCodeAt(i); return a; }
+function swReg() { return navigator.serviceWorker.register("/little-things/sw.js", { scope: "/little-things/" }).then(function () { return navigator.serviceWorker.ready; }); }
+function sendSub(sub, h, m) {
+  var j = sub.toJSON ? sub.toJSON() : sub;
+  return secret().then(function (k) { return rpc("lt_push_set", { p_secret: k, p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_hour: h, p_minute: m, p_tz: tz(), p_lang: LANGS[li()] }); })
+    .then(function () { lsSet("lt_push", JSON.stringify({ h: h, m: m, ep: j.endpoint, l: LANGS[li()] })); });
+}
+function pushOn(h, m) {
+  return consent().then(function (yes) {
+    if (!yes) return "no";
+    return Promise.resolve(Notification.permission === "granted" ? "granted" : Notification.requestPermission()).then(function (p) {
+      if (p !== "granted") return "denied";
+      return swReg().then(function (reg) { return reg.pushManager.getSubscription().then(function (s) { return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(pushKey) }); }); })
+        .then(function (sub) { return sendSub(sub, h, m); }).then(function () { return "ok"; });
+    });
+  });
+}
+function pushOff() {
+  var P = pushState();
+  return secret().then(function (k) { return rpc("lt_push_off", { p_secret: k, p_endpoint: P && P.ep || null }); }).then(function () {
+    lsSet("lt_push", null);
+    return navigator.serviceWorker.getRegistration("/little-things/").then(function (r) { return r && r.pushManager.getSubscription(); }).then(function (s) { return s && s.unsubscribe(); }).catch(function () {});
+  });
+}
+function pushCheck() {   /* a knock that's on: keep its address and language fresh (browsers renew subscriptions) */
+  var P = pushState(); if (!P || !pushCan()) return;   /* if the browser took the permission back, subscribe fails quietly */
+  probePush().then(function (k) {
+    if (!k) return;
+    return navigator.serviceWorker.getRegistration("/little-things/").then(function (r) { return r || swReg(); }).then(function (reg) {
+      return reg.pushManager.getSubscription().then(function (s) { return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(k) }); });
+    }).then(function (sub) { if (sub.endpoint !== P.ep || P.l !== LANGS[li()]) return sendSub(sub, P.h, P.m); });
+  }).catch(function () {});
+}
+
+/* ---------------- the pocket: three quiet buttons under the jar ---------------- */
+function pocket(box) {
+  box.innerHTML = "";
+  var who = function () { return asleep() ? "note" : "popo"; };
+  var row = function () { var r = document.createElement("div"); r.className = "row"; box.appendChild(r); return r; };
+  var mk = function (r, label, fn, cls) { var b = document.createElement("button"); b.className = "btn sm " + (cls || ""); b.textContent = label; b.addEventListener("click", fn); r.appendChild(b); return b; };
+  var speak = function (line, o) { box.innerHTML = ""; var q = say(o && o.who || who(), typeof line === "string" ? line : T(line), o); box.appendChild(q); setTimeout(function () { try { box.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (e) {} }, 30); return q; };
+  var back = function (r) { mk(r || row(), T(W.backJar), function () { pocket(box); }, "quiet"); };
+  var busy = function () { box.querySelectorAll("button,input").forEach(function (b) { b.disabled = true; }); };
+  var r0 = row(), P = pushState();
+  mk(r0, syncOn() ? T(W.bCopyOn) : T(W.bCopy), copyView);
+  mk(r0, T(W.bKey), keyView);
+  var ib = mk(r0, T(W.invite), function () { shareIt(T(W.inviteText), inviteLink(), ib); });
+  var pb = mk(r0, P ? T(W.bPushOn).replace("{t}", hm(P.h, P.m)) : T(W.bPush), pushView); pb.hidden = !P;
+  if (!P) probePush().then(function (k) { if (k && pb.isConnected) pb.hidden = false; });
+
+  function copyView() {
+    if (syncOn()) { speak(PP.copyOnQ); var r = row(); mk(r, T(W.stopCopy), function () { busy(); copyOff().then(function () { speak(PP.copyGone); back(); chrome(); }).catch(function () { speak(PP.fail); back(); }); }, "quiet"); mk(r, T(W.keepCopy), function () { pocket(box); }, "pri"); return; }
+    speak(PP.copyQ); var r2 = row();
+    mk(r2, T(W.yesCopy), function () { busy(); copyOn().then(function (x) { speak(x === "ok" ? PP.copyKept : PP.onlyHere); back(); chrome(); refresh(); }).catch(function () { lsSet("lt_sync", null); speak(PP.fail); back(); }); }, "pri");
+    mk(r2, T(W.noCopy), function () { speak(PP.onlyHere); back(); }, "quiet");
+  }
+  function keyView() {
+    if (!syncOn()) { speak(PP.keyNeed); var r = row(); mk(r, T(W.yesCopy), function () { busy(); copyOn().then(function (x) { if (x === "ok") { chrome(); keyView(); } else { speak(PP.onlyHere); back(); } }).catch(function () { lsSet("lt_sync", null); speak(PP.fail); back(); }); }, "pri"); back(r); pasteBox(); return; }
+    speak(PP.keyQ); var mei = say("mei", MEI_KEY, { small: true }); box.appendChild(mei);
+    var r2 = row();
+    mk(r2, T(W.sendKey), function () {
+      var u = keyLink(), tx = T(W.keyText);
+      if (navigator.share) navigator.share({ title: T(W.app), text: tx, url: u }).catch(function () {});
+      else if (navigator.clipboard) navigator.clipboard.writeText(u).then(function () { hint.textContent = T(W.copied); }).catch(function () {});
+    }, "pri");
+    var hint = document.createElement("p"); hint.className = "hint"; hint.textContent = T(W.keyWarn); box.appendChild(hint);
+    pasteBox(); back();
+  }
+  function pasteBox() {
+    var lb = document.createElement("label"); lb.textContent = T(W.paste); lb.htmlFor = "ltKey";
+    var inp = document.createElement("input"); inp.id = "ltKey"; inp.autocomplete = "off"; inp.spellcheck = false; inp.setAttribute("autocapitalize", "off"); inp.placeholder = "…#keys=k1.…";
+    box.appendChild(lb); box.appendChild(inp);
+    var r = row(); mk(r, T(W.useKey), function () {
+      var v = inp.value; busy();
+      takeKey(v).then(function (x) { speak(x === "ok" ? PP.keyDone : x === "empty" ? PP.keyEmpty : x === "bad" ? PP.keyBad : x === "no" ? PP.onlyHere : PP.fail); back(); chrome(); refresh(); });
+    });
+  }
+  function pushView() {
+    var P = pushState();
+    if (P) { speak(T(PP.pushOnQ).replace("{t}", hm(P.h, P.m))); var r = row(); mk(r, T(W.changePush), function () { timeView(P); }); mk(r, T(W.stopPush), function () { busy(); pushOff().then(function () { speak(PP.pushOff); back(); }).catch(function () { speak(PP.fail); back(); }); }, "quiet"); back(); return; }
+    timeView(null);
+  }
+  function timeView(P) {
+    speak(PP.pushQ);
+    var lb = document.createElement("label"); lb.textContent = T(W.time); lb.htmlFor = "ltTime";
+    var inp = document.createElement("input"); inp.type = "time"; inp.id = "ltTime"; inp.step = 900; inp.value = P ? ("0" + P.h).slice(-2) + ":" + ("0" + P.m).slice(-2) : "10:00";
+    box.appendChild(lb); box.appendChild(inp);
+    var r = row();
+    mk(r, T(W.yesPush), function () {
+      var m = /^(\d{1,2}):(\d{2})/.exec(inp.value || "") || [0, 10, 0], h = Math.min(23, +m[1] || 0), mi = Math.round((+m[2] || 0) / 15) * 15; if (mi === 60) { mi = 0; h = (h + 1) % 24; }
+      busy();
+      pushOn(h, mi).then(function (x) { speak(x === "ok" ? T(PP.pushOn).replace("{t}", hm(h, mi)) : x === "denied" ? T(PP.pushNo) : T(PP.onlyHere)); back(); })
+        .catch(function () { speak(PP.fail); back(); });
+    }, "pri");
+    mk(r, T(W.noPush), function () { pocket(box); }, "quiet");
+  }
+}
+/* after the jar changed from elsewhere (the safe box, a key), show it as it is now */
+function refresh() { if (!sheet.hidden) drawBig(); scene(performance.now()); }
+
+/* ---------------- a friend: an invitation, or one paper to do together. Only in the link; nothing stored, nobody counted ---------------- */
+function nick() { return (lsGet("fb_nick") || "").replace(/[*<>]/g, "").slice(0, 24); }
+function shareIt(text, url, b) {
+  if (navigator.share) return navigator.share({ title: T(W.app), text: text, url: url }).catch(function () {});
+  if (navigator.clipboard) navigator.clipboard.writeText(text + " " + url).then(function () { if (!b) return; var was = b.innerHTML; b.textContent = T(W.linkCopied); setTimeout(function () { b.innerHTML = was; }, 2200); }).catch(function () {});
+}
+function inviteLink() { return location.origin + "/little-things/"; }
+function doLink(t) { var n = nick(); return location.origin + "/little-things/#do=" + encodeURIComponent(t.id) + (n ? "&from=" + encodeURIComponent(n) : ""); }
+var lastFriend = null;
+function friendThing(t, from) {
+  lastFriend = [t, from]; clear(); var f = String(from || "").replace(/[*<>]/g, "").trim().slice(0, 24) || T(W.someone);
+  say(asleep() ? "note" : "popo", T(PP.fromFriend).split("{f}").join(f));
+  paper(t);
+  if (Math.random() < .5) say("mei", MEI_DUO, { small: true });
+  btn(icon("heart") + esc(T(W.did)), function () { didIt(t); }, "pri");
+  btn(esc(T(W.notToday)), function () { notToday(t); }, "quiet");
+  mode = "friend";
+}
+
 /* ---------------- the jar, opened ---------------- */
 var sheet = $("sheet"), sbody = $("sheetBody"), lastFocus = null;
 var DF = null;
@@ -468,8 +874,9 @@ function slips(list) { return '<div class="slips">' + list.slice().reverse().map
 function jarBody() {
   var h = S.done.length ? slips(S.done) : '<p class="empty">' + esc(T(W.empty)) + "</p>";
   S.old.forEach(function (o) { h += '<details class="older"><summary>' + esc(T(W.older)) + " · " + esc(when(o.end)) + "</summary>" + slips(o.done) + "</details>"; });
-  h += '<div class="tools" id="tools"></div>';
-  sbody.innerHTML = h;
+  h += '<div class="tools" id="tools"></div><div class="pocket" id="pocket"></div>';
+  sbody.innerHTML = '<canvas class="bigjar" id="bigJar" aria-hidden="true"></canvas>' + h;
+  drawBig(); pocket($("pocket"));
   var tools = $("tools");
   var mk = function (label, fn, cls) { var b = document.createElement("button"); b.className = "btn sm " + (cls || ""); b.textContent = label; b.addEventListener("click", fn); tools.appendChild(b); return b; };
   if (S.size) mk(T(W.other), function () { tools.innerHTML = ""; tools.appendChild(jarButtons(function (n) { S.size = n; if (S.cur && BY[S.cur] && BY[S.cur].t > tierMax(n)) S.cur = null; save(); closeJar(); present(chose()); })); });
@@ -477,9 +884,10 @@ function jarBody() {
     tools.innerHTML = ""; var d = document.createElement("div"); d.style.width = "100%"; tools.appendChild(d);
     var q = say("popo", P.restartQ[0]); d.appendChild(q);
     mk(T(W.keep), function () { jarBody(); }, "pri");
-    mk(T(W.restart), function () { S = { v: 1, size: S.size, cur: null, at: 0, done: [], later: {}, old: [], met: 1 }; save(); closeJar(); present(["popo", P.restarted[0]]); }, "quiet");
+    mk(T(W.restart), function () { S = { v: 1, size: S.size, cur: null, at: 0, done: [], later: {}, old: [], met: 1, reset: Date.now() }; save(); closeJar(); present(["popo", P.restarted[0]]); }, "quiet");
   }, "quiet");
 }
+function drawBig() { var c = $("bigJar"); if (!c) return; var d = jarDims(S.size); c.width = d[0]; c.height = d[1]; c.style.height = d[1] * 3 + "px"; jar(c.getContext("2d"), 0, 0, d[0], d[1], S.done.length, S.size || 20, 0); }
 function openJar() { lastFocus = document.activeElement; $("jarTitle").textContent = T(W.jar); jarBody(); sheet.hidden = false; $("sheetClose").focus(); }
 function closeJar() { sheet.hidden = true; if (lastFocus && lastFocus.focus) try { lastFocus.focus(); } catch (e) {} }
 $("sheetClose").addEventListener("click", closeJar);
@@ -504,13 +912,14 @@ function chrome() {
   $("appName").textContent = T(W.app); document.title = T(W.app);
   $("langLbl").textContent = SHORT[i]; $("langIco").innerHTML = icon("globe"); $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + NAMES[i]);
   $("jarHit").setAttribute("aria-label", T(W.look)); cv.setAttribute("aria-label", T(W.kitchen)); $("sheetClose").setAttribute("aria-label", T(W.close));
-  $("foot").innerHTML = "<span>" + esc(T(W.device)) + '</span><a href="/nearby/">' + icon("heart") + " " + esc(T(W.nearby)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a>";
+  $("foot").innerHTML = "<span>" + esc(T(syncOn() ? W.deviceSync : W.device)) + '</span><a href="/nearby/">' + icon("heart") + " " + esc(T(W.nearby)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a>";
 }
 function paint(again) {
   chrome();
   if (!sheet.hidden) { $("jarTitle").textContent = T(W.jar); jarBody(); }
   if (!S.size) return intro(0);
   if (again && mode === "thing" && S.cur && BY[S.cur]) return show(BY[S.cur]);
+  if (again && mode === "friend" && lastFriend) return friendThing(lastFriend[0], lastFriend[1]);
   if (again && mode === "rest") return rest();
   if (again && mode === "full") return full();
   start();
@@ -524,8 +933,22 @@ function start() {
 addEventListener("fbl:lang", function () { paint(true); });
 addEventListener("storage", function (e) { if (e.key === KEY) { S = load(); paint(true); } });
 chrome();
-if (!S.size) intro(0); else start();
+var arriving = /[#&]keys=(k1\.[A-Za-z0-9_-]+)/.exec(location.hash);
+if (arriving) try { history.replaceState(history.state, "", location.pathname + location.search); } catch (e) {}
+var friend = /[#&]do=([A-Za-z0-9_-]{1,40})/.exec(location.hash), fromM = /[#&]from=([^&]*)/.exec(location.hash), from = "";
+try { from = fromM ? decodeURIComponent(fromM[1]) : ""; } catch (e) {}
+if (friend) try { history.replaceState(history.state, "", location.pathname + location.search); } catch (e) {}
+if (friend && BY[friend[1]] && !arriving) friendThing(BY[friend[1]], from);
+else if (!S.size) intro(0); else start();
 requestAnimationFrame(loop);
+if (arriving) takeKey(arriving[1]).then(function (x) {   /* opened with a key from another device */
+  clear(); say(asleep() ? "note" : "popo", x === "ok" ? PP.keyDone : x === "empty" ? PP.keyEmpty : x === "bad" ? PP.keyBad : x === "no" ? PP.onlyHere : PP.fail);
+  chrome();
+  if (S.size) { btn(esc(T(W.give)), function () { present(); }, "pri"); btn(esc(T(W.look)), openJar, "quiet"); mode = "rest"; }
+  else btn(esc(T(W.next)), function () { intro(0); }, "pri");
+});
+else if (syncOn()) pull().then(function () { var had = S.size; chrome(); if (mode === "intro" && had) start(); LTSync.up(); refresh(); }).catch(function () {});
+setTimeout(pushCheck, 2500);
 })();
 </script>
 </body>
