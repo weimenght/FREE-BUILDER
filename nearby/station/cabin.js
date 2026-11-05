@@ -465,7 +465,7 @@
   addEventListener("pagehide", function () { if (S.tx) send("bye", {}); });
 
   function newCode() { var A = "BCDFGHJKLMNPQRSTVWXZ", s = ""; for (var i = 0; i < 4; i++) s += A[(Math.random() * A.length) | 0]; return s; }
-  function link() { var u = new URL(location.href); u.search = "?with=" + S.code; u.hash = ""; return u.toString(); }
+  function link() { var u = new URL(location.href); try { if (/[?&]app=1/.test(location.search) && window.top !== window) u = new URL(window.top.location.href); } catch (e) {} u.search = "?with=" + S.code; u.hash = ""; return u.toString(); }   /* the standalone app shares its own address */
   function join(code, creating) {
     S.code = code; seats();
     if (S.tx) S.tx.close();
@@ -584,4 +584,7 @@
     else boardCard();
     /* (no "turn your phone" screen: the train runs upright too) */
   });
+  /* the standalone app (/station/, journey.js) steers the same train: getting off, another train, a new seat */
+  window.FBCabin = { director: director, S: S, toast: toast, leave: leave, somewhereElse: somewhereElse, paintDock: paintDock, unlockAudio: unlockAudio,
+    seat: function (c, s) { CAR = window.FB_CAR = c; SEAT = s; plate(); }, where: function () { return { car: CAR, seat: SEAT }; } };
 })();

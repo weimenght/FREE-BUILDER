@@ -1,0 +1,15 @@
+{
+  "name": "Nearby Station",
+  "short_name": "Station",
+  "description": "A window seat on a slow train: records, the trolley, and any stop you like to get off at. Some lead into Nearby.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#120f14",
+  "theme_color": "#120f14",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
