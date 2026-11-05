@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9cd48637f2"></script>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Intercultural Atlas — a FREE//BUILDER lab</title>
   <meta name="description" content="A FREE//BUILDER lab: eight real-world collisions between global teams. Read the moment, check three lenses, make your move.">
@@ -96,10 +96,6 @@ html,body{background-color:var(--paper)}
 .seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
 .steps span.done{background:#ECEBE6}
 .curtain{border:1px solid #3B3B42}
-/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
-.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
-/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
-.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
 /* illustrations keep their light look on a plate */
 .screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
 .plate{background:#fff!important}
@@ -117,7 +113,7 @@ img{filter:none}
   <!-- HEADER -->
   <header class="sticky top-0 z-40 bg-paper/85 backdrop-blur-md border-b border-line/80 px-3 sm:px-8 py-2.5" style="padding-top: max(10px, env(safe-area-inset-top));">
     <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
-      <a href="https://www.freebuilder.net" class="fb-brand flex items-center gap-2.5 min-w-0" aria-label="FREE//BUILDER">
+      <a href="https://wei-meng.org/free_builder" class="fb-brand flex items-center gap-2.5 min-w-0" aria-label="FREE//BUILDER">
         <span class="fb-mark w-9 h-9 flex-shrink-0 rounded-[11px] bg-ink flex items-center justify-center" aria-hidden="true">
           <svg viewBox="0 0 24 24" class="w-[20px] h-[20px] overflow-visible">
             <rect class="fb-block" x="3" y="3" width="8" height="8" rx="2" fill="#fff"/>
@@ -221,13 +217,29 @@ img{filter:none}
         <div class="md:col-span-8 space-y-4">
           <h2 class="font-syne text-2xl sm:text-3xl font-bold tracking-tight" data-i18n-html="ctaTitle"></h2>
           <p class="text-sm sm:text-base text-ink/70 leading-relaxed" data-i18n="ctaDesc"></p>
-          <a href="https://www.freebuilder.net/#contact" class="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-ink text-white hover:bg-accent text-xs font-bold font-mono transition-colors"><span data-i18n="ctaBtn"></span> <span aria-hidden="true">→</span></a>
+          <a href="https://wei-meng.org/free_builder#contact" class="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-ink text-white hover:bg-accent text-xs font-bold font-mono transition-colors"><span data-i18n="ctaBtn"></span> <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="fbf" data-fbf-root><div class="fbf-in"><span class="fbf-note">Map data: Natural Earth</span><span>© <span id="year">2026</span> <a href="/" data-fbf-title="home">FREE//BUILDER</a> L&amp;D Solutions</span><nav aria-label="Footer"><a href="/privacy/" data-fbf="privacy">Privacy</a><a href="https://www.wei-meng.org/" data-fbf="by">A practice by Wei</a><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai">AI</a> &amp; <a href="/nearby/" class="fbf-heart">♥</a></span></nav></div></footer>
+  <footer class="border-t border-line px-4 sm:px-10 py-6 mt-4">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] font-mono text-muted">
+      <span>© <span id="year"></span> FREE//BUILDER L&amp;D Solutions · <span data-i18n="mapCredit">Map data: Natural Earth</span></span>
+      <div class="flex items-center gap-4">
+        <a href="https://www.wei-meng.org/portfolio" class="hover:text-ink transition-colors" data-i18n="moreLabs">More labs</a>
+        <a href="https://wei-meng.org/free_builder" class="fb-brand inline-flex items-center gap-2 hover:text-ink transition-colors">
+          <span data-i18n="madeBy">Made by FREE//BUILDER</span>
+          <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 overflow-visible" aria-hidden="true">
+            <rect class="fb-block" x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/>
+            <rect class="fb-block" x="13" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".55"/>
+            <rect class="fb-block" x="3" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".55"/>
+            <rect class="fb-block fb-last" x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
 
   <!-- TOAST -->
   <div id="toast" class="fixed left-1/2 -translate-x-1/2 z-[70] pointer-events-none opacity-0 translate-y-2 w-[calc(100%-32px)] sm:w-auto" style="top: max(14px, env(safe-area-inset-top));" role="status" aria-live="polite">
@@ -621,168 +633,6 @@ img{filter:none}
             { text: 'Envía a Elodie el documento de evaluación del proveedor después de la reunión.', why: 'Responde a su pregunta, pero tarde, y sigue pareciendo una ocurrencia de última hora.' },
             { text: 'Dile a Elodie que la decisión está tomada y que la fecha de implantación es fija.', why: 'Consigues obediencia sobre el papel y resistencia silenciosa en la práctica.' }],
           script: 'Elodie, antes de la demo, déjame dedicar cinco minutos a por qué elegimos este modelo de datos frente a las alternativas. Luego los resultados. Me interesa mucho tu opinión sobre la evaluación.' }
-      ], "zh-Hant": [
-        { title: "消失的障礙", tag: "壞訊息與層級", a: "舊金山", b: "班加羅爾",
-          transcript: [["Alex · 工程經理，舊金山", "認證服務明天上線。有什麼阻礙嗎？"], ["Rohan · 技術負責人，班加羅爾（供應商團隊）", "團隊正在積極分析負載流程。我們這邊一切正常。"], ['Alex · 第二天', "構建因為一個遺留資料結構依賴掛了！昨天為什麼沒提出來？"], ['Rohan', "我們通宵修復了它，以免驚動你們的領導層。"]],
-          intent: ['Alex', "我直接問了有沒有阻礙。儘早暴露風險是本職工作，壞訊息越早越好。"],
-          impact: ['Rohan', "在公開頻道里、當著客戶經理的面提出阻礙，感覺就像當眾失敗。“正在積極分析”是我在發出有問題的訊號。"],
-          lenses: { culture: "Erin Meyer 的《文化地圖》在“領導”維度上，平均而言把印度放在偏層級的一端，美國放在偏平等的一端。把一個未解決的問題交給上級，可能會讓人覺得是失職。", power: "Rohan 為供應商工作。在任何國家，向客戶經理承認有阻礙，都可能感覺是在拿合同冒險。", person: "Rohan 為團隊的手藝感到自豪，不想讓手下的初級工程師受責備。" },
-          options: [
-            { text: "在私下的一對一里問：“有哪一個超出你們團隊控制的依賴，是我這周可以幫忙推動的？”", why: "你把提出問題變成了私下尋求幫助。這對供應商負責人來說是安全的，也誠實地說明了風險歸誰。" },
-            { text: "在站會看板上加一列“風險”，讓任何人都能不用開口就標出問題。", why: "一個有用的結構性改進。配合一場讓“提出問題”變得安全的對話，效果最好。" },
-            { text: "在團隊頻道里發：“請立即標出阻礙，哪怕再小。沒有例外。”", why: "在你看來很合理，但在一次公開失誤後緊接著釋出公開規定，讀起來像訓斥。人們會更善於隱藏問題，而不是更早提出。" }],
-          script: "Rohan，我工作的一部分就是清除你們團隊控制不了的障礙。這周有哪一個依賴是我可以幫你推動的？" },
-        { title: "直白的程式碼評審", tag: "反饋與語氣", a: '阿姆斯特丹', b: "聖保羅",
-          transcript: [["Daan · 資深工程師，阿姆斯特丹", "PR 評審：“這個實現不可接受。放棄這個 ORM 模式，重寫。”"], ["Thiago · 高階開發，聖保羅", '收到。'], ["Daan · 那周晚些時候", "為什麼 Thiago 之後在每次評審裡都不吭聲了？"]],
-          intent: ['Daan', "程式碼不是人。說清楚能為大家省下好幾個小時的來回。"],
-          impact: ['Thiago', "在公開的 PR 裡，一句肯定都沒有，還用了“不可接受”。這不是對待一位你尊重的同事的方式。"],
-          lenses: { culture: "在 Meyer 的“評估”維度上，平均而言，荷蘭在負面反饋上接近直接的一端，而巴西更偏向間接。", power: "書面評審意見會丟失語氣，而且 Daan 資歷更深。來自上面的嚴厲措辭，分量更重。", person: "Daan 對所有人都寫得很簡短，包括他的經理。Thiago 為了趕上這個 PR 加班到很晚。" },
-          options: [
-            { text: "保持標準，改變表達：說出哪些做得好，精確指出問題，並提議快速通個電話一起看看方案。", why: "同樣的標準，不同的包裝。精確加溫度，對直接和間接的溝通者都有效。" },
-            { text: "約定一份團隊評審指南：嚴重程度標籤（“必須修改”“建議”），每次評審附一條正面意見。", why: "一個不錯的團隊層面改進。但它修復不了與 Thiago 的這一刻，所以要配合一次對話。" },
-            { text: "告訴 Thiago 這裡的評審就是很直接，他會習慣的。", why: "它要求一個人承擔所有的調整。這不是文化，而是成本。" }],
-          script: "Thiago，資料結構部分做得很紮實。有一個顧慮：這個 ORM 查詢模式在高峰負載下會吃力。有十分鐘一起看看方案嗎？" },
-        { title: "四秒鐘的沉默", tag: "沉默與輪流發言", a: "倫敦", b: "東京",
-          transcript: [["Harry · 總監，倫敦", "下個月停用遺留資料結構，有人反對嗎？"], ["Kenji · 架構師，東京", "（取消靜音……停頓）"], ['Harry', "很好，沉默就是同意！進入第二項。"], ["三天後", "東京團隊指出對遺留資料結構有一個關鍵依賴。"]],
-          intent: ['Harry', "在視訊會議上，沉默就是同意。如果幾秒鐘內沒人反對，我們就繼續。"],
-          impact: ['Kenji', "我正在用第二語言小心地組織反對意見，免得讓任何人難堪。還沒等我開口，他就繼續了。"],
-          lenses: { culture: "在日本的商務場合中，常有人描述在反對上級之前會先停頓。但關於日常對話的研究發現，不同語言之間的話輪間隔其實相近（Stivers et al., 2009），所以不要假設這次停頓是“文化性的”。", power: "Harry 主持會議，也是在場資歷最深的人。在任何地方，當著別人的面實時反對主持人都很難。", person: "Kenji 在用第二語言工作，當時是東京時間晚上 9 點，討論的是一個需要精確措辭的技術問題。" },
-          options: [
-            { text: "認真停頓，然後點名邀請：“Kenji，在決定之前我想聽聽東京的看法。慢慢來。”並在 24 小時內接受書面反對意見。", why: "真正的停頓、點名邀請和書面渠道：為任何用第二語言思考、或不願當面反駁主持人的人留出空間。" },
-            { text: "會後透過郵件發出決定，請大家在週五前提出反對意見。", why: "給了大家時間，但會議本身仍然教會了所有人：沉默就是同意。" },
-            { text: "請每個人在十秒內在聊天框裡輸入 +1 或 −1。", why: "很快，但它獎勵的是用英語思考最快的人，而且當著總監的面打 −1 依然很難。" }],
-          script: "我在這裡停一下。Kenji，你準備好的時候，我很想聽聽東京對邊界情況的看法。" },
-        { title: '冷冰冰的催促', tag: "信任與關係", a: '慕尼黑', b: '墨西哥城',
-          transcript: [["Stefan · 專案經理，慕尼黑", "09:02 · “Carlos，現在就把 API 文件發過來。已經過截止日期了。”"], ["Carlos · 工程負責人，墨西哥城", '……'], ['Stefan · 第二天', "“收到我的訊息了嗎？為什麼還沒發？”"], ['Carlos', "“Hola Stefan。我們正在審閱。”"]],
-          intent: ['Stefan', "開門見山是尊重他的時間。截止日期就是截止日期。"],
-          impact: ['Carlos', "兩條訊息，沒有問候，也沒問我們怎麼樣。感覺我是一張工單，而不是一位同事。"],
-          lenses: { culture: "在 Meyer 的“信任”維度上，平均而言，德國偏向基於任務的信任（透過可靠的工作建立），墨西哥偏向基於關係的信任（透過個人聯絡建立）。", power: "Stefan 在總部。Carlos 的團隊常常是最後得知優先順序變化的人，所以生硬的要求讀起來就像命令。", person: "Carlos 的團隊整晚都在修復一次生產故障。Stefan 不知道，因為他沒有問。" },
-          options: [
-            { text: "打電話而不是發訊息：先問團隊最近怎麼樣，瞭解到故障，再約一個現實的文件時間。", why: "先問一句，揭示了延誤的真正原因，也為下次需要的關係做了投資。" },
-            { text: "在訊息里加一句友好的問候，然後再要文件。", why: "語氣更好，但在同樣的要求前加一句問候，仍可能顯得公事公辦。一個問題本可以揭示那次故障。" },
-            { text: "升級到 Carlos 的總監：截止日期很明確，而且已經錯過了。", why: "也許能拿到文件，但它證實了關係無關緊要，你也會失去以後需要的人情。" }],
-          script: "Hola Carlos，團隊這周怎麼樣？聽說挺忙的。我們什麼時候可以比較現實地一起過一遍 API 文件？" },
-        { title: "意味著“也許”的“是”", tag: "解讀“是”", a: '悉尼', b: "河內",
-          transcript: [["Liam · 客戶專案經理，悉尼", "你們能承諾 10 月 15 日嗎？可能嗎？"], ["Linh · 工程負責人，河內", "可以……我們會盡力。"], ['Liam · 10 月 16 日', "還沒上線？你說了可以的！"], ['Linh', "我說的是我們會盡力。這個範圍需要我們沒有的服務。"]],
-          intent: ['Liam', "“是”就是“是”。如果日期不可能，她就該說不。"],
-          impact: ['Linh', "直接對客戶說“不”非常難。“我們會盡力”，加上停頓，就是我的警告。"],
-          lenses: { culture: "在許多高語境環境中（越南是其中之一），人們可能會避免直接對客戶說“不”，“我們會盡力”可能是真正的疑慮訊號。不過，很多低語境的人也會用同樣的話來含糊其辭。", power: "Liam 掌握著 Linh 團隊的預算。在任何地方，對付錢給你的人說不都很難。", person: "Linh 剛剛升職，想證明自己能交付。" },
-          options: [
-            { text: "把是非題換成開放式問題：“要趕上 15 日，需要滿足哪些條件？為了做到，你會砍掉什麼？”", why: "開放式問題讓人根本不需要說“不”。風險會以事實的形式出現，而不是以拒絕的形式。" },
-            { text: "要求每個估算都附一份書面風險登記表。", why: "有用的文書，但如果說“不”讓人感到不安全，最大的風險依然不會被寫下來。" },
-            { text: "從現在起，給河內團隊的每個估算都加 50%。", why: "它悄悄地給整個團隊貼上了不可靠的標籤，而他們會察覺到。" }],
-          script: "Linh，如果我們以 10 月 15 日為目標，有哪三件事必須完美進行？為了做到，你會做哪些取捨？" },
-        { title: "激烈的辯論", tag: '分歧', a: '巴黎', b: '新加坡',
-          transcript: [["Camille · 設計負責人，巴黎", "我完全不同意這個使用者旅程。它在邏輯上完全說不通！"], ["Jia Hui · 產品經理，新加坡", "（沉默下來；這個迭代剩下的時間裡只回一兩個字）"], ["Camille · 下班喝酒時", "來嗎？剛才的辯論太棒了！"]],
-          intent: ['Camille', "對想法激烈爭論，說明我認真對待它們。這不是針對個人；之後我們還是朋友。"],
-          impact: ['Jia Hui', "當著團隊的面被說我的工作“在邏輯上完全說不通”，感覺像是公開攻擊。一杯酒抵消不了。"],
-          lenses: { culture: "在 Meyer 的“分歧”維度上，平均而言，法國偏向把公開對抗視為投入，而許多東南亞和東亞職場偏向避免公開對抗。", power: "Camille 在總部，對區域晉升有非正式影響力，這提高了公開衝突的風險。", person: "Jia Hui 一邊照顧生病的父母，一邊在這個旅程上花了兩週時間。" },
-          options: [
-            { text: "把想法和人分開：先對旅程寫書面意見，再進行討論，先談哪些可行，再談哪些不行。", why: "一個共享的評審格式，讓喜歡對抗和重視和諧的人都能做出最好的思考。" },
-            { text: "請 Camille 私下向 Jia Hui 道歉。", why: "它修復了這一刻，但下一次評審的方式什麼都沒變。" },
-            { text: "告訴 Jia Hui 這個團隊就是靠辯論運作的，她應該更有力地反駁。", why: "它把所有的調整都壓在一個人身上，也忽略了權力差距。" }],
-          script: "Jia Hui，我們來看看兩個旅程的不同之處。如果兩個都測試，什麼樣的使用者行為能告訴我們哪個更好？" },
-        { title: "有彈性的截止時間", tag: "時間與日程", a: "蘇黎世", b: "羅馬",
-          transcript: [["Anna · 物流規劃師，蘇黎世", "我們的碼頭時段鎖定在週五 09:00。你們的卡車週二 14:00 才到。"], ["Matteo · 運營負責人，羅馬", "一個重要客戶的工廠週四出了故障。我們調動所有人去修。我們救了他們，今天也送到了！"], ['Anna', "你們打亂了我們整個日程。"]],
-          intent: ['Anna', "如果時段是有彈性的，供應鏈就會崩潰。準時就是尊重。"],
-          impact: ['Matteo', "一個客戶陷入了危機。為了保護一個內部時段而不顧真正的緊急情況，這不是服務。"],
-          lenses: { culture: "在 Meyer 的“日程”維度上，平均而言，瑞士接近線性時間的一端，義大利偏向靈活時間。", power: "Anna 的工廠錯過碼頭時段會被自動罰款；Matteo 的獎金與客戶滿意度掛鉤。", person: "Matteo 週日親自開車去客戶那裡，確保修復有效。" },
-          options: [
-            { text: "約定哪些里程碑是固定的、哪些可以靈活，再加一條規則：客戶危機迫使變更時，提前一小時預警。", why: "一種不屬於任何一方辦公室的第三種方式：關鍵之處設硬性關口，其餘之處在預警下保持靈活。" },
-            { text: "感謝 Matteo 救了客戶，並請他下次早點告訴你。", why: "語氣不錯，但“早點”很含糊。一條共享規則才能讓它落地。" },
-            { text: "提醒 Matteo，蘇黎世的日程優先於區域問題。", why: "它強加了一方的規範，也無視了一次真實的客戶緊急情況。" }],
-          script: "Matteo，救下那個客戶幹得漂亮。這裡的碼頭變更會波及另外三家工廠。危機發生時，我們能約定提前一小時預警，好讓我們及時調整時段嗎？" },
-        { title: "“先講為什麼”的反推", tag: "說服", a: "紐約", b: '巴黎',
-          transcript: [["Jordan · 產品副總裁，紐約", "這是我們的新 CRM！三個案例研究顯示成交率提高了 40%。週五前完成上線吧！"], ["Elodie · 國家負責人，巴黎", "等等。為什麼是這家供應商？它的資料模型背後的邏輯是什麼？"], ['Jordan · 私下', "為什麼巴黎總想講哲學？"]],
-          intent: ['Jordan', "展示結果，跳過理論。人們想要的是有效的證據。"],
-          impact: ['Elodie', "如果邏輯有缺陷，那些案例研究就只是運氣。先讓我相信方法是可靠的。"],
-          lenses: { culture: "Meyer 的“說服”維度對比了原則優先的推理（常與法國聯絡在一起）和應用優先的推理（常與美國聯絡在一起）。兩者都很嚴謹，只是起點不同。", power: "這個決定來自紐約，歐洲幾乎沒有參與，所以“為什麼？”也意味著“我們沒被徵求意見”。", person: "Elodie 有工程背景，經歷過一次失敗的 CRM 遷移。" },
-          options: [
-            { text: "分兩部分介紹：先用五分鐘講為什麼選這家供應商和這個資料模型，再講案例研究。邀請 Elodie 審閱評估過程。", why: "先原則，後應用：兩類聽眾都得到了所需，徵求意見的缺口也補上了。" },
-            { text: "會後把供應商評估檔案發給 Elodie。", why: "它回答了她的問題，但太遲了，而且仍然像是事後補救。" },
-            { text: "告訴 Elodie 決定已經做出，上線日期是固定的。", why: "你在紙面上得到了服從，在實踐中得到了無聲的抵抗。" }],
-          script: "Elodie，在演示之前，我先花五分鐘講講為什麼我們選擇這個資料模型而不是其他方案，然後再看結果。我很想聽聽你對評估的看法。" }
-      ], "ca": [
-        { title: "El bloqueig que va desaparèixer", tag: "Males notícies i jerarquia", a: 'San Francisco', b: 'Bengaluru',
-          transcript: [["Alex · Mànager d'enginyeria, San Francisco", "Demà llancem el servei d'autenticació. Algun bloqueig?"], ["Rohan · Tech lead, Bengaluru (equip proveïdor)", "L'equip està analitzant activament els fluxos de dades. Tot bé per la nostra banda."], ["Alex · l'endemà", "La build s'ha trencat per una dependència d'un esquema antic! Per què no es va avisar ahir?"], ['Rohan', "Vam treballar tota la nit per arreglar-ho sense alarmar la vostra direcció."]],
-          intent: ['Alex', "Vaig preguntar directament per bloquejos. Avisar aviat dels riscos és la feina; les males notícies d'hora són bones notícies."],
-          impact: ['Rohan', "Assenyalar un bloqueig en un canal obert, davant del mànager del client, era com fallar en públic. «Analitzant activament» era el meu senyal que alguna cosa anava malament."],
-          lenses: { culture: "El Culture Map d'Erin Meyer situa l'Índia cap a l'extrem jeràrquic de la seva escala de «Liderar» i els EUA cap a l'igualitari, de mitjana. Portar un problema sense resoldre a algú de més rang es pot sentir com faltar al deure.", power: "En Rohan treballa per a un proveïdor. Admetre un bloqueig davant del mànager del client es pot sentir com arriscar el contracte, a qualsevol país.", person: "En Rohan està orgullós de l'ofici del seu equip i no volia que culpessin els seus enginyers júnior." },
-          options: [
-            { text: "En un 1:1 privat, pregunta: «Quina dependència fora del control del teu equip puc desbloquejar jo aquesta setmana?»", why: "Has convertit plantejar un problema en demanar ajuda, en privat. És segur per a un líder proveïdor i honest sobre qui és l'amo del risc." },
-            { text: "Afegeix una columna de «riscos» al tauler de l'stand-up perquè qualsevol pugui assenyalar problemes sense dir-los en veu alta.", why: "Un arranjament estructural útil. Funciona millor juntament amb una conversa que faci que assenyalar se senti segur." },
-            { text: "Publica al canal de l'equip: «Assenyaleu els bloquejos immediatament, encara que siguin petits. Sense excepcions».", why: "Raonable per a tu, però una norma pública just després d'un error públic es llegeix com una renyada. La gent amaga millor els problemes, no els avisa abans." }],
-          script: "Rohan, part de la meva feina és treure del mig el que el teu equip no controla. Quina dependència puc desbloquejar per tu aquesta setmana?" },
-        { title: "La revisió de codi sense filtre", tag: "Feedback i to", a: "Amsterdam", b: 'São Paulo',
-          transcript: [["Daan · Staff engineer, Amsterdam", "Revisió del PR: «Aquesta implementació és inacceptable. Descarta el patró ORM i reescriu-la»."], ["Thiago · Desenvolupador sènior, São Paulo", "Rebut."], ["Daan · més tard, aquella mateixa setmana", "Per què en Thiago no ha tornat a dir res en cap revisió?"]],
-          intent: ['Daan', "El codi no és una persona. Ser clar estalvia hores d'anades i vingudes a tothom."],
-          impact: ['Thiago', "Ni una paraula sobre el que funcionava, en un PR públic, amb «inacceptable». Així no es tracta un company que respectes."],
-          lenses: { culture: "A l'escala d'«Avaluar» de Meyer, els Països Baixos són a prop de l'extrem directe per al feedback negatiu, mentre que el Brasil és més cap a l'indirecte, de mitjana.", power: "Els comentaris escrits perden el to, i en Daan té més antiguitat. Les paraules dures des de dalt pesen més.", person: "En Daan escriu de manera escarida a tothom, inclòs el seu mànager. En Thiago s'havia quedat fins tard per lliurar aquest PR." },
-          options: [
-            { text: "Mantén l'estàndard i canvia la forma: digues què funciona, anomena el problema amb precisió i ofereix una trucada ràpida per veure opcions junts.", why: "El mateix llistó, un altre embolcall. Precisió més calidesa funciona tant amb comunicadors directes com indirectes." },
-            { text: "Acordeu una guia de revisió de l'equip: etiquetes de gravetat («cal arreglar», «suggeriment») i una nota positiva per revisió.", why: "Un bon arranjament a nivell d'equip. No repara aquest moment amb en Thiago, així que acompanya-ho d'una conversa." },
-            { text: "Digues a en Thiago que aquí les revisions són directes i que ja s'hi acostumarà.", why: "Demana a una sola persona que absorbeixi tot l'ajust. Això no és una cultura, és un cost." }],
-          script: "Thiago, la feina de l'esquema és sòlida. Un dubte: el patró de consultes ORM patirà als pics de càrrega. Tens deu minuts per veure opcions junts?" },
-        { title: "El silenci de quatre segons", tag: "Silenci i torns de paraula", a: 'Londres', b: "Tòquio",
-          transcript: [['Harry · Director, Londres', "Alguna objecció a retirar l'esquema antic el mes que ve?"], ["Kenji · Arquitecte, Tòquio", "(activa el micro… fa una pausa)"], ['Harry', "Genial, qui calla atorga! Següent punt."], ["Tres dies després", "L'equip de Tòquio avisa d'una dependència crítica de l'esquema antic."]],
-          intent: ['Harry', "En una videotrucada, el silenci és acord. Si ningú no objecta en un parell de segons, continuem."],
-          impact: ['Kenji', "Estava formulant un desacord en el meu segon idioma, amb cura, per no avergonyir ningú. Va continuar abans que pogués parlar."],
-          lenses: { culture: "Sovint es descriu que en entorns de negoci japonesos es fa una pausa abans de discrepar d'algú de més rang. Però la recerca sobre la conversa quotidiana troba pauses entre torns semblants en tots els idiomes (Stivers et al., 2009), així que no donis per fet que la pausa era «cultural».", power: "En Harry presideix la trucada i és la persona de més rang. Objectar a qui presideix, en directe i davant d'altres, és difícil a tot arreu.", person: "En Kenji treballava en el seu segon idioma, a les 21:00 hora de Tòquio, sobre un punt tècnic que exigia paraules precises." },
-          options: [
-            { text: "Fes una pausa de debò i convida pel nom: «Kenji, m'agradaria sentir la visió de Tòquio abans de decidir. Pren-te un moment». I accepta objeccions per escrit durant 24 hores.", why: "Una pausa real, una invitació amb nom i un canal escrit: espai per a qui pensa en un segon idioma o tem contradir qui presideix." },
-            { text: "Envia la decisió per correu després i demana objeccions abans de divendres.", why: "Dona temps a la gent, però la mateixa trucada va ensenyar a tothom que el silenci vol dir sí." },
-            { text: "Demana a tothom que escrigui +1 o −1 al xat en deu segons.", why: "Ràpid, però premia qui pensa més de pressa en anglès, i un −1 davant del director continua costant." }],
-          script: "Faré una pausa aquí. Kenji, quan estiguis a punt, m'encantaria sentir la visió de Tòquio sobre els casos límit." },
-        { title: "El missatge en fred", tag: "Confiança i relacions", a: "Munic", b: "Ciutat de Mèxic",
-          transcript: [["Stefan · Project manager, Munic", "09:02 · «Carlos, envia ja la documentació de l'API. Anem tard.»"], ["Carlos · Líder d'enginyeria, Ciutat de Mèxic", '…'], ["Stefan · l'endemà", "«Vas rebre el meu missatge? Per què no l'has enviada?»"], ['Carlos', "«Hola Stefan. L'estem revisant.»"]],
-          intent: ['Stefan', "Anar al gra respecta el seu temps. Un termini és un termini."],
-          impact: ['Carlos', "Dos missatges, sense un hola, sense preguntar com estem. Sento que soc un tiquet, no un company."],
-          lenses: { culture: "L'escala de «Confiar» de Meyer situa Alemanya cap a la confiança basada en la tasca (construïda amb feina fiable) i Mèxic cap a la confiança basada en la relació (construïda amb connexió personal), de mitjana.", power: "L'Stefan és a la seu central. L'equip d'en Carlos sol ser l'últim a assabentar-se dels canvis de prioritat, així que les exigències seques sonen a ordres.", person: "L'equip d'en Carlos havia passat la nit arreglant una caiguda a producció. L'Stefan no ho sabia perquè no va preguntar." },
-          options: [
-            { text: "Truca en lloc d'escriure: pregunta com està l'equip, assabenta't de la caiguda i acordeu un termini realista per a la documentació.", why: "Preguntar primer va destapar la raó real del retard i va invertir en la relació que necessitaràs la propera vegada." },
-            { text: "Afegeix una salutació amable als missatges i després demana la documentació.", why: "Millor to, però una salutació enganxada a la mateixa exigència pot continuar sonant transaccional. Una pregunta hauria destapat la caiguda." },
-            { text: "Escala al director d'en Carlos: el termini era clar i no s'ha complert.", why: "Potser aconsegueixes els documents, però confirma que la relació no importa, i perdràs els favors que necessitaràs després." }],
-          script: "Hola Carlos, com està l'equip aquesta setmana? Em diuen que ha estat intensa. Quan podríem repassar junts la documentació de l'API, de manera realista?" },
-        { title: "El sí que volia dir potser", tag: "Desxifrar el «sí»", a: "Sydney", b: "Hanoi",
-          transcript: [["Liam · Project manager del client, Sydney", "Us podeu comprometre al 15 d'octubre? És possible?"], ["Linh · Líder d'enginyeria, Hanoi", "Sí… farem el que puguem."], ["Liam · 16 d'octubre", "No és a producció? Vas dir que sí!"], ['Linh', "Vaig dir que faríem el que poguéssim. L'abast necessitava serveis que no teníem."]],
-          intent: ['Liam', "Sí és sí. Si la data era impossible, hauria d'haver dit que no."],
-          impact: ['Linh', "Dir que no a un client sense embuts és molt difícil. «Farem el que puguem», amb una pausa, era el meu avís."],
-          lenses: { culture: "En molts entorns d'alt context, entre ells el Vietnam, es pot evitar un «no» directe a un client, i «farem el que puguem» pot indicar un dubte real. Molta gent de baix context es cobreix amb les mateixes paraules.", power: "En Liam controla el pressupost de l'equip de la Linh. Dir que no a qui et paga és difícil a tot arreu.", person: "La Linh acabava de ser ascendida i volia demostrar que podia complir." },
-          options: [
-            { text: "Canvia les preguntes de sí/no per obertes: «Què hauria de passar per arribar al 15? Què retallaries per aconseguir-ho?»", why: "Les preguntes obertes eliminen la necessitat de dir «no». Els riscos surten com a fets, no com a negatives." },
-            { text: "Demana un registre de riscos per escrit amb cada estimació.", why: "Paperassa útil, però si dir que no fa por, els riscos més grans continuen sense escriure's." },
-            { text: "A partir d'ara, suma un 50 % a cada estimació de l'equip de Hanoi.", why: "Etiqueta en silenci tot un equip com a poc fiable, i ho notaran." }],
-          script: "Linh, si apuntem al 15 d'octubre, quines són les tres coses que haurien de sortir perfectes? Què sacrificaries per arribar-hi?" },
-        { title: "El debat acalorat", tag: "Desacord", a: 'París', b: 'Singapur',
-          transcript: [["Camille · Líder de disseny, París", "No estic gens d'acord amb aquest recorregut d'usuari. No té cap sentit lògic!"], ['Jia Hui · Product manager, Singapur', "(es queda callada; respostes d'una paraula durant la resta de l'sprint)"], ["Camille · a les canyes", "Vens? Quin bon debat!"]],
-          intent: ['Camille', "Discutir amb força les idees demostra que me les prenc seriosament. No és personal; després continuem sent amigues."],
-          impact: ['Jia Hui', "Que em diguessin davant de l'equip que la meva feina «no té cap sentit lògic» va ser un atac públic. Una copa no ho arregla."],
-          lenses: { culture: "L'escala de «Discrepar» de Meyer situa França cap a la confrontació oberta com a forma d'implicació, i molts entorns de treball del sud-est i l'est d'Àsia cap a evitar la confrontació oberta, de mitjana.", power: "La Camille és a la seu central i té influència informal en els ascensos regionals, cosa que eleva el que està en joc en un xoc públic.", person: "La Jia Hui havia dedicat dues setmanes al recorregut mentre tenia cura d'un familiar malalt." },
-          options: [
-            { text: "Separa les idees de les persones: primer comentaris escrits sobre el recorregut i després una conversa que comenci pel que funciona abans del que no.", why: "Un format de crítica compartit permet que tant qui confronta com qui busca harmonia pensin al millor nivell possible." },
-            { text: "Demana a la Camille que es disculpi en privat amb la Jia Hui.", why: "Repara aquest moment, però no canvia res de com anirà la propera crítica." },
-            { text: "Digues a la Jia Hui que aquest equip funciona a base de debat i que hauria de rebatre amb més força.", why: "Posa tot l'ajust sobre una persona i ignora la diferència de poder." }],
-          script: "Jia Hui, mirem on difereixen els nostres dos recorreguts. Si provéssim tots dos, quin comportament d'usuari ens diria quin funciona millor?" },
-        { title: "El termini elàstic", tag: "Temps i planificació", a: "Zúric", b: 'Roma',
-          transcript: [["Anna · Planificadora logística, Zúric", "La nostra franja de moll estava fixada per a divendres a les 09:00. Els vostres camions van arribar dimarts a les 14:00."], ["Matteo · Líder d'operacions, Roma", "La planta d'un client clau es va avariar dijous. Vam moure tothom per arreglar-ho. Els vam salvar, i avui hem lliurat!"], ['Anna', "Heu trencat tota la nostra planificació."]],
-          intent: ['Anna', "Si les franges són elàstiques, la cadena de subministrament s'enfonsa. Ser puntual és respecte."],
-          impact: ['Matteo', "Un client estava en crisi. Protegir una franja interna davant d'una emergència real no és servei."],
-          lenses: { culture: "L'escala de «Planificar» de Meyer situa Suïssa a prop de l'extrem del temps lineal i Itàlia cap al temps flexible, de mitjana.", power: "La planta de l'Anna paga penalitzacions automàtiques per franges perdudes; el bonus d'en Matteo depèn de la satisfacció del client.", person: "En Matteo va conduir ell mateix fins al client diumenge per assegurar-se que l'arranjament funcionava." },
-          options: [
-            { text: "Acordeu quines fites són fixes i quines poden flexibilitzar-se, més una regla d'avís amb una hora d'antelació quan una crisi de client obligui a canviar.", why: "Una tercera via que no pertany a cap oficina: portes fermes on importa i flexibilitat amb avís on no." },
-            { text: "Agraeix a en Matteo que salvés el client i demana-li que t'avisi abans la propera vegada.", why: "Bon to, però «abans» és vague. Una regla compartida fa que es compleixi." },
-            { text: "Recorda a en Matteo que la planificació de Zúric té prioritat sobre els assumptes regionals.", why: "Imposa la norma d'una part i menysprea una emergència real d'un client." }],
-          script: "Matteo, gran feina salvant aquell client. Aquí els canvis de moll afecten tres plantes més. Quan arribi una crisi, acordem un avís amb una hora d'antelació per moure les franges a temps?" },
-        { title: "El «primer, per què»", tag: 'Persuadir', a: "Nova York", b: 'París',
-          transcript: [["Jordan · VP de producte, Nova York", "Aquí teniu el nostre nou CRM! Tres casos d'èxit mostren un 40 % més de tancaments. Implantació abans de divendres!"], ['Elodie · Country lead, París', "Un moment. Per què aquest proveïdor? Quina és la lògica del seu model de dades?"], ["Jordan · en privat", "Per què París sempre vol filosofar?"]],
-          intent: ['Jordan', "Ensenya resultats i salta't la teoria. La gent vol proves que funciona."],
-          impact: ['Elodie', "Si el raonament falla, els casos d'èxit són sort. Convenç-me primer que el mètode és sòlid."],
-          lenses: { culture: "L'escala de «Persuadir» de Meyer contraposa el raonament que comença pels principis (sovint associat amb França) al que comença per les aplicacions (sovint associat amb els EUA). Tots dos són rigorosos; només comencen en llocs diferents.", power: "La decisió va venir de Nova York amb poca participació europea, així que «per què?» també vol dir «no ens vau consultar».", person: "L'Elodie té formació d'enginyera i va viure una migració de CRM fallida." },
-          options: [
-            { text: "Presenta-ho en dues parts: cinc minuts sobre per què aquest proveïdor i aquest model de dades, i després els casos d'èxit. Convida l'Elodie a revisar l'avaluació.", why: "Primer principis, després aplicacions: tots dos públics obtenen el que necessiten i es tanca el buit de la consulta." },
-            { text: "Envia a l'Elodie el document d'avaluació del proveïdor després de la reunió.", why: "Respon la seva pregunta, però tard, i continua semblant una ocurrència d'última hora." },
-            { text: "Digues a l'Elodie que la decisió està presa i que la data d'implantació és fixa.", why: "Aconsegueixes obediència sobre el paper i resistència silenciosa a la pràctica." }],
-          script: "Elodie, abans de la demo, deixa'm dedicar cinc minuts a per què vam triar aquest model de dades davant de les alternatives. Després els resultats. M'interessa molt la teva opinió sobre l'avaluació." }
       ]
     };
 
@@ -916,90 +766,6 @@ img{filter:none}
           ['Demostrar', 'Con qué frecuencia los managers van más allá de la lente cultural (N2), ítems 360 sobre reuniones inclusivas (N3) y entrega de proyectos entre sedes y rotación (N4).']
         ],
         letsTalk: 'Hablemos', moreLabs: 'Más laboratorios', madeBy: 'Hecho por FREE//BUILDER', close: 'Cerrar', mapCredit: 'Datos del mapa: Natural Earth'
-      }, "zh-Hant": {
-        pageTitle: "跨文化地圖 — FREE//BUILDER 實驗室", brand: "跨文化地圖", kicker: "FREE//BUILDER 實驗室", codex: "實戰手冊", langAria: "切換語言", soundAria: "聲音",
-        hudDone: "航線", hudSecrets: '彩蛋',
-        heroKicker: "文化智商模擬器", heroTitle: "文化能解釋<span class=\"accent-word\">一部分</span>，但永遠不是全部。",
-        heroDesc: "八次真實的全球團隊碰撞，每次約兩分鐘。讀懂那一刻，透過三個視角（文化、權力、個人）觀察，然後做出你的選擇。",
-        mapTitle: "地圖 · 8 條航線", toExplore: '待探索', restored: "已修復", mapAria: "標有八條團隊航線的世界地圖", compass: "指南針",
-        mapFallback: "地圖無法載入。請從下面的列表中選擇一條航線。", restoredTag: "已修復",
-        caps: { humility: "暫緩評判", subtext: "讀懂言外之意", flexibility: "調整風格", calibration: "校準反饋", thirdCulture: "共創團隊規範" },
-        capsShort: { humility: "暫緩評判", subtext: '言外之意', flexibility: "調整風格", calibration: "校準反饋", thirdCulture: "共創規範" },
-        profileKicker: "01 / 你的文化智商畫像", profileTitle: "由你的<span class=\"accent-word\">選擇</span>構成，而不是點選。",
-        profileEmpty: "目前還是空的。你修復的每條航線都會改變畫像，而且只取決於你選擇的那一步。看似合理但較弱的選擇得分更少；有害的選擇會扣分。",
-        profileSome: "基於 8 條航線中的 {n} 條。滿分意味著你每次都選了最強的一步，並透過了全部三個視角。可隨時重玩任何航線來修改答案。",
-        notesKicker: "02 / 實戰筆記", notesTitle: "每條航線都會留給你一句<span class=\"accent-word\">可用</span>的話。", notesDesc: "修復一條航線即可保留它的話術。複製到你的下一次一對一或會議中。",
-        copy: "複製", locked: "未解鎖",
-        ctaKicker: "03 / 為你定製", ctaTitle: "你的辦公室，你們的<span class=\"accent-word\">摩擦</span>。",
-        ctaDesc: "客戶版本會使用你們自己的城市組合和從團隊中收集的故事，並報告你的管理者最先使用哪個視角。", ctaBtn: "為我的團隊定製",
-        steps: ['那一刻', "解讀", "你的選擇", "帶走一句話"], stepOf: '第 {n} / 4 步 · {s}', current: "當前", stepsAria: "步驟",
-        whatsGoingOn: "你覺得真正發生了什麼？", readIt: "解讀", drivingQ: "行動之前：主要是什麼在起作用？",
-        lensChoices: { culture: '主要是文化', power: "主要是權力和位置", person: "主要是個人", mix: '三者兼有' },
-        mixGood: "直覺很好。三者都在起作用。以下是每個視角補充的資訊：", mixPart: "這是其中一部分。以下是每個視角補充的資訊；大多數真實案例三者兼有：",
-        lensNames: { culture: "文化 · 平均傾向", power: "權力與位置", person: "個人" },
-        intentOf: "{n} 的意圖", impactOf: '{n} 的感受', makeMove: "做出你的選擇", youreManager: "你是這個團隊的管理者。你會怎麼做？",
-        tags: { best: '最佳', ok: '部分有效', poor: "適得其反" }, yourMove: " · 你的選擇", keepLine: "帶走一句話",
-        pairKicker: "現在，和一位真實的同事", pairTxt: "你在螢幕上看到了兩邊的故事。現在和同事一起玩這條航線：每人只拿到自己那一半——然後開聊。", pairBtn: "兩人一起玩：視角互換", lineToUse: "一句你可以用的話", choseBest: "你選擇了最強的一步。航線已修復。", choseOther: "航線已修復。你的畫像記錄了你的選擇；隨時可以重玩來修改。",
-        copyLine: "複製這句話", restore: "修復航線",
-        t: { copied: "已複製", copyFail: "複製失敗：請手動選擇文字", all: "八條航線全部修復", restoredN: "航線已修復 · {n}/8", updated: '答案已更新',
-             pacific: "世界沒有中心。你的預設視角只是一個預設值。", back: "回到常見的視角。注意到它感覺很“正常”了嗎？", soundOn: "聲音已開啟", soundOff: "聲音已關閉", secret: "發現彩蛋：{t}" },
-        introTag: "認識這張地圖", introTitle: "八條航線，三個<span class=\"accent-word\">視角</span>，一步選擇。",
-        introDesc: "全球團隊相互誤讀的真實時刻。每一次，在行動之前，先透過文化、權力和個人去觀察。途中藏著四個彩蛋。",
-        introStart: "開啟地圖", introMeta: "每條航線約 2 分鐘 · 無需註冊 · 進度儲存在本裝置",
-        introLenses: [['文化', "平均傾向，而非宿命"], ["權力", "誰能放心開口"], ["個人", "你面前這個人"]],
-        codexKicker: "實戰檔案", codexTitle: "地圖實戰手冊", tabSecrets: '彩蛋', tabCard: "文化智商護照", tabBuild: "設計思路",
-        eggTag: "發現彩蛋", eggUse: "在工作中用起來", eggLocked: "未解鎖的彩蛋", eggHint: '提示', eggResume: "繼續",
-        cardName: '你的名字', cardNamePh: "輸入你的名字", cardCopy: "複製護照", cardShare: '分享', cardHead: "跨文化地圖 · 文化智商護照",
-        sDone: "航線", sTop: "最強項", sSecrets: '彩蛋', cardEmpty: "修復航線來給你的護照蓋章。",
-        buildTitle: "診斷。構建。驗證。",
-        build: [
-          ["診斷", "大多數文化培訓只是把一種刻板印象換成更禮貌的另一種。管理者學到“X 國的人說話很間接”，然後誤讀了面前的人，而對方其實主要是在擔心自己的合同。"],
-          ["構建", "每個案例都透過三個視角來解讀：文化（作為平均傾向，並註明來源）、權力和個人。每個選項都看似合理，你的畫像只隨你的選擇而變化。"],
-          ["驗證", "管理者超越文化視角的頻率（L2）、關於包容性會議的 360 度評估題項（L3），以及跨地點專案交付和人員流失（L4）。"]
-        ],
-        letsTalk: '聊一聊', moreLabs: "更多實驗室", madeBy: '由 FREE//BUILDER 打造', close: "關閉", mapCredit: "地圖資料：Natural Earth"
-      }, "ca": {
-        pageTitle: "Atles Intercultural — un laboratori FREE//BUILDER", brand: "Atles Intercultural", kicker: "un laboratori FREE//BUILDER", codex: "Còdex", langAria: "Canviar d'idioma", soundAria: "So",
-        hudDone: "Corredors", hudSecrets: "Secrets",
-        heroKicker: 'Simulador de CQ', heroTitle: "La cultura n'explica <span class=\"accent-word\">una part</span>. Mai no ho explica tot.",
-        heroDesc: "Vuit xocs reals entre equips globals, uns dos minuts cadascun. Llegeix el moment, mira a través de tres lents (cultura, poder i la persona) i fes la teva jugada.",
-        mapTitle: "L'atles · 8 corredors", toExplore: "Per explorar", restored: "Restaurat", mapAria: "Mapa del món amb vuit corredors d'equips", compass: "Brúixola",
-        mapFallback: "El mapa no s'ha pogut carregar. Tria un corredor de la llista.", restoredTag: "restaurat",
-        caps: { humility: "Suspendre el judici", subtext: "Llegir el que no es diu", flexibility: "Adaptar el teu estil", calibration: 'Calibrar el feedback', thirdCulture: "Cocrear normes d'equip" },
-        capsShort: { humility: "Suspendre", subtext: "Llegir", flexibility: 'Adaptar', calibration: 'Calibrar', thirdCulture: "Cocrear" },
-        profileKicker: "01 / El teu perfil CQ", profileTitle: "Construït amb les teves <span class=\"accent-word\">decisions</span>, no amb els teus clics.",
-        profileEmpty: "Buit de moment. Cada corredor que restaures mou el perfil, i només segons la jugada que has triat. Les jugades plausibles però més febles compten menys; les perjudicials resten.",
-        profileSome: "Basat en {n} de 8 corredors. Una puntuació completa vol dir que vas triar la jugada més forta cada vegada i vas mirar a través de les tres lents. Repeteix qualsevol corredor per canviar la teva resposta.",
-        notesKicker: "02 / Notes de camp", notesTitle: "Cada corredor et deixa una <span class=\"accent-word\">frase</span> per fer servir.", notesDesc: "Restaura un corredor per quedar-te amb el seu guió. Copia'ls al teu proper 1:1 o reunió.",
-        copy: 'Copiar', locked: "bloquejat",
-        ctaKicker: "03 / Fes-lo teu", ctaTitle: "Les teves oficines. Les teves <span class=\"accent-word\">friccions</span>.",
-        ctaDesc: "Una versió per a clients fa servir els vostres propis parells de ciutats i històries recollides dels vostres equips, i informa de quines lents fan servir primer els teus mànagers.", ctaBtn: "Crear-ne un per als meus equips",
-        steps: ["El moment", "Llegeix-lo", "La teva jugada", "Queda't la frase"], stepOf: "Pas {n} / 4 · {s}", current: 'actual', stepsAria: "Passos",
-        whatsGoingOn: "Què creus que està passant de debò?", readIt: "Llegeix-lo", drivingQ: "Abans d'actuar: què ho està impulsant més?",
-        lensChoices: { culture: "Sobretot la cultura", power: "Sobretot el poder i la posició", person: "Sobretot la persona", mix: "Una barreja de les tres" },
-        mixGood: "Bon instint. Totes tres hi són en joc. Això és el que aporta cadascuna:", mixPart: "N'és una part. Això és el que aporta cada lent; la majoria dels casos reals impliquen totes tres:",
-        lensNames: { culture: "Cultura · tendències mitjanes", power: "Poder i posició", person: 'La persona' },
-        intentOf: "Intenció de {n}", impactOf: "Vivència de {n}", makeMove: "Fes la teva jugada", youreManager: "Ets el mànager d'aquest equip. Què fas?",
-        tags: { best: "La més forta", ok: "Ajuda, en part", poor: "Contraproduent" }, yourMove: " · la teva jugada", keepLine: "Queda't la frase",
-        pairKicker: "Ara amb un col·lega real", pairTxt: "Has vist els dos costats en una pantalla. Ara juga aquest corredor amb un col·lega: cadascú rep només la seva meitat de la història, i després parleu.", pairBtn: "Jugueu-lo en parella: Canvi de Perspectiva", lineToUse: "Una frase que pots fer servir", choseBest: "Has triat la jugada més forta. El corredor està restaurat.", choseOther: "Corredor restaurat. El teu perfil registra la jugada que has triat; repeteix-lo quan vulguis per canviar-la.",
-        copyLine: 'Copiar frase', restore: 'Restaurar corredor',
-        t: { copied: "Copiat", copyFail: "No s'ha pogut copiar: selecciona el text", all: "Els vuit corredors restaurats", restoredN: "Corredor restaurat · {n}/8", updated: "Resposta actualitzada",
-             pacific: "El món no té centre. La teva vista per defecte és només això: per defecte.", back: "De tornada a la vista habitual. Notes que et semblava «normal»?", soundOn: "So activat", soundOff: "So desactivat", secret: "Secret trobat: {t}" },
-        introTag: "Coneix l'atles", introTitle: "Vuit corredors. Tres <span class=\"accent-word\">lents</span>. Una jugada.",
-        introDesc: "Moments reals en què equips globals s'interpreten malament. En cadascun, mira a través de la cultura, el poder i la persona abans d'actuar. Hi ha quatre secrets amagats pel camí.",
-        introStart: "Obrir l'atles", introMeta: "Uns 2 minuts per corredor · sense registre · el progrés es desa en aquest dispositiu",
-        introLenses: [['Cultura', "tendències mitjanes, mai destí"], ['Poder', "qui es pot permetre parlar"], ['Persona', "l'ésser humà que tens davant"]],
-        codexKicker: "Arxiu de camp", codexTitle: "El còdex de l'atles", tabSecrets: "Secrets", tabCard: "Passaport CQ", tabBuild: "Com es va fer",
-        eggTag: "Secret trobat", eggUse: "Fes-ho servir a la feina", eggLocked: "Secret bloquejat", eggHint: 'Pista', eggResume: "Continuar",
-        cardName: "El teu nom", cardNamePh: "Escriu el teu nom", cardCopy: "Copiar passaport", cardShare: 'Compartir', cardHead: "ATLES INTERCULTURAL · PASSAPORT CQ",
-        sDone: "Corredors", sTop: "Punt fort", sSecrets: "Secrets", cardEmpty: "Restaura corredors per segellar el teu passaport.",
-        buildTitle: 'Diagnosticar. Construir. Demostrar.',
-        build: [
-          ['Diagnosticar', "La majoria de les formacions sobre cultura canvien un estereotip per un altre de més educat. Els mànagers aprenien que «el país X és indirecte» i després interpretaven malament la persona que tenien davant, a qui sobretot li preocupava el seu contracte."],
-          ['Construir', "Cada cas es llegeix a través de tres lents: cultura (com a tendències mitjanes, amb fonts), poder i la persona. Totes les opcions són plausibles, i el teu perfil només es mou amb les decisions que prens."],
-          ['Demostrar', "Amb quina freqüència els mànagers van més enllà de la lent cultural (N2), ítems 360 sobre reunions inclusives (N3) i lliurament de projectes entre seus i rotació (N4)."]
-        ],
-        letsTalk: "Parlem-ne", moreLabs: "Més laboratoris", madeBy: "Fet per FREE//BUILDER", close: "Tancar", mapCredit: "Dades del mapa: Natural Earth"
       }
     };
 
@@ -1022,16 +788,6 @@ img{filter:none}
         lenses: { title: 'Pensar en «y», no en «o»', hint: 'Resiste la historia única. Lee tres corredores a través de todas las lentes a la vez.', quote: 'El peligro de una historia única no es que sea falsa, sino que está incompleta. — parafraseando a Chimamanda Ngozi Adichie (2009)', tip: 'Antes de explicar el comportamiento de un compañero por su nacionalidad, nombra una razón de poder y una razón personal que también podrían ser ciertas.' },
         second: { title: 'La segunda mirada', hint: 'Vuelve a un corredor restaurado y elige otra jugada.', quote: 'Cambiar de opinión ante información nueva es una habilidad, no una debilidad. — máxima de aprendizaje', tip: 'Después de un tropiezo intercultural, vuelve y di: «He estado pensando en cómo lo gestioné. ¿Puedo intentarlo de nuevo?». Casi siempre se recibe bien.' },
         atlas: { title: 'Tercera cultura', hint: 'Restaura todos los corredores del atlas.', quote: 'Los mejores equipos globales no eligen las normas de un bando. Construyen juntos una tercera. — FREE//BUILDER', tip: 'Haz una sesión de 30 minutos de «cómo trabajamos» con tu equipo: reuniones, feedback, plazos, desacuerdo. Escribid los acuerdos.' }
-      }, "zh-Hant": {
-        compass: { title: "世界沒有中心", hint: "指南針很好奇。連續點它三下。", quote: "每張地圖都是從某個地方繪製的。關鍵是記得你站在哪裡。——FREE//BUILDER", tip: "在下一次全球會議中，留意是誰的時區、語言和假期在設定預設值。輪換其中一個。" },
-        lenses: { title: "兼而有之的思維", hint: "抵制單一敘事。在三條航線上同時透過所有視角去解讀。", quote: "單一敘事的危險不在於它不真實，而在於它不完整。——轉述自 Chimamanda Ngozi Adichie (2009)", tip: "在用國籍來解釋同事的行為之前，先說出一個權力方面的原因，和一個個人方面的原因。" },
-        second: { title: '再看一眼', hint: "回到一條已修復的航線，做出不同的選擇。", quote: "根據新資訊改變想法是一種能力，而不是弱點。——學習格言", tip: "在一次跨文化失誤之後，回去說：“我一直在想我當時是怎麼處理的。我能再試一次嗎？”這幾乎總能被好好接住。" },
-        atlas: { title: '第三文化', hint: "修復地圖上的每一條航線。", quote: "最好的全球團隊不會選邊站，而是一起建立第三套規範。——FREE//BUILDER", tip: "和團隊開一次 30 分鐘的“我們怎樣協作”會議：會議、反饋、截止日期、分歧。把約定寫下來。" }
-      }, "ca": {
-        compass: { title: "El món no té centre", hint: "La brúixola és curiosa. Toca-la tres vegades seguides.", quote: "Tot mapa es dibuixa des d'algun lloc. El truc és recordar on ets tu. — FREE//BUILDER", tip: "A la teva propera reunió global, fixa't en quina zona horària, idioma i festius marquen el que es dona per fet. Fes rotar-ne un." },
-        lenses: { title: "Pensar en «i», no en «o»", hint: "Resisteix la història única. Llegeix tres corredors a través de totes les lents alhora.", quote: "El perill d'una història única no és que sigui falsa, sinó que és incompleta. — parafrasejant Chimamanda Ngozi Adichie (2009)", tip: "Abans d'explicar el comportament d'un company per la seva nacionalitat, anomena una raó de poder i una raó personal que també podrien ser certes." },
-        second: { title: "La segona mirada", hint: "Torna a un corredor restaurat i tria una altra jugada.", quote: "Canviar d'opinió davant d'informació nova és una habilitat, no una debilitat. — màxima d'aprenentatge", tip: "Després d'una relliscada intercultural, torna-hi i digues: «He estat pensant en com ho vaig gestionar. Puc tornar-ho a provar?». Gairebé sempre es rep bé." },
-        atlas: { title: 'Tercera cultura', hint: "Restaura tots els corredors de l'atles.", quote: "Els millors equips globals no trien les normes d'un bàndol. En construeixen junts una tercera. — FREE//BUILDER", tip: "Fes una sessió de 30 minuts de «com treballem» amb el teu equip: reunions, feedback, terminis, desacord. Escriviu els acords." }
       }
     };
     const EGG_IDS = ['compass', 'lenses', 'second', 'atlas'];
@@ -1039,9 +795,9 @@ img{filter:none}
     const CAP_KEYS = ['humility', 'subtext', 'flexibility', 'calibration', 'thirdCulture'];
 
     /* ─────────── Language ─────────── */
-    const LANGS = ['en', 'zh', 'zh-Hant', 'es', 'ca'];
-    const LANG_LABEL = { en: 'EN', zh: '中文', es: 'ES', "zh-Hant": "繁中", "ca": "CA" };
-    const HTML_LANG = { en: 'en', zh: 'zh-CN', es: 'es', "zh-Hant": "zh-TW", "ca": "ca" };
+    const LANGS = ['en', 'zh', 'es'];
+    const LANG_LABEL = { en: 'EN', zh: '中文', es: 'ES' };
+    const HTML_LANG = { en: 'en', zh: 'zh-CN', es: 'es' };
     let lang = (() => {
       try { const l = localStorage.getItem('wm_preferred_lang'); if (LANGS.includes(l)) return l; } catch (e) {}
       const b = (navigator.language || '').toLowerCase();
@@ -1049,7 +805,7 @@ img{filter:none}
     })();
     const T = () => UI[lang];
     const fmt = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (_, k) => (v[k] !== undefined ? v[k] : ''));
-    const q = (s) => (/*i18n*/lang === 'es' ? `«${s}»` : (lang === "ca" ? `«${s}»` : `“${s}”`));
+    const q = (s) => lang === 'es' ? `«${s}»` : `“${s}”`;
     const cache = {};
     function cases() {
       if (cache[lang]) return cache[lang];
@@ -1327,7 +1083,7 @@ img{filter:none}
             <button type="button" id="copy-line" class="h-12 rounded-full border border-line bg-white hover:border-ink/40 text-xs font-mono font-bold">${esc(t.copyLine)}</button>
             <button type="button" id="finish" class="h-12 rounded-full bg-ink text-white hover:bg-accent text-xs font-mono font-bold">${esc(t.restore)} <span aria-hidden="true">→</span></button>
           </div>`;
-        body.insertAdjacentHTML('beforeend', `<a href="/tools/swap?c=${c.id}" class="block rounded-3xl border border-ink p-5 hover:bg-white transition-colors">
+        body.insertAdjacentHTML('beforeend', `<a href="/free_builder/tools/swap?c=${c.id}" class="block rounded-3xl border border-ink p-5 hover:bg-white transition-colors">
             <span class="block text-[11px] font-mono uppercase tracking-[0.14em] text-accent">${esc(t.pairKicker)}</span>
             <span class="block mt-2 text-sm text-ink/80 leading-relaxed">${esc(t.pairTxt)}</span>
             <span class="inline-flex items-center gap-2 mt-3 text-xs font-mono font-bold">${esc(t.pairBtn)} <span aria-hidden="true">↗</span></span></a>`);
@@ -1451,7 +1207,7 @@ img{filter:none}
       if (codexTab === 'build') {
         body.innerHTML = `<h3 class="font-syne text-xl font-bold tracking-tight mb-5">${esc(t.buildTitle)}</h3>
           <ol class="space-y-4 text-sm leading-relaxed">${t.build.map(([h, p], i) => `<li class="grid grid-cols-[2rem_1fr] gap-2"><span class="font-mono text-[11px] text-accent pt-0.5">0${i + 1}</span><div><p class="font-syne font-bold">${esc(h)}</p><p class="text-ink/70">${esc(p)}</p></div></li>`).join('')}</ol>
-          <a href="https://www.freebuilder.net/#contact" class="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-white hover:bg-accent text-xs font-bold font-mono transition-colors">${esc(t.letsTalk)} <span aria-hidden="true">→</span></a>`;
+          <a href="https://wei-meng.org/free_builder#contact" class="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink text-white hover:bg-accent text-xs font-bold font-mono transition-colors">${esc(t.letsTalk)} <span aria-hidden="true">→</span></a>`;
       }
     }
 
@@ -1500,6 +1256,6 @@ img{filter:none}
   })();
   </script>
 <script>(() => { const b = document.getElementById('codex-btn'); if (!b) return; const name = () => b.setAttribute('aria-label', b.textContent.replace(/\s+/g, ' ').trim()); name(); new MutationObserver(name).observe(b, { childList: true, subtree: true, characterData: true }); })();</script>
-<script>if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {});</script>
+<script>if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/free_builder/sw.js", { scope: "/free_builder/" }).catch(() => {});</script>
 </body>
 </html>

@@ -3,17 +3,18 @@
 <head>
   <!--
     FREE//BUILDER demo starter (Phase 0 kit)
-    Copy this file to /<short-name>/index.html, rename, and replace the SAMPLE APP section.
+    Copy this file to /free_builder/<short-name>/index.html, rename, and replace the SAMPLE APP section.
     Kit pieces: page shell + tokens · language switch (shared with the whole site) · sound · toast
     · timer ring with screen wake lock · pass-the-phone curtain · seeded pairing codes (two phones, no server)
     · teach-back store (fb_teachback, on-device only) · facilitator drawer.
     Design rules: ends in a human moment within 3 min · mutual roles · no ranking · one phone is enough
     · EN/中文/ES · mobile-first, no blocking CDNs · fun-tested with 5 pairs · facilitator note + Monday line.
   -->
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=9cd48637f2"></script>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title id="page-title">Demo name — FREE//BUILDER</title>
   <meta name="description" content="One sentence on what people practise together.">
+  <meta name="theme-color" content="#F7F6F2">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
   <!-- Brand fonts load without blocking the page: where Google Fonts is slow or blocked, system fonts show instantly. -->
   <link rel="stylesheet" href="/fonts/fonts.css">
@@ -43,27 +44,27 @@
     :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:10px; }
     .kicker { font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
     .dots { position:fixed; inset:0; z-index:-1; pointer-events:none;
-      background-image:radial-gradient(rgba(var(--dot-rgb,23,23,26),.09) 1px,transparent 1px); background-size:22px 22px;
+      background-image:radial-gradient(rgba(23,23,26,.09) 1px,transparent 1px); background-size:22px 22px;
       -webkit-mask-image:linear-gradient(to bottom,#000,transparent 60%); mask-image:linear-gradient(to bottom,#000,transparent 60%); }
 
-    header.top { position:sticky; top:0; z-index:40; background:rgba(var(--paper-rgb,247,246,242),.92);
+    header.top { position:sticky; top:0; z-index:40; background:rgba(247,246,242,.92);
       -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid rgba(229,226,218,.8);
       padding:10px max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left)); }
     .top-in { max-width:960px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:10px; }
     .brand { display:flex; align-items:center; gap:10px; text-decoration:none; min-width:0; }
-    .mark { width:34px; height:34px; border-radius:10px; background:var(--inkbg,var(--ink)); display:grid; place-items:center; flex-shrink:0; transition:transform .5s var(--ease); }
+    .mark { width:34px; height:34px; border-radius:10px; background:var(--ink); display:grid; place-items:center; flex-shrink:0; transition:transform .5s var(--ease); }
     .mark rect { transform-box:fill-box; transform-origin:center; transition:transform .6s var(--ease); }
     .mark .last { transform:translate(2.5px,-2.5px) rotate(12deg); }
     .brand:hover .mark { transform:rotate(-4deg); }
     .brand:hover .mark .last { transform:none; }
     .brand-txt { line-height:1; min-width:0; }
     .brand-txt b { font-family:var(--syne); font-weight:700; font-size:13px; display:block; }
-    .brand-txt b i { color:var(--accent-text,#E2553F); font-style:normal; }
+    .brand-txt b i { color:var(--accent); font-style:normal; }
     .brand-txt span { display:block; font-size:11px; color:var(--muted); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .top-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
-    .chip { height:32px; padding:0 10px; border:1px solid var(--line); border-radius:9px; background:rgba(var(--white-rgb,255,255,255),.6);
+    .chip { height:32px; padding:0 10px; border:1px solid var(--line); border-radius:9px; background:rgba(255,255,255,.6);
       display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11px; transition:border-color .2s, transform .1s; }
-    .chip:hover { border-color:rgba(var(--ink-rgb,23,23,26),.3); }
+    .chip:hover { border-color:rgba(23,23,26,.3); }
     .chip:active { transform:scale(.96); }
     .chip svg { width:14px; height:14px; }
     .chip[hidden] { display:none; }
@@ -75,7 +76,7 @@
     /* progress dots */
     .steps { display:flex; gap:6px; align-items:center; margin-bottom:18px; min-height:8px; }
     .steps span { height:6px; flex:1; border-radius:3px; background:var(--line); transition:background .4s; }
-    .steps span.done { background:var(--inkbg,var(--ink)); }
+    .steps span.done { background:var(--ink); }
     .steps span.now { background:var(--accent); }
 
     /* screens */
@@ -84,21 +85,21 @@
     h1, h2 { font-family:var(--syne); font-weight:700; letter-spacing:-.02em; margin:0; line-height:1.1; }
     h1 { font-size:clamp(34px, 9vw, 52px); }
     h2 { font-size:clamp(26px, 6.5vw, 34px); }
-    .lead { font-size:16px; line-height:1.6; color:rgba(var(--ink-rgb,23,23,26),.75); margin:0; }
-    .serif { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.3; color:rgba(var(--ink-rgb,23,23,26),.85); margin:0; }
+    .lead { font-size:16px; line-height:1.6; color:rgba(23,23,26,.75); margin:0; }
+    .serif { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.3; color:rgba(23,23,26,.85); margin:0; }
     .accent-word { font-family:var(--serif); font-style:italic; font-weight:400; color:var(--muted); white-space:nowrap; padding-bottom:.12em;
       background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 7 Q 12 1 22 7 T 42 7 T 62 7 T 82 7 T 102 7 T 118 6' fill='none' stroke='%23E2553F' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left bottom / 100% .32em; }
     .pills { display:flex; flex-wrap:wrap; gap:6px; }
-    .pill { font-family:var(--mono); font-size:11px; padding:4px 10px; border-radius:99px; border:1px solid var(--line); color:var(--muted); background:rgba(var(--white-rgb,255,255,255),.6); }
+    .pill { font-family:var(--mono); font-size:11px; padding:4px 10px; border-radius:99px; border:1px solid var(--line); color:var(--muted); background:rgba(255,255,255,.6); }
     .spacer { flex:1; }
 
     .btns { display:flex; gap:8px; flex-wrap:wrap; }
     .btn { flex:1; min-height:52px; padding:0 20px; border-radius:99px; font-family:var(--mono); font-size:13px; font-weight:700;
       display:inline-flex; align-items:center; justify-content:center; gap:8px; border:1px solid var(--line); background:var(--white);
       transition:background .2s, border-color .2s, transform .1s; }
-    .btn:hover { border-color:rgba(var(--ink-rgb,23,23,26),.35); }
+    .btn:hover { border-color:rgba(23,23,26,.35); }
     .btn:active { transform:scale(.98); }
-    .btn.pri { background:var(--inkbg,var(--ink)); border-color:var(--inkbd,var(--ink)); color:#fff; flex:2; }
+    .btn.pri { background:var(--ink); border-color:var(--ink); color:#fff; flex:2; }
     .btn.pri:hover { background:var(--accent); border-color:var(--accent); }
     .btn[disabled] { opacity:.45; pointer-events:none; }
     .link { font-family:var(--mono); font-size:12px; color:var(--muted); text-decoration:underline; text-decoration-style:dotted; text-underline-offset:4px; align-self:center; padding:8px; }
@@ -109,22 +110,22 @@
     .field span { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
     .field input, .field textarea { width:100%; font:inherit; font-size:16px; padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:var(--white); color:var(--ink); }
     .field textarea { resize:vertical; min-height:96px; line-height:1.5; }
-    .field input:focus, .field textarea:focus { outline:none; border-color:var(--inkbd,var(--ink)); }
+    .field input:focus, .field textarea:focus { outline:none; border-color:var(--ink); }
     .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
     .seg { display:flex; flex-wrap:wrap; gap:6px; }
     .seg button { padding:9px 14px; border-radius:99px; border:1px solid var(--line); background:var(--white); font-size:13px; transition:all .2s; }
-    .seg button[aria-pressed="true"] { background:var(--inkbg,var(--ink)); color:#fff; border-color:var(--inkbd,var(--ink)); }
+    .seg button[aria-pressed="true"] { background:var(--ink); color:#fff; border-color:var(--ink); }
 
     /* who's who */
     .roles { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
     .role { border-radius:18px; padding:14px; border:1px solid var(--line); background:var(--white); }
     .role .k { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
     .role .n { font-family:var(--syne); font-weight:700; font-size:18px; margin-top:4px; word-break:break-word; }
-    .role.speak { background:var(--inkbg,var(--ink)); color:#fff; border-color:var(--inkbd,var(--ink)); }
+    .role.speak { background:var(--ink); color:#fff; border-color:var(--ink); }
     .role.speak .k { color:rgba(255,255,255,.55); }
 
     /* prompt card */
-    .prompt { position:relative; background:var(--inkbg,var(--ink)); color:#fff; border-radius:26px; padding:28px 24px 24px; min-height:200px;
+    .prompt { position:relative; background:var(--ink); color:#fff; border-radius:26px; padding:28px 24px 24px; min-height:200px;
       display:flex; flex-direction:column; justify-content:space-between; gap:18px; overflow:hidden; }
     .prompt::after { content:""; position:absolute; right:-50px; top:-50px; width:170px; height:170px; border-radius:50%; border:1px solid rgba(255,255,255,.1); }
     .prompt .q { font-family:var(--serif); font-style:italic; font-size:clamp(24px, 6.4vw, 30px); line-height:1.25; position:relative; }
@@ -144,8 +145,8 @@
     .timer.pulse { animation:pulse 1.2s ease-in-out 2; }
     @keyframes pulse { 50% { transform:scale(1.04); } }
 
-    .tip { display:flex; gap:10px; align-items:flex-start; padding:14px 16px; border-radius:16px; background:var(--white); border:1px dashed rgba(var(--ink-rgb,23,23,26),.2); font-size:14px; line-height:1.5; }
-    .tip b { font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-text,#E2553F); font-weight:400; display:block; margin-bottom:2px; }
+    .tip { display:flex; gap:10px; align-items:flex-start; padding:14px 16px; border-radius:16px; background:var(--white); border:1px dashed rgba(23,23,26,.2); font-size:14px; line-height:1.5; }
+    .tip b { font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:400; display:block; margin-bottom:2px; }
     .tip i { font-style:normal; font-size:18px; line-height:1.2; }
     .stems { display:grid; gap:8px; }
     .stems div { padding:12px 14px; border-radius:14px; background:var(--white); border:1px solid var(--line); font-family:var(--serif); font-style:italic; font-size:19px; }
@@ -153,13 +154,13 @@
     /* felt heard */
     .heard { display:grid; gap:8px; }
     .heard button { display:flex; align-items:center; gap:14px; text-align:left; padding:16px 18px; border-radius:18px; border:1px solid var(--line); background:var(--white); transition:all .2s; }
-    .heard button:hover { border-color:rgba(var(--ink-rgb,23,23,26),.35); }
+    .heard button:hover { border-color:rgba(23,23,26,.35); }
     .heard button .e { width:40px; height:40px; border-radius:50%; display:grid; place-items:center; font-size:20px; flex-shrink:0; background:var(--paper); }
     .heard button b { display:block; font-size:16px; }
     .heard button small { display:block; font-size:13px; color:var(--muted); margin-top:2px; }
 
     /* curtain (pass the phone) */
-    .curtain { background:var(--inkbg,var(--ink)); color:#fff; border-radius:28px; padding:32px 24px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:14px; }
+    .curtain { background:var(--ink); color:#fff; border-radius:28px; padding:32px 24px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:14px; }
     .curtain .hand { width:84px; height:84px; }
     .curtain h2 { color:#fff; }
     .curtain p { margin:0; color:rgba(255,255,255,.7); line-height:1.55; }
@@ -169,14 +170,14 @@
     .sum div { background:var(--white); border:1px solid var(--line); border-radius:18px; padding:16px; }
     .sum b { display:block; font-family:var(--syne); font-size:18px; word-break:break-word; }
     .sum span { display:block; font-size:13px; color:var(--muted); margin-top:4px; }
-    .monday { padding:14px 16px; border-radius:16px; background:var(--white); border:1px dashed rgba(var(--ink-rgb,23,23,26),.2); font-size:14px; line-height:1.55; }
-    .monday b { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-text,#E2553F); font-weight:400; margin-bottom:3px; }
+    .monday { padding:14px 16px; border-radius:16px; background:var(--white); border:1px dashed rgba(23,23,26,.2); font-size:14px; line-height:1.55; }
+    .monday b { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:400; margin-bottom:3px; }
     .chain { list-style:none; padding:0; margin:0; display:grid; gap:8px; }
     .chain li { background:var(--white); border:1px solid var(--line); border-radius:14px; padding:12px 14px; font-size:14px; line-height:1.5; }
     .chain li small { display:block; font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:4px; }
     .steps3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
     .steps3 div { background:var(--white); border:1px solid var(--line); border-radius:16px; padding:14px 12px; text-align:center; }
-    .steps3 b { display:block; font-family:var(--mono); font-size:11px; color:var(--accent-text,#E2553F); }
+    .steps3 b { display:block; font-family:var(--mono); font-size:11px; color:var(--accent); }
     .steps3 span { display:block; font-family:var(--syne); font-weight:700; font-size:15px; margin-top:4px; }
 
     /* drawer (facilitator guide) */
@@ -188,11 +189,11 @@
     .panel h3 { font-family:var(--syne); font-size:22px; margin:4px 0 12px; }
     .panel h4 { font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:400; margin:22px 0 8px; }
     .panel ol, .panel ul { margin:0; padding-left:20px; display:grid; gap:8px; font-size:14px; line-height:1.55; }
-    .panel p { font-size:14px; line-height:1.6; color:rgba(var(--ink-rgb,23,23,26),.78); margin:0; }
+    .panel p { font-size:14px; line-height:1.6; color:rgba(23,23,26,.78); margin:0; }
     .x { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; border:1px solid var(--line); background:var(--white); font-family:var(--mono); flex-shrink:0; }
 
     .toast { position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom)); transform:translate(-50%,10px); opacity:0; pointer-events:none; z-index:70;
-      background:var(--inkbg,var(--ink)); color:#fff; border-radius:99px; padding:9px 16px; font-family:var(--mono); font-size:11px; transition:opacity .25s, transform .35s var(--ease);
+      background:var(--ink); color:#fff; border-radius:99px; padding:9px 16px; font-family:var(--mono); font-size:11px; transition:opacity .25s, transform .35s var(--ease);
       max-width:calc(100% - 32px); }
     .toast.show { opacity:1; transform:translate(-50%,0); }
 
@@ -206,38 +207,13 @@
     /* Chinese: keep CJK upright (no faux italic); Latin italics stay real */
     html:lang(zh) { font-synthesis: weight; }
 </style>
-<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
-:root{color-scheme:light dark}
-@media (prefers-color-scheme: dark){
-:root{--paper:#141416;--ink:#ECEBE6;--muted:#A8A7AD;--line:#303036;--grid:#26262B;--white:#1D1D21;--inkbg:#2B2B31;--inkbd:#3B3B42;--accent-ink:#F28C76;--good:#62C48F;--paper-rgb:20,20,22;--dot-rgb:255,255,255;--ink-rgb:236,235,230;--white-rgb:29,29,33;--accent-text:#F2806A;--warn-ink:#E3B25C}
-html,body{background-color:var(--paper)}
-/* primary actions read as light on dark */
-.btn.pri,.cta a.pri,.chip.pri{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
-.btn.pri:hover,.cta a.pri:hover,.chip.pri:hover{background:#fff!important;border-color:#fff!important}
-.btn[disabled]{opacity:.45}
-.seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
-.steps span.done{background:#ECEBE6}
-.curtain{border:1px solid #3B3B42}
-/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
-.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
-/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
-.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
-/* illustrations keep their light look on a plate */
-.screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
-.plate{background:#fff!important}
-.card-art~.text-ink\/60,.card-art~span .text-ink\/60{color:rgba(23,23,26,.62)!important}
-.text-accent{color:#F2806A!important}
-.bg-white\/90.text-ink,.bg-white\/90 .text-ink{color:#ECEBE6}
-img{filter:none}
-::selection{background:#E2553F;color:#fff}
-}
-</style></head>
+</head>
 <body>
   <div class="dots" aria-hidden="true"></div>
 
   <header class="top">
     <div class="top-in">
-      <a class="brand" href="/" aria-label="FREE//BUILDER">
+      <a class="brand" href="/free_builder/" aria-label="FREE//BUILDER">
         <span class="mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="19" height="19" style="overflow:visible">
             <rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/>
@@ -265,7 +241,12 @@ img{filter:none}
     <div id="stage" aria-live="polite"></div>
   </main>
 
-  <footer class="fbf" data-fbf-root><div class="fbf-in"><span class="fbf-note" data-t="privacy">Nothing is recorded. Nothing leaves this phone.</span><span>© <span id="fbf-year">2026</span> <a href="/" data-fbf-title="home">FREE//BUILDER</a> L&amp;D Solutions</span><nav aria-label="Footer"><a href="/privacy/" data-fbf="privacy">Privacy</a><a href="https://www.wei-meng.org/" data-fbf="by">A practice by Wei</a><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai">AI</a> &amp; <a href="/nearby/" class="fbf-heart">♥</a></span></nav></div></footer>
+  <footer>
+    <div class="foot-in">
+      <span data-t="privacy">Nothing is recorded. Nothing leaves this phone.</span>
+      <a href="/free_builder/" data-t="back">FREE//BUILDER ↗</a>
+    </div>
+  </footer>
 
   <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="g-title">
     <div class="panel" id="panel"></div>
@@ -309,31 +290,13 @@ es: { title: "Nombre de la demo — FREE//BUILDER", product: "Nombre de la demo"
   codeYours: "Tu código", codeEnter: "O escribe el código de tu pareja", codeGo: "Ver escenario", scenario: "Escenario",
   scenarios: ["Una fecha de entrega movida dos veces", "Una colega callada en una reunión ruidosa", "Dos oficinas, un lanzamiento"],
   teachTitle: "Enséñaselo a alguien nuevo.", learned: "Lo que aprendió, con sus palabras", save: "Guardar en este móvil", saved: "Guardado solo en este móvil.",
-  back2: "← Volver al kit", gKicker: "Guía para facilitadores", gTitle: "Cómo usar esta demo con un grupo", gWhyTxt: "Escribe aquí el porqué en un párrafo, los pasos y las preguntas de cierre." }, "zh-Hant": { title: "演示名稱 — FREE//BUILDER", product: "演示名稱", guide: "引導師", privacy: "不做任何記錄，所有內容都只留在這部手機上。", back: "FREE//BUILDER ↗",
-  soundOn: "聲音開", soundOff: "聲音關", left: "剩餘", paused: "已暫停", close: "關閉",
-  kicker: "FREE//BUILDER 工具包", h: '起步<span class="accent-word">模板</span>', lead: "新演示需要的每一個部件，複製即用。",
-  timerBtn: "試試 10 秒計時", passBtn: "傳手機遮擋頁", codeBtn: "兩部手機配對", teachBtn: "“教回去”頁面",
-  passTitle: "把手機交給你的搭檔。", passLead: "下一屏只給 TA 看。", passGo: "手機在我這兒",
-  codeTitle: "兩部手機配對", codeLead: "在兩部手機上輸入同一個程式碼，就會看到同一個情境。不需要伺服器。",
-  codeYours: "你的程式碼", codeEnter: "或輸入搭檔的程式碼", codeGo: "顯示情境", scenario: "情境",
-  scenarios: ["截止日期被改了兩次", "熱鬧會議裡的安靜同事", "兩個辦公室，一次釋出"],
-  teachTitle: "教給一個新的人。", learned: "TA 用自己的話寫下的收穫", save: "儲存在這部手機上", saved: "只儲存在這部手機上。",
-  back2: "← 回到工具包", gKicker: "引導師指南", gTitle: "帶一組人玩這個演示", gWhyTxt: "在這裡寫一段“為什麼”、步驟和覆盤問題。" }, "ca": { title: "Nom de la demo — FREE//BUILDER", product: "Nom de la demo", guide: "Facilitadors", privacy: "No es grava res. Res no surt d'aquest mòbil.", back: "FREE//BUILDER ↗",
-  soundOn: "So activat", soundOff: "So desactivat", left: "queden", paused: "en pausa", close: "Tancar",
-  kicker: "Kit FREE//BUILDER", h: 'Plantilla <span class="accent-word">inicial</span>', lead: "Totes les peces que necessita una demo nova, a punt per copiar.",
-  timerBtn: "Provar un temporitzador de 10 s", passBtn: "Cortina de passar el mòbil", codeBtn: "Aparellar dos mòbils", teachBtn: "Pantalla de transmetre",
-  passTitle: "Passa el mòbil a la teva parella.", passLead: "Només aquesta persona ha de veure la pantalla següent.", passGo: "Ja tinc el mòbil",
-  codeTitle: "Aparellar dos mòbils", codeLead: "Escriviu el mateix codi als dos mòbils i veureu el mateix escenari. Sense servidor.",
-  codeYours: "El teu codi", codeEnter: "O escriu el codi de la teva parella", codeGo: "Veure l'escenari", scenario: "Escenari",
-  scenarios: ["Una data d'entrega moguda dues vegades", "Una col·lega callada en una reunió sorollosa", "Dues oficines, un llançament"],
-  teachTitle: "Ensenya-ho a algú nou.", learned: "El que ha après, amb les seves paraules", save: "Desar en aquest mòbil", saved: "Desat només en aquest mòbil.",
-  back2: "← Tornar al kit", gKicker: "Guia per a facilitadors", gTitle: "Com fer servir aquesta demo amb un grup", gWhyTxt: "Escriu aquí el perquè en un paràgraf, els passos i les preguntes de tancament." }
+  back2: "← Volver al kit", gKicker: "Guía para facilitadores", gTitle: "Cómo usar esta demo con un grupo", gWhyTxt: "Escribe aquí el porqué en un párrafo, los pasos y las preguntas de cierre." }
 };
 
 /* =====================================================================
    FB KIT · helpers (copy into every demo)
    ===================================================================== */
-const LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LANG_LBL = { en: "EN", zh: "中文", es: "ES", "zh-Hant": "繁中", "ca": "CA" };
+const LANGS = ["en", "zh", "es"], LANG_LBL = { en: "EN", zh: "中文", es: "ES" };
 let lang = "en";
 const T = () => I18N[lang];
 const $ = id => document.getElementById(id);
@@ -484,7 +447,7 @@ $("btn-sound").addEventListener("click", () => { sound.muted = !sound.muted; sto
 
 function applyLang(l) {
   lang = LANGS.includes(l) ? l : "en";
-  document.documentElement.lang = (/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang));
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
   document.title = T().title;
   $("lang-lbl").textContent = LANG_LBL[lang];
   document.querySelectorAll("[data-t]").forEach(el => { const v = T()[el.dataset.t]; if (typeof v === "string") el.textContent = v; });

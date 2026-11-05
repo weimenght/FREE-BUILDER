@@ -1,9 +1,9 @@
-/* FREE//BUILDER — offline cache for the demos (upload to /sw.js)
+/* FREE//BUILDER — offline cache for the demos (upload to /free_builder/sw.js)
  * Pages: network first, so updates show up straight away; the cached copy is used when offline.
  * Fonts and vendor scripts: cache first. Nothing about the people using the demos is stored here. */
 const VERSION = "fb-2026-10-23b";
 // Launchpad (1.3 MB) is cached when first opened, not up front.
-const PAGES = ["tools/listen", "tools/questions", "tools/thanks", "tools/swap", "tools/repair", "tools/teachback", "tools/discovery", "tools/room", "tools/design", "guide", "labs/coach", "labs/cq", "tools/diagnose", "tools/cost", "programmes/impact", "notes/adapted", "notes/ai", "programmes/frontline", "programmes/circles", "programmes/rituals", "programmes/facilitator", "kit", "tools/twotruths", "tools/prompt", "tools/museum", "tools/manual", "tools/dial", "tools/decide", "programmes/managers"].map(n => `/${n}/`).concat(["/"]);
+const PAGES = ["tools/listen", "tools/questions", "tools/thanks", "tools/swap", "tools/repair", "tools/teachback", "tools/discovery", "tools/room", "tools/design", "guide", "labs/coach", "labs/cq", "tools/diagnose", "tools/cost", "programmes/impact", "notes/adapted", "notes/ai", "programmes/frontline", "programmes/circles", "programmes/rituals", "programmes/facilitator", "kit", "tools/twotruths", "tools/prompt", "tools/museum", "tools/manual", "tools/dial", "tools/decide", "programmes/managers"].map(n => `/free_builder/${n}/`).concat(["/free_builder/"]);
 const FONTS = [
   "/fonts/fonts.css",
   "/fonts/syne-latin-600-normal.woff2", "/fonts/syne-latin-700-normal.woff2", "/fonts/syne-latin-800-normal.woff2",
@@ -26,11 +26,11 @@ const withSlash = u => (u.pathname.endsWith("/") || /\.[a-z0-9]+$/i.test(u.pathn
 self.addEventListener("fetch", e => {
   const req = e.request, url = new URL(req.url);
   if (req.method !== "GET" || url.origin !== location.origin) return;
-  if (url.pathname.startsWith("/fonts/") || url.pathname.startsWith("/vendor/") || url.pathname.startsWith("/fbkit/")) {
+  if (url.pathname.startsWith("/fonts/") || url.pathname.startsWith("/free_builder/vendor/") || url.pathname.startsWith("/fbkit/")) {
     e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(res => { const copy = res.clone(); caches.open(VERSION).then(c => c.put(req, copy)); return res; })));
     return;
   }
-  if (req.mode === "navigate" && url.pathname.startsWith("/")) {
+  if (req.mode === "navigate" && url.pathname.startsWith("/free_builder/")) {
     e.respondWith(
       fetch(req).then(res => {
         if (res.ok) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(withSlash(url), copy)); }
