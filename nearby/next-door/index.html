@@ -315,13 +315,24 @@
       box-shadow: inset 0 2px 0 rgba(255,210,150,.25);
     }
     #stage-floor { position: absolute; left: 0; right: 0; bottom: 22px; height: 120px; }
+    /* the room's layers, back to front: wall and shelves (1–2) → the pinned postcards, the jukebox, the signs (3) → everyone:
+       whoever is behind the counter and a dog on a stool (4), the cats on the counter and a friend's seat (5) → the menu stand (6)
+       → what was just served (7, always on top); the lamp's light (8) and the lamp (9) over it all */
+    .shelf { z-index: 1; }
+    #served-item-plate { z-index: 7; pointer-events: none; }
 
-    #wei-anchor { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 5; }
+    #wei-anchor { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); z-index: 4; }
     #svg-wei-avatar { width: 66px; height: 74px; display: block; image-rendering: pixelated; }
 
-    .cat { position: absolute; bottom: 0; z-index: 6; transform: translateX(-50%); transition: left 1.6s ease-in-out; cursor: pointer; }
+    .cat { position: absolute; bottom: 0; z-index: 5; transform: translateX(-50%); transition: left 1.6s ease-in-out; cursor: pointer; }
     .cat.fast { transition: left .35s ease-out; }
-    .cat .cat-sprite { width: 46px; height: 40px; display: block; image-rendering: pixelated; transition: transform .2s; }
+    .cat .cat-sprite { width: 51px; height: 40px; display: block; image-rendering: pixelated; transition: transform .2s; overflow: visible; }
+    /* the town's animals: a tail that twitches now and then, a stride when they play */
+    .pt-tail { transform-box: fill-box; transform-origin: 100% 100%; animation: ptTail 5s ease-in-out infinite; }
+    .cat.sleeping .pt-tail, #dog-avatar.asleep .pt-tail { animation: none; }
+    @keyframes ptTail { 0%, 70%, 100% { transform: rotate(0); } 78% { transform: rotate(-14deg); } 86% { transform: rotate(8deg); } }
+    .pt-stride .pt-l2 { display: none; }
+    @media (prefers-reduced-motion: reduce) { .pt-tail { animation: none; } }
     .cat.flip .cat-sprite { transform: scaleX(-1); }
     .cat-name { text-align: center; font-family: "VT323", monospace; font-size: 13px; color: var(--muted); margin-top: -2px; }
 
@@ -388,7 +399,7 @@
       .stage { height: clamp(380px, calc(100dvh - 190px), 620px); }
       #stage-floor { height: 150px; }
       #svg-wei-avatar { width: 92px; height: 104px; }
-      .cat .cat-sprite { width: 64px; height: 56px; }
+      .cat .cat-sprite { width: 72px; height: 56px; }
       .shelf { font-size: 20px; height: 34px; }
     }
 
@@ -480,7 +491,7 @@
 
     /* the second-hand book corner next door */
     /* the big cabinet in the corner: MEMEX-68, every FREE//BUILDER game on one tape */
-    .nd-peek { position: absolute; right: 10px; top: 120px; z-index: 15; display: flex; align-items: center; gap: 3px; text-decoration: none; transform-origin: 50% 0; animation: ndSwing 5s ease-in-out infinite; filter: drop-shadow(2px 3px 0 #000) drop-shadow(0 0 12px rgba(255,190,110,.25)); }
+    .nd-peek { position: absolute; right: 10px; top: 120px; z-index: 3; display: flex; align-items: center; gap: 3px; text-decoration: none; transform-origin: 50% 0; animation: ndSwing 5s ease-in-out infinite; filter: drop-shadow(2px 3px 0 #000) drop-shadow(0 0 12px rgba(255,190,110,.25)); }
     .nd-peek .nd-mini { width: 54px; height: auto; display: block; }
     .nd-peek:hover, .nd-peek:focus-visible { filter: drop-shadow(2px 3px 0 #000) drop-shadow(0 0 18px rgba(255,200,120,.6)); }
     @keyframes ndSwing { 0%, 100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
@@ -3413,71 +3424,21 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
 
   <script>
     /* ===================== THE CATS: MISO & YUZU ===================== */
-    const CAT_MAPS = {
-      sit: [
-        "..X........X..",
-        ".XXX......XXX.",
-        ".XXXXXXXXXXXX.",
-        ".XXEXXXXXXEXX.",
-        ".XXXXXNNXXXXX.",
-        "..XXXXXXXXXX..",
-        "...XXXXXXXX...",
-        "..XXBBBBBBXX..",
-        ".XXXBBBBBBXXX.",
-        ".XXXBBBBBBXXXT",
-        ".XXXXXXXXXXXXT",
-        "..XX..XX..XXT."
-      ],
-      loaf: [
-        "..............",
-        "..............",
-        "..............",
-        "..X......X....",
-        ".XXX....XXX...",
-        ".XXXXXXXXXXXX.",
-        ".XCCXXXXCCXXX.",
-        ".XXXXNNXXXXXXX",
-        "XXXXXXXXXXXXXX",
-        "XXXBBBBBBXXXXT",
-        "XXXXXXXXXXXXTT",
-        ".XXXXXXXXXXXX."
-      ],
-      play: [
-        "..X........X..",
-        ".XXX......XXX.",
-        ".XXXXXXXXXXXX.",
-        ".XXEXXXXXXEXX.",
-        ".XXXXXNNXXXXX.",
-        "..XXXXXXXXXX..",
-        "XX.XXXXXXXX...",
-        "XXXXBBBBBBXX..",
-        "..XXBBBBBBXXX.",
-        "..XXBBBBBBXXXT",
-        "..XXXXXXXXXXXT",
-        "..XX......XXT."
-      ]
-    };
-    const CAT_PAL = {
-      miso: { X: '#231b17', B: '#3a2f29', E: '#f2c94c', N: '#c98272', T: '#231b17', C: '#0d0a08', S: '#231b17' },
-      yuzu: { X: '#e8913a', B: '#f8dcae', E: '#4f9a62', N: '#e07a8a', T: '#e8913a', C: '#7a3d10', S: '#b5611d' }
-    };
-
+    /* Miso & Yuzu at the counter are the town's own drawing (FBWorld.petSvg, palette FBWorld.PETS): on all four, side on;
+       'loaf' is curled up asleep (legs tucked), 'play' a mid-step stride; a blink shuts the eyes for a beat */
+    function petPic(k, o) {
+      o = o || {}; const W = window.FBWorld, dog = k === 'dog', w = dog ? 22 : 18, h = dog ? 16 : 14;
+      if (!W || !W.petSvg) return '';
+      let s = W.petSvg(k, { asleep: o.asleep, tail: 'pt-tail', legs: 'pt-legs', legs2: 'pt-legs pt-l2' });
+      const P = (W.PETS || {})[k];
+      if (o.blink && P && P.e) s = s.split('fill="' + P.e + '"').join('fill="' + (P.d || P.b) + '"');
+      s = s.replace('<svg ', '<svg x="' + (o.dx || 0) + '" y="' + ((o.dy || 0) + (o.asleep ? (dog ? 4 : 3) : 0)) + '" width="' + w + '" height="' + h + '" ');
+      const vw = o.vw || w, vh = o.vh || h;
+      return '<svg class="' + (o.cls || '') + (o.stride ? ' pt-stride' : '') + '" viewBox="0 0 ' + vw + ' ' + vh + '" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" aria-hidden="true">' + (o.under || '') + s + '</svg>';
+    }
+    window.NDPetPic = petPic;
     function catSVG(id, pose, blink) {
-      const map = CAT_MAPS[pose] || CAT_MAPS.sit;
-      const pal = CAT_PAL[id];
-      let rects = '';
-      map.forEach((row, y) => {
-        for (let x = 0; x < row.length; x++) {
-          let ch = row[x];
-          if (ch === '.') continue;
-          if (ch === 'E' && blink) ch = 'C';
-          let col = pal[ch] || pal.X;
-          if (id === 'yuzu' && ch === 'X' && (y === 2 || y === 8 || y === 9) && x % 3 === 0) col = pal.S;
-          rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${col}"/>`;
-        }
-      });
-      if (id === 'miso') rects += `<rect x="4" y="1" width="1" height="1" fill="#4a3b33"/>`;
-      return `<svg class="cat-sprite" viewBox="0 0 14 12" xmlns="http://www.w3.org/2000/svg" style="shape-rendering:crispEdges">${rects}</svg>`;
+      return petPic(id, { cls: 'cat-sprite', asleep: pose === 'loaf', stride: pose === 'play', blink: blink && pose !== 'loaf' });
     }
 
     const Cats = {
@@ -3495,6 +3456,7 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
         el.innerHTML = catSVG(id, s.pose, blink) + `<div class="cat-name">${esc(this.name(id))}</div>`;
         el.style.left = s.x + '%';
         el.classList.toggle('sleeping', s.pose === 'loaf');
+        if (!el.dataset.faced) { el.dataset.faced = '1'; el.classList.toggle('flip', s.x > 50); }   /* side on, looking into the room */
       },
       renderAll() { this.render('miso'); this.render('yuzu'); },
 
@@ -3513,6 +3475,7 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
         el.classList.toggle('flip', x < s.x);
         s.x = Math.max(5, Math.min(95, x));
         el.style.left = s.x + '%';
+        clearTimeout(el._face); el._face = setTimeout(() => { if (!el.classList.contains('fast')) el.classList.toggle('flip', s.x > 50); }, fast ? 900 : 1800);   /* once there, turn to face the room */
       },
       setPose(id, pose) { this.st[id].pose = pose; this.render(id); },
       returnHome(id) {
@@ -4769,7 +4732,7 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     window.WeiAway = { on: away, place: function () { return away() ? st.p : null; } };
 
     var css = document.createElement("style");
-    css.textContent = '#wei-note{display:none;position:absolute;left:50%;bottom:6px;transform:translateX(-50%) rotate(-4deg);z-index:6;width:128px;padding:8px 9px 6px;background:#f6ecd2;color:#3a2a1c;border:2px solid #000;box-shadow:3px 3px 0 rgba(0,0,0,.45);font:17px/1.1 Caveat,"Kaiti SC",STKaiti,KaiTi,cursive;text-decoration:none;image-rendering:pixelated}'
+    css.textContent = '#wei-note{display:none;position:absolute;left:50%;bottom:6px;transform:translateX(-50%) rotate(-4deg);z-index:4;width:128px;padding:8px 9px 6px;background:#f6ecd2;color:#3a2a1c;border:2px solid #000;box-shadow:3px 3px 0 rgba(0,0,0,.45);font:17px/1.1 Caveat,"Kaiti SC",STKaiti,KaiTi,cursive;text-decoration:none;image-rendering:pixelated}'
       + '#wei-note::before{content:"";position:absolute;top:-7px;left:50%;width:22px;height:10px;margin-left:-11px;background:rgba(242,165,65,.75);border:1px solid #000}'
       + '#wei-note b{display:block;font:15px/1 VT323,"PingFang SC",monospace;letter-spacing:.05em;color:#b4472c;margin-bottom:4px}#wei-note span{display:block;text-decoration:underline;text-decoration-style:dotted}#wei-note i{display:block;text-align:right;font-style:normal;opacity:.7}'
       + '#wei-note:hover,#wei-note:focus-visible{transform:translateX(-50%) rotate(0) scale(1.05)}'
@@ -5176,7 +5139,7 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
 })();
 </script>
 <style>
-  #friend-seat{position:absolute;left:33%;bottom:3px;transform:translateX(-50%);z-index:7;display:flex;flex-direction:column;align-items:center;gap:0;background:none;border:0;padding:0;cursor:pointer;min-width:44px;min-height:44px;justify-content:flex-end}
+  #friend-seat{position:absolute;left:33%;bottom:3px;transform:translateX(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:0;background:none;border:0;padding:0;cursor:pointer;min-width:44px;min-height:44px;justify-content:flex-end}
   #friend-seat[hidden]{display:none}
   #friend-seat .fs-drink{font-size:20px;line-height:1;min-height:20px}
   #friend-seat .fs-stool{font-size:18px;line-height:1;opacity:.55}
@@ -5633,11 +5596,16 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     setTimeout(function () { try { showBubble(L(D.served)); } catch (e) {} }, 900);
     try { DB.log("dog_serve", { k: d.k }); } catch (e) {}
   }
-  var dcv = document.createElement("canvas"); dcv.id = "dog-avatar"; dcv.width = 32; dcv.height = 36; dcv.setAttribute("role", "img"); dcv.setAttribute("aria-label", "Mantou");
-  function paintDog(asleep) { var g = dcv.getContext("2d"); g.clearRect(0, 0, 32, 36); if (W.drawDogFace) W.drawDogFace(g, 0, 2, 1, { asleep: asleep }); }
+  /* Mantou keeps the counter as a dog: the town's own drawing (FBWorld.petSvg), on all four on a bar stool behind the counter
+     (curled up on it when he sleeps), never standing like a person */
+  var dcv = document.createElement("div"); dcv.id = "dog-avatar"; dcv.setAttribute("role", "img"); dcv.setAttribute("aria-label", "Mantou");
+  var STOOL = '<path fill="#1a1410" d="M3 16h20v3H3zM6 19h2v5H6zM18 19h2v5h-2z"/><path fill="#8a5a2e" d="M4 16h18v1H4z"/><path fill="#5a3519" d="M4 17h18v1H4zM7 19h1v5H7zM19 19h1v5h-1z"/><path fill="#3a2210" d="M8 22h10v1H8z"/>';
+  var dogPainted = null;
+  function paintDog(asleep) { asleep = !!asleep; if (dogPainted === asleep) return; dogPainted = asleep; dcv.classList.toggle("asleep", asleep);
+    dcv.innerHTML = window.NDPetPic ? NDPetPic("dog", { asleep: asleep, vw: 26, vh: 24, dx: 2, under: STOOL }) : ""; }
   var css0 = document.createElement("style");
-  css0.textContent = "#dog-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.dog-on #dog-avatar{display:block}body.dog-on #svg-wei-avatar,body.dog-on #mei-avatar,body.dog-on #popo-avatar,body.dog-on #wei-zzz-particles{display:none!important}" +
-    "#dog-guest{position:absolute;bottom:0;left:34%;z-index:6;width:44px;height:32px;image-rendering:pixelated;cursor:pointer;transform:translateX(-50%)}";
+  css0.textContent = "#dog-avatar{display:none;width:78px;height:72px;image-rendering:pixelated}#dog-avatar svg{display:block;width:100%;height:100%;overflow:visible}@media (min-width:1024px){#dog-avatar{width:109px;height:101px}}body.dog-on #dog-avatar{display:block}body.dog-on #svg-wei-avatar,body.dog-on #mei-avatar,body.dog-on #popo-avatar,body.dog-on #wei-zzz-particles{display:none!important}" +
+    "#dog-guest{position:absolute;bottom:0;left:30%;z-index:4;width:78px;height:72px;image-rendering:pixelated;cursor:pointer;transform:translateX(-50%)}#dog-guest svg{display:block;width:100%;height:100%;overflow:visible}@media (min-width:1024px){#dog-guest{width:109px;height:101px}}";
   document.head.appendChild(css0);
   var css = document.createElement("style");
   css.textContent = "#popo-avatar{display:none;width:66px;height:74px;image-rendering:pixelated}body.popo-on #popo-avatar{display:block}body.popo-on #svg-wei-avatar,body.popo-on #mei-avatar,body.popo-on:not(.popo-nap) #wei-zzz-particles,body.cats-on #svg-wei-avatar,body.cats-on #mei-avatar,body.cats-on #wei-zzz-particles{display:none!important}body.popo-on:not(.wei-away) #wei-anchor{visibility:visible!important}body.cats-on #wei-anchor{visibility:hidden!important}@media (min-width:768px){#popo-avatar{width:92px;height:104px}}";
@@ -5690,9 +5658,10 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     var here = false; try { here = who().who !== "mantou" && W.dog && W.dog() === "bar"; } catch (e) {}
     var stage = document.getElementById("cat-miso"); stage = stage && stage.parentElement;
     if (!here || !stage) { if (gcv) gcv.style.display = "none"; return; }
-    if (!gcv) { gcv = document.createElement("canvas"); gcv.id = "dog-guest"; gcv.width = 22; gcv.height = 16; gcv.setAttribute("role", "img"); gcv.setAttribute("aria-label", "Mantou"); stage.appendChild(gcv);
+    if (!gcv) { gcv = document.createElement("div"); gcv.id = "dog-guest"; gcv.setAttribute("role", "img"); gcv.setAttribute("aria-label", "Mantou"); stage.appendChild(gcv);
       gcv.onclick = function (e) { e.stopPropagation(); try { SoundEngine.playClick(); } catch (x) {} if (window.NDSay) NDSay(L(pick(GD))); }; }
-    var g = gcv.getContext("2d"); g.clearRect(0, 0, 22, 16); if (W.drawPet) W.drawPet(g, "dog", 11, 16, 1, { asleep: W.phase && W.phase() === "night" });
+    var nap = !!(W.phase && W.phase() === "night");   /* a visiting dog up on a stool behind the counter, on all four (curled up at night), facing into the room */
+    if (gcv.dataset.nap !== String(nap)) { gcv.dataset.nap = String(nap); gcv.innerHTML = window.NDPetPic ? NDPetPic("dog", { asleep: nap, vw: 26, vh: 24, dx: 2, under: STOOL }) : ""; }
     gcv.style.display = "";
   }
   /* from Tonight's menu: Popo doesn't make drinks, she cooks you something instead */
@@ -5718,7 +5687,8 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
   var SHELF = {
     mei: { sign: M("DON'T TOUCH", "别碰", "別碰", "NO TOCAR", "NO TOCAR"), r: [["polish", "gloss", "compact", "iced"], ["polaroid", "disco", "polish", "scrunchie"], ["gloss", "polaroid", "scrunchie"], ["iced", "compact", "polish"]] },
     popo: { sign: M("PANTRY", "婆婆的架子", "婆婆嘅架", "DESPENSA", "REBOST"), r: [["jar", "jar", "steamer", "orange"], ["bowl", "thermos", "orange", "cup"], ["radio", "jar", "garden"], ["steamer", "restaurant", "bowl"]] },   /* her own tin is the one on the lower shelf (#nd-tin): only one */
-    cats: { sign: M("MEOW", "喵", "喵", "MIAU", "MÈU"), r: [["box", "yarn"], ["feather", "fish", "yarn"], ["fish"], ["box"]] }
+    cats: { sign: M("MEOW", "喵", "喵", "MIAU", "MÈU"), r: [["box", "yarn"], ["feather", "fish", "yarn"], ["fish"], ["box"]] },
+    mantou: { sign: M("WOOF", "汪", "汪", "GUAU", "BUP"), r: [["rope", "coin"], ["bowl", "yarn"], ["box"], ["dumpling", "coin"]] }   /* his lead, his ball, his water bowl, a sock, his toy box, a mantou from Popo's kitchen */
   };
   var shelf0 = null;
   function shelves(w) {
@@ -5727,7 +5697,7 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     if (!shelf0) shelf0 = spans.map(function (e) { return e ? e.innerHTML : ""; });
     var S = SHELF[w];
     if (!S) { if (document.body.dataset.shelf) { spans.forEach(function (e, i) { if (e) e.innerHTML = shelf0[i]; }); delete document.body.dataset.shelf; try { if (window.updateCellarBanner) updateCellarBanner(); } catch (e) {} } return; }
-    if (document.body.dataset.shelf !== w || spans.some(function (e) { return e && !e.querySelector(".hshelf"); })) { document.body.dataset.shelf = w; spans.forEach(   /* the town's clock re-stocks Wei's cellar every quarter hour: put the host's things back */function (e, i) { if (e) e.innerHTML = S.r[i].map(function (k) { return '<span class="hshelf" data-k="' + k + '">' + W.pix(k) + "</span>"; }).join(""); }); }
+    if (document.body.dataset.shelf !== w || !document.querySelector('.shelf .hshelf[data-h="' + w + '"]') || spans.some(function (e) { return e && [].some.call(e.childNodes, function (n) { return n.nodeType === 3 ? /\S/.test(n.nodeValue) : !(n.classList && n.classList.contains("hshelf") && n.dataset.h === w); }); })) {   /* (a thing moved to another spot along the shelves stays there) */ document.body.dataset.shelf = w; spans.forEach(   /* the town's clock re-stocks Wei's cellar every quarter hour: put the host's things back */function (e, i) { if (e) e.innerHTML = S.r[i].map(function (k) { return '<span class="hshelf" data-h="' + w + '" data-k="' + k + '">' + W.pix(k) + "</span>"; }).join(""); }); }
     if (sign && sign.textContent !== L(S.sign)) sign.textContent = L(S.sign);
   }
   var css2 = document.createElement("style"); css2.textContent = ".hshelf{display:inline-block;width:20px;height:20px;margin:0 1px;vertical-align:bottom}.hshelf .fbpx{width:20px;height:20px}@media (min-width:768px){.hshelf,.hshelf .fbpx{width:26px;height:26px}}"; document.head.appendChild(css2);
@@ -5955,7 +5925,7 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
   const TIN = S("Popo's tin", "婆婆的饼干罐", "婆婆的曲奇罐", "La lata de Popo", "La llauna de la Popo"), MEET = S("Find a friend", "找个朋友", "找個朋友", "Busca un amigo", "Troba un amic"),
     BOARD = S("FIND A FRIEND · THE WALL", "找个朋友 · 墙上", "找個朋友 · 牆上", "BUSCA UN AMIGO · EL MURO", "TROBA UN AMIC · EL MUR");
   const st = document.createElement('style');
-  st.textContent = '#nd-tin{position:absolute;top:92px;left:47%;z-index:5;width:26px;height:24px;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(1px 2px 0 rgba(0,0,0,.6))}#nd-tin svg{width:100%;height:100%;image-rendering:pixelated}#nd-tin:hover{transform:translateY(-1px)}#nd-tin:focus-visible{outline:2px solid var(--amber,#f6b73c);outline-offset:2px}';
+  st.textContent = '#nd-tin{position:absolute;top:92px;left:47%;z-index:2;width:26px;height:24px;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(1px 2px 0 rgba(0,0,0,.6))}#nd-tin svg{width:100%;height:100%;image-rendering:pixelated}#nd-tin:hover{transform:translateY(-1px)}#nd-tin:focus-visible{outline:2px solid var(--amber,#f6b73c);outline-offset:2px}';
   document.head.appendChild(st);
   const tin = document.getElementById('nd-tin'); try { tin.innerHTML = FBWorld.pix('tin'); } catch (e) {}
   window.NDTin = function () { try { (window.FBTale || parent.FBTale).tin(); } catch (e) {} };
@@ -6099,14 +6069,14 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     '.nd-thing:hover,.nd-thing:focus-visible{filter:drop-shadow(2px 2px 0 rgba(0,0,0,.65)) drop-shadow(0 0 8px rgba(255,200,120,.55))}',
     '.nd-thing:focus-visible{outline:2px solid var(--amber);outline-offset:2px}',
     '.nd-thing:active{transform:translateY(1px)}',
-    '#nd-stand{right:24%;bottom:12px;width:42px;height:50px;z-index:7}',
+    '#nd-stand{right:24%;bottom:12px;width:42px;height:50px;z-index:6}',
     '#nd-stand b{position:absolute;left:3px;right:3px;top:9px;font:400 6px/1.2 "Press Start 2P",VT323,monospace;color:#f3ead8;text-align:center;letter-spacing:-.5px;pointer-events:none;white-space:nowrap;overflow:hidden}',
-    '#nd-juke{left:12px;top:120px;width:40px;height:50px;z-index:6;transform-origin:50% 0}',
+    '#nd-juke{left:12px;top:120px;width:40px;height:50px;z-index:3;transform-origin:50% 0}',
     '#nd-juke i{position:absolute;top:-4px;right:-8px;font:400 15px/1 VT323,monospace;font-style:normal;color:var(--amber-2);opacity:0;pointer-events:none}',
     '#nd-juke.on i{animation:ndNote 2.4s steps(6) infinite}#nd-juke.on i+i{animation-delay:1.2s;right:auto;left:-8px}',
     '@keyframes ndNote{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-16px)}}',
     '#nd-juke.on .jl{animation:ndBlink 1s steps(2) infinite}@keyframes ndBlink{50%{opacity:.35}}',
-    '#nd-cards{right:12px;top:168px;width:48px;height:42px;z-index:6}',
+    '#nd-cards{right:12px;top:168px;width:48px;height:42px;z-index:3}',
     '#nd-lamp{left:50%;top:0;width:52px;height:46px;transform:translateX(-50%);z-index:9;filter:none}',
     '#nd-lamp:hover,#nd-lamp:focus-visible{filter:none;background:radial-gradient(ellipse at 50% 70%,rgba(255,210,140,.18),transparent 70%)}',
     '#nd-lamp:active{transform:translateX(-50%) translateY(2px)}',
@@ -6257,6 +6227,15 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     mantou: [H("*Mantou's ears go up at the clink. He thinks it's dinner.* Woof?", "*听到叮当一声，馒头耳朵竖了起来。他以为开饭了。* 汪？", "*聽到叮噹一聲，饅頭耳朵豎了起來。他以為開飯了。* 汪？", "*聽到叮一聲，饅頭對耳仔即刻企起。佢以為開飯。* 汪？", "*Las orejas de Mantou se levantan con el tintineo. Cree que es la cena.* ¿Guau?", "*Les orelles d'en Mantou s'aixequen amb el dring. Es pensa que és l'hora de sopar.* Bup?"),
       H("*Mantou watches your hand very closely, in case it's a ball.*", "*馒头紧紧盯着你的手，万一是个球呢。*", "*饅頭緊緊盯著你的手，萬一是個球呢。*", "*饅頭死死盯住你隻手，萬一係個波呢。*", "*Mantou vigila tu mano muy de cerca, por si es una pelota.*", "*En Mantou et vigila la mà molt de prop, per si és una pilota.*"),
       H("*Mantou sneezes at the dust and looks at you like it was your fault.*", "*馒头被灰呛得打了个喷嚏，看着你，好像是你的错。*", "*饅頭被灰嗆得打了個噴嚏，看著你，好像是你的錯。*", "*饅頭俾啲塵整到乞嚏，望住你，好似係你衰。*", "*Mantou estornuda por el polvo y te mira como si fuera culpa tuya.*", "*En Mantou esternuda per la pols i et mira com si fos culpa teva.*")],
+    /* Mantou's own shelf (his lead, ball, bowl, a sock, his toy box, a mantou): each thing first, then his everyday reactions */
+    mantouK: {
+      rope: [H("*Mantou sees the lead in your hand and is sitting at the door before you've put it down.* Woof! Woof!", "*馒头一看见你手里的牵绳，你还没放下，他已经坐在门口了。* 汪！汪！", "*饅頭一看見你手裡的牽繩，你還沒放下，他已經坐在門口了。* 汪！汪！", "*饅頭一見到你手上條狗帶，你未放低佢已經坐咗喺門口。* 汪！汪！", "*Mantou ve la correa en tu mano y ya está sentado en la puerta antes de que la sueltes.* ¡Guau! ¡Guau!", "*En Mantou veu la corretja a la teva mà i ja seu a la porta abans que la deixis.* Bup! Bup!")],
+      coin: [H("*The ball. Mantou freezes, every muscle ready. Throw it. Please throw it.*", "*球。馒头一动不动，全身都准备好了。扔啊。求你扔啊。*", "*球。饅頭一動不動，全身都準備好了。扔啊。求你扔啊。*", "*個波。饅頭定晒格，成身預備好。掟啦。求吓你掟啦。*", "*La pelota. Mantou se queda quieto, cada músculo listo. Tírala. Por favor, tírala.*", "*La pilota. En Mantou es queda immòbil, amb tots els músculs a punt. Llança-la. Si us plau, llança-la.*")],
+      bowl: [H("*Mantou noses his water bowl along the shelf towards you. Shared, generously.*", "*馒头用鼻子把水碗沿着架子推到你面前。大方地分给你。*", "*饅頭用鼻子把水碗沿著架子推到你面前。大方地分給你。*", "*饅頭用個鼻將個水兜沿住架推埋嚟俾你。好大方。*", "*Mantou empuja su cuenco de agua por el estante hacia ti con el hocico. Compartido, con generosidad.*", "*En Mantou empeny el seu bol d'aigua pel prestatge cap a tu amb el morro. Compartit, amb generositat.*")],
+      yarn: [H("*You pick up the sock. Mantou takes the other end. This is a game now.* Grrr (happy).", "*你拿起袜子。馒头叼住另一头。现在这是游戏了。* 呜呜（开心的）。", "*你拿起襪子。饅頭叼住另一頭。現在這是遊戲了。* 嗚嗚（開心的）。", "*你拎起隻襪。饅頭咬住另一頭。而家變咗遊戲喇。* 嗚嗚（開心嘅）。", "*Coges el calcetín. Mantou coge el otro extremo. Ahora es un juego.* Grrr (contento).", "*Agafes el mitjó. En Mantou n'agafa l'altra punta. Ara és un joc.* Grrr (content).")],
+      box: [H("*Mantou noses through his toy box and brings you the best thing in it: a squeaky duck, very loved.*", "*馒头用鼻子翻他的玩具箱，把最好的那样叼给你：一只被他爱得旧旧的吱吱鸭。*", "*饅頭用鼻子翻他的玩具箱，把最好的那樣叼給你：一隻被他愛得舊舊的吱吱鴨。*", "*饅頭用個鼻喺玩具箱度搵嚟搵去，咬咗最好嗰樣俾你：一隻俾佢錫到殘晒嘅吱吱鴨。*", "*Mantou rebusca en su caja de juguetes y te trae lo mejor que hay: un pato que pita, muy querido.*", "*En Mantou remena la seva capsa de joguines i et porta el millor que hi ha: un ànec que xiula, molt estimat.*")],
+      dumpling: [H("*Mantou looks at the bun, then at you, then at the bun. He's been very good today.*", "*馒头看看馒头，看看你，又看看馒头。他今天很乖的。*", "*饅頭看看饅頭，看看你，又看看饅頭。他今天很乖的。*", "*饅頭望吓個饅頭，望吓你，又望返個饅頭。佢今日好乖㗎。*", "*Mantou mira el bollo, luego a ti, luego el bollo. Hoy se ha portado muy bien.*", "*En Mantou mira el panet, després a tu, després el panet. Avui s'ha portat molt bé.*")]
+    },
     mantouZ: [H("*Mantou's tail thumps once in his sleep.*", "*馒头在睡梦里拍了一下尾巴。*", "*饅頭在睡夢裡拍了一下尾巴。*", "*饅頭瞓夢中拍咗一下條尾。*", "*La cola de Mantou golpea una vez en sueños.*", "*La cua d'en Mantou pica un cop mentre dorm.*")]
   };
   const fidIdx = {};
@@ -6277,7 +6256,7 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     else if (h.who === 'mei') { const mk = F.mei[k] && !fidIdx['m' + k] ? k : 'x'; line = h.asleep ? L(F.mei.z[0]) : fidLine(F.mei[mk], 'm' + mk); }
     else if (h.who === 'popo') line = h.asleep ? L(F.popo.z[0]) : fidLine(F.popo[k] && !fidIdx['p' + k] ? F.popo[k] : (F.popo[k] || []).concat(F.popo.x), 'p' + k);   /* the thing's own line first, then her usual */
     else if (h.who === 'cats') line = h.asleep ? L(F.cats.z[0]) : fidLine(F.cats[k] && !fidIdx['c' + k] ? F.cats[k] : (F.cats[k] || []).concat(F.cats.x), 'c' + k);
-    else if (h.who === 'mantou') line = h.asleep ? L(F.mantouZ[0]) : fidLine(F.mantou, 'd');
+    else if (h.who === 'mantou') line = h.asleep ? (catsHere() && Math.random() < .5 ? fidLine(F.cats.x, 'cx') : L(F.mantouZ[0])) : fidLine(F.mantouK[k] && !fidIdx['d' + k] ? F.mantouK[k] : (F.mantouK[k] || []).concat(F.mantou), 'd' + k);
     try { if (line && !/^\*/.test(line) && h.who !== 'cats' && h.who !== 'mantou') setExpression(one(['flat', 'o', 'grin']), 1400); } catch (x) {}
     try { if (h.who === 'cats' && !h.asleep) ['miso', 'yuzu'].forEach(id => Cats.anim && Cats.anim(id, 'hop')); } catch (x) {}
     if (line) say(line);
@@ -6460,6 +6439,117 @@ html.fbsh-in #view-sanctuary { grid-template-rows: 0 1fr; }
     nextZ = Date.now() + 6000 + Math.random() * 3000; SE.playSnore();
   }, 500);
   addEventListener('fbhostwake', () => SE.stopSnore());
+})();
+</script>
+<script>
+/* The shelves' things can be moved (Nov 5, the owner's direction): drag any of them along the shelves and it snaps into a spot
+   on the nearest shelf, staying there for the visit (per set of things, sessionStorage nd_shelf). A tap still gets the host's
+   own reaction (the click handler in "Next Door, simply"); a drag never counts as a tap. Popo's tin moves too and still opens. */
+(function () {
+  const stage = document.getElementById('stage-counter-box'); if (!stage) return;
+  const rows = () => [...stage.querySelectorAll('.shelf')].slice(0, 2);
+  const spans = () => { const r = rows(); if (r.length < 2) return []; return [r[0].querySelector('#shelf-icon-left'), r[0].querySelector('#shelf-icon-right'), r[1].children[0], r[1].children[1]]; };
+  const EM = /(?:[☀-➿⬀-⯿⌀-⏿]|[\uD83C-\uD83E][\uDC00-\uDFFF])(?:️|‍(?:[☀-➿]|[\uD83C-\uD83E][\uDC00-\uDFFF])|\uD83C[\uDFFB-\uDFFF])*/g;
+  const emo = () => { try { return !!(window.FBL && FBL.emo && FBL.emo()); } catch (e) { return false; } };
+  const hash = t => { let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); };
+  const load = () => { try { return JSON.parse(sessionStorage.getItem('nd_shelf') || '{}') || {}; } catch (e) { return {}; } };
+  const keep = o => { try { sessionStorage.setItem('nd_shelf', JSON.stringify(o)); } catch (e) {} };
+  const css = document.createElement('style');
+  css.textContent = '.shelf .hshelf,#nd-tin{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.shelf .hshelf{cursor:grab}' +
+    '.nd-drag-src{opacity:.3}.nd-ghost{position:absolute;z-index:10;pointer-events:none;filter:drop-shadow(2px 4px 0 rgba(0,0,0,.55));transform:translateY(-3px) rotate(-6deg)}.nd-ghost .fbpx{width:100%;height:100%}' +
+    '#nd-tin.nd-dragging{cursor:grabbing;z-index:10;filter:drop-shadow(2px 5px 0 rgba(0,0,0,.55))}';
+  document.head.appendChild(css);
+
+  /* every thing on a shelf is one item (.hshelf): the hosts' sets already are; Wei's cellar is a run of emoji, split here */
+  function wrap(html, k, text) { const it = document.createElement('span'); it.className = 'hshelf'; it.dataset.k = k; if (text != null) it.textContent = text; else it.innerHTML = html; return it; }
+  let sig = '';
+  function itemize() {
+    const sp = spans(); if (sp.length < 4 || sp.some(e => !e)) return;
+    sp.forEach(e => {
+      [...e.childNodes].forEach(n => {
+        if (n.nodeType === 1 && n.classList.contains('hshelf')) return;
+        if (n.nodeType === 3) {
+          if (!/\S/.test(n.nodeValue)) return;
+          const f = document.createDocumentFragment();
+          (n.nodeValue.match(EM) || []).forEach(m => { const h = !emo() && window.FBWorld && FBWorld.px ? FBWorld.px(m) : ''; f.appendChild(h.indexOf('<') >= 0 ? wrap(h, 'e' + m) : wrap('', 'e' + m, m)); });
+          n.replaceWith(f);
+        } else if (n.nodeType === 1) n.replaceWith(wrap(n.outerHTML, 'p' + hash(n.outerHTML)));
+      });
+    });
+    const all = sp.flatMap(e => [...e.querySelectorAll(':scope > .hshelf')]);
+    if (!all.some(it => !it.dataset.sid)) return;
+    const n = {}; all.forEach(it => { const k = it.dataset.k || '?'; n[k] = (n[k] || 0) + 1; it.dataset.sid = k + '#' + n[k]; });
+    sig = hash(all.map(it => it.dataset.sid).sort().join('|'));
+    const st = load()[sig]; if (!st) return;   /* put things back where they were moved to this visit */
+    const by = {}; all.forEach(it => { by[it.dataset.sid] = it; });
+    st.forEach((list, i) => (list || []).forEach(id => { if (by[id] && sp[i]) { sp[i].appendChild(by[id]); delete by[id]; } }));
+  }
+  function save() {
+    const sp = spans(); if (sp.length < 4 || !sig) return;
+    const o = load(); o[sig] = sp.map(e => e ? [...e.querySelectorAll(':scope > .hshelf')].map(it => it.dataset.sid) : []); keep(o);
+  }
+  let queued = 0;
+  const later = () => { if (!queued) queued = setTimeout(() => { queued = 0; itemize(); }, 0); };
+  rows().forEach(r => new MutationObserver(later).observe(r, { childList: true, subtree: true, characterData: true }));
+  itemize(); setTimeout(itemize, 700);
+
+  /* Popo's tin sits wherever it was put along a shelf */
+  const tin = document.getElementById('nd-tin');
+  function tinTo(pct, ri) {
+    const r = rows()[ri]; if (!tin || !r) return;
+    const sr = stage.getBoundingClientRect(), rr = r.getBoundingClientRect();
+    tin.style.left = Math.max(1, Math.min(96, pct)) + '%'; tin.style.top = Math.round(rr.bottom - sr.top - tin.offsetHeight + 1) + 'px';
+  }
+  function tinBack() { const t = load().tin; if (t && tin) tinTo(t.l, t.r); }
+  setTimeout(tinBack, 300); addEventListener('resize', tinBack);
+
+  /* dragging */
+  let d = null, just = 0;
+  stage.addEventListener('pointerdown', e => {
+    if (e.button > 0) return;
+    const it = e.target.closest && e.target.closest('.shelf .hshelf, #nd-tin'); if (!it) return;
+    d = { it, id: e.pointerId, x0: e.clientX, y0: e.clientY, on: false };
+  });
+  function nearRow(y) { let best = 0, bd = 1e9; rows().forEach((r, i) => { const b = r.getBoundingClientRect().bottom, dd = Math.abs(y - (b - 12)); if (dd < bd) { bd = dd; best = i; } }); return best; }
+  function start() {
+    d.on = true;
+    if (d.it === tin) { tin.classList.add('nd-dragging'); return; }
+    const r = d.it.getBoundingClientRect(), g = d.it.cloneNode(true); g.classList.add('nd-ghost'); g.classList.remove('nd-fid', 'hshelf'); g.removeAttribute('data-sid');
+    g.style.width = r.width + 'px'; g.style.height = r.height + 'px'; stage.appendChild(g); d.g = g; d.w = r.width; d.h = r.height;
+    d.it.classList.add('nd-drag-src');
+  }
+  function move(e) {
+    const sr = stage.getBoundingClientRect(), ri = nearRow(e.clientY);
+    if (d.it === tin) { tinTo((e.clientX - sr.left - tin.offsetWidth / 2) / sr.width * 100, ri); return; }
+    d.g.style.left = (e.clientX - sr.left - d.w / 2) + 'px'; d.g.style.top = (e.clientY - sr.top - d.h * .8) + 'px';
+    const sp = spans(), cand = ri === 0 ? [sp[0], sp[1]] : [sp[2], sp[3]];
+    /* the nearest run of things on that shelf (an empty one sits at its end of the shelf), then the gap the finger is over */
+    let span = cand[0], bd = 1e9;
+    cand.forEach(s => { if (!s) return; const b = s.getBoundingClientRect(), dd = e.clientX < b.left ? b.left - e.clientX : e.clientX > b.right ? e.clientX - b.right : 0; if (dd < bd) { bd = dd; span = s; } });
+    if (!span) return;
+    const sibs = [...span.querySelectorAll(':scope > .hshelf')].filter(x => x !== d.it);
+    const before = sibs.find(x => { const b = x.getBoundingClientRect(); return e.clientX < b.left + b.width / 2; }) || null;
+    if (d.it.parentNode !== span || d.it.nextElementSibling !== before) span.insertBefore(d.it, before);
+  }
+  addEventListener('pointermove', e => {
+    if (!d || e.pointerId !== d.id) return;
+    if (!d.on) { const dx = e.clientX - d.x0, dy = e.clientY - d.y0; if (dx * dx + dy * dy < 64) return; start(); }
+    e.preventDefault(); move(e);
+  }, { passive: false });
+  function end(e, cancel) {
+    if (!d || (e && e.pointerId !== d.id)) return;
+    const was = d; d = null; if (!was.on) return;
+    just = Date.now();
+    if (was.it === tin) {
+      tin.classList.remove('nd-dragging');
+      const sr = stage.getBoundingClientRect(), tr = tin.getBoundingClientRect(), o = load(); o.tin = { l: (tr.left - sr.left) / sr.width * 100, r: nearRow(tr.bottom) }; keep(o);
+    } else { if (was.g) was.g.remove(); was.it.classList.remove('nd-drag-src'); save(); }
+    if (!cancel) { try { SoundEngine.playBlip(0.7); } catch (x) {} }
+    try { resetIdle(); } catch (x) {}
+  }
+  addEventListener('pointerup', e => end(e)); addEventListener('pointercancel', e => end(e, true));
+  /* the tap that ends a drag is not a tap */
+  addEventListener('click', e => { if (Date.now() - just < 450 && e.target && e.target.closest && e.target.closest('#stage-counter-box')) { e.stopPropagation(); e.preventDefault(); } }, true);
 })();
 </script>
 </body>
