@@ -59,6 +59,9 @@
   .fc .bar { background:linear-gradient(90deg,#1F6F78 0 34%,#E9C46A 34% 67%,#1C1917 67%); }
   .fc .logo { background:#1F6F78; color:#fff; font:700 14px/1 "Fraunces", Georgia, serif; }
   .note { margin-top:26px; color:var(--muted); font-size:13px; text-align:center; }
+  .note.by { margin-top:8px; }
+  .note.by a { color:inherit; text-underline-offset:3px; }
+  .note.by a:hover { color:var(--text); }
   @media (prefers-color-scheme: dark) { .lang .go { color:#111; } .ca, .es { --ink:#FFC94A; } .yue { --ink:#FF5C7A; } .fc { --ink:#6CC6CF; } }
   @media (prefers-reduced-motion: reduce) { .lang, .lang .go { transition:none; } }
   .sub.ask { color:var(--text); font:600 clamp(18px, 4.6vw, 22px)/1.3 "Figtree", system-ui, sans-serif; margin:4px 0 22px; }
@@ -128,6 +131,7 @@
     </a>
   </div>
   <p class="note" data-t="note">No account. Nothing to install. Add it to your home screen if you like.</p>
+  <p class="note by"><span data-t="by">A small app from</span> <a href="/">FREE//BUILDER</a></p>
 </main>
 <script>
 (function () {
@@ -146,6 +150,7 @@
     fc: ["Any words, any language · cards, review & import", "任何词，任何语言 · 卡片、复习与导入", "任何詞，任何語言 · 卡片、複習與匯入", "Cualquier palabra, cualquier idioma · tarjetas, repaso e importación", "Qualsevol paraula, qualsevol llengua · targetes, repàs i importació"],
     fcG: ["a list of your own, with a quick flip", "你自己的词表，快速翻面", "你自己的詞表，快速翻面", "una lista propia, con un giro rápido", "una llista pròpia, amb un cop de girada ràpid"],
     cymG: ["a deep longing for home", "对家乡深深的思念", "對家鄉深深的思念", "una añoranza profunda del hogar", "un enyor profund de casa"],
+    by: ["A small app from", "出自", "出自", "Una pequeña app de", "Una petita app de"],
     note: ["No account. Nothing to install. Add it to your home screen if you like.", "不用账号，不用安装。喜欢的话可以添加到主屏幕。", "不用帳號，不用安裝。喜歡的話可以加到主畫面。", "Sin cuenta. Nada que instalar. Si quieres, añádelo a tu pantalla de inicio.", "Sense compte. Res a instal·lar. Si vols, afegeix-ho a la pantalla d'inici."]
   };
   var L = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }[(window.FBL && FBL.get()) || "en"] || 0;
