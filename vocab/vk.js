@@ -59,7 +59,7 @@
 
 
   /* ---------- the language you're learning: the last room you opened, opened straight away next time ---------- */
-  var ROOMS = ["cat", "es", "yue", "chengyu", "cymraeg"];
+  var ROOMS = ["cat", "es", "yue", "chengyu", "cymraeg", "flashcards"];
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
   var path = location.pathname, m = /\/vocab\/([a-z]+)\/(index\.html)?$/.exec(path), here = m && ROOMS.indexOf(m[1]) >= 0 ? m[1] : null;
   if (here) ls("vk_room", here);
