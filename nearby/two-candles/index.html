@@ -185,7 +185,7 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
     noteFrom: ["a napkin from {p}", "{p} 推过来的餐巾", "{p} 推過來的餐巾", "una servilleta de {p}", "un tovalló de {p}"], keep: ["Keep it", "收好", "收好", "Guardarla", "Guardar-lo"], noteSent: ["Slid across the table ✉️", "已经推到对面 ✉️", "已經推到對面 ✉️", "Ya está al otro lado ✉️", "Ja és a l'altre costat ✉️"],
     endText: ["Blow out both candles together. The evening goes into your little book.", "一起吹灭两支蜡烛。这个夜晚会记进你们的小本子。", "一起吹熄兩支蠟燭。這個夜晚會記進你們的小本子。", "Apagad las dos velas juntos. La noche queda en vuestro librito.", "Bufeu les dues espelmes junts. La nit queda al vostre llibret."],
     blow: ["Blow out the candles", "吹灭蜡烛", "吹熄蠟燭", "Apagar las velas", "Bufar les espelmes"], blowWait: ["Waiting for {p} to blow too…", "等{p}也一起吹…", "等{p}也一起吹…", "Esperando a que {p} sople también…", "Esperant que {p} bufi també…"], blowAsk: ["{p} is ready to say goodnight 🌬️", "{p} 准备说晚安了 🌬️", "{p} 準備說晚安了 🌬️", "{p} quiere dar las buenas noches 🌬️", "{p} vol dir bona nit 🌬️"],
-    rTable: ["TABLE FOR TWO", "双人桌", "雙人桌", "MESA PARA DOS", "TAULA PER A DOS"], rTime: ["together", "相处", "相處", "juntos", "junts"], rClinks: ["clinks", "碰杯", "碰杯", "brindis", "brindis"], rCards: ["cards", "话题", "話題", "cartas", "cartes"], rNotes: ["napkins", "餐巾", "餐巾", "servilletas", "tovallons"], rThanks: ["Thank you, come again.", "谢谢光临，欢迎再来。", "謝謝光臨，歡迎再來。", "Gracias, volved pronto.", "Gràcies, torneu aviat."],
+    rTable: ["TABLE FOR TWO", "双人桌", "雙人桌", "MESA PARA DOS", "TAULA PER A DOS"], rTime: ["two candles, lit together", "两支蜡烛，一起点亮", "兩支蠟燭，一起點亮", "dos velas, encendidas juntas", "dues espelmes, enceses juntes"], rClinks: ["a glass raised", "举过杯", "舉過杯", "un brindis", "un brindis"], rCards: ["cards on the table", "聊过话题卡", "聊過話題卡", "cartas sobre la mesa", "cartes sobre la taula"], rNotes: ["a napkin passed", "递过餐巾", "遞過餐巾", "una servilleta de mano en mano", "un tovalló de mà en mà"], rThanks: ["Thank you, come again.", "谢谢光临，欢迎再来。", "謝謝光臨，歡迎再來。", "Gracias, volved pronto.", "Gràcies, torneu aviat."],
     flowers: ["Send {p} flowers for tomorrow ↗", "给{p}送几枝花，明天打开 ↗", "給{p}送幾枝花，明天打開 ↗", "Mándale a {p} flores para mañana ↗", "Envia a {p} flors per a demà ↗"],
     again: ["🕯️ Another evening", "🕯️ 再约一晚", "🕯️ 再約一晚", "🕯️ Otra noche", "🕯️ Una altra nit"],
     on: ["on", "开", "開", "sí", "sí"], off: ["off", "关", "關", "no", "no"], music: ["Music {s}", "音乐{s}", "音樂{s}", "Música: {s}", "Música: {s}"],
@@ -390,8 +390,8 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   function goodnight() {
     flameOut = Date.now(); music(false);
     if (APP) { emit("goodnight", { with: here() ? them.name : "", dish: DISH[S.d] ? S.d : "" }); return; }   /* no receipt, nothing counted: the app says goodnight its own way */
-    var mins = started ? Math.max(1, Math.round((Date.now() - started) / 60000)) : 0, dish = DISH[S.d] ? tr(DISH[S.d].n) : "";
-    var rec = { at: Date.now(), with: here() ? them.name : "", mins: mins, dish: dish, clinks: stats.clinks, cards: stats.cards, notes: stats.notes };
+    var dish = DISH[S.d] ? tr(DISH[S.d].n) : "";
+    var rec = { at: Date.now(), with: here() ? them.name : "", dish: dish, clinks: stats.clinks ? 1 : 0, cards: stats.cards ? 1 : 0, notes: stats.notes ? 1 : 0 };   /* what happened, never how many or how long */
     var past = []; try { past = JSON.parse(ls("fb_table_evenings") || "[]"); } catch (e) {} past.unshift(rec); ls("fb_table_evenings", JSON.stringify(past.slice(0, 30)));
     var box = $("p-end"); box.innerHTML = ""; var r = document.createElement("div"); r.className = "receipt"; r.textContent = receipt(rec); box.appendChild(r);
     var a = document.createElement("button"); a.type = "button"; a.className = "big"; a.textContent = t("again"); a.onclick = function () { location.reload(); }; box.appendChild(a); var o = document.querySelector(".out"); if (o) box.appendChild(o.cloneNode(true)), wireApps(box);
@@ -401,7 +401,7 @@ html.fbsh-in.fbfit .fit-panel .panel:first-child{margin-top:0}html.fbsh-in.fbfit
   }
   function receipt(r) {
     var d = new Date(r.at), when = d.toLocaleDateString([], { year: "numeric", month: "short", day: "numeric" }) + " " + d.toTimeString().slice(0, 5);
-    return "TWO CANDLES · " + t("rTable") + "\n" + when + "\n" + (ME.name || t("you")) + (r.with ? " & " + r.with : "") + "\n- - - - - - - - - - -\n" + (r.dish ? "🍽️ " + r.dish + "\n" : "") + "🕯️ " + r.mins + " min " + t("rTime") + "\n🥂 " + t("rClinks") + " ×" + r.clinks + "\n💬 " + t("rCards") + " ×" + r.cards + "\n✉️ " + t("rNotes") + " ×" + r.notes + "\n- - - - - - - - - - -\n" + t("rThanks");
+    return "TWO CANDLES · " + t("rTable") + "\n" + when + "\n" + (ME.name || t("you")) + (r.with ? " & " + r.with : "") + "\n- - - - - - - - - - -\n" + (r.dish ? "🍽️ " + r.dish + "\n" : "") + "🕯️ " + t("rTime") + "\n" + (r.clinks ? "🥂 " + t("rClinks") + "\n" : "") + (r.cards ? "💬 " + t("rCards") + "\n" : "") + (r.notes ? "✉️ " + t("rNotes") + "\n" : "") + "- - - - - - - - - - -\n" + t("rThanks");
   }
 
   /* when can we eat together? both of your mealtimes, the next two days */
