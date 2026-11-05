@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=a98184fb82"></script>
+<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=94ef37d575"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Borrowed Pages · real books, lent by hand</title>
 <meta name="description" content="Real books, lent by hand between neighbours. Browse a house of books people actually own, ask for one, meet and hand it over. No account.">
@@ -278,7 +278,6 @@ details summary{cursor:pointer;color:var(--ink2);font-size:14px;padding:8px 0;mi
   </section>
 </main>
 <footer class="foot wrap" id="foot">
-  <button type="button" id="privB" data-i="privacy">Privacy</button>
   <a href="/nearby/" data-i="nearbyLink">Nearby</a>
   <a class="ah" id="ahA" href="https://www.wei-meng.org/after-hours/" target="_blank" rel="noopener"><span aria-hidden="true">♥</span> <span data-i="ah">After hours</span></a>
 </footer>
@@ -333,6 +332,7 @@ details summary{cursor:pointer;color:var(--ink2);font-size:14px;padding:8px 0;mi
     $("#langL").textContent = SHORT[LANGS.indexOf(lang())];
     $("#mineB").setAttribute("aria-label", t("mine"));
     $("#ahA").href = "https://www.wei-meng.org/after-hours/?fbl=" + lang();
+    var fx = $("#foot"); if (window.FBC && FBC.foot && !fx.querySelector(".fbf-row")) FBC.foot(fx, { extra: fx.innerHTML });   // the suite's one footer (the owner, Nov 5); Nearby and After hours on the line under it
     roomTabs();
   }
   function setLang(l) { if (window.FBL && FBL.set) FBL.set(l); else lsSet("wm_preferred_lang", l); paintWords(); render(); var s = $(".scrim"); if (s && s._redo) s._redo(); }
@@ -664,7 +664,7 @@ details summary{cursor:pointer;color:var(--ink2);font-size:14px;padding:8px 0;mi
   document.addEventListener("click", function (e) { if (!e.target.closest(".langm,#langB")) closeLang(); });
 
   /* wiring */
-  $("#howB").onclick = welcome; $("#mineB").onclick = myShelf; $("#lendB").onclick = function () { lendForm(); }; $("#privB").onclick = privacy;
+  $("#howB").onclick = welcome; $("#mineB").onclick = myShelf; $("#lendB").onclick = function () { lendForm(); }; if ($("#privB")) $("#privB").onclick = privacy;
   $("#rooms").onclick = function (e) { var b = e.target.closest("[data-room]"); if (!b) return; room = b.dataset.room; roomTabs(); render(); };
   $("#fFree").onclick = function () { fFree = !fFree; this.setAttribute("aria-pressed", String(fFree)); render(); };
   $("#fNote").onclick = function () { fNote = !fNote; this.setAttribute("aria-pressed", String(fNote)); render(); };

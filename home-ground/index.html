@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=a98184fb82"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=94ef37d575"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Home Ground</title>
 <meta name="description" content="Build a little town with your family or friends: each place is a way you look after each other, and asks one honest question. Then take it to dinner. Lives in its link; nothing stored.">
@@ -1002,7 +1002,9 @@ function chrome() {
   var i = li(); document.documentElement.lang = LANGS[i];
   $("appName").textContent = sg(T(W.app)); document.title = TOWN && TOWN.n ? TOWN.n + " · " + T(W.app) : T(W.app);
   $("langLbl").textContent = SHORT[i]; $("langIco").innerHTML = icon("globe"); $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + NAMES[i]);
-  $("foot").innerHTML = '<span class="line">' + esc(T(W.device)) + '</span><a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener">' + icon("heart") + " " + esc(T(W.ah)) + '</a><a href="/">' + (window.FBC && FBC.logo ? FBC.logo("fb", 1) + '<span class="mw">FREE//BUILDER</span>' : "FREE//BUILDER") + '</a><a href="/privacy/">' + esc(T(W.privacy)) + '</a><a href="/notes/ai-use/">AI</a>';
+  var _x = '<span>' + esc(T(W.device)) + '</span><a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener">' + icon("heart") + " " + esc(T(W.ah)) + "</a>";
+  if (window.FBC && FBC.foot) FBC.foot($("foot"), { px: 1, extra: _x });   // the suite's one footer (the owner, Nov 5): [Wei Meng] © year · Your privacy · Made with AI & ♥ by [FREE//BUILDER]; this app's own things on the line under it
+  else $("foot").innerHTML = _x;
 }
 var paintT = 0;
 function paint() {

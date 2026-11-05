@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=a98184fb82"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=94ef37d575"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Twelve Grapes</title>
 <meta name="description" content="New Year's Eve at Popo's table: twelve grapes for twelve months, a chair for everyone you care about, three small red papers on the door. Kept on your own device.">
@@ -474,7 +474,9 @@ function chrome() {
   var sb = $("snd"), ic = icon(soundOn ? "snd" : "mute"); sb.innerHTML = ic ? '<span class="pxi">' + ic + "</span>" : esc(T(soundOn ? W.sndOn : W.sndOff));
   sb.setAttribute("aria-label", T(soundOn ? W.sndOn : W.sndOff)); sb.title = T(soundOn ? W.sndOn : W.sndOff); sb.setAttribute("aria-pressed", String(soundOn));
   cv.setAttribute("aria-label", T(W.room));
-  $("foot").innerHTML = "<span>" + esc(T(W.device)) + '</span><a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener"><span class="pxi">' + icon("heart") + "</span>" + esc(T(W.ah)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a>";
+  var _x = "<span>" + esc(T(W.device)) + '</span><a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener"><span class="pxi">' + icon("heart") + "</span>" + esc(T(W.ah)) + "</a>";
+  if (window.FBC && FBC.foot) FBC.foot($("foot"), { px: 1, extra: _x });   // the suite's one footer (the owner, Nov 5): [Wei Meng] © year · Your privacy · Made with AI & ♥ by [FREE//BUILDER]; this app's own things on the line under it
+  else $("foot").innerHTML = _x;
 }
 function repaint() { chrome(); if (view && !chiming) view(); }
 addEventListener("fbl:lang", repaint);
