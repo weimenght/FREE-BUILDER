@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=891c02cc3a"></script><script src="../vk.js?v=7"></script><script src="./ui.js?v=3"></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=891c02cc3a"></script><script src="../vk.js?v=8"></script><script src="./ui.js?v=4"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FBF8F3">
   <title>Cymraeg bob dydd · Vocab</title>
@@ -1364,10 +1364,10 @@ function numAns(m) {
 /* ---------- the sounds of Welsh: every letter is said one way ---------- */
 const SND = [['a', 'a in "cat" (long: "father")', 'tad · father'], ['c', 'always k', 'cath · cat'], ['ch', 'as in Scottish "loch"', 'bach · small'], ['dd', 'th in "this"', 'dydd · day'], ['e', 'e in "bed"', 'pen · head'], ['f', 'v in "van"', 'fan · place'], ['ff', 'f in "fun"', 'ffordd · road'], ['g', 'always hard, as in "go"', 'gardd · garden'], ['i', 'ee in "see"', 'ti · you'], ['ll', 'tongue behind the teeth, blow out the sides', 'llan · church'], ['o', 'o in "hot"', 'bore · morning'], ['r', 'rolled, as in Spanish', 'bara · bread'], ['rh', 'a breathy r', 'rhosyn · rose'], ['si', 'sh in "shop"', 'siop · shop'], ['th', 'th in "thin"', 'wyth · eight'], ['u', 'ee, or i in "bit"', 'un · one'], ['w', 'often a vowel: oo', 'cwm · valley'], ['y', 'uh in most syllables, ee in the last', 'mynydd · mountain'], ['ŵ ŷ â', 'the little roof makes the vowel long', 'tŷ · house'], ['ae ai au', 'like "eye"', 'Cymraeg · Welsh'], ['wy', 'oo-ee', 'wy · egg'], ['aw', 'ow in "cow"', 'mawr · big']];
 function renderSounds() {
-  const v = window.VK ? (VK.hasVoice('cy') ? 'cy' : VK.hasVoice('es') || VK.hasVoice('en') ? 'approx' : 'none') : 'none';
+  const v = window.VK ? (VK.clipReady && VK.clipReady('cymraeg') ? 'rec' : VK.hasVoice('cy') ? 'cy' : VK.hasVoice('es') || VK.hasVoice('en') ? 'approx' : 'none') : 'none';
   $('v-sounds').innerHTML = `<p class="meta" style="margin:0 2px">Mae Cymraeg yn cael ei sillafu fel mae'n swnio. Dysgwch y rhain a gallwch chi ddarllen unrhyw air.</p>
     <div class="sounds">${SND.map((s, i) => `<div class="snd"><button class="snd-say" data-act="saySnd" data-arg="${i}"><b>${s[0]}</b><i lang="cy">${esc(s[2].split(' · ')[0])}</i><small>${esc(s[2].split(' · ')[1])} · ${esc(s[1])}</small></button><button class="icon-btn mic" data-act="micSnd" data-arg="${i}" aria-label="Dywedwch e">${MIC}</button></div>`).join('')}</div>
-    <div class="card pad stack"><span class="label">Llais</span><p class="meta" style="margin:0">${v === 'cy' ? 'Mae llais Cymraeg ar y ddyfais hon.' : v === 'approx' ? 'Does dim llais Cymraeg ar y ddyfais hon, felly mae llais arall yn ei ddarllen yn fras. Ar Android: Gosodiadau → Testun i lais → Google → gosod Cymraeg. Ar Windows: Gosodiadau → Amser ac iaith → Lleferydd → ychwanegu Cymraeg.' : 'Does dim llais ar y ddyfais hon: darllenwch yr ynganiad o dan bob gair.'}</p></div>`;
+    <div class="card pad stack"><span class="label">Llais</span><p class="meta" style="margin:0">${v === 'rec' ? 'Mae geiriau a brawddegau’r ystafell wedi’u recordio mewn llais Cymraeg. Mae’ch geiriau eich hun yn defnyddio llais y ddyfais.' : v === 'cy' ? 'Mae llais Cymraeg ar y ddyfais hon.' : v === 'approx' ? 'Does dim llais Cymraeg ar y ddyfais hon, felly mae llais arall yn ei ddarllen yn fras. Ar Android: Gosodiadau → Testun i lais → Google → gosod Cymraeg. Ar Windows: Gosodiadau → Amser ac iaith → Lleferydd → ychwanegu Cymraeg.' : 'Does dim llais ar y ddyfais hon: darllenwch yr ynganiad o dan bob gair.'}</p></div>`;
 }
 
 /* ---------- progress: what you know, not how long you kept going ---------- */

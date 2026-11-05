@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=891c02cc3a"></script><script src="../vk.js?v=7"></script><script src="./ui.js?v=3"></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=891c02cc3a"></script><script src="../vk.js?v=8"></script><script src="./ui.js?v=3"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#FBF8F3">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1351,6 +1351,7 @@ const Voice = {
   },
   done() { if (!this.ok && this.tried && !this.noted) { this.noted = true; if (window.VK) VK.note('呢部機冇廣東話聲音 · 設定入面有方法加', 4200); } },
   say(text, rate) {
+    if (text && window.VK && VK.clip && VK.clip('yue', text, rate || (S.slow ? 0.7 : 0.92))) return;   /* the recorded voice, when the deck has it */
     if (!window.speechSynthesis) return;
     if (!this.v) this.load();
     this.tried = true; this.done();

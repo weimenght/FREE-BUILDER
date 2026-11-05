@@ -354,9 +354,49 @@
       return w;
     }).join("");
   }
+  /* ---------- recorded clips: the built-in decks of Català, Cantonese and Welsh, made once with Azure voices (build/vocab/voices_make.js)
+     and served from this site (/vocab/<room>/say/<id>.mp3). A room's list.json says which exist; anything else uses the device voice. */
+  var CLIP_ROOM = { ca: "cat", yue: "yue", cy: "cymraeg" }, CLIPS = {}, clipAudio = null;
+  function clipNorm(t) { return String(t).normalize("NFC").replace(/…/g, "").replace(/\s+/g, " ").trim(); }
+  function clipId(room, t) {   /* cyrb53: a short, stable id for a text in a room (also used by the build to name the files) */
+    var s = room + "|" + clipNorm(t), h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+    for (var i = 0, c; i < s.length; i++) { c = s.charCodeAt(i); h1 = Math.imul(h1 ^ c, 2654435761); h2 = Math.imul(h2 ^ c, 1597334677); }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+  }
+  function clipList(room) {
+    if (CLIPS[room]) return CLIPS[room];
+    var c = CLIPS[room] = { ids: null };
+    try { fetch("/vocab/" + room + "/say/list.json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (a) { c.ids = new Set(a || []); }, function () { c.ids = new Set(); }); } catch (e) { c.ids = new Set(); }
+    return c;
+  }
+  /* play the recorded clip if there is one; true when it plays (call it straight from the tap, so phones allow the sound) */
+  function clip(room, text, rate) {
+    var c = clipList(room), id = text && clipId(room, text);
+    if (!c.ids || !c.ids.has(id)) return false;
+    try {
+      if (window.speechSynthesis) speechSynthesis.cancel();
+      if (clipAudio) clipAudio.pause();
+      var a = clipAudio = document.createElement("audio"); a.src = "/vocab/" + room + "/say/" + id + ".mp3";   /* not `new Audio`: Català names its own player Audio */
+      a.preservesPitch = true; a.playbackRate = Math.max(.6, Math.min(1.25, (rate || .9) / .9));
+      var p = a.play(); if (p && p.catch) p.catch(function () {});
+      return true;
+    } catch (e) { return false; }
+  }
+  function clipReady(room) { var c = clipList(room); return !!(c.ids && c.ids.size); }
+  (function () {   /* load this room's list while the page is idle, so the first tap already knows */
+    var m = location.pathname.match(/\/vocab\/(cat|yue|cymraeg)\//); if (!m) return;
+    var go = function () { clipList(m[1]); };
+    if (window.requestIdleCallback) requestIdleCallback(go, { timeout: 2500 }); else setTimeout(go, 800);
+  })();
+
   var LANG_RE = { cy: /^cy/i, ca: /^ca/i, es: /^es/i, yue: /^(zh[-_]HK|yue)/i, zh: /^(zh[-_](CN|Hans|SG)|cmn)/i, "zh-TW": /^zh[-_]TW/i, en: /^en/i };
   function say(text, o) {
-    o = o || {}; if (!window.speechSynthesis || !text) return "none";
+    o = o || {}; if (!text) return "none";
+    if (CLIP_ROOM[o.lang] && clip(CLIP_ROOM[o.lang], text, o.rate)) return "clip";
+    if (!window.speechSynthesis) return "none";
     var lang = o.lang || "en", v = voiceFor(LANG_RE[lang] || new RegExp("^" + lang, "i")), how = "native", spoken = text;
     if (!v && lang === "cy") { v = voiceFor(/^es[-_]ES/i) || voiceFor(/^es/i); if (v) { spoken = cyToEs(text); how = "approx"; }
       else if (o.say) { v = voiceFor(/^en[-_]GB/i) || voiceFor(/^en/i); if (v) { spoken = String(o.say).replace(/[\/]/g, " ").replace(/-/g, " ").toLowerCase(); how = "approx"; } } }
@@ -436,6 +476,6 @@
     e.preventDefault(); e.stopPropagation(); sheet();
   }, true);
 
-  window.VK = { say: say, hasVoice: hasVoice, cyToEs: cyToEs, mic: mic, sync: startSync, syncNow: function () { return run(); }, syncing: syncing, importList: importList, parseList: parseList, note: note, room: room, LANGS: LANGS, code: code, idx: idx, t: t, W: W, sheet: sheet, ui: ui, tr: tr, locale: locale };
+  window.VK = { say: say, clip: clip, clipId: clipId, clipReady: clipReady, hasVoice: hasVoice, cyToEs: cyToEs, mic: mic, sync: startSync, syncNow: function () { return run(); }, syncing: syncing, importList: importList, parseList: parseList, note: note, room: room, LANGS: LANGS, code: code, idx: idx, t: t, W: W, sheet: sheet, ui: ui, tr: tr, locale: locale };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", paintButtons); else paintButtons();
 })();
