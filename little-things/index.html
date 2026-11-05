@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=6687381dc1"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=aad6eedb37"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Little Things</title>
 <meta name="description" content="Popo's jar of little offline things: one at a time, in her kitchen, for a fuller life away from the screen. Kept on your own device.">
@@ -869,7 +869,8 @@ function clear() { talk.innerHTML = ""; card.innerHTML = ""; acts.innerHTML = ""
 function btn(label, fn, cls) { var b = document.createElement("button"); b.className = "btn " + (cls || ""); b.innerHTML = label; b.addEventListener("click", fn); acts.appendChild(b); return b; }
 function placeLink(k) {
   if (k === "story") return { href: "/nearby/about/popo/", label: T(W.story) };
-  var nm = FW.name ? FW.name(k, LANGS[li()]) : k, href = FW.url ? FW.url(k) : "/nearby/";
+  var app = window.FBApps && FBApps.place ? FBApps.place(k) : "";   /* a place that has its own app now (Two Candles, Come Over, Say Hello, Paw Reading) opens the app */
+  var nm = FW.name ? FW.name(k, LANGS[li()]) : k, href = app || (FW.url ? FW.url(k) : "/nearby/");
   return { href: href, label: T(W.goIn).replace("{p}", nm) };
 }
 function icon(n) { return FW.pix ? FW.pix(n) : ""; }

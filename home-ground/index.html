@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=6687381dc1"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=aad6eedb37"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Home Ground</title>
 <meta name="description" content="Build a little town with your family or friends: each place is a way you look after each other, and asks one honest question. Then take it to dinner. Lives in its link; nothing stored.">
@@ -655,7 +655,8 @@ function linesHTML(q) {
 /* where it can be done for real: a place in Nearby (opened in the town) or Little Things */
 function goLink(key) {
   if (!key) return ""; var o = GO[key], dir = FW.DIR && FW.DIR[key];
-  var href = o ? o.href : dir ? "/nearby/?at=" + encodeURIComponent("/nearby/" + dir + "/") : "", nm = o ? T(o.n) : FW.name ? FW.name(key, LANGS[li()]) : key;
+  var app = !o && window.FBApps && FBApps.place ? FBApps.place(key) : "";   /* a place with its own app now opens the app, not the town */
+  var href = o ? o.href : app ? app : dir ? "/nearby/?at=" + encodeURIComponent("/nearby/" + dir + "/") : "", nm = o ? T(o.n) : FW.name ? FW.name(key, LANGS[li()]) : key;
   return href ? '<a class="go" href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(F(W.goIt, { t: nm })) + "</a>" : "";
 }
 function open(q, inWalk) {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=6687381dc1"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=aad6eedb37"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Twelve Grapes</title>
 <meta name="description" content="New Year's Eve at Popo's table: twelve grapes for twelve months, a chair for everyone you care about, three small red papers on the door. Kept on your own device.">
@@ -373,8 +373,8 @@ function actions() {
       c.act = k; [].forEach.call(r.children, function (x) { x.className = "btn"; }); if (b) b.className = "btn on"; out.innerHTML = "";
       var card = el("div", "card", null, out);
       if (k === "line") { var msg = F(c.kind === "miss" ? W.msgMiss : W.msgWith, { n: c.name }); el("p", "msg", esc(msg), card); var rr = el("div", "row", null, card); btn(W.b.send, function (bb) { share(msg, "", bb); }, "sm", rr); }
-      else if (k === "over") { el("p", "", "<em>" + esc(T(W.overCard)) + "</em>", card); link(F(W.b.open, { p: T(W.places.party) }), "/nearby/come-over/", el("div", "row", null, card)); }
-      else if (k === "far") { el("p", "", "<em>" + esc(T(W.farCard)) + "</em>", card); link(F(W.b.open, { p: T(W.places.restaurant) }), "/nearby/two-candles/", el("div", "row", null, card)); }
+      else if (k === "over") { el("p", "", "<em>" + esc(T(W.overCard)) + "</em>", card); link(F(W.b.open, { p: T(W.places.party) }), (window.FBApps ? FBApps.href("party") : "/nearby/come-over/"), el("div", "row", null, card)); }
+      else if (k === "far") { el("p", "", "<em>" + esc(T(W.farCard)) + "</em>", card); link(F(W.b.open, { p: T(W.places.restaurant) }), (window.FBApps ? FBApps.href("table") : "/nearby/two-candles/"), el("div", "row", null, card)); }
       else if (k === "cook") el("p", "", "<em>" + esc(T(W.cookCard)) + "</em>", card);
       else { if (c.paper == null) c.paper = S.pIdx++ % W.papers.length; el("p", "", '<span class="tag">' + esc(T(W.lab.paperTag)) + "</span>" + esc(T(W.papers[c.paper])), card); link(F(W.b.open, { p: T(W.places.lt) }), "/little-things/", el("div", "row", null, card)); }
     }
