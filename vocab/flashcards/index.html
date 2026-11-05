@@ -377,6 +377,8 @@
 .flagbar { background:linear-gradient(90deg,#1F6F78 0 34%,#E9C46A 34% 67%,#1C1917 67%) !important; }
 .logo { background:#1F6F78 !important; color:#fff !important; font:700 12px/1 var(--serif) !important; place-items:center !important; }
 .tab.on::before { background:var(--accent) !important; }
+.brand-title { font-family:var(--serif) !important; }
+.brand-title i { font-style:italic !important; font-weight:600; }
 .term { font-family:var(--serif); }
 .term.small { font-size:30px; margin:4px 0 0; }
 .meaning { font-family:var(--font); }
@@ -435,7 +437,7 @@
     <div class="top-row">
       <a class="brand" href="../#all" aria-label="Vocab"><svg class="vk-back" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
         <div class="logo" aria-hidden="true">Aa</div>
-        <span class="brand-title">Flashcards <i>your words</i></span>
+        <span class="brand-title">Flashcards <i>by heart</i></span>
       </a>
       <button class="icon-btn vk-lang" data-vk="lang" type="button" aria-label="Interface language"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5S9.4 5.2 12 2.5z"/></svg></button>
     </div>
@@ -523,6 +525,51 @@ const STORE_KEY = 'flashcards_v1';
 const DEF = () => ({ dir: 'term', meta: {}, days: {}, mine: [] });
 let S = DEF();
 try { const r = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); if (r) S = Object.assign(DEF(), r); } catch (e) {}
+/* A first visit gets a small deck that shows how the room works, in the interface language (stable ids, so two devices
+   that sync don't double them). They're ordinary cards: learn them, or delete them in Words. Never seeded again. */
+const HOWTO = {
+  en: [['Tap me', 'Tap a card to turn it over. Swipe, or ‹ ›, for the next one.'],
+       ['Again · Good · Learnt', 'Again: soon. Good: back in a few days, then longer. Learnt: you know it, it leaves the deck.'],
+       ['Add', 'Write a word and what it means. Any language, any words.'],
+       ['Import a list', 'Paste a list, one card a line: word | meaning (a tab or a comma works too).'],
+       ['Words', 'Find your cards and delete them. These ones too, once you know how it works.'],
+       ['Meaning first', 'The button above the card turns it round: you see the meaning and recall the word.'],
+       ['☁', 'Your cards stay on this device. ☁ keeps them on your other devices too.']],
+  zh: [['点我', '点一下卡片就翻面。左右滑，或按 ‹ ›，换下一张。'],
+       ['再来 · 好 · 学会', '再来：一会儿再见。好：过几天再来，之后间隔更长。学会：你会了，它就离开这一叠。'],
+       ['添加', '写下一个词和它的意思。什么语言、什么词都行。'],
+       ['导入词表', '贴一个词表，一行一张：词 | 意思（用 Tab 或逗号也可以）。'],
+       ['单词', '找到你的卡片，也可以删掉。学会怎么用以后，这几张也可以删。'],
+       ['先看意思', '卡片上方的按钮能把方向反过来：先看意思，再想起那个词。'],
+       ['☁', '卡片保存在这台设备上。☁ 也会让它们出现在你的其他设备上。']],
+  'zh-Hant': [['點我', '點一下卡片就翻面。左右滑，或按 ‹ ›，換下一張。'],
+       ['再來 · 好 · 學會', '再來：一會兒再見。好：過幾天再來，之後間隔更長。學會：你會了，它就離開這一疊。'],
+       ['新增', '寫下一個詞和它的意思。什麼語言、什麼詞都行。'],
+       ['匯入詞表', '貼一個詞表，一行一張：詞 | 意思（用 Tab 或逗號也可以）。'],
+       ['單詞', '找到你的卡片，也可以刪掉。學會怎麼用以後，這幾張也可以刪。'],
+       ['先看意思', '卡片上方的按鈕能把方向反過來：先看意思，再想起那個詞。'],
+       ['☁', '卡片保存在這台裝置上。☁ 也會讓它們出現在你的其他裝置上。']],
+  es: [['Tócame', 'Toca una tarjeta para darle la vuelta. Desliza, o ‹ ›, para pasar a la siguiente.'],
+       ['Otra vez · Bien · Aprendida', 'Otra vez: pronto. Bien: vuelve en unos días, luego más tarde. Aprendida: ya la sabes y sale del mazo.'],
+       ['Añadir', 'Escribe una palabra y lo que significa. Cualquier idioma, cualquier palabra.'],
+       ['Importar una lista', 'Pega una lista, una tarjeta por línea: palabra | significado (también vale un tabulador o una coma).'],
+       ['Palabras', 'Busca tus tarjetas y bórralas. Estas también, cuando ya sepas cómo va.'],
+       ['Primero el significado', 'El botón de encima de la tarjeta le da la vuelta: ves el significado y recuerdas la palabra.'],
+       ['☁', 'Tus tarjetas se quedan en este dispositivo. ☁ las mantiene también en tus otros dispositivos.']],
+  ca: [['Toca\'m', 'Toca una targeta per girar-la. Llisca, o ‹ ›, per passar a la següent.'],
+       ['Un altre cop · Bé · Apresa', 'Un altre cop: aviat. Bé: torna d\'aquí a uns dies, després més tard. Apresa: ja la saps i surt del feix.'],
+       ['Afegeix', 'Escriu una paraula i què vol dir. Qualsevol llengua, qualsevol paraula.'],
+       ['Importa una llista', 'Enganxa una llista, una targeta per línia: paraula | significat (també serveix un tabulador o una coma).'],
+       ['Paraules', 'Busca les teves targetes i esborra-les. Aquestes també, quan ja sàpigues com funciona.'],
+       ['Primer el significat', 'El botó de sobre la targeta la gira: veus el significat i recordes la paraula.'],
+       ['☁', 'Les teves targetes es queden en aquest dispositiu. ☁ les manté també als teus altres dispositius.']],
+};
+if (!S.seeded) {
+  let l = 'en'; try { l = (window.FBL && FBL.get()) || 'en'; } catch (e) {}
+  const set = HOWTO[l] || HOWTO.en;
+  if (!S.mine.length) S.mine = set.map((c, i) => ({ id: 'howto' + (i + 1), term: c[0], meaning: c[1] }));
+  S.seeded = 1; try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {}
+}
 let saveT; function save() { clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {} }, 200); }
 const cardKey = id => 'c:' + id;
 const items = () => S.mine.map(m => ({ key: cardKey(m.id), id: m.id, term: m.term, meaning: m.meaning }));
@@ -553,7 +600,9 @@ function go(tab) {
 function buildDeck() {
   const now = Date.now(); let list = items().filter(x => statusOf(x.key) !== 'mastered');
   const due = list.filter(x => (peek(x.key).due || 0) <= now); list = due.length ? due : list;
-  list.sort((a, b) => (peek(a.key).due || 0) - (peek(b.key).due || 0) || Math.random() - .5);
+  const how = x => /^howto\d+$/.test(x.id) ? +x.id.slice(5) : 99;   // the how-to cards come in order, the rest shuffled
+  for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
+  list.sort((a, b) => (peek(a.key).due || 0) - (peek(b.key).due || 0) || how(a) - how(b));
   App.deck = list.map(x => x.key); App.idx = 0;
 }
 function renderStudy() {
@@ -649,7 +698,7 @@ const ACT = {
   importMine: () => VK.importList({
     cols: [['Word', '词', '詞', 'Palabra', 'Paraula'], ['Meaning', '意思', '意思', 'Significado', 'Significat']],
     add: rows => { let added = 0, dup = 0; rows.forEach(c => { const r = addMine(c); if (r) added++; else if (r === null) dup++; }); App.deck = []; save(); renderMine(); return { added, dup }; } }),
-  reset: () => { if (!confirm('Start again? Your progress on this device will be cleared. Your cards stay.')) return; S = Object.assign(DEF(), { mine: S.mine, dir: S.dir }); App.deck = []; save(); go('study'); }
+  reset: () => { if (!confirm('Start again? Your progress on this device will be cleared. Your cards stay.')) return; S = Object.assign(DEF(), { mine: S.mine, dir: S.dir, seeded: 1 }); App.deck = []; save(); go('study'); }
 };
 document.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (!b) return; const f = ACT[b.dataset.act]; if (f) { e.stopPropagation(); f(b.dataset.arg); } });
 document.addEventListener('keydown', e => {
