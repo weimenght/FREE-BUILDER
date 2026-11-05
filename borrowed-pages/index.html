@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=6a4a3973df"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Borrowed Pages · real books, lent by hand</title>
+<meta name="description" content="Real books, lent by hand between neighbours. Browse a house of books people actually own, ask for one, meet and hand it over. No account.">
+<meta name="theme-color" content="#f4ecdc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15100c" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Borrowed Pages">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+:root{
+  --bg:#f4ecdc;--bg2:#ebe0ca;--card:#fffaf0;--ink:#2a1d14;--ink2:#6b5a48;--line:#d9c9ab;--accent:#7c2513;--accent2:#a1381f;--brass:#b8862e;--ok:#2f5a3a;
+  --wood:#7a4f2c;--wood2:#5b3a1f;--back:#4a3121;--plank:#8a5a33;--plankHi:#a8734a;--shadow:0 1px 0 rgba(255,255,255,.6) inset,0 18px 40px -24px rgba(42,29,20,.45);
+  --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,"Songti SC","Noto Serif SC","Noto Serif TC",serif;
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI","PingFang SC","PingFang TC","Microsoft YaHei",sans-serif;
+  --hand:"Caveat","Bradley Hand","Kaiti SC","STKaiti","KaiTi","Kaiti TC",cursive;
+  --row:186px;--rowIn:170px;--plankH:16px;--r:14px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#15100c;--bg2:#1d1610;--card:#241b14;--ink:#f1e6d2;--ink2:#b9a78e;--line:#3d2f22;--accent:#e0805f;--accent2:#f09a78;--brass:#d9a94e;--ok:#8fc49b;
+  --wood:#4a301b;--wood2:#382413;--back:#24170f;--plank:#5e3c22;--plankHi:#7a5030;--shadow:0 18px 40px -24px #000;color-scheme:dark}}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;background-image:radial-gradient(rgba(120,90,50,.08) 1px,transparent 1.2px);background-size:5px 5px;z-index:0}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--brass);outline-offset:2px;border-radius:6px}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-right))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:8px;min-height:60px;padding-top:env(safe-area-inset-top)}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit}
+.brand svg{flex:none;width:34px;height:34px}
+.brand b{font:600 clamp(19px,4.6vw,24px)/1.1 var(--serif);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;min-width:44px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:600 14px var(--sans);white-space:nowrap}
+.ib:hover{border-color:var(--brass)}
+.ib .dot{position:absolute;top:6px;right:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--card)}
+.ib svg{width:18px;height:18px;flex:none}
+@media (max-width:560px){.ib .lbl{display:none}.ib{padding:0}}
+
+/* hero */
+.hero{padding:26px 0 8px;display:grid;gap:16px}
+.hero h1{margin:0;font:500 clamp(26px,6vw,44px)/1.08 var(--serif);letter-spacing:-.02em;max-width:18em}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:8px;min-height:48px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.search svg{width:18px;height:18px;flex:none;color:var(--ink2)}
+.search input{flex:1;min-width:0;border:0;background:none;outline:none;font-size:16px}
+.search button{border:0;background:none;color:var(--ink2);padding:6px;min-height:36px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:600 15px var(--sans);text-decoration:none;color:var(--ink);transition:transform .12s}
+.btn:active{transform:translateY(1px)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff8ee}
+@media (prefers-color-scheme:dark){.btn.pri{color:#1b120c}}
+.btn.sm{min-height:40px;padding:0 14px;font-size:14px}
+.btn.ghosty{background:none}
+.btn.warn{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.btn[disabled]{opacity:.5;cursor:default}
+.btn svg{width:18px;height:18px}
+
+/* rooms */
+.rooms{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:14px 0 4px;margin:0 -16px;padding-left:16px;padding-right:16px;scroll-snap-type:x proximity}
+.rooms::-webkit-scrollbar{display:none}
+.rooms button{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:none;font:600 14px var(--sans);color:var(--ink2);scroll-snap-align:start}
+.rooms button svg{width:18px;height:18px}
+.rooms button[aria-selected=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.tools{display:flex;align-items:center;gap:8px;padding:10px 0 6px}
+.tools .chip{flex:none}
+@media (max-width:560px){.seg button span{display:none}.seg button{padding:0 10px}.tools .chip{padding:0 10px}}
+.tools .chip{min-height:38px;padding:0 12px;border-radius:999px;border:1px dashed var(--line);background:none;font:500 13px var(--sans);color:var(--ink2)}
+.tools .chip[aria-pressed=true]{border-style:solid;border-color:var(--brass);color:var(--ink);background:color-mix(in srgb,var(--brass) 14%,transparent)}
+.seg{margin-left:auto;display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--card)}
+.seg button{min-height:34px;padding:0 12px;border:0;border-radius:999px;background:none;font:600 13px var(--sans);color:var(--ink2);display:inline-flex;gap:6px;align-items:center}
+.seg button svg{width:16px;height:16px}
+.seg button[aria-pressed=true]{background:var(--bg2);color:var(--ink)}
+
+/* the house */
+.house{padding:6px 0 30px;display:grid;gap:30px}
+@media (min-width:1000px){.house.two{grid-template-columns:1fr 1fr;gap:34px 28px}}
+.rm h2{margin:0 0 2px;font:600 22px/1.2 var(--serif);display:flex;align-items:center;gap:10px}
+.rm h2 svg{width:26px;height:26px}
+.rm .line{margin:0 0 12px;color:var(--ink2);font:italic 400 15px/1.4 var(--serif)}
+.rmh{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.case{position:relative;border-radius:10px;padding:14px 12px 0;background:linear-gradient(var(--wood),var(--wood2));box-shadow:var(--shadow)}
+.shelf{position:relative;display:flex;flex-wrap:wrap;align-items:flex-end;gap:0 3px;padding:0 6px;border-radius:4px;
+  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,0) 26px) 0 0/100% var(--row) repeat-y,
+    repeating-linear-gradient(180deg,var(--back) 0 var(--rowIn),var(--plankHi) var(--rowIn) calc(var(--rowIn) + 3px),var(--plank) calc(var(--rowIn) + 3px) calc(var(--row) - 3px),var(--wood2) calc(var(--row) - 3px) var(--row))}
+.slot{height:var(--rowIn);margin-bottom:var(--plankH);display:flex;align-items:flex-end}
+.bk{position:relative;display:block;height:var(--h);width:var(--w);padding:0;border:0;border-radius:3px 3px 1px 1px;transform-origin:50% 100%;
+  background:linear-gradient(90deg,var(--c2) 0 8%,var(--c) 22% 70%,var(--c2) 100%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25),2px 0 3px -1px rgba(0,0,0,.45);transition:transform .18s ease}
+.bk::before,.bk::after{content:"";position:absolute;left:3px;right:3px;height:2px;background:var(--gild);opacity:.8}
+.bk::before{top:9%}.bk::after{bottom:7%}
+.bk .t{position:absolute;top:16%;bottom:14%;left:0;right:0;writing-mode:vertical-rl;text-align:center;font:600 12px/var(--w) var(--serif);color:var(--tc);letter-spacing:.02em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.bk.wide .t{font-size:13px}
+.bk:hover,.bk:focus-visible{transform:translateY(-10px) rotate(0deg)!important;z-index:2}
+.bk .rib{position:absolute;top:-2px;right:3px;width:6px;height:28px;background:var(--accent2);clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%)}
+.bk .mk{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 2px rgba(0,0,0,.25)}
+.bk .mk.req{background:#f4d7d0;width:9px;height:9px;box-shadow:0 0 0 2px var(--accent2)}
+.bk.new{animation:glow 2.4s ease 2}
+@keyframes glow{50%{box-shadow:0 0 0 3px var(--brass),0 0 22px var(--brass)}}
+.bk.add{--c:transparent;--c2:transparent;background:none;border:2px dashed rgba(255,240,210,.45);color:rgba(255,240,210,.85);font:400 26px/1 var(--serif);display:grid;place-items:center;box-shadow:none}
+.bk.add::before,.bk.add::after{display:none}
+.cat{position:absolute;right:16px;top:-30px;width:46px;height:34px;border:0;background:none;padding:0;z-index:3}
+.cat svg{width:100%;height:100%;image-rendering:pixelated}
+.empty{display:grid;place-items:center;gap:14px;text-align:center;padding:36px 16px;color:var(--ink2);font:italic 17px/1.5 var(--serif)}
+.empty svg{width:120px;height:auto;opacity:.85}
+
+/* list */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:start;text-align:left;padding:14px;border-radius:var(--r);border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);width:100%}
+.card:hover{border-color:var(--brass)}
+.card b{display:block;font:600 17px/1.25 var(--serif)}
+.card .by{color:var(--ink2);font-size:14px}
+.card .nt{margin-top:6px;font:500 19px/1.2 var(--hand);color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font:600 12px var(--sans);background:var(--bg2);color:var(--ink2)}
+.tag.a{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.tag.m{background:color-mix(in srgb,var(--brass) 20%,transparent);color:var(--ink)}
+
+/* drawn covers */
+.cover{position:relative;aspect-ratio:2/3;width:100%;border-radius:3px 6px 6px 3px;overflow:hidden;color:var(--tc);background:linear-gradient(90deg,var(--c2) 0 7%,var(--c) 12%);background-size:cover;background-position:center;box-shadow:inset 3px 0 0 rgba(0,0,0,.18),0 10px 22px -12px rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:center;padding:12% 10% 12% 16%;text-align:center}
+.cover::before{content:"";position:absolute;inset:7% 7% 7% 12%;border:1px solid var(--gild);opacity:.6;border-radius:2px}
+.cover .ct{position:relative;font:600 clamp(10px,2.6vw,20px)/1.15 var(--serif);overflow:hidden;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;word-break:break-word}
+.cover .ca{position:relative;margin-top:8%;font:italic 400 clamp(8px,1.8vw,13px)/1.2 var(--serif);opacity:.85}
+.cover.img::before,.cover.img .ct,.cover.img .ca{display:none}
+.card .cover .ct{font-size:10px}.card .cover .ca{display:none}
+.item .cover{padding:10% 8% 10% 16%}.item .cover::before{inset:6% 6% 6% 12%}.item .cover .ct{font-size:7px;-webkit-line-clamp:4}.item .cover .ca{display:none}
+
+/* dialogs */
+.scrim{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;background:rgba(20,14,10,.5);animation:fade .2s ease}
+@media (min-width:760px){.scrim{align-items:center;padding:24px}}
+@keyframes fade{from{opacity:0}}
+.sheet{position:relative;width:100%;max-width:720px;max-height:min(92vh,900px);overflow:auto;overscroll-behavior:contain;background:var(--bg);border-radius:22px 22px 0 0;padding:26px 20px calc(24px + env(safe-area-inset-bottom));box-shadow:0 -20px 60px -20px rgba(0,0,0,.5);animation:up .28s cubic-bezier(.2,.8,.2,1)}
+@media (min-width:760px){.sheet{border-radius:22px;padding:30px 30px 28px}.sheet.narrow{max-width:520px}}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheet .x{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:22px;line-height:1}
+.sheet h3{margin:0 0 6px;padding-right:44px;font:600 25px/1.2 var(--serif);letter-spacing:-.01em}
+.sheet .sub{margin:0 0 16px;color:var(--ink2)}
+.grab{position:absolute;top:8px;left:50%;width:40px;height:4px;margin-left:-20px;border-radius:2px;background:var(--line)}
+@media (min-width:760px){.grab{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.book{display:grid;grid-template-columns:minmax(110px,190px) 1fr;grid-template-areas:"c i" "n n";gap:4px 20px;align-items:start}
+.book .bc{grid-area:c}.book .bi{grid-area:i}.book .bn{grid-area:n;min-width:0}
+@media (min-width:760px){.book{grid-template-areas:"c i" "c n"}.book .bc{position:sticky;top:0}}
+@media (max-width:480px){.book{grid-template-columns:104px 1fr;gap:4px 14px}}
+.book .meta{color:var(--ink2);margin:2px 0 10px}
+.book .roomline{display:inline-flex;align-items:center;gap:6px;color:var(--ink2);font-size:14px}
+.book .roomline svg{width:18px;height:18px}
+.note{position:relative;margin:16px 0;padding:16px 18px 14px;background:#fff6d9;color:#3a2a14;border-radius:3px;box-shadow:0 8px 18px -12px rgba(0,0,0,.5);transform:rotate(-.6deg);font:500 23px/1.25 var(--hand)}
+.note::before{content:"";position:absolute;top:-9px;left:50%;width:70px;height:18px;margin-left:-35px;background:rgba(220,200,150,.6);transform:rotate(2deg)}
+.note .sig{display:block;text-align:right;font-size:20px;opacity:.8;margin-top:6px}
+.note.blank{font-style:normal;opacity:.75}
+.lcard{margin:16px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.lcard ol{background-image:repeating-linear-gradient(180deg,transparent 0 27px,color-mix(in srgb,var(--line) 70%,transparent) 27px 28px)}
+.lcard h4{margin:0 0 6px;font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.lcard ol{list-style:none;margin:0;padding:0}
+.lcard li{line-height:28px;font:500 21px/28px var(--hand)}
+.lcard li small{font:400 13px var(--sans);color:var(--ink2);margin-left:6px}
+.lcard li.cur{color:var(--accent)}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.acts .btn{flex:1 1 auto}
+.quiet{display:inline-flex;align-items:center;gap:6px;margin-top:12px;border:0;background:none;padding:6px 0;color:var(--ink2);font:500 14px var(--sans);text-decoration:underline;text-underline-offset:3px}
+
+/* forms */
+.f{display:grid;gap:14px}
+.fld{display:grid;gap:6px}
+.fld>span{font:600 14px var(--sans)}
+.fld small{color:var(--ink2);font-size:13px}
+.fld input,.fld textarea{width:100%;min-height:48px;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:16px;outline:none}
+.fld textarea{min-height:96px;resize:vertical}
+.fld input:focus,.fld textarea:focus{border-color:var(--brass);box-shadow:0 0 0 3px color-mix(in srgb,var(--brass) 25%,transparent)}
+.fld [aria-invalid=true]{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.fld textarea.paper{background:#fff6d9;color:#3a2a14;font:500 22px/1.25 var(--hand)}
+.ir{display:flex;gap:8px}.ir input{flex:1;min-width:0}
+.lock{display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--ok) 10%,transparent);color:var(--ink);font-size:14px}
+.lock svg{width:18px;height:18px;flex:none;margin-top:2px;color:var(--ok)}
+.warnl{color:var(--accent);font-size:14px;min-height:0}
+.lendg{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:start}
+@media (max-width:480px){.lendg{grid-template-columns:86px 1fr;gap:12px}}
+.found{display:flex;gap:8px;flex-wrap:wrap}
+.found button{padding:0;border:2px solid transparent;border-radius:4px;background:none;width:46px;height:68px;overflow:hidden}
+.found button img{width:100%;height:100%;object-fit:cover;display:block}
+.found button[aria-pressed=true]{border-color:var(--brass)}
+.found .hint{color:var(--ink2);font-size:13px}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw button{width:34px;height:34px;border-radius:50%;border:2px solid var(--bg);box-shadow:0 0 0 1px var(--line)}
+.sw button[aria-pressed=true]{box-shadow:0 0 0 3px var(--brass)}
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:420px){.four{grid-template-columns:repeat(2,1fr)}}
+.four button{display:grid;justify-items:center;gap:4px;padding:10px 6px;min-height:64px;border-radius:12px;border:1px solid var(--line);background:var(--card);font:600 13px var(--sans)}
+.four button svg{width:24px;height:24px}
+.four button[aria-pressed=true]{border-color:var(--brass);box-shadow:0 0 0 2px var(--brass) inset}
+
+/* welcome */
+.steps{list-style:none;margin:18px 0;padding:0;display:grid;gap:12px}
+.steps li{display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:center;padding:12px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.steps li svg{width:56px;height:56px}
+.steps b{display:block;font:600 18px/1.2 var(--serif)}
+.steps span{color:var(--ink2);font-size:15px}
+.small{color:var(--ink2);font-size:14px;display:flex;gap:8px;align-items:center}
+.small svg{width:16px;height:16px;flex:none}
+
+/* my shelf */
+.sec{margin:22px 0 0}
+.sec h4{margin:0 0 10px;font:600 13px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);display:flex;align-items:center;gap:8px}
+.item{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}
+.item b{font:600 16px/1.25 var(--serif)}
+.item .s{color:var(--ink2);font-size:14px}
+.ask{margin-top:10px;padding:12px 14px;border-radius:12px;background:var(--card);border:1px solid var(--brass)}
+.ask .who{font-weight:600}
+.ask .c{display:block;margin:4px 0;font:600 15px var(--sans);word-break:break-word;user-select:all}
+.ask q{display:block;font:500 20px/1.25 var(--hand);quotes:none}
+.ask .acts{margin-top:10px}
+.keybox{padding:14px;border-radius:14px;border:1px solid var(--line);background:var(--card)}
+.keybox p{margin:0 0 10px;font-size:14px;color:var(--ink2)}
+.qr{display:grid;place-items:center;padding:12px;background:#fff;border-radius:10px;margin-top:10px}
+.qr svg{max-width:100%;height:auto}
+details summary{cursor:pointer;color:var(--ink2);font-size:14px;padding:8px 0;min-height:40px}
+
+/* Nearby + footer */
+.town{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;margin:10px 0 30px;padding:16px 18px;border-radius:var(--r);background:#1d1526;color:#f3e7cf;box-shadow:var(--shadow)}
+.town svg{width:56px;height:56px;image-rendering:pixelated}
+.town b{display:block;font:600 16px/1.3 var(--serif)}
+.town span{font-size:14px;opacity:.8}
+.town a{color:#1d1526;background:#f6b73c;border-color:#f6b73c}
+@media (max-width:520px){.town{grid-template-columns:auto 1fr}.town a{grid-column:1/-1}}
+.foot{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:center;padding:22px 0 calc(28px + env(safe-area-inset-bottom));border-top:1px solid var(--line);color:var(--ink2);font-size:14px}
+.foot a,.foot button{color:var(--ink2);background:none;border:0;padding:6px 2px;text-decoration:underline;text-underline-offset:3px;font-size:14px}
+.foot .ah{color:var(--accent)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));z-index:80;max-width:min(92vw,460px);transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:12px 18px;border-radius:14px;background:var(--ink);color:var(--bg);font:500 15px/1.4 var(--sans);box-shadow:0 12px 30px -10px rgba(0,0,0,.5);transition:.25s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.langm{position:absolute;right:0;top:calc(100% + 6px);display:grid;min-width:160px;padding:6px;border-radius:14px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);z-index:30}
+.langm button{text-align:left;min-height:42px;padding:0 12px;border:0;border-radius:10px;background:none;font:500 15px var(--sans)}
+.langm button[aria-current=true]{background:var(--bg2);font-weight:700}
+.rel{position:relative}
+.skel{height:var(--row);border-radius:10px;background:linear-gradient(90deg,var(--bg2),var(--card),var(--bg2));background-size:200% 100%;animation:sh 1.4s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./" aria-label="Borrowed Pages"><svg viewBox="0 0 34 34" aria-hidden="true"><rect x="2" y="30" width="30" height="3" rx="1" fill="#8a5a33"/><rect x="5" y="9" width="6" height="21" rx="1" fill="#7c2513"/><rect x="5" y="12" width="6" height="1.5" fill="#d9a94e"/><rect x="12" y="5" width="7" height="25" rx="1" fill="#1e3a5f"/><rect x="12" y="8" width="7" height="1.5" fill="#d9a94e"/><rect x="20" y="11" width="5" height="19" rx="1" fill="#2f4a2a"/><rect x="24.5" y="8" width="6" height="22" rx="1" fill="#8a5a1e" transform="rotate(12 27 30)"/></svg><b data-i="name">Borrowed Pages</b></a>
+  <button class="ib" id="howB" type="button" data-ia="how"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14"/><circle cx="12" cy="17.5" r=".6" fill="currentColor"/></svg></button>
+  <div class="rel"><button class="ib" id="langB" type="button" data-ia="lang" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg><span class="lbl" id="langL">EN</span></button></div>
+  <button class="ib" id="mineB" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg><span class="lbl" data-i="mine">My shelf</span><span class="dot" id="mineDot" hidden></span></button>
+</div></header>
+
+<main class="wrap" id="main">
+  <section class="hero">
+    <h1 id="tagH">Real books, lent by hand between neighbours.</h1>
+    <div class="hrow">
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="sr" data-i="search">Search</span><input id="q" type="search" enterkeyhint="search" autocomplete="off" data-ip="search"><button type="button" id="qx" hidden data-ia="clear">✕</button></label>
+      <button class="btn pri" id="lendB" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span data-i="lend">Lend a book</span></button>
+    </div>
+  </section>
+  <nav class="rooms" id="rooms" role="tablist"></nav>
+  <div class="tools">
+    <button class="chip" type="button" id="fFree" aria-pressed="false" data-i="onlyFree">Nobody's asked yet</button>
+    <button class="chip" type="button" id="fNote" aria-pressed="false" data-i="withNote">Has a note</button>
+    <div class="seg" role="group"><button type="button" id="vShelf" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v16M9 6v14M14 4v16M19 7l-2 13M3 20h18"/></svg><span data-i="shelfView">Shelves</span></button><button type="button" id="vList" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"/></svg><span data-i="listView">List</span></button></div>
+  </div>
+  <div class="house" id="house" aria-live="polite"><div class="skel"></div><div class="skel"></div></div>
+  <section class="town" id="town">
+    <svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="6" width="12" height="9" fill="#6b4426"/><rect x="1" y="5" width="14" height="2" fill="#4a2d18"/><rect x="3" y="3" width="10" height="2" fill="#4a2d18"/><rect x="5" y="1" width="6" height="2" fill="#4a2d18"/><rect x="4" y="8" width="3" height="3" fill="#ffcf7a"/><rect x="9" y="8" width="3" height="3" fill="#ffcf7a"/><rect x="7" y="11" width="2" height="4" fill="#2a1a10"/></svg>
+    <div><b data-i="inTown"></b><span data-i="same"></span></div>
+    <a class="btn sm" id="walkA" href="/nearby/?at=%2Fnearby%2Fborrowed-pages%2F" data-i="walk">Walk there</a>
+  </section>
+</main>
+<footer class="foot wrap" id="foot">
+  <button type="button" id="privB" data-i="privacy">Privacy</button>
+  <a href="/nearby/" data-i="nearbyLink">Nearby</a>
+  <a class="ah" id="ahA" href="https://www.wei-meng.org/after-hours/" target="_blank" rel="noopener"><span aria-hidden="true">♥</span> <span data-i="ah">After hours</span></a>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* Borrowed Pages, the app: the same house, shelves and keychain as Nearby's Borrowed Pages (town_books_* on Nearby's server,
+   keys dogeared_key + fb_device_key in this browser). Everything personal goes through functions that take this device's
+   private key, which the database only ever stores as a one-way fingerprint. */
+(function () {
+  "use strict";
+  var STR = {"name":["Borrowed Pages","借来的书","借來的書","Páginas Prestadas","Pàgines Manllevades"],"docTitle":["Borrowed Pages · real books, lent by hand","借来的书 · 真的书，亲手借出","借來的書 · 真的書，親手借出","Páginas Prestadas · libros de verdad, prestados en mano","Pàgines Manllevades · llibres de debò, deixats en mà"],"tag":["Real books, lent by hand between neighbours.","真的书，在邻居之间亲手传递。","真的書，在鄰居之間親手傳遞。","Libros de verdad, prestados en mano entre vecinos.","Llibres de debò, deixats en mà entre veïns."],"lend":["Lend a book","借出一本书","借出一本書","Presta un libro","Deixa un llibre"],"mine":["My shelf","我的书架","我的書架","Mi estante","El meu prestatge"],"how":["How it works","怎么用","怎麼用","Cómo funciona","Com funciona"],"lang":["Language","语言","語言","Idioma","Idioma"],"search":["Search titles, authors, notes","搜索书名、作者、便条","搜尋書名、作者、便條","Busca títulos, autores, notas","Cerca títols, autors, notes"],"clear":["Clear","清除","清除","Borrar","Esborra"],"all":["Whole house","整栋房子","整棟房子","Toda la casa","Tota la casa"],"attic":["Attic","阁楼","閣樓","Desván","Golfes"],"parlor":["Parlour","客厅","客廳","Salón","Saló"],"garden":["Garden","花园","花園","Jardín","Jardí"],"basement":["Basement","地下室","地下室","Sótano","Soterrani"],"r_attic":["Under the eaves: poems, old travels, the quiet ones.","屋檐下：诗、旧游记、安静的书。","屋簷下：詩、舊遊記、安靜的書。","Bajo el tejado: poemas, viajes antiguos, los callados.","Sota la teulada: poemes, viatges antics, els silenciosos."],"r_parlor":["The tall oak case by the window. Novels, mostly.","窗边高高的橡木书柜，大多是小说。","窗邊高高的橡木書櫃，大多是小說。","La estantería alta de roble junto a la ventana. Novelas, sobre todo.","L'armari alt de roure vora la finestra. Novel·les, sobretot."],"r_garden":["On the ivy bench: cookbooks, plants, things to do outside.","常春藤长椅上：食谱、植物、到外面去做的事。","常春藤長椅上：食譜、植物、到外面去做的事。","En el banco de hiedra: recetas, plantas, cosas para hacer fuera.","Al banc d'heura: receptes, plantes, coses per fer a fora."],"r_basement":["Wine crates and stone steps: big books, odd books, comics.","酒箱和石阶：大部头、怪书、漫画。","酒箱和石階：大部頭、怪書、漫畫。","Cajas de vino y escalones de piedra: libros gordos, raros, cómics.","Caixes de vi i graons de pedra: llibres grossos, estranys, còmics."],"shelfView":["Shelves","书架","書架","Estantes","Prestatges"],"listView":["List","列表","列表","Lista","Llista"],"onlyFree":["Nobody's asked yet","还没人想要","還沒人想要","Nadie lo ha pedido aún","Ningú l'ha demanat encara"],"withNote":["Has a note","有便条","有便條","Con nota","Amb nota"],"emptyHouse":["The shelves are waiting for their first book.","书架在等它的第一本书。","書架在等它的第一本書。","Los estantes esperan su primer libro.","Els prestatges esperen el seu primer llibre."],"emptyRoom":["Nothing here yet. Bring the first one?","这里还空着。放第一本？","這裡還空著。放第一本？","Aún no hay nada. ¿Traes el primero?","Encara no hi ha res. Hi portes el primer?"],"noMatch":["No book like that on the shelves yet.","书架上还没有这样的书。","書架上還沒有這樣的書。","Aún no hay un libro así en los estantes.","Encara no hi ha cap llibre així als prestatges."],"loading":["Dusting the shelves…","正在掸书架上的灰…","正在撣書架上的灰…","Quitando el polvo a los estantes…","Traient la pols dels prestatges…"],"offline":["The shelves can't be reached right now. Try again soon.","现在连不上书架，稍后再试。","現在連不上書架，稍後再試。","Ahora no se llega a los estantes. Prueba pronto.","Ara no s'arriba als prestatges. Torna-ho a provar aviat."],"retry":["Try again","再试一次","再試一次","Reintentar","Torna-ho a provar"],"w_h":["A house of books you can actually borrow","一栋真的能借书的房子","一棟真的能借書的房子","Una casa de libros que de verdad puedes pedir","Una casa de llibres que de debò pots demanar"],"w_1h":["Browse","逛逛","逛逛","Mira","Mira"],"w_1":["Every spine is a real book a neighbour owns, with a note inside.","每一本都是邻居手里真的书，里面夹着便条。","每一本都是鄰居手裡真的書，裡面夾著便條。","Cada lomo es un libro de verdad de un vecino, con una nota dentro.","Cada llom és un llibre de debò d'un veí, amb una nota dins."],"w_2h":["Ask","开口","開口","Pide","Demana"],"w_2":["Say how to reach you. Only the book's keeper sees it.","留下联系方式，只有这本书的主人看得到。","留下聯絡方式，只有這本書的主人看得到。","Di cómo contactarte. Solo quien lo guarda lo ve.","Digues com contactar-te. Només qui el guarda ho veu."],"w_3h":["Meet","见面","見面","Quedad","Quedeu"],"w_3":["Hand it over in person. The book remembers who kept it.","当面交给对方。书会记得谁读过它。","當面交給對方。書會記得誰讀過它。","Entrégalo en persona. El libro recuerda quién lo tuvo.","Lliura'l en persona. El llibre recorda qui l'ha tingut."],"w_none":["No account, no sign-up. This device keeps a private key.","不用注册，不用账号。这台设备会保存一把私人钥匙。","不用註冊，不用賬號。這臺裝置會儲存一把私人鑰匙。","Sin cuenta ni registro. Este dispositivo guarda una llave privada.","Sense compte ni registre. Aquest dispositiu guarda una clau privada."],"w_go":["Show me the shelves","带我看看书架","帶我看看書架","Enséñame los estantes","Ensenya'm els prestatges"],"w_lend":["I have a book to lend","我有书想借出","我有書想借出","Tengo un libro para prestar","Tinc un llibre per deixar"],"close":["Close","关闭","關閉","Cerrar","Tanca"],"keeper":["Kept by {x}","{x} 保管","{x} 保管","Lo guarda {x}","El guarda {x}"],"keepers":["Who has kept it","谁保管过它","誰保管過它","Quién lo ha guardado","Qui l'ha guardat"],"l_in":["brought it in","带来的","帶來的","lo trajo","el va portar"],"l_hand":["by hand","亲手接过","親手接過","en mano","en mà"],"now":["has it now","现在在 TA 手上","現在在 TA 手上","lo tiene ahora","el té ara"],"noNote":["No note inside, just a pressed leaf.","里面没有便条，只夹着一片压干的叶子。","裡面沒有便條，只夾著一片壓乾的葉子。","Sin nota dentro, solo una hoja prensada.","Sense nota dins, només una fulla premsada."],"asked":["Someone has asked for it","有人想要这本","有人想要這本","Alguien lo ha pedido","Algú l'ha demanat"],"yours":["Yours","你的","你的","Tuyo","Teu"],"youAsked":["You asked for it","你想要过","你想要過","Lo pediste","L'has demanat"],"want":["I'd like to borrow it","我想借这本","我想借這本","Me gustaría pedirlo","M'agradaria demanar-lo"],"wantAgain":["Change my request","改一下我的请求","改一下我的請求","Cambiar mi petición","Canvia la meva petició"],"share":["Send it to someone who'd love it","发给会喜欢它的人","發給會喜歡它的人","Envíalo a alguien a quien le encantaría","Envia'l a algú a qui li encantaria"],"shareLine":["I found “{t}” at Borrowed Pages and thought of you.","我在借来的书看到《{t}》，想到了你。","我在借來的書看到《{t}》，想到了你。","He visto «{t}» en Páginas Prestadas y me he acordado de ti.","He vist «{t}» a Pàgines Manllevades i he pensat en tu."],"copied":["Link copied ✓","链接已复制 ✓","連結已複製 ✓","Enlace copiado ✓","Enllaç copiat ✓"],"edit":["Edit","编辑","編輯","Editar","Edita"],"answer":["Answer","回复","回覆","Responder","Respon"],"covers":["Show real covers (they load from Open Library)","显示真实封面（从 Open Library 加载）","顯示真實封面（從 Open Library 載入）","Mostrar portadas reales (se cargan de Open Library)","Mostra les portades reals (es carreguen d'Open Library)"],"coversOn":["Real covers on","已显示真实封面","已顯示真實封面","Portadas reales activadas","Portades reals activades"],"coversOff":["Drawn covers","手绘封面","手繪封面","Portadas dibujadas","Portades dibuixades"],"notFound":["That book has left the shelves.","这本书已经不在书架上了。","這本書已經不在書架上了。","Ese libro ya no está en los estantes.","Aquest llibre ja no és als prestatges."],"askH":["Ask {x} for it","向 {x} 借这本书","向 {x} 借這本書","Pídeselo a {x}","Demana-li a {x}"],"penName":["Your name (any name)","你的名字（随便叫什么）","你的名字（隨便叫什麼）","Tu nombre (el que quieras)","El teu nom (el que vulguis)"],"reach":["How {x} can reach you","{x} 怎么联系你","{x} 怎麼聯絡你","Cómo puede contactarte {x}","Com et pot contactar {x}"],"reachPh":["WeChat, a phone, an email, “at Next Door on Sunday”…","微信、电话、邮箱、“周日在隔壁”…","微信、電話、郵箱、“週日在隔壁”…","WhatsApp, un teléfono, un correo, «en Al Lado el domingo»…","WhatsApp, un telèfon, un correu, «a Al Costat diumenge»…"],"onlyX":["Only {x} sees this. It's erased 30 days after the handover.","只有 {x} 看得到，交接 30 天后删除。","只有 {x} 看得到，交接 30 天后刪除。","Solo {x} lo ve. Se borra 30 días después de la entrega.","Només {x} ho veu. S'esborra 30 dies després del lliurament."],"msg":["A line for {x} (optional)","给 {x} 的一句话（可不填）","給 {x} 的一句話（可不填）","Unas palabras para {x} (opcional)","Unes paraules per a {x} (opcional)"],"msgPh":["I've wanted to read this for years. Saturday afternoon?","我想读这本好多年了。周六下午可以吗？","我想讀這本好多年了。週六下午可以嗎？","Hace años que quiero leerlo. ¿El sábado por la tarde?","Fa anys que el vull llegir. Dissabte a la tarda?"],"send":["Send my request","发出请求","發出請求","Enviar petición","Envia la petició"],"nextH":["Sent to {x}","已发给 {x}","已發給 {x}","Enviado a {x}","Enviat a {x}"],"next1":["{x} sees your note on their shelf.","{x} 会在 TA 的书架上看到你的留言。","{x} 會在 TA 的書架上看到你的留言。","{x} verá tu nota en su estante.","{x} veurà la teva nota al seu prestatge."],"next2":["They reach you the way you said.","TA 会用你留下的方式联系你。","TA 會用你留下的方式聯絡你。","Te contactará como dijiste.","Et contactarà com has dit."],"next3":["Meet, hand it over, and your name joins the book's card.","见面、交书，你的名字就写进这本书的卡片里。","見面、交書，你的名字就寫進這本書的卡片裡。","Quedáis, te lo da y tu nombre entra en la ficha del libro.","Quedeu, te'l dona i el teu nom entra a la fitxa del llibre."],"ok":["OK","好","好","Vale","D'acord"],"lendH":["Lend a book","借出一本书","借出一本書","Presta un libro","Deixa un llibre"],"lendSub":["A real one, from your own shelf. You'll hand it over in person.","一本真的书，来自你自己的书架。你会亲手交给对方。","一本真的書，來自你自己的書架。你會親手交給對方。","Uno de verdad, de tu propio estante. Lo entregarás en persona.","Un de debò, del teu propi prestatge. El lliuraràs en persona."],"title":["Title","书名","書名","Título","Títol"],"author":["Author","作者","作者","Autor","Autor"],"find":["Find it","查找","查詢","Buscar","Cerca"],"findHint":["Only the title goes to Open Library, to find the cover.","只会把书名发给 Open Library，用来找封面。","只會把書名發給 Open Library，用來找封面。","Solo el título va a Open Library, para encontrar la portada.","Només el títol va a Open Library, per trobar la portada."],"noCover":["No cover found. A drawn spine is lovely too.","没找到封面。手绘书脊也很好看。","沒找到封面。手繪書脊也很好看。","No hay portada. Un lomo dibujado también es bonito.","No hi ha portada. Un llom dibuixat també és bonic."],"offCover":["Open Library can't be reached right now.","现在连不上 Open Library。","現在連不上 Open Library。","Ahora no se llega a Open Library.","Ara no s'arriba a Open Library."],"colour":["Spine colour","书脊颜色","書脊顏色","Color del lomo","Color del llom"],"room":["Which room?","放在哪个房间？","放在哪個房間？","¿En qué habitación?","A quina habitació?"],"noteLbl":["The note inside","夹在里面的便条","夾在裡面的便條","La nota de dentro","La nota de dins"],"notePh":["I read it on a night train and missed my stop. Pass it on when you're done.","我在夜车上读它，坐过了站。读完请传下去。","我在夜車上讀它，坐過了站。讀完請傳下去。","Lo leí en un tren nocturno y me pasé de parada. Pásalo cuando acabes.","El vaig llegir en un tren de nit i em vaig passar de parada. Passa'l quan acabis."],"everyone":["Everyone can read the note, so leave out phone numbers and addresses.","所有人都能读到便条，请别写电话和地址。","所有人都能讀到便條，請別寫電話和地址。","Todos pueden leer la nota: no pongas teléfonos ni direcciones.","Tothom pot llegir la nota: no hi posis telèfons ni adreces."],"leak":["That looks like a phone number or an email. Everyone can read the note.","这看起来像电话或邮箱，所有人都能读到便条。","這看起來像電話或郵箱，所有人都能讀到便條。","Eso parece un teléfono o un correo. Todos pueden leer la nota.","Això sembla un telèfon o un correu. Tothom pot llegir la nota."],"put":["Put it on the shelf","放上书架","放上書架","Ponerlo en el estante","Posa'l al prestatge"],"placed":["On the shelf ✓","已放上书架 ✓","已放上書架 ✓","En el estante ✓","Al prestatge ✓"],"placedShare":["Tell a friend it's there","告诉朋友它在这里","告訴朋友它在這裡","Cuéntale a alguien que está ahí","Explica a algú que hi és"],"madeLine":["I just put “{t}” on the shelf at Borrowed Pages. Want to borrow it?","我刚把《{t}》放上了借来的书的书架。想借吗？","我剛把《{t}》放上了借來的書的書架。想借嗎？","Acabo de poner «{t}» en el estante de Páginas Prestadas. ¿Lo quieres?","Acabo de posar «{t}» al prestatge de Pàgines Manllevades. El vols?"],"save":["Save","保存","儲存","Guardar","Desa"],"saved":["Saved ✓","已保存 ✓","已儲存 ✓","Guardado ✓","Desat ✓"],"remove":["Take it off the shelf","从书架上拿下来","從書架上拿下來","Quitarlo del estante","Treu-lo del prestatge"],"sure":["Tap again to confirm","再点一次确认","再點一次確認","Toca otra vez para confirmar","Toca un altre cop per confirmar"],"removed":["Off the shelf","已拿下书架","已拿下書架","Fuera del estante","Fora del prestatge"],"waiting":["Waiting for you","等你回复","等你回覆","Esperan tu respuesta","Esperen la teva resposta"],"waitingNone":["Nobody's waiting on you.","没有人在等你。","沒有人在等你。","Nadie espera tu respuesta.","Ningú espera la teva resposta."],"lending":["Books you lend","你借出的书","你借出的書","Libros que prestas","Llibres que deixes"],"lendingNone":["You haven't put a book on the shelves yet.","你还没有把书放上书架。","你還沒有把書放上書架。","Aún no has puesto ningún libro en los estantes.","Encara no has posat cap llibre als prestatges."],"askedFor":["Books you asked for","你想借的书","你想借的書","Libros que pediste","Llibres que has demanat"],"askedNone":["Nothing asked for yet.","还没有想借的书。","還沒有想借的書。","Aún no has pedido nada.","Encara no has demanat res."],"wantsIt":["{x} would like to borrow it","{x} 想借这本","{x} 想借這本","A {x} le gustaría pedirlo","A {x} li agradaria demanar-lo"],"handed":["We met, I handed it over","见过面了，书已交给 TA","見過面了，書已交給 TA","Quedamos, ya se lo di","Hem quedat, ja l'hi he donat"],"notThis":["Not this time","这次不行","這次不行","Esta vez no","Aquesta vegada no"],"newKeeper":["{x} keeps it now. Their name is on its card.","现在由 {x} 保管，TA 的名字写在卡片上了。","現在由 {x} 保管，TA 的名字寫在卡片上了。","Ahora lo guarda {x}. Su nombre está en la ficha.","Ara el guarda {x}. El seu nom és a la fitxa."],"st_open":["waiting for an answer","等回复","等回覆","esperando respuesta","esperant resposta"],"st_done":["it's yours now","现在是你的了","現在是你的了","ahora es tuyo","ara és teu"],"st_declined":["not this time","这次不行","這次不行","esta vez no","aquesta vegada no"],"st_withdrawn":["withdrawn","已撤回","已撤回","retirada","retirada"],"withdraw":["Withdraw","撤回","撤回","Retirar","Retira"],"shelfDown":["Your shelf can't open right now. Your books are safe.","现在打不开你的书架，你的书都好好的。","現在打不開你的書架，你的書都好好的。","Tu estante no se abre ahora mismo. Tus libros están a salvo.","Ara no s'obre el teu prestatge. Els teus llibres estan a recer."],"keysH":["On another phone or computer","在另一台手机或电脑上","在另一臺手機或電腦上","En otro móvil u ordenador","En un altre mòbil o ordinador"],"keysP":["Your shelf belongs to a key on this device, the same keychain as Nearby. Open this link on your other device and everything you lend and asked for comes with you.","你的书架属于这台设备上的一把钥匙，和近邻用的是同一个钥匙串。在另一台设备上打开这个链接，你借出和想借的书都会跟过去。","你的書架屬於這臺裝置上的一把鑰匙，和近鄰用的是同一個鑰匙串。在另一臺裝置上開啟這個連結，你借出和想借的書都會跟過去。","Tu estante pertenece a una llave de este dispositivo, el mismo llavero que Cerca. Abre este enlace en el otro dispositivo y todo lo que prestas y pediste te acompaña.","El teu prestatge pertany a una clau d'aquest dispositiu, el mateix clauer que A Prop. Obre aquest enllaç a l'altre dispositiu i tot el que deixes i has demanat t'acompanya."],"keysWarn":["Keep it to yourself: anyone with it can change your shelf.","自己留着：拿到它的人可以改动你的书架。","自己留著：拿到它的人可以改動你的書架。","Guárdalo para ti: quien lo tenga puede cambiar tu estante.","Guarda-te'l: qui el tingui pot canviar el teu prestatge."],"copyLink":["Copy the link","复制链接","複製連結","Copiar el enlace","Copia l'enllaç"],"showQr":["Show a QR code","显示二维码","顯示二維碼","Mostrar un código QR","Mostra un codi QR"],"haveKey":["I have a keychain link","我有钥匙串链接","我有鑰匙串連結","Tengo un enlace de llavero","Tinc un enllaç de clauer"],"keyPh":["Paste the link here","把链接粘贴到这里","把連結貼上到這裡","Pega aquí el enlace","Enganxa aquí l'enllaç"],"open":["Open my shelf","打开我的书架","開啟我的書架","Abrir mi estante","Obre el meu prestatge"],"keyHere":["Your keychain is on this device now.","你的钥匙串已经在这台设备上了。","你的鑰匙串已經在這臺裝置上了。","Tu llavero ya está en este dispositivo.","El teu clauer ja és en aquest dispositiu."],"badKey":["That doesn't look like a keychain link.","这看起来不像钥匙串链接。","這看起來不像鑰匙串連結。","Eso no parece un enlace de llavero.","Això no sembla un enllaç de clauer."],"forget":["Forget me: delete everything I added","忘记我：删除我添加的一切","忘記我：刪除我新增的一切","Olvídame: borra todo lo que añadí","Oblida'm: esborra tot el que he afegit"],"forgot":["Forgotten. Nothing of yours is left on the shelves.","已忘记。书架上没有你的东西了。","已忘記。書架上沒有你的東西了。","Olvidado. No queda nada tuyo en los estantes.","Oblidat. No queda res teu als prestatges."],"emptyMine":["Your shelf is empty. Lend a book, or ask for one.","你的书架是空的。借出一本，或者借一本。","你的書架是空的。借出一本，或者借一本。","Tu estante está vacío. Presta un libro o pide uno.","El teu prestatge és buit. Deixa un llibre o demana'n un."],"noNet":["Can't reach the shelves. Check your connection.","连不上书架，请检查网络。","連不上書架，請檢查網路。","No se llega a los estantes. Revisa la conexión.","No s'arriba als prestatges. Revisa la connexió."],"e_notyours":["That isn't your book.","这不是你的书。","這不是你的書。","Ese libro no es tuyo.","Aquest llibre no és teu."],"e_many":["That's enough asking for today. Try again tomorrow.","今天问得够多啦，明天再来。","今天問得夠多啦，明天再來。","Ya has pedido bastante por hoy. Vuelve mañana.","Ja n'has demanat prou per avui. Torna demà."],"e_full":["Your shelf is full (40 books).","你的书架满了（40 本）。","你的書架滿了（40 本）。","Tu estante está lleno (40 libros).","El teu prestatge és ple (40 llibres)."],"e_local":["You chose to keep everything on this device. You can change it under Privacy.","你选择了把一切留在这台设备上，可以在“隐私”里改。","你選擇了把一切留在這臺裝置上，可以在“隱私”裡改。","Elegiste guardarlo todo en este dispositivo. Puedes cambiarlo en Privacidad.","Vas triar guardar-ho tot en aquest dispositiu. Ho pots canviar a Privadesa."],"e_own":["That's already your book.","这已经是你的书了。","這已經是你的書了。","Ese libro ya es tuyo.","Aquest llibre ja és teu."],"need":["Fill this in","请填写","請填寫","Rellena esto","Omple això"],"privacy":["Privacy","隐私","隱私","Privacidad","Privadesa"],"p_h":["What goes where","什么去了哪里","什麼去了哪裡","Qué va a dónde","Què va on"],"p1":["Looking around sends nothing about you.","随便逛不会发送任何关于你的信息。","隨便逛不會發送任何關於你的資訊。","Mirar no envía nada sobre ti.","Mirar no envia res sobre tu."],"p2":["No account. This device keeps a random key; Nearby's server keeps only a one-way fingerprint of it.","不用账号。这台设备保存一把随机钥匙，近邻的服务器只保存它的单向指纹。","不用賬號。這臺裝置儲存一把隨機鑰匙，近鄰的伺服器只儲存它的單向指紋。","Sin cuenta. Este dispositivo guarda una llave aleatoria; el servidor de Cerca solo guarda una huella de un solo sentido.","Sense compte. Aquest dispositiu guarda una clau aleatòria; el servidor d'A Prop només en guarda una empremta d'un sol sentit."],"p3":["Everyone sees titles, notes and the names you choose.","所有人都能看到书名、便条和你选的名字。","所有人都能看到書名、便條和你選的名字。","Todos ven títulos, notas y los nombres que eliges.","Tothom veu títols, notes i els noms que tries."],"p4":["Only a book's keeper sees how to reach you, and it's erased 30 days after the handover.","只有书的主人看得到你的联系方式，交接 30 天后删除。","只有書的主人看得到你的聯絡方式，交接 30 天后刪除。","Solo quien guarda el libro ve cómo contactarte, y se borra 30 días después de la entrega.","Només qui guarda el llibre veu com contactar-te, i s'esborra 30 dies després del lliurament."],"p5":["Finding a cover sends only the title to Open Library. Real covers load from there only if you turn them on.","查找封面只会把书名发给 Open Library。真实封面只有在你打开后才会从那里加载。","查詢封面只會把書名發給 Open Library。真實封面只有在你開啟後才會從那裡載入。","Buscar una portada solo envía el título a Open Library. Las portadas reales solo se cargan si las activas.","Cercar una portada només envia el títol a Open Library. Les portades reals només es carreguen si les actives."],"p6":["“Forget me” on your shelf deletes everything you added.","书架里的“忘记我”会删除你添加的一切。","書架裡的“忘記我”會刪除你新增的一切。","«Olvídame» en tu estante borra todo lo que añadiste.","«Oblida'm» al teu prestatge esborra tot el que has afegit."],"pAll":["All of FREE//BUILDER's privacy →","FREE//BUILDER 的全部隐私说明 →","FREE//BUILDER 的全部隱私說明 →","Toda la privacidad de FREE//BUILDER →","Tota la privadesa de FREE//BUILDER →"],"inTown":["Borrowed Pages is also a house in Nearby, next door to the bar.","借来的书也是近邻里的一栋房子，就在酒吧隔壁。","借來的書也是近鄰里的一棟房子，就在酒吧隔壁。","Páginas Prestadas también es una casa en Cerca, al lado del bar.","Pàgines Manllevades també és una casa a A Prop, al costat del bar."],"ah":["After hours","下班以后","下班以後","Fuera de horario","Fora d'hores"],"nearbyLink":["Nearby","近邻","近鄰","Cerca","A Prop"],"walk":["Walk there","走过去","走過去","Ir paseando","Ves-hi a peu"],"same":["Same shelves, same keychain.","同样的书架，同样的钥匙串。","同樣的書架，同樣的鑰匙串。","Los mismos estantes, el mismo llavero.","Els mateixos prestatges, el mateix clauer."],"Miso":["Miso","Miso","Miso","Miso","Miso"],"Yuzu":["Yuzu","Yuzu","Yuzu","Yuzu","Yuzu"],"catLine":["{c} came over from Next Door and found the warmest book.","{c} 从隔壁溜过来，找到了最暖和的那本书。","{c} 從隔壁溜過來，找到了最暖和的那本書。","{c} ha venido desde Al Lado y ha encontrado el libro más calentito.","{c} ha vingut des d'Al Costat i ha trobat el llibre més calentet."]};
+  var LANGS = ["en", "zh", "zh-Hant", "es", "ca"], NAMES = ["English", "简体中文", "繁體中文", "Español", "Català"], SHORT = ["EN", "简中", "繁中", "ES", "CA"];
+  var LOCALE = { en: "en-GB", zh: "zh-CN", "zh-Hant": "zh-TW", es: "es-ES", ca: "ca-ES" };
+  var ROOMS = { attic: ["attic-eaves", "attic-trunk", "attic-skylight"], parlor: ["parlor-top", "parlor-bottom", "parlor-window", "parlor-counter"], garden: ["garden-wall", "garden-bench", "garden-potting"], basement: ["basement-arch", "basement-crates", "basement-steps"] };
+  var ORDER = ["attic", "parlor", "garden", "basement"];
+  var PALETTE = ["#7c2513", "#1e3a5f", "#2f4a2a", "#5a3a6e", "#8a5a1e", "#3d4a52", "#6b1f2f", "#24525a", "#7a6a2a", "#4a2d18", "#2a3d6b", "#7d3c2a", "#c9b38a", "#e3d5b8"];
+  var COLS = "id,title,author,year,cover,room,spot,color,h,w,tilt,lying,wear,note,owner_name,house,handovers,requests,created_at";
+  var KEYS = { d: "fb_device_key", b: "dogeared_key" }, KOK = /^[A-Za-z0-9_-]{32,128}$/;
+  var LEAK = /(\+?\d[\d\s\-().]{6,}\d)|([^\s@]+@[^\s@]+\.[a-z]{2,})/i;
+  var ICON = {
+    attic: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 13 12 4l10 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M5 12v8h14v-8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="2.4" fill="#d9a94e"/></svg>',
+    parlor: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v3H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 14h18v4H3zM5 18v2M19 18v2" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+    garden: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9M12 12c0-4 3-7 7-7 0 4-3 7-7 7zM12 15c0-3-2.5-5.5-6-5.5 0 3 2.5 5.5 6 5.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M5 21h14" stroke="currentColor" stroke-width="2"/></svg>',
+    basement: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V10a9 9 0 0 1 18 0v11" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 21v-4h4v-4h4v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    all: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 20v-5h4v5" fill="none" stroke="currentColor" stroke-width="2"/></svg>'
+  };
+  var STEP = [
+    '<svg viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="14" fill="#e9dcc0"/><rect x="8" y="44" width="40" height="4" fill="#8a5a33"/><rect x="11" y="18" width="7" height="26" fill="#7c2513"/><rect x="19" y="13" width="8" height="31" fill="#1e3a5f"/><rect x="28" y="20" width="6" height="24" fill="#2f4a2a"/><rect x="35" y="16" width="8" height="28" fill="#8a5a1e" transform="rotate(10 39 44)"/></svg>',
+    '<svg viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="14" fill="#f3d9cf"/><rect x="11" y="15" width="34" height="26" rx="3" fill="#fffaf0" stroke="#7c2513" stroke-width="2"/><path d="m12 17 16 12 16-12" fill="none" stroke="#7c2513" stroke-width="2"/><circle cx="41" cy="38" r="7" fill="#2f5a3a"/><path d="m38 38 2 2 4-4" fill="none" stroke="#fff" stroke-width="2"/></svg>',
+    '<svg viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="14" fill="#dfe6d3"/><circle cx="17" cy="18" r="5" fill="#5a3a6e"/><path d="M9 40c0-7 4-12 8-12s8 5 8 12" fill="#5a3a6e"/><circle cx="39" cy="18" r="5" fill="#24525a"/><path d="M31 40c0-7 4-12 8-12s8 5 8 12" fill="#24525a"/><rect x="23" y="26" width="10" height="13" rx="1" fill="#7c2513" transform="rotate(-8 28 32)"/><rect x="24" y="28" width="8" height="1.6" fill="#d9a94e" transform="rotate(-8 28 32)"/></svg>'
+  ];
+  var cfg = { url: "", key: "" }, books = [], live = false, failed = false, mine = null, room = "all", q = "", fFree = false, fNote = false;
+  var view = lsGet("bp_view") === "list" ? "list" : "shelf";
+  var $ = function (s, r) { return (r || document).querySelector(s); }, $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function hash(s) { var h = 2166136261; s = String(s); for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967295; }
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+  function toast(m, ms) { var t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(t._t); t._t = setTimeout(function () { t.classList.remove("on"); }, ms || 3600); }
+  function fold(s) { return String(s || "").toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, ""); }
+
+  /* ---------- five languages (the same choice as the rest of FREE//BUILDER) ---------- */
+  function lang() { var l = (window.FBL && FBL.get && FBL.get()) || lsGet("wm_preferred_lang") || (navigator.language || "en"); if (/^zh-(tw|hk|mo|hant)/i.test(l)) l = "zh-Hant"; else if (/^zh/i.test(l)) l = "zh"; else l = l.slice(0, 2); return LANGS.indexOf(l) >= 0 ? l : "en"; }
+  function t(k, v) { var row = STR[k], s = row ? (row[LANGS.indexOf(lang())] || row[0]) : k; if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]); return s; }
+  function paintWords() {
+    document.documentElement.lang = lang(); document.title = t("docTitle");
+    $$("[data-i]").forEach(function (e) { if (STR[e.dataset.i]) e.textContent = t(e.dataset.i); });
+    $$("[data-ia]").forEach(function (e) { e.setAttribute("aria-label", t(e.dataset.ia)); e.title = t(e.dataset.ia); });
+    $$("[data-ip]").forEach(function (e) { e.placeholder = t(e.dataset.ip); });
+    $("#tagH").innerHTML = esc(t("tag")).replace(/^(\S+\s\S+)/, function (m) { return lang().indexOf("zh") === 0 ? m : "<em>" + m + "</em>"; });
+    $("#langL").textContent = SHORT[LANGS.indexOf(lang())];
+    $("#mineB").setAttribute("aria-label", t("mine"));
+    $("#ahA").href = "https://www.wei-meng.org/after-hours/?fbl=" + lang();
+    roomTabs();
+  }
+  function setLang(l) { if (window.FBL && FBL.set) FBL.set(l); else lsSet("wm_preferred_lang", l); paintWords(); render(); var s = $(".scrim"); if (s && s._redo) s._redo(); }
+  addEventListener("fbl:lang", function () { paintWords(); render(); });
+
+  /* ---------- the keychain: the same keys as Nearby ---------- */
+  function newKey() { var a = new Uint8Array(32); crypto.getRandomValues(a); return btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+  function key(create) { var k = lsGet(KEYS.b); if ((!k || !KOK.test(k)) && create) { k = newKey(); lsSet(KEYS.b, k); } return k && KOK.test(k) ? k : null; }
+  function b64u(s) { return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+  function unb64u(s) { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return decodeURIComponent(escape(atob(s))); }
+  function keyLink() { if (!KOK.test(lsGet(KEYS.d) || "")) lsSet(KEYS.d, newKey()); var o = {}; for (var k in KEYS) { var v = lsGet(KEYS[k]); if (v) o[k] = v; } return location.origin + "/borrowed-pages/#keys=k1." + b64u(JSON.stringify(o)); }
+  function keyImport(text) {   /* takes a Nearby keychain link (k1), or Borrowed Pages' older single key (#key=…) */
+    text = String(text || "").trim();
+    var m = /k1\.([A-Za-z0-9_-]{20,600})/.exec(text), o = null;
+    if (m) { try { o = JSON.parse(unb64u(m[1])); } catch (e) { return false; } if (!o || !o.d || !KOK.test(o.d)) return false; }
+    else { var k = /(?:key=)?([A-Za-z0-9_-]{32,128})$/.exec(text); if (!k) return false; o = { b: k[1] }; }
+    var old = []; try { old = JSON.parse(lsGet("fb_keys_old") || "[]"); } catch (e) {}
+    var cur = {}; for (var x in KEYS) { var v = lsGet(KEYS[x]); if (v) cur[x] = v; }
+    if ((cur.d && o.d && cur.d !== o.d) || (cur.b && o.b && cur.b !== o.b)) { old.unshift(cur); lsSet("fb_keys_old", JSON.stringify(old.slice(0, 5))); }
+    for (var y in KEYS) if (o[y] && KOK.test(o[y])) lsSet(KEYS[y], o[y]);
+    ["fb_my_pets", "fb_pets_v"].forEach(function (z) { try { localStorage.removeItem(z); sessionStorage.removeItem(z); } catch (e) {} });
+    return true;
+  }
+  (function arriving() {
+    var m = /[#&](keys=k1\.[A-Za-z0-9_-]+|key=[A-Za-z0-9_-]{32,128})/.exec(location.hash); if (!m) return;
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    if (keyImport(m[1].replace(/^keys=/, ""))) setTimeout(function () { toast("🗝️ " + t("keyHere"), 5000); refreshMine(); }, 700);
+  })();
+
+  /* ---------- data ---------- */
+  function rest(path, opt) {
+    opt = opt || {};
+    return fetch(cfg.url + "/rest/v1/" + path, { method: opt.method || "GET", headers: { apikey: cfg.key, Authorization: "Bearer " + cfg.key, "Content-Type": "application/json" }, body: opt.body ? JSON.stringify(opt.body) : undefined })
+      .then(function (r) { return r.text().then(function (x) { var j = null; try { j = x ? JSON.parse(x) : null; } catch (e) {} if (!r.ok) throw new Error((j && (j.message || j.hint)) || ("HTTP " + r.status)); return j; }); });
+  }
+  function rpc(fn, args) { return rest("rpc/" + fn, { method: "POST", body: args }); }
+  function load() {
+    if (!cfg.url) { failed = true; render(); return Promise.resolve(); }
+    return rest("town_books_shelf?select=" + COLS + "&order=created_at.asc").then(function (rows) { live = true; failed = false; books = (rows || []).filter(function (b) { return !b.house; }); render(); })
+      .catch(function () { failed = !live; render(); });
+  }
+  function refreshMine() {
+    var k = key(false); if (!k || !cfg.url) { mine = null; paintMine(); return Promise.resolve(); }
+    return rpc("book_mine", { p_secret: k }).then(function (j) { mine = j; paintMine(); render(); }).catch(function () { mine = null; paintMine(); });
+  }
+  function waitingAsks() { var a = []; if (mine && mine.books) mine.books.forEach(function (b) { (b.asks || []).forEach(function (q) { a.push({ q: q, b: b }); }); }); return a; }
+  function paintMine() { var n = waitingAsks().length; $("#mineDot").hidden = !n; $("#mineB").setAttribute("aria-label", t("mine") + (n ? " · " + t("waiting") : "")); }
+  function isMine(b) { return !!(mine && mine.books && mine.books.some(function (x) { return x.id === b.id; })); }
+  function myAsk(b) { return mine && mine.asks && mine.asks.filter(function (x) { return x.book === b.id && x.status === "open"; })[0]; }
+  function friendly(x) {
+    var m = String(x && x.message || x);
+    if (/kept on this device|fbc-block|FB_BLOCK/i.test(m)) return t("e_local");
+    if (/Failed to fetch|NetworkError|Load failed|network/i.test(m)) return t("noNet");
+    if (/not your book/.test(m)) return t("e_notyours"); if (/too many requests/.test(m)) return t("e_many"); if (/shelf full/.test(m)) return t("e_full");
+    if (/already your book/.test(m)) return t("e_own");
+    return t("offline");
+  }
+
+  /* ---------- how a book looks ---------- */
+  function lum(hex) { var n = parseInt(hex.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255; }
+  function shade(hex, p) { var n = parseInt(hex.slice(1), 16), f = function (v) { return Math.max(0, Math.min(255, Math.round(v * (100 + p) / 100))); }; return "rgb(" + f(n >> 16) + "," + f((n >> 8) & 255) + "," + f(n & 255) + ")"; }
+  function colour(b) { return /^#[0-9a-f]{6}$/i.test(b.color || "") ? b.color : PALETTE[Math.floor(hash(String(b.id) + b.title) * 12)]; }
+  function vars(c) { var light = lum(c) > 0.62; return "--c:" + c + ";--c2:" + shade(c, -26) + ";--tc:" + (light ? "#2a1d14" : "#fbf1dc") + ";--gild:" + (light ? "#8a5a1e" : "#d9b45e"); }
+  function coversOk() { return lsGet("fb_bp_covers") === "1"; }
+  function cover(b) { var c = colour(b), img = b.cover && coversOk(); return '<div class="cover' + (img ? " img" : "") + '" style="' + vars(c) + (img ? ";background-image:url(" + esc(b.cover) + ")" : "") + '"><span class="ct">' + esc(b.title) + '</span><span class="ca">' + esc(b.author || "") + "</span></div>"; }
+  function spine(b) {
+    var c = colour(b), r = hash(String(b.id) + b.title), h = Math.round(Math.max(112, Math.min(162, (b.h || 120 + r * 60) * 0.92))), w = Math.round(Math.max(20, Math.min(46, (b.w || 20 + hash(b.title) * 18) * 1.1)));
+    var tilt = b.tilt != null ? Math.max(-7, Math.min(7, +b.tilt)) : (r < 0.15 ? -5 : (r - 0.5) * 2), me = isMine(b), asked = myAsk(b);
+    var label = b.title + (b.author ? ", " + b.author : "") + " · " + t("keeper", { x: b.owner_name }) + (me ? " · " + t("yours") : asked ? " · " + t("youAsked") : b.requests ? " · " + t("asked") : "");
+    return '<div class="slot"><button type="button" class="bk' + (w > 34 ? " wide" : "") + '" data-id="' + esc(b.id) + '" aria-label="' + esc(label) + '" style="' + vars(c) + ";--h:" + h + "px;--w:" + w + "px;transform:rotate(" + tilt.toFixed(1) + 'deg)"><span class="t">' + esc(b.title) + "</span>" +
+      (b.requests && !me ? '<span class="rib" aria-hidden="true"></span>' : "") + (me ? '<span class="mk" aria-hidden="true"></span>' : asked ? '<span class="mk req" aria-hidden="true"></span>' : "") + "</button></div>";
+  }
+  function addSlot(r) { return '<div class="slot"><button type="button" class="bk add" data-add="' + r + '" style="--h:120px;--w:34px" aria-label="' + esc(t("lend")) + " · " + esc(t(r)) + '">+</button></div>'; }
+
+  /* ---------- the house ---------- */
+  function visible() {
+    var f = fold(q);
+    return books.filter(function (b) {
+      if (room !== "all" && b.room !== room) return false;
+      if (fFree && (b.requests || isMine(b))) return false;
+      if (fNote && !b.note) return false;
+      if (f && fold([b.title, b.author, b.note, b.owner_name, b.year].join(" ")).indexOf(f) < 0) return false;
+      return true;
+    });
+  }
+  function roomTabs() {
+    $("#rooms").innerHTML = ["all"].concat(ORDER).map(function (r) { return '<button type="button" role="tab" data-room="' + r + '" aria-selected="' + (r === room) + '">' + ICON[r] + esc(t(r)) + "</button>"; }).join("");
+  }
+  function catHere() {   /* Miso and Yuzu wander in from Next Door, as they do in the town; at night they sleep on the books */
+    try { if (!window.FBWorld || !FBWorld.cats || !FBWorld.petSvg) return null; var cw = FBWorld.cats(), k = ["miso", "yuzu"].filter(function (x) { return cw[x] === "books"; })[0]; if (!k) return null;
+      var h = FBWorld.hour ? FBWorld.hour() : new Date().getHours(); return { k: k, asleep: h >= 23 || h < 6 || hash(k + new Date().getHours()) < 0.5 }; } catch (e) { return null; }
+  }
+  function render(highlight) {
+    var H = $("#house"); if (!H) return;
+    if (!live && !failed) return;
+    if (failed && !books.length) { H.innerHTML = '<div class="empty">' + emptyArt() + "<p>" + esc(t("offline")) + '</p><button class="btn" type="button" id="retry">' + esc(t("retry")) + "</button></div>"; $("#retry").onclick = function () { H.innerHTML = '<div class="skel"></div>'; failed = false; load().then(refreshMine); }; return; }
+    var list = visible(), filtering = q || fFree || fNote;
+    if (!books.length) { H.innerHTML = '<div class="empty">' + emptyArt() + "<p>" + esc(t("emptyHouse")) + '</p><button class="btn pri" type="button" data-add="parlor">' + esc(t("lend")) + "</button></div>"; return; }
+    if (!list.length && filtering) { H.innerHTML = '<div class="empty">' + emptyArt() + "<p>" + esc(t("noMatch")) + '</p><button class="btn" type="button" data-add="' + (room === "all" ? "parlor" : room) + '">' + esc(t("lend")) + "</button></div>"; return; }
+    var cat = catHere(), catRoom = cat ? ORDER[Math.floor(hash(cat.k + new Date().toDateString()) * 4)] : null;
+    H.classList.remove("two");
+    if (view === "list") {
+      list = list.slice().sort(function (a, b) { return String(b.created_at).localeCompare(String(a.created_at)); });
+      H.innerHTML = '<div class="grid">' + list.map(function (b) {
+        var me = isMine(b), asked = myAsk(b);
+        return '<button type="button" class="card" data-id="' + esc(b.id) + '">' + cover(b) + "<div><b>" + esc(b.title) + '</b><span class="by">' + esc([b.author, b.year].filter(Boolean).join(" · ")) + "</span>" +
+          (b.note ? '<div class="nt">' + esc(b.note) + "</div>" : "") + '<div class="tags"><span class="tag">' + ICON[b.room].replace("<svg", '<svg width="14" height="14"') + esc(t(b.room)) + "</span>" +
+          (me ? '<span class="tag m">' + esc(t("yours")) + "</span>" : asked ? '<span class="tag a">' + esc(t("youAsked")) + "</span>" : b.requests ? '<span class="tag a">' + esc(t("asked")) + "</span>" : '<span class="tag">' + esc(t("keeper", { x: b.owner_name })) + "</span>") + "</div></div></button>";
+      }).join("") + "</div>";
+    } else {
+      var rooms = room === "all" ? ORDER : [room]; H.classList.toggle("two", rooms.length > 1);
+      H.innerHTML = rooms.map(function (r) {
+        var inR = list.filter(function (b) { return b.room === r; }).sort(function (a, b) { return hash(a.id) - hash(b.id); });
+        if (!inR.length && filtering) return "";
+        var c = cat && catRoom === r ? '<button type="button" class="cat" id="cat" aria-label="' + esc(t(cat.k === "miso" ? "Miso" : "Yuzu")) + '">' + FBWorld.petSvg(cat.k, { asleep: cat.asleep }) + "</button>" : "";
+        return '<section class="rm" id="rm-' + r + '"><div class="rmh"><div><h2>' + ICON[r] + esc(t(r)) + '</h2><p class="line">' + esc(t("r_" + r)) + "</p></div></div>" +
+          '<div class="case">' + c + '<div class="shelf">' + inR.map(spine).join("") + (filtering ? "" : addSlot(r)) + "</div></div>" + (!inR.length ? '<p class="line" style="margin-top:10px">' + esc(t("emptyRoom")) + "</p>" : "") + "</section>";
+      }).join("");
+    }
+    if (highlight) { var el = $('[data-id="' + highlight + '"]', H); if (el) { el.classList.add("new"); el.scrollIntoView({ block: "center", behavior: "smooth" }); } }
+  }
+  function emptyArt() { return '<svg viewBox="0 0 120 70" aria-hidden="true"><rect x="4" y="60" width="112" height="6" rx="1" fill="#8a5a33"/><rect x="20" y="22" width="12" height="38" rx="1" fill="none" stroke="#b8862e" stroke-width="2" stroke-dasharray="4 3"/><rect x="38" y="30" width="10" height="30" fill="#7c2513" transform="rotate(-14 43 60)"/><circle cx="86" cy="52" r="8" fill="#231b17"/><path d="M80 46l2-6 3 5M92 46l-2-6-3 5" fill="#231b17"/><path d="M94 56c6 0 8-4 6-8" stroke="#231b17" stroke-width="3" fill="none" stroke-linecap="round"/></svg>'; }
+
+  /* ---------- dialogs ---------- */
+  var lastFocus = null;
+  function sheet(html, cls, redo) {
+    var s0 = $(".scrim"); if (s0) s0.remove(); else lastFocus = document.activeElement;
+    var s = document.createElement("div"); s.className = "scrim"; s._redo = redo; var at0 = Date.now();
+    s.innerHTML = '<div class="sheet ' + (cls || "") + '" role="dialog" aria-modal="true"><span class="grab" aria-hidden="true"></span><button class="x" type="button" aria-label="' + esc(t("close")) + '">×</button>' + html + "</div>";
+    document.body.appendChild(s); document.body.style.overflow = "hidden";
+    s.addEventListener("click", function (e) { if (Date.now() - at0 < 400) return; if (e.target === s || e.target.closest(".x")) close(); });
+    var h = s.querySelector("h3"); if (h) { h.id = "dlgh"; s.firstChild.setAttribute("aria-labelledby", "dlgh"); }
+    var f = s.querySelector("input:not([type=hidden]),textarea"); if (f && matchMedia("(pointer:fine)").matches) setTimeout(function () { f.focus(); }, 80); else setTimeout(function () { var d = s.firstChild; d.tabIndex = -1; d.style.outline = "none"; d.focus({ preventScroll: true }); }, 60);
+    return s.querySelector(".sheet");
+  }
+  function close() { var s = $(".scrim"); if (s) s.remove(); document.body.style.overflow = ""; if (lastFocus && lastFocus.focus) try { lastFocus.focus({ preventScroll: true }); } catch (e) {} if (/[?&]book=/.test(location.search)) try { history.replaceState(null, "", location.pathname); } catch (e) {} }
+  addEventListener("keydown", function (e) { if (e.key === "Escape") { if ($(".langm")) closeLang(); else close(); } });
+  function bad(el) { el.setAttribute("aria-invalid", "true"); el.focus(); el.addEventListener("input", function () { el.removeAttribute("aria-invalid"); }, { once: true }); }
+  function busy(f, on) { $$("button", f).forEach(function (b) { if (!b.classList.contains("x")) b.disabled = on; }); }
+  function confirmTwice(btn) { if (btn.dataset.armed) return true; btn.dataset.armed = "1"; var o = btn.textContent; btn.textContent = t("sure"); setTimeout(function () { delete btn.dataset.armed; btn.textContent = o; }, 3500); return false; }
+  function date(d) { try { return new Date(d).toLocaleDateString(LOCALE[lang()], { month: "short", year: "numeric" }); } catch (e) { return ""; } }
+  function bookUrl(b) { return location.origin + "/borrowed-pages/?book=" + encodeURIComponent(b.id); }
+  function share(text, url) {
+    if (navigator.share) return navigator.share({ text: text, url: url }).catch(function () {});
+    var all = text + " " + url; if (navigator.clipboard) navigator.clipboard.writeText(all).then(function () { toast(t("copied")); }, function () { prompt("", all); }); else prompt("", all);
+  }
+
+  /* the welcome: three steps, once (? shows it again) */
+  function welcome() {
+    lsSet("bp_app_seen", "1");
+    var s = sheet("<h3>" + esc(t("w_h")) + '</h3><ol class="steps">' + [1, 2, 3].map(function (i) { return "<li>" + STEP[i - 1] + "<div><b>" + esc(t("w_" + i + "h")) + "</b><span>" + esc(t("w_" + i)) + "</span></div></li>"; }).join("") +
+      '</ol><p class="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>' + esc(t("w_none")) + '</p><div class="acts"><button class="btn pri" type="button" data-go>' + esc(t("w_go")) + '</button><button class="btn" type="button" data-lend>' + esc(t("w_lend")) + "</button></div>", "narrow", welcome);
+    $("[data-go]", s).onclick = close; $("[data-lend]", s).onclick = function () { lendForm(); };
+  }
+
+  /* a book */
+  function openBook(id) {
+    var b = books.filter(function (x) { return String(x.id) === String(id); })[0];
+    if (!b) { if (live) toast(t("notFound")); return; }
+    try { history.replaceState(null, "", location.pathname + "?book=" + encodeURIComponent(b.id)); } catch (e) {}
+    var me = isMine(b), asked = myAsk(b);
+    var acts = me ? '<button class="btn pri" type="button" data-act="mine">' + esc(t("mine")) + '</button><button class="btn" type="button" data-act="edit">✎ ' + esc(t("edit")) + "</button>"
+      : '<button class="btn pri" type="button" data-act="ask">' + esc(asked ? t("wantAgain") : t("want")) + "</button>";
+    var s = sheet('<div class="book"><div class="bc">' + cover(b) + '</div><div class="bi"><h3>' + esc(b.title) + '</h3><div class="meta">' + esc([b.author, b.year].filter(Boolean).join(" · ")) + '</div><span class="roomline">' + ICON[b.room] + esc(t(b.room)) + "</span>" +
+      '<div class="tags">' + (me ? '<span class="tag m">' + esc(t("yours")) + "</span>" : asked ? '<span class="tag a">' + esc(t("youAsked")) + "</span>" : b.requests ? '<span class="tag a">' + esc(t("asked")) + "</span>" : "") + '</div></div><div class="bn">' +
+      (b.note ? '<div class="note">' + esc(b.note) + '<span class="sig">— ' + esc(b.owner_name) + "</span></div>" : '<div class="note blank">' + esc(t("noNote")) + '<span class="sig">— ' + esc(b.owner_name) + "</span></div>") +
+      '<div class="lcard"><h4>' + esc(t("keepers")) + '</h4><ol id="lin"><li class="cur">' + esc(b.owner_name) + " <small>" + esc(t("now")) + "</small></li></ol></div>" +
+      '<div class="acts">' + acts + '</div><button class="quiet" type="button" data-act="share">↗ ' + esc(t("share")) + "</button>" +
+      (b.cover ? ' <button class="quiet" type="button" data-act="covers" style="margin-left:14px">' + esc(coversOk() ? t("coversOff") : t("covers")) + "</button>" : "") + "</div></div>", "", function () { openBook(id); });
+    rest("town_books_lineage?select=owner_name,line,since&book_id=eq." + encodeURIComponent(b.id) + "&order=since.asc").then(function (rows) {
+      var L = $("#lin", s); if (!rows || !rows.length || !L) return;
+      L.innerHTML = rows.map(function (r, i) { var cur = i === rows.length - 1; return "<li" + (cur ? ' class="cur"' : "") + ">" + esc(r.owner_name) + " <small>" + esc(i ? t("l_hand") : t("l_in")) + " · " + esc(date(r.since)) + (cur ? " · " + esc(t("now")) : "") + "</small></li>"; }).join("");
+    }).catch(function () {});
+    s.addEventListener("click", function (e) {
+      var a = e.target.closest("[data-act]"); if (!a) return;
+      var k = a.dataset.act;
+      if (k === "ask") askForm(b); if (k === "edit") editForm(b); if (k === "mine") myShelf();
+      if (k === "share") share(t("shareLine", { t: b.title }), bookUrl(b));
+      if (k === "covers") { lsSet("fb_bp_covers", coversOk() ? null : "1"); render(); openBook(id); }
+    });
+  }
+  function penName() { return lsGet("dogeared_name") || lsGet("fb_nick") || ""; }
+  function head(b) { return '<div class="item" style="border:0;padding-top:0"><div style="width:44px">' + cover(b) + "</div><div><b>" + esc(b.title) + '</b><div class="s">' + esc(t("keeper", { x: b.owner_name })) + "</div></div></div>"; }
+
+  /* asking */
+  function askForm(b) {
+    var s = sheet('<form class="f" novalidate><h3>' + esc(t("askH", { x: b.owner_name })) + "</h3>" + head(b) +
+      '<label class="fld"><span>' + esc(t("penName")) + '</span><input id="an" maxlength="32" autocomplete="nickname" value="' + esc(penName()) + '"></label>' +
+      '<label class="fld"><span>' + esc(t("reach", { x: b.owner_name })) + '</span><input id="ac" maxlength="120" placeholder="' + esc(t("reachPh")) + '"></label>' +
+      '<div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>' + esc(t("onlyX", { x: b.owner_name })) + "</span></div>" +
+      '<label class="fld"><span>' + esc(t("msg", { x: b.owner_name })) + '</span><textarea id="am" class="paper" maxlength="300" placeholder="' + esc(t("msgPh")) + '"></textarea></label>' +
+      '<div class="warnl" id="ae" role="alert"></div><div class="acts"><button class="btn pri" type="submit">' + esc(t("send")) + "</button></div></form>", "narrow", function () { askForm(b); });
+    $("form", s).onsubmit = function (e) {
+      e.preventDefault(); var f = this, n = $("#an", s), c = $("#ac", s);
+      if (!n.value.trim()) return bad(n); if (c.value.trim().length < 3) return bad(c);
+      lsSet("dogeared_name", n.value.trim()); busy(f, true);
+      rpc("book_ask", { p_secret: key(true), p_id: b.id, p_name: n.value.trim(), p_contact: c.value.trim(), p_message: $("#am", s).value.trim() }).then(function () {
+        sheet("<h3>" + esc(t("nextH", { x: b.owner_name })) + '</h3><ol class="steps">' + ["next1", "next2", "next3"].map(function (k, i) { return "<li>" + STEP[i] + "<div><span>" + esc(t(k, { x: b.owner_name })) + "</span></div></li>"; }).join("") + '</ol><div class="acts"><button class="btn pri" type="button" data-ok>' + esc(t("ok")) + "</button></div>", "narrow");
+        $(".scrim [data-ok]").onclick = close;
+        return load().then(refreshMine);
+      }).catch(function (x) { busy(f, false); $("#ae", s).textContent = friendly(x); });
+    };
+  }
+
+  /* lending */
+  function roomPick(cur) { return '<div class="four" id="rm" role="group">' + ORDER.map(function (r) { return '<button type="button" data-r="' + r + '" aria-pressed="' + (r === cur) + '">' + ICON[r] + esc(t(r)) + "</button>"; }).join("") + "</div>"; }
+  function bindRoom(s, set) { $("#rm", s).onclick = function (e) { var x = e.target.closest("button"); if (!x) return; $$("#rm button", s).forEach(function (y) { y.setAttribute("aria-pressed", String(y === x)); }); set(x.dataset.r); }; }
+  function lendForm(r0, keep) {
+    keep = keep || {}; var rm = keep.room || (r0 && ORDER.indexOf(r0) >= 0 ? r0 : room !== "all" ? room : "parlor"), color = keep.color || PALETTE[Math.floor(Math.random() * 12)], cov = keep.cover || "", year = keep.year || "";
+    var s = sheet('<form class="f" novalidate><h3>' + esc(t("lendH")) + '</h3><p class="sub">' + esc(t("lendSub")) + "</p>" +
+      '<div class="lendg"><div id="pv"></div><div class="f">' +
+      '<label class="fld"><span>' + esc(t("title")) + '</span><span class="ir"><input id="tt" maxlength="120"><button class="btn sm" type="button" id="find">' + esc(t("find")) + '</button></span><small>' + esc(t("findHint")) + '</small></label><div class="found" id="fd"></div>' +
+      '<label class="fld"><span>' + esc(t("author")) + '</span><input id="ta" maxlength="80"></label></div></div>' +
+      '<div class="fld"><span>' + esc(t("colour")) + '</span><div class="sw" id="sw">' + PALETTE.map(function (c) { return '<button type="button" data-c="' + c + '" style="background:' + c + '" aria-pressed="' + (c === color) + '" aria-label="' + c + '"></button>'; }).join("") + "</div></div>" +
+      '<div class="fld"><span>' + esc(t("room")) + "</span>" + roomPick(rm) + "</div>" +
+      '<label class="fld"><span>' + esc(t("noteLbl")) + '</span><textarea id="tn" class="paper" maxlength="500" placeholder="' + esc(t("notePh")) + '"></textarea><small id="lk">' + esc(t("everyone")) + "</small></label>" +
+      '<label class="fld"><span>' + esc(t("penName")) + '</span><input id="tp" maxlength="32" autocomplete="nickname" value="' + esc(penName()) + '"></label>' +
+      '<div class="warnl" id="te" role="alert"></div><div class="acts"><button class="btn pri" type="submit">' + esc(t("put")) + "</button></div></form>", "", function () { lendForm(rm, grab()); });
+    function grab() { return { t: $("#tt", s).value, a: $("#ta", s).value, n: $("#tn", s).value, p: $("#tp", s).value, color: color, cover: cov, year: year, room: rm }; }
+    if (keep.t != null) { $("#tt", s).value = keep.t; $("#ta", s).value = keep.a; $("#tn", s).value = keep.n; $("#tp", s).value = keep.p; }
+    function paint() {
+      $("#pv", s).innerHTML = cover({ id: "new", title: $("#tt", s).value || t("title"), author: $("#ta", s).value, color: color, cover: cov });
+      if (cov) { var c = $("#pv .cover", s); c.classList.add("img"); c.style.backgroundImage = "url(" + cov + ")"; }
+      var lk = $("#lk", s), leak = LEAK.test($("#tn", s).value); lk.textContent = leak ? t("leak") : t("everyone"); lk.style.color = leak ? "var(--accent)" : "";
+    }
+    paint();
+    $("#tt", s).addEventListener("input", function () { cov = ""; year = ""; paint(); }); $("#ta", s).addEventListener("input", paint); $("#tn", s).addEventListener("input", paint);
+    $("#sw", s).onclick = function (e) { var x = e.target.closest("button"); if (!x) return; color = x.dataset.c; $$("#sw button", s).forEach(function (y) { y.setAttribute("aria-pressed", String(y === x)); }); paint(); };
+    bindRoom(s, function (r) { rm = r; });
+    $("#find", s).onclick = function () {   /* Open Library: only the title, to openlibrary.org */
+      var qq = $("#tt", s).value.trim(); if (qq.length < 2) return bad($("#tt", s)); var fd = $("#fd", s); fd.innerHTML = '<span class="hint">…</span>';
+      fetch("https://openlibrary.org/search.json?limit=8&fields=title,author_name,first_publish_year,cover_i&title=" + encodeURIComponent(qq)).then(function (r) { return r.json(); }).then(function (j) {
+        var docs = ((j && j.docs) || []).filter(function (d) { return d.cover_i; }).slice(0, 6);
+        if (!docs.length) { fd.innerHTML = '<span class="hint">' + esc(t("noCover")) + "</span>"; return; }
+        fd.innerHTML = docs.map(function (d, i) { return '<button type="button" data-n="' + i + '" aria-pressed="false" title="' + esc(d.title + " · " + ((d.author_name || [])[0] || "") + " " + (d.first_publish_year || "")) + '"><img alt="' + esc(d.title) + '" src="https://covers.openlibrary.org/b/id/' + d.cover_i + '-S.jpg"></button>'; }).join("");
+        fd.onclick = function (e) { var bt = e.target.closest("button"); if (!bt) return; var d = docs[+bt.dataset.n]; $$("button", fd).forEach(function (x) { x.setAttribute("aria-pressed", String(x === bt)); });
+          $("#tt", s).value = d.title; $("#ta", s).value = (d.author_name || [])[0] || ""; year = d.first_publish_year ? String(d.first_publish_year) : ""; cov = "https://covers.openlibrary.org/b/id/" + d.cover_i + "-M.jpg"; paint(); };
+      }).catch(function () { fd.innerHTML = '<span class="hint">' + esc(t("offCover")) + "</span>"; });
+    };
+    $("form", s).onsubmit = function (e) {
+      e.preventDefault(); var f = this, tt = $("#tt", s), tp = $("#tp", s);
+      if (!tt.value.trim()) return bad(tt); if (!tp.value.trim()) return bad(tp);
+      lsSet("dogeared_name", tp.value.trim()); busy(f, true);
+      var spots = ROOMS[rm], spot = spots[Math.floor(Math.random() * spots.length)], rr = Math.random(), title = tt.value.trim();
+      rpc("book_add", { p_secret: key(true), p_name: tp.value.trim(), p_title: title, p_author: $("#ta", s).value.trim(), p_year: year, p_cover: cov, p_room: rm, p_spot: spot,
+        p_color: color, p_h: Math.round(130 + rr * 55), p_w: Math.round(20 + Math.random() * 18), p_tilt: +((Math.random() - 0.5) * (Math.random() < 0.2 ? 10 : 3)).toFixed(1), p_lying: false, p_wear: "", p_note: $("#tn", s).value.trim() })
+        .then(function (id) {
+          close(); room = rm; roomTabs(); toast(t("placed"));
+          return refreshMine().then(load).then(function () {
+            render(id);
+            setTimeout(function () { var b = books.filter(function (x) { return x.id === id; })[0]; if (!b) return;
+              var s2 = sheet("<h3>" + esc(t("placed")) + "</h3>" + head(b) + '<div class="acts"><button class="btn pri" type="button" data-sh>↗ ' + esc(t("placedShare")) + '</button><button class="btn" type="button" data-ok>' + esc(t("ok")) + "</button></div>", "narrow");
+              $("[data-sh]", s2).onclick = function () { share(t("madeLine", { t: b.title }), bookUrl(b)); }; $("[data-ok]", s2).onclick = close; }, 900);
+          });
+        }).catch(function (x) { busy(f, false); $("#te", s).textContent = friendly(x); });
+    };
+  }
+  function editForm(b) {
+    var rm = b.room;
+    var s = sheet('<form class="f" novalidate><h3>✎ ' + esc(t("edit")) + "</h3>" + head(b) + '<label class="fld"><span>' + esc(t("noteLbl")) + '</span><textarea id="en" class="paper" maxlength="500">' + esc(b.note || "") + '</textarea><small id="lk">' + esc(t("everyone")) + "</small></label>" +
+      '<div class="fld"><span>' + esc(t("room")) + "</span>" + roomPick(rm) + '</div><div class="warnl" id="ee" role="alert"></div><div class="acts"><button class="btn pri" type="submit">' + esc(t("save")) + '</button><button class="btn warn" type="button" data-rm>' + esc(t("remove")) + "</button></div></form>", "narrow", function () { editForm(b); });
+    $("#en", s).addEventListener("input", function () { var l = LEAK.test(this.value); $("#lk", s).textContent = l ? t("leak") : t("everyone"); $("#lk", s).style.color = l ? "var(--accent)" : ""; });
+    bindRoom(s, function (r) { rm = r; });
+    $("form", s).onsubmit = function (e) { e.preventDefault(); var f = this; busy(f, true); var spot = rm === b.room ? null : ROOMS[rm][Math.floor(Math.random() * ROOMS[rm].length)];
+      rpc("book_edit", { p_secret: key(false), p_id: b.id, p_note: $("#en", s).value, p_room: rm, p_spot: spot }).then(function () { close(); toast(t("saved")); return load(); }).catch(function (x) { busy(f, false); $("#ee", s).textContent = friendly(x); }); };
+    $("[data-rm]", s).onclick = function () { if (!confirmTwice(this)) return; rpc("book_remove", { p_secret: key(false), p_id: b.id }).then(function () { close(); toast(t("removed")); return refreshMine().then(load); }).catch(function (x) { $("#ee", s).textContent = friendly(x); }); };
+  }
+
+  /* my shelf: who's waiting on me first, then what I lend, what I asked for, the keychain */
+  function keysBlock() {
+    return '<div class="sec"><h4>🗝️ ' + esc(t("keysH")) + '</h4><div class="keybox"><p>' + esc(t("keysP")) + '</p><div class="acts" style="margin-top:0"><button class="btn sm" type="button" id="kc">' + esc(t("copyLink")) + '</button><button class="btn sm" type="button" id="kq">' + esc(t("showQr")) + '</button></div><div id="qrb"></div><p class="small" style="margin:10px 0 0">' + esc(t("keysWarn")) + "</p>" +
+      '<details><summary>' + esc(t("haveKey")) + '</summary><div class="ir"><input id="pk" style="min-height:44px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-size:16px" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="' + esc(t("keyPh")) + '"><button class="btn sm" type="button" id="pkb">' + esc(t("open")) + "</button></div></details></div></div>";
+  }
+  function bindKeys(s) {
+    $("#kc", s).onclick = function () { var l = keyLink(), b = this; if (navigator.clipboard) navigator.clipboard.writeText(l).then(function () { b.textContent = t("copied"); }, function () { prompt("", l); }); else prompt("", l); };
+    $("#kq", s).onclick = function () {
+      var box = $("#qrb", s), draw = function () { var svg = window.FBTake && FBTake.qrSvg ? FBTake.qrSvg(keyLink(), t("keysH")) : null; box.innerHTML = svg ? '<div class="qr">' + svg + "</div>" : ""; };
+      if (window.FBTake) return draw(); var sc = document.createElement("script"); sc.src = "/little-things/take.js?v=1"; sc.onload = draw; document.head.appendChild(sc);
+    };
+    $("#pkb", s).onclick = function () { var inp = $("#pk", s); if (keyImport(inp.value)) { toast("🗝️ " + t("keyHere")); refreshMine().then(load).then(myShelf); } else { bad(inp); toast(t("badKey")); } };
+  }
+  function myShelf() {
+    var k = key(false);
+    if (!k) { var s0 = sheet("<h3>" + esc(t("mine")) + '</h3><p class="sub">' + esc(t("emptyMine")) + '</p><div class="acts"><button class="btn pri" type="button" data-lend>' + esc(t("lend")) + "</button></div>" + keysBlock(), "narrow", myShelf); $("[data-lend]", s0).onclick = function () { lendForm(); }; bindKeys(s0); return; }
+    var s = sheet("<h3>" + esc(t("mine")) + '</h3><div id="ms"><div class="skel" style="height:120px"></div></div>' + keysBlock(), "narrow", myShelf);
+    bindKeys(s);
+    refreshMine().then(function () {
+      var M = $("#ms", s); if (!M) return;
+      if (!mine) { M.innerHTML = '<p class="sub">' + esc(t("shelfDown")) + "</p>"; return; }
+      var W = waitingAsks(), h = "";
+      h += '<div class="sec"><h4>' + esc(t("waiting")) + "</h4>" + (W.length ? W.map(function (x) {
+        var full = books.filter(function (y) { return y.id === x.b.id; })[0] || x.b;
+        return '<div class="item"><div>' + cover(full) + "</div><div><b>" + esc(x.b.title) + '</b><div class="ask"><span class="who">' + esc(t("wantsIt", { x: x.q.name })) + '</span><span class="c">' + esc(x.q.contact) + "</span>" + (x.q.message ? "<q>" + esc(x.q.message) + "</q>" : "") +
+          '<div class="acts"><button class="btn sm pri" type="button" data-give="' + esc(x.q.id) + '" data-who="' + esc(x.q.name) + '">' + esc(t("handed")) + '</button><button class="btn sm" type="button" data-no="' + esc(x.q.id) + '">' + esc(t("notThis")) + "</button></div></div></div></div>";
+      }).join("") : '<p class="small">' + esc(t("waitingNone")) + "</p>") + "</div>";
+      h += '<div class="sec"><h4>' + esc(t("lending")) + "</h4>" + (mine.books.length ? mine.books.map(function (b) {
+        var full = books.filter(function (y) { return y.id === b.id; })[0] || b;
+        return '<div class="item"><div>' + cover(full) + '</div><div><b>' + esc(b.title) + '</b><div class="s">' + esc(t(b.room)) + '</div><button class="quiet" type="button" data-open="' + esc(b.id) + '" style="margin-top:2px">' + esc(t("edit")) + "</button></div></div>";
+      }).join("") : '<p class="small">' + esc(t("lendingNone")) + '</p><div class="acts" style="margin-top:6px"><button class="btn sm" type="button" data-lend>' + esc(t("lend")) + "</button></div>") + "</div>";
+      h += '<div class="sec"><h4>' + esc(t("askedFor")) + "</h4>" + (mine.asks.length ? mine.asks.map(function (x) {
+        return '<div class="item" style="grid-template-columns:1fr"><div><b>' + esc(x.title) + '</b> <span class="tag' + (x.status === "open" ? " a" : x.status === "done" ? " m" : "") + '">' + esc(t("st_" + x.status)) + "</span>" + (x.status === "open" ? ' <button class="quiet" type="button" data-cancel="' + esc(x.id) + '">' + esc(t("withdraw")) + "</button>" : "") + "</div></div>";
+      }).join("") : '<p class="small">' + esc(t("askedNone")) + "</p>") + "</div>";
+      M.innerHTML = h;
+      var fgw = document.createElement("div"); fgw.className = "acts"; fgw.style.marginTop = "26px"; fgw.innerHTML = '<button class="btn sm warn" type="button" id="fg">' + esc(t("forget")) + "</button>"; s.appendChild(fgw);
+      M.onclick = function (e) {
+        var g = e.target.closest("[data-give]"), n = e.target.closest("[data-no]"), c = e.target.closest("[data-cancel]"), o = e.target.closest("[data-open]"), l = e.target.closest("[data-lend]");
+        if (g) { g.disabled = true; rpc("book_reply", { p_secret: k, p_req: g.dataset.give, p_handover: true }).then(function () { toast(t("newKeeper", { x: g.dataset.who }), 5000); return load().then(myShelf); }).catch(function (x) { g.disabled = false; toast(friendly(x)); }); }
+        if (n) rpc("book_reply", { p_secret: k, p_req: n.dataset.no, p_handover: false }).then(function () { return load().then(myShelf); }).catch(function (x) { toast(friendly(x)); });
+        if (c) rpc("book_cancel", { p_secret: k, p_req: c.dataset.cancel }).then(function () { return load().then(myShelf); }).catch(function (x) { toast(friendly(x)); });
+        if (o) { var b = books.filter(function (y) { return y.id === o.dataset.open; })[0]; if (b) editForm(b); }
+        if (l) lendForm();
+      };
+      $("#fg", s).onclick = function () { if (!confirmTwice(this)) return; rpc("book_forget", { p_secret: k }).then(function () { lsSet(KEYS.b, null); mine = null; paintMine(); close(); toast(t("forgot"), 5000); load(); }).catch(function (x) { toast(friendly(x)); }); };
+    });
+  }
+  function privacy() {
+    sheet("<h3>" + esc(t("p_h")) + '</h3><ol class="steps">' + ["p1", "p2", "p3", "p4", "p5", "p6"].map(function (k) { return '<li style="grid-template-columns:1fr"><span style="color:var(--ink)">' + esc(t(k)) + "</span></li>"; }).join("") + '</ol><a href="/privacy/">' + esc(t("pAll")) + "</a>", "narrow", privacy);
+  }
+
+  /* language menu */
+  function closeLang() { var m = $(".langm"); if (m) m.remove(); $("#langB").setAttribute("aria-expanded", "false"); }
+  $("#langB").onclick = function (e) {
+    e.stopPropagation(); if ($(".langm")) return closeLang();
+    var m = document.createElement("div"); m.className = "langm"; m.setAttribute("role", "menu");
+    m.innerHTML = LANGS.map(function (l, i) { return '<button type="button" role="menuitem" data-l="' + l + '" aria-current="' + (l === lang()) + '" lang="' + l + '">' + NAMES[i] + "</button>"; }).join("");
+    this.parentNode.appendChild(m); this.setAttribute("aria-expanded", "true"); m.querySelector("[aria-current=true]").focus();
+    m.onclick = function (ev) { var b = ev.target.closest("[data-l]"); if (b) { closeLang(); setLang(b.dataset.l); } };
+  };
+  document.addEventListener("click", function (e) { if (!e.target.closest(".langm,#langB")) closeLang(); });
+
+  /* wiring */
+  $("#howB").onclick = welcome; $("#mineB").onclick = myShelf; $("#lendB").onclick = function () { lendForm(); }; $("#privB").onclick = privacy;
+  $("#rooms").onclick = function (e) { var b = e.target.closest("[data-room]"); if (!b) return; room = b.dataset.room; roomTabs(); render(); };
+  $("#fFree").onclick = function () { fFree = !fFree; this.setAttribute("aria-pressed", String(fFree)); render(); };
+  $("#fNote").onclick = function () { fNote = !fNote; this.setAttribute("aria-pressed", String(fNote)); render(); };
+  function setView(v) { view = v; lsSet("bp_view", v); $("#vShelf").setAttribute("aria-pressed", String(v === "shelf")); $("#vList").setAttribute("aria-pressed", String(v === "list")); render(); }
+  $("#vShelf").onclick = function () { setView("shelf"); }; $("#vList").onclick = function () { setView("list"); };
+  var qt; $("#q").addEventListener("input", function () { var v = this.value; $("#qx").hidden = !v; clearTimeout(qt); qt = setTimeout(function () { q = v.trim(); render(); }, 140); });
+  $("#qx").onclick = function () { $("#q").value = ""; q = ""; this.hidden = true; render(); $("#q").focus(); };
+  $("#house").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-id]"), a = e.target.closest("[data-add]"), c = e.target.closest("#cat");
+    if (c) { toast(t("catLine", { c: c.getAttribute("aria-label") })); return; }
+    if (a) lendForm(a.dataset.add); else if (b) openBook(b.dataset.id);
+  });
+
+  paintWords(); setView(view);
+  var askFor = new URLSearchParams(location.search).get("book");
+  (function config() {
+    var sc = document.createElement("script"); sc.src = "/config.js";
+    sc.onload = function () { var c = window.FB_SUPABASE || {}; cfg.url = c.url || ""; cfg.key = c.anonKey || ""; load().then(refreshMine).then(function () { if (askFor) openBook(askFor); }); };
+    sc.onerror = function () { failed = true; render(); };
+    document.head.appendChild(sc);
+  })();
+  if (!lsGet("bp_app_seen") && !askFor && !/[#&]keys?=/.test(location.hash)) setTimeout(welcome, 500);
+})();
+</script>
+</body>
+</html>

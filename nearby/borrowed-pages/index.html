@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=ec6e3b0caa"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=6093309694" defer></script>
+<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=6a4a3973df"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=78666bc514" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Borrowed Pages · Nearby</title>
 <meta name="description" content="A four-room book house next door to the bar. Wander the attic, parlour, garden and basement, read the notes tucked into books, ask for one, and pass it on by hand.">
@@ -499,6 +499,7 @@ html.fbsh-in.bp-one body > header.sign { position: fixed; }
   function date(d) { try { return new Date(d).toLocaleDateString(LOCALE[lang()], { month: "short", year: "numeric" }); } catch (e) { return ""; } }
 
   /* the open book */
+  var APP = ["The same shelves as an app for your phone", "同样的书架，手机上的独立应用", "同樣的書架，手機上的獨立應用", "Los mismos estantes, como app para el móvil", "Els mateixos prestatges, com a app per al mòbil"];
   var COVERS = ["Show book covers (they load from Open Library)", "显示封面（从 Open Library 加载）", "顯示封面（從 Open Library 載入）", "Mostrar portadas (se cargan de Open Library)", "Mostra les portades (es carreguen d'Open Library)"], LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 };
   function openBook(id) {
     touched = true;
@@ -649,6 +650,7 @@ html.fbsh-in.bp-one body > header.sign { position: fixed; }
       }).join("") : '<p class="note">—</p>');
       var link = location.origin + location.pathname + "#key=" + k, town = townKeys();
       h += "<h4>" + esc(t("key")) + '</h4><div class="keybox">' + KEYSVG + (town ? '<span style="flex:1">' + esc(t("keyHint")) + '</span><button class="btn sm" type="button" id="kc">🗝️</button></div>' : '<code id="kl" tabindex="0">' + esc(link) + '</code><button class="btn sm" type="button" id="kc">' + esc(t("copy")) + '</button></div><p class="note">' + esc(t("keyHint")) + "</p>");
+      h += '<p class="note" style="margin-top:14px"><a href="/borrowed-pages/" target="_top" rel="noopener">' + esc(APP[LI[lang()] || 0]) + " ↗</a></p>";   /* the same shelves as an app of its own, outside the town */
       h += '<div class="row" style="margin-top:26px"><button class="btn sm warn" type="button" id="fg">' + esc(t("forget")) + "</button></div>";
       L.innerHTML = h;
       if ($("#kl", s)) $("#kl", s).onclick = function () { this.classList.toggle("show"); };
