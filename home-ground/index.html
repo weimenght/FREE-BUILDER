@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=b09feb0a24"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=64da877b8c"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Home Ground</title>
 <meta name="description" content="Build a little town with your family or friends: each place is a way you look after each other, and asks one honest question. Then take it to dinner. Lives in its link; nothing stored.">
@@ -900,7 +900,7 @@ function chrome() {
   $("appName").textContent = sg(T(W.app)); document.title = TOWN && TOWN.n ? TOWN.n + " · " + T(W.app) : T(W.app);
   $("langLbl").textContent = SHORT[i]; $("langIco").innerHTML = icon("globe"); $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + NAMES[i]);
   $("foot").innerHTML = '<span class="line">' + esc(T(W.device)) + '</span><a href="/nearby/">' + icon("heart") + " " + esc(T(W.nearby)) + '</a><a href="/">FREE//BUILDER</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a><span>" +
-    F(esc(T(W.made)), { ai: '<a href="/notes/ai-use/" style="display:inline">AI</a>', h: "♥" }) + "</span>";
+    F(esc(T(W.made)), { ai: '<a href="/notes/ai-use/" style="display:inline">AI</a>', h: '<a href="https://www.wei-meng.org/after-hours/" style="display:inline" aria-label="After hours">♥</a>' }) + "</span>";
 }
 var paintT = 0;
 function paint() {
