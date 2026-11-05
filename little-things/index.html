@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=64da877b8c"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=1d3880e09c"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Little Things</title>
 <meta name="description" content="Popo's jar of little offline things: one at a time, in her kitchen, for a fuller life away from the screen. Kept on your own device.">
@@ -47,7 +47,7 @@
   .btn.sm { min-height:40px; padding:6px 10px; font-size:18px; }
   .btn svg.fbpx, .pxi svg { width:18px; height:18px; image-rendering:pixelated; }
   .scene { position:relative; border:3px solid var(--line); box-shadow:4px 4px 0 var(--shadow); background:#3a2414; }
-  .scene canvas { display:block; width:100%; height:auto; image-rendering:pixelated; image-rendering:crisp-edges; }
+  .scene canvas { display:block; width:100%; height:auto; image-rendering:pixelated; image-rendering:crisp-edges; cursor:pointer; }
   .scene button.jarhit { position:absolute; right:10%; top:18%; width:24%; height:50%; background:transparent; border:0; cursor:pointer; }
   .scene button.jarhit:focus-visible { outline:3px solid var(--amber); }
   .talk { display:flex; flex-direction:column; gap:10px; min-height:120px; }
@@ -247,6 +247,7 @@ var MEI_KEY = ["*leaning over* Send it to yourself. Not the family group chat. P
 var WHO = {
   popo: ["Popo", "婆婆", "婆婆", "Popo", "Popo"], mei: ["Mei", "Mei", "Mei", "Mei", "Mei"], wei: ["Wei", "Wei", "Wei", "Wei", "Wei"],
   cats: ["Miso & Yuzu", "味噌和柚子", "味噌和柚子", "Miso y Yuzu", "Miso i Yuzu"], mantou: ["Mantou", "馒头", "饅頭", "Mantou", "Mantou"],
+  miso: ["Miso", "味噌", "味噌", "Miso", "Miso"], yuzu: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"],
   note: ["Popo's paper", "婆婆的纸条", "婆婆的紙條", "El papel de Popo", "El paper de la Popo"]
 };
 /* Popo's own lines: en (broken), zh (broken), zh-Hant (her Cantonese), es (broken), ca (her own, fluent) */
@@ -292,7 +293,7 @@ var CATS = {
   done: [["*Yuzu noses the paper into the jar. Miso purrs, loudly.*", "*柚子用鼻子把纸条拱进罐子。味噌大声呼噜。*", "*柚子用鼻子把紙條拱進罐子。味噌大聲呼嚕。*", "*Yuzu empuja el papel al tarro con el hocico. Miso ronronea, fuerte.*", "*Yuzu empeny el paper dins del pot amb el nas. Miso ronca de gust, fort.*"]],
   another: [["*Miso fishes another paper out of the apron pocket*", "*味噌从围裙口袋里又钓出一张纸条*", "*味噌從圍裙口袋裡又釣出一張紙條*", "*Miso pesca otro papel del bolsillo del delantal*", "*Miso pesca un altre paper de la butxaca del davantal*"]],
   later: [["*Both cats curl up on your lap. Clearly not today.*", "*两只猫都在你腿上蜷起来了。今天显然不了。*", "*兩隻貓都在你腿上蜷起來了。今天顯然不了。*", "*Los dos gatos se acurrucan en tu regazo. Claramente, hoy no.*", "*Els dos gats s'arrauleixen a la teva falda. Avui no, és clar.*"]],
-  rest: [["*Popo snores softly. Miso blinks at you, slowly. Yuzu is asleep on the knitting.*", "*婆婆轻轻打着呼。味噌对你慢慢眨眼。柚子在毛线上睡着了。*", "*婆婆輕輕打著呼。味噌對你慢慢眨眼。柚子在毛線上睡著了。*", "*Popo ronca bajito. Miso te parpadea despacio. Yuzu duerme sobre el punto.*", "*La Popo ronca fluixet. Miso et fa l'ullet a poc a poc. Yuzu dorm damunt la mitja.*"]]
+  rest: [["*Popo snores softly. Miso blinks at you, slowly. Yuzu is curled on the knitting, one eye open.*", "*婆婆轻轻打着呼。味噌对你慢慢眨眼。柚子蜷在毛线上，睁着一只眼。*", "*婆婆輕輕打著呼。味噌對你慢慢眨眼。柚子蜷在毛線上，睜著一隻眼。*", "*Popo ronca bajito. Miso te parpadea despacio. Yuzu está enroscada sobre el punto, con un ojo abierto.*", "*La Popo ronca fluixet. Miso et fa l'ullet a poc a poc. La Yuzu és arraulida damunt la mitja, amb un ull obert.*"]]
 };
 /* now and then someone else is in the kitchen */
 var DROP = [
@@ -304,8 +305,39 @@ var DROP = [
   ["cats", ["*Yuzu tries to fit inside the jar. Does not fit. Tries again.*", "*柚子想钻进罐子。钻不进去。再试一次。*", "*柚子想鑽進罐子。鑽不進去。再試一次。*", "*Yuzu intenta meterse en el tarro. No cabe. Lo vuelve a intentar.*", "*Yuzu prova de ficar-se dins del pot. No hi cap. Ho torna a provar.*"]]
 ];
 
-/* only someone who is in the kitchen right now drops a line */
-function drop() { var a = DROP.filter(function (d) { return d[0] === "mantou" ? petHere("dog") : d[0] === "cats" ? petHere("yuzu") : true; }); return a.length ? pick(a) : null; }
+/* one cat on its own (woken at night): {c} is its name */
+var CATN = { miso: ["Miso", "味噌", "味噌", "Miso", "Miso"], yuzu: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"] };
+var SOLO = {
+  done: [["*{c} noses the paper into the jar, then sits on the lid. Purrs.*", "*{c}用鼻子把纸条拱进罐子，然后坐到盖子上。呼噜呼噜。*", "*{c}用鼻子把紙條拱進罐子，然後坐到蓋子上。呼嚕呼嚕。*", "*{c} empuja el papel al tarro con el hocico y se sienta en la tapa. Ronronea.*", "*{c} empeny el paper dins del pot amb el nas i s'asseu a la tapa. Ronca de gust.*"]],
+  another: [["*{c} hooks another paper out of the apron pocket, slowly, still half asleep*", "*{c}慢吞吞地从围裙口袋里又勾出一张纸条，还半睡半醒*", "*{c}慢吞吞地從圍裙口袋裡又勾出一張紙條，還半睡半醒*", "*{c} saca otro papel del bolsillo del delantal, despacio, aún medio dormida*", "*{c} treu un altre paper de la butxaca del davantal, a poc a poc, encara mig adormida*"]],
+  later: [["*{c} yawns, very wide, and curls up on your lap. Not today, then.*", "*{c}打了个大大的哈欠，在你腿上蜷起来。那就今天不了。*", "*{c}打了個大大的哈欠，在你腿上蜷起來。那就今天不了。*", "*{c} bosteza, muy grande, y se acurruca en tu regazo. Hoy no, entonces.*", "*{c} fa un badall enorme i s'arrauleix a la teva falda. Avui no, doncs.*"]],
+  rest: [["*{c} sits by the jar, blinking slowly. Popo snores in the armchair.*", "*{c}坐在罐子旁边，慢慢眨眼。婆婆在扶手椅上打着呼。*", "*{c}坐在罐子旁邊，慢慢眨眼。婆婆在扶手椅上打著呼。*", "*{c} se sienta junto al tarro y parpadea despacio. Popo ronca en la butaca.*", "*{c} s'asseu al costat del pot i parpelleja a poc a poc. La Popo ronca a la butaca.*"]],
+  wake: [["*{c} opens one eye. Then the other. A long, offended stretch.* Mrrrow.", "*{c}睁开一只眼。又睁开另一只。伸了个很长、很不高兴的懒腰。* 喵——", "*{c}睜開一隻眼。又睜開另一隻。伸了個很長、很不高興的懶腰。* 喵——", "*{c} abre un ojo. Luego el otro. Un estiramiento largo y ofendido.* Mrrriau.", "*{c} obre un ull. Després l'altre. S'estira llarg i molt ofesa.* Mrrrèu."],
+    ["*{c} glares at you from the cushion, sighs, and gets up anyway*", "*{c}从垫子上瞪了你一眼，叹口气，还是起来了*", "*{c}從墊子上瞪了你一眼，嘆口氣，還是起來了*", "*{c} te fulmina con la mirada desde el cojín, suspira y se levanta igualmente*", "*{c} et mira malament des del coixí, sospira i s'aixeca igualment*"]]
+};
+/* the dark kitchen (23–5): a paper Popo left on the jar, in her voice */
+var NOTE = ["Go sleep! Little things tomorrow. Can't sleep? OK, take one paper. Only one. — Popo", "去睡觉啦！小事明天再做。睡不着？好啦，拿一张纸条。一张就好喔。——婆婆", "去瞓啦！小事聽日先做。瞓唔著？好啦，攞一張紙仔，一張就夠喇。——婆婆", "¡Ve a dormir! Cositas mañana. ¿No duermes? Vale, coge un papel. Solo uno. — Popo", "Vés a dormir! Les cosetes, demà. No pots dormir? Bé, agafa un paper. Només un, eh. — Popo"];
+var NOTE_INTRO = ["For who comes at night: this is my jar. Inside, little things to do. Not on the phone, in your life. Take one paper, go do it, put it in the jar. Small jar for start. Then go sleep! — Popo", "给晚上来的人：这是我的罐子。里面是小事，不是在手机上做，是在你的生活里做。拿一张纸条，去做，做完放进罐子。刚开始挑小罐。然后去睡觉啦！——婆婆", "俾夜晚嚟嘅人：呢個係我個樽。入面係啲小事，唔係喺部電話度做，係喺你嘅生活度做。攞一張紙仔，去做，做完放入個樽。啱啱開始揀細樽。跟住去瞓啦！——婆婆", "Para quien viene de noche: este es mi tarro. Dentro, cositas para hacer. No en el móvil, en tu vida. Coges un papel, lo haces, lo pones en el tarro. Pequeño para empezar. ¡Y luego a dormir! — Popo", "Per a qui vingui de nit: aquest és el meu pot. A dins hi ha coses petites per fer, no al mòbil, a la teva vida. Agafes un paper, la fas i el poses al pot. Per començar, el pot petit. I després, a dormir! — Popo"];
+var CAT_POINT = ["*Miso pats the note with one paw: read this.*", "*味噌用一只爪子拍拍纸条：看这个。*", "*味噌用一隻爪子拍拍紙條：看這個。*", "*Miso le da a la nota con una pata: lee esto.*", "*Miso toca la nota amb una pota: llegeix això.*"];
+var FRIEND_NOTE = ["{f} sends you this paper. Do it together. Better. — Popo", "{f}送这张纸条给你。一起做，更好。——婆婆", "{f}送呢張紙仔俾你。一齊做，仲好。——婆婆", "{f} te manda este papel. Hacedlo juntos. Mejor. — Popo", "{f} t'envia aquest paper. Feu-lo junts, que és millor. — Popo"];
+/* a tap on someone in the kitchen */
+var TAP = {
+  popo: [["*looks up from the pot* Hm? You hungry? Sit.", "*从锅边抬起头* 嗯？饿了吗？坐啦。", "*喺個煲度抬起頭* 嗯？肚餓呀？坐低先。", "*levanta la vista de la olla* ¿Mm? ¿Hambre? Siéntate.", "*aixeca la vista de l'olla* Mm? Tens gana? Seu."],
+    ["*pats your arm* Too thin. Later I make you soup.", "*拍拍你的手臂* 太瘦啦。等一下煲汤给你。", "*拍拍你隻手臂* 咁瘦嘅。遲啲煲湯俾你飲。", "*te da palmaditas en el brazo* Muy flaco. Luego te hago sopa.", "*et dona copets al braç* Estàs massa prim. Després et faré una sopa."]],
+  popoZ: [["*snores, very softly. The knitting slides a little down her lap.*", "*轻轻地打着呼。毛线从她腿上滑下来一点。*", "*輕輕地打著呼。毛線從她腿上滑下來一點。*", "*ronca, muy bajito. El punto se le escurre un poco del regazo.*", "*ronca, molt fluixet. La mitja li llisca una mica per la falda.*"],
+    ["*turns in the armchair, pulls the blanket up, sleeps on*", "*在扶手椅上翻了个身，把毯子拉高，继续睡*", "*在扶手椅上翻了個身，把毯子拉高，繼續睡*", "*se gira en la butaca, se sube la manta y sigue durmiendo*", "*es gira a la butaca, s'estira la manta amunt i continua dormint*"]],
+  guardCat: [["*{c} puts a paw on your hand: let her sleep.*", "*{c}把爪子搭在你手上：让她睡吧。*", "*{c}把爪子搭在你手上：讓她睡吧。*", "*{c} te pone una pata en la mano: déjala dormir.*", "*{c} et posa una pota a la mà: deixa-la dormir.*"]],
+  guardDog: [["*Mantou lies down across Popo's slippers and looks at you: shh.* …woof.", "*馒头趴在婆婆的拖鞋上，看着你：嘘。* ……汪。", "*饅頭趴在婆婆的拖鞋上，看著你：噓。* ……汪。", "*Mantou se tumba sobre las zapatillas de Popo y te mira: chis.* …guau.", "*Mantou s'estira damunt les sabatilles de la Popo i et mira: xst.* …bup."]],
+  cat: [["*{c} headbutts your hand.* Mrrp.", "*{c}用头顶顶你的手。* 咪呜。", "*{c}用頭頂頂你的手。* 咪嗚。", "*{c} te da un cabezazo en la mano.* Mrrp.", "*{c} et dona un cop de cap a la mà.* Mrrp."]],
+  catNap: [["*{c} opens one eye, decides no, and closes it again.*", "*{c}睁开一只眼，想了想，又闭上了。*", "*{c}睜開一隻眼，想了想，又閉上了。*", "*{c} abre un ojo, decide que no, y lo vuelve a cerrar.*", "*{c} obre un ull, decideix que no, i el torna a tancar.*"]],
+  dog: [["*Mantou rolls onto his back. Belly, please.* Woof!", "*馒头翻过来，肚皮朝天：摸这里。* 汪！", "*饅頭翻過來，肚皮朝天：摸這裡。* 汪！", "*Mantou se pone panza arriba: la barriga, por favor.* ¡Guau!", "*Mantou es posa panxa enlaire: la panxa, si us plau.* Bup!"]],
+  dogZ: [["*Mantou snores. One paw twitches: he's running somewhere in a dream.*", "*馒头打着呼。一只爪子抽了一下：他在梦里跑。*", "*饅頭打著呼。一隻爪子抽了一下：他在夢裡跑。*", "*Mantou ronca. Una pata le tiembla: corre en sueños.*", "*Mantou ronca. Una pota li tremola: corre en somnis.*"]]
+};
+
+/* only someone who is in the kitchen right now, and awake, drops a line (Mei and Wei only while Popo is up, in their own hours) */
+function awakeHere(k) { for (var i = 0; i < PETZ.length; i++) if (PETZ[i].k === k) return PETZ[i].st !== "away" && PETZ[i].st !== "sleep" && (k === "dog" ? dogUp() : catUp(k)); return false; }
+function canSpeak(w) { return w === "mantou" ? awakeHere("dog") : w === "cats" ? awakeHere("miso") || awakeHere("yuzu") : true; }
+function drop() { var a = DROP.filter(function (d) { return d[0] === "mantou" ? awakeHere("dog") : d[0] === "cats" ? awakeHere("yuzu") : !asleep() && !sleeps(d[0]); }); return a.length ? pick(a) : null; }
 
 /* ---------------- state (this device only) ---------------- */
 var KEY = "lt_jar";
@@ -323,11 +355,33 @@ function draw(except) {
   var lo = Math.min.apply(null, a.map(function (t) { return t.t; })), low = a.filter(function (t) { return t.t === lo; });
   return (Math.random() < .75 ? pick(low) : pick(a)).id;
 }
-function hour() { var h = new Date().getHours(); return h; }
-var welcomed = false;   /* a newcomer is welcomed by Popo herself, whatever the hour */
-function asleep() { var h = hour(); return !welcomed && (h >= 21 || h < 5); }   /* Popo keeps her hours: early to bed, up at dawn */
-function chose() { return asleep() ? ["cats", CATS.another[0]] : ["popo", P.chose[0]]; }
+/* ---------------- everyone's own day, on the browser's clock (?h=14.5 or ?h=14:30 sets the hour for testing) ----------------
+   The hours are the town's (FBWorld.sleeps in fbl.js): Popo asleep 21–5 in her armchair, and nobody wakes her; Miso & Yuzu
+   asleep 23–5 (a tap wakes one, grumpily, for 15 minutes, and then it serves); Mantou asleep 22–6 and for his 14:00–15:30 nap. */
+var FORCE = (function () {
+  var m = /[?&]h=(\d{1,2})(?:[:h](\d{1,2})|(\.\d+))?/.exec(location.search); if (!m) return null;
+  var h = +m[1] + (m[2] ? +m[2] / 60 : m[3] ? +m[3] : 0); return h >= 0 && h < 24 ? { h: h, t0: Date.now() } : null;
+})();
+function hourF() { if (FORCE) return (FORCE.h + (Date.now() - FORCE.t0) / 36e5) % 24; var d = new Date(); return d.getHours() + d.getMinutes() / 60; }
+function hour() { return Math.floor(hourF()); }
+var HRS = { popo: function (h) { return h >= 21 || h < 5; }, cats: function (h) { return h >= 23 || h < 5; }, mantou: function (h) { return h >= 22 || h < 6 || (h >= 14 && h < 15.5); },
+  mei: function (h) { return h >= 2 && h < 12; }, wei: function (h) { return h < 6 || (h >= 12 && h < 14); } };   /* only if fb.js is missing */
+function sleeps(w) { var h = hourF(); try { if (FW.sleeps) return FW.sleeps(w, h); } catch (e) {} return HRS[w](h); }
+var WOKE = (function () { try { return JSON.parse(sessionStorage.getItem("lt_woke") || "{}") || {}; } catch (e) { return {}; } })();
+function woken(k) { return Date.now() - (+WOKE[k] || 0) < 15 * 60000; }
+function wakeCat(k) { WOKE[k] = Date.now(); try { sessionStorage.setItem("lt_woke", JSON.stringify(WOKE)); } catch (e) {} }
+function asleep() { return sleeps("popo"); }                      /* Popo keeps her hours: early to bed, up at dawn */
+function catUp(k) { return !sleeps("cats") || woken(k); }
+function dogUp() { return !sleeps("mantou"); }
+function deep() { return asleep() && sleeps("cats"); }             /* 23–5: the lamp is off, the kitchen is dark and quiet */
+/* who hands out the jar right now: Popo, both cats, one woken cat, or nobody (the visitor takes a paper themselves) */
+function catServes(k) { return catUp(k) && petHere(k); }
+function srv() { if (!asleep()) return "popo"; var m = catServes("miso"), y = catServes("yuzu"); return m && y ? "cats" : m ? "miso" : y ? "yuzu" : null; }
+function catLine(s, key) { return s === "cats" ? pick(CATS[key]) : T(pick(SOLO[key])).split("{c}").join(T(CATN[s])); }
+function chose() { var s = srv(); return s === "popo" ? ["popo", P.chose[0]] : s ? [s, catLine(s, "another")] : null; }
 function part() { var h = hour(); return h < 12 ? "morn" : h < 18 ? "aft" : "eve"; }
+var noteShown = false;   /* in the dark, Popo's paper on the jar is read once; after that the jar works without a word */
+function darkNote() { if (noteShown) return false; noteShown = true; say("note", NOTE); return true; }
 
 /* ---------------- drawing ---------------- */
 var WEI = [[9,3,14,4,"#1c1917"],[7,5,4,5,"#1c1917"],[21,5,4,5,"#1c1917"],[11,2,10,2,"#292524"],[9,7,14,12,"#f5d49a"],[8,10,1,4,"#e9be78"],[23,10,1,4,"#e9be78"],
@@ -340,8 +394,9 @@ function face(cv, who, o) {
   o = o || {}; var g = cv.getContext("2d"); cv.width = 32; cv.height = 32; rect(g, 0, 0, 32, 32, who === "note" ? "#f6ecd4" : "#3a2414");
   if (who === "popo" && FW.drawPopo) return FW.drawPopo(g, 0, 0, 1, { asleep: !!o.asleep });
   if (who === "mei" && FW.drawMei) return FW.drawMei(g, 0, 0, 1, { phone: Math.random() < .3 });
-  if (who === "cats" && FW.drawCatsFace) return FW.drawCatsFace(g, 0, 0, 1, {});
-  if (who === "mantou" && FW.drawDogFace) return FW.drawDogFace(g, 0, 0, 1, {});
+  if (who === "cats" && FW.drawCatsFace) return FW.drawCatsFace(g, 0, 0, 1, { asleep: !!o.asleep });
+  if (who === "mantou" && FW.drawDogFace) return FW.drawDogFace(g, 0, 0, 1, { asleep: !!o.asleep });
+  if ((who === "miso" || who === "yuzu") && FW.drawPet) return FW.drawPet(g, who, 16, 24, 1, { asleep: !!o.asleep });
   if (who === "wei") { WEI.forEach(function (r) { rect(g, r[0], r[1] - 1, r[2], r[3], r[4]); }); return; }
   if (who === "note") { rect(g, 6, 6, 20, 22, "#fffdf6"); rect(g, 6, 6, 20, 1, "#000"); rect(g, 6, 27, 20, 1, "#000"); rect(g, 6, 6, 1, 22, "#000"); rect(g, 25, 6, 1, 22, "#000"); for (var i = 0; i < 4; i++) rect(g, 9, 11 + i * 4, i === 3 ? 8 : 14, 1, "#4a7ec0"); rect(g, 12, 4, 8, 4, "rgba(232,168,56,.8)"); return; }
   rect(g, 8, 8, 16, 16, "#d6d2ca");
@@ -392,7 +447,6 @@ var WX = (function () {
   if (["clear", "cloudy", "rain", "snow", "fog"].indexOf(w) < 0) { w = pick(WXS[SEASON] || WXS.spring); try { sessionStorage.setItem("lt_wx", w); } catch (e) {} }
   return w === "snow" && SEASON !== "winter" ? "rain" : w;   /* snow only in winter */
 })();
-function hourF() { var d = new Date(); return d.getHours() + d.getMinutes() / 60; }
 function phaseAt(h) { var s = SUNT[SEASON] || SUNT.spring; return h < s[0] - .75 ? "night" : h < s[0] + .75 ? "dawn" : h < s[1] - .75 ? "day" : h < s[1] + .75 ? "dusk" : "night"; }
 var SKY = { night: ["#0b1130", "#1c2552"], dawn: ["#6a5a9a", "#f4a882"], day: ["#5aa8e0", "#bfe2f4"], dusk: ["#4a3a72", "#f08a5a"] };
 var WET = { night: ["#0c0e14", "#181c28"], dawn: ["#5a566a", "#8a8290"], day: ["#66727e", "#98a2ac"], dusk: ["#463e52", "#7a6670"] };
@@ -437,23 +491,33 @@ function drawWindow(g, t, h) {
 
 /* ---------------- the animals: they come and go as they like ---------------- */
 var PZ = { miso: { lanes: [57, 84], v: .5, p: .85 }, yuzu: { lanes: [57, 84], v: .55, p: .8 }, dog: { lanes: [84], v: .8, p: .35 } };
-function mantouNaps(h) { return h >= 22 || h < 6 || (h >= 14 && h < 15.5); }
-function sleepy(p) { var h = hourF(); return p.k === "dog" ? mantouNaps(h) : asleep() || (h >= 13 && h < 16); }
+/* must sleep now (the cats at night unless woken, Mantou at night and after lunch): home, curled up, not walking */
+function mustSleep(p) { return p.k === "dog" ? !dogUp() : !catUp(p.k); }
+function napTime(p) { var h = hourF(); return p.k !== "dog" && h >= 13 && h < 16; }   /* the cats doze a bit after lunch, as cats do */
+function stays(p) { return asleep() && p.k !== "dog"; }                               /* while Popo sleeps the cats keep the kitchen */
+function homeOf(p) { var h = hourF(); return p.k === "miso" ? { lane: 57, x: 153 } : p.k === "yuzu" ? { lane: 84, x: 96 } : (h >= 22 || h < 6) ? { lane: 84, x: 62 } : { lane: 84, x: 150 }; }   /* Mantou: at Popo's feet by night, by the door after lunch */
 var PETZ = Object.keys(PZ).map(function (k) {
-  var c = PZ[k], home = asleep() && k !== "dog", here = home || Math.random() < c.p, now = performance.now();
-  var p = { k: k, lane: pick(c.lanes), x: 14 + Math.random() * 132, dir: Math.random() < .5 ? 1 : -1, st: here ? "sit" : "away", until: now + (here ? 1500 + Math.random() * 5000 : 20000 + Math.random() * 70000), tx: 0, step: 0 };
-  p.y = p.lane; if (here && sleepy(p) && Math.random() < .8) p.st = "sleep";
-  if (k === "miso" && home) { p.lane = p.y = 57; p.x = 148; } if (k === "yuzu" && home) { p.lane = p.y = 84; p.x = 96; }
+  var c = PZ[k], now = performance.now(), p = { k: k, tx: 0, step: 0 }, ms = mustSleep(p), home = ms || stays(p), here = home || Math.random() < c.p;
+  p.lane = pick(c.lanes); p.x = 14 + Math.random() * 132; p.dir = Math.random() < .5 ? 1 : -1; p.st = here ? "sit" : "away"; p.until = now + (here ? 1500 + Math.random() * 5000 : 20000 + Math.random() * 70000);
+  if (home) { var hs = homeOf(p); p.lane = hs.lane; p.x = hs.x; }
+  p.y = p.lane;
+  if (ms) { p.st = "sleep"; p.until = now + 30000; } else if (here && napTime(p) && Math.random() < .8) p.st = "sleep";
   return p;
 });
 function petHere(k) { for (var i = 0; i < PETZ.length; i++) if (PETZ[i].k === k) return PETZ[i].st !== "away"; return false; }
+function pet(k) { for (var i = 0; i < PETZ.length; i++) if (PETZ[i].k === k) return PETZ[i]; return null; }
 function jarSpan() { var d = jarDims(S.size); return [125 - (d[0] >> 1) - 10, 125 + (d[0] >> 1) + 10]; }
 function petNext(p, now) {
-  var r = Math.random(), z = sleepy(p), span = jarSpan();
+  if (mustSleep(p)) {   /* bedtime: go home and curl up there */
+    var hs = homeOf(p);
+    if (Math.abs(p.x - hs.x) < 2 && p.lane === hs.lane) { p.st = "sleep"; p.until = now + 30000; return; }
+    p.lane = hs.lane; p.tx = hs.x; p.st = "walk"; p.leave = 0; p.dir = p.tx < p.x ? -1 : 1; return;
+  }
+  var r = Math.random(), z = napTime(p), span = jarSpan(), st = stays(p);
   if (z && r < .6) { p.st = "sleep"; p.until = now + 20000 + Math.random() * 40000; return; }
-  if (r < (asleep() && p.k !== "dog" ? 0 : .12)) { p.st = "walk"; p.leave = 1; p.tx = p.x < 80 ? -16 : 176; p.dir = p.tx < p.x ? -1 : 1; return; }
+  if (r < (st ? 0 : .12)) { p.st = "walk"; p.leave = 1; p.tx = p.x < 80 ? -16 : 176; p.dir = p.tx < p.x ? -1 : 1; return; }
   if (r < .45) { p.st = "sit"; p.until = now + 3000 + Math.random() * 8000; return; }
-  if (r < .58 && !z) { p.st = "sleep"; p.until = now + 8000 + Math.random() * 20000; return; }
+  if (r < .58 && !z && !st) { p.st = "sleep"; p.until = now + 8000 + Math.random() * 20000; return; }
   var c = PZ[p.k]; if (c.lanes.length > 1 && Math.random() < .25) p.lane = c.lanes[p.lane === c.lanes[0] ? 1 : 0];   /* a hop up onto the table, or down */
   p.tx = 8 + Math.random() * 144; if (p.lane === 57 && p.tx > span[0] && p.tx < span[1]) p.tx = Math.random() < .5 ? span[0] - 4 : span[1] + 4;
   p.st = "walk"; p.leave = 0; p.dir = p.tx < p.x ? -1 : 1;
@@ -461,7 +525,7 @@ function petNext(p, now) {
 function petTick(now) {
   PETZ.forEach(function (p) {
     if (p.y !== p.lane) p.y += Math.max(-7, Math.min(7, p.lane - p.y));
-    if (p.st === "away") { if (now > p.until) { var c = PZ[p.k]; p.lane = p.y = pick(c.lanes); p.x = Math.random() < .5 ? -14 : 174; p.tx = 20 + Math.random() * 120; p.dir = p.tx < p.x ? -1 : 1; p.st = "walk"; p.leave = 0; } return; }
+    if (p.st === "away") { if (now > p.until || mustSleep(p) || stays(p)) {   /* home for the night */ var c = PZ[p.k]; p.lane = p.y = pick(c.lanes); p.x = Math.random() < .5 ? -14 : 174; p.tx = 20 + Math.random() * 120; p.dir = p.tx < p.x ? -1 : 1; p.st = "walk"; p.leave = 0; } return; }
     if (p.st === "walk") {
       p.x += p.dir * PZ[p.k].v; p.step++;
       if ((p.dir > 0 && p.x >= p.tx) || (p.dir < 0 && p.x <= p.tx)) {
@@ -484,7 +548,7 @@ function petDraw(g, t) {
 
 var anim = { drop: -1, t0: 0 }, blink = 0, cv = $("scene"), sg = cv.getContext("2d");
 function scene(t) {
-  var g = sg, h = hourF(), night = asleep(), ph = phaseAt(h), dim = !night && (ph === "night" || ph === "dusk");
+  var g = sg, h = hourF(), night = asleep(), dark = deep(), ph = phaseAt(h), dim = !night && (ph === "night" || ph === "dusk");
   g.imageSmoothingEnabled = false;
   /* wall, tiles, shelf */
   rect(g, 0, 0, 160, 84, night ? "#4a3424" : "#c9a46c"); for (var i = 0; i < 160; i += 8) rect(g, i, 0, 1, 52, "rgba(0,0,0,.06)");
@@ -498,7 +562,7 @@ function scene(t) {
   /* a calendar on the wall: paper, no numbers that count anything */
   rect(g, 10, 6, 18, 20, "#000"); rect(g, 11, 7, 16, 18, "#fffdf6"); rect(g, 11, 7, 16, 4, "#c8303a"); for (i = 0; i < 4; i++) rect(g, 13, 13 + i * 3, 12, 1, "#d6d2ca");
   /* the lamp over the table */
-  rect(g, 47, 0, 1, 7, "#000"); rect(g, 43, 7, 9, 3, "#2e6b54"); rect(g, 43, 7, 9, 1, "#000"); rect(g, 45, 10, 5, 1, dim || night ? "#ffe08a" : "#d8c890");
+  rect(g, 47, 0, 1, 7, "#000"); rect(g, 43, 7, 9, 3, "#2e6b54"); rect(g, 43, 7, 9, 1, "#000"); rect(g, 45, 10, 5, 1, dark ? "#6a6450" : dim || night ? "#ffe08a" : "#d8c890");
   /* Popo (or Popo asleep in her armchair) */
   if (night) {
     rect(g, 14, 24, 40, 30, "#7a2232"); rect(g, 14, 24, 40, 2, "#000"); rect(g, 12, 34, 6, 22, "#8a2a3a"); rect(g, 50, 34, 6, 22, "#8a2a3a");
@@ -521,7 +585,12 @@ function scene(t) {
   jar(g, jx, jy, jd[0], jd[1], n, S.size || 20, dy);
   petDraw(g, t);
   /* evening in the kitchen: the room dims and the lamp is on (the window keeps its own light) */
-  if (dim || night) {
+  if (dark) {   /* everyone asleep: the lamp is off, only the window's light falls in, faintly on the jar */
+    g.save(); g.beginPath(); g.rect(0, 0, 160, 84); g.rect(64, 8, 30, 24); g.clip("evenodd");
+    rect(g, 0, 0, 160, 84, "rgba(6,6,22,.52)");
+    g.restore();
+    for (var my = 34; my < 60; my++) { var mw = 26 + (my - 34) * 1.4; rect(g, Math.round(79 + (my - 34) * 1.6 - mw / 2), my, Math.round(mw), 1, "rgba(190,205,255," + (.07 - (my - 34) * .0016).toFixed(3) + ")"); }
+  } else if (dim || night) {
     g.save(); g.beginPath(); g.rect(0, 0, 160, 84); g.rect(64, 8, 30, 24); g.clip("evenodd");
     rect(g, 0, 0, 160, 84, night ? "rgba(10,8,30,.28)" : "rgba(30,20,50,.22)");
     g.restore();
@@ -558,10 +627,11 @@ function paper(t, writing) {
 }
 var mode = "", anotherN = 0;
 function show(t, opener) {
-  clear(); var night = asleep();
+  clear(); var night = asleep(), quiet = !srv();
   if (opener) say(opener[0], opener[1], { asleep: opener[0] === "popo" && night });
   paper(t);
-  if (t.c && Math.random() < .55) say(t.c[0], t.c[1], { small: true });
+  if (quiet) {}   /* the dark kitchen: nobody chimes in */
+  else if (t.c && canSpeak(t.c[0]) && Math.random() < .55) say(t.c[0], t.c[1], { small: true });
   else if (Math.random() < .12) { var d = drop(); if (d) say(d[0], d[1], { small: true }); }
   btn(icon("heart") + esc(T(W.did)), function () { didIt(t); }, "pri");
   btn(esc(T(W.another)), function () { another(t); });
@@ -576,16 +646,16 @@ function present(opener) {
   show(BY[S.cur], opener);
 }
 function didIt(t) {
-  clear(); var night = asleep();
+  clear();
   paper(t, true);
   var inp = $("own");
   var go = function () {
     var w = (inp.value || "").trim().slice(0, 80);
     S.done.push({ id: t.id, at: Date.now(), w: w || undefined }); if (S.cur === t.id || !BY[S.cur]) S.cur = null; delete S.later[t.id]; anotherN = 0; save();
     anim.drop = 1; anim.t0 = performance.now();
-    clear();
-    if (isFull()) { say(night ? "cats" : "popo", night ? pick(CATS.done) : pick(P.done)); setTimeout(full, 900); return; }
-    say(night ? "cats" : "popo", night ? pick(CATS.done) : T(pick(P.done)) + " " + T(P.enough[0]));
+    clear(); var s = srv();   /* whoever is up says so; in the dark the paper just goes in */
+    if (isFull()) { if (s) say(s, s === "popo" ? pick(P.done) : catLine(s, "done")); setTimeout(full, 900); return; }
+    if (s) say(s, s === "popo" ? T(pick(P.done)) + " " + T(P.enough[0]) : catLine(s, "done"));
     if (!S.size) { btn(esc(T(W.next)), function () { intro(0); }, "pri"); return; }
     btn(esc(T(W.tomorrow)), function () { rest(); }, "pri");
     btn(esc(T(W.more)), function () { present(); });
@@ -597,27 +667,31 @@ function didIt(t) {
   setTimeout(function () { try { if (matchMedia("(hover:hover)").matches) inp.focus(); } catch (e) {} }, 50);
 }
 function another(t) {
-  anotherN++; var night = asleep(), id = draw(t.id);
-  if (!id) return show(t, ["popo", pick(P.another)]);
+  anotherN++; var s = srv(), id = draw(t.id);
+  var op = s === "popo" ? ["popo", anotherN >= 4 && id ? pick(P.picky) : pick(P.another)] : s ? [s, catLine(s, "another")] : null;
+  if (!id) return show(t, op);
   S.cur = id; S.at = Date.now(); save();
-  show(BY[id], night ? ["cats", pick(CATS.another)] : ["popo", anotherN >= 4 ? pick(P.picky) : pick(P.another)]);
+  show(BY[id], op);
 }
+function laterLine() { var s = srv(); return s === "popo" ? ["popo", pick(P.later)] : s ? [s, catLine(s, "later")] : null; }
 function notToday(t) {
   S.later[t.id] = day(); if (S.cur === t.id) S.cur = null; anotherN = 0; save();
-  if (!S.size) { clear(); say("popo", pick(P.later)); btn(esc(T(W.next)), function () { intro(0); }, "pri"); return; }
-  rest(asleep() ? ["cats", pick(CATS.later)] : ["popo", pick(P.later)]);
+  if (!S.size) { clear(); var op = laterLine(); if (op) say(op[0], op[1]); btn(esc(T(W.next)), function () { intro(0); }, "pri"); return; }
+  rest(laterLine());
 }
 function rest(opener) {
-  clear(); var night = asleep();
+  clear(); var s = srv();
   if (opener) say(opener[0], opener[1]);
-  else say(night ? "cats" : "popo", night ? pick(CATS.rest) : pick(P.rest), { asleep: night });
-  if (!opener && Math.random() < .35) { var d = drop(); if (d) say(d[0], d[1], { small: true }); }
+  else if (s) say(s, s === "popo" ? pick(P.rest) : catLine(s, "rest"));
+  else if (deep()) darkNote();
+  if (!opener && s && Math.random() < .35) { var d = drop(); if (d) say(d[0], d[1], { small: true }); }
   btn(esc(T(W.give)), function () { present(); }, "pri");
   btn(esc(T(W.look)), openJar, "quiet");
   mode = "rest";
 }
 function full() {
-  clear(); say("popo", pick(P.full));
+  clear(); var s = srv();
+  if (s === "popo") say("popo", pick(P.full)); else if (s) say(s, catLine(s, "done"));
   if (S.size < 100) btn(esc(T(W.bigger)), function () { S.size = S.size < 50 ? 50 : 100; S.cur = null; save(); present(chose()); }, "pri");
   btn(esc(T(W.newJar)), function () { S.old.unshift({ size: S.size, done: S.done, end: Date.now() }); S.done = []; S.cur = null; S.later = {}; save(); present(chose()); }, S.size < 100 ? "" : "pri");
   btn(esc(T(W.look)), openJar, "quiet");
@@ -636,7 +710,13 @@ function jarButtons(onPick) {
 }
 function intro(i) {
   i = i || 0; clear();
-  welcomed = true; say("popo", P.intro[i]);
+  if (asleep()) {   /* a newcomer at night: Popo left a paper on the jar for whoever comes; the cats point at it if they're up */
+    noteShown = true; say("note", NOTE_INTRO);
+    if (srv()) say(srv() === "yuzu" ? "yuzu" : srv() === "cats" ? "cats" : "miso", srv() === "yuzu" ? T(CAT_POINT).replace(T(CATN.miso), T(CATN.yuzu)) : CAT_POINT, { small: true });
+    acts.appendChild(jarButtons(function (n) { S.size = n; S.met = 1; save(); present(chose()); }));
+    mode = "intro"; return;
+  }
+  say("popo", P.intro[i]);
   if (i === 1) say("mei", ["*not looking up from her phone* She means real life. It's like an app, but you leave it.", "*头也不抬地看着手机* 她说的是现实生活。像个 app，但你得退出来。", "*頭也不抬地看著手機* 她說的是現實生活。像個 app，但你得退出來。", "*sin levantar la vista del móvil* Se refiere a la vida real. Es como una app, pero te sales.", "*sense aixecar els ulls del mòbil* Vol dir la vida real. És com una app, però en surts."], { small: true });
   if (i < P.intro.length - 1) { btn(esc(T(W.next)), function () { intro(i + 1); }, "pri"); return; }
   acts.appendChild(jarButtons(function (n) { S.size = n; S.met = 1; save(); present(chose()); }));
@@ -858,9 +938,9 @@ function doLink(t) { var n = nick(); return location.origin + "/little-things/#d
 var lastFriend = null;
 function friendThing(t, from) {
   lastFriend = [t, from]; clear(); var f = String(from || "").replace(/[*<>]/g, "").trim().slice(0, 24) || T(W.someone);
-  say(asleep() ? "note" : "popo", T(PP.fromFriend).split("{f}").join(f));
+  say(asleep() ? "note" : "popo", T(asleep() ? FRIEND_NOTE : PP.fromFriend).split("{f}").join(f));
   paper(t);
-  if (Math.random() < .5) say("mei", MEI_DUO, { small: true });
+  if (!asleep() && !sleeps("mei") && Math.random() < .5) say("mei", MEI_DUO, { small: true });
   btn(icon("heart") + esc(T(W.did)), function () { didIt(t); }, "pri");
   btn(esc(T(W.notToday)), function () { notToday(t); }, "quiet");
   mode = "friend";
@@ -882,9 +962,9 @@ function jarBody() {
   if (S.size) mk(T(W.other), function () { tools.innerHTML = ""; tools.appendChild(jarButtons(function (n) { S.size = n; if (S.cur && BY[S.cur] && BY[S.cur].t > tierMax(n)) S.cur = null; save(); closeJar(); present(chose()); })); });
   if (S.done.length || S.old.length) mk(T(W.restart), function () {
     tools.innerHTML = ""; var d = document.createElement("div"); d.style.width = "100%"; tools.appendChild(d);
-    var q = say("popo", P.restartQ[0]); d.appendChild(q);
+    if (!asleep()) { var q = say("popo", P.restartQ[0]); d.appendChild(q); }   /* asleep, she asks nothing: the buttons say it */
     mk(T(W.keep), function () { jarBody(); }, "pri");
-    mk(T(W.restart), function () { S = { v: 1, size: S.size, cur: null, at: 0, done: [], later: {}, old: [], met: 1, reset: Date.now() }; save(); closeJar(); present(["popo", P.restarted[0]]); }, "quiet");
+    mk(T(W.restart), function () { S = { v: 1, size: S.size, cur: null, at: 0, done: [], later: {}, old: [], met: 1, reset: Date.now() }; save(); closeJar(); present(asleep() ? chose() : ["popo", P.restarted[0]]); }, "quiet");
   }, "quiet");
 }
 function drawBig() { var c = $("bigJar"); if (!c) return; var d = jarDims(S.size); c.width = d[0]; c.height = d[1]; c.style.height = d[1] * 3 + "px"; jar(c.getContext("2d"), 0, 0, d[0], d[1], S.done.length, S.size || 20, 0); }
@@ -926,10 +1006,43 @@ function paint(again) {
 }
 function start() {
   if (isFull()) return full();
-  var night = asleep();
-  if (S.cur && BY[S.cur]) return show(BY[S.cur], night ? ["cats", P.night[0]] : ["popo", pick(P.back)]);
-  present(night ? ["cats", P.night[0]] : ["popo", pick(P.hi[part()])]);
+  var s = srv(), back = S.cur && BY[S.cur];
+  var op = s === "popo" ? ["popo", back ? pick(P.back) : pick(P.hi[part()])] : s === "cats" ? ["cats", P.night[0]] : s ? [s, catLine(s, "another")] : (noteShown = true, ["note", NOTE]);
+  if (back) return show(BY[S.cur], op);
+  present(op);
 }
+/* ---------------- a tap on someone in the kitchen: Popo, a cat, Mantou ---------------- */
+var tapped = null;
+function react(who, line, o) { if (tapped && tapped.isConnected) tapped.remove(); o = o || {}; o.small = true; tapped = say(who, line, o); tapped.classList.add("tap"); }
+function nm(k, line) { return T(line).split("{c}").join(T(CATN[k])); }
+function tapAt(x, y) {
+  var hit = null, best = 99;
+  PETZ.forEach(function (p) { if (p.st === "away") return; var dx = Math.abs(x - p.x), dy = y - p.y; if (dx < 11 && dy > -16 && dy < 3 && dx < best) { best = dx; hit = p; } });
+  if (hit) return tapPet(hit);
+  if (x >= 12 && x <= 56 && y >= 22 && y <= 58) return tapPopo();
+}
+function tapPopo() {
+  if (!asleep()) return react("popo", pick(TAP.popo));
+  var c = ["miso", "yuzu"].filter(awakeHere);   /* nobody wakes Popo: someone awake keeps watch, or she just sleeps on */
+  if (c.length) { var k = pick(c); return react(k, nm(k, pick(TAP.guardCat))); }
+  if (awakeHere("dog")) return react("mantou", pick(TAP.guardDog));
+  react("popo", pick(TAP.popoZ), { asleep: true });
+}
+function tapPet(p) {
+  if (p.k === "dog") return react("mantou", pick(p.st === "sleep" ? TAP.dogZ : TAP.dog), { asleep: p.st === "sleep" });   /* nobody wakes a sleeping Mantou */
+  var k = p.k;
+  if (p.st === "sleep" && !catUp(k)) {   /* asleep for the night: woken, grumpily, for a quarter of an hour, and then it serves */
+    wakeCat(k); p.st = "sit"; p.until = performance.now() + 4000;
+    var w = [k, nm(k, pick(SOLO.wake))], s = srv();
+    if (s && s !== "popo") { if (mode === "thing" && S.cur && BY[S.cur]) return show(BY[S.cur], w); if (mode === "rest") return rest(w); }
+    return react(k, w[1]);
+  }
+  if (p.st === "sleep") return react(k, nm(k, pick(TAP.catNap)), { asleep: true });   /* an afternoon doze: one eye, then no */
+  react(k, nm(k, pick(TAP.cat)));
+}
+cv.addEventListener("click", function (e) { var r = cv.getBoundingClientRect(); tapAt((e.clientX - r.left) / r.width * 160, (e.clientY - r.top) / r.height * 84); });
+/* test hook: who is up and who serves */
+window.LT = { hour: hourF, serves: srv, dark: deep, pets: function () { return PETZ.map(function (p) { return { k: p.k, st: p.st, x: Math.round(p.x), y: p.y }; }); }, tap: tapAt };
 addEventListener("fbl:lang", function () { paint(true); });
 addEventListener("storage", function (e) { if (e.key === KEY) { S = load(); paint(true); } });
 chrome();
