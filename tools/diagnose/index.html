@@ -1,213 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b09feb0a24"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title id="page-title">Listening Duet — FREE//BUILDER</title>
   <meta name="description" content="A 2-minute diagnosis for any training request: expectations, feedback, tools, consequences — or a real skills gap?">
-  <meta name="theme-color" content="#F7F6F2">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
   <!-- Brand fonts load without blocking the page: where Google Fonts is slow or blocked, system fonts show instantly. -->
   <link rel="stylesheet" href="/fonts/fonts.css">
 
-  <style>
-    /* =================================================================
-       FB KIT · tokens + shell (shared by every FREE//BUILDER demo)
-       ================================================================= */
-    :root {
-      --paper:#F7F6F2; --ink:#17171A; --muted:#6B6A70; --line:#E5E2DA; --accent:#E2553F; --accent-ink:#C2412D; --white:#fff; --good:#2F8A5C;
-      --st:#E2553F;
-      --ease:cubic-bezier(.23,1,.32,1);
-      --sans:"Plus Jakarta Sans",system-ui,-apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
-      --mono:"Space Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
-      --syne:Syne,"Plus Jakarta Sans",system-ui,"PingFang SC","Noto Sans SC",sans-serif;
-      --serif:"Instrument Serif",Georgia,"Songti SC","STSong",serif;
-    }
-    * { box-sizing:border-box; }
-    html, body { margin:0; overflow-x:hidden; }
-    body {
-      background:var(--paper); color:var(--ink); font-family:var(--sans);
-      -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
-      min-height:100vh; min-height:100svh; display:flex; flex-direction:column;
-    }
-    button { font:inherit; color:inherit; cursor:pointer; background:none; border:0; padding:0; touch-action:manipulation; }
-    a { color:inherit; }
-    :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:10px; }
-    .kicker { font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
-    .dots { position:fixed; inset:0; z-index:-1; pointer-events:none;
-      background-image:radial-gradient(rgba(23,23,26,.09) 1px,transparent 1px); background-size:22px 22px;
-      -webkit-mask-image:linear-gradient(to bottom,#000,transparent 60%); mask-image:linear-gradient(to bottom,#000,transparent 60%); }
-
-    header.top { position:sticky; top:0; z-index:40; background:rgba(247,246,242,.92);
-      -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid rgba(229,226,218,.8);
-      padding:10px max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left)); }
-    .top-in { max-width:960px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .brand { display:flex; align-items:center; gap:10px; text-decoration:none; min-width:0; }
-    .mark { width:34px; height:34px; border-radius:10px; background:var(--ink); display:grid; place-items:center; flex-shrink:0; transition:transform .5s var(--ease); }
-    .mark rect { transform-box:fill-box; transform-origin:center; transition:transform .6s var(--ease); }
-    .mark .last { transform:translate(2.5px,-2.5px) rotate(12deg); }
-    .brand:hover .mark { transform:rotate(-4deg); }
-    .brand:hover .mark .last { transform:none; }
-    .brand-txt { line-height:1; min-width:0; }
-    .brand-txt b { font-family:var(--syne); font-weight:700; font-size:13px; display:block; }
-    .brand-txt b i { color:var(--accent); font-style:normal; }
-    .brand-txt span { display:block; font-size:11px; color:var(--muted); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .top-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
-    .chip { height:32px; padding:0 10px; border:1px solid var(--line); border-radius:9px; background:rgba(255,255,255,.6);
-      display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11px; transition:border-color .2s, transform .1s; }
-    .chip:hover { border-color:rgba(23,23,26,.3); }
-    .chip:active { transform:scale(.96); }
-    .chip svg { width:14px; height:14px; }
-    .chip[hidden] { display:none; }
-    @media (max-width:420px) { .chip .lbl { display:none; } }
-    @media (max-width:340px) { .brand-txt { display:none; } }
-
-    main { flex:1; width:100%; max-width:600px; margin:0 auto; padding:24px max(16px, env(safe-area-inset-right)) 32px max(16px, env(safe-area-inset-left)); display:flex; flex-direction:column; }
-
-    /* progress dots */
-    .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-    .steps { display:flex; gap:6px; align-items:center; margin-bottom:18px; min-height:8px; }
-    .steps span { height:6px; flex:1; border-radius:3px; background:var(--line); transition:background .4s; }
-    .steps span.done { background:var(--ink); }
-    .steps span.now { background:var(--accent); }
-
-    /* screens */
-    .screen { flex:1; display:flex; flex-direction:column; gap:18px; animation:in .5s var(--ease) both; }
-    @keyframes in { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
-    h1, h2 { font-family:var(--syne); font-weight:700; letter-spacing:-.02em; margin:0; line-height:1.1; }
-    h1 { font-size:clamp(34px, 9vw, 52px); }
-    h2 { font-size:clamp(26px, 6.5vw, 34px); }
-    .lead { font-size:16px; line-height:1.6; color:rgba(23,23,26,.75); margin:0; }
-    .serif { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.3; color:rgba(23,23,26,.85); margin:0; }
-    .accent-word { font-family:var(--serif); font-style:italic; font-weight:400; color:var(--muted); white-space:nowrap; padding-bottom:.12em;
-      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 7 Q 12 1 22 7 T 42 7 T 62 7 T 82 7 T 102 7 T 118 6' fill='none' stroke='%23E2553F' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left bottom / 100% .32em; }
-    .pills { display:flex; flex-wrap:wrap; gap:6px; }
-    .pill { font-family:var(--mono); font-size:11px; padding:4px 10px; border-radius:99px; border:1px solid var(--line); color:var(--muted); background:rgba(255,255,255,.6); }
-    .spacer { flex:1; }
-
-    .btns { display:flex; gap:8px; flex-wrap:wrap; }
-    .btn { flex:1; min-height:52px; padding:0 20px; border-radius:99px; font-family:var(--mono); font-size:13px; font-weight:700;
-      display:inline-flex; align-items:center; justify-content:center; gap:8px; border:1px solid var(--line); background:var(--white);
-      transition:background .2s, border-color .2s, transform .1s; }
-    .btn:hover { border-color:rgba(23,23,26,.35); }
-    .btn:active { transform:scale(.98); }
-    .btn.pri { background:var(--ink); border-color:var(--ink); color:#fff; flex:2; }
-    .btn.pri:hover { background:var(--accent-ink); border-color:var(--accent-ink); }
-    .btn[disabled] { opacity:.45; pointer-events:none; }
-    .link { font-family:var(--mono); font-size:12px; color:var(--muted); text-decoration:underline; text-decoration-style:dotted; text-underline-offset:4px; align-self:center; padding:8px; }
-    .link:hover { color:var(--ink); }
-
-    .card { background:var(--white); border:1px solid var(--line); border-radius:24px; padding:22px; }
-    .field { display:block; }
-    .field span { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-    .field input, .field textarea { width:100%; font:inherit; font-size:16px; padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:var(--white); color:var(--ink); }
-    .field textarea { resize:vertical; min-height:96px; line-height:1.5; }
-    .field input:focus, .field textarea:focus { outline:none; border-color:var(--ink); }
-    .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .seg { display:flex; flex-wrap:wrap; gap:6px; }
-    .seg button { padding:9px 14px; border-radius:99px; border:1px solid var(--line); background:var(--white); font-size:13px; transition:all .2s; }
-    .seg button[aria-pressed="true"] { background:var(--ink); color:#fff; border-color:var(--ink); }
-
-    /* who's who */
-    .roles { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .role { border-radius:18px; padding:14px; border:1px solid var(--line); background:var(--white); }
-    .role .k { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
-    .role .n { font-family:var(--syne); font-weight:700; font-size:18px; margin-top:4px; word-break:break-word; }
-    .role.speak { background:var(--ink); color:#fff; border-color:var(--ink); }
-    .role.speak .k { color:rgba(255,255,255,.55); }
-
-    /* prompt card */
-    .prompt { position:relative; background:var(--ink); color:#fff; border-radius:26px; padding:28px 24px 24px; min-height:200px;
-      display:flex; flex-direction:column; justify-content:space-between; gap:18px; overflow:hidden; }
-    .prompt::after { content:""; position:absolute; right:-50px; top:-50px; width:170px; height:170px; border-radius:50%; border:1px solid rgba(255,255,255,.1); }
-    .prompt .q { font-family:var(--serif); font-style:italic; font-size:clamp(24px, 6.4vw, 30px); line-height:1.25; position:relative; }
-    .prompt .meta { display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.5); position:relative; }
-    .prompt.flip { animation:flip .55s var(--ease); }
-    @keyframes flip { 0% { transform:rotateX(0); } 50% { transform:rotateX(80deg); opacity:.4; } 100% { transform:none; } }
-
-    /* timer ring */
-    .timer { display:grid; place-items:center; margin:4px auto; position:relative; width:min(68vw, 260px); aspect-ratio:1; }
-    .timer svg { width:100%; height:100%; transform:rotate(-90deg); }
-    .timer .bg { stroke:var(--line); }
-    .timer .fg { stroke:var(--st); transition:stroke .3s; }
-    .timer .num { position:absolute; inset:0; display:grid; place-items:center; text-align:center; }
-    .timer .num b { font-family:var(--mono); font-size:clamp(40px, 13vw, 56px); font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-.02em; display:block; }
-    .timer .num small { font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; }
-    .timer.done .fg { stroke:var(--good); }
-    .timer.pulse { animation:pulse 1.2s ease-in-out 2; }
-    @keyframes pulse { 50% { transform:scale(1.04); } }
-
-    .tip { display:flex; gap:10px; align-items:flex-start; padding:14px 16px; border-radius:16px; background:var(--white); border:1px dashed rgba(23,23,26,.2); font-size:14px; line-height:1.5; }
-    .tip b { font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:400; display:block; margin-bottom:2px; }
-    .tip i { font-style:normal; font-size:18px; line-height:1.2; }
-    .stems { display:grid; gap:8px; }
-    .stems div { padding:12px 14px; border-radius:14px; background:var(--white); border:1px solid var(--line); font-family:var(--serif); font-style:italic; font-size:19px; }
-
-    /* felt heard */
-    .heard { display:grid; gap:8px; }
-    .heard button { display:flex; align-items:center; gap:14px; text-align:left; padding:16px 18px; border-radius:18px; border:1px solid var(--line); background:var(--white); transition:all .2s; }
-    .heard button:hover { border-color:rgba(23,23,26,.35); }
-    .heard button .e { width:40px; height:40px; border-radius:50%; display:grid; place-items:center; font-size:20px; flex-shrink:0; background:var(--paper); }
-    .heard button b { display:block; font-size:16px; }
-    .heard button small { display:block; font-size:13px; color:var(--muted); margin-top:2px; }
-
-    /* curtain (pass the phone) */
-    .curtain { background:var(--ink); color:#fff; border-radius:28px; padding:32px 24px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:14px; }
-    .curtain .hand { width:84px; height:84px; }
-    .curtain h2 { color:#fff; }
-    .curtain p { margin:0; color:rgba(255,255,255,.7); line-height:1.55; }
-    .curtain .btn.pri { background:#fff; border-color:#fff; color:var(--ink); }
-    .curtain .btn.pri:hover { background:var(--accent-ink); border-color:var(--accent-ink); color:#fff; }
-
-    /* summary */
-    .sum { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .sum div { background:var(--white); border:1px solid var(--line); border-radius:18px; padding:16px; }
-    .sum b { display:block; font-family:var(--syne); font-size:18px; word-break:break-word; }
-    .sum span { display:block; font-size:13px; color:var(--muted); margin-top:4px; }
-    .monday { padding:14px 16px; border-radius:16px; background:var(--white); border:1px dashed rgba(23,23,26,.2); font-size:14px; line-height:1.55; }
-    .monday b { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:400; margin-bottom:3px; }
-    .chain { list-style:none; padding:0; margin:0; display:grid; gap:8px; }
-    .chain li { background:var(--white); border:1px solid var(--line); border-radius:14px; padding:12px 14px; font-size:14px; line-height:1.5; }
-    .chain li small { display:block; font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:4px; }
-    .steps3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
-    .steps3 div { background:var(--white); border:1px solid var(--line); border-radius:16px; padding:14px 12px; text-align:center; }
-    .steps3 b { display:block; font-family:var(--mono); font-size:11px; color:var(--accent-ink); }
-    .steps3 span { display:block; font-family:var(--syne); font-weight:700; font-size:15px; margin-top:4px; }
-
-    /* drawer (facilitator guide) */
-    .drawer { position:fixed; inset:0; z-index:60; display:flex; justify-content:flex-end; background:rgba(23,23,26,.45); opacity:0; pointer-events:none; transition:opacity .25s; }
-    .drawer.show { opacity:1; pointer-events:auto; }
-    .panel { width:100%; max-width:460px; height:100%; background:var(--paper); overflow-y:auto; padding:22px 22px calc(28px + env(safe-area-inset-bottom)); transform:translateX(30px); transition:transform .45s var(--ease); overscroll-behavior:contain; }
-    .drawer.show .panel { transform:none; }
-    @media (max-width:560px) { .drawer { align-items:flex-end; } .panel { max-width:none; height:88vh; height:88svh; border-radius:24px 24px 0 0; transform:translateY(40px); } }
-    .panel h3 { font-family:var(--syne); font-size:22px; margin:4px 0 12px; }
-    .panel h4 { font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:400; margin:22px 0 8px; }
-    .panel ol, .panel ul { margin:0; padding-left:20px; display:grid; gap:8px; font-size:14px; line-height:1.55; }
-    .panel p { font-size:14px; line-height:1.6; color:rgba(23,23,26,.78); margin:0; }
-    .x { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; border:1px solid var(--line); background:var(--white); font-family:var(--mono); flex-shrink:0; }
-
-    .toast { position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom)); transform:translate(-50%,10px); opacity:0; pointer-events:none; z-index:70;
-      background:var(--ink); color:#fff; border-radius:99px; padding:9px 16px; font-family:var(--mono); font-size:11px; transition:opacity .25s, transform .35s var(--ease);
-      max-width:calc(100% - 32px); }
-    .toast.show { opacity:1; transform:translate(-50%,0); }
-
-    footer { border-top:1px solid var(--line); padding:18px max(16px, env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
-    .foot-in { max-width:960px; margin:0 auto; display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between; font-family:var(--mono); font-size:11px; color:var(--muted); }
-    .foot-in a { text-decoration:none; } .foot-in a:hover { color:var(--ink); }
-
-    @media (min-width:700px) { main { padding-top:40px; } }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.001ms !important; transition-duration:.001ms !important; } }
-  
-    /* Chinese: keep CJK upright (no faux italic); Latin italics stay real */
-    html:lang(zh) { font-synthesis: weight; }
-</style>
-</head>
+  <link rel="stylesheet" href="/fbkit/s-04cc69ab1d.css">
+<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
+:root{color-scheme:light dark}
+@media (prefers-color-scheme: dark){
+:root{--paper:#141416;--ink:#ECEBE6;--muted:#A8A7AD;--line:#303036;--grid:#26262B;--white:#1D1D21;--inkbg:#2B2B31;--inkbd:#3B3B42;--accent-ink:#F28C76;--good:#62C48F;--paper-rgb:20,20,22;--dot-rgb:255,255,255;--ink-rgb:236,235,230;--white-rgb:29,29,33;--accent-text:#F2806A;--warn-ink:#E3B25C}
+html,body{background-color:var(--paper)}
+/* primary actions read as light on dark */
+.btn.pri,.cta a.pri,.chip.pri{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.btn.pri:hover,.cta a.pri:hover,.chip.pri:hover{background:#fff!important;border-color:#fff!important}
+.btn[disabled]{opacity:.45}
+.seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.steps span.done{background:#ECEBE6}
+.curtain{border:1px solid #3B3B42}
+/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
+.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
+/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
+.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
+/* illustrations keep their light look on a plate */
+.screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
+.plate{background:#fff!important}
+.card-art~.text-ink\/60,.card-art~span .text-ink\/60{color:rgba(23,23,26,.62)!important}
+.text-accent{color:#F2806A!important}
+.bg-white\/90.text-ink,.bg-white\/90 .text-ink{color:#ECEBE6}
+img{filter:none}
+::selection{background:#E2553F;color:#fff}
+}
+</style></head>
 <body>
   <div class="dots" aria-hidden="true"></div>
 
   <header class="top">
     <div class="top-in">
-      <a class="brand" href="/free_builder/" aria-label="FREE//BUILDER">
+      <a class="brand" href="/" aria-label="FREE//BUILDER">
         <span class="mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="19" height="19" style="overflow:visible">
             <rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/>
@@ -236,12 +70,7 @@
     <div id="stage" aria-live="polite"></div>
   </main>
 
-  <footer>
-    <div class="foot-in">
-      <span data-t="privacy">Nothing is recorded. Nothing leaves this device.</span>
-      <a href="/free_builder/" data-t="back">FREE//BUILDER ↗</a>
-    </div>
-  </footer>
+  <footer class="fbf" data-fbf-root><div class="fbf-in"><span class="fbf-note" data-t="privacy">Nothing is recorded. Nothing leaves this device.</span><span>© <span id="fbf-year">2026</span> <a href="/" data-fbf-title="home">FREE//BUILDER</a> L&amp;D Solutions</span><nav aria-label="Footer"><a href="/privacy/" data-fbf="privacy">Privacy</a><a href="https://www.wei-meng.org/" data-fbf="by">A practice by Wei</a><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai">AI</a> &amp; <a href="/nearby/" class="fbf-heart">♥</a></span></nav></div></footer>
 
   <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="g-title">
     <div class="panel" id="panel"></div>
@@ -446,13 +275,139 @@ es: {
   gDebriefList: ["¿Qué haría la gente de forma distinta si esto funcionara?", "¿Quién lo hace ya bien, y qué es distinto para esa persona?", "¿Qué dejaremos de hacer para hacerle sitio?"],
   gNotes: "Notas",
   gNotesList: ["Nada de lo que escribes se guarda ni se envía.", "Si la respuesta es formar, que sea práctica y social.", "Revísalo a los 30 días: ¿cambió el comportamiento?"]
+}, "zh-Hant": {
+  title: "這是培訓能解決的問題嗎？— FREE//BUILDER", product: "要不要培訓？", guide: "工作原理",
+  privacy: "不記錄任何內容，不離開這臺裝置。", back: "FREE//BUILDER ↗",
+  soundOn: "聲音開", soundOff: "聲音關", left: "剩餘", paused: "已暫停", close: "關閉", resume: "繼續", pause: "暫停",
+  introKicker: "診斷 · 給管理者和 L&D",
+  introTitle: "這是<span class=\"accent-word\">培訓</span>能解決的問題嗎？",
+  introLead: "大多數培訓需求，背後其實是別的問題：期望不清楚、沒有反饋、缺少工具，或者制度在獎勵錯誤的做法。在這裡花兩分鐘，可能省下一整個專案——並指向真正有用的辦法。",
+  introMeta: ["2 分鐘", "7 個問題", "無需註冊"],
+  start: "開始",
+  reqTitle: "對方提出了什麼需求？", reqLead: "按你聽到的原話寫下來。", reqPh: "例如：“我們的組長需要一場反饋培訓。”",
+  whoLbl: "這關乎誰的表現？", whoPh: "例如：新任組長",
+  next: "下一步", backBtn: "返回",
+  qOf: "第 {n} / {m} 題",
+  answers: ["是", "否", "不確定"],
+  qs: [
+    ["他們清楚地知道“做得好”是什麼樣子嗎？", "他們能用自己的話說出期望的結果和標準嗎？"],
+    ["他們能及時得到關於自己表現的反饋嗎？", "不是一年一次。而是幾天之內，來自他們信任的人或訊號。"],
+    ["他們有足夠的時間、工具和資訊去做嗎？", "想想系統、許可權、工作量，以及在對的時刻拿到對的資料。"],
+    ["如果明天工作就取決於它，他們能做到嗎？", "經典的檢驗：如果能，那就不是技能差距。"],
+    ["做得好會被看見嗎？做得差會不會反而更省事？", "如果正確的做法沒人看見，或者錯誤的做法更快、更安全，請選“否”。"],
+    ["他們以前至少有時候做好過嗎？", "如果有時候能做到，練習和提醒比一門課更有效。"],
+    ["大多數人都有同樣的差距嗎？", "如果只有部分人有困難，先看看他們有什麼不同，再決定要不要全員培訓。"]
+  ],
+  resKicker: "你的診斷結果", copy: "複製總結", copied: "已複製——發給提出需求的人吧。",
+  verdicts: {
+    train: ["培訓會有幫助——把它做成練習。", "這看起來是真正的技能差距，而且條件已經具備。用真實的人來練習，而不是 PPT。"],
+    both: ["培訓有幫助，但先解決環境條件。", "確實有技能差距，但環境裡的某些因素會抵消培訓效果。兩者都要做——先改條件。"],
+    not: ["這不是培訓能解決的問題。", "大家其實做得到，是周圍的某些東西在阻礙他們。培訓會花時間，卻改變不了多少。"],
+    unsure: ["做決定之前，先進行三次對話。", "不確定的因素太多，還無法判斷。去和相關的人聊聊——這是成本最低的診斷。"]
+  },
+  movesLbl: "替代（或先於）培訓，可以這樣做",
+  moves: [
+    "寫下“做得好”是什麼樣——附上一個真例項子——並找兩位一線同事確認。",
+    "建立快速反饋：每週 5 分鐘的碰頭，或一個他們自己就能看到的簡單訊號。",
+    "先移除障礙：在要求大家更努力之前，先解決工具、許可權或工作量問題。",
+    "不需要上課。給他們一份工作輔助卡，再找個時間和同事練一練。",
+    "看看後果：讓正確的做法成為最省事的做法，並在它發生時被看見。",
+    "用練習和提醒代替課程：一次簡短的兩人練習，加一句週一提醒。",
+    "在全員培訓之前，先弄清那些有困難的人有什麼不同。"
+  ],
+  unsureMove: "去弄清楚：問三位一線同事——“{q}”",
+  trainLbl: "如果決定培訓", trainTip: "短、實用、有互動。兩兩配對，用真實情境練習，最後帶走一件週一就能試的事。",
+  demosLbl: "合適的練習",
+  talkLbl: "現在，和提出需求的人聊聊",
+  talkQs: ["如果這件事成功了，大家會有什麼不同的做法？", "今天是什麼在阻礙這些做法？", "30 天后我們怎麼知道它有效？"],
+  monday: "週一試試這個", mondayTxt: "下次有人提出培訓需求時，先問一句“大家會有什麼不同的做法？”，再答應。",
+  again: "診斷另一個需求", passOn: "傳下去",
+  teachKicker: "傳下去", teachTitle: "把這個問題教給別人。",
+  teachLead: "給同事講講這三個檢查，然後讓 TA 用自己的話寫下下次會問什麼。",
+  t3: ["“做得好”是什麼樣？", "必要時他們能做到嗎？", "是什麼在阻礙？"], t3sub: ["期望", "是不是技能", "環境"],
+  learnerName: "TA 的名字（可選）", learnerPh: "例如：小美", learned: "TA 下次會問什麼（用自己的話）", learnedPh: "把裝置遞給 TA……",
+  save: "儲存在這臺裝置上", chainTitle: "你傳給過的人", chainEmpty: "還沒有。你的第一次“教回去”會出現在這裡。",
+  saved: "只儲存在這臺裝置上。", restart: "回到開頭", timeUp: "",
+  summaryHead: "要不要培訓？——兩分鐘診斷", reqLine: "需求", whoLine: "物件",
+  gKicker: "工作原理", gTitle: "問題背後的邏輯",
+  gWhy: "為什麼有效",
+  gWhyTxt: "這些問題來自經典的績效諮詢思路（Mager & Pipe 的“如果性命攸關，他們能做到嗎？”，以及 Gilbert 的觀點：大多數績效問題出在環境，而不在個人）。它是對話的起點，不是最終裁決。",
+  gSteps: "和提出需求的人一起用",
+  gStepList: ["和提出培訓需求的人一起開啟它。", "誠實作答——“不確定”是很好的答案。", "大聲讀出總結，約定第一步。", "在設計任何內容之前，先問最後那三個問題。"],
+  gDebrief: "值得一直問的問題",
+  gDebriefList: ["如果這件事成功了，大家會有什麼不同的做法？", "誰已經做得很好——他們有什麼不同？", "為了騰出空間，我們要停止做什麼？"],
+  gNotes: "備註",
+  gNotesList: ["你輸入的任何內容都不會被儲存或傳送。", "如果答案是培訓，請保持以練習為主、有互動。", "30 天后回顧：行為改變了嗎？"]
+}, "ca": {
+  title: "És un problema de formació? — FREE//BUILDER", product: "Formació o no?", guide: "Com funciona",
+  privacy: "No es guarda res. Res no surt d'aquest dispositiu.", back: "FREE//BUILDER ↗",
+  soundOn: "So activat", soundOff: "So desactivat", left: "queden", paused: "en pausa", close: "Tancar", resume: "Continuar", pause: "Pausa",
+  introKicker: "Diagnòstic · Per a comandaments i L&D",
+  introTitle: "És un problema de <span class=\"accent-word\">formació</span>?",
+  introLead: "La majoria de les peticions de formació tracten en realitat d'una altra cosa: expectatives poc clares, falta de feedback, eines que no hi són o un sistema que premia el que no toca. Dos minuts aquí poden estalviar un programa sencer i assenyalar el que de debò ajudarà.",
+  introMeta: ["2 minuts", "7 preguntes", "sense registre"],
+  start: "Començar",
+  reqTitle: "Què s'està demanant?", reqLead: "Escriu la petició tal com la vas sentir.", reqPh: "p. ex. «Els nostres caps d'equip necessiten una formació en feedback».",
+  whoLbl: "De qui és l'acompliment?", whoPh: "p. ex. caps d'equip nous",
+  next: "Següent", backBtn: "Enrere",
+  qOf: "Pregunta {n} de {m}",
+  answers: ["Sí", "No", "No ho sé"],
+  qs: [
+    ["Saben exactament com és fer-ho bé?", "Podrien descriure el resultat i l'estàndard esperats amb les seves paraules?"],
+    ["Reben feedback a temps sobre com ho fan?", "No un cop l'any. En dies, d'algú o alguna cosa en qui confien."],
+    ["Tenen el temps, les eines i la informació per fer-ho?", "Pensa en sistemes, accessos, càrrega de treball i la dada correcta en el moment just."],
+    ["Si demà la seva feina en depengués, podrien fer-ho?", "La prova clàssica: si la resposta és sí, no és una mancança d'habilitat."],
+    ["Es nota quan ho fan bé, i fer-ho malament no és més fàcil?", "Respon «No» si el que és correcte passa desapercebut, o l'incorrecte és més ràpid o més segur."],
+    ["Ho han fet bé alguna vegada, almenys de vegades?", "Si de vegades ho aconsegueixen, la pràctica i els recordatoris funcionen millor que un curs."],
+    ["La mancança és la mateixa en gairebé totes les persones?", "Si només a algunes els costa, mira què és diferent per a elles abans de formar tothom."]
+  ],
+  resKicker: "El teu diagnòstic", copy: "Copiar el resum", copied: "Copiat: comparteix-lo amb qui ho va demanar.",
+  verdicts: {
+    train: ["La formació ajudarà: que sigui pràctica.", "Sembla una mancança real d'habilitat i les condicions hi són. Practica amb persones reals, no amb diapositives."],
+    both: ["La formació ajuda, però primer arregla les condicions.", "Hi ha una mancança d'habilitat, i alguna cosa de l'entorn desfarà la formació si no es toca. Fes les dues coses: primer les condicions."],
+    not: ["Això no és un problema de formació.", "La gent sap fer-ho. Alguna cosa al seu voltant ho impedeix. Formar costaria temps i canviaria poc."],
+    unsure: ["Necessites tres converses abans de decidir.", "Hi ha massa incògnites. Parla amb les persones implicades: és el diagnòstic més barat que existeix."]
+  },
+  movesLbl: "Què fer en lloc de (o abans de) formar",
+  moves: [
+    "Escriu com és fer-ho bé, amb un exemple real, i comprova-ho amb dues persones que fan aquesta feina.",
+    "Crea un circuit de feedback ràpid: un check-in setmanal de 5 minuts o un senyal senzill que puguin veure.",
+    "Treu l'obstacle: arregla l'eina, l'accés o la càrrega de treball abans de demanar més esforç.",
+    "Sense curs. Dona'ls una guia de suport i un moment per practicar amb un col·lega.",
+    "Mira les conseqüències: que el que és correcte sigui el fàcil, i que es noti quan passa.",
+    "Pràctica i recordatoris en lloc d'un curs: un exercici curt en parella i una idea per al dilluns.",
+    "Esbrina què és diferent per a qui té dificultats abans de formar tothom."
+  ],
+  unsureMove: "Esbrina-ho: pregunta a tres persones que fan aquesta feina: «{q}»",
+  trainLbl: "Si decideixes formar", trainTip: "Curta, pràctica i social. Per parelles, sobre situacions reals, i que acabi amb alguna cosa per provar dilluns.",
+  demosLbl: "Pràctica que hi encaixa",
+  talkLbl: "Ara parla amb qui ho va demanar",
+  talkQs: ["Què faria la gent de manera diferent si això funcionés?", "Què ho impedeix avui?", "Com ho sabrem d'aquí a 30 dies?"],
+  monday: "Prova-ho dilluns", mondayTxt: "La propera vegada que algú demani formació, pregunta «Què faria la gent de manera diferent?» abans de dir que sí.",
+  again: "Diagnosticar una altra petició", passOn: "Transmetre-ho",
+  teachKicker: "Transmetre-ho", teachTitle: "Ensenya la pregunta a algú.",
+  teachLead: "Mostra a un col·lega les tres comprovacions i deixa que escrigui, amb les seves paraules, què preguntarà la propera vegada.",
+  t3: ["Com és fer-ho bé?", "Podrien si haguessin de fer-ho?", "Què ho impedeix?"], t3sub: ["expectatives", "habilitat o no", "entorn"],
+  learnerName: "El seu nom (opcional)", learnerPh: "p. ex. Mei", learned: "Què preguntarà la propera vegada, amb les seves paraules", learnedPh: "Passa-li el dispositiu…",
+  save: "Desar en aquest dispositiu", chainTitle: "Persones a qui ho has transmès", chainEmpty: "Encara ningú. La teva primera transmissió apareixerà aquí.",
+  saved: "Desat només en aquest dispositiu.", restart: "Tornar a l'inici", timeUp: "",
+  summaryHead: "Formació o no? — un diagnòstic de 2 minuts", reqLine: "Petició", whoLine: "Sobre",
+  gKicker: "Com funciona", gTitle: "El que hi ha darrere de les preguntes",
+  gWhy: "Per què funciona",
+  gWhyTxt: "Les preguntes segueixen la consultoria d'acompliment clàssica (el «podrien fer-ho si els hi anés la vida?» de Mager i Pipe, i la idea de Gilbert que la majoria dels problemes d'acompliment són a l'entorn, no en la persona). És un inici de conversa, no un veredicte.",
+  gSteps: "Fer-lo servir amb qui demana formació",
+  gStepList: ["Obre'l al costat de la persona que demana la formació.", "Responeu amb sinceritat: «No ho sé» és una bona resposta.", "Llegiu el resum en veu alta i acordeu un primer pas.", "Fes les tres preguntes finals abans de dissenyar res."],
+  gDebrief: "Preguntes que convé repetir",
+  gDebriefList: ["Què faria la gent de manera diferent si això funcionés?", "Qui ho fa ja bé, i què és diferent per a aquesta persona?", "Què deixarem de fer per fer-hi lloc?"],
+  gNotes: "Notes",
+  gNotesList: ["Res del que escrius es guarda ni s'envia.", "Si la resposta és formar, que sigui pràctica i social.", "Revisa-ho als 30 dies: ha canviat el comportament?"]
 }
 };
 
 /* =====================================================================
    FB KIT · helpers (copy into every demo)
    ===================================================================== */
-const LANGS = ["en", "zh", "es"], LANG_LBL = { en: "EN", zh: "中文", es: "ES" };
+const LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LANG_LBL = { en: "EN", zh: "中文", es: "ES", "zh-Hant": "繁中", "ca": "CA" };
 let lang = "en";
 const T = () => I18N[lang];
 const $ = id => document.getElementById(id);
@@ -544,7 +499,7 @@ function curtainHTML(title, lead, btnLabel, act) {
 const ENV = [0, 1, 2, 4];             // a "No" here is something around the person
 const S = { screen: "intro", req: "", who: "", q: 0, a: [] };
 const DEMOS = { listen: ["Listening Duet", "倾听二重奏", "Dúo de escucha"], repair: ["Repair Kit", "修复工具包", "Kit de Reparación"], thanks: ["Specific Thanks", "具体的感谢", "Gracias Concretas"], swap: ["Perspective Swap", "视角互换", "Cambio de Perspectiva"], discovery: ["Discovery Duet", "探询二重奏", "Dúo de Descubrimiento"], coach: ["Coaching Co-Pilot", "教练副驾", "Copiloto de Coaching"] };
-const li = () => ({ en: 0, zh: 1, es: 2 }[lang]);
+const li = () => ({ en: 0, zh: 1, es: 2, "zh-Hant": 1, "ca": 2 }[lang]);
 
 function analyse() {
   const a = S.a, unsure = a.filter(x => x === 2).length;
@@ -610,7 +565,7 @@ function render() {
       <span class="kicker">${esc(fmt(t.qOf, { n: S.q + 1, m: t.qs.length }))}</span>
       <h2>${esc(q[0])}</h2>
       <p class="lead">${esc(q[1])}</p>
-      <div class="heard">${t.answers.map((a, i) => `<button data-ans="${i}" aria-pressed="${S.a[S.q] === i}" style="${S.a[S.q] === i ? "border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)" : ""}" ${i === 0 ? "data-focus" : ""}><span class="e">${ANS_ICONS[i]}</span><span><b>${esc(a)}</b></span></button>`).join("")}</div>
+      <div class="heard">${t.answers.map((a, i) => `<button data-ans="${i}" aria-pressed="${S.a[S.q] === i}" style="${S.a[S.q] === i ? "border-color:var(--inkbd,var(--ink));box-shadow:inset 0 0 0 1px var(--ink)" : ""}" ${i === 0 ? "data-focus" : ""}><span class="e">${ANS_ICONS[i]}</span><span><b>${esc(a)}</b></span></button>`).join("")}</div>
       <div class="spacer"></div>
       <div class="btns"><button class="btn" data-act="prevQ">← ${esc(t.backBtn)}</button></div>
     </section>`; break; }
@@ -624,8 +579,8 @@ function render() {
       <p class="serif" style="margin:0;font-size:18px">${esc(v[1])}</p>
       ${r.moves.length ? `<div><span class="kicker">${esc(t.movesLbl)}</span><ul class="chain" style="margin-top:10px">${r.moves.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>` : ""}
       ${r.verdict === "train" || r.verdict === "both" ? `<div class="tip"><i>✦</i><span><b>${esc(t.trainLbl)}</b>${esc(t.trainTip)}</span></div>
-        <div><span class="kicker">${esc(t.demosLbl)}</span><div class="pills" style="margin-top:10px">${fit.map(k => `<a class="pill" style="color:var(--ink);text-decoration:none" href="/free_builder/${k}">${esc(DEMOS[k][li()])} ↗</a>`).join("")}</div></div>` : ""}
-      <div class="card" style="background:var(--ink);color:#fff;border-color:var(--ink)"><span class="kicker" style="color:rgba(255,255,255,.55)">${esc(t.talkLbl)}</span>
+        <div><span class="kicker">${esc(t.demosLbl)}</span><div class="pills" style="margin-top:10px">${fit.map(k => `<a class="pill" style="color:var(--ink);text-decoration:none" href="/${k}">${esc(DEMOS[k][li()])} ↗</a>`).join("")}</div></div>` : ""}
+      <div class="card" style="background:var(--inkbg,var(--ink));color:#fff;border-color:var(--inkbd,var(--ink))"><span class="kicker" style="color:rgba(255,255,255,.55)">${esc(t.talkLbl)}</span>
         <ol style="margin:10px 0 0;padding-left:20px;display:grid;gap:8px;font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.35">${t.talkQs.map(q => `<li>${esc(q)}</li>`).join("")}</ol></div>
       <div class="monday"><b>${esc(t.monday)}</b>${esc(t.mondayTxt)}</div>
       <div class="btns"><button class="btn" data-act="copy">⧉ ${esc(t.copy)}</button><button class="btn" data-act="again">↻ ${esc(t.again)}</button></div>
@@ -658,8 +613,8 @@ function teachHTML(demo) {
       <button class="btn pri" data-act="saveTeach" style="flex:none">${esc(t.save)}</button>
     </div>
     <div><span class="kicker">${esc(t.chainTitle)}</span>
-      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString(lang === "zh" ? "zh-CN" : lang))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
-    <a class="link" href="/free_builder/tools/teachback">⊂⊃ ${esc(lang === "zh" ? "教回去链条 ↗" : lang === "es" ? "Cadena de Enseñar de Vuelta ↗" : "Teach-Back Chain ↗")}</a>
+      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang))))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
+    <a class="link" href="/tools/teachback">⊂⊃ ${esc((/*i18n*/lang === "zh" ? "教回去链条 ↗" : (lang === "zh-Hant" ? "教回去鏈條 ↗" : (/*i18n*/lang === "es" ? "Cadena de Enseñar de Vuelta ↗" : (lang === "ca" ? "Cadena d'Ensenyar de Tornada ↗" : "Teach-Back Chain ↗")))))}</a>
     <button class="link" data-act="restart">${esc(t.restart)}</button>
   </section>`;
 }
@@ -668,7 +623,7 @@ function summaryText() {
   const t = T(), r = analyse(), v = t.verdicts[r.verdict];
   return [t.summaryHead, `${t.reqLine}: ${S.req.trim()}`, S.who.trim() ? `${t.whoLine}: ${S.who.trim()}` : "", "",
     ...t.qs.map((q, i) => `${i + 1}. ${q[0]} — ${t.answers[S.a[i]] || "—"}`), "", `→ ${v[0]}`, ...r.moves.map(m => `• ${m}`), "",
-    ...t.talkQs.map(q => `? ${q}`), "", "wei-meng.org/free_builder/tools/diagnose"].filter((x, i, a) => x !== "" || a[i - 1] !== "").join("\n");
+    ...t.talkQs.map(q => `? ${q}`), "", "freebuilder.net/tools/diagnose"].filter((x, i, a) => x !== "" || a[i - 1] !== "").join("\n");
 }
 
 $("stage").addEventListener("input", e => {
@@ -742,7 +697,7 @@ $("btn-sound").addEventListener("click", () => { sound.muted = !sound.muted; sto
 
 function applyLang(l) {
   lang = LANGS.includes(l) ? l : "en";
-  document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
+  document.documentElement.lang = (/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang));
   document.title = T().title;
   $("lang-lbl").textContent = LANG_LBL[lang];
   $("btn-guide").setAttribute("aria-label", T().guide); drawer.setAttribute("aria-label", T().guide);
@@ -763,7 +718,7 @@ try { saved = localStorage.getItem("wm_preferred_lang") || localStorage.getItem(
 const nav = (navigator.language || "").toLowerCase();
 applyLang(LANGS.includes(saved) ? saved : nav.startsWith("zh") ? "zh" : nav.startsWith("es") ? "es" : "en");
 document.addEventListener("visibilitychange", () => { if (!document.hidden && timer.running) keepAwake(true); });
-if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/free_builder/sw.js", { scope: "/free_builder/" }).catch(() => {}); // offline cache
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {}); // offline cache
 })();
 </script>
 </body>

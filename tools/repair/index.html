@@ -1,213 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=b09feb0a24"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title id="page-title">Listening Duet — FREE//BUILDER</title>
   <meta name="description" content="Practise repairing trust with a colleague: own it, name the impact, repair forward. Then swap.">
-  <meta name="theme-color" content="#F7F6F2">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
   <!-- Brand fonts load without blocking the page: where Google Fonts is slow or blocked, system fonts show instantly. -->
   <link rel="stylesheet" href="/fonts/fonts.css">
 
-  <style>
-    /* =================================================================
-       FB KIT · tokens + shell (shared by every FREE//BUILDER demo)
-       ================================================================= */
-    :root {
-      --paper:#F7F6F2; --ink:#17171A; --muted:#6B6A70; --line:#E5E2DA; --accent:#E2553F; --accent-ink:#C2412D; --white:#fff; --good:#2F8A5C;
-      --st:#E2553F;
-      --ease:cubic-bezier(.23,1,.32,1);
-      --sans:"Plus Jakarta Sans",system-ui,-apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
-      --mono:"Space Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
-      --syne:Syne,"Plus Jakarta Sans",system-ui,"PingFang SC","Noto Sans SC",sans-serif;
-      --serif:"Instrument Serif",Georgia,"Songti SC","STSong",serif;
-    }
-    * { box-sizing:border-box; }
-    html, body { margin:0; overflow-x:hidden; }
-    body {
-      background:var(--paper); color:var(--ink); font-family:var(--sans);
-      -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
-      min-height:100vh; min-height:100svh; display:flex; flex-direction:column;
-    }
-    button { font:inherit; color:inherit; cursor:pointer; background:none; border:0; padding:0; touch-action:manipulation; }
-    a { color:inherit; }
-    :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:10px; }
-    .kicker { font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
-    .dots { position:fixed; inset:0; z-index:-1; pointer-events:none;
-      background-image:radial-gradient(rgba(23,23,26,.09) 1px,transparent 1px); background-size:22px 22px;
-      -webkit-mask-image:linear-gradient(to bottom,#000,transparent 60%); mask-image:linear-gradient(to bottom,#000,transparent 60%); }
-
-    header.top { position:sticky; top:0; z-index:40; background:rgba(247,246,242,.92);
-      -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid rgba(229,226,218,.8);
-      padding:10px max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left)); }
-    .top-in { max-width:960px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .brand { display:flex; align-items:center; gap:10px; text-decoration:none; min-width:0; }
-    .mark { width:34px; height:34px; border-radius:10px; background:var(--ink); display:grid; place-items:center; flex-shrink:0; transition:transform .5s var(--ease); }
-    .mark rect { transform-box:fill-box; transform-origin:center; transition:transform .6s var(--ease); }
-    .mark .last { transform:translate(2.5px,-2.5px) rotate(12deg); }
-    .brand:hover .mark { transform:rotate(-4deg); }
-    .brand:hover .mark .last { transform:none; }
-    .brand-txt { line-height:1; min-width:0; }
-    .brand-txt b { font-family:var(--syne); font-weight:700; font-size:13px; display:block; }
-    .brand-txt b i { color:var(--accent); font-style:normal; }
-    .brand-txt span { display:block; font-size:11px; color:var(--muted); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .top-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
-    .chip { height:32px; padding:0 10px; border:1px solid var(--line); border-radius:9px; background:rgba(255,255,255,.6);
-      display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11px; transition:border-color .2s, transform .1s; }
-    .chip:hover { border-color:rgba(23,23,26,.3); }
-    .chip:active { transform:scale(.96); }
-    .chip svg { width:14px; height:14px; }
-    .chip[hidden] { display:none; }
-    @media (max-width:420px) { .chip .lbl { display:none; } }
-    @media (max-width:340px) { .brand-txt { display:none; } }
-
-    main { flex:1; width:100%; max-width:600px; margin:0 auto; padding:24px max(16px, env(safe-area-inset-right)) 32px max(16px, env(safe-area-inset-left)); display:flex; flex-direction:column; }
-
-    /* progress dots */
-    .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
-    .steps { display:flex; gap:6px; align-items:center; margin-bottom:18px; min-height:8px; }
-    .steps span { height:6px; flex:1; border-radius:3px; background:var(--line); transition:background .4s; }
-    .steps span.done { background:var(--ink); }
-    .steps span.now { background:var(--accent); }
-
-    /* screens */
-    .screen { flex:1; display:flex; flex-direction:column; gap:18px; animation:in .5s var(--ease) both; }
-    @keyframes in { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
-    h1, h2 { font-family:var(--syne); font-weight:700; letter-spacing:-.02em; margin:0; line-height:1.1; }
-    h1 { font-size:clamp(34px, 9vw, 52px); }
-    h2 { font-size:clamp(26px, 6.5vw, 34px); }
-    .lead { font-size:16px; line-height:1.6; color:rgba(23,23,26,.75); margin:0; }
-    .serif { font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.3; color:rgba(23,23,26,.85); margin:0; }
-    .accent-word { font-family:var(--serif); font-style:italic; font-weight:400; color:var(--muted); white-space:nowrap; padding-bottom:.12em;
-      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 7 Q 12 1 22 7 T 42 7 T 62 7 T 82 7 T 102 7 T 118 6' fill='none' stroke='%23E2553F' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left bottom / 100% .32em; }
-    .pills { display:flex; flex-wrap:wrap; gap:6px; }
-    .pill { font-family:var(--mono); font-size:11px; padding:4px 10px; border-radius:99px; border:1px solid var(--line); color:var(--muted); background:rgba(255,255,255,.6); }
-    .spacer { flex:1; }
-
-    .btns { display:flex; gap:8px; flex-wrap:wrap; }
-    .btn { flex:1; min-height:52px; padding:0 20px; border-radius:99px; font-family:var(--mono); font-size:13px; font-weight:700;
-      display:inline-flex; align-items:center; justify-content:center; gap:8px; border:1px solid var(--line); background:var(--white);
-      transition:background .2s, border-color .2s, transform .1s; }
-    .btn:hover { border-color:rgba(23,23,26,.35); }
-    .btn:active { transform:scale(.98); }
-    .btn.pri { background:var(--ink); border-color:var(--ink); color:#fff; flex:2; }
-    .btn.pri:hover { background:var(--accent-ink); border-color:var(--accent-ink); }
-    .btn[disabled] { opacity:.45; pointer-events:none; }
-    .link { font-family:var(--mono); font-size:12px; color:var(--muted); text-decoration:underline; text-decoration-style:dotted; text-underline-offset:4px; align-self:center; padding:8px; }
-    .link:hover { color:var(--ink); }
-
-    .card { background:var(--white); border:1px solid var(--line); border-radius:24px; padding:22px; }
-    .field { display:block; }
-    .field span { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-    .field input, .field textarea { width:100%; font:inherit; font-size:16px; padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:var(--white); color:var(--ink); }
-    .field textarea { resize:vertical; min-height:96px; line-height:1.5; }
-    .field input:focus, .field textarea:focus { outline:none; border-color:var(--ink); }
-    .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .seg { display:flex; flex-wrap:wrap; gap:6px; }
-    .seg button { padding:9px 14px; border-radius:99px; border:1px solid var(--line); background:var(--white); font-size:13px; transition:all .2s; }
-    .seg button[aria-pressed="true"] { background:var(--ink); color:#fff; border-color:var(--ink); }
-
-    /* who's who */
-    .roles { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .role { border-radius:18px; padding:14px; border:1px solid var(--line); background:var(--white); }
-    .role .k { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
-    .role .n { font-family:var(--syne); font-weight:700; font-size:18px; margin-top:4px; word-break:break-word; }
-    .role.speak { background:var(--ink); color:#fff; border-color:var(--ink); }
-    .role.speak .k { color:rgba(255,255,255,.55); }
-
-    /* prompt card */
-    .prompt { position:relative; background:var(--ink); color:#fff; border-radius:26px; padding:28px 24px 24px; min-height:200px;
-      display:flex; flex-direction:column; justify-content:space-between; gap:18px; overflow:hidden; }
-    .prompt::after { content:""; position:absolute; right:-50px; top:-50px; width:170px; height:170px; border-radius:50%; border:1px solid rgba(255,255,255,.1); }
-    .prompt .q { font-family:var(--serif); font-style:italic; font-size:clamp(24px, 6.4vw, 30px); line-height:1.25; position:relative; }
-    .prompt .meta { display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.5); position:relative; }
-    .prompt.flip { animation:flip .55s var(--ease); }
-    @keyframes flip { 0% { transform:rotateX(0); } 50% { transform:rotateX(80deg); opacity:.4; } 100% { transform:none; } }
-
-    /* timer ring */
-    .timer { display:grid; place-items:center; margin:4px auto; position:relative; width:min(68vw, 260px); aspect-ratio:1; }
-    .timer svg { width:100%; height:100%; transform:rotate(-90deg); }
-    .timer .bg { stroke:var(--line); }
-    .timer .fg { stroke:var(--st); transition:stroke .3s; }
-    .timer .num { position:absolute; inset:0; display:grid; place-items:center; text-align:center; }
-    .timer .num b { font-family:var(--mono); font-size:clamp(40px, 13vw, 56px); font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-.02em; display:block; }
-    .timer .num small { font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; }
-    .timer.done .fg { stroke:var(--good); }
-    .timer.pulse { animation:pulse 1.2s ease-in-out 2; }
-    @keyframes pulse { 50% { transform:scale(1.04); } }
-
-    .tip { display:flex; gap:10px; align-items:flex-start; padding:14px 16px; border-radius:16px; background:var(--white); border:1px dashed rgba(23,23,26,.2); font-size:14px; line-height:1.5; }
-    .tip b { font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:400; display:block; margin-bottom:2px; }
-    .tip i { font-style:normal; font-size:18px; line-height:1.2; }
-    .stems { display:grid; gap:8px; }
-    .stems div { padding:12px 14px; border-radius:14px; background:var(--white); border:1px solid var(--line); font-family:var(--serif); font-style:italic; font-size:19px; }
-
-    /* felt heard */
-    .heard { display:grid; gap:8px; }
-    .heard button { display:flex; align-items:center; gap:14px; text-align:left; padding:16px 18px; border-radius:18px; border:1px solid var(--line); background:var(--white); transition:all .2s; }
-    .heard button:hover { border-color:rgba(23,23,26,.35); }
-    .heard button .e { width:40px; height:40px; border-radius:50%; display:grid; place-items:center; font-size:20px; flex-shrink:0; background:var(--paper); }
-    .heard button b { display:block; font-size:16px; }
-    .heard button small { display:block; font-size:13px; color:var(--muted); margin-top:2px; }
-
-    /* curtain (pass the phone) */
-    .curtain { background:var(--ink); color:#fff; border-radius:28px; padding:32px 24px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:14px; }
-    .curtain .hand { width:84px; height:84px; }
-    .curtain h2 { color:#fff; }
-    .curtain p { margin:0; color:rgba(255,255,255,.7); line-height:1.55; }
-    .curtain .btn.pri { background:#fff; border-color:#fff; color:var(--ink); }
-    .curtain .btn.pri:hover { background:var(--accent-ink); border-color:var(--accent-ink); color:#fff; }
-
-    /* summary */
-    .sum { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .sum div { background:var(--white); border:1px solid var(--line); border-radius:18px; padding:16px; }
-    .sum b { display:block; font-family:var(--syne); font-size:18px; word-break:break-word; }
-    .sum span { display:block; font-size:13px; color:var(--muted); margin-top:4px; }
-    .monday { padding:14px 16px; border-radius:16px; background:var(--white); border:1px dashed rgba(23,23,26,.2); font-size:14px; line-height:1.55; }
-    .monday b { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:400; margin-bottom:3px; }
-    .chain { list-style:none; padding:0; margin:0; display:grid; gap:8px; }
-    .chain li { background:var(--white); border:1px solid var(--line); border-radius:14px; padding:12px 14px; font-size:14px; line-height:1.5; }
-    .chain li small { display:block; font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:4px; }
-    .steps3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
-    .steps3 div { background:var(--white); border:1px solid var(--line); border-radius:16px; padding:14px 12px; text-align:center; }
-    .steps3 b { display:block; font-family:var(--mono); font-size:11px; color:var(--accent-ink); }
-    .steps3 span { display:block; font-family:var(--syne); font-weight:700; font-size:15px; margin-top:4px; }
-
-    /* drawer (facilitator guide) */
-    .drawer { position:fixed; inset:0; z-index:60; display:flex; justify-content:flex-end; background:rgba(23,23,26,.45); opacity:0; pointer-events:none; transition:opacity .25s; }
-    .drawer.show { opacity:1; pointer-events:auto; }
-    .panel { width:100%; max-width:460px; height:100%; background:var(--paper); overflow-y:auto; padding:22px 22px calc(28px + env(safe-area-inset-bottom)); transform:translateX(30px); transition:transform .45s var(--ease); overscroll-behavior:contain; }
-    .drawer.show .panel { transform:none; }
-    @media (max-width:560px) { .drawer { align-items:flex-end; } .panel { max-width:none; height:88vh; height:88svh; border-radius:24px 24px 0 0; transform:translateY(40px); } }
-    .panel h3 { font-family:var(--syne); font-size:22px; margin:4px 0 12px; }
-    .panel h4 { font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:400; margin:22px 0 8px; }
-    .panel ol, .panel ul { margin:0; padding-left:20px; display:grid; gap:8px; font-size:14px; line-height:1.55; }
-    .panel p { font-size:14px; line-height:1.6; color:rgba(23,23,26,.78); margin:0; }
-    .x { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; border:1px solid var(--line); background:var(--white); font-family:var(--mono); flex-shrink:0; }
-
-    .toast { position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom)); transform:translate(-50%,10px); opacity:0; pointer-events:none; z-index:70;
-      background:var(--ink); color:#fff; border-radius:99px; padding:9px 16px; font-family:var(--mono); font-size:11px; transition:opacity .25s, transform .35s var(--ease);
-      max-width:calc(100% - 32px); }
-    .toast.show { opacity:1; transform:translate(-50%,0); }
-
-    footer { border-top:1px solid var(--line); padding:18px max(16px, env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
-    .foot-in { max-width:960px; margin:0 auto; display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between; font-family:var(--mono); font-size:11px; color:var(--muted); }
-    .foot-in a { text-decoration:none; } .foot-in a:hover { color:var(--ink); }
-
-    @media (min-width:700px) { main { padding-top:40px; } }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.001ms !important; transition-duration:.001ms !important; } }
-  
-    /* Chinese: keep CJK upright (no faux italic); Latin italics stay real */
-    html:lang(zh) { font-synthesis: weight; }
-</style>
-</head>
+  <link rel="stylesheet" href="/fbkit/s-04cc69ab1d.css">
+<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
+:root{color-scheme:light dark}
+@media (prefers-color-scheme: dark){
+:root{--paper:#141416;--ink:#ECEBE6;--muted:#A8A7AD;--line:#303036;--grid:#26262B;--white:#1D1D21;--inkbg:#2B2B31;--inkbd:#3B3B42;--accent-ink:#F28C76;--good:#62C48F;--paper-rgb:20,20,22;--dot-rgb:255,255,255;--ink-rgb:236,235,230;--white-rgb:29,29,33;--accent-text:#F2806A;--warn-ink:#E3B25C}
+html,body{background-color:var(--paper)}
+/* primary actions read as light on dark */
+.btn.pri,.cta a.pri,.chip.pri{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.btn.pri:hover,.cta a.pri:hover,.chip.pri:hover{background:#fff!important;border-color:#fff!important}
+.btn[disabled]{opacity:.45}
+.seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.steps span.done{background:#ECEBE6}
+.curtain{border:1px solid #3B3B42}
+/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
+.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
+/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
+.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
+/* illustrations keep their light look on a plate */
+.screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
+.plate{background:#fff!important}
+.card-art~.text-ink\/60,.card-art~span .text-ink\/60{color:rgba(23,23,26,.62)!important}
+.text-accent{color:#F2806A!important}
+.bg-white\/90.text-ink,.bg-white\/90 .text-ink{color:#ECEBE6}
+img{filter:none}
+::selection{background:#E2553F;color:#fff}
+}
+</style></head>
 <body>
   <div class="dots" aria-hidden="true"></div>
 
   <header class="top">
     <div class="top-in">
-      <a class="brand" href="/free_builder/" aria-label="FREE//BUILDER">
+      <a class="brand" href="/" aria-label="FREE//BUILDER">
         <span class="mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="19" height="19" style="overflow:visible">
             <rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/>
@@ -236,12 +70,7 @@
     <div id="stage" aria-live="polite"></div>
   </main>
 
-  <footer>
-    <div class="foot-in">
-      <span data-t="privacy">Nothing is recorded. Nothing leaves this phone.</span>
-      <a href="/free_builder/" data-t="back">FREE//BUILDER ↗</a>
-    </div>
-  </footer>
+  <footer class="fbf" data-fbf-root><div class="fbf-in"><span class="fbf-note" data-t="privacy">Nothing is recorded. Nothing leaves this phone.</span><span>© <span id="fbf-year">2026</span> <a href="/" data-fbf-title="home">FREE//BUILDER</a> L&amp;D Solutions</span><nav aria-label="Footer"><a href="/privacy/" data-fbf="privacy">Privacy</a><a href="https://www.wei-meng.org/" data-fbf="by">A practice by Wei</a><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai">AI</a> &amp; <a href="/nearby/" class="fbf-heart">♥</a></span></nav></div></footer>
 
   <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="g-title">
     <div class="panel" id="panel"></div>
@@ -431,6 +260,122 @@ es: {
   gDebriefList: ["¿Cuál de los tres pasos costó más decir?", "¿Qué necesitaba quien recibía que sorprendió a quien reparaba?", "¿Qué frena las reparaciones en nuestro equipo?"],
   gNotes: "Notas",
   gNotesList: ["Usad errores inventados, salvo que la gente elija otra cosa.", "No hay puntuación: “todavía no” es información útil, no un fracaso.", "Reparar nunca exige que la otra persona perdone."]
+}, "zh-Hant": {
+  title: "修復工具包 — FREE//BUILDER", product: "修復工具包", guide: "引導師",
+  privacy: "不錄音，不上傳，一切只在這部手機上。", back: "FREE//BUILDER ↗",
+  soundOn: "聲音開", soundOff: "聲音關", left: "剩餘", paused: "已暫停", close: "關閉", resume: "繼續", pause: "暫停",
+  introKicker: "人的能力 · 兩人一組", repairing: "修復", receiving: "回應",
+  introTitle: "修復<span class=\"accent-word\">工具包</span>",
+  introLead: "工作中誰都會犯錯。真正建立信任的，是修復。和一位同事練習一次——一人修復，另一人誠實地說出感受——然後交換。",
+  introMeta: ["2 個人", "1 部手機", "約 12 分鐘"],
+  start: "開始",
+  setupTitle: "誰來練習？", nameA: "A", nameB: "B", phA: "例如：小安", phB: "例如：阿樂",
+  setupNote: "A 先修復，然後交換。",
+  next: "下一步", backBtn: "返回",
+  pickTitle: "{a}，選一個要修復的失誤", pickLead: "想象你對 {b} 做了這件事。選一個感覺足夠真實的。",
+  ownLbl: "或者寫一個你自己的", ownPh: "例如：我把我們的一對一改期了三次",
+  warmTitle: "有點緊張？先私下排練一下。", warmTxt: "在“教練副駕”裡，你可以先對一位模擬同事試試你要說的話，再對真人說。", warmLink: "開啟教練副駕 ↗",
+  recipeKicker: "修復配方", recipeTitle: "三個動作，一分鐘以內",
+  recipe: [["承認", "具體說出你做了什麼。不說“但是”。"], ["說出影響", "說出這可能給對方帶來了什麼——然後確認一下。"], ["向前修復", "說出你以後會怎麼做，並問對方什麼會有幫助。"]],
+  avoidLbl: "不要說", avoid: ["“……但是……”", "“如果你覺得被冒犯了”", "長篇解釋"],
+  forB: "{b}：先聽。你不必接受。之後誠實地說說感受。",
+  imagine: "{b} 可能的感受",
+  startRepair: "{a} 開始",
+  repairTitle: "{a}，開始修復吧。", repairTo: "對 {b} 說",
+  hintLbl: "{b} 希望你",
+  done: "說完了",
+  respondTitle: "{b}，你感覺如何？", respondLead: "善意而誠實。可以從這些開頭：",
+  stems: ["“讓我覺得被理解的是……”", "“我還需要的是……”", "“對我有幫助的是……”"],
+  checkBtn: "下一步",
+  checkTitle: "{b}，這次修復有效嗎？",
+  yes: "有效", yesSub: "我感覺信任在回來。", partly: "部分有效", partlySub: "還缺點什麼。", no: "還沒有", noSub: "我想換個方式再聽一次。",
+  hintTitle: "什麼對 {a} 最有幫助？", hintLead: "選一個。{a} 還有一次機會。",
+  hints: ["更具體地說出你做了什麼", "讓我知道你理解這對我的影響", "告訴我以後會有什麼改變"],
+  retry: "再試一次",
+  swapTitle: "交換角色", swapLead: "現在由 {s} 來修復，{l} 來說感受。", swapGo: "交換",
+  sumKicker: "兩次修復完成", sumTitle: "你們練習了最難的一種對話。",
+  landed: { 0: "修復有效", 1: "部分有效", 2: "還想再聽一次" },
+  realTitle: "你是否欠某人一次真正的修復？",
+  realLead: "可選，只屬於你。寫下開場白。這裡不會儲存任何內容。",
+  realPh: "例如：“能給我五分鐘嗎？我想為週二會上的事負起責任。”",
+  copy: "複製", copied: "已複製——現在去對 TA 說吧。", skip: "跳過", toClose: "下一步",
+  endKicker: "修復練習完成", endTitle: "修復是一種能力，越練越強。",
+  endLead: "信任不是靠從不犯錯建立的——而是靠我們怎樣回來。你剛剛和一個真實的人，把它說出了口。",
+  monday: "週一試試這個", mondayTxt: "做一次小小的修復：說出你做了什麼、可能帶來的影響、以及接下來會怎麼做。",
+  again: "再練一次", passOn: "傳下去",
+  teachKicker: "傳下去", teachTitle: "把這個配方教給別人。",
+  teachLead: "給同事講講這三個動作，然後讓 TA 用自己的話寫下想嘗試的做法。",
+  t3: ["承認", "說出影響", "向前修復"], t3sub: ["不說“但是”", "然後確認", "以後怎麼做"],
+  learnerName: "TA 的名字（可選）", learnerPh: "例如：小美", learned: "TA 想嘗試的做法（用自己的話）", learnedPh: "把手機遞給 TA……",
+  save: "儲存在這部手機上", chainTitle: "你傳給過的人", chainEmpty: "還沒有。你的第一次“教回去”會出現在這裡。",
+  saved: "只儲存在這部手機上。", restart: "回到開頭", timeUp: "時間到——把這句話說完吧。",
+  gKicker: "引導師指南", gTitle: "如何帶“修復工具包”",
+  gWhy: "為什麼有效",
+  gWhyTxt: "大多數人迴避修復，是因為從沒練習過。一個安全的、虛構的失誤，加上一位誠實的夥伴，會讓這些話變得熟悉——真正的修復也就更容易開口。",
+  gSteps: "怎麼帶（約 15 分鐘）",
+  gStepList: ["兩兩配對，每組一部手機。", "A 選一個失誤，在一分鐘內完成修復。", "B 用句子開頭，誠實地說出感受。", "如果沒有效果，B 選一個提示，A 再試一次。", "交換角色。", "最後可選：寫下一句真實的開場白。"],
+  gDebrief: "覆盤問題",
+  gDebriefList: ["三個動作裡，哪一個最難說出口？", "接受修復的一方需要什麼，讓修復的一方感到意外？", "在我們團隊裡，是什麼在阻礙修復？"],
+  gNotes: "備註",
+  gNotesList: ["除非大家願意，失誤都用虛構的。", "沒有分數——“還沒有”是有用的資訊，不是失敗。", "修復從不要求對方必須原諒。"]
+}, "ca": {
+  title: "Kit de Reparació — FREE//BUILDER", product: "Kit de Reparació", guide: "Facilitadors",
+  privacy: "No es grava res. Res no surt d'aquest mòbil.", back: "FREE//BUILDER ↗",
+  soundOn: "So activat", soundOff: "So desactivat", left: "queden", paused: "en pausa", close: "Tancar", resume: "Continuar", pause: "Pausa",
+  introKicker: "Habilitats humanes · Parelles", repairing: "Repara", receiving: "Respon",
+  introTitle: "Kit de <span class=\"accent-word\">Reparació</span>",
+  introLead: "Tots ens equivoquem alguna vegada a la feina. El que construeix confiança és la reparació. Practica'n una amb un col·lega: un repara, l'altre diu amb honestedat com li ha arribat, i després canvieu.",
+  introMeta: ["2 persones", "1 mòbil", "≈ 12 minuts"],
+  start: "Començar",
+  setupTitle: "Qui practica?", nameA: "Persona A", nameB: "Persona B", phA: "p. ex. Anna", phB: "p. ex. Leo",
+  setupNote: "A repara primer. Després canvieu.",
+  next: "Següent", backBtn: "Enrere",
+  pickTitle: "{a}, tria un error per reparar", pickLead: "Imagina que l'hi vas fer a {b}. Tria'n un que et sembli prou real.",
+  ownLbl: "O descriu-ne un de teu", ownPh: "p. ex. Vaig canviar la nostra reunió 1:1 tres vegades",
+  warmTitle: "Nervis? Assaja abans en privat.", warmTxt: "El Copilot de Coaching et deixa provar les teves paraules amb un col·lega simulat i després dir-les a un de real.", warmLink: "Obrir el Copilot de Coaching ↗",
+  recipeKicker: "La recepta de la reparació", recipeTitle: "Tres passos, en menys d'un minut",
+  recipe: [["Assumeix-ho", "Digues exactament què vas fer. Sense “però”."], ["Anomena l'impacte", "Digues com el va poder afectar i després comprova-ho."], ["Repara endavant", "Digues què faràs diferent i pregunta què l'ajudaria."]],
+  avoidLbl: "Evita", avoid: ["“…però…”", "“si t'has ofès”", "una explicació llarga"],
+  forB: "{b}: només escolta. No ho has d'acceptar. Després diràs amb honestedat com t'ha arribat.",
+  imagine: "Com es va poder sentir {b}",
+  startRepair: "Comença {a}",
+  repairTitle: "{a}, fes la teva reparació.", repairTo: "Per a {b}",
+  hintLbl: "{b} t'ha demanat",
+  done: "Llest",
+  respondTitle: "{b}, com t'ha arribat?", respondLead: "Amb amabilitat i honestedat. Comença amb una d'aquestes:",
+  stems: ["“El que m'ha arribat és…”", "“El que encara necessito és…”", "“El que m'ajudaria és…”"],
+  checkBtn: "Següent",
+  checkTitle: "{b}, ha funcionat la reparació?",
+  yes: "Ha funcionat", yesSub: "Sento que la confiança torna.", partly: "En part", partlySub: "Encara hi falta alguna cosa.", no: "Encara no", noSub: "M'agradaria tornar-ho a sentir, d'una altra manera.",
+  hintTitle: "Què ajudaria més {a}?", hintLead: "Tria'n una. {a} té un intent més.",
+  hints: ["Sigues més concret sobre el que vas fer", "Mostra'm que entens com em va afectar", "Digues-me què canviarà"],
+  retry: "Tornar-ho a provar",
+  swapTitle: "Canvieu de paper", swapLead: "Ara {s} fa una reparació i {l} diu com li arriba.", swapGo: "Canviar",
+  sumKicker: "Dues reparacions fetes", sumTitle: "Heu practicat la conversa més difícil.",
+  landed: { 0: "ha funcionat", 1: "ha funcionat en part", 2: "vol un altre intent" },
+  realTitle: "Deus una reparació real a algú?",
+  realLead: "Opcional, i només per a tu. Escriu la primera frase. No es guarda enlloc.",
+  realPh: "p. ex. “Tens cinc minuts? Vull assumir una cosa de la reunió de dimarts.”",
+  copy: "Copiar", copied: "Copiat: ara digues-l'hi.", skip: "Saltar", toClose: "Següent",
+  endKicker: "Reparació practicada", endTitle: "Reparar és una habilitat. Creix amb la pràctica.",
+  endLead: "La confiança no es construeix sense equivocar-se mai, sinó per com tornem. Acabes de fer-ho en veu alta, amb una persona real.",
+  monday: "Prova-ho dilluns", mondayTxt: "Fes una petita reparació: digues què vas fer, com va poder arribar i què faràs després.",
+  again: "Practicar un altre cop", passOn: "Transmetre-ho",
+  teachKicker: "Transmetre-ho", teachTitle: "Ensenya la recepta a algú.",
+  teachLead: "Mostra a un col·lega els tres passos i deixa que escrigui, amb les seves paraules, què provarà.",
+  t3: ["Assumeix-ho", "Anomena l'impacte", "Repara endavant"], t3sub: ["sense “però”", "i comprova-ho", "què canviarà"],
+  learnerName: "El seu nom (opcional)", learnerPh: "p. ex. Mei", learned: "Què provarà, amb les seves paraules", learnedPh: "Passa-li el mòbil…",
+  save: "Desar en aquest mòbil", chainTitle: "Persones a qui ho has transmès", chainEmpty: "Encara ningú. La teva primera transmissió apareixerà aquí.",
+  saved: "Desat només en aquest mòbil.", restart: "Tornar a l'inici", timeUp: "S'ha acabat el temps: acaba la frase.",
+  gKicker: "Guia per a facilitadors", gTitle: "Com dinamitzar el Kit de Reparació",
+  gWhy: "Per què funciona",
+  gWhyTxt: "Gairebé tots evitem reparar perquè no ho hem practicat mai. Un error inventat i segur, i una parella honesta, fan que les paraules resultin familiars, i així costa menys començar la reparació real.",
+  gSteps: "Com fer-ho (≈ 15 minuts)",
+  gStepList: ["Formeu parelles. Un mòbil per parella.", "A tria un error i el repara en menys d'un minut.", "B diu amb honestedat com li ha arribat, amb un inici de frase.", "Si no ha funcionat, B tria una pista i A ho prova una vegada més.", "Canvieu de paper.", "Tanqueu amb la frase real opcional."],
+  gDebrief: "Preguntes de tancament",
+  gDebriefList: ["Quin dels tres passos ha costat més de dir?", "Què necessitava qui rebia que ha sorprès qui reparava?", "Què frena les reparacions al nostre equip?"],
+  gNotes: "Notes",
+  gNotesList: ["Feu servir errors inventats, llevat que la gent triï una altra cosa.", "No hi ha puntuació: “encara no” és informació útil, no un fracàs.", "Reparar mai no exigeix que l'altra persona perdoni."]
 }
 };
 
@@ -458,13 +403,27 @@ es: [
   ["Le diste un feedback duro delante del equipo.", "Avergonzado y sin saber cuán grave es de verdad."],
   ["Prometiste ayudar y se te olvidó.", "Poco importante. Sin saber si puede contar contigo."],
   ["Le quitaste importancia a una preocupación suya, y resultó importante.", "No escuchado, y con una razón que se siente solitaria."]
+], "zh-Hant": [
+  ["你在會上兩次打斷了 TA。", "被忽視，好像 TA 的想法不重要。"],
+  ["你錯過了截止時間，害得 TA 卡住了。", "失望，而且在自己團隊面前很被動。"],
+  ["你把 TA 的想法當成自己的說了出去。", "被抹去了。以後不太敢和你分享想法。"],
+  ["你當著全組的面給了 TA 尖銳的反饋。", "很難堪，也不確定問題到底有多嚴重。"],
+  ["你答應幫忙，然後忘了。", "覺得自己不重要，不確定還能不能指望你。"],
+  ["你沒把 TA 提出的顧慮當回事——結果它很重要。", "沒被聽見；雖然被證明是對的，卻覺得孤單。"]
+], "ca": [
+  ["El vas interrompre en una reunió, dues vegades.", "Invisible. Com si la seva idea no comptés."],
+  ["No vas complir un termini i el vas deixar bloquejat.", "Decebut i exposat davant del seu propi equip."],
+  ["Vas presentar la seva idea com a teva.", "Esborrat. Amb recança a compartir idees amb tu."],
+  ["Li vas donar un feedback dur davant de l'equip.", "Avergonyit i sense saber fins a quin punt és greu de veritat."],
+  ["Vas prometre ajudar i se't va oblidar.", "Poc important. Sense saber si pot comptar amb tu."],
+  ["Vas treure importància a una preocupació seva, i va resultar important.", "No escoltat, i amb una raó que se sent solitària."]
 ]
 };
 
 /* =====================================================================
    FB KIT · helpers (copy into every demo)
    ===================================================================== */
-const LANGS = ["en", "zh", "es"], LANG_LBL = { en: "EN", zh: "中文", es: "ES" };
+const LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LANG_LBL = { en: "EN", zh: "中文", es: "ES", "zh-Hant": "繁中", "ca": "CA" };
 let lang = "en";
 const T = () => I18N[lang];
 const $ = id => document.getElementById(id);
@@ -621,9 +580,9 @@ function render() {
       ${rolesHTML()}
       <h2>${fmt(t.pickTitle, { a: rep() })}</h2>
       <p class="lead">${fmt(t.pickLead, { b: rec() })}</p>
-      <div class="heard">${MISSTEPS[lang].map((m, i) => `<button data-pick="${i}" aria-pressed="${p === i}" style="${p === i ? "border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)" : ""}"><span class="e" style="font-family:var(--mono);font-size:12px">0${i + 1}</span><span><b style="font-size:15px;font-weight:600">${esc(m[0])}</b></span></button>`).join("")}</div>
+      <div class="heard">${MISSTEPS[lang].map((m, i) => `<button data-pick="${i}" aria-pressed="${p === i}" style="${p === i ? "border-color:var(--inkbd,var(--ink));box-shadow:inset 0 0 0 1px var(--ink)" : ""}"><span class="e" style="font-family:var(--mono);font-size:12px">0${i + 1}</span><span><b style="font-size:15px;font-weight:600">${esc(m[0])}</b></span></button>`).join("")}</div>
       <label class="field"><span>${esc(t.ownLbl)}</span><input id="own" maxlength="120" autocomplete="off" placeholder="${esc(t.ownPh)}" value="${esc(S.own[S.round])}"></label>
-      <div class="tip"><i>✦</i><span><b>${esc(t.warmTitle)}</b>${esc(t.warmTxt)} <a href="/free_builder/labs/coach/" target="_blank" rel="noopener" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px">${esc(t.warmLink)}</a></span></div>
+      <div class="tip"><i>✦</i><span><b>${esc(t.warmTitle)}</b>${esc(t.warmTxt)} <a href="/labs/coach/" target="_blank" rel="noopener" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px">${esc(t.warmLink)}</a></span></div>
       <div class="spacer"></div>
       <div class="btns"><button class="btn pri" data-act="toRecipe" id="nextBtn" ${p != null && (p !== -1 || ownOk) ? "" : "disabled"}>${esc(t.next)} →</button></div>
     </section>`; break; }
@@ -745,8 +704,8 @@ function teachHTML(demo) {
       <button class="btn pri" data-act="saveTeach" style="flex:none">${esc(t.save)}</button>
     </div>
     <div><span class="kicker">${esc(t.chainTitle)}</span>
-      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString(lang === "zh" ? "zh-CN" : lang))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
-    <a class="link" href="/free_builder/tools/teachback">⊂⊃ ${esc(lang === "zh" ? "教回去链条 ↗" : lang === "es" ? "Cadena de Enseñar de Vuelta ↗" : "Teach-Back Chain ↗")}</a>
+      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang))))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
+    <a class="link" href="/tools/teachback">⊂⊃ ${esc((/*i18n*/lang === "zh" ? "教回去链条 ↗" : (lang === "zh-Hant" ? "教回去鏈條 ↗" : (/*i18n*/lang === "es" ? "Cadena de Enseñar de Vuelta ↗" : (lang === "ca" ? "Cadena d'Ensenyar de Tornada ↗" : "Teach-Back Chain ↗")))))}</a>
     <button class="link" data-act="restart">${esc(t.restart)}</button>
   </section>`;
 }
@@ -847,7 +806,7 @@ $("btn-sound").addEventListener("click", () => { sound.muted = !sound.muted; sto
 
 function applyLang(l) {
   lang = LANGS.includes(l) ? l : "en";
-  document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
+  document.documentElement.lang = (/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang));
   document.title = T().title;
   $("lang-lbl").textContent = LANG_LBL[lang];
   $("btn-guide").setAttribute("aria-label", T().guide); drawer.setAttribute("aria-label", T().guide);
@@ -868,7 +827,7 @@ try { saved = localStorage.getItem("wm_preferred_lang") || localStorage.getItem(
 const nav = (navigator.language || "").toLowerCase();
 applyLang(LANGS.includes(saved) ? saved : nav.startsWith("zh") ? "zh" : nav.startsWith("es") ? "es" : "en");
 document.addEventListener("visibilitychange", () => { if (!document.hidden && timer.running) keepAwake(true); });
-if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/free_builder/sw.js", { scope: "/free_builder/" }).catch(() => {}); // offline cache
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {}); // offline cache
 })();
 </script>
 </body>
