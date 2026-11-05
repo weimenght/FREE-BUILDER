@@ -383,7 +383,6 @@
       </a>
       <button class="lvl-pill" data-act="openSettings" aria-label="Nivel"><svg class="ic sm"><use href="#i-graduation-cap"/></svg><span id="lvlPill">A1</span></button>
       <button class="icon-btn" data-act="openSettings" aria-label="Sincronización y ajustes" title="Sincronización y ajustes"><svg class="ic"><use href="#i-sliders-horizontal"/></svg><span class="dot" id="syncDot"></span></button>
-      <button class="icon-btn" data-act="toggleSound" aria-label="Sonido" title="Sonido"><svg class="ic"><use href="#i-volume-2" id="sfxUse"/></svg></button>
       <button class="icon-btn vk-lang" data-vk="lang" type="button" aria-label="Interface language"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.7 3.9 5.9 3.9 9.5s-1.3 6.8-3.9 9.5c-2.6-2.7-3.9-5.9-3.9-9.5S9.4 5.2 12 2.5z"/></svg></button>
     </div>
     <nav class="subnav" id="subnav" aria-label="Secciones"></nav>
@@ -2291,19 +2290,7 @@ const Audio = {
     } catch (e) { /* noop */ }
   },
   beep(kind) {
-    const freq = { ok: 660, good: 520, near: 420, bad: 220, win: 880 }[kind] || 440;
     if (navigator.vibrate && IS_TOUCH) { try { navigator.vibrate(kind === 'bad' ? [30, 40, 30] : 12); } catch (e) {} }
-    if (!S.settings.sfx) return;
-    try {
-      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
-      if (!this.ctx) this.ctx = new AC();
-      if (this.ctx.state === 'suspended') this.ctx.resume();
-      const t = this.ctx.currentTime, o = this.ctx.createOscillator(), g = this.ctx.createGain();
-      o.type = 'sine'; o.frequency.setValueAtTime(freq, t);
-      if (kind === 'ok' || kind === 'win') o.frequency.setValueAtTime(freq * 1.5, t + 0.07);
-      g.gain.setValueAtTime(0.07, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
-      o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t + 0.17);
-    } catch (e) { /* noop */ }
   }
 };
 
@@ -3315,7 +3302,6 @@ function setLevel(l) {
 }
 function applySettings() {
   $('lvlPill').textContent = S.settings.level;
-  $('sfxUse').setAttribute('href', S.settings.sfx ? '#i-volume-2' : '#i-volume-x');
   if (App.tab === 'cards' && App.sub.cards === 'study') { buildDeck(); renderCard(); }
   else onEnter();
   renderSubnav();
@@ -3362,7 +3348,6 @@ function toast(msg) { const el = $('toast'); el.textContent = msg; el.classList.
 const ACTIONS = {
   tab: a => go(a), sub: a => { if (a === 'study') App.savedOnly = false; go(App.tab, a); },
   openSettings, closeSheet: () => closeSheet(), setLevel,
-  toggleSound: () => { S.settings.sfx = !S.settings.sfx; save(); applySettings(); toast(S.settings.sfx ? 'Sonido activado' : 'Sonido desactivado'); },
   toggleTheme,
   setDeck: a => { try { localStorage.setItem('esp_deck_chosen', '1'); } catch (e) {} App.savedOnly = a === 'saved'; S.settings.deck = a; save(); buildDeck(); renderCard(); },
   toggleDirection: () => { S.settings.direction = S.settings.direction === 'es' ? 'en' : 'es'; save(); renderDeckControls(); renderCard(); },
