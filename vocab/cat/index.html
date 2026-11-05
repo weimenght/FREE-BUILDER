@@ -216,9 +216,10 @@
     .face.front::after { content:""; position:absolute; left:16px; right:16px; bottom:0; height:4px; border-radius:4px 4px 0 0; background:repeating-linear-gradient(to right,#FCDD09 0 10px,#DA121A 10px 16px); opacity:.85; }
     .face-mid { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:8px; min-height:0; padding:4px 6px; }
     .term { font-family:var(--serif); font-weight:700; font-size:clamp(28px, 8.5vw, 44px); line-height:1.12; margin:0; word-break:break-word; hyphens:auto; }
-    .meaning { font-family:var(--serif); font-weight:700; font-size:clamp(22px, 6vw, 30px); margin:0; line-height:1.2; }
+    .meaning { font-family:var(--serif); font-weight:700; font-size:clamp(22px, 6vw, 30px); margin:0; line-height:1.2; overflow-wrap:break-word; }
     .example { font-size:15px; color:var(--muted); font-style:italic; margin:0; max-width:34em; }
-    .back-scroll { overflow-y:auto; -webkit-overflow-scrolling:touch; width:100%; }
+    .back-scroll { overflow-y:auto; -webkit-overflow-scrolling:touch; width:100%; justify-content:flex-start !important; }
+    .back-scroll > :first-child { margin-top:auto; } .back-scroll > :last-child { margin-bottom:auto; }   /* centred when it fits, scrolls from the top when it doesn't (plain centring pushed the meaning out of the top) */
     .note-box { width:100%; margin-top:8px; text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:8px 10px; }
     .note-box textarea { width:100%; border:0; outline:0; background:transparent; resize:none; font-size:16px; line-height:1.35; color:var(--text); padding:0; }
     .hint-line { font-size:12px; color:var(--muted); text-align:center; display:flex; align-items:center; justify-content:center; gap:6px; }
