@@ -474,7 +474,7 @@ function chrome() {
   var sb = $("snd"), ic = icon(soundOn ? "snd" : "mute"); sb.innerHTML = ic ? '<span class="pxi">' + ic + "</span>" : esc(T(soundOn ? W.sndOn : W.sndOff));
   sb.setAttribute("aria-label", T(soundOn ? W.sndOn : W.sndOff)); sb.title = T(soundOn ? W.sndOn : W.sndOff); sb.setAttribute("aria-pressed", String(soundOn));
   cv.setAttribute("aria-label", T(W.room));
-  $("foot").innerHTML = "<span>" + esc(T(W.device)) + '</span><a href="/nearby/"><span class="pxi">' + icon("heart") + "</span>" + esc(T(W.nearby)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a>";
+  $("foot").innerHTML = "<span>" + esc(T(W.device)) + '</span><a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener"><span class="pxi">' + icon("heart") + "</span>" + esc(T(W.ah)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a>";
 }
 function repaint() { chrome(); if (view && !chiming) view(); }
 addEventListener("fbl:lang", repaint);

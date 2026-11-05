@@ -8,6 +8,7 @@ window.TG_W = {
   sndOn: ["Sound on", "声音开", "聲音開", "Sonido sí", "So sí"],
   sndOff: ["Sound off", "声音关", "聲音關", "Sonido no", "So no"],
   device: ["Kept on this device. Nothing is sent.", "只存在这台设备上，不发送任何东西。", "只存在這台裝置上，不傳送任何東西。", "Se guarda en este dispositivo. No se envía nada.", "Es guarda en aquest dispositiu. No s'envia res."],
+  ah: ["After hours", "下班以后", "下班以後", "Fuera de horario", "Fora d'hores"],
   nearby: ["Nearby", "近邻", "近鄰", "Cerca", "A Prop"],
   privacy: ["Privacy", "隐私", "隱私", "Privacidad", "Privadesa"],
   room: ["Popo's table on New Year's Eve: a bowl of twelve grapes, Josep's clock on the wall", "跨年夜婆婆的饭桌：一碗十二颗葡萄，墙上是 Josep 的钟", "跨年夜婆婆的飯桌：一碗十二顆葡萄，牆上是 Josep 的鐘", "La mesa de Popo en Nochevieja: un cuenco con doce uvas y el reloj de Josep en la pared", "La taula de la Popo per Cap d'Any: un bol amb dotze grans de raïm i el rellotge d'en Josep a la paret"],

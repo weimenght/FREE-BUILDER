@@ -199,6 +199,7 @@ var W = {
   close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"],
   back: ["‹ Back to Popo", "‹ 回到婆婆那儿", "‹ 回到婆婆那兒", "‹ Volver con Popo", "‹ Tornar amb la Popo"],
   device: ["Kept on this device. Nothing is sent anywhere.", "只保存在这台设备上，什么都不会发送。", "只保存在這台裝置上，什麼都不會傳送。", "Se guarda en este dispositivo. No se envía nada.", "Es guarda en aquest dispositiu. No s'envia res."],
+  ah: ["After hours", "下班以后", "下班以後", "Fuera de horario", "Fora d'hores"],
   nearby: ["Nearby", "近邻", "近鄰", "Cerca", "A Prop"],
   privacy: ["Privacy", "隐私", "隱私", "Privacidad", "Privadesa"],
   story: ["Popo's story", "婆婆的故事", "婆婆的故事", "La historia de Popo", "La història de la Popo"],
@@ -1299,7 +1300,7 @@ function chrome() {
   $("appName").textContent = T(W.app); document.title = T(W.app);
   $("langLbl").textContent = SHORT[i]; $("langIco").innerHTML = icon("globe"); $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + NAMES[i]);
   $("jarHit").setAttribute("aria-label", T(W.look)); cv.setAttribute("aria-label", T(W.kitchen)); $("sheetClose").setAttribute("aria-label", T(W.close));
-  $("foot").innerHTML = "<span>" + esc(T(syncOn() ? W.deviceSync : W.device)) + '</span><a href="/nearby/">' + icon("heart") + " " + esc(T(W.nearby)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a>";
+  $("foot").innerHTML = "<span>" + esc(T(syncOn() ? W.deviceSync : W.device)) + '</span><a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener">' + icon("heart") + " " + esc(T(W.ah)) + '</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a>";
 }
 function paint(again) {
   chrome();

@@ -338,6 +338,7 @@ var W = {
   wishQ: ["At “{p}”, {n} wished: “{w}” What would it take?", "在“{p}”，{n}希望：“{w}” 要怎样才能做到？", "在「{p}」，{n}希望：「{w}」 要怎樣才能做到？", "En «{p}», {n} deseó: «{w}» ¿Qué haría falta?", "A «{p}», {n} va desitjar: «{w}» Què caldria?"],
   madeOn: ["Made together on Home Ground", "在“我们的家园”一起做的", "在「我們的家園」一起做的", "Hecho juntos en Nuestro Rincón", "Fet junts a «El Nostre Racó»"],
   device: ["The town lives in its link and on your devices. Nothing is stored on a server.", "小镇装在它的链接里和你们的设备上，服务器上什么都不存。", "小鎮裝在它的連結裡和你們的裝置上，伺服器上什麼都不存。", "El pueblo vive en su enlace y en vuestros dispositivos. No se guarda nada en ningún servidor.", "El poble viu al seu enllaç i als vostres dispositius. No es desa res a cap servidor."],
+  ah: ["After hours", "下班以后", "下班以後", "Fuera de horario", "Fora d'hores"],
   nearby: ["Nearby", "近邻", "近鄰", "Cerca", "A Prop"],
   privacy: ["Privacy", "隐私", "隱私", "Privacidad", "Privadesa"],
   made: ["Made with {ai} & {h}", "用 {ai} 和 {h} 做的", "用 {ai} 和 {h} 做的", "Hecho con {ai} y {h}", "Fet amb {ai} i {h}"],
@@ -999,8 +1000,8 @@ function chrome() {
   var i = li(); document.documentElement.lang = LANGS[i];
   $("appName").textContent = sg(T(W.app)); document.title = TOWN && TOWN.n ? TOWN.n + " · " + T(W.app) : T(W.app);
   $("langLbl").textContent = SHORT[i]; $("langIco").innerHTML = icon("globe"); $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + NAMES[i]);
-  $("foot").innerHTML = '<span class="line">' + esc(T(W.device)) + '</span><a href="/nearby/">' + icon("heart") + " " + esc(T(W.nearby)) + '</a><a href="/">FREE//BUILDER</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a><span>" +
-    F(esc(T(W.made)), { ai: '<a href="/notes/ai-use/" style="display:inline">AI</a>', h: '<a href="https://www.wei-meng.org/after-hours/" style="display:inline" aria-label="After hours">♥</a>' }) + "</span>";
+  $("foot").innerHTML = '<span class="line">' + esc(T(W.device)) + '</span><a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener">' + icon("heart") + " " + esc(T(W.ah)) + '</a><a href="/">FREE//BUILDER</a><a href="/privacy/">' + esc(T(W.privacy)) + "</a><span>" +
+    F(esc(T(W.made)), { ai: '<a href="/notes/ai-use/" style="display:inline">AI</a>', h: '<a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener" style="display:inline" aria-label="' + esc(T(W.ah)) + '">♥</a>' }) + "</span>";
 }
 var paintT = 0;
 function paint() {
