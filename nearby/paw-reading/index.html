@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=35d3a9106b"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=4c8e5c5904" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=810cd8f633"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8ac27ab698" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Paw Reading · Nearby</title>
 <meta name="description" content="Miso and Yuzu's little stall by the Plaza: one of them paws a card from the Nearby deck over to you, and the card says what you'll do today, somewhere real. One card a day.">
@@ -22,6 +22,7 @@
 .pr-k{display:block;font:400 9px/1.5 'Press Start 2P',monospace;letter-spacing:.06em;color:#f6b73c;margin-bottom:6px}
 .pr-f{margin:0;font:400 24px/1.3 var(--vt);color:#fbeedd}
 .pr-w{margin:10px 0 0;font:400 19px/1.3 var(--vt);color:#b8a890}
+.pr-app a{color:#f6b73c}
 @media (max-width:420px){.pr-card{grid-template-columns:1fr}.pr-flip{width:62%;margin:0 auto}}
 @media (prefers-reduced-motion:reduce){.pr-in{transition:none}}
 </style>
@@ -34,6 +35,7 @@
 </div>
 <div class="tk-dock" id="dock"><button class="fbb fbb-pri" type="button" id="ask"><span aria-hidden="true">🔮</span> <span id="askL">Ask for a card</span></button></div>
 <script src="/nearby/townkit.js"></script>
+<script src="/nearby/paw-reading/paw.js"></script>
 <script>
 /* Paw Reading: Miso and Yuzu's stall by the Plaza. Tap the deck (or Ask for a card) and whichever cat is minding the stall
    paws one card of the Nearby deck over; the card says what you'll do today, somewhere real. One card a day (fb_paw, on this
@@ -43,30 +45,7 @@
   "use strict";
   var W = window.FBWorld || {}, T = window.FBTown || { t: function (a) { return a[0]; } }, t = function (a, v) { return T.t(a, v); };
   var cv = document.getElementById("cv"), g = cv.getContext("2d"), panel = document.getElementById("panel"), ask = document.getElementById("ask");
-  var SUIT = ["h", "d", "c", "s"], RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-  /* what each card asks of you: by suit (♥ together, ♦ make, ♣ the wild, ♠ Popo's tin), three asks each, the rank picks one */
-  var ASK = {
-    h: [["Someone you haven't called in a while is thinking of you. Call first.", "有个很久没联系的人正在想你。你先打过去。", "有個很久沒聯絡的人正在想你。你先打過去。", "Alguien a quien hace tiempo que no llamas piensa en ti. Llama tú primero.", "Algú a qui fa temps que no truques pensa en tu. Truca tu primer."],
-        ["Cook for two tonight, even if the second one is a neighbour.", "今晚做两人份的饭，哪怕另一份是给邻居的。", "今晚做兩人份的飯，哪怕另一份是給鄰居的。", "Cocina para dos esta noche, aunque la segunda sea una vecina.", "Cuina per a dos aquest vespre, encara que la segona sigui una veïna."],
-        ["Say thank you, out loud, to someone who never hears it.", "对一个很少听到谢谢的人，大声说一句谢谢。", "對一個很少聽到謝謝的人，大聲說一句謝謝。", "Da las gracias, en voz alta, a alguien que nunca las oye.", "Dona les gràcies, en veu alta, a algú que no les sent mai."]],
-    d: [["Make something small with your hands and give it away.", "亲手做一样小东西，然后送出去。", "親手做一樣小東西，然後送出去。", "Haz algo pequeño con las manos y regálalo.", "Fes alguna cosa petita amb les mans i regala-la."],
-        ["Mend one broken thing today. Gold is optional.", "今天修好一样坏掉的东西。金子可有可无。", "今天修好一樣壞掉的東西。金子可有可無。", "Arregla hoy una cosa rota. El oro es opcional.", "Adoba avui una cosa trencada. L'or és opcional."],
-        ["Write a few lines to someone, on paper.", "给某个人写几行字，写在纸上。", "給某個人寫幾行字，寫在紙上。", "Escribe unas líneas a alguien, en papel.", "Escriu unes ratlles a algú, en paper."]],
-    c: [["Go outside before dark and look up for one whole minute.", "天黑前出门，抬头看整整一分钟。", "天黑前出門，抬頭看整整一分鐘。", "Sal antes de que oscurezca y mira arriba un minuto entero.", "Surt abans que es faci fosc i mira amunt un minut sencer."],
-        ["Walk somewhere you've never walked, slowly.", "慢慢走一条你从没走过的路。", "慢慢走一條你從沒走過的路。", "Camina por donde nunca has caminado, despacio.", "Camina per on no has caminat mai, a poc a poc."],
-        ["Find a tree you like. Visit it again next week.", "找一棵你喜欢的树，下周再去看它。", "找一棵你喜歡的樹，下週再去看它。", "Busca un árbol que te guste. Vuelve a verlo la semana que viene.", "Busca un arbre que t'agradi. Torna a veure'l la setmana que ve."]],
-    s: [["Ask someone older in your family how they met someone.", "问问家里长辈，他们是怎么认识某个人的。", "問問家裡長輩，他們是怎麼認識某個人的。", "Pregúntale a alguien mayor de tu familia cómo conoció a alguien.", "Pregunta a algú gran de la teva família com va conèixer algú."],
-        ["Keep one thing from today: a ticket, a leaf, a note.", "从今天留下一样东西：一张票、一片叶子、一张纸条。", "從今天留下一樣東西：一張票、一片葉子、一張紙條。", "Guarda una cosa de hoy: un billete, una hoja, una nota.", "Guarda una cosa d'avui: un bitllet, una fulla, una nota."],
-        ["Look at an old photo with someone who's in it.", "和照片里的人一起看一张老照片。", "和照片裡的人一起看一張老照片。", "Mira una foto vieja con alguien que sale en ella.", "Mira una foto vella amb algú que hi surt."]]
-  };
-  var ACE = ["A new start, close by: say hello to someone on your street.", "新的开始就在身边：跟街上的某个人打声招呼。", "新的開始就在身邊：跟街上的某個人打聲招呼。", "Un comienzo nuevo, cerca: saluda a alguien de tu calle.", "Un començament nou, a prop: saluda algú del teu carrer."];
-  var COURT = {
-    J: ["Mei says: put the phone down and actually go. (She's on hers.)", "Mei 说：把手机放下，真的出门去。（她自己在玩手机。）", "Mei 說：把手機放下，真的出門去。（她自己在滑手機。）", "Mei dice: deja el móvil y ve de verdad. (Ella está con el suyo.)", "La Mei diu: deixa el mòbil i ves-hi de debò. (Ella és amb el seu.)"],
-    Q: ["Popo says: eat something proper. Then call your mama.", "婆婆说：好好吃顿饭。然后给你妈妈打个电话。", "婆婆話：好好食餐飯。然後打個電話俾你阿媽。", "Popo dice: come algo como Dios manda. Luego llama a tu mamá.", "La Popo diu: menja alguna cosa com cal. Després truca a la teva mare."],
-    K: ["Wei says: take someone for a drink, and talk until the ice melts.", "Wei 说：约个人去喝一杯，聊到冰块化掉。", "Wei 說：約個人去喝一杯，聊到冰塊化掉。", "Wei dice: invita a alguien a una copa y hablad hasta que se derrita el hielo.", "En Wei diu: convida algú a una copa i parleu fins que es fongui el gel."]
-  };
-  var JOKER = [["The cats knock the deck off the table. Today: a nap. A real one.", "猫把整副牌推下了桌。今天：睡个午觉，真的睡。", "貓把整副牌推下了桌。今天：睡個午覺，真的睡。", "Los gatos tiran la baraja de la mesa. Hoy: una siesta. De verdad.", "Els gats tiren la baralla de la taula. Avui: una migdiada. De debò."],
-    ["Mantou drops his ball at your feet. Go for a walk with someone.", "馒头把球放在你脚边。找个人一起去散步。", "饅頭把球放在你腳邊。找個人一起去散步。", "Mantou deja la pelota a tus pies. Sal a pasear con alguien.", "En Mantou et deixa la pilota als peus. Surt a passejar amb algú."]];
+  var P = window.FBPaw;   /* the deck, its asks and the day's card live in paw.js, shared with the app at /paw-reading/ */
   var S = {
     ask: ["Ask for a card", "求一张牌", "求一張牌", "Pide una carta", "Demana una carta"],
     cut: ["Cut the deck", "自己切牌", "自己切牌", "Corta la baraja", "Talla la baralla"],
@@ -82,17 +61,17 @@
       ["*Miso knocks the deck over, then sits on the one card she wants you to have.*", "*味噌把牌碰倒，然后坐在她想给你的那一张上。*", "*味噌把牌碰倒，然後坐在她想給你的那一張上。*", "*Miso tumba la baraja y se sienta sobre la carta que quiere darte.*", "*La Miso tomba la baralla i s'asseu damunt la carta que et vol donar.*"]],
     doze: ["*Miso and Yuzu doze behind the counter, curled up nose to tail. The deck is right here.*", "*味噌和柚子在柜台后面打盹，头尾相接蜷成一团。牌就在这儿。*", "*味噌和柚子在櫃台後面打盹，頭尾相接蜷成一團。牌就在這兒。*", "*Miso y Yuzu dormitan tras el mostrador, hechas un ovillo. La baraja está aquí.*", "*La Miso i la Yuzu dormisquegen darrere el taulell, fetes un cabdell. La baralla és aquí.*"],
     dozeOne: ["*{c} dozes behind the counter, curled up. The deck is right here.*", "*{c}在柜台后面打盹，蜷成一团。牌就在这儿。*", "*{c}在櫃台後面打盹，蜷成一團。牌就在這兒。*", "*{c} dormita tras el mostrador, hecha un ovillo. La baraja está aquí.*", "*La {c} dormisqueja darrere el taulell, feta un cabdell. La baralla és aquí.*"],
+    app: ["Take the stall with you", "把小摊带在身边", "把小攤帶在身邊", "Llévate el puesto", "Emporta't la parada"],
     self: ["You cut the deck. The top card:", "你自己切了牌。最上面那张：", "你自己切了牌。最上面那張：", "Cortas la baraja. La de arriba:", "Talles la baralla. La de dalt:"],
     sc: ["Miso and Yuzu's stall: a striped awning, a counter, the deck.", "味噌和柚子的小摊：条纹遮阳篷、柜台、一副牌。", "味噌和柚子的小攤：條紋遮陽篷、櫃台、一副牌。", "El puesto de Miso y Yuzu: un toldo a rayas, un mostrador, la baraja.", "La parada de la Miso i la Yuzu: un tendal a ratlles, un taulell, la baralla."],
     cat: { miso: ["Miso", "味噌", "味噌", "Miso", "Miso"], yuzu: ["Yuzu", "柚子", "柚子", "Yuzu", "Yuzu"] }
   };
-  function day() { var d = new Date(); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
-  function saved() { try { var v = JSON.parse(localStorage.getItem("fb_paw") || "null"); return v && v.d === day() ? v : null; } catch (e) { return null; } }
+  function saved() { return P.today(); }
   function cats() { var c = {}; try { c = W.cats ? W.cats() : {}; } catch (e) {} return ["miso", "yuzu"].filter(function (k) { return c[k] === "fortune"; }); }
   function elsewhere() { var c = {}; try { c = W.cats ? W.cats() : {}; } catch (e) {} return c.miso && c.miso !== "fortune" ? c.miso : c.yuzu; }
   function asleep() { var h = 12; try { h = W.hour ? W.hour() : 12; } catch (e) {} return h >= 23 || h < 6; }
-  function cardOf(i) { var s = Math.floor(i / 13), r = i % 13; return i >= 52 ? { joker: i - 52 } : { s: SUIT[s], r: RANKS[r], n: r + 1 }; }
-  function askOf(c) { if (c.joker != null) return JOKER[c.joker]; if (c.r === "A") return ACE; if (COURT[c.r]) return COURT[c.r]; return ASK[c.s][c.n % 3]; }
+  function cardOf(i) { return P.cardOf(i); }
+  function askOf(c) { return P.askOf(c); }
   function esc(x) { return String(x).replace(/[&<>"]/g, function (m) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]; }); }
   function act(x) { return esc(x).replace(/\*([^*]+)\*/g, "<em>*$1*</em>"); }
   function nm(k) { try { return W.name ? W.name(k) : k; } catch (e) { return k; } }
@@ -142,16 +121,18 @@
     var c = cardOf(v.i), src = "cards/" + (v.i < 10 ? "0" : "") + v.i + ".png";
     panel.innerHTML = '<p class="pr-say">' + (fresh ? (who ? act(t(S.paw[who === "miso" ? 1 : 0])) : esc(t(S.self))) : line()) + "</p>" +
       '<div class="pr-card"><div class="pr-flip"><div class="pr-in' + (fresh ? "" : " up") + '"><img class="b" src="cards/back.png" alt=""><img class="f" src="' + src + '" alt=""></div></div>' +
-      '<div><span class="pr-k">' + esc(t(S.today)) + "</span><p class=\"pr-f\">" + esc(t(askOf(c))) + '</p><p class="pr-w">' + esc(t(S.tomorrow)) + "</p></div></div>";
+      '<div><span class="pr-k">' + esc(t(S.today)) + "</span><p class=\"pr-f\">" + esc(t(askOf(c))) + '</p><p class="pr-w">' + esc(t(S.tomorrow)) + '</p><p class="pr-w pr-app"><a href="/paw-reading/" data-app>' + esc(t(S.app)) + " ↗</a></p></div></div>";
     if (fresh) setTimeout(function () { var el = panel.querySelector(".pr-in"); if (el) el.classList.add("up"); }, 380);
     document.getElementById("dock").hidden = true; links();
   }
   function idle() { panel.innerHTML = '<p class="pr-say">' + line() + "</p>"; document.getElementById("dock").hidden = false; document.getElementById("askL").textContent = t(cats().length && !asleep() ? S.ask : S.cut); links(); }
-  function links() { panel.querySelectorAll("a[data-go]").forEach(function (a) { a.onclick = function (e) { try { if (parent !== window && parent.FBShell) { e.preventDefault(); parent.FBShell.open(a.getAttribute("href")); } } catch (x) {} }; }); }
+  function links() {
+    panel.querySelectorAll("a[data-app]").forEach(function (a) { a.onclick = function (e) { e.preventDefault(); try { (window.top || window).location.href = a.href; } catch (x) { location.href = a.href; } }; });   /* the app opens in the top window, out of the town's frame */
+    panel.querySelectorAll("a[data-go]").forEach(function (a) { a.onclick = function (e) { try { if (parent !== window && parent.FBShell) { e.preventDefault(); parent.FBShell.open(a.getAttribute("href")); } } catch (x) {} }; }); }
   function draw1() {
     if (saved()) return show(saved(), false);
     var here = asleep() ? [] : cats(), who = here.length ? here[(Math.random() * here.length) | 0] : null;
-    var i = (Math.random() * 54) | 0, v = { d: day(), i: i }; try { localStorage.setItem("fb_paw", JSON.stringify(v)); } catch (e) {}
+    var v = P.draw();
     anim = 900; ask.disabled = true;
     var st = performance.now(); (function sl(n) { var k = Math.min(1, (n - st - 600) / 500); if (k > 0) slide = k; if (k < 1) requestAnimationFrame(sl); else setTimeout(function () { slide = 0; ask.disabled = false; show(v, true, who); }, 150); })(st);
   }

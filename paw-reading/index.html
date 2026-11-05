@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=810cd8f633"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paw Reading</title>
+<meta name="description" content="Miso and Yuzu's stall from Nearby: one card a day from the Nearby deck, and it asks one thing of you, somewhere real. Draw with someone and you both get the same card. Kept on your own device.">
+<meta name="theme-color" content="#f3ead8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14101e" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Paw Reading">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+  /* Paw Reading on its own: the stall on top (left on wide screens), the reading under it. Paper by day on a light device,
+     the town's night ink on a dark one; the stall itself follows the hour on the browser's clock either way. */
+  :root {
+    --page:#f3ead8; --ink:#2a1c14; --mut:#6e5440; --panel:#fbf3e2; --field:#fffaf0; --line:#1a1410; --amber:#f6b73c; --red:#c8303a;
+    --wood:#c8955a; --woodD:#8a5a2c; --check:rgba(90,60,30,.06); --link:#a8401c; color-scheme:light;
+    --pix:"VT323", ui-monospace, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", monospace;
+    --sign:"Press Start 2P", "VT323", monospace;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --page:#14101e; --ink:#f3ead8; --mut:#b9a88e; --panel:#221a2c; --field:#1a1422; --wood:#7a4a28; --woodD:#3e2414; --check:rgba(255,255,255,.025); --link:#f6b73c; color-scheme:dark; } }
+  :root[data-theme="dark"] { --page:#14101e; --ink:#f3ead8; --mut:#b9a88e; --panel:#221a2c; --field:#1a1422; --wood:#7a4a28; --woodD:#3e2414; --check:rgba(255,255,255,.025); --link:#f6b73c; color-scheme:dark; }
+  :lang(zh) { --pix:"VT323", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; }
+  :lang(zh-Hant) { --pix:"VT323", "PingFang HK", "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC", sans-serif; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; background:var(--page); color:var(--ink); }
+  body { font:21px/1.25 var(--pix); min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; -webkit-text-size-adjust:100%;
+    background-image:repeating-conic-gradient(var(--check) 0 25%, transparent 0 50%); background-size:8px 8px; transition:background-color .8s; }
+  html:lang(zh) body, html:lang(zh-Hant) body { font-size:17px; line-height:1.55; }
+  .wrap { width:100%; max-width:620px; margin:0 auto; flex:1; display:grid; align-content:start; gap:14px;
+    padding:max(14px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 20px max(16px, env(safe-area-inset-left)); }
+  header { display:flex; align-items:center; gap:10px; }
+  .brand { display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
+  .brand svg { width:28px; height:28px; flex:none; }
+  .brand h1 { margin:0; font:12px/1.4 var(--sign); letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  html:lang(zh) .brand h1, html:lang(zh-Hant) .brand h1 { font:700 18px/1.2 var(--pix); letter-spacing:.1em; }
+  .main { display:grid; gap:14px; align-content:start; }
+  .stage { position:relative; border:3px solid var(--line); box-shadow:4px 4px 0 var(--line); background:#14101e; }
+  #cv { display:block; width:100%; height:auto; aspect-ratio:192/120; image-rendering:pixelated; cursor:pointer; touch-action:manipulation; }
+  .panel { background:var(--panel); border:3px solid var(--line); box-shadow:4px 4px 0 var(--line); padding:14px 16px 16px; display:grid; gap:12px; }
+  .say { margin:0; }
+  .say em { font-style:normal; color:var(--mut); }
+  .say a, .panel a { color:var(--link); }
+  .row { display:flex; flex-wrap:wrap; gap:10px; }
+  .btn { font:21px/1 var(--pix); color:#1a1410; background:var(--wood); border:3px solid var(--line); box-shadow:3px 3px 0 var(--line), inset 0 2px 0 rgba(255,255,255,.25);
+    min-height:46px; padding:8px 14px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; text-decoration:none; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn { color:#f3ead8; } }
+  :root[data-theme="dark"] .btn { color:#f3ead8; }
+  .btn.pri { background:var(--amber); color:#1a1410; }
+  .btn.sm { min-height:40px; padding:6px 10px; font-size:19px; }
+  .btn:active { transform:translate(2px, 2px); box-shadow:1px 1px 0 var(--line); }
+  .btn:focus-visible, .lk:focus-visible { outline:3px solid var(--amber); outline-offset:2px; }
+  .btn[disabled] { opacity:.55; cursor:default; }
+  html:lang(zh) .btn, html:lang(zh-Hant) .btn { font-size:17px; }
+  .lk { font:inherit; color:var(--link); background:none; border:0; padding:4px 0; cursor:pointer; text-decoration:underline; text-underline-offset:3px; min-height:36px; }
+  .card { display:grid; grid-template-columns:minmax(120px, 40%) 1fr; gap:16px; align-items:start; }
+  .flip { perspective:900px; width:100%; aspect-ratio:300/419; }
+  .flip .in { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .9s cubic-bezier(.3,.7,.3,1); }
+  .flip .in.up { transform:rotateY(180deg); }
+  .flip img { position:absolute; inset:0; width:100%; height:100%; backface-visibility:hidden; -webkit-backface-visibility:hidden; border:3px solid var(--line); box-shadow:4px 4px 0 var(--line); background:#f6ecd2; }
+  .flip img.f { transform:rotateY(180deg); }
+  .kick { display:block; font:9px/1.6 var(--sign); letter-spacing:.06em; color:var(--mut); margin-bottom:6px; text-transform:uppercase; }
+  html:lang(zh) .kick, html:lang(zh-Hant) .kick { font:700 14px/1.4 var(--pix); letter-spacing:.12em; }
+  .ask { margin:0; font-size:25px; line-height:1.25; }
+  html:lang(zh) .ask, html:lang(zh-Hant) .ask { font-size:20px; line-height:1.6; }
+  .sub { margin:0; color:var(--mut); font-size:19px; }
+  html:lang(zh) .sub, html:lang(zh-Hant) .sub { font-size:15px; }
+  .acts { display:grid; gap:10px; }
+  .pocket { display:flex; gap:16px; align-items:center; }
+  .pocket img { width:72px; flex:none; border:3px solid var(--line); box-shadow:3px 3px 0 var(--line); transform:rotate(-6deg); }
+  .theirs { display:flex; gap:12px; align-items:flex-start; border-top:3px dashed color-mix(in srgb, var(--line) 30%, transparent); padding-top:12px; }
+  .theirs img { width:64px; flex:none; border:2px solid var(--line); }
+  .field { display:grid; gap:4px; }
+  .field label { font-size:17px; color:var(--mut); }
+  input[type=text], input[type=time] { font:21px var(--pix); color:var(--ink); background:var(--field); border:3px solid var(--line); padding:8px 10px; min-height:46px; width:100%; max-width:320px; }
+  html:lang(zh) input, html:lang(zh-Hant) input { font-size:17px; }
+  .ring { width:150px; height:150px; margin:4px auto; display:block; }
+  .ring circle { fill:none; stroke-width:8; }
+  .ring .bg { stroke:color-mix(in srgb, var(--mut) 30%, transparent); }
+  .ring .fg { stroke:var(--amber); stroke-linecap:butt; transform:rotate(-90deg); transform-origin:50% 50%; transition:stroke-dashoffset 1s linear; }
+  .morn { border-top:3px dashed color-mix(in srgb, var(--line) 30%, transparent); padding-top:10px; display:grid; gap:10px; }
+  .pxi { display:inline-flex; } .pxi svg { width:18px; height:18px; display:block; image-rendering:pixelated; }
+  .langmenu { position:absolute; right:16px; top:58px; z-index:30; background:var(--panel); border:3px solid var(--line); box-shadow:4px 4px 0 var(--line); display:flex; flex-direction:column; min-width:150px; }
+  .langmenu button { font:20px/1.2 var(--pix); color:var(--ink); background:none; border:0; text-align:left; padding:10px 14px; min-height:44px; cursor:pointer; }
+  .langmenu button[aria-checked="true"] { background:var(--amber); color:#1a1410; }
+  .sheet { position:fixed; inset:0; z-index:40; display:grid; place-items:center; padding:16px; background:rgba(10,8,16,.55); }
+  .sheet .panel { max-width:460px; width:100%; }
+  .sheet ol { margin:0; padding:0 0 0 1.2em; display:grid; gap:8px; }
+  footer { padding:10px 16px max(16px, env(safe-area-inset-bottom)); font-size:17px; color:var(--mut); }
+  footer a { color:inherit; }
+  /* off the screen: once the card is in your pocket the page dims and gets out of the way */
+  body.away .stage { filter:saturate(.7) brightness(.85); }
+  [hidden] { display:none !important; }
+  @media (min-width: 880px) {
+    .wrap { max-width:1060px; }
+    .main { grid-template-columns:minmax(0, 1.15fr) minmax(0, 1fr); align-items:start; }
+    .stage { position:sticky; top:16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .flip .in { transition:none; } .btn:active { transform:none; } body { transition:none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#1a1410" d="M3 1h8v1h1v12h-1v1H3v-1H2V2h1z"/><path fill="#f6ecd2" d="M3 2h8v12H3z"/><path fill="#c8303a" d="M4 4h2v1h1V4h2v3H8v1H7v1H6V8H5V7H4z"/><path fill="#1a1410" d="M10 9h3v1h1v4h-1v1h-3v-1H9v-4h1z"/><path fill="#e8913a" d="M10 10h3v4h-3z"/><path fill="#1a1410" d="M9 7h1v1H9zM11 7h1v1h-1zM13 7h1v1h-1z"/><path fill="#e8913a" d="M9 8h1v1H9zM11 8h1v1h-1zM13 8h1v1h-1z"/></svg><h1 id="appName">Paw Reading</h1></div>
+    <button class="btn sm" id="helpBtn" type="button" aria-haspopup="dialog">?</button>
+    <button class="btn sm" id="langBtn" type="button" aria-haspopup="menu" aria-expanded="false"><span id="langLbl">EN</span></button>
+  </header>
+  <div class="main">
+    <div class="stage"><canvas id="cv" width="192" height="120" role="img"></canvas></div>
+    <section id="panel" class="panel" aria-live="polite"></section>
+  </div>
+</div>
+<footer id="foot"></footer>
+<script src="/nearby/paw-reading/paw.js"></script>
+<script>
+/* Paw Reading, the app (freebuilder.net/paw-reading/): Miso & Yuzu's stall from Nearby, outside the town.
+   One card a day from the Nearby deck (FBPaw in /nearby/paw-reading/paw.js; fb_paw on this device, the same one the town's
+   stall and Your Plot's keepsakes read). The cats paw it over by day (whichever is at the stall, or one trots back from
+   wherever FBWorld.cats() has her), doze behind the counter at night (FBWorld.sleeps), and you cut the deck quietly.
+   The card asks one thing of you, somewhere real, and most carry one way to start it (a line to send, your own maps, a minute
+   with the phone face down); then it goes in your pocket and the page gets out of the way. Draw with someone: the same card,
+   today only, carried in the link (#with=i.Y-M-D&from=name), nothing stored. A card in the morning: optional, off unless asked,
+   through Little Things' Web Push (lt_push with app 'paw', /little-things/sw.js at scope /little-things/paw/, lt-nudge).
+   No streaks, no collections, no counts. Test hooks: window.PR, ?h=<hour> sets the hour. */
+(function () {
+"use strict";
+var P = window.FBPaw, FW = window.FBWorld || {};
+var LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LNAMES = ["English", "简体中文", "繁體中文", "Español", "Català"], SHORT = ["EN", "简中", "繁中", "ES", "CA"];
+function li() { var l = window.FBL ? FBL.get() : "en"; var i = LANGS.indexOf(l); return i < 0 ? 0 : i; }
+function T(a, v) { var s = a == null ? "" : typeof a === "string" ? a : (a[li()] || a[0]); if (v) for (var k in v) s = s.split("{" + k + "}").join(v[k]); return s; }
+function $(id) { return document.getElementById(id); }
+function esc(x) { return String(x).replace(/[&<>"]/g, function (m) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]; }); }
+function act(x) { return esc(x).replace(/\*([^*]+)\*/g, "<em>*$1*</em>"); }
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+var W = {
+  app: ["Paw Reading", "猫爪占卜", "貓爪占卜", "Lectura de Patas", "Lectura de Potes"],
+  ask: ["Ask for a card", "求一张牌", "求一張牌", "Pide una carta", "Demana una carta"],
+  cutQuiet: ["Cut the deck quietly", "轻轻地自己切牌", "輕輕地自己切牌", "Corta la baraja sin hacer ruido", "Talla la baralla sense fer soroll"],
+  today: ["Today's card", "今天的牌", "今天的牌", "La carta de hoy", "La carta d'avui"],
+  tomorrow: ["Tomorrow there'll be another.", "明天还有一张。", "明天還有一張。", "Mañana habrá otra.", "Demà n'hi haurà una altra."],
+  here: [["*Yuzu pats the deck twice, as if it's warm.*", "*柚子拍了两下牌，好像牌是暖的。*", "*柚子拍了兩下牌，好像牌是暖的。*", "*Yuzu da dos palmaditas a la baraja, como si estuviera caliente.*", "*La Yuzu dona dos copets a la baralla, com si fos calenta.*"],
+    ["*Miso sits on the deck and looks at you for a long time.*", "*味噌坐在牌上，看了你很久。*", "*味噌坐在牌上，看了你很久。*", "*Miso se sienta sobre la baraja y te mira un buen rato.*", "*La Miso s'asseu damunt la baralla i et mira una bona estona.*"],
+    ["*Both cats wait behind the counter, tails curled round their paws.*", "*两只猫在柜台后面等着，尾巴绕着爪子。*", "*兩隻貓在櫃台後面等著，尾巴繞著爪子。*", "*Las dos gatas esperan tras el mostrador, con la cola alrededor de las patas.*", "*Les dues gates esperen darrere el taulell, amb la cua enrotllada a les potes.*"]],
+  one: ["*{C} minds the stall alone, one ear on the street.*", "*{c}独自看摊，一只耳朵听着街上。*", "*{c}獨自看攤，一隻耳朵聽著街上。*", "*{C} cuida el puesto sola, con una oreja en la calle.*", "*{C} cuida la parada sola, amb una orella al carrer.*"],
+  away: ["BACK SOON, says the sign. {C} is at {p}. Ask, and she'll come.", "牌子上写着：马上回来。{c}在{p}。你一求牌，她就回来。", "牌子上寫著：馬上回來。{c}在{p}。你一求牌，她就回來。", "VUELVO PRONTO, dice el cartel. {C} está en {p}. Pide y vendrá.", "TORNO AVIAT, diu el cartell. {C} és a {p}. Demana i vindrà."],
+  home: ["GONE HOME, says the sign. Ask, and one of them will pad back over.", "牌子上写着：回家了。你一求牌，就会有一只慢慢走回来。", "牌子上寫著：回家了。你一求牌，就會有一隻慢慢走回來。", "A CASA, dice el cartel. Pide y una de ellas volverá sin prisa.", "A CASA, diu el cartell. Demana i una d'elles tornarà sense pressa."],
+  doze: ["*Miso and Yuzu doze behind the counter, curled up nose to tail. The deck is right here.*", "*味噌和柚子在柜台后面打盹，头尾相接蜷成一团。牌就在这儿。*", "*味噌和柚子在櫃台後面打盹，頭尾相接蜷成一團。牌就在這兒。*", "*Miso y Yuzu dormitan tras el mostrador, hechas un ovillo. La baraja está aquí.*", "*La Miso i la Yuzu dormisquegen darrere el taulell, fetes un cabdell. La baralla és aquí.*"],
+  paw: { yuzu: ["*Yuzu slides one card out with a paw and pushes it across.*", "*柚子用爪子抽出一张牌，推了过来。*", "*柚子用爪子抽出一張牌，推了過來。*", "*Yuzu saca una carta con la pata y te la acerca.*", "*La Yuzu treu una carta amb la pota i te l'acosta.*"],
+    miso: ["*Miso knocks the deck over, then sits on the one card she wants you to have.*", "*味噌把牌碰倒，然后坐在她想给你的那一张上。*", "*味噌把牌碰倒，然後坐在她想給你的那一張上。*", "*Miso tumba la baraja y se sienta sobre la carta que quiere darte.*", "*La Miso tomba la baralla i s'asseu damunt la carta que et vol donar.*"] },
+  trot: ["*{C} trots back from {p}, paws one card across, and is off again.*", "*{c}从{p}一路小跑回来，用爪子推过来一张牌，又跑走了。*", "*{c}從{p}一路小跑回來，用爪子推過來一張牌，又跑走了。*", "*{C} vuelve trotando desde {p}, te acerca una carta con la pata y se va otra vez.*", "*{C} torna trotant des de {p}, t'acosta una carta amb la pota i se'n torna a anar.*"],
+  nightCut: ["*You cut the deck quietly. Miso opens one eye, then closes it.*", "*你轻轻地自己切了牌。味噌睁开一只眼，又闭上了。*", "*你輕輕地自己切了牌。味噌睜開一隻眼，又閉上了。*", "*Cortas la baraja sin hacer ruido. Miso abre un ojo y lo vuelve a cerrar.*", "*Talles la baralla sense fer soroll. La Miso obre un ull i el torna a tancar.*"],
+  still: ["*Today's card is still on the counter, face up. One a day.*", "*今天的牌还摊在柜台上。一天一张。*", "*今天的牌還攤在櫃台上。一天一張。*", "*La carta de hoy sigue boca arriba en el mostrador. Una al día.*", "*La carta d'avui encara és cap per amunt al taulell. Una al dia.*"],
+  pocketBtn: ["Pocket it", "收进口袋", "收進口袋", "Al bolsillo", "A la butxaca"],
+  pocketed: ["In your pocket. Off you go.", "收好了。去吧。", "收好了。去吧。", "En el bolsillo. Hala, ve.", "A la butxaca. Au, ves."],
+  pocketSub: ["Tomorrow the cats will have another.", "明天猫咪还会给你一张。", "明天貓咪還會給你一張。", "Mañana las gatas tendrán otra.", "Demà les gates en tindran una altra."],
+  look: ["Look at it again", "再看一眼", "再看一眼", "Mírala otra vez", "Mira-la un altre cop"],
+  withBtn: ["Draw with someone", "和谁一起抽", "和誰一起抽", "Saca con alguien", "Treu amb algú"],
+  withTo: ["Same card for {to}, same day. Send it and do it together.", "给{to}同一张牌，同一天。发过去，一起去做。", "給{to}同一張牌，同一天。傳過去，一起去做。", "La misma carta para {to}, el mismo día. Mándasela y hacedlo juntos.", "La mateixa carta per a {to}, el mateix dia. Envia-la i feu-ho junts."],
+  withHead: ["Same card, same day. Send it to someone and do it together.", "同一张牌，同一天。发给一个人，一起去做。", "同一張牌，同一天。傳給一個人，一起去做。", "La misma carta, el mismo día. Mándasela a alguien y hacedlo juntos.", "La mateixa carta, el mateix dia. Envia-la a algú i feu-ho junts."],
+  withName: ["From", "署名", "署名", "De", "De"],
+  withPh: ["your name (optional)", "你的名字（可不填）", "你的名字（可不填）", "tu nombre (opcional)", "el teu nom (opcional)"],
+  withSend: ["Send the link", "发送链接", "傳送連結", "Envía el enlace", "Envia l'enllaç"],
+  withNote: ["The card lives only in the link. Nothing is stored.", "牌只在链接里，不会存在任何地方。", "牌只在連結裡，不會存在任何地方。", "La carta va solo en el enlace. No se guarda nada.", "La carta només va dins l'enllaç. No es guarda res."],
+  back: ["Back", "返回", "返回", "Volver", "Tornar"],
+  shareText: ["The cats drew me {card} today: “{ask}” Same card for you, today only:", "猫咪今天给我抽到了{card}：“{ask}”今天你也是这张：", "貓咪今天給我抽到了{card}：「{ask}」今天你也是這張：", "Las gatas me han sacado {card} hoy: «{ask}» La misma carta para ti, solo hoy:", "Les gates m'han tret {card} avui: «{ask}» La mateixa carta per a tu, només avui:"],
+  copied: ["Link copied.", "链接已复制。", "連結已複製。", "Enlace copiado.", "Enllaç copiat."],
+  lineCopied: ["Copied. Paste it to them.", "已复制，粘贴给对方吧。", "已複製，貼給對方吧。", "Copiado. Pégaselo.", "Copiat. Enganxa-l'hi."],
+  someone: ["Someone", "有人", "有人", "Alguien", "Algú"],
+  arrive: ["*{from} drew this for both of you. Yuzu pushes the same card across.*", "*{from}替你们俩抽了这张。柚子把同一张牌推了过来。*", "*{from}替你們倆抽了這張。柚子把同一張牌推了過來。*", "*{from} la sacó para los dos. Yuzu te acerca la misma carta.*", "*{from} l'ha treta per a tots dos. La Yuzu t'acosta la mateixa carta.*"],
+  arriveSame: ["*Same card as {from}. Today you're in it together.*", "*和{from}是同一张牌。今天你们一起。*", "*和{from}是同一張牌。今天你們一起。*", "*La misma carta que {from}. Hoy vais juntos.*", "*La mateixa carta que {from}. Avui hi aneu junts.*"],
+  theirs: ["{from}'s card today:", "{from}今天的牌：", "{from}今天的牌：", "La carta de {from} hoy:", "La carta de {from} avui:"],
+  theirsSub: ["Yours is already on the counter. Do theirs together, if you like.", "你今天的牌已经抽过了。想的话，就一起做对方那张。", "你今天的牌已經抽過了。想的話，就一起做對方那張。", "La tuya ya está en el mostrador. Si quieres, haced juntos la suya.", "La teva ja és al taulell. Si vols, feu junts la seva."],
+  old: ["That card was for {d}. The cats only deal today's.", "那张牌是{d}的。猫咪只发今天的牌。", "那張牌是{d}的。貓咪只發今天的牌。", "Esa carta era del {d}. Las gatas solo reparten la de hoy.", "Aquella carta era del {d}. Les gates només reparteixen la d'avui."],
+  goLine: ["Send them a line", "给对方发一句话", "給對方傳一句話", "Mándale unas palabras", "Envia-li unes paraules"],
+  goMaps: ["Find a {q} near you", "找找附近的{q}", "找找附近的{q}", "Busca «{q}» cerca de ti", "Busca «{q}» a prop teu"],
+  goMinute: ["One minute, phone down", "放下手机一分钟", "放下手機一分鐘", "Un minuto, sin móvil", "Un minut, sense mòbil"],
+  minHead: ["Put the phone face down and look up. A soft bell at the end.", "把手机扣在桌上，抬头看。一分钟后会轻轻响一声。", "把手機扣在桌上，抬頭看。一分鐘後會輕輕響一聲。", "Deja el móvil boca abajo y mira arriba. Al final, una campanita.", "Deixa el mòbil cap per avall i mira amunt. Al final, una campaneta."],
+  minDone: ["There. One whole minute of sky.", "好了。整整一分钟的天空。", "好了。整整一分鐘的天空。", "Ya está. Un minuto entero de cielo.", "Ja està. Un minut sencer de cel."],
+  stop: ["Stop", "停下", "停下", "Parar", "Para"],
+  h1: ["Miso and Yuzu paw you one card a day.", "味噌和柚子每天用爪子推给你一张牌。", "味噌和柚子每天用爪子推給你一張牌。", "Miso y Yuzu te acercan una carta al día con la pata.", "La Miso i la Yuzu t'acosten una carta al dia amb la pota."],
+  h2: ["It asks one thing of you, out there: a call, a walk, a meal.", "它请你在屏幕外做一件事：一通电话、一段路、一顿饭。", "它請你在螢幕外做一件事：一通電話、一段路、一頓飯。", "Te pide una cosa, ahí fuera: una llamada, un paseo, una comida.", "Et demana una cosa, allà fora: una trucada, un passeig, un àpat."],
+  h3: ["Draw with someone: the same card, the same day.", "和谁一起抽：同一张牌，同一天。", "和誰一起抽：同一張牌，同一天。", "Saca con alguien: la misma carta, el mismo día.", "Treu amb algú: la mateixa carta, el mateix dia."],
+  hTown: ["In Nearby, the stall is by the Plaza", "在近邻里，小摊就在广场边上", "在近鄰裡，小攤就在廣場邊上", "En Cerca, el puesto está junto a la Plaza", "A A Prop, la parada és al costat de la Plaça"],
+  ok: ["OK", "好", "好", "Vale", "D'acord"],
+  mBtn: ["A card in the morning", "每天早上一张牌", "每天早上一張牌", "Una carta por la mañana", "Una carta al matí"],
+  mHead: ["The cats nudge you once a day, at a time you pick. Off unless you turn it on.", "猫咪每天在你选的时间轻轻提醒你一次。你不打开就不会有。", "貓咪每天在你選的時間輕輕提醒你一次。你不打開就不會有。", "Las gatas te avisan una vez al día, a la hora que elijas. Apagado si no lo activas.", "Les gates t'avisen un cop al dia, a l'hora que triïs. Apagat si no ho actives."],
+  mTime: ["At", "时间", "時間", "A las", "A les"],
+  mOn: ["Turn it on", "打开", "打開", "Activar", "Activa-ho"],
+  mOff: ["Stop it", "关掉", "關掉", "Desactivar", "Desactiva-ho"],
+  mIsOn: ["A card every morning at {t}.", "每天早上{t}，一张牌。", "每天早上{t}，一張牌。", "Una carta cada mañana a las {t}.", "Una carta cada matí a les {t}."],
+  mDenied: ["The browser said no to notifications. You can allow them in its settings.", "浏览器没有允许通知。你可以在浏览器设置里打开。", "瀏覽器沒有允許通知。你可以在瀏覽器設定裡打開。", "El navegador ha dicho que no a las notificaciones. Puedes permitirlas en sus ajustes.", "El navegador ha dit que no a les notificacions. Les pots permetre a la seva configuració."],
+  mFail: ["Couldn't reach the server. Try again later.", "暂时连不上服务器，稍后再试。", "暫時連不上伺服器，稍後再試。", "No se ha podido conectar. Prueba más tarde.", "No s'ha pogut connectar. Torna-ho a provar més tard."],
+  notNow: ["Not now", "先不用", "先不用", "Ahora no", "Ara no"],
+  device: ["One card a day, kept on this device", "一天一张，只存在这台设备上", "一天一張，只存在這台裝置上", "Una carta al día, guardada en este dispositivo", "Una carta al dia, desada en aquest dispositiu"],
+  ah: ["After hours", "下班以后", "下班以後", "Fuera de horario", "Fora d'hores"],
+  lang: ["Language", "语言", "語言", "Idioma", "Idioma"],
+  help: ["What is this?", "这是什么？", "這是什麼？", "¿Qué es esto?", "Què és això?"],
+  scene: ["Miso and Yuzu's stall: a striped awning, a counter, the deck.", "味噌和柚子的小摊：条纹遮阳篷、柜台、一副牌。", "味噌和柚子的小攤：條紋遮陽篷、櫃台、一副牌。", "El puesto de Miso y Yuzu: un toldo a rayas, un mostrador, la baraja.", "La parada de la Miso i la Yuzu: un tendal a ratlles, un taulell, la baralla."],
+  cat: { miso: ["Miso", "味噌", "味噌", "Miso", "la Miso"], yuzu: ["Yuzu", "柚子", "柚子", "Yuzu", "la Yuzu"] }
+};
+var Cn = function (k) { return T(W.cat[k]); };
+
+/* ---------------- the hour, the cats ---------------- */
+var HQ = (function () { var m = /[?&]h=(\d+(?:\.\d+)?)/.exec(location.search); return m ? +m[1] % 24 : null; })();
+function hour() { if (HQ != null) return HQ; try { return FW.hour ? FW.hour() : new Date().getHours() + new Date().getMinutes() / 60; } catch (e) { return 12; } }
+function phase() { var h = hour(); try { return FW.phase ? FW.phase(h) : (h < 6 || h >= 20 ? "night" : "day"); } catch (e) { return "day"; } }
+function asleep() { var h = hour(); try { return FW.sleeps ? FW.sleeps("miso", h) : (h >= 23 || h < 6); } catch (e) { return h >= 23 || h < 6; } }
+function where() { var c = {}; try { c = FW.cats ? FW.cats() : {}; } catch (e) {} return { miso: c.miso || "bar", yuzu: c.yuzu || "bar" }; }
+function atStall() { var c = where(); return ["miso", "yuzu"].filter(function (k) { return c[k] === "fortune"; }); }
+function placeName(k) { try { return FW.name ? FW.name(k) : k; } catch (e) { return k; } }
+function weather() { try { return FW.weather ? FW.weather() : "clear"; } catch (e) { return "clear"; } }
+
+/* ---------------- the stall (192×120, the town's own drawing, bigger) ---------------- */
+var cv = $("cv"), g = cv.getContext("2d"), PW = 192, PH = 120;
+g.imageSmoothingEnabled = false;
+var anim = { shuffle: 0, slide: 0, visitor: null };   /* visitor: { k, x, dir, paw } a cat trotting back for your card */
+function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+function draw(now) {
+  var ph = phase(), night = ph === "night", dusk = ph === "dusk" || ph === "dawn", lit = night || dusk, zz = asleep(), here = zz ? ["miso", "yuzu"] : atStall();
+  R(0, 0, PW, PH, night ? "#141020" : dusk ? "#5a3a52" : "#a8c0d4");
+  if (night) for (var s = 0; s < 26; s++) { var sx = (s * 53) % PW, sy = (s * 29) % 40; g.globalAlpha = .4 + .4 * Math.sin(now / 700 + s); R(sx, sy, 1, 1, "#fff8d8"); } g.globalAlpha = 1;
+  if (night) { R(PW - 30, 8, 8, 8, "#f6ecd2"); R(PW - 31, 9, 1, 6, "#f6ecd2"); R(PW - 22, 9, 1, 6, "#f6ecd2"); R(PW - 26, 10, 3, 3, "#d8ccb0"); }
+  else if (!dusk) { R(18, 10, 10, 10, "#f8e08a"); R(17, 12, 12, 6, "#f8e08a"); }
+  else { R(14, 30, 14, 6, "#f0a060"); }
+  /* the Plaza's houses behind, windows lit at dusk and night */
+  for (var b = 0, bi = 0; b < PW; b += 24, bi++) {
+    var hh = 22 + (bi * 7) % 14, top = PH * .64 - hh - 18;
+    R(b, top, 22, PH * .64 - top, night ? "#1e1828" : bi % 2 ? "#c8b8a0" : "#d4a888");
+    R(b - 1, top - 3, 24, 3, night ? "#2a2034" : "#8a4a3a");
+    for (var w = 0; w < 2; w++) for (var r = 0; r < 2; r++) R(b + 4 + w * 9, top + 5 + r * 11, 5, 6, lit && ((bi + w + r) % 3) ? "#f6c84a" : night ? "#120e1a" : "#6a7a8a");
+  }
+  R(0, PH * .64, PW, PH * .36, night ? "#2a2430" : "#9a8e7c"); for (var cb = 0; cb < PW; cb += 8) R(cb, PH * .64 + ((cb / 8) % 2) * 7 + 4, 7, 1, night ? "#221c28" : "#857a68");
+  var cx = Math.round(PW / 2), sw = 124, x0 = cx - sw / 2, top2 = 18, ctr = Math.round(PH * .66);
+  R(x0 + 5, top2 + 12, 4, ctr - top2 - 8, "#5a3a2a"); R(x0 + sw - 9, top2 + 12, 4, ctr - top2 - 8, "#5a3a2a");
+  for (var a = 0; a < sw; a += 8) R(x0 + a, top2, 8, 14, (a / 8) % 2 ? "#f3ead8" : "#c8303a");
+  for (var sc = 0; sc < sw; sc += 8) { R(x0 + sc, top2 + 14, 8, 3, (sc / 8) % 2 ? "#c8303a" : "#f3ead8"); R(x0 + sc + 2, top2 + 17, 4, 2, (sc / 8) % 2 ? "#c8303a" : "#f3ead8"); }
+  R(x0 - 2, top2 - 3, sw + 4, 3, "#7c2513");
+  /* the sign on the awning: two paws and a card */
+  R(cx - 16, top2 - 12, 32, 10, "#1a1410"); R(cx - 15, top2 - 11, 30, 8, "#f6b73c"); R(cx - 4, top2 - 10, 7, 6, "#f6ecd2"); R(cx - 2, top2 - 9, 3, 3, "#c8303a");
+  R(cx - 12, top2 - 9, 2, 2, "#1a1410"); R(cx - 9, top2 - 9, 2, 2, "#1a1410"); R(cx + 7, top2 - 9, 2, 2, "#1a1410"); R(cx + 10, top2 - 9, 2, 2, "#1a1410");
+  /* the lantern */
+  if (lit) { g.globalAlpha = .16 + .03 * Math.sin(now / 400); R(x0 + 4, top2 + 18, sw - 8, ctr - top2 - 16, "#f6c84a"); g.globalAlpha = 1; }
+  R(x0 + 14, top2 + 19, 1, 4, "#1a1410"); R(x0 + 11, top2 + 23, 7, 8, "#1a1410"); R(x0 + 12, top2 + 24, 5, 6, lit ? "#f6c84a" : "#a88a5a");
+  /* the cats behind the counter (asleep at night: curled up, a slow z) */
+  here.forEach(function (k, i) { if (FW.drawPet) FW.drawPet(g, k, cx + (here.length === 1 ? 26 : i ? 30 : -30), ctr - 1, 2, { asleep: zz, flip: i === 1 }); });
+  if (zz) for (var z = 0; z < 2; z++) { var zy = ctr - 30 - ((now / 140 + z * 9) % 18), zx = cx + 40 + z * 4; g.globalAlpha = Math.max(0, 1 - ((now / 140 + z * 9) % 18) / 18); R(zx, zy, 4, 1, "#fff"); R(zx + 2, zy + 1, 1, 1, "#fff"); R(zx + 1, zy + 2, 1, 1, "#fff"); R(zx, zy + 3, 4, 1, "#fff"); } g.globalAlpha = 1;
+  if (!here.length && !anim.visitor) { R(cx + 16, ctr - 16, 26, 14, "#f3ead8"); R(cx + 16, ctr - 16, 26, 1, "#5a3a2a"); R(cx + 19, ctr - 12, 20, 1, "#5a3a2a"); R(cx + 19, ctr - 9, 14, 1, "#5a3a2a"); R(cx + 28, ctr - 21, 1, 5, "#5a3a2a"); }
+  /* a cat trotting back for your card, and off again */
+  if (anim.visitor && FW.drawPet) { var v = anim.visitor; FW.drawPet(g, v.k, v.x, ctr - 1, 2, { flip: v.dir < 0, step: (now / 120 | 0) % 2 }); }
+  R(x0, ctr, sw, 6, "#a8743a"); R(x0, ctr + 6, sw, 2, "#6a4020"); R(x0 + 2, ctr + 8, sw - 4, PH * .93 - ctr - 8, "#5a3a2a");
+  for (var pl = x0 + 6; pl < x0 + sw - 6; pl += 10) R(pl, ctr + 11, 1, PH * .93 - ctr - 14, "#4a2a1a");
+  /* the deck (it shuffles when you ask) and the crystal ball */
+  var dk = cx - 9, dy = ctr - 8, jig = anim.shuffle > 0 ? Math.round(Math.sin(now / 40) * 2) : 0;
+  for (var k = 0; k < 5; k++) { R(dk + (k % 2 ? jig : -jig) * (k / 4), dy + 5 - k, 14, 4, "#120c1c"); R(dk + 1 + (k % 2 ? jig : -jig) * (k / 4), dy + 6 - k, 12, 2, "#f6b73c"); }
+  if (anim.slide > 0) { var sy2 = dy - 4 + anim.slide * 12; R(dk + 2, sy2, 11, 15, "#f6ecd2"); R(dk + 2, sy2, 11, 1, "#000"); R(dk + 5, sy2 + 5, 4, 4, "#c8303a"); }
+  R(cx + 10, ctr - 9, 8, 8, "#7cc8d8"); R(cx + 11, ctr - 8, 2, 2, "#fff"); R(cx + 9, ctr - 1, 10, 2, "#6a4224");
+  var wx = weather(); if (wx === "rain" || wx === "storm") { g.fillStyle = "rgba(190,210,230,.4)"; for (var q = 0; q < PW * PH / 90; q++) g.fillRect((q * 37 + now / 30) % PW | 0, (q * 53 + now / 7) % PH | 0, 1, 2); }
+  if (wx === "snow") { g.fillStyle = "rgba(255,255,255,.85)"; for (var q2 = 0; q2 < PW * PH / 160; q2++) g.fillRect((q2 * 37 + Math.sin(now / 900 + q2) * 4) % PW | 0, (q2 * 53 + now / 40) % PH | 0, 1, 1); }
+  if (wx === "fog") { g.globalAlpha = .25; R(0, PH * .45, PW, PH * .3, "#d8d8e0"); g.globalAlpha = 1; }
+}
+var reduce = false; try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+(function loop(now) { if (anim.shuffle > 0) anim.shuffle -= 16; if (!document.hidden) draw(now || 0); requestAnimationFrame(loop); })();
+
+/* ---------------- the reading ---------------- */
+var panel = $("panel"), view = null;
+function el(tag, cls, html, parent) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }
+function pxIcon(e) { var h = ""; try { h = FW.px ? FW.px(e) : ""; } catch (x) {} return /<svg/.test(h) ? '<span class="pxi" aria-hidden="true">' + h + "</span>" : '<span aria-hidden="true">' + esc(e) + "</span>"; }   /* the town's pixel icons where it has one */
+function btn(label, fn, cls, parent, icon) { var b = el("button", "btn" + (cls ? " " + cls : ""), (icon ? pxIcon(icon) + " " : "") + esc(T(label)), parent); b.type = "button"; b.addEventListener("click", function () { fn(b); }); return b; }
+function lk(label, fn, parent) { var b = el("button", "lk", esc(T(label)), parent); b.type = "button"; b.addEventListener("click", fn); return b; }
+function go(fn) { view = fn; panel.innerHTML = ""; document.body.classList.remove("away"); fn(); }
+function line() {
+  if (asleep()) return act(T(W.doze));
+  var here = atStall();
+  if (here.length === 2) return act(T(W.here[(Date.now() / 6e4 | 0) % 3]));
+  if (here.length === 1) return act(T(W.one, { c: Cn(here[0]), C: cap(Cn(here[0])) }));
+  var c = where(), k = c.yuzu !== "nest" ? "yuzu" : "miso";
+  if (c[k] === "nest") return esc(T(W.home));
+  return esc(T(W.away, { c: Cn(k), C: cap(Cn(k)), p: placeName(c[k]) }));
+}
+var arrival = null;   /* a "draw with someone" link, read once */
+
+function idle() {
+  var a = arrival; arrival = null;
+  if (a && !a.fresh) el("p", "say sub", esc(T(W.old, { d: niceDay(a.d) })), panel);
+  el("p", "say", line(), panel);
+  var row = el("div", "row", null, panel);
+  btn(asleep() ? W.cutQuiet : W.ask, deal, "pri", row, "🔮");
+  morning(panel);
+}
+function deal(b) {
+  if (P.today()) return go(reveal);
+  if (b) b.disabled = true;
+  var zz = asleep(), here = zz ? [] : atStall(), who = here.length ? here[(Math.random() * here.length) | 0] : null, trot = null;
+  if (!zz && !who) { var c = where(); trot = c.yuzu !== "nest" && Math.random() < .5 ? "yuzu" : "miso"; }
+  var v = P.draw(), say = zz ? T(W.nightCut) : who ? T(W.paw[who]) : T(W.trot, { c: Cn(trot), C: cap(Cn(trot)), p: placeName(where()[trot]) });
+  function slide() {
+    anim.shuffle = zz ? 400 : 900;
+    var st = performance.now();
+    (function sl(n) { var k = Math.min(1, (n - st - (zz ? 200 : 600)) / 500); if (k > 0) anim.slide = k; if (k < 1 && !reduce) requestAnimationFrame(sl); else setTimeout(function () { anim.slide = 0; go(function () { reveal(true, say); }); if (trot) leave(); }, 150); })(st);
+  }
+  if (trot && !reduce) { anim.visitor = { k: trot, x: -20, dir: 1 }; var tx = PW / 2 + 26; (function walk() { var vv = anim.visitor; if (!vv) return; vv.x += 1.6; if (vv.x < tx) requestAnimationFrame(walk); else { vv.x = tx; slide(); } })(); }
+  else slide();
+}
+function leave() { setTimeout(function () { var vv = anim.visitor; if (!vv) return; vv.dir = -1; (function walk() { if (!anim.visitor) return; vv.x -= 1.8; if (vv.x > -24) requestAnimationFrame(walk); else anim.visitor = null; })(); }, 1600); }
+
+function cardBlock(v, fresh) {
+  var c = P.cardOf(v.i), wrap = el("div", "card", null, panel);
+  var flip = el("div", "flip", '<div class="in' + (fresh && !reduce ? "" : " up") + '"><img class="b" src="/nearby/paw-reading/cards/back.png" alt=""><img class="f" src="' + P.img(v.i) + '" alt="' + esc(cap(P.cardName(c, li()))) + '"></div>', wrap);
+  if (fresh && !reduce) setTimeout(function () { var e = flip.querySelector(".in"); if (e) e.classList.add("up"); }, 380);
+  var right = el("div", null, null, wrap);
+  el("span", "kick", esc(T(W.today)), right);
+  el("p", "ask", esc(T(P.askOf(c))), right);
+  return { c: c, right: right };
+}
+function reveal(fresh, say) {
+  var v = P.today(); if (!v) return go(idle);
+  el("p", "say", say ? act(say) : act(T(W.still)), panel);
+  var cb = cardBlock(v, fresh), acts = el("div", "acts", null, panel);
+  var gg = P.goOf(cb.c);
+  if (gg) {
+    var r1 = el("div", "row", null, acts);
+    if (gg.k === "line") btn(W.goLine, function () { sendLine(T(gg.l)); }, "", r1, "✉️");
+    if (gg.q) btn([T(W.goMaps, { q: T(gg.q) })], function () { maps(T(gg.q)); }, "", r1, "🗺️");
+    if (gg.k === "minute") btn(W.goMinute, function () { go(minute); }, "", r1, "⏱");
+  }
+  var r2 = el("div", "row", null, acts);
+  btn(W.pocketBtn, function () { P.pocket(true); go(pocketed); }, "pri", r2, "✋");
+  btn(W.withBtn, function () { go(withSomeone); }, "", r2, "↗");
+  if (theirCard) theirsBlock();
+  el("p", "sub", esc(T(W.tomorrow)), panel);
+}
+function pocketed() {
+  var v = P.today(); if (!v) return go(idle);
+  document.body.classList.add("away");
+  var p = el("div", "pocket", null, panel);
+  el("img", null, null, p).src = "/nearby/paw-reading/cards/back.png";
+  var t = el("div", null, null, p);
+  el("p", "ask", esc(T(W.pocketed)), t); el("p", "sub", esc(T(W.pocketSub)), t);
+  var r = el("div", "row", null, panel);
+  lk(W.look, function () { P.pocket(false); go(reveal); }, r);
+  morning(panel);
+}
+var theirCard = null, toName = "";   /* toName: FBApps.go("fortune", {to}) from another app brings a name in #to= */
+function theirsBlock() {
+  var t = theirCard, c = P.cardOf(t.i), box = el("div", "theirs", null, panel);
+  el("img", null, null, box).src = P.img(t.i);
+  var r = el("div", null, null, box);
+  el("span", "kick", esc(T(W.theirs, { from: t.from || T(W.someone) })), r);
+  el("p", "say", esc(T(P.askOf(c))), r);
+  el("p", "sub", esc(T(W.theirsSub)), r);
+}
+
+/* draw with someone: the card and today's date in the link, and the name you give, if you give one */
+function nick() { try { return localStorage.getItem("fb_nick") || ""; } catch (e) { return ""; } }
+function withSomeone() {
+  var v = P.today(); if (!v) return go(idle);
+  el("p", "say", esc(toName ? T(W.withTo, { to: toName }) : T(W.withHead)), panel);
+  var f = el("div", "field", null, panel), id = "prNick";
+  el("label", null, esc(T(W.withName)), f).setAttribute("for", id);
+  var inp = el("input", null, null, f); inp.type = "text"; inp.id = id; inp.maxLength = 24; inp.autocomplete = "nickname"; inp.placeholder = T(W.withPh); inp.value = nick();
+  var r = el("div", "row", null, panel);
+  btn(W.withSend, function () {
+    var n = inp.value.trim().slice(0, 24); try { if (n) localStorage.setItem("fb_nick", n); } catch (e) {}
+    var c = P.cardOf(v.i), url = location.origin + "/paw-reading/#" + P.pack(v, n);
+    share(T(W.app), T(W.shareText, { card: P.cardName(c, li()), ask: T(P.askOf(c)) }), url, W.copied);
+  }, "pri", r, "↗");
+  btn(W.back, function () { go(reveal); }, "", r);
+  el("p", "sub", esc(T(W.withNote)), panel);
+}
+function share(title, text, url, copiedMsg) {
+  if (navigator.share) return navigator.share(url ? { title: title, text: text, url: url } : { text: text }).catch(function () {});
+  var all = url ? text + " " + url : text;
+  if (navigator.clipboard) navigator.clipboard.writeText(all).then(function () { toast(T(copiedMsg)); }).catch(function () { prompt("", all); });
+  else prompt("", all);
+}
+function sendLine(text) { share("", text, "", W.lineCopied); }
+function maps(q) {
+  var ua = navigator.userAgent || "", u;
+  if (/iPhone|iPad/.test(ua) || (/Macintosh/.test(ua) && "ontouchend" in document)) u = "https://maps.apple.com/?q=" + encodeURIComponent(q);
+  else if (/Android/.test(ua)) u = "geo:0,0?q=" + encodeURIComponent(q);
+  else u = "https://www.openstreetmap.org/search?query=" + encodeURIComponent(q);
+  window.open(u, "_blank", "noopener");
+}
+var toastT = 0;
+function toast(msg) { var t = $("prToast") || el("p", "sub", null, panel); t.id = "prToast"; t.textContent = msg; clearTimeout(toastT); toastT = setTimeout(function () { if (t.parentNode) t.remove(); }, 4000); }
+
+/* one minute, phone face down: a ring that empties, then one soft bell (made here, nothing fetched) */
+var minT = 0;
+function minute() {
+  el("p", "say", esc(T(W.minHead)), panel);
+  var C = 2 * Math.PI * 64, svg = el("div", null, '<svg class="ring" viewBox="0 0 150 150" aria-hidden="true"><circle class="bg" cx="75" cy="75" r="64"/><circle class="fg" cx="75" cy="75" r="64" stroke-dasharray="' + C + '" stroke-dashoffset="0"/></svg>', panel);
+  var fg = svg.querySelector(".fg"), left = 60, ac = null;
+  try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+  var r = el("div", "row", null, panel); btn(W.stop, function () { clearInterval(minT); go(reveal); }, "", r);
+  clearInterval(minT);
+  minT = setInterval(function () {
+    left--; fg.style.strokeDashoffset = String(C * (1 - left / 60));
+    if (left <= 0) { clearInterval(minT); bell(ac); panel.innerHTML = ""; el("p", "ask", esc(T(W.minDone)), panel); var r2 = el("div", "row", null, panel); btn(W.pocketBtn, function () { P.pocket(true); go(pocketed); }, "pri", r2, "✋"); btn(W.back, function () { go(reveal); }, "", r2); }
+  }, 1000);
+}
+function bell(ac) {
+  if (!ac) return; try {
+    [880, 1320].forEach(function (f, i) { var o = ac.createOscillator(), gn = ac.createGain(), t0 = ac.currentTime + i * .02; o.type = "sine"; o.frequency.value = f; gn.gain.setValueAtTime(0, t0); gn.gain.linearRampToValueAtTime(i ? .05 : .12, t0 + .02); gn.gain.exponentialRampToValueAtTime(.0001, t0 + 2.4); o.connect(gn); gn.connect(ac.destination); o.start(t0); o.stop(t0 + 2.5); });
+  } catch (e) {}
+}
+function niceDay(d) { var m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(d); if (!m) return d; try { return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString(LANGS[li()] === "zh-Hant" ? "zh-TW" : LANGS[li()], { month: "long", day: "numeric" }); } catch (e) { return d; } }
+
+/* ---------------- a card in the morning: Little Things' Web Push, reused ----------------
+   Off unless asked. Same pieces as Little Things: the town's device key hashed as sha256("lt:" + fb_device_key) (so Nearby's
+   "Delete my things from the server" covers it), lt_push_get for the public key (hidden until the server side is set up),
+   lt_push_set with p_app 'paw', lt_push_off. Its own registration of /little-things/sw.js at scope /little-things/paw/, so
+   it has its own subscription and never replaces Little Things' nudge. Privacy entry "paw" in fbc.js. */
+var KOK = /^[A-Za-z0-9_-]{32,128}$/, SCOPE = "/little-things/paw/";
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+function cfg() { return new Promise(function (res) { if (window.FB_SUPABASE && FB_SUPABASE.url) return res(FB_SUPABASE); var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { res(window.FB_SUPABASE || {}); }; document.head.appendChild(sc); }); }
+function rpc(fn, body) {
+  return cfg().then(function (c) {
+    if (!c.url) throw new Error("offline");
+    return fetch(c.url + "/rest/v1/rpc/" + fn, { method: "POST", headers: { apikey: c.anonKey, Authorization: "Bearer " + c.anonKey, "Content-Type": "application/json" }, body: JSON.stringify(body || {}) })
+      .then(function (r) { return r.text().then(function (x) { var j = null; try { j = x ? JSON.parse(x) : null; } catch (e) {} if (!r.ok) throw new Error((j && j.message) || "error"); return j; }); });
+  });
+}
+function newKey() { var a = new Uint8Array(32); crypto.getRandomValues(a); return btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+function devKey() { var k = lsGet("fb_device_key"); if (!k || !KOK.test(k)) { k = newKey(); lsSet("fb_device_key", k); } return k; }
+var secMemo = null;
+function secret() { return secMemo || (secMemo = crypto.subtle.digest("SHA-256", new TextEncoder().encode("lt:" + devKey())).then(function (b) { return Array.prototype.map.call(new Uint8Array(b), function (x) { return ("0" + x.toString(16)).slice(-2); }).join(""); })); }
+function consent() { try { if (window.FBC && FBC.ask) { var d = (FBC.DATA || []).filter(function (x) { return x.k === "paw"; })[0]; if (d) return FBC.ask(d); } } catch (e) {} return Promise.resolve(true); }
+function pushCan() { try { return !!(window.isSecureContext && "serviceWorker" in navigator && "PushManager" in window && "Notification" in window); } catch (e) { return false; } }
+var pushProbe = null, pushKey = null;
+function probePush() {
+  if (!pushCan()) return Promise.resolve(null);
+  if (!pushProbe) pushProbe = rpc("lt_push_get", {}).then(function (k) { return typeof k === "string" && /^[A-Za-z0-9_-]{40,200}$/.test(k) ? (pushKey = k) : null; }).catch(function () { pushProbe = null; return null; });
+  return pushProbe;
+}
+function pushState() { try { var o = JSON.parse(lsGet("paw_push") || "null"); return o && typeof o.h === "number" ? o : null; } catch (e) { return null; } }
+function tz() { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; } catch (e) { return "UTC"; } }
+function keyBytes(b) { b = b.replace(/-/g, "+").replace(/_/g, "/"); while (b.length % 4) b += "="; var r = atob(b), a = new Uint8Array(r.length); for (var i = 0; i < r.length; i++) a[i] = r.charCodeAt(i); return a; }
+function myReg() { return navigator.serviceWorker.getRegistrations().then(function (rs) { return rs.filter(function (r) { return /\/little-things\/paw\/$/.test(r.scope); })[0] || null; }); }
+function swReg() { return navigator.serviceWorker.register("/little-things/sw.js", { scope: SCOPE }).then(function (reg) { return reg.active ? reg : new Promise(function (res) { var w = reg.installing || reg.waiting; if (!w) return res(reg); w.addEventListener("statechange", function () { if (w.state === "activated") res(reg); }); }); }); }
+function sub(reg, k) { return reg.pushManager.getSubscription().then(function (s) { return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(k) }); }); }
+function sendSub(s, h, m) {
+  var j = s.toJSON ? s.toJSON() : s;
+  return secret().then(function (k) { return rpc("lt_push_set", { p_secret: k, p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_hour: h, p_minute: m, p_tz: tz(), p_lang: LANGS[li()], p_app: "paw" }); })
+    .then(function () { lsSet("paw_push", JSON.stringify({ h: h, m: m, ep: j.endpoint, l: LANGS[li()] })); });
+}
+function pushOn(h, m) {
+  return consent().then(function (yes) {
+    if (!yes) return "no";
+    return Promise.resolve(Notification.permission === "granted" ? "granted" : Notification.requestPermission()).then(function (p) {
+      if (p !== "granted") return "denied";
+      return swReg().then(function (reg) { return sub(reg, pushKey); }).then(function (s) { return sendSub(s, h, m); }).then(function () { return "ok"; });
+    });
+  });
+}
+function pushOff() {
+  var Pp = pushState();
+  return secret().then(function (k) { return rpc("lt_push_off", { p_secret: k, p_endpoint: Pp && Pp.ep || null }); }).then(function () {
+    lsSet("paw_push", null);
+    return myReg().then(function (r) { return r && r.pushManager.getSubscription().then(function (s) { return s && s.unsubscribe(); }).then(function () { return r.unregister(); }); }).catch(function () {});
+  });
+}
+function pushCheck() {   /* a morning card that's on: keep its address and language fresh (browsers renew subscriptions) */
+  var Pp = pushState(); if (!Pp || !pushCan() || Notification.permission !== "granted") return;
+  probePush().then(function (k) { if (!k) return; return myReg().then(function (r) { return r || swReg(); }).then(function (reg) { return sub(reg, k); }).then(function (s) { if (s.endpoint !== Pp.ep || Pp.l !== LANGS[li()]) return sendSub(s, Pp.h, Pp.m); }); }).catch(function () {});
+}
+function hm(h, m) { var d = new Date(); d.setHours(h, m, 0, 0); try { return new Intl.DateTimeFormat(LANGS[li()] === "zh-Hant" ? "zh-HK" : LANGS[li()], { hour: "numeric", minute: "2-digit" }).format(d); } catch (e) { return h + ":" + ("0" + m).slice(-2); } }
+var mornOpen = false;
+function morning(parent) {
+  var box = el("div", "morn", null, parent); box.hidden = true;
+  probePush().then(function (k) {
+    var on = pushState(); if (!k && !on) return;
+    box.hidden = false; box.innerHTML = "";
+    if (on) {
+      el("p", "sub", "🔔 " + esc(T(W.mIsOn, { t: hm(on.h, on.m) })), box);
+      lk(W.mOff, function () { pushOff().then(function () { mornOpen = false; go(view); }, function () { toast(T(W.mFail)); }); }, box);
+      return;
+    }
+    if (!mornOpen) { lk(W.mBtn, function () { mornOpen = true; go(view); }, box).insertAdjacentHTML("afterbegin", "🔔 "); return; }
+    el("p", "sub", esc(T(W.mHead)), box);
+    var f = el("div", "field", null, box); el("label", null, esc(T(W.mTime)), f).setAttribute("for", "prTime");
+    var inp = el("input", null, null, f); inp.type = "time"; inp.id = "prTime"; inp.value = "08:00"; inp.step = 300;
+    var r = el("div", "row", null, box);
+    btn(W.mOn, function (b) {
+      var m = /^(\d{1,2}):(\d{2})/.exec(inp.value || "08:00"); if (!m) return; b.disabled = true;
+      pushOn(+m[1], +m[2]).then(function (res) { mornOpen = false; go(view); if (res === "denied") toast(T(W.mDenied)); }, function () { b.disabled = false; toast(T(W.mFail)); });
+    }, "pri sm", r);
+    btn(W.notNow, function () { mornOpen = false; go(view); }, "sm", r);
+  });
+}
+
+/* ---------------- help, language, footer ---------------- */
+function help() {
+  var sh = el("div", "sheet", null, document.body), p = el("div", "panel", null, sh); sh.setAttribute("role", "dialog"); sh.setAttribute("aria-modal", "true"); sh.setAttribute("aria-label", T(W.help));
+  var ol = el("ol", null, null, p); [W.h1, W.h2, W.h3].forEach(function (x) { el("li", null, esc(T(x)), ol); });
+  el("p", "sub", '<a href="/nearby/?at=' + encodeURIComponent("/nearby/paw-reading/") + '">' + esc(T(W.hTown)) + " ↗</a>", p);
+  var r = el("div", "row", null, p), opened = Date.now();
+  function close() { sh.remove(); document.removeEventListener("keydown", key); $("helpBtn").focus(); }
+  function key(e) { if (e.key === "Escape") close(); }
+  btn(W.ok, close, "pri", r).focus();
+  sh.addEventListener("click", function (e) { if (e.target === sh && Date.now() - opened > 450) close(); });
+  document.addEventListener("keydown", key);
+}
+$("helpBtn").addEventListener("click", help);
+var menu = null;
+function closeLang() { if (menu) { menu.remove(); menu = null; $("langBtn").setAttribute("aria-expanded", "false"); } }
+$("langBtn").addEventListener("click", function (e) {
+  e.stopPropagation(); if (menu) return closeLang();
+  menu = document.createElement("div"); menu.className = "langmenu"; menu.setAttribute("role", "menu");
+  LANGS.forEach(function (l, i) { var b = document.createElement("button"); b.setAttribute("role", "menuitemradio"); b.setAttribute("aria-checked", String(i === li())); b.lang = l; b.textContent = LNAMES[i];
+    b.addEventListener("click", function () { if (window.FBL) FBL.set(l); closeLang(); repaint(); }); menu.appendChild(b); });
+  document.body.appendChild(menu); $("langBtn").setAttribute("aria-expanded", "true"); menu.querySelector("[aria-checked=true]").focus();
+});
+document.addEventListener("click", function (e) { if (menu && !menu.contains(e.target)) closeLang(); });
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLang(); });
+function heart() { return (FW.pix && FW.pix("heart")) || "♥"; }
+function chrome() {
+  var i = li(); document.documentElement.lang = LANGS[i];
+  $("appName").textContent = T(W.app); document.title = T(W.app);
+  $("langLbl").textContent = SHORT[i]; $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + LNAMES[i]);
+  $("helpBtn").setAttribute("aria-label", T(W.help)); $("helpBtn").title = T(W.help);
+  cv.setAttribute("aria-label", T(W.scene));
+  var x = "<span>" + esc(T(W.device)) + '</span> · <a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener"><span class="pxi">' + heart() + "</span> " + esc(T(W.ah)) + "</a>";
+  if (window.FBC && FBC.foot) FBC.foot($("foot"), { px: 1, extra: x }); else $("foot").innerHTML = x;   /* the suite's one footer; this app's own line under it */
+}
+function repaint() { chrome(); if (view) go(view); }
+addEventListener("fbl:lang", repaint);
+cv.addEventListener("click", function () { if (view === idle) deal(panel.querySelector(".btn.pri")); });
+/* a new day while the page is open (left on overnight): back to the counter */
+var shownDay = P.day();
+document.addEventListener("visibilitychange", function () { if (!document.hidden && P.day() !== shownDay) { shownDay = P.day(); theirCard = null; go(idle); } });
+
+/* ---------------- arrive ---------------- */
+chrome();
+var TO = /[#&]to=([^&]*)/.exec(location.hash); if (TO) { try { toName = decodeURIComponent(TO[1]).replace(/[<>]/g, "").slice(0, 24); } catch (e) {} if (!/[#&]with=/.test(location.hash)) try { history.replaceState(history.state, "", location.pathname + location.search); } catch (e) {} }
+var A = P.unpack(location.hash);
+if (A) {
+  try { history.replaceState(history.state, "", location.pathname + location.search); } catch (e) {}
+  var mine = P.today(), from = A.from || T(W.someone);
+  if (!A.fresh) { if (mine) { go(mine.p ? pocketed : reveal); toast(T(W.old, { d: niceDay(A.d) })); } else { arrival = A; go(idle); } }
+  else if (!mine) { P.take(A.i, A.from); go(function () { reveal(true, T(W.arrive, { from: from })); }); }
+  else if (mine.i === A.i) go(function () { reveal(false, T(W.arriveSame, { from: from })); });
+  else { theirCard = A; go(reveal); }
+} else { var t0 = P.today(); go(t0 ? (toName ? withSomeone : t0.p ? pocketed : reveal) : idle); }
+pushCheck();
+window.PR = { today: P.today, hour: hour, asleep: asleep, where: where, view: function () { return view && view.name; } };
+})();
+</script>
+</body>
+</html>
