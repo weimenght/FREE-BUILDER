@@ -52,12 +52,22 @@
     @keyframes draw { to { background-size: 100% .32em; } }
 
     /* Accordion */
-    .acc-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s var(--ease), opacity .3s ease; opacity: 0; }
-    .acc-item.open .acc-body { grid-template-rows: 1fr; opacity: 1; }
-    .acc-body > div { overflow: hidden; min-height: 0; }
-    .acc-item:not(.open) .acc-body a { visibility: hidden; }
-    .acc-icon { transition: transform .45s var(--ease); }
-    .acc-item.open .acc-icon { transform: rotate(45deg); }
+    /* 04 / Services: four cards, one link each */
+    .svc-grid { display:grid; gap:14px; grid-template-columns:1fr; }
+    @media (min-width:720px) { .svc-grid { grid-template-columns:1fr 1fr; } }
+    .svc { display:flex; flex-direction:column; gap:8px; padding:24px; border-radius:22px; border:1px solid rgba(255,255,255,.14); color:#fff; text-decoration:none; transition:border-color .2s, background .2s; }
+    .svc:hover { border-color:rgba(255,255,255,.5); background:rgba(255,255,255,.03); }
+    .svc-n { font:400 11px 'Space Mono',monospace; color:#F2A091; }
+    .svc-t { font-family:Syne,'Plus Jakarta Sans','PingFang SC',sans-serif; font-weight:700; font-size:clamp(1.25rem,2.2vw,1.5rem); line-height:1.15; letter-spacing:-.01em; }
+    .svc-b { font:400 11px 'Space Mono',monospace; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.45); }
+    .svc-d { font-size:14.5px; line-height:1.6; color:rgba(255,255,255,.75); margin-top:4px; }
+    .svc-best { font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-size:17px; color:rgba(255,255,255,.85); }
+    .svc-try { margin-top:auto; padding-top:10px; font:400 12px 'Space Mono',monospace; color:rgba(255,255,255,.6); }
+    .svc-try b { color:#fff; font-weight:700; text-decoration:underline; text-decoration-color:#E2553F; text-decoration-thickness:2px; text-underline-offset:4px; }
+    .svc:hover .svc-try b { color:#F2A091; }
+    .svc-lab { display:block; margin-top:14px; padding:18px 22px; border-radius:22px; border:1px dashed rgba(255,255,255,.25); color:#fff; text-decoration:none; }
+    .svc-lab > * + * { margin-top:6px; }
+    .svc-lab:hover { border-color:rgba(255,255,255,.6); }
 
     /* Work rows */
     .work-row .arrow { transition: transform .4s var(--ease); }
@@ -180,7 +190,7 @@ img{filter:none}
         <nav class="hidden lg:flex items-center gap-5 text-[13px] font-medium text-muted">
           <a href="#belief" class="hover:text-ink transition-colors" data-i18n="navBelief">Belief</a>
           <a href="#services" class="hover:text-ink transition-colors" data-i18n="navServices">Services</a>
-          <a href="https://www.wei-meng.org/portfolio" target="_blank" rel="noopener noreferrer" class="hover:text-ink transition-colors" data-i18n="navWork">Work</a>
+          <a href="https://www.wei-meng.org/portfolio" target="_blank" rel="noopener noreferrer" class="hover:text-ink transition-colors" data-i18n="navWork">Portfolio ↗</a>
         </nav>
         <button type="button" onclick="cycleLanguage()"
           class="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-lg border border-line hover:border-ink/30 bg-white/60 active:scale-95 text-[11px] font-mono transition-all select-none"
@@ -223,19 +233,10 @@ img{filter:none}
         </div>
       </section>
 
-      <!-- 01 PROBLEM -->
-      <section class="reveal py-16 sm:py-24 border-t border-line grid grid-cols-1 md:grid-cols-12 gap-8">
-        <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="probLabel">01 / The problem</span></div>
-        <div class="md:col-span-8 space-y-5">
-          <h2 class="font-syne text-3xl sm:text-4xl font-bold tracking-tight leading-[1.12]" data-i18n-html="probTitle">The mandatory-training <span class="accent-word">sigh</span> is expensive.</h2>
-          <p class="text-base sm:text-lg text-ink/70 leading-relaxed" data-i18n="probDesc">Every hour spent clicking through a deck nobody remembers is an hour of salary, attention and goodwill gone. And as AI takes over routine work, the skills that matter most — reading a room, repairing trust, really listening — are exactly the ones a slide can't teach.</p>
-        </div>
-      </section>
-
-      <!-- 02 BELIEF -->
+      <!-- 01 BELIEF -->
       <section id="belief" class="scroll-mt-20 py-16 sm:py-24 border-t border-line space-y-10">
         <div class="reveal grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="belLabel">02 / What we believe</span></div>
+          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="belLabel">01 / What we believe</span></div>
           <div class="md:col-span-8 space-y-3">
             <h2 class="font-syne text-3xl sm:text-4xl font-bold tracking-tight leading-[1.12]" data-i18n-html="belTitle">People are the <span class="accent-word">point</span>.</h2>
             <p class="text-base sm:text-lg text-ink/70 leading-relaxed" data-i18n="belDesc">AI and web apps are tools. What matters is what people do with each other afterwards.</p>
@@ -265,10 +266,10 @@ img{filter:none}
         </div>
       </section>
 
-      <!-- 03 APPROACH -->
+      <!-- 02 APPROACH -->
       <section id="approach" class="scroll-mt-20 py-16 sm:py-24 border-t border-line space-y-10">
         <div class="reveal grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="appLabel">03 / Approach</span></div>
+          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="appLabel">02 / Approach</span></div>
           <h2 class="md:col-span-8 font-syne text-3xl sm:text-4xl font-bold tracking-tight" data-i18n="appTitle">Diagnose. Build. Pass it on.</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-line border border-line rounded-3xl overflow-hidden">
@@ -291,173 +292,69 @@ img{filter:none}
       </section>
     </div>
 
-    <!-- 04 SERVICES (dark band) -->
+    <!-- 03 SERVICES (dark band) -->
     <section id="services" class="on-dark scroll-mt-16 bg-ink text-white px-4 sm:px-8 py-16 sm:py-24">
       <div class="max-w-5xl mx-auto space-y-10">
         <div class="reveal grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-white/45" data-i18n="svcLabel">04 / Services</span></div>
+          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-white/45" data-i18n="svcLabel">03 / Services</span></div>
           <div class="md:col-span-8 space-y-3">
             <h2 class="font-syne text-3xl sm:text-4xl font-bold tracking-tight" data-i18n-html="svcTitle">Four ways to <span class="accent-word">work</span> together.</h2>
             <p class="text-sm sm:text-base text-white/60" data-i18n="svcDesc">Engage one, or combine them into a full programme. Each comes with something you can try today.</p>
           </div>
         </div>
 
-        <div class="reveal border-t border-white/10" id="accordion">
-          <!-- s1 Human Skills Studio -->
-          <div class="acc-item open border-b border-white/10">
-            <button type="button" class="acc-head w-full py-6 sm:py-7 flex items-center gap-4 sm:gap-6 text-left group" aria-expanded="true" onclick="toggleAcc(0)">
-              <span class="font-mono text-[11px] text-accent w-8 flex-shrink-0">01</span>
-              <span class="flex-1 min-w-0">
-                <span class="flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <span class="font-syne text-lg sm:text-2xl font-bold tracking-tight group-hover:text-accent transition-colors" data-i18n="s1Title">Human Skills Studio</span>
-                  <span class="text-[10px] font-mono uppercase tracking-[0.14em] px-2 py-0.5 rounded-full bg-accent text-white" data-i18n="newTag">New</span>
-                </span>
-                <span class="block text-[11px] font-mono uppercase tracking-[0.14em] text-white/45 mt-1" data-i18n="s1Badge">Listening · empathy · repair · perspective</span>
-              </span>
-              <span class="acc-icon w-9 h-9 rounded-full border border-white/20 flex items-center justify-center flex-shrink-0 text-lg leading-none" aria-hidden="true">+</span>
-            </button>
-            <div class="acc-body"><div>
-              <div class="pb-8 pl-12 sm:pl-14 grid grid-cols-1 md:grid-cols-12 gap-6">
-                <div class="md:col-span-7 space-y-4">
-                  <p class="text-sm sm:text-base text-white/75 leading-relaxed" data-i18n="s1Desc">Programmes for the capabilities AI can't replace. Short, playful setups pair colleagues up — then the phone goes down and the real conversation starts.</p>
-                  <p class="font-serif italic text-lg text-white/85" data-i18n="s1Best">Best for teams working across functions, cultures — or tension.</p>
-                  <div class="flex flex-wrap gap-2 pt-1">
-                    <a href="/tools/listen" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dListen">Listening Duet</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/swap" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dSwap">Perspective Swap</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/repair" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dRepair">Repair Kit</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/twotruths" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dTwoTruths">Two Truths</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/prompt" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dPrompt">Prompt Partner</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/museum" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dMuseum">Mistake Museum</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/room" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-dashed border-white/25 hover:border-white/60 text-[11px] font-mono transition-colors"><span data-i18n="dRoom">Room Mode</span><span class="text-white/40" data-i18n="soon">soon</span></a>
-                    <a href="/programmes/circles" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dCircles">Learning circles</span><span aria-hidden="true">↗</span></a>
-                    <a href="/programmes/rituals" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dRituals">Team rituals</span><span aria-hidden="true">↗</span></a>
-                    <a href="/notes/adapted" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dAdapted">Adapted, not translated</span><span aria-hidden="true">↗</span></a>
-                    <a href="/programmes/frontline" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dFrontline">Frontline (concept)</span><span aria-hidden="true">↗</span></a>
-                  </div>
-                  <a href="/labs/common-ground/" class="block rounded-2xl border border-white/20 hover:border-white/60 p-4 space-y-2 transition-colors group">
-                    <span class="flex flex-wrap items-center gap-2 text-[10px] font-mono uppercase tracking-[0.14em] text-white/45"><span class="px-2 py-0.5 rounded-full bg-accent text-white" data-i18n="newTag">New</span><span data-i18n="cgKicker">Lab · for a team</span></span>
-                    <span class="block font-syne text-lg font-bold tracking-tight group-hover:text-accent transition-colors" data-i18n="cgTitle">Common Ground</span>
-                    <span class="block text-sm text-white/70 leading-relaxed" data-i18n="cgDesc">Most teams never say out loud how they actually work together. Here everyone moves into a little town and puts down the ways the team listens, gives feedback and trusts each other, each with one honest question. Then it prints as a sheet for your next meeting, and the real conversation starts.</span>
-                    <span class="inline-block text-[11px] font-mono text-white underline decoration-accent decoration-2 underline-offset-4"><span data-i18n="cgGo">Build your team's town</span>&nbsp;<span aria-hidden="true">↗</span></span>
-                  </a>
-                </div>
-                <ul class="md:col-span-5 space-y-2.5 text-[12px] font-mono text-white/70 md:border-l md:border-white/10 md:pl-6">
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s1f1">Pair practice: listening, feedback, repair</span></li>
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s1f2">Cross-cultural perspective-taking</span></li>
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s1f3">Room Mode for live workshops, in person or remote</span></li>
-                </ul>
-              </div>
-            </div></div>
-          </div>
-          <!-- s2 Advisory -->
-          <div class="acc-item border-b border-white/10">
-            <button type="button" class="acc-head w-full py-6 sm:py-7 flex items-center gap-4 sm:gap-6 text-left group" aria-expanded="false" onclick="toggleAcc(1)">
-              <span class="font-mono text-[11px] text-accent w-8 flex-shrink-0">02</span>
-              <span class="flex-1 min-w-0">
-                <span class="block font-syne text-lg sm:text-2xl font-bold tracking-tight group-hover:text-accent transition-colors" data-i18n="s2Title">Strategic L&D Advisory</span>
-                <span class="block text-[11px] font-mono uppercase tracking-[0.14em] text-white/45 mt-1" data-i18n="s2Badge">Strategy & audit</span>
-              </span>
-              <span class="acc-icon w-9 h-9 rounded-full border border-white/20 flex items-center justify-center flex-shrink-0 text-lg leading-none" aria-hidden="true">+</span>
-            </button>
-            <div class="acc-body"><div>
-              <div class="pb-8 pl-12 sm:pl-14 grid grid-cols-1 md:grid-cols-12 gap-6">
-                <div class="md:col-span-7 space-y-4">
-                  <p class="text-sm sm:text-base text-white/75 leading-relaxed" data-i18n="s2Desc">Curriculum architecture, learning audits and tech-stack choices — with teach-back built into every programme, so knowledge spreads person to person instead of sitting in an LMS.</p>
-                  <p class="font-serif italic text-lg text-white/85" data-i18n="s2Best">Best for CHROs and L&D leads rebuilding from the ground up.</p>
-                  <div class="flex flex-wrap gap-2 pt-1">
-                    <a href="/tools/teachback" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dTeach">Teach-Back Chain</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/diagnose" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dDiagnose">Training or not?</span><span aria-hidden="true">↗</span></a>
-                    <a href="/programmes/impact" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dImpact">Impact report</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/cost" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dCost">Cost calculator</span><span aria-hidden="true">↗</span></a>
-                    <a href="/notes/ai" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dAI">AI guardrails</span><span aria-hidden="true">↗</span></a>
-                    <a href="/programmes/facilitator" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dFacil">Train the facilitator</span><span aria-hidden="true">↗</span></a>
-                    <a href="/kit" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dKit">Open starter kit</span><span aria-hidden="true">↗</span></a>
-                  </div>
-                </div>
-                <ul class="md:col-span-5 space-y-2.5 text-[12px] font-mono text-white/70 md:border-l md:border-white/10 md:pl-6">
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s2f1">Competency-gap & structural audits</span></li>
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s2f2">Teach-back loops across every programme</span></li>
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s2f3">Humane evaluation leadership can verify</span></li>
-                </ul>
-              </div>
-            </div></div>
-          </div>
-          <!-- s3 Coaching -->
-          <div class="acc-item border-b border-white/10">
-            <button type="button" class="acc-head w-full py-6 sm:py-7 flex items-center gap-4 sm:gap-6 text-left group" aria-expanded="false" onclick="toggleAcc(2)">
-              <span class="font-mono text-[11px] text-accent w-8 flex-shrink-0">03</span>
-              <span class="flex-1 min-w-0">
-                <span class="block font-syne text-lg sm:text-2xl font-bold tracking-tight group-hover:text-accent transition-colors" data-i18n="s3Title">Executive & Managerial Coaching</span>
-                <span class="block text-[11px] font-mono uppercase tracking-[0.14em] text-white/45 mt-1" data-i18n="s3Badge">Leadership behaviour</span>
-              </span>
-              <span class="acc-icon w-9 h-9 rounded-full border border-white/20 flex items-center justify-center flex-shrink-0 text-lg leading-none" aria-hidden="true">+</span>
-            </button>
-            <div class="acc-body"><div>
-              <div class="pb-8 pl-12 sm:pl-14 grid grid-cols-1 md:grid-cols-12 gap-6">
-                <div class="md:col-span-7 space-y-4">
-                  <p class="text-sm sm:text-base text-white/75 leading-relaxed" data-i18n="s3Desc">One-to-one and cohort coaching grounded in applied neuroscience and deliberate practice. AI rehearsal is only the warm-up — the goal is the real conversation with your team.</p>
-                  <p class="font-serif italic text-lg text-white/85" data-i18n="s3Best">Best for new managers, leadership pipelines and teams in transition.</p>
-                  <div class="flex flex-wrap gap-2 pt-1">
-                    <a href="https://www.freebuilder.net/labs/coach/" target="_blank" rel="noopener noreferrer" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dCoach">Coaching Co-Pilot</span><span aria-hidden="true">↗</span></a>
-                    <a href="/programmes/managers" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dManagers">For managers: 3 tracks</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/manual" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dManual">My User Manual</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/dial" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dDial">Delegation Dial</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/decide" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dDecide">Decision Room</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/repair" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dRepair">Repair Kit</span><span aria-hidden="true">↗</span></a>
-                  </div>
-                </div>
-                <ul class="md:col-span-5 space-y-2.5 text-[12px] font-mono text-white/70 md:border-l md:border-white/10 md:pl-6">
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s3f1">Applied neuroscience (SCARF & SLII)</span></li>
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s3f2">Rehearse privately, then practise with peers</span></li>
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s3f3">Radical Candor & psychological safety</span></li>
-                </ul>
-              </div>
-            </div></div>
-          </div>
-          <!-- s4 Simulations -->
-          <div class="acc-item border-b border-white/10">
-            <button type="button" class="acc-head w-full py-6 sm:py-7 flex items-center gap-4 sm:gap-6 text-left group" aria-expanded="false" onclick="toggleAcc(3)">
-              <span class="font-mono text-[11px] text-accent w-8 flex-shrink-0">04</span>
-              <span class="flex-1 min-w-0">
-                <span class="block font-syne text-lg sm:text-2xl font-bold tracking-tight group-hover:text-accent transition-colors" data-i18n="s4Title">Simulations & Story-led Media</span>
-                <span class="block text-[11px] font-mono uppercase tracking-[0.14em] text-white/45 mt-1" data-i18n="s4Badge">Games · drama · onboarding</span>
-              </span>
-              <span class="acc-icon w-9 h-9 rounded-full border border-white/20 flex items-center justify-center flex-shrink-0 text-lg leading-none" aria-hidden="true">+</span>
-            </button>
-            <div class="acc-body"><div>
-              <div class="pb-8 pl-12 sm:pl-14 grid grid-cols-1 md:grid-cols-12 gap-6">
-                <div class="md:col-span-7 space-y-4">
-                  <p class="text-sm sm:text-base text-white/75 leading-relaxed" data-i18n="s4Desc">Games, branching mysteries and workplace dramas written around your company's own friction points — designed to be played and watched together, and to end with something to try with a colleague.</p>
-                  <p class="font-serif italic text-lg text-white/85" data-i18n="s4Best">Best for onboarding, innovation sprints and sales teams.</p>
-                  <div class="flex flex-wrap gap-2 pt-1">
-                    <a href="https://www.freebuilder.net/tools/design/" target="_blank" rel="noopener noreferrer" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dOdyssey">Design Thinking Odyssey</span><span aria-hidden="true">↗</span></a>
-                    <a href="/labs/launchpad/" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dOnboard">Launchpad</span><span aria-hidden="true">↗</span></a>
-                    <a href="https://www.wei-meng.org/portfolio" target="_blank" rel="noopener noreferrer" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dDrama">Survival Drama</span><span aria-hidden="true">↗</span></a>
-                    <a href="https://www.freebuilder.net/labs/sales/" target="_blank" rel="noopener noreferrer" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dSales">Sales Academy</span><span aria-hidden="true">↗</span></a>
-                    <a href="/tools/discovery" class="demo-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/25 hover:border-white/60 hover:bg-white hover:text-ink text-[11px] font-mono transition-colors"><span data-i18n="dDiscovery">Discovery Duet</span><span aria-hidden="true">↗</span></a>
-                  </div>
-                </div>
-                <ul class="md:col-span-5 space-y-2.5 text-[12px] font-mono text-white/70 md:border-l md:border-white/10 md:pl-6">
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s4f1">Custom branching games & simulations</span></li>
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s4f2">AI-assisted video & voice production</span></li>
-                  <li class="flex gap-2"><span class="text-accent">→</span><span data-i18n="s4f3">Discussion guides so teams watch and play together</span></li>
-                </ul>
-              </div>
-            </div></div>
-          </div>
+        <div class="svc-grid">
+          <a class="svc reveal" href="/tools/listen">
+            <span class="svc-n">01</span>
+            <span class="svc-t" data-i18n="s1Title">Human Skills Studio</span>
+            <span class="svc-b" data-i18n="s1Badge">Listening · empathy · repair · perspective</span>
+            <span class="svc-d" data-i18n="s1Desc">Programmes for the capabilities AI can't replace. Short, playful setups pair colleagues up — then the phone goes down and the real conversation starts.</span>
+            <span class="svc-best" data-i18n="s1Best">Best for teams working across functions, cultures — or tension.</span>
+            <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dListen">Listening Duet</b> ↗</span>
+          </a>
+          <a class="svc reveal" href="/tools/diagnose">
+            <span class="svc-n">02</span>
+            <span class="svc-t" data-i18n="s2Title">Strategic L&amp;D Advisory</span>
+            <span class="svc-b" data-i18n="s2Badge">Strategy &amp; audit</span>
+            <span class="svc-d" data-i18n="s2Desc">Curriculum architecture, learning audits and tech-stack choices — with teach-back built into every programme, so knowledge spreads person to person instead of sitting in an LMS.</span>
+            <span class="svc-best" data-i18n="s2Best">Best for CHROs and L&D leads rebuilding from the ground up.</span>
+            <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dDiagnose">Training or not?</b> ↗</span>
+          </a>
+          <a class="svc reveal" href="/labs/coach/">
+            <span class="svc-n">03</span>
+            <span class="svc-t" data-i18n="s3Title">Executive &amp; Managerial Coaching</span>
+            <span class="svc-b" data-i18n="s3Badge">Leadership behaviour</span>
+            <span class="svc-d" data-i18n="s3Desc">One-to-one and cohort coaching grounded in applied neuroscience and deliberate practice. AI rehearsal is only the warm-up — the goal is the real conversation with your team.</span>
+            <span class="svc-best" data-i18n="s3Best">Best for new managers, leadership pipelines and teams in transition.</span>
+            <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dCoach">Coaching Co-Pilot</b> ↗</span>
+          </a>
+          <a class="svc reveal" href="/tools/design/">
+            <span class="svc-n">04</span>
+            <span class="svc-t" data-i18n="s4Title">Simulations &amp; Story-led Media</span>
+            <span class="svc-b" data-i18n="s4Badge">Games · drama · onboarding</span>
+            <span class="svc-d" data-i18n="s4Desc">Games, branching mysteries and workplace dramas written around your company's own friction points — designed to be played and watched together, and to end with something to try with a colleague.</span>
+            <span class="svc-best" data-i18n="s4Best">Best for onboarding, innovation sprints and sales teams.</span>
+            <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dOdyssey">Design Thinking Odyssey</b> ↗</span>
+          </a>
         </div>
+        <a href="/labs/common-ground/" class="svc-lab reveal">
+          <span class="flex flex-wrap items-center gap-2 text-[10px] font-mono uppercase tracking-[0.14em] text-white/45"><span class="px-2 py-0.5 rounded-full bg-accent text-white" data-i18n="newTag">New</span><span data-i18n="cgKicker">Lab · for a team</span></span>
+          <span class="block font-syne text-lg font-bold tracking-tight" data-i18n="cgTitle">Common Ground</span>
+          <span class="block text-sm text-white/70 leading-relaxed" data-i18n="cgShort">Your team builds a little town together, then takes one honest question to its next meeting.</span>
+          <span class="inline-block text-[11px] font-mono text-white underline decoration-accent decoration-2 underline-offset-4"><span data-i18n="cgGo">Build your team's town</span>&nbsp;<span aria-hidden="true">↗</span></span>
+        </a>
         <a href="https://www.wei-meng.org/portfolio" target="_blank" rel="noopener noreferrer" class="reveal mt-10 inline-block text-sm font-mono text-white underline decoration-accent decoration-2 underline-offset-4 hover:text-accent transition-colors">
-          <span data-i18n="workAll">See the full portfolio, with the stories behind each one</span>&nbsp;<span aria-hidden="true">→</span>
+          <span data-i18n="workAll">See all the work, with the story behind each one</span>&nbsp;<span aria-hidden="true">→</span>
         </a>
       </div>
     </section>
 
     <div class="max-w-5xl mx-auto px-4 sm:px-8">
 
-      <!-- 05 CONTACT -->
+      <!-- 04 CONTACT -->
       <section id="contact" class="scroll-mt-20 py-16 sm:py-24 border-t border-line">
         <div class="reveal grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="contactLabel">05 / Start a project</span></div>
+          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="contactLabel">04 / Start a project</span></div>
           <div class="md:col-span-8 space-y-8">
             <div class="space-y-3">
               <h2 class="font-syne text-3xl sm:text-5xl font-bold tracking-tight leading-[1.1]" data-i18n-html="contactTitle">Let's get your people <span class="accent-word">talking</span>.</h2>
@@ -498,49 +395,30 @@ img{filter:none}
   <footer class="fbf" data-fbf-root><div class="fbf-in"><span>© <span id="current-year">2026</span> FREE//BUILDER L&amp;D Solutions</span><nav aria-label="Footer"><a href="/privacy/" data-fbf="privacy">Privacy</a><a href="https://www.wei-meng.org/" data-fbf="by">A practice by Wei</a><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai">AI</a> &amp; <a href="https://www.wei-meng.org/after-hours/" class="fbf-heart">♥</a></span></nav></div></footer>
 
   <script>
-    /* Selected work — one list, rendered per language */
-    const WORK = {
-      a: [
-        { k: 'wListen', t: 'wListenT', href: '/tools/listen', live: true },
-        { k: 'wSwap', t: 'wSwapT', href: 'https://www.freebuilder.net/labs/cq/', live: true },
-        { k: 'wCoach', t: 'wCoachT', href: 'https://www.freebuilder.net/labs/coach/', live: true },
-        { k: 'wRoom', t: 'wRoomT', href: '/tools/room', live: false }
-      ],
-      b: [
-        { k: 'wOdyssey', t: 'wOdysseyT', href: 'https://www.freebuilder.net/tools/design/', live: true },
-        { k: 'wOnboard', t: 'wOnboardT', href: '/labs/launchpad/', live: true },
-        { k: 'wDrama', t: 'wDramaT', href: 'https://www.wei-meng.org/portfolio', live: true },
-        { k: 'wSales', t: 'wSalesT', href: '/tools/discovery', live: true }
-      ]
-    };
-
     const translations = {
       en: {
         pageTitle: "FREE//BUILDER — Better work starts between people",
         brandSub: "L&D Solutions",
-        navBelief: "Belief", navServices: "Services", navTools: "Free tools", navWork: "Work", navAbout: "About", navCta: "Let's talk",
+        navBelief: "Belief", navServices: "Services", navTools: "Free tools", navWork: "Portfolio ↗", navAbout: "About", navCta: "Let's talk",
         heroKicker: "Independent L&D practice",
         heroTitle: 'Better work starts <span class="accent-word">between</span> people.',
         heroDesc: "We design learning that helps colleagues understand one another, get through difficult moments and find better ways of working together. Short, hands-on practice in listening, feedback and trust that ends in real conversations.",
         heroCta1: "Book a discovery call", heroCta2: "See the services",
         stripLabel: "Built for", strip1: "Global consultancies", strip2: "Hyper-growth tech", strip3: "Multinational teams",
-        probLabel: "01 / The problem",
-        probTitle: 'The mandatory-training <span class="accent-word">sigh</span> is expensive.',
-        probDesc: "Every hour spent clicking through a deck nobody remembers is an hour of salary, attention and goodwill gone. And as AI takes over routine work, the skills that matter most — reading a room, repairing trust, really listening — are exactly the ones a slide can't teach.",
-        belLabel: "02 / What we believe",
+        belLabel: "01 / What we believe",
         belTitle: 'People are the <span class="accent-word">point</span>.',
         belDesc: "AI and web apps are tools. What matters is what people do with each other afterwards.",
         b1t: "Learn by doing — and have fun", b1d: "If you can't try it, you haven't learned it. Play lowers the stakes so people dare to practise.",
         b2t: "Human capabilities first", b2d: "In the age of AI, empathy, curiosity and trust are the differentiators. That's where we put the practice time.",
         b3t: "Learning is mutual", b3d: "Everyone teaches, everyone learns. No trainees — only partners. Sharing is caring.",
         b4t: "People are the end, never the means", b4d: "No leaderboards ranking colleagues, no surveillance analytics. Success is a sincere conversation that wouldn't have happened otherwise.",
-        appLabel: "03 / Approach", appTitle: "Diagnose. Build. Pass it on.",
+        appLabel: "02 / Approach", appTitle: "Diagnose. Build. Pass it on.",
         app1Title: "Diagnose", app1Desc: "Listen first. A request for a “communication workshop” is often a psychological-safety or role-clarity problem in disguise.",
         app2Title: "Build", app2Desc: "Prototype fast and test with real people. Every tool is designed to hand off — the screen sets things up, colleagues do the rest.",
         app3Title: "Pass it on", app3Desc: "Every programme ends with people teaching what they learned to someone else. It's the best evidence of learning — measured alongside Kirkpatrick L1–L4.",
-        svcLabel: "04 / Services",
+        svcLabel: "03 / Services",
         svcTitle: 'Four ways to <span class="accent-word">work</span> together.',
-        svcDesc: "Engage one, or combine them into a full programme. Each comes with something you can try today.",
+        svcDesc: "Engage one, or combine them into a full programme. Each comes with something you can try today.", tryLbl: "Try it in two minutes:", cgShort: "Your team builds a little town together, then takes one honest question to its next meeting.",
         newTag: "New", soon: "soon",
         s1Title: "Human Skills Studio", s1Badge: "Listening · empathy · repair · perspective",
         s1Desc: "Programmes for the capabilities AI can't replace. Short, playful setups pair colleagues up — then the phone goes down and the real conversation starts.",
@@ -582,12 +460,12 @@ img{filter:none}
         wOnboard: "Launchpad × KILL//SWITCH", wOnboardT: "Graduate onboarding day",
         wDrama: "Corporate Survival Drama", wDramaT: "Watch-together series",
         wSales: "Discovery Duet × Sales Academy", wSalesT: "Client discovery · pairs",
-        workAll: "See the full portfolio, with the stories behind each one",
+        workAll: "See all the work, with the story behind each one",
         cgKicker: "Lab · for a team", cgTitle: "Common Ground", cgDesc: "Most teams never say out loud how they actually work together. Here everyone moves into a little town and puts down the ways the team listens, gives feedback and trusts each other, each with one honest question. Then it prints as a sheet for your next meeting, and the real conversation starts.", cgGo: "Build your team's town",
         aboutLabel: "07 / Behind the practice", aboutTitle: "Hi, I'm Wei.",
         aboutDesc: "FREE//BUILDER is the independent practice of Wei Meng — an L&D architect and corporate coach with 8+ years in enterprise tech. I build playful tools, but I care more about what happens after them: two colleagues who finally hear each other, a team that teaches itself. The mission is simple: make the mandatory-training sigh extinct",
         aboutLink: "More about Wei",
-        contactLabel: "05 / Start a project",
+        contactLabel: "04 / Start a project",
         contactTitle: 'Let\'s get your people <span class="accent-word">talking</span>.',
         contactDesc: "Tell me where it hurts. I read and reply to every message personally.",
         fName: "Name", fEmail: "Work email", fCompany: "Company", fHeadache: "What should people be doing differently with each other?",
@@ -602,29 +480,26 @@ img{filter:none}
       zh: {
         pageTitle: "FREE//BUILDER — 更好的工作，从人与人之间开始",
         brandSub: "学习与发展解决方案",
-        navBelief: "理念", navServices: "服务", navTools: "免费工具", navWork: "案例", navAbout: "关于", navCta: "聊聊",
+        navBelief: "理念", navServices: "服务", navTools: "免费工具", navWork: "作品集 ↗", navAbout: "关于", navCta: "聊聊",
         heroKicker: "独立 L&D 咨询工作室",
         heroTitle: '更好的工作，<br class="hidden sm:inline">从人与人<span class="accent-word">之间</span>开始。',
         heroDesc: "我们设计的学习，帮助同事理解彼此、走过艰难的时刻、找到更好的共事方式。短小、上手即练的倾听、反馈与信任练习，最终落在真实的对话里。",
         heroCta1: "预约初步沟通", heroCta2: "看看服务",
         stripLabel: "服务对象", strip1: "全球咨询公司", strip2: "高速成长的科技企业", strip3: "跨国团队",
-        probLabel: "01 / 问题",
-        probTitle: '“又要培训”的那声<span class="accent-word">叹气</span>，代价不菲。',
-        probDesc: "员工每花一小时点完一份没人记得的课件，就是一小时的薪资、注意力和好感被白白消耗。而当 AI 接手日常工作，最重要的能力——察言观色、修复信任、真正倾听——恰恰是 PPT 教不会的。",
-        belLabel: "02 / 我们的理念",
+        belLabel: "01 / 我们的理念",
         belTitle: '人，才是<span class="accent-word">重点</span>。',
         belDesc: "AI 和网页应用都只是工具。真正重要的，是人们之后彼此之间发生了什么。",
         b1t: "在做中学，玩得开心", b1d: "没上手试过，就不算学会。游戏降低了风险，人们才敢去练。",
         b2t: "人的能力优先", b2d: "在 AI 时代，共情、好奇和信任才是差异所在。我们把练习时间花在这里。",
         b3t: "学习是相互的", b3d: "人人都教，人人都学。没有学员，只有伙伴。分享即关怀。",
         b4t: "人是目的，而非手段", b4d: "不给同事排行，不做监控式分析。成功，是一场原本不会发生的真诚对话。",
-        appLabel: "03 / 方法", appTitle: "诊断。构建。传下去。",
+        appLabel: "02 / 方法", appTitle: "诊断。构建。传下去。",
         app1Title: "诊断", app1Desc: "先倾听。一句“办个沟通培训”，背后往往是心理安全感或角色不清的问题。",
         app2Title: "构建", app2Desc: "快速做原型，和真实的人一起测试。每个工具都为“交接”而设计——屏幕负责开场，同事负责接下去。",
         app3Title: "传下去", app3Desc: "每个项目都以“把学到的教给另一个人”收尾。这是最好的学习证据——与柯氏 L1–L4 评估一并衡量。",
-        svcLabel: "04 / 服务",
+        svcLabel: "03 / 服务",
         svcTitle: '四种<span class="accent-word">合作</span>方式。',
-        svcDesc: "可以单独选择，也可以组合成完整项目。每一种都附带今天就能试的东西。",
+        svcDesc: "可以单独选择，也可以组合成完整项目。每一种都附带今天就能试的东西。", tryLbl: "两分钟试一试：", cgShort: "团队一起盖一座小镇，然后把一个真诚的问题带到下次会议。",
         newTag: "新", soon: "即将",
         s1Title: "人的能力工作室", s1Badge: "倾听 · 共情 · 修复 · 视角",
         s1Desc: "为 AI 无法替代的能力设计的项目。简短有趣的引导把同事两两配对——然后放下手机，真正的对话开始。",
@@ -671,7 +546,7 @@ img{filter:none}
         aboutLabel: "07 / 工作室背后", aboutTitle: "你好，我是孟玮。",
         aboutDesc: "FREE//BUILDER 是孟玮的独立咨询工作室。我是一名学习体验架构师与企业教练，在企业科技领域深耕 8 年以上。我做好玩的工具，但我更在乎工具之后发生的事：两位同事终于听见了彼此，一个团队开始互相教学。使命很简单：让“又要培训”的叹气声彻底消失",
         aboutLink: "了解更多关于孟玮",
-        contactLabel: "05 / 开启项目",
+        contactLabel: "04 / 开启项目",
         contactTitle: '让你的团队<span class="accent-word">聊起来</span>。',
         contactDesc: "告诉我哪里最痛。每条留言我都会亲自阅读和回复。",
         fName: "姓名", fEmail: "工作邮箱", fCompany: "公司", fHeadache: "你希望同事之间的相处有什么不同？",
@@ -686,29 +561,26 @@ img{filter:none}
       es: {
         pageTitle: "FREE//BUILDER — El buen trabajo empieza entre personas",
         brandSub: "Soluciones de L&D",
-        navBelief: "Creencias", navServices: "Servicios", navTools: "Herramientas", navWork: "Proyectos", navAbout: "Nosotros", navCta: "Hablemos",
+        navBelief: "Creencias", navServices: "Servicios", navTools: "Herramientas", navWork: "Portafolio ↗", navAbout: "Nosotros", navCta: "Hablemos",
         heroKicker: "Práctica independiente de L&D",
         heroTitle: 'El buen trabajo empieza <span class="accent-word">entre</span> personas.',
         heroDesc: "Diseñamos aprendizaje que ayuda a los colegas a entenderse, atravesar momentos difíciles y encontrar mejores formas de trabajar juntos. Práctica breve de escucha, feedback y confianza que termina en conversaciones reales.",
         heroCta1: "Agenda una llamada", heroCta2: "Ver los servicios",
         stripLabel: "Para", strip1: "Consultoras globales", strip2: "Tecnológicas de alto crecimiento", strip3: "Equipos multinacionales",
-        probLabel: "01 / El problema",
-        probTitle: 'El <span class="accent-word">suspiro</span> de la capacitación obligatoria sale caro.',
-        probDesc: "Cada hora frente a una presentación que nadie recuerda es una hora de salario, atención y buena voluntad perdida. Y a medida que la IA asume el trabajo rutinario, las habilidades que más importan —leer una sala, reparar la confianza, escuchar de verdad— son justo las que una diapositiva no enseña.",
-        belLabel: "02 / En qué creemos",
+        belLabel: "01 / En qué creemos",
         belTitle: 'Las personas son lo <span class="accent-word">importante</span>.',
         belDesc: "La IA y las apps son herramientas. Lo que importa es lo que las personas hacen entre sí después.",
         b1t: "Aprender haciendo, y disfrutarlo", b1d: "Si no puedes probarlo, no lo has aprendido. El juego baja el riesgo para que la gente se atreva a practicar.",
         b2t: "Primero las capacidades humanas", b2d: "En la era de la IA, la empatía, la curiosidad y la confianza marcan la diferencia. Ahí ponemos el tiempo de práctica.",
         b3t: "Aprender es mutuo", b3d: "Todos enseñan, todos aprenden. No hay alumnos, solo compañeros. Compartir es cuidar.",
         b4t: "Las personas son el fin, nunca el medio", b4d: "Sin rankings entre colegas, sin analítica de vigilancia. El éxito es una conversación sincera que no habría ocurrido de otra forma.",
-        appLabel: "03 / Enfoque", appTitle: "Diagnosticar. Construir. Transmitir.",
+        appLabel: "02 / Enfoque", appTitle: "Diagnosticar. Construir. Transmitir.",
         app1Title: "Diagnosticar", app1Desc: "Primero, escuchar. Un pedido de “taller de comunicación” suele ser un problema de seguridad psicológica o de claridad de roles disfrazado.",
         app2Title: "Construir", app2Desc: "Prototipar rápido y probar con personas reales. Cada herramienta está pensada para dar el relevo: la pantalla prepara, los colegas hacen el resto.",
         app3Title: "Transmitir", app3Desc: "Cada programa termina con las personas enseñando lo aprendido a otra persona. Es la mejor evidencia de aprendizaje, medida junto a Kirkpatrick N1–N4.",
-        svcLabel: "04 / Servicios",
+        svcLabel: "03 / Servicios",
         svcTitle: 'Cuatro formas de <span class="accent-word">trabajar</span> juntos.',
-        svcDesc: "Contrata uno o combínalos en un programa completo. Cada uno incluye algo que puedes probar hoy.",
+        svcDesc: "Contrata uno o combínalos en un programa completo. Cada uno incluye algo que puedes probar hoy.", tryLbl: "Pruébalo en dos minutos:", cgShort: "Tu equipo construye un pueblito y se lleva una pregunta sincera a su próxima reunión.",
         newTag: "Nuevo", soon: "pronto",
         s1Title: "Estudio de Habilidades Humanas", s1Badge: "Escucha · empatía · reparación · perspectiva",
         s1Desc: "Programas para las capacidades que la IA no puede reemplazar. Dinámicas breves y lúdicas emparejan a colegas; luego el móvil se guarda y empieza la conversación real.",
@@ -755,7 +627,7 @@ img{filter:none}
         aboutLabel: "07 / Detrás de la práctica", aboutTitle: "Hola, soy Wei.",
         aboutDesc: "FREE//BUILDER es la práctica independiente de Wei Meng, arquitecto de L&D y coach corporativo con más de 8 años en tecnología empresarial. Creo herramientas lúdicas, pero me importa más lo que pasa después: dos colegas que por fin se escuchan, un equipo que aprende enseñándose. La misión es sencilla: extinguir el suspiro de la capacitación obligatoria",
         aboutLink: "Más sobre Wei",
-        contactLabel: "05 / Iniciar un proyecto",
+        contactLabel: "04 / Iniciar un proyecto",
         contactTitle: 'Hagamos que tu gente <span class="accent-word">converse</span>.',
         contactDesc: "Cuéntame dónde duele. Leo y respondo cada mensaje personalmente.",
         fName: "Nombre", fEmail: "Email de trabajo", fCompany: "Empresa", fHeadache: "¿Qué deberían hacer distinto las personas entre sí?",
@@ -769,29 +641,26 @@ img{filter:none}
       }, "zh-Hant": {
         pageTitle: "FREE//BUILDER — 更好的工作，從人與人之間開始",
         brandSub: "學習與發展解決方案",
-        navBelief: "理念", navServices: "服務", navTools: "免費工具", navWork: "案例", navAbout: "關於", navCta: "聊聊",
+        navBelief: "理念", navServices: "服務", navTools: "免費工具", navWork: "作品集 ↗", navAbout: "關於", navCta: "聊聊",
         heroKicker: "獨立 L&D 諮詢工作室",
         heroTitle: "更好的工作，<br class=\"hidden sm:inline\">從人與人<span class=\"accent-word\">之間</span>開始。",
         heroDesc: "我們設計的學習，幫助同事理解彼此、走過艱難的時刻、找到更好的共事方式。短小、上手即練的傾聽、反饋與信任練習，最終落在真實的對話裡。",
         heroCta1: "預約初步溝通", heroCta2: "看看服務",
         stripLabel: "服務物件", strip1: "全球諮詢公司", strip2: "高速成長的科技企業", strip3: "跨國團隊",
-        probLabel: "01 / 問題",
-        probTitle: "“又要培訓”的那聲<span class=\"accent-word\">嘆氣</span>，代價不菲。",
-        probDesc: "員工每花一小時點完一份沒人記得的課件，就是一小時的薪資、注意力和好感被白白消耗。而當 AI 接手日常工作，最重要的能力——察言觀色、修復信任、真正傾聽——恰恰是 PPT 教不會的。",
-        belLabel: "02 / 我們的理念",
+        belLabel: "01 / 我們的理念",
         belTitle: "人，才是<span class=\"accent-word\">重點</span>。",
         belDesc: "AI 和網頁應用都只是工具。真正重要的，是人們之後彼此之間發生了什麼。",
         b1t: "在做中學，玩得開心", b1d: "沒上手試過，就不算學會。遊戲降低了風險，人們才敢去練。",
         b2t: "人的能力優先", b2d: "在 AI 時代，共情、好奇和信任才是差異所在。我們把練習時間花在這裡。",
         b3t: "學習是相互的", b3d: "人人都教，人人都學。沒有學員，只有夥伴。分享即關懷。",
         b4t: "人是目的，而非手段", b4d: "不給同事排行，不做監控式分析。成功，是一場原本不會發生的真誠對話。",
-        appLabel: "03 / 方法", appTitle: "診斷。構建。傳下去。",
+        appLabel: "02 / 方法", appTitle: "診斷。構建。傳下去。",
         app1Title: "診斷", app1Desc: "先傾聽。一句“辦個溝通培訓”，背後往往是心理安全感或角色不清的問題。",
         app2Title: "構建", app2Desc: "快速做原型，和真實的人一起測試。每個工具都為“交接”而設計——螢幕負責開場，同事負責接下去。",
         app3Title: "傳下去", app3Desc: "每個專案都以“把學到的教給另一個人”收尾。這是最好的學習證據——與柯氏 L1–L4 評估一併衡量。",
-        svcLabel: "04 / 服務",
+        svcLabel: "03 / 服務",
         svcTitle: "四種<span class=\"accent-word\">合作</span>方式。",
-        svcDesc: "可以單獨選擇，也可以組合成完整專案。每一種都附帶今天就能試的東西。",
+        svcDesc: "可以單獨選擇，也可以組合成完整專案。每一種都附帶今天就能試的東西。", tryLbl: "兩分鐘試一試：", cgShort: "團隊一起蓋一座小鎮，然後把一個真誠的問題帶到下次會議。",
         newTag: "新", soon: "即將",
         s1Title: "人的能力工作室", s1Badge: "傾聽 · 共情 · 修復 · 視角",
         s1Desc: "為 AI 無法替代的能力設計的專案。簡短有趣的引導把同事兩兩配對——然後放下手機，真正的對話開始。",
@@ -838,7 +707,7 @@ img{filter:none}
         aboutLabel: "07 / 工作室背後", aboutTitle: "你好，我是孟瑋。",
         aboutDesc: "FREE//BUILDER 是孟瑋的獨立諮詢工作室。我是一名學習體驗架構師與企業教練，在企業科技領域深耕 8 年以上。我做好玩的工具，但我更在乎工具之後發生的事：兩位同事終於聽見了彼此，一個團隊開始互相教學。使命很簡單：讓“又要培訓”的嘆氣聲徹底消失",
         aboutLink: "瞭解更多關於孟瑋",
-        contactLabel: "05 / 開啟專案",
+        contactLabel: "04 / 開啟專案",
         contactTitle: "讓你的團隊<span class=\"accent-word\">聊起來</span>。",
         contactDesc: "告訴我哪裡最痛。每條留言我都會親自閱讀和回覆。",
         fName: "姓名", fEmail: "工作郵箱", fCompany: "公司", fHeadache: "你希望同事之間的相處有什麼不同？",
@@ -852,29 +721,26 @@ img{filter:none}
       }, "ca": {
         pageTitle: "FREE//BUILDER — La bona feina comença entre persones",
         brandSub: "Solucions de L&D",
-        navBelief: "Creences", navServices: "Serveis", navTools: "Eines", navWork: "Projectes", navAbout: "Nosaltres", navCta: "Parlem-ne",
+        navBelief: "Creences", navServices: "Serveis", navTools: "Eines", navWork: "Portafoli ↗", navAbout: "Nosaltres", navCta: "Parlem-ne",
         heroKicker: "Pràctica independent de L&D",
         heroTitle: "La bona feina comença <span class=\"accent-word\">entre</span> persones.",
         heroDesc: "Dissenyem aprenentatge que ajuda els companys a entendre's, travessar moments difícils i trobar maneres millors de treballar junts. Pràctica breu d'escolta, feedback i confiança que acaba en converses reals.",
         heroCta1: "Reserva una trucada", heroCta2: "Veure els serveis",
         stripLabel: "Per a", strip1: "Consultores globals", strip2: "Tecnològiques d'alt creixement", strip3: "Equips multinacionals",
-        probLabel: "01 / El problema",
-        probTitle: "El <span class=\"accent-word\">sospir</span> de la formació obligatòria surt car.",
-        probDesc: "Cada hora davant d'una presentació que ningú no recorda és una hora de sou, atenció i bona voluntat perduda. I a mesura que la IA assumeix la feina rutinària, les habilitats que més importen —llegir una sala, reparar la confiança, escoltar de veritat— són justament les que una diapositiva no ensenya.",
-        belLabel: "02 / En què creiem",
+        belLabel: "01 / En qué creemos",
         belTitle: "Les persones són el que <span class=\"accent-word\">importa</span>.",
         belDesc: "La IA i les apps són eines. El que importa és el que les persones fan entre elles després.",
         b1t: "Aprendre fent, i gaudir-ne", b1d: "Si no ho pots provar, no ho has après. El joc abaixa el risc perquè la gent s'atreveixi a practicar.",
         b2t: "Primer les capacitats humanes", b2d: "En l'era de la IA, l'empatia, la curiositat i la confiança marquen la diferència. Hi posem el temps de pràctica.",
         b3t: "Aprendre és mutu", b3d: "Tothom ensenya, tothom aprèn. No hi ha alumnes, només companys. Compartir és cuidar.",
         b4t: "Les persones són el fi, mai el mitjà", b4d: "Sense rànquings entre col·legues, sense analítica de vigilància. L'èxit és una conversa sincera que no s'hauria produït d'una altra manera.",
-        appLabel: "03 / Enfocament", appTitle: "Diagnosticar. Construir. Transmetre.",
+        appLabel: "02 / Enfoque", appTitle: "Diagnosticar. Construir. Transmetre.",
         app1Title: "Diagnosticar", app1Desc: "Primer, escoltar. Una petició de “taller de comunicació” sol ser un problema de seguretat psicològica o de claredat de rols disfressat.",
         app2Title: "Construir", app2Desc: "Prototipar de pressa i provar amb persones reals. Cada eina està pensada per passar el relleu: la pantalla prepara, els col·legues fan la resta.",
         app3Title: "Transmetre", app3Desc: "Cada programa acaba amb les persones ensenyant el que han après a una altra persona. És la millor evidència d'aprenentatge, mesurada al costat de Kirkpatrick N1–N4.",
-        svcLabel: "04 / Serveis",
+        svcLabel: "03 / Servicios",
         svcTitle: "Quatre maneres de <span class=\"accent-word\">treballar</span> junts.",
-        svcDesc: "Contracta'n un o combina'ls en un programa complet. Cadascun inclou alguna cosa que pots provar avui.",
+        svcDesc: "Contracta'n un o combina'ls en un programa complet. Cadascun inclou alguna cosa que pots provar avui.", tryLbl: "Prova-ho en dos minuts:", cgShort: "El teu equip construeix un poblet i s'endú una pregunta sincera a la seva propera reunió.",
         newTag: "Nou", soon: "aviat",
         s1Title: "Estudi d'Habilitats Humanes", s1Badge: "Escolta · empatia · reparació · perspectiva",
         s1Desc: "Programes per a les capacitats que la IA no pot substituir. Dinàmiques breus i lúdiques aparellen col·legues; després el mòbil es guarda i comença la conversa real.",
@@ -921,7 +787,7 @@ img{filter:none}
         aboutLabel: "07 / Darrere de la pràctica", aboutTitle: "Hola, soc la Wei.",
         aboutDesc: "FREE//BUILDER és la pràctica independent de Wei Meng, arquitecte de L&D i coach corporatiu amb més de 8 anys en tecnologia empresarial. Creo eines lúdiques, però m'importa més el que passa després: dos col·legues que per fi s'escolten, un equip que aprèn ensenyant-se. La missió és senzilla: extingir el sospir de la formació obligatòria",
         aboutLink: "Més sobre la Wei",
-        contactLabel: "05 / Iniciar un projecte",
+        contactLabel: "04 / Iniciar un proyecto",
         contactTitle: "Fem que la teva gent <span class=\"accent-word\">conversi</span>.",
         contactDesc: "Explica'm on fa mal. Llegeixo i responc cada missatge personalment.",
         fName: "Nom", fEmail: "Correu de feina", fCompany: "Empresa", fHeadache: "Què haurien de fer diferent les persones entre elles?",
@@ -941,28 +807,6 @@ img{filter:none}
     const t = () => translations[currentLang];
     const $ = id => document.getElementById(id);
 
-    /* ---------- Work rows ---------- */
-    function renderWork() {
-      [['a', 'rows-a'], ['b', 'rows-b']].forEach(([g, id], gi) => {
-        const box = $(id); if (!box) return; box.innerHTML = '';
-        WORK[g].forEach((w, i) => {
-          const a = document.createElement('a');
-          a.href = w.href;
-          if (/^https?:/.test(w.href)) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
-          a.className = 'work-row group grid grid-cols-[2rem_1fr_auto] sm:grid-cols-[3rem_1fr_13rem_4.5rem] items-center gap-3 sm:gap-4 py-5 border-b border-line hover:bg-white -mx-3 px-3 rounded-xl transition-colors';
-          const n = document.createElement('span'); n.className = 'font-mono text-[11px] text-muted group-hover:text-accent transition-colors'; n.textContent = String(gi * 4 + i + 1).padStart(2, '0');
-          const title = document.createElement('span'); title.className = 'font-syne text-base sm:text-xl font-bold tracking-tight'; title.textContent = t()[w.k];
-          const tag = document.createElement('span'); tag.className = 'hidden sm:block text-[11px] font-mono uppercase tracking-[0.12em] text-muted'; tag.textContent = t()[w.t];
-          const st = document.createElement('span');
-          st.className = 'inline-flex items-center justify-end gap-1.5 text-[10px] font-mono uppercase tracking-[0.12em] ' + (w.live ? 'text-emerald-700' : 'text-muted');
-          st.innerHTML = w.live ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>' : '<span class="w-1.5 h-1.5 rounded-full border border-ink/30"></span>';
-          st.append(document.createTextNode(w.live ? t().live : t().inWorkshop));
-          a.append(n, title, tag, st);
-          box.appendChild(a);
-        });
-      });
-    }
-
     /* ---------- i18n ---------- */
     function cycleLanguage() { setLanguage(supportedLangs[(supportedLangs.indexOf(currentLang) + 1) % supportedLangs.length]); }
     function setLanguage(lang) {
@@ -974,7 +818,6 @@ img{filter:none}
       document.querySelectorAll('[data-i18n]').forEach(el => { const v = t()[el.dataset.i18n]; if (v) el.textContent = v; });
       document.querySelectorAll('[data-i18n-html]').forEach(el => { const v = t()[el.dataset.i18nHtml]; if (v) el.innerHTML = v; });
       document.querySelectorAll('[data-i18n-ph]').forEach(el => { const v = t()[el.dataset.i18nPh]; if (v) el.placeholder = v; });
-      renderWork();
       try { localStorage.setItem('wm_preferred_lang', lang); localStorage.setItem('wm_cases_lang', lang); } catch (e) {}
     }
 
@@ -988,15 +831,6 @@ img{filter:none}
       toastTimer = setTimeout(() => el.classList.add('opacity-0', 'translate-y-3'), 3200);
     }
     function synapse() { showToast(t().toastSynapse); }
-
-    /* ---------- Accordion ---------- */
-    function toggleAcc(i) {
-      document.querySelectorAll('.acc-item').forEach((item, idx) => {
-        const open = idx === i && !item.classList.contains('open');
-        item.classList.toggle('open', open);
-        item.querySelector('.acc-head').setAttribute('aria-expanded', String(open));
-      });
-    }
 
     /* ---------- Logo easter egg: triple-click ---------- */
     let clicks = 0, clickTimer;
