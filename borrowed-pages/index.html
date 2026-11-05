@@ -1,7 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=f6145f761a"></script>
+<<<<<<< Updated upstream
+<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=27bd3ece48"></script>
+=======
+<meta charset="utf-8">
+>>>>>>> Stashed changes
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Borrowed Pages · real books, lent by hand</title>
 <meta name="description" content="Real books, lent by hand between neighbours. Browse a house of books people actually own, ask for one, meet and hand it over. No account.">
@@ -238,6 +242,7 @@ details summary{cursor:pointer;color:var(--ink2);font-size:14px;padding:8px 0;mi
 .foot{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:center;padding:22px 0 calc(28px + env(safe-area-inset-bottom));border-top:1px solid var(--line);color:var(--ink2);font-size:14px}
 .foot a,.foot button{color:var(--ink2);background:none;border:0;padding:6px 2px;text-decoration:underline;text-underline-offset:3px;font-size:14px}
 .foot .ah{color:var(--accent)}
+.foot.fbf-k{gap:2px 0;padding-top:16px}.foot.fbf-k a{font-size:inherit;padding:3px 0;text-decoration:none}.foot.fbf-k .fbf-x a{text-decoration:underline}   /* the suite's one footer row sets the size (the owner, Nov 6) */
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));z-index:80;max-width:min(92vw,460px);transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:12px 18px;border-radius:14px;background:var(--ink);color:var(--bg);font:500 15px/1.4 var(--sans);box-shadow:0 12px 30px -10px rgba(0,0,0,.5);transition:.25s}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 .langm{position:absolute;right:0;top:calc(100% + 6px);display:grid;min-width:160px;padding:6px;border-radius:14px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);z-index:30}
@@ -279,7 +284,7 @@ details summary{cursor:pointer;color:var(--ink2);font-size:14px;padding:8px 0;mi
 </main>
 <footer class="foot wrap" id="foot">
   <a href="/nearby/" data-i="nearbyLink">Nearby</a>
-  <a class="ah" id="ahA" href="https://www.wei-meng.org/after-hours/" target="_blank" rel="noopener"><span aria-hidden="true">♥</span> <span data-i="ah">After hours</span></a>
+  <a class="ah" id="ahA" href="https://www.wei-meng.org/after-hours/" target="_blank" rel="noopener"><span data-i="ah">After hours</span> ↗</a>
 </footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

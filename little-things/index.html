@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=f6145f761a"></script>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=27bd3ece48"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Little Things</title>
 <meta name="description" content="Popo's jar of little offline things: one at a time, in her kitchen, for a fuller life away from the screen. Kept on your own device.">
@@ -1300,7 +1300,8 @@ function chrome() {
   $("appName").textContent = T(W.app); document.title = T(W.app);
   $("langLbl").textContent = SHORT[i]; $("langIco").innerHTML = icon("globe"); $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + NAMES[i]);
   $("jarHit").setAttribute("aria-label", T(W.look)); cv.setAttribute("aria-label", T(W.kitchen)); $("sheetClose").setAttribute("aria-label", T(W.close));
-  var _x = "<span>" + esc(T(syncOn() ? W.deviceSync : W.device)) + '</span><a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener">' + icon("heart") + " " + esc(T(W.ah)) + "</a>";
+  var _k = function (k, d) { return window.FBC && FBC.W && FBC.W[k] ? FBC.t(FBC.W[k]) : d; };   // the kit's short footnote words (the owner, Nov 6: one short line under the row)
+  var _x = "<span>" + esc(syncOn() ? _k("fDeviceSync", T(W.deviceSync)) : _k("fDevice", T(W.device))) + '</span><a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener">' + esc(_k("fAh", T(W.ah))) + "</a>";
   if (window.FBC && FBC.foot) FBC.foot($("foot"), { px: 1, extra: _x });   // the suite's one footer (the owner, Nov 5): [Wei Meng] © year · Your privacy · Made with AI & ♥ by [FREE//BUILDER]; this app's own things on the line under it
   else $("foot").innerHTML = _x;
 }
