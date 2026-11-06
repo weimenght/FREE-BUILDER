@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=aad6eedb37"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8ac27ab698" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=746b977e22"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=289fe5208f" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>The Plaza · Nearby</title>
 <meta name="description" content="The square in the middle of Nearby: a fountain, benches, pigeons. Toss a coin and make a wish; keep it to yourself or let it float for the town to read.">
@@ -113,6 +113,8 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     away: ["The coin sank, but the wish couldn't float just now. It stays with you.", "硬币沉下去了，但愿望这会儿漂不起来。它留在你心里。", "硬幣沉下去了，但願望這會兒漂不起來。它留在你心裡。", "La moneda se hundió, pero el deseo no pudo flotar ahora. Se queda contigo.", "La moneda s'ha enfonsat, però el desig no ha pogut surar ara. Es queda amb tu."],
     close: ["Close", "关闭", "關閉", "Cerrar", "Tancar"],
     bq: ["Flowers", "鲜花", "鮮花", "Flores", "Flors"],
+    jarGot: ["The flowers someone sent you today, in a jar of water on the stall.", "今天有人送你的花，插在花摊上的一罐清水里。", "今天有人送你的花，插在花攤上的一罐清水裡。", "Las flores que alguien te mandó hoy, en un tarro con agua sobre el puesto.", "Les flors que algú t'ha enviat avui, en un pot amb aigua damunt la parada."],
+    jarSent: ["The stems you sent today. The stall kept a few in a jar.", "你今天送出去的花。花摊留了几枝，插在罐子里。", "你今天送出去的花。花攤留了幾枝，插在罐子裡。", "Las flores que mandaste hoy. El puesto se quedó unas cuantas en un tarro.", "Les flors que has enviat avui. La parada se n'ha quedat unes quantes en un pot."],
     bqQ: ["A bouquet for someone", "给某人扎一束花", "給某人紮一束花", "Un ramo para alguien", "Un ram per a algú"],
     bqTo: ["For… (your sister, a friend, your grandmother)", "送给……（姐妹、朋友、外婆）", "送給……（姊妹、朋友、外婆）", "Para… (tu hermana, una amiga, tu abuela)", "Per a… (la teva germana, una amiga, la teva àvia)"],
     bqMsg: ["A line on the card", "卡片上写一句", "卡片上寫一句", "Una línea en la tarjeta", "Una línia a la targeta"],
@@ -221,8 +223,19 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     for (var i = 0; i < w; i += 4) R(x + i, y - 16, 4, 5, (i / 4) % 2 ? "#fbf3e2" : "#e06a8a"); R(x, y - 11, w, 1, "#8a2a4a");
     R(x, y + 2, w, 7, "#7a4e2e"); R(x, y + 2, w, 1, "#9a6a40");
     if (night) { R(x + 1, y - 2, w - 2, 5, "#5a6a8a"); R(x + 1, y + 2, w - 2, 1, "#4a5a7a"); if (lit) R(x + w / 2 - 1, y - 10, 2, 2, "#ffd68a"); }
-    else for (var b = 0; b < 5; b++) { var bx = x + 2 + b * 6; R(bx, y - 1, 4, 3, "#9aa0a8"); var C = ["#c8303a", "#f48fb8", "#fbf3e2", "#f4d04a", "#8a5ac8"][b]; R(bx, y - 4, 2, 2, C); R(bx + 2, y - 5, 2, 2, C); R(bx + 1, y - 3, 1, 2, "#4a8a44"); }
+    else for (var b = 0; b < (JAR ? 4 : 5); b++) { var bx = x + 2 + b * 6; R(bx, y - 1, 4, 3, "#9aa0a8"); var C = ["#c8303a", "#f48fb8", "#fbf3e2", "#f4d04a", "#8a5ac8"][b]; R(bx, y - 4, 2, 2, C); R(bx + 2, y - 5, 2, 2, C); R(bx + 1, y - 3, 1, 2, "#4a8a44"); }
+    if (JAR) jar(x + 26, y, night && !lit);
     if (snow) R(x - 1, y - 17, w + 2, 1, "#ffffff");
+  }
+  /* a jar of today's stems on the counter: the last bouquet this visitor opened or sent today, in A Few Stems or here (FBApps.traced, on the device only) */
+  var JAR = null, JARR = null, jarAt = 0;
+  function jarNow() { if (Date.now() - jarAt > 2000) { jarAt = Date.now(); try { JAR = window.FBApps && FBApps.traced ? FBApps.traced("flowers") : null; } catch (e) { JAR = null; } } return JAR; }
+  function jar(jx, y, dim) {
+    var fl = JAR.f.split("").map(Number).slice(0, 5), n = fl.length, glass = dim ? "#7a94a4" : "#c4e2ee", water = dim ? "#5a7a8e" : "#8cc4d8";
+    fl.forEach(function (k, i) { var hx = jx + 1 + Math.round((n === 1 ? 0 : (i / (n - 1) - .5)) * 6), hy = y - 7 + (i % 2) * 2;
+      R(hx, hy + 2, 1, y - 2 - (hy + 2), "#3f7a3a"); var C = FLC[k] || FLC[0]; R(hx - (hx > jx + 1 ? 0 : 1), hy, 2, 2, dim ? C[1] : C[0]); R(hx, hy, 1, 1, C[1]); });
+    R(jx, y - 2, 4, 4, glass); R(jx, y, 4, 2, water); R(jx, y - 3, 4, 1, dim ? "#9ab0bc" : "#eef8fb"); R(jx, y - 1, 4, 1, (WRAPS[JAR.w] || WRAPS[0])[0]);
+    JARR = { x: jx - 4, y: y - 9, w: 12, h: 12 };
   }
   /* two more carts: across the square a seasonal one (chestnuts roasting in autumn and winter, ice lollies in spring and summer),
      and beside the left lamp a crate of old books that points up the street to Borrowed Pages. Nothing to buy here, nothing kept:
@@ -279,7 +292,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     for (var ry = G.py + 2, row = 0; ry < PH; ry += 3 + Math.round((ry - G.py) / 30), row++) { var step = 6 + Math.round((ry - G.py) / 12); for (var rx = (row % 2) * (step / 2); rx < PW; rx += step) R(rx, ry, step - 2, 1, cob2); }
     if (wet) for (var pd = 0; pd < 6; pd++) R(hash(pd + 70) * PW, G.py + 6 + hash(pd + 71) * (PH - G.py - 8), 10 + hash(pd) * 14, 1, "rgba(200,220,255,.25)");
     season(night, lit, snow);
-    stall(night, lit, snow, wet);
+    jarNow(); JARR = null; stall(night, lit, snow, wet);
     carts(night, lit, snow);
     /* benches and lamps */
     [[.12, .86], [.88, .86]].forEach(function (b) { var x = PW * b[0] - 10, y = PH * b[1] - (PW / PH > 1.1 ? 0 : 6); R(x, y, 20, 2, "#6a4426"); R(x, y - 4, 20, 2, "#7a5432"); R(x + 2, y + 2, 2, 4, "#2a1a10"); R(x + 16, y + 2, 2, 4, "#2a1a10"); if (snow) R(x, y - 5, 20, 1, "#fbfbff"); });
@@ -390,6 +403,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
   function pickCoin(p) { var best = null, bd = 64; coinsAll().forEach(function (k) { if (k.kept) return; var d = (k.x - p.x) * (k.x - p.x) + (k.y - p.y) * (k.y - p.y) * 2; if (d < bd) { bd = d; best = k; } }); return best; }
   cv.addEventListener("pointerdown", function (e) {
     var p = at(e), k = pickCoin(p); if (k) { openCoin(k); return; }
+    if (JARR && JAR && p.x >= JARR.x && p.x <= JARR.x + JARR.w && p.y >= JARR.y && p.y <= JARR.y + JARR.h) { note(t(JAR.k === "sent" ? "jarSent" : "jarGot"), "🌼"); return; }
     if (p.x >= STALL.x - 2 && p.x <= STALL.x + STALL.w + 2 && p.y >= STALL.y - 4 && p.y <= STALL.y + STALL.h) { openBouquet(); return; }
     for (var ci = 0; ci < CARTS.length; ci++) { var C = CARTS[ci]; if (p.x >= C.x && p.x <= C.x + C.w && p.y >= C.y && p.y <= C.y + C.h) { openCart(C.k); return; } }
     birds.forEach(function (b) { if (!b.fly && !b.gone && b.px != null && Math.abs(b.px - p.x) < 24 && Math.abs(b.py - p.y) < 18) { b.fly = 1; b.fx = b.px; b.fy = b.py; b.vx = (b.px < p.x ? -1 : 1) * (.8 + Math.random() * .6); b.vy = -1.2; } });
@@ -514,6 +528,7 @@ canvas#cv{display:block;width:100vw;height:100vh;height:100dvh;image-rendering:p
     var from = ""; try { from = localStorage.getItem("fb_nick") || ""; } catch (e) {}
     var o = { f: BQ.f.join(""), w: BQ.w, t: $("bqTo").value.trim().slice(0, 24), m: $("bqMsg").value.trim().slice(0, 80), n: from.slice(0, 24) };
     var url = window.FBApps ? FBApps.link("flowers", "#bq=" + b64(o)) : location.origin + "/nearby/plaza/#bq=" + b64(o), text = t("shareT");
+    try { if (window.FBApps && FBApps.trace) FBApps.trace("flowers", o, "sent"); } catch (e) {}
     show(null);
     if (navigator.share) navigator.share({ title: t("h1"), text: text, url: url }).catch(function () {});
     else if (navigator.clipboard) navigator.clipboard.writeText(text + " " + url).then(function () { note(t("copied"), "↗"); }).catch(function () {});

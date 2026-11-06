@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=aad6eedb37"></script>
+<meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=746b977e22"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>A Few Stems · flowers for someone, in a link</title>
 <meta name="description" content="Tie a few stems for someone you love and send them in a link or a picture. Nothing is kept anywhere.">
@@ -429,6 +429,7 @@ h1.tagline em{font-style:italic;color:var(--rose)}
   function ready() { if (B.f.length) return true; hop($("stems")); toast(t("empty")); return false; }
   $("send").onclick = function () {
     if (!ready()) return; collect(); var url = linkFor(B), text = B.d ? t("shareTd", { d: dayName(B.d) }) : t("shareT");
+    try { if (window.FBApps && FBApps.trace) FBApps.trace("flowers", pack(B), "sent"); } catch (e) {}   /* the town's Plaza keeps today's stems in a jar on this device (nothing sent) */
     if (navigator.share) navigator.share({ title: t("name"), text: text, url: url }).catch(function () {});
     else if (navigator.clipboard) navigator.clipboard.writeText(text + " " + url).then(function () { toast(t("copied")); }, function () { prompt(text, url); });
     else prompt(text, url);

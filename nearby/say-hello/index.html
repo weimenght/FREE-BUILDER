@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=aad6eedb37"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=8ac27ab698" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=746b977e22"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=289fe5208f" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Say Hello · Nearby</title>
 <meta name="description" content="Write a postcard, seal it until the day you choose, and send it to a friend or hang it on the wall in Next Door.">
@@ -60,6 +60,7 @@ main{max-width:620px;margin:0 auto;padding:10px 16px 110px}
 .env::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom right,transparent 49.5%,rgba(0,0,0,.18) 50%,transparent 51%),linear-gradient(to bottom left,transparent 49.5%,rgba(0,0,0,.18) 50%,transparent 51%);background-size:100% 62%;background-repeat:no-repeat}
 .env .addr{position:absolute;left:16px;bottom:14px;color:#3a2a1c;font:600 26px/1.05 var(--hand)}
 .env .addr small{display:block;font:400 15px/1 var(--vt);opacity:.7}
+.env .when{position:absolute;left:14px;top:12px;padding:3px 8px 1px;border:3px solid #7a1e1e;color:#7a1e1e;font:400 19px/1 var(--vt);letter-spacing:.04em;transform:rotate(-4deg);background:rgba(255,246,226,.35)}
 .env .stamp{position:absolute;top:12px;right:12px;cursor:default}
 .seal{position:relative;z-index:1;width:84px;height:84px;border-radius:50%;border:4px solid #000;background:radial-gradient(circle at 35% 35%,#e05a46,#9c2418 70%);box-shadow:inset -4px -4px 0 rgba(0,0,0,.3),4px 4px 0 #000;font:400 30px/1 var(--px);color:#ffd9c9;display:grid;place-items:center;cursor:pointer}
 .seal:disabled{cursor:default;filter:saturate(.75)}
@@ -440,6 +441,7 @@ window.PCScenes = (function () {
   var LI = { en: 0, zh: 1, "zh-Hant": 2, es: 3, ca: 4 }, LOC = ["en-GB", "zh-CN", "zh-TW", "es-ES", "ca-ES"];
   function L() { return LI[(window.FBL && FBL.get && FBL.get()) || "en"] || 0; }
   function t(k, v) { var a = T[k], s = (a && (a[L()] || a[0])) || k; if (v) for (var x in v) s = s.split("{" + x + "}").join(v[x]); return s; }
+  function fday(d) { try { return new Intl.DateTimeFormat(LOC[L()], { weekday: "short", day: "numeric", month: "short", year: d.getFullYear() !== new Date().getFullYear() ? "numeric" : undefined }).format(d); } catch (e) { return d.toDateString(); } }   /* the day it opens, as the app shows it on the envelope */
   function fmt(d) { try { return new Intl.DateTimeFormat(LOC[L()], { weekday: "short", day: "numeric", month: "short", year: d.getFullYear() !== new Date().getFullYear() ? "numeric" : undefined, hour: "2-digit", minute: "2-digit" }).format(d); } catch (e) { return d.toLocaleString(); } }
   function pmDate(d) { try { return new Intl.DateTimeFormat(LOC[L()], { day: "2-digit", month: "short", year: "numeric" }).format(d); } catch (e) { return d.toDateString(); } }
   function toast(m) { var e = $("#toast"); e.textContent = m; e.classList.add("on"); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove("on"); }, 3200); }
@@ -626,19 +628,16 @@ window.PCScenes = (function () {
     if (c.sealed) {
       env.querySelector(".seal").disabled = true; env.querySelector(".seal").setAttribute("aria-label", t("opensOn", { d: fmt(o) }));
       $("#readWhen").innerHTML = esc("🔒 " + t("opensOn", { d: fmt(o) })) + '<br><small style="font-size:17px;opacity:.8">' + esc(t("bell")) + "</small>";
-      clearInterval(tick); tick = setInterval(countdown, 1000); countdown(); readButtons(true);
+      var wh = env.querySelector(".when"); if (!wh) { wh = document.createElement("div"); wh.className = "when"; env.appendChild(wh); } wh.textContent = t("opensOn", { d: fday(o) });
+      $("#clock").textContent = ""; clearTimeout(tick); var ms = o - new Date() + 1500;   /* no ticking clock (the owner, Nov 6): the day is on the envelope, and it quietly opens on the day if the page is still open */
+      if (ms < 2147000000) tick = setTimeout(function () { api("postcard_get", { p_id: reading }, true).then(function (c2) { if (c2) { got = c2; paintRead(); blip(660, .2, "triangle", .1); } }); }, Math.max(1000, ms));
+      readButtons(true);
       try { var wl = JSON.parse(ls("postcard_waiting") || "[]"); if (!wl.some(function (x) { return x.id === c.id; })) { wl.unshift({ id: c.id, from: c.from, open_at: c.open_at }); ls("postcard_waiting", JSON.stringify(wl.slice(0, 40))); } } catch (e) {}
     } else {
-      clearInterval(tick); $("#clock").textContent = "";
+      clearTimeout(tick); $("#clock").textContent = ""; var wh2 = env.querySelector(".when"); if (wh2) wh2.remove();
       var seal = env.querySelector(".seal"); seal.disabled = false; seal.classList.add("ready"); seal.setAttribute("aria-label", t("tapSeal")); seal.title = t("tapSeal");
       $("#readWhen").textContent = "🔓 " + t("tapSeal"); readButtons(false);
     }
-  }
-  function countdown() {
-    var ms = new Date(got.open_at) - new Date();
-    if (ms <= 0) { clearInterval(tick); $("#clock").textContent = "00:00:00"; setTimeout(function () { api("postcard_get", { p_id: reading }, true).then(function (c) { if (c) { got = c; paintRead(); blip(660, .2, "triangle", .1); } }); }, 1200); return; }
-    var s = Math.floor(ms / 1000), dd = Math.floor(s / 86400), hh = Math.floor(s % 86400 / 3600), mm = Math.floor(s % 3600 / 60), ss = s % 60, p2 = function (x) { return String(x).padStart(2, "0"); };
-    $("#clock").textContent = (dd ? dd + t("day") + " " : "") + p2(hh) + ":" + p2(mm) + ":" + p2(ss);
   }
   function openIt() {
     if (!got || got.sealed) return;
