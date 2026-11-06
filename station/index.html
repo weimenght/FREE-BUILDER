@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=5900b20222"></script><meta name="referrer" content="same-origin">
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=2f0ef5e174"></script><meta name="referrer" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nearby Station</title>
 <meta name="description" content="A window seat on a slow train: change the record, have a drink from the trolley, get off at any stop, walk the platform and catch another train. Some stops lead into Nearby.">
@@ -30,7 +30,7 @@
   if (!NAME[lang]) { var n = (navigator.language || "en").toLowerCase(); lang = /^zh-(tw|hk|mo|hant)/.test(n) ? "zh-Hant" : /^zh/.test(n) ? "zh" : /^ca/.test(n) ? "ca" : /^es/.test(n) ? "es" : "en"; }
   document.documentElement.lang = lang === "zh" ? "zh-Hans" : lang; document.title = NAME[lang];
   /* the train itself; a friend's link (?with=CODE) seats you in their car */
-  var src = "/nearby/station/?solo=1&app=1&v=8f9747c188", w = (qs.get("with") || qs.get("cabin") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
+  var src = "/nearby/station/?solo=1&app=1&v=965e18fffa", w = (qs.get("with") || qs.get("cabin") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
   if (w) src += "&with=" + w;
   var f = document.getElementById("ride"); f.src = src;
   f.addEventListener("load", function () { try { f.contentWindow.focus(); } catch (e) {} });
