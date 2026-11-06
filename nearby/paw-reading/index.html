@@ -61,6 +61,7 @@
       ["*Miso knocks the deck over, then sits on the one card she wants you to have.*", "*味噌把牌碰倒，然后坐在她想给你的那一张上。*", "*味噌把牌碰倒，然後坐在她想給你的那一張上。*", "*Miso tumba la baraja y se sienta sobre la carta que quiere darte.*", "*La Miso tomba la baralla i s'asseu damunt la carta que et vol donar.*"]],
     doze: ["*Miso and Yuzu doze behind the counter, curled up nose to tail. The deck is right here.*", "*味噌和柚子在柜台后面打盹，头尾相接蜷成一团。牌就在这儿。*", "*味噌和柚子在櫃台後面打盹，頭尾相接蜷成一團。牌就在這兒。*", "*Miso y Yuzu dormitan tras el mostrador, hechas un ovillo. La baraja está aquí.*", "*La Miso i la Yuzu dormisquegen darrere el taulell, fetes un cabdell. La baralla és aquí.*"],
     dozeOne: ["*{c} dozes behind the counter, curled up. The deck is right here.*", "*{c}在柜台后面打盹，蜷成一团。牌就在这儿。*", "*{c}在櫃台後面打盹，蜷成一團。牌就在這兒。*", "*{c} dormita tras el mostrador, hecha un ovillo. La baraja está aquí.*", "*La {c} dormisqueja darrere el taulell, feta un cabdell. La baralla és aquí.*"],
+    feast: ["Today: {f}. The cats have something for it.", "今天是{f}。猫咪为它准备了一张牌。", "今天是{f}。貓咪為它準備了一張牌。", "Hoy: {f}. Las gatas tienen algo para el día.", "Avui: {f}. Les gates tenen alguna cosa per al dia."],
     app: ["Take the stall with you", "把小摊带在身边", "把小攤帶在身邊", "Llévate el puesto", "Emporta't la parada"],
     self: ["You cut the deck. The top card:", "你自己切了牌。最上面那张：", "你自己切了牌。最上面那張：", "Cortas la baraja. La de arriba:", "Talles la baralla. La de dalt:"],
     sc: ["Miso and Yuzu's stall: a striped awning, a counter, the deck.", "味噌和柚子的小摊：条纹遮阳篷、柜台、一副牌。", "味噌和柚子的小攤：條紋遮陽篷、櫃台、一副牌。", "El puesto de Miso y Yuzu: un toldo a rayas, un mostrador, la baraja.", "La parada de la Miso i la Yuzu: un tendal a ratlles, un taulell, la baralla."],
@@ -121,20 +122,23 @@
     var c = cardOf(v.i), src = "cards/" + (v.i < 10 ? "0" : "") + v.i + ".png";
     panel.innerHTML = '<p class="pr-say">' + (fresh ? (who ? act(t(S.paw[who === "miso" ? 1 : 0])) : esc(t(S.self))) : line()) + "</p>" +
       '<div class="pr-card"><div class="pr-flip"><div class="pr-in' + (fresh ? "" : " up") + '"><img class="b" src="cards/back.png" alt=""><img class="f" src="' + src + '" alt=""></div></div>' +
-      '<div><span class="pr-k">' + esc(t(S.today)) + "</span><p class=\"pr-f\">" + esc(t(askOf(c))) + '</p><p class="pr-w">' + esc(t(S.tomorrow)) + '</p><p class="pr-w pr-app"><a href="/paw-reading/" data-app>' + esc(t(S.app)) + " ↗</a></p></div></div>";
+      '<div><span class="pr-k">' + esc(t(P.titleFor(v) || S.today)) + "</span><p class=\"pr-f\">" + esc(t(P.askFor(v))) + '</p><p class="pr-w">' + esc(t(S.tomorrow)) + '</p><p class="pr-w pr-app"><a href="/paw-reading/" data-app>' + esc(t(S.app)) + " ↗</a></p></div></div>";
     if (fresh) setTimeout(function () { var el = panel.querySelector(".pr-in"); if (el) el.classList.add("up"); }, 380);
     document.getElementById("dock").hidden = true; links();
   }
-  function idle() { panel.innerHTML = '<p class="pr-say">' + line() + "</p>"; document.getElementById("dock").hidden = false; document.getElementById("askL").textContent = t(cats().length && !asleep() ? S.ask : S.cut); links(); }
+  function idle() { panel.innerHTML = '<p class="pr-say">' + line() + "</p>"; feast(); document.getElementById("dock").hidden = false; document.getElementById("askL").textContent = t(cats().length && !asleep() ? S.ask : S.cut); links(); }
+  function feast() {   /* the database's card of the day: a feast day says so before you draw */
+    P.dayCard().then(function (s) { if (!s || !s.t || saved() || panel.querySelector(".pr-fe")) return; var p = document.createElement("p"); p.className = "pr-w pr-fe"; p.textContent = t(S.feast, { f: t(s.t) }); panel.appendChild(p); });
+  }
   function links() {
     panel.querySelectorAll("a[data-app]").forEach(function (a) { a.onclick = function (e) { e.preventDefault(); try { (window.top || window).location.href = a.href; } catch (x) { location.href = a.href; } }; });   /* the app opens in the top window, out of the town's frame */
     panel.querySelectorAll("a[data-go]").forEach(function (a) { a.onclick = function (e) { try { if (parent !== window && parent.FBShell) { e.preventDefault(); parent.FBShell.open(a.getAttribute("href")); } } catch (x) {} }; }); }
   function draw1() {
     if (saved()) return show(saved(), false);
     var here = asleep() ? [] : cats(), who = here.length ? here[(Math.random() * here.length) | 0] : null;
-    var v = P.draw();
     anim = 900; ask.disabled = true;
-    var st = performance.now(); (function sl(n) { var k = Math.min(1, (n - st - 600) / 500); if (k > 0) slide = k; if (k < 1) requestAnimationFrame(sl); else setTimeout(function () { slide = 0; ask.disabled = false; show(v, true, who); }, 150); })(st);
+    var got = P.deal();   /* today's card from the database (chosen ahead for the date and its feast), or the deck's if it can't be reached */
+    var st = performance.now(); (function sl(n) { var k = Math.min(1, (n - st - 600) / 500); if (k > 0) slide = k; if (k < 1) requestAnimationFrame(sl); else setTimeout(function () { got.then(function (v) { slide = 0; ask.disabled = false; show(v, true, who); }); }, 150); })(st);
   }
   ask.onclick = draw1;
   cv.addEventListener("click", function () { if (!saved()) draw1(); });

@@ -142,6 +142,7 @@ var W = {
   ask: ["Ask for a card", "求一张牌", "求一張牌", "Pide una carta", "Demana una carta"],
   cutQuiet: ["Cut the deck quietly", "轻轻地自己切牌", "輕輕地自己切牌", "Corta la baraja sin hacer ruido", "Talla la baralla sense fer soroll"],
   today: ["Today's card", "今天的牌", "今天的牌", "La carta de hoy", "La carta d'avui"],
+  feast: ["Today: {f}. The cats have something for it.", "今天是{f}。猫咪为它准备了一张牌。", "今天是{f}。貓咪為它準備了一張牌。", "Hoy: {f}. Las gatas tienen algo para el día.", "Avui: {f}. Les gates tenen alguna cosa per al dia."],
   tomorrow: ["Tomorrow there'll be another.", "明天还有一张。", "明天還有一張。", "Mañana habrá otra.", "Demà n'hi haurà una altra."],
   here: [["*Yuzu pats the deck twice, as if it's warm.*", "*柚子拍了两下牌，好像牌是暖的。*", "*柚子拍了兩下牌，好像牌是暖的。*", "*Yuzu da dos palmaditas a la baraja, como si estuviera caliente.*", "*La Yuzu dona dos copets a la baralla, com si fos calenta.*"],
     ["*Miso sits on the deck and looks at you for a long time.*", "*味噌坐在牌上，看了你很久。*", "*味噌坐在牌上，看了你很久。*", "*Miso se sienta sobre la baraja y te mira un buen rato.*", "*La Miso s'asseu damunt la baralla i et mira una bona estona.*"],
@@ -288,6 +289,8 @@ function idle() {
   var a = arrival; arrival = null;
   if (a && !a.fresh) el("p", "say sub", esc(T(W.old, { d: niceDay(a.d) })), panel);
   el("p", "say", line(), panel);
+  var fe = el("p", "sub", null, panel); fe.hidden = true;
+  P.dayCard().then(function (s) { if (s && s.t && view === idle && fe.isConnected) { fe.textContent = T(W.feast, { f: T(s.t) }); fe.hidden = false; } });   /* the database's card of the day: a feast says so before you draw */
   var row = el("div", "row", null, panel);
   btn(asleep() ? W.cutQuiet : W.ask, deal, "pri", row, "🔮");
   morning(panel);
@@ -297,11 +300,11 @@ function deal(b) {
   if (b) b.disabled = true;
   var zz = asleep(), here = zz ? [] : atStall(), who = here.length ? here[(Math.random() * here.length) | 0] : null, trot = null;
   if (!zz && !who) { var c = where(); trot = c.yuzu !== "nest" && Math.random() < .5 ? "yuzu" : "miso"; }
-  var v = P.draw(), say = zz ? T(W.nightCut) : who ? T(W.paw[who]) : T(W.trot, { c: Cn(trot), C: cap(Cn(trot)), p: placeName(where()[trot]) });
+  var got = P.deal(), say = zz ? T(W.nightCut) : who ? T(W.paw[who]) : T(W.trot, { c: Cn(trot), C: cap(Cn(trot)), p: placeName(where()[trot]) });
   function slide() {
     anim.shuffle = zz ? 400 : 900;
     var st = performance.now();
-    (function sl(n) { var k = Math.min(1, (n - st - (zz ? 200 : 600)) / 500); if (k > 0) anim.slide = k; if (k < 1 && !reduce) requestAnimationFrame(sl); else setTimeout(function () { anim.slide = 0; go(function () { reveal(true, say); }); if (trot) leave(); }, 150); })(st);
+    (function sl(n) { var k = Math.min(1, (n - st - (zz ? 200 : 600)) / 500); if (k > 0) anim.slide = k; if (k < 1 && !reduce) requestAnimationFrame(sl); else setTimeout(function () { got.then(function () { anim.slide = 0; go(function () { reveal(true, say); }); if (trot) leave(); }); }, 150); })(st);
   }
   if (trot && !reduce) { anim.visitor = { k: trot, x: -20, dir: 1 }; var tx = PW / 2 + 26; (function walk() { var vv = anim.visitor; if (!vv) return; vv.x += 1.6; if (vv.x < tx) requestAnimationFrame(walk); else { vv.x = tx; slide(); } })(); }
   else slide();
@@ -313,15 +316,15 @@ function cardBlock(v, fresh) {
   var flip = el("div", "flip", '<div class="in' + (fresh && !reduce ? "" : " up") + '"><img class="b" src="/nearby/paw-reading/cards/back.png" alt=""><img class="f" src="' + P.img(v.i) + '" alt="' + esc(cap(P.cardName(c, li()))) + '"></div>', wrap);
   if (fresh && !reduce) setTimeout(function () { var e = flip.querySelector(".in"); if (e) e.classList.add("up"); }, 380);
   var right = el("div", null, null, wrap);
-  el("span", "kick", esc(T(W.today)), right);
-  el("p", "ask", esc(T(P.askOf(c))), right);
+  el("span", "kick", esc(T(P.titleFor(v) || W.today)), right);   /* a feast day names itself over the card */
+  el("p", "ask", esc(T(P.askFor(v))), right);
   return { c: c, right: right };
 }
 function reveal(fresh, say) {
   var v = P.today(); if (!v) return go(idle);
   el("p", "say", say ? act(say) : act(T(W.still)), panel);
   var cb = cardBlock(v, fresh), acts = el("div", "acts", null, panel);
-  var gg = P.goOf(cb.c);
+  var gg = P.goFor(v);
   if (gg) {
     var r1 = el("div", "row", null, acts);
     if (gg.k === "line") btn(W.goLine, function () { sendLine(T(gg.l)); }, "", r1, "✉️");
@@ -367,7 +370,7 @@ function withSomeone() {
   btn(W.withSend, function () {
     var n = inp.value.trim().slice(0, 24); try { if (n) localStorage.setItem("fb_nick", n); } catch (e) {}
     var c = P.cardOf(v.i), url = location.origin + "/paw-reading/#" + P.pack(v, n);
-    share(T(W.app), T(W.shareText, { card: P.cardName(c, li()), ask: T(P.askOf(c)) }), url, W.copied);
+    share(T(W.app), T(W.shareText, { card: P.cardName(c, li()), ask: T(P.askFor(v)) }), url, W.copied);
   }, "pri", r, "↗");
   btn(W.back, function () { go(reveal); }, "", r);
   el("p", "sub", esc(T(W.withNote)), panel);
@@ -543,11 +546,12 @@ if (A) {
   try { history.replaceState(history.state, "", location.pathname + location.search); } catch (e) {}
   var mine = P.today(), from = A.from || T(W.someone);
   if (!A.fresh) { if (mine) { go(mine.p ? pocketed : reveal); toast(T(W.old, { d: niceDay(A.d) })); } else { arrival = A; go(idle); } }
-  else if (!mine) { P.take(A.i, A.from); go(function () { reveal(true, T(W.arrive, { from: from })); }); }
+  else if (!mine) { P.deal({ i: A.i, from: A.from }).then(function () { go(function () { reveal(true, T(W.arrive, { from: from })); }); }); }
   else if (mine.i === A.i) go(function () { reveal(false, T(W.arriveSame, { from: from })); });
   else { theirCard = A; go(reveal); }
 } else { var t0 = P.today(); go(t0 ? (toName ? withSomeone : t0.p ? pocketed : reveal) : idle); }
 pushCheck();
+P.dayCard();   /* ask the database for today's card now, so drawing it is instant */
 window.PR = { today: P.today, hour: hour, asleep: asleep, where: where, view: function () { return view && view.name; } };
 })();
 </script>

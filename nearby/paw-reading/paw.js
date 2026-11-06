@@ -1,7 +1,10 @@
 /* Paw Reading's deck, shared by the town's stall (/nearby/paw-reading/) and the app (/paw-reading/): window.FBPaw.
+   The card of the day comes from the database (paw_day_get(date): one card for everyone that date, chosen ahead by a daily
+   scheduled job from the date, the weekday, the season and the feast days; build/paw/days.py holds that content). Asking
+   sends only the date. If the server can't be reached, the deck below deals instead (offline, or before the migration).
    One card a day per device (localStorage fb_paw: { d: "Y-M-D" on the browser's calendar, i: 0–53, f: who drew it for you,
-   p: 1 once it's in your pocket }), so a card drawn in town is today's card in the app and the other way round. Nothing here
-   is sent anywhere. Each card asks one thing of you, somewhere real (ASK by suit: ♥ together, ♦ make, ♣ the wild, ♠ Popo's
+   p: 1 once it's in your pocket, and from the server a: its ask, g: its way to start it, t: the feast's name, k: the
+   feast's key }), so a card drawn in town is today's card in the app and the other way round. Each card asks one thing of you, somewhere real (ASK by suit: ♥ together, ♦ make, ♣ the wild, ♠ Popo's
    tin; aces, Mei/Popo/Wei and the jokers have their own), and most carry one way to start it off the screen (GO):
    a line to send someone (`line`), a place to find in your own maps (`maps`), or one minute with the phone face down (`minute`). */
 (function () {
@@ -79,7 +82,50 @@
   function read() { try { var v = JSON.parse(localStorage.getItem("fb_paw") || "null"); return v && typeof v.i === "number" && v.i >= 0 && v.i < 54 ? v : null; } catch (e) { return null; } }
   function today() { var v = read(); return v && v.d === day() ? v : null; }
   function keep(v) { try { localStorage.setItem("fb_paw", JSON.stringify(v)); } catch (e) {} return v; }
-  function draw(from) { var t = today(); if (t) return t; return keep({ d: day(), i: (Math.random() * 54) | 0 }); }
+  function draw() { var t = today(); if (t) return t; return keep({ d: day(), i: localPick() }); }
+  /* offline, everyone who opens it on the same date still gets the same card: a hash of the date */
+  function localPick(d) { var x = d || day(), h = 2166136261; for (var k = 0; k < x.length; k++) { h ^= x.charCodeAt(k); h = Math.imul(h, 16777619); } return (h >>> 0) % 54; }
+
+  /* the server's card of the day */
+  function iso(d) { var m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(d || day()); return m[1] + "-" + ("0" + m[2]).slice(-2) + "-" + ("0" + m[3]).slice(-2); }
+  function cfg() { return new Promise(function (res) { if (window.FB_SUPABASE && FB_SUPABASE.url) return res(FB_SUPABASE); var sc = document.createElement("script"); sc.src = "/config.js"; sc.onload = sc.onerror = function () { res(window.FB_SUPABASE || {}); }; document.head.appendChild(sc); }); }
+  function L5(a) { return Array.isArray(a) && a.length === 5 && a.every(function (x) { return typeof x === "string"; }) ? a : null; }
+  function clean(o) {   /* what the server sent, checked before it's kept or shown */
+    if (!o || typeof o.i !== "number" || o.i < 0 || o.i > 53 || !L5(o.ask)) return null;
+    var g = o.go && typeof o.go === "object" && /^(line|maps|minute)$/.test(o.go.k) ? { k: o.go.k } : null;
+    if (g && o.go.l) g.l = L5(o.go.l); if (g && o.go.q) g.q = L5(o.go.q);
+    if (g && ((g.k === "line" && !g.l) || (g.k === "maps" && !g.q))) g = null;
+    return { i: o.i, a: o.ask, g: g, t: L5(o.title), k: typeof o.k === "string" ? o.k.slice(0, 24) : null };
+  }
+  var dayMemo = {};
+  function dayCard(d, ms) {
+    d = d || day();
+    if (dayMemo[d]) return dayMemo[d];
+    try { var c = JSON.parse(localStorage.getItem("paw_day") || "null"); if (c && c.d === d && clean(c.v)) return (dayMemo[d] = Promise.resolve(clean(c.v))); } catch (e) {}
+    var p = cfg().then(function (c) {
+      if (!c.url) return null;
+      var ctl = window.AbortController ? new AbortController() : null, tm = setTimeout(function () { if (ctl) ctl.abort(); }, ms || 3500);
+      return fetch(c.url + "/rest/v1/rpc/paw_day_get", { method: "POST", signal: ctl && ctl.signal, headers: { apikey: c.anonKey, Authorization: "Bearer " + c.anonKey, "Content-Type": "application/json" }, body: JSON.stringify({ p_d: iso(d) }) })
+        .then(function (r) { clearTimeout(tm); return r.ok ? r.json() : null; })
+        .then(function (o) { var v = o && clean({ i: o.i, ask: o.ask, go: o.go, title: o.title, k: o.k }); if (v) try { localStorage.setItem("paw_day", JSON.stringify({ d: d, v: { i: v.i, ask: v.a, go: v.g, title: v.t, k: v.k } })); } catch (e) {} return v; });
+    }).catch(function () { return null; });
+    p.then(function (v) { if (!v) delete dayMemo[d]; });
+    return (dayMemo[d] = p);
+  }
+  /* deal today's card: the server's if it answers, else the deck's (opts.i: a card someone sent you, for when offline) */
+  function deal(opts) {
+    opts = opts || {}; var t = today(); if (t) return Promise.resolve(t);
+    return dayCard().then(function (s) {
+      var t2 = today(); if (t2) return t2;   /* drawn in another tab meanwhile */
+      var v = s ? { d: day(), i: s.i, a: s.a } : { d: day(), i: typeof opts.i === "number" ? opts.i : localPick() };
+      if (s && s.g) v.g = s.g; if (s && s.t) v.t = s.t; if (s && s.k) v.k = s.k;
+      if (opts.from) v.f = String(opts.from).slice(0, 24);
+      return keep(v);
+    });
+  }
+  function askFor(v) { return (v && L5(v.a)) || askOf(cardOf(v.i)); }
+  function goFor(v) { return v && v.a ? (v.g || null) : goOf(cardOf(v.i)); }
+  function titleFor(v) { return (v && L5(v.t)) || null; }
   function take(i, from) { var t = today(); if (t) return t; var v = { d: day(), i: i }; if (from) v.f = String(from).slice(0, 24); return keep(v); }
   function pocket(on) { var t = today(); if (!t) return null; if (on) t.p = 1; else delete t.p; return keep(t); }
 
@@ -93,5 +139,6 @@
   }
 
   window.FBPaw = { SUIT: SUIT, RANKS: RANKS, ASK: ASK, ACE: ACE, COURT: COURT, JOKER: JOKER, cardOf: cardOf, askOf: askOf, goOf: goOf, cardName: cardName, img: img,
-    day: day, read: read, today: today, draw: draw, take: take, pocket: pocket, pack: pack, unpack: unpack };
+    day: day, read: read, today: today, draw: draw, take: take, pocket: pocket, pack: pack, unpack: unpack,
+    deal: deal, dayCard: dayCard, askFor: askFor, goFor: goFor, titleFor: titleFor, localPick: localPick };
 })();
