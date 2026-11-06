@@ -30,7 +30,7 @@
   if (!NAME[lang]) { var n = (navigator.language || "en").toLowerCase(); lang = /^zh-(tw|hk|mo|hant)/.test(n) ? "zh-Hant" : /^zh/.test(n) ? "zh" : /^ca/.test(n) ? "ca" : /^es/.test(n) ? "es" : "en"; }
   document.documentElement.lang = lang === "zh" ? "zh-Hans" : lang; document.title = NAME[lang];
   /* the train itself; a friend's link (?with=CODE) seats you in their car */
-  var src = "/nearby/station/?solo=1&app=1&v=2ed1cba267", w = (qs.get("with") || qs.get("cabin") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
+  var src = "/nearby/station/?solo=1&app=1&v=8f9747c188", w = (qs.get("with") || qs.get("cabin") || "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
   if (w) src += "&with=" + w;
   var f = document.getElementById("ride"); f.src = src;
   f.addEventListener("load", function () { try { f.contentWindow.focus(); } catch (e) {} });

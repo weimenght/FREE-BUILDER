@@ -158,14 +158,46 @@
   var lastCity = null;
   function tzOf(st) { if (!st || !st.look) return null; if (st.look === "us") return TZ_US[st.name] || null; return TZ[st.tongue] || TZ[st.look] || null; }
   function cityHour(tz) { try { var p = new Intl.DateTimeFormat("en-GB", { timeZone: tz, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()), h = 0, m = 0; p.forEach(function (x) { if (x.type === "hour") h = +x.value; if (x.type === "minute") m = +x.value; }); return (h % 24) + m / 60; } catch (e) { return null; } }
+  /* each stop has its own weather: what the sky is likely doing there at this time of year (the visitor's month, all the
+     stops are north of the equator), the same for everyone that day and changing every three hours (a seed from the stop,
+     the date and the hour), so the window and the platform agree. A sky someone chose in the app holds for five minutes. */
+  var CLIM = {
+    metropolis: { clear: 5, rain: 3, fog: 1, storm: 0.5, snow: 0.6 }, hutong: { clear: 7, rain: 1.4, fog: 1.6, snow: 1 },
+    alpine: { clear: 5, rain: 2, fog: 2.4, storm: 0.6, snow: 2.4 }, coastal: { clear: 5, rain: 2.4, fog: 2, storm: 0.8 },
+    countryside: { clear: 6, rain: 2.4, fog: 1.6, storm: 0.5, snow: 0.5 }, desert: { clear: 14, storm: 0.7, fog: 0.2, snow: 0.4 },
+    forest: { clear: 4, rain: 3, fog: 3, snow: 0.8 }, lake: { clear: 5, rain: 2, fog: 3, snow: 0.6 }, snow: { clear: 4, fog: 2, snow: 4.5, rain: 0.4 }
+  };
+  var WET = { uk: 1.8, cy: 2.1, de: 1.3, fr: 1.1, jp: 1.2, hk: 1.4 }, DRY = { es: 0.45, ca: 0.6, us: 0.75, it: 0.8 };
+  function skyHeld() { return (window.__jnSkyHold || 0) > Date.now(); }
+  function climate(st, d) {
+    if (!st) return "clear"; d = d || new Date();
+    var m = d.getMonth(), winter = m === 11 || m < 2, summer = m > 4 && m < 8, autumn = m > 8 && m < 11, b = st.biome, c = {}, k;
+    var base = CLIM[b] || CLIM.countryside; for (k in base) c[k] = base[k];
+    var wet = WET[st.tongue] || WET[st.look] || DRY[st.look] || 1, warm = /es|ca|it/.test(st.look || "") || st.tongue === "hk" || st.name === "Santa Barbara" || b === "coastal";
+    c.rain = (c.rain || 0) * wet; c.storm = (c.storm || 0) * (summer ? 2.2 : winter ? 0.3 : 1) * wet; c.fog = (c.fog || 0) * (autumn || winter ? 1.6 : summer ? 0.5 : 1);
+    if (winter && !warm) { if (b === "snow" || b === "alpine") { c.snow *= 2; c.rain *= 0.3; } }
+    else { c.rain += (c.snow || 0) * (summer ? 0.2 : 0.6); c.snow = (b === "snow" || b === "alpine") && !summer && !warm ? (c.snow || 0) * 0.35 : 0; }
+    if (summer) c.clear *= 1.4;
+    var h = 2166136261, key = st.name + "|" + d.getFullYear() + "-" + m + "-" + d.getDate() + "|" + Math.floor(d.getHours() / 3);
+    for (var i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619); }
+    var tot = 0; for (k in c) tot += c[k]; var r = ((h >>> 0) % 100000) / 100000 * tot;
+    for (k in c) { r -= c[k]; if (r <= 0) return k; } return "clear";
+  }
   function townTakesCity(st) {
-    var tz = tzOf(st), W = window.FBWorld; if (!tz || !W || !W.setHour || (st && st.name === lastCity)) return;
-    var h = cityHour(tz); if (h == null) return; lastCity = st.name;
-    var w = state.weather || "clear"; if (w === "snow" && !/snow|alpine/.test(st.biome || "")) w = "rain";
-    try { W.setHour(h); W.set(w); } catch (e) {}
-    var tod = h < 5 ? "night" : h < 7.5 ? "dawn" : h < 17 ? "afternoon" : h < 19.5 ? "sunset" : "night"; if (tod !== state.timeOfDay) setTimeOfDay(tod); if (w !== state.weather) setWeather(w);
+    if (!st) return; var key = st.name + "|" + Math.floor(Date.now() / 600e3); if (key === lastCity) return; lastCity = key;
+    var held = skyHeld(), w = held ? state.weather : climate(st);
+    if (w !== state.weather) { try { setWeather(w); } catch (e) {} }
+    var tz = tzOf(st), W = window.FBWorld; if (!tz) return;
+    var h = cityHour(tz); if (h == null) return;
+    try { if (W && W.setHour) { W.setHour(h); W.set(w); } } catch (e) {}
+    var tod = h < 5 ? "night" : h < 7.5 ? "dawn" : h < 17 ? "afternoon" : h < 19.5 ? "sunset" : "night"; if (!held && tod !== state.timeOfDay) setTimeOfDay(tod);
     try { var hh = Math.floor(h), mm = Math.floor((h - hh) * 60); toast("🕰 " + st.name + " · " + ("0" + hh).slice(-2) + ":" + ("0" + mm).slice(-2)); } catch (e) {}
   }
+  /* however the train is stopped (the timetable, Stop here, a friend's car), the stop brings its own sky */
+  try {
+    var tss = window.triggerStationStopOrDepart;
+    if (tss) window.triggerStationStopOrDepart = function () { var was = state.trainState, r = tss.apply(this, arguments); if (was === "CRUISING") setTimeout(function () { townTakesCity(state.station); }, 1400); return r; };
+  } catch (e) {}
 
   /* 🔀: the window goes dark for a breath and opens somewhere else (in a shared cabin everyone aboard sees the new view) */
   function somewhereElse() {
@@ -175,7 +207,7 @@
         var pick = function (a) { return a[(Math.random() * a.length) | 0]; };
         if (state.inTunnel) toggleMountainTunnel();
         var st = pick(STATION_CATALOG.filter(function (x) { return x !== state.station; }));
-        state.station = st; setBiome(st.biome, false); setTimeOfDay(pick(TIMES)); setWeather(pickWeather());
+        state.station = st; setBiome(st.biome, false); setTimeOfDay(pick(TIMES)); setWeather(climate(st));
         state.trainState = "CRUISING"; state.stationScrollOffset = -cw * 6; syncHUDAndButtons();
       } catch (e) { shuffle(); }
       if (vpEl) vpEl.style.opacity = "1";
@@ -403,7 +435,7 @@
       if (document.hidden) { if (S.code) syncIfChanged(); return; }
       var now = Date.now(), n = this.next, changed = false;
       if (state.trainState === "STOPPED" && now > n.depart) { triggerStationStopOrDepart(); n.station = now + 240e3 + Math.random() * 120e3; changed = true; }
-      else if (now > n.station && state.trainState === "CRUISING" && !state.inTunnel) { triggerStationStopOrDepart(); n.depart = now + 22e3; changed = true; setTimeout(function () { townTakesCity(state.station); }, 2500); }
+      else if (now > n.station && state.trainState === "CRUISING" && !state.inTunnel) { triggerStationStopOrDepart(); n.depart = now + 22e3; changed = true; }
       else if (now > n.tunnel && state.trainState === "CRUISING") {
         if (!state.inTunnel) { toggleMountainTunnel(); n.tunnelOut = now + 10e3 + Math.random() * 14e3; n.tunnel = Infinity; }
         changed = true;
@@ -588,6 +620,6 @@
     /* (no "turn your phone" screen: the train runs upright too) */
   });
   /* the standalone app (/station/, journey.js) steers the same train: getting off, another train, a new seat */
-  window.FBCabin = { director: director, S: S, toast: toast, leave: leave, somewhereElse: somewhereElse, paintDock: paintDock, unlockAudio: unlockAudio, share: shareSheet, sync: function () { try { if (S.code) sync(); } catch (e) {} }, fit: fit,
+  window.FBCabin = { director: director, S: S, toast: toast, leave: leave, somewhereElse: somewhereElse, paintDock: paintDock, unlockAudio: unlockAudio, share: shareSheet, sync: function () { try { if (S.code) sync(); } catch (e) {} }, fit: fit, climate: climate, tz: tzOf, hourAt: cityHour,
     seat: function (c, s) { CAR = window.FB_CAR = c; SEAT = s; plate(); }, where: function () { return { car: CAR, seat: SEAT }; } };
 })();
