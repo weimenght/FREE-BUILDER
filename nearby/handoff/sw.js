@@ -1,19 +1,11 @@
-// Handoff moved to /handoff/ (its own app). This worker stays at the old address so phones that installed Handoff
-// here keep getting their notifications; any page it controls is sent on to the new address.
-const NEW = '/handoff/';
-
+// Handoff moved to after-hours.work/handoff/ (Nov 6). This worker stays at the old address so a phone that installed Handoff here
+// still shows a notification that reaches it, and a tap opens the new address. Pages are left to the network: freebuilder.net's 404 page
+// forwards them, with this device's own settings (not the sign-in).
+const NEW = 'https://www.after-hours.work/handoff/';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (event) => {
     event.waitUntil(caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k)))).then(() => self.clients.claim()));
 });
-
-self.addEventListener('fetch', (event) => {
-    const req = event.request;
-    if (req.method !== 'GET' || req.mode !== 'navigate') return;
-    const u = new URL(req.url), rest = u.pathname.replace(/^\/(nearby\/handoff|game\/love)\/?/, '');
-    event.respondWith(Response.redirect(new URL(NEW + rest + u.search + u.hash, u.origin).href, 302));
-});
-
 self.addEventListener('push', (event) => {
     let data = {};
     try { data = event.data ? event.data.json() : {}; } catch (e) { data = { title: 'Handoff', body: event.data ? event.data.text() : '' }; }
@@ -22,12 +14,7 @@ self.addEventListener('push', (event) => {
         icon: NEW + 'icon-192.png', badge: NEW + 'icon-192.png', data: { url: NEW }
     }));
 });
-
 self.addEventListener('notificationclick', (event) => {
     event.notification.close();
-    event.waitUntil((async () => {
-        const all = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-        for (const c of all) { if (new URL(c.url).pathname.indexOf(NEW) === 0) { await c.focus(); return; } }
-        await self.clients.openWindow(NEW);
-    })());
+    event.waitUntil(self.clients.openWindow(NEW));
 });
