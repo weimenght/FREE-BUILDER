@@ -636,7 +636,7 @@
 
   /* ---------- the ticket says where you are ---------- */
   function ticket() {
-    var t = document.querySelector(".cb-ticket"); if (!t || t._jn) return; t._jn = 1;
+    var t = document.querySelector(".cb-ticket"); if (!t || t._jn) return; t._jn = 1; t.classList.add("jn-ok");
     var sm = t.querySelector("small"), h = t.querySelector("h1");
     if (sm) sm.textContent = w("car", { c: String(window.FB_CAR || 1).padStart(2, "0") });
     if (h && !/🎟/.test(h.textContent)) h.textContent = w("app");
@@ -709,13 +709,18 @@
     "@media (prefers-reduced-motion:reduce){.jn-do.pri,.jn-steam path{animation:none}.jn-steam path{opacity:.6}}";
   document.head.appendChild(css);
 
+  (function () { ticket(); if (document.querySelector(".cb-ticket.jn-ok")) return; var mo = new MutationObserver(function () { ticket(); if (document.querySelector(".cb-ticket.jn-ok")) mo.disconnect(); }); mo.observe(document.documentElement, { childList: true, subtree: true }); setTimeout(function () { mo.disconnect(); }, 10000); })();   /* dress the ticket the moment it appears */
+  /* the page is hidden from the first paint (cb-app-pre in index.html) until the new frame is up */
+  function reveal() { paintUI(); try { FBCabin.fit(); } catch (e) {} requestAnimationFrame(function () { de.classList.remove("cb-app-pre"); }); }
+  setTimeout(function () { de.classList.remove("cb-app-pre"); }, 8000);   /* never leave the car dark */
   /* ---------- wire up ---------- */
   addEventListener("load", function () {
     try { if (!state.zenMode) toggleZenMode(); } catch (e) {}   /* the clean window from the start: the app draws its own bars */
     setTimeout(ticket, 0);
     setInterval(function () {
       if (!window.FBCabin) return;
-      if (FBCabin.S.boarded) { buildUI(); paintCup(); if (!intro.t) intro.t = setTimeout(function () { intro(false); }, 1200); }
+      if (FBCabin.S.boarded) { buildUI(); paintCup(); if (!intro.t) intro.t = setTimeout(function () { intro(false); }, 1200);
+        if (!reveal.t) reveal.t = setTimeout(reveal, 700); }
       paintUI();
     }, 400);
   });

@@ -3,9 +3,11 @@
    the relay): only the town's own pages, its shared kit, fonts and drawings.
    - versioned kit (/fbkit/…?v=…), fonts, vendor files: kept, served from here (a new version is a new address)
    - pages of the town: not touched (straight to the network)
-   - other files of the town (scripts, pictures without a version): served from here, refreshed in the background
+   - the town's own scripts and styles: fresh from the network every time, the saved copy only when offline
+     (serving the saved copy first meant the first open after an update ran yesterday's code)
+   - other files of the town (pictures, sounds without a version): served from here, refreshed in the background
    To retire it, ship a version whose activate step unregisters (see OFF). */
-const V = 'nearby-2';
+const V = 'nearby-3';   /* nearby-3: scripts and styles go to the network first (Nov 6) */
 const OFF = false;
 const KIT = V + '-kit', PAGES = V + '-pages', FILES = V + '-files';
 
@@ -54,7 +56,22 @@ self.addEventListener('fetch', (event) => {
     })());
     return;
   }
-  if (u.pathname.indexOf('/nearby/') === 0 && /\.(js|css|png|svg|webp|jpg|json|txt|woff2?)$/.test(u.pathname)) {
+  if (u.pathname.indexOf('/nearby/') === 0 && /\.(js|css|json|txt)$/.test(u.pathname)) {
+    event.respondWith((async () => {
+      const c = await caches.open(FILES);
+      try {
+        const res = await fetch(req, { cache: 'no-cache' });
+        if (res.ok && res.type === 'basic') { c.put(req, res.clone()); if (Math.random() < .05) trim(FILES, 200); }
+        return res;
+      } catch (e) {
+        const hit = await c.match(req, { ignoreSearch: true });
+        if (hit) return hit;
+        throw e;
+      }
+    })());
+    return;
+  }
+  if (u.pathname.indexOf('/nearby/') === 0 && /\.(png|svg|webp|jpg|woff2?)$/.test(u.pathname)) {
     event.respondWith((async () => {
       const c = await caches.open(FILES), hit = await c.match(req);
       const fresh = fetch(req).then((res) => { if (res.ok && res.type === 'basic') { c.put(req, res.clone()); if (Math.random() < .05) trim(FILES, 200); } return res; }).catch(() => hit || Response.error());
