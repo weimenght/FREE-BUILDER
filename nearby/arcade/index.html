@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="fbt">
 <head>
-<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=746b977e22"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=289fe5208f" defer></script>
+<meta charset="UTF-8" /><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=746b977e22"></script><link rel="stylesheet" href="/fbkit/fbb.css?v=e10ee1e3d0" data-fbb><script data-fbg src="/fbkit/fbg.js?v=66fa42ef9e" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Last Coin · Nearby</title>
 <meta name="description" content="An old arcade cabinet against the club wall, with every tape in town on it. One coin, one game, and the next level is always out the door.">
@@ -27,6 +27,16 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:re
 .over .lv{margin:10px 0 2px;font:400 10px/1.4 'Press Start 2P',monospace;color:#f6b73c;letter-spacing:.08em}
 .over .ch{margin:6px 0 14px;font-size:26px;line-height:1.15;color:#fff3c0}.over .ch b{display:block;font-size:40px;margin-bottom:6px}
 .over .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* the last coin (handed over by the host after a long stay): drop it in the slot, one game, then out */
+.slot{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:16px;background:rgba(6,4,12,.78)}.slot[hidden]{display:none}
+.slot .card{width:min(340px,100%);padding:18px;background:#2a1d14;border:3px solid #000;box-shadow:6px 6px 0 #000,inset 0 0 0 2px #5a3a22;text-align:center}
+.slot h2{margin:0 0 14px;font:400 12px/1.5 'Press Start 2P',monospace;color:#f6b73c;letter-spacing:.08em}
+.slot .mouth{position:relative;width:96px;height:120px;margin:0 auto 14px;cursor:pointer;background:none;border:0;padding:0}
+.slot .mouth::after{content:"";position:absolute;left:24px;right:24px;bottom:10px;height:10px;background:#000;border:3px solid #6a4a2a;box-shadow:inset 0 3px 0 #1a120a}
+.slot .coin{position:absolute;left:26px;top:0;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff1a8,#f6b73c 45%,#b07a14);border:3px solid #000;box-shadow:inset 0 0 0 4px #e0a020;display:grid;place-items:center;font:400 14px/1 'Press Start 2P',monospace;color:#6a4a00}
+.slot .mouth:focus-visible{outline:3px solid #f6b73c;outline-offset:4px}
+.slot.drop .coin{animation:coindrop .9s steps(9) forwards}@keyframes coindrop{60%{transform:translateY(62px) scaleX(1)}100%{transform:translateY(70px) scaleX(.12);opacity:0}}
+@media (prefers-reduced-motion:reduce){.slot.drop .coin{animation:none;opacity:0}}
 </style>
 <link rel="manifest" href="/nearby/manifest.webmanifest" data-fbapp><meta name="apple-mobile-web-app-capable" content="yes" data-fbapp><meta name="mobile-web-app-capable" content="yes" data-fbapp><meta name="apple-mobile-web-app-title" content="Nearby" data-fbapp></head>
 <body>
@@ -34,6 +44,9 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:re
 <div class="cab">
   <div class="marq"><i>●</i> LAST COIN <i>●</i></div>
   <div class="bezel"><iframe id="tv" title="MEMEX-68" src="/nearby/memex.html?cabinet=1"></iframe></div>
+</div>
+<div class="slot" id="slot" hidden role="dialog" aria-modal="true" aria-labelledby="slotT">
+  <div class="card"><h2 id="slotT"></h2><button type="button" class="mouth" id="mouth"><span class="coin" aria-hidden="true">1</span></button></div>
 </div>
 <div class="over" id="over" hidden role="dialog" aria-modal="true" aria-labelledby="ovT">
   <div class="card">
@@ -54,6 +67,10 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:re
   var W = {
     lv: ["NEXT LEVEL · OUT THE DOOR", "下一关 · 在门外", "下一關 · 在門外", "SIGUIENTE NIVEL · AFUERA", "SEGÜENT NIVELL · A FORA"],
     done: ["✓ Did it", "✓ 做到了", "✓ 做到了", "✓ Hecho", "✓ Fet"], later: ["Later", "等会儿", "等一下", "Luego", "Després"],
+    ins: ["INSERT YOUR LAST COIN", "投入你的最后一枚硬币", "投入你的最後一枚硬幣", "INSERTA TU ÚLTIMA MONEDA", "INSEREIX LA TEVA ÚLTIMA MONEDA"],
+    credit: ["1 CREDIT", "1 次机会", "1 次機會", "1 CRÉDITO", "1 CRÈDIT"],
+    nocoin: ["NO COINS LEFT · NEXT LEVEL", "没有硬币了 · 下一关", "沒有硬幣了 · 下一關", "NO QUEDAN MONEDAS · SIGUIENTE NIVEL", "NO QUEDEN MONEDES · SEGÜENT NIVELL"],
+    back: ["Back to real life", "回到真实生活", "回到真實生活", "Volver a la vida real", "Tornar a la vida real"],
     thanks: ["🪙 A coin for the next round, whenever.", "🪙 下一局的硬币，随时来拿。", "🪙 下一局的硬幣，隨時來拿。", "🪙 Una moneda para la próxima, cuando quieras.", "🪙 Una moneda per a la propera, quan vulguis."]
   };
   /* the next level, by your real hour: something small, off the screen, with or for someone if possible */
@@ -75,20 +92,39 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:re
   function part() { var h = new Date().getHours(); return h < 5 ? "night" : h < 11 ? "morning" : h < 17 ? "day" : h < 22 ? "evening" : "night"; }
   var KEY = "fb_arcade_out";
   function out() { try { return JSON.parse(sessionStorage.getItem(KEY) || "null"); } catch (e) { return null; } }
+  function ss(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) { return null; } }
+  var marq = document.querySelector(".marq");
+  function credit() { marq.innerHTML = "<i>●</i> <span></span> <i>●</i>"; marq.querySelector("span").textContent = t(W.credit); }
+  /* the host's last coin: ?coin=last (or one handed over and not yet spent) asks for it in the slot first */
+  function slot() {
+    var c = ss("fb_last_coin"); if (c === "in") { credit(); return; }
+    if (!/[?&]coin=last\b/.test(location.search) && c !== "1") return;
+    $("slotT").textContent = t(W.ins); $("mouth").setAttribute("aria-label", t(W.ins)); $("slot").hidden = false;
+    try { $("mouth").focus({ preventScroll: true }); } catch (e) {}
+    $("mouth").onclick = function () { if ($("slot").classList.contains("drop")) return; $("slot").classList.add("drop"); ss("fb_last_coin", "in"); clink(); setTimeout(function () { $("slot").hidden = true; $("slot").classList.remove("drop"); credit(); }, 950); };
+  }
+  function clink() { try { var A = new (window.AudioContext || window.webkitAudioContext)(), n = A.currentTime; [[1320, 0], [1760, .07], [990, .5]].forEach(function (f) { var o = A.createOscillator(), g = A.createGain(); o.type = "triangle"; o.frequency.value = f[0]; g.gain.setValueAtTime(.0001, n + f[1]); g.gain.exponentialRampToValueAtTime(.12, n + f[1] + .01); g.gain.exponentialRampToValueAtTime(.0001, n + f[1] + .25); o.connect(g); g.connect(A.destination); o.start(n + f[1]); o.stop(n + f[1] + .3); }); } catch (e) {} }
   function gameOver() {
     var o = out(); if (!o) return;
     try { sessionStorage.removeItem(KEY); } catch (e) {}
     var list = LV[part()], c = list[(Math.random() * list.length) | 0];
-    $("ovL").textContent = t(W.lv); $("ovC").innerHTML = "<b></b><span></span>"; $("ovC").firstChild.textContent = c[0]; $("ovC").lastChild.textContent = c[1 + li()] || c[1];
-    $("done").textContent = t(W.done); $("later").textContent = t(W.later); $("over").hidden = false;
+    $("ovL").textContent = t(o.last ? W.nocoin : W.lv); $("later").style.display = o.last ? "none" : ""; $("over").dataset.last = o.last ? c[0] + " " + (c[1 + li()] || c[1]) : ""; $("ovC").innerHTML = "<b></b><span></span>"; $("ovC").firstChild.textContent = c[0]; $("ovC").lastChild.textContent = c[1 + li()] || c[1];
+    $("done").textContent = t(o.last ? W.back : W.done); $("later").textContent = t(W.later); $("over").hidden = false;
     try { $("done").focus({ preventScroll: true }); } catch (e) {}
   }
-  $("done").onclick = function () { $("over").hidden = true; try { if (window.FBG && FBG.note) FBG.note({ icon: "🪙", text: t(W.thanks), ms: 5000 }); } catch (e) {} };
+  $("done").onclick = function () {
+    var last = $("over").dataset.last;
+    if (last) {   /* the last game is over: back to real life (the shell puts the town's lights out) */
+      ss("fb_last_coin", "spent"); ss("fb_gameover", JSON.stringify({ lv: last })); $("over").hidden = true;
+      try { if (window.parent !== window && window.parent.FBShell && window.parent.FBShell.lightsOut) { window.parent.FBShell.lightsOut(); return; } } catch (e) {}
+      location.href = "/nearby/"; return;
+    }
+    $("over").hidden = true; try { if (window.FBG && FBG.note) FBG.note({ icon: "🪙", text: t(W.thanks), ms: 5000 }); } catch (e) {} };
   $("later").onclick = function () { $("over").hidden = true; };
   /* the cabinet hands each tape to the town instead of leaving it */
   window.FBArcade = {
     play: function (url) {
-      try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), url: url })); } catch (e) {}
+      try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), url: url, last: ss("fb_last_coin") === "in" ? 1 : 0 })); } catch (e) {}
       try { if (window.parent !== window && window.parent.FBShell) { window.parent.FBShell.open(url); return; } } catch (e) {}
       location.href = url;
     }
@@ -98,7 +134,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:re
   function words() { document.documentElement.lang = ["en", "zh-Hans", "zh-Hant", "es", "ca"][li()]; }
   window.FBL_GET = function () { return (window.FBL && FBL.get()) || "en"; };
   window.FBL_SET = function (l) { if (window.FBL) FBL.set(l); words(); };
-  words();
+  words(); slot();
 })();
 </script>
 </body>
