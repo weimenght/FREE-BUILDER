@@ -20,7 +20,7 @@
     ctl: ["Show the controls", "显示控制按钮", "顯示控制按鈕", "Muestra los controles", "Mostra els controls"],
     u_music: ["Music", "音乐", "音樂", "Música", "Música"], u_drink: ["Drink", "喝点什么", "喝點什麼", "Bebida", "Beguda"], u_sky: ["Sky", "天色", "天色", "Cielo", "Cel"],
     u_else: ["Elsewhere", "换个地方", "換個地方", "Otro lugar", "Un altre lloc"], u_friend: ["Friend", "朋友", "朋友", "Amigo", "Amic"],
-    help: ["How it works", "怎么玩", "怎麼玩", "Cómo funciona", "Com funciona"], full: ["Full screen", "全屏", "全螢幕", "Pantalla completa", "Pantalla completa"],
+    help: ["How it works", "怎么玩", "怎麼玩", "Cómo funciona", "Com funciona"], full: ["Full screen", "全屏", "全螢幕", "Pantalla completa", "Pantalla completa"], unfullL: ["Exit full screen", "退出全屏", "退出全螢幕", "Salir de pantalla completa", "Surt de la pantalla completa"],
     nextOnly: ["Next stop", "下一站", "下一站", "Próxima parada", "Propera parada"], arrivingOnly: ["Arriving", "即将到站", "即將到站", "Llegando", "Arribant"],
     atPf: ["At the platform", "停靠站台", "停靠月台", "En el andén", "A l'andana"], offShort: ["Get off", "下车", "下車", "Bajar", "Baixar"],
     play: ["Play", "播放", "播放", "Reproducir", "Reprodueix"], pause: ["Pause", "暂停", "暫停", "Pausa", "Pausa"],
@@ -175,10 +175,17 @@
     "else": SV('<path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>'),
     friend: SV('<circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.4 3-5.4 6-5.4s5.4 2 6 5.4"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14.6c2.4.2 4 1.9 4.5 5.4"/>'),
     full: SV('<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>'),
+    unfull: SV('<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>'),
     window: SV('<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 3v18M3 12h18"/><path d="M6 7.5l2-2M15 16.5l2-2" opacity=".6"/>'),
     door: SV('<path d="M5 21V4a1 1 0 0 1 1-1h9v18"/><path d="M15 3l4 1.5V21"/><path d="M3 21h18"/><circle cx="12" cy="12.5" r=".9" fill="currentColor"/>')
   };
   function fullOk() { var d = document.documentElement; try { return !!(d.requestFullscreen || d.webkitRequestFullscreen) && window.top === window ? true : !!(window.top.document.documentElement.requestFullscreen); } catch (e) { return false; } }
+  function paintFull() {
+    var f = UI && UI.top.querySelector('[data-u="full"]'); if (!f) return;
+    var on = false; try { var td = window.top.document; on = !!(td.fullscreenElement || td.webkitFullscreenElement); } catch (e) {}
+    if (f._on === on) return; f._on = on; f.innerHTML = on ? ICON.unfull : ICON.full;
+    var k = on ? "unfullL" : "full"; f.setAttribute("aria-label", w(k)); f.title = w(k);
+  }
   function toggleFull() {
     try { var td = window.top.document, el = td.documentElement, on = td.fullscreenElement || td.webkitFullscreenElement;
       if (on) (td.exitFullscreen || td.webkitExitFullscreen).call(td); else (el.requestFullscreen || el.webkitRequestFullscreen).call(el); } catch (e) {}
@@ -207,7 +214,7 @@
     if (!UI) return;
     UI.dock.querySelectorAll("button").forEach(function (b) { var k = "u_" + b.dataset.u; b.querySelector("span").textContent = w(k); b.setAttribute("aria-label", w(k)); });
     var h = UI.top.querySelector('[data-u="help"]'); h.textContent = "?"; h.setAttribute("aria-label", w("help")); h.title = w("help");
-    var f = UI.top.querySelector('[data-u="full"]'); if (f) { f.setAttribute("aria-label", w("full")); f.title = w("full"); }
+    paintFull();
   }
   function paintUI() {
     if (!UI) return;
@@ -227,7 +234,8 @@
     if (ts === "STOPPED") { try { var dn = FBCabin.director.next; if (dn.depart && dn.depart - Date.now() < 35e3) dn.depart = Date.now() + 35e3; } catch (x) {} }   /* time to decide */
     var tH = UI.top.offsetHeight, bH = UI.dock.offsetHeight, r = de.style;
     if (r.getPropertyValue("--jnT") !== tH + "px" || r.getPropertyValue("--jnB") !== bH + "px") { r.setProperty("--jnT", tH + "px"); r.setProperty("--jnB", bH + "px"); try { FBCabin.fit(); } catch (x) {} }
-    if (li() !== paintUI.l) { paintUI.l = li(); words(); }
+    if (li() !== paintUI.l) { paintUI.l = li(); words(); var ff = UI.top.querySelector('[data-u="full"]'); if (ff) ff._on = null; }
+    paintFull();
   }
   function reserve() { return (UI && FBCabin.S.boarded ? UI.top.offsetHeight + UI.dock.offsetHeight : 0) + 28; }
 
@@ -655,11 +663,11 @@
     ".jn-seats .cb-seats{padding:0 4px}.jn-seats:empty{display:none}" +
     ".jn-do{flex:none;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(245,230,200,.45);background:transparent;color:inherit;font:600 14px/1 system-ui,-apple-system,sans-serif;cursor:pointer;white-space:nowrap}.jn-do[hidden]{display:none}" +
     ".jn-do.pri{background:#f5c27a;border-color:#f5c27a;color:#2a1a10;animation:jnGlow 2.4s ease-in-out infinite}@keyframes jnGlow{50%{box-shadow:0 0 0 6px rgba(245,194,122,.2)}}" +
-    ".jn-ic{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid rgba(245,230,200,.25);background:transparent;color:inherit;font:600 16px/1 system-ui,sans-serif;cursor:pointer}" +
+    ".jn-ic{flex:none;display:grid;place-items:center;width:40px;height:40px;padding:0;box-sizing:border-box;border-radius:50%;border:1px solid rgba(245,230,200,.25);background:transparent;color:inherit;font:600 16px/1 system-ui,sans-serif;cursor:pointer}.jn-ic svg{display:block;margin:0}" +
     ".jn-do:hover,.jn-ic:hover,.jn-do:focus-visible,.jn-ic:focus-visible{border-color:#f5e6c8;outline:none}" +
     ".jn-dock{bottom:max(8px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:6px;border-radius:20px}" +
     ".jn-dock button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:54px;padding:4px 2px;border:0;border-radius:14px;background:transparent;color:inherit;cursor:pointer;font:500 12px/1.15 system-ui,-apple-system,'PingFang SC',sans-serif;min-width:0}" +
-    ".jn-dock button i{font-style:normal;line-height:0}.jn-dock button svg{width:22px;height:22px}.jn-ic svg{width:18px;height:18px;vertical-align:middle}.jn-ib svg{width:38px;height:38px}.jn-dock button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.85}" +
+    ".jn-dock button i{font-style:normal;line-height:0}.jn-dock button svg{width:22px;height:22px}.jn-ic svg{width:18px;height:18px}.jn-ib svg{width:38px;height:38px}.jn-dock button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.85}" +
     ".jn-dock button:hover,.jn-dock button:focus-visible{background:rgba(255,230,190,.12);outline:none}" +
     ".jn-hl{box-shadow:0 0 0 3px #f5c27a,0 0 22px rgba(245,194,122,.55)!important;border-radius:14px;position:relative;z-index:2}#windowViewport.jn-hl{border-radius:inherit}" +
     ".jn-intro{position:fixed;inset:0;z-index:110;display:grid;place-items:center;padding:calc(var(--jnT,64px) + 16px) 16px calc(var(--jnB,72px) + 16px);pointer-events:none}" +
