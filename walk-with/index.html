@@ -42,6 +42,12 @@
   label { font-family:var(--hand); font-weight:600; font-size:27px; display:block; margin-bottom:6px; }
   html:lang(zh) label, html:lang(zh-Hant) label { font-size:20px; font-weight:700; }
   .times { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .days { display:grid; grid-template-columns:repeat(10,1fr); gap:8px; }
+  .days .chip { grid-column:span 2; }
+  .days .chip[data-d="0"], .days .chip[data-d="1"] { grid-column:span 5; }
+  .days .chip { font-size:22px; padding:7px 0; }
+  html:lang(zh) .days .chip, html:lang(zh-Hant) .days .chip { font-size:16px; }
+  .chip:disabled { opacity:.35; box-shadow:none; cursor:default; }
   .chip, .btn, input { font:inherit; color:var(--ink); background:var(--field); border:2.5px solid var(--ink); border-radius:255px 14px 225px 14px/14px 225px 14px 255px; }
   .chip { font-family:var(--hand); font-weight:600; font-size:31px; padding:8px 0; cursor:pointer; box-shadow:2px 2px 0 var(--ink); }
   .chip[aria-pressed=true] { background:var(--sun); color:#3b2a20; box-shadow:none; transform:translate(2px,2px); }
@@ -115,7 +121,9 @@ function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).r
 function dec(x) { try { x = x.replace(/-/g, "+").replace(/_/g, "/"); return JSON.parse(decodeURIComponent(escape(atob(x)))); } catch (e) { return null; } }
 function newCode() { var a = "ACDEFHJKMNPRTWXY3479", c = "", r = new Uint32Array(4); try { crypto.getRandomValues(r); } catch (e) { for (var i = 0; i < 4; i++) r[i] = Math.random() * 1e9; } for (var j = 0; j < 4; j++) c += a[r[j] % a.length]; return c; }
 function linkFor(w) { return location.href.split(/[?#]/)[0] + "#w=" + enc({ v: 1, id: w.id, t: w.t, c: w.c, n: w.n, at: w.at }); }
-function nextAt(tm) { var p = tm.split(":").map(Number), d = new Date(); d.setHours(p[0], p[1], 0, 0); if (d.getTime() <= Date.now() + MIN) d.setDate(d.getDate() + 1); return d.getTime(); }
+function atFor(off, tm) { var p = tm.split(":").map(Number), d = new Date(); d.setDate(d.getDate() + off); d.setHours(p[0], p[1], 0, 0); return d.getTime(); }
+function ok(off, tm) { return atFor(off, tm) > Date.now() + MIN; }
+function dayName(off) { if (off === 0) return T(W.today); if (off === 1) return T(W.tomorrow); var d = new Date(); d.setDate(d.getDate() + off); try { return d.toLocaleDateString(T(W.locale), { weekday: "short" }); } catch (e) { return ""; } }
 function dayLabel(at) {
   var a = new Date(at), n = new Date(); function strip(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); }
   var diff = Math.round((strip(a) - strip(n)) / DAY); if (diff === 0) return T(W.today); if (diff === 1) return T(W.tomorrow);
@@ -223,7 +231,8 @@ const WALKING=()=>`<svg class="scene" viewBox="0 0 320 150" role="img" aria-labe
 var V = {
 home: function () { return '<section class="screen">' + CORNER() +
   '<div><h1>' + esc(T(W.app)) + '</h1><p class="lede">' + esc(T(W.lede)) + '</p></div>' +
-  '<div><label id="whenL">' + esc(T(W.pickTime)) + '</label><div class="times" role="group" aria-labelledby="whenL">' + TIMES.map(function (x) { return '<button type="button" class="chip" aria-pressed="false" data-t="' + x + '">' + x + '</button>'; }).join("") + '</div></div>' +
+  '<div><label id="dayL">' + esc(T(W.pickDay)) + '</label><div class="days" role="group" aria-labelledby="dayL">' + [0, 1, 2, 3, 4, 5, 6].map(function (o) { return '<button type="button" class="chip day" aria-pressed="false" data-d="' + o + '">' + esc(dayName(o)) + '</button>'; }).join("") + '</div></div>' +
+  '<div><label id="whenL">' + esc(T(W.pickTime)) + '</label><div class="times" role="group" aria-labelledby="whenL">' + TIMES.map(function (x) { return '<button type="button" class="chip tm" aria-pressed="false" data-t="' + x + '">' + x + '</button>'; }).join("") + '</div></div>' +
   '<div><label for="corner">' + esc(T(W.whereLabel)) + '</label><input id="corner" maxlength="60" autocomplete="off" placeholder="' + esc(T(W.wherePh)) + '"></div>' +
   '<div><label for="name">' + esc(T(W.nameLabel)) + '</label><input id="name" maxlength="30" autocomplete="given-name" placeholder="' + esc(T(W.namePh)) + '" value="' + esc(get(NAMEKEY) || "") + '"></div>' +
   '<p class="note err" id="err" aria-live="polite"></p>' +
@@ -264,11 +273,18 @@ function share(text, onCopied) {
   window.prompt("", text);
 }
 var B = {
-  home: function () { var pick = null, chips = document.querySelectorAll(".chip");
-    Array.prototype.forEach.call(chips, function (b) { b.onclick = function () { Array.prototype.forEach.call(chips, function (x) { x.setAttribute("aria-pressed", "false"); }); b.setAttribute("aria-pressed", "true"); pick = b.getAttribute("data-t"); }; });
+  home: function () { var pick = null, day = TIMES.some(function (t) { return ok(0, t); }) ? 0 : 1;
+    var days = document.querySelectorAll(".chip.day"), tms = document.querySelectorAll(".chip.tm");
+    function paint() {
+      Array.prototype.forEach.call(days, function (b) { var o = +b.getAttribute("data-d"); b.setAttribute("aria-pressed", String(o === day)); b.disabled = !TIMES.some(function (t) { return ok(o, t); }); });
+      Array.prototype.forEach.call(tms, function (b) { var t = b.getAttribute("data-t"); b.disabled = !ok(day, t); if (b.disabled && pick === t) pick = null; b.setAttribute("aria-pressed", String(pick === t)); });
+    }
+    Array.prototype.forEach.call(days, function (b) { b.onclick = function () { day = +b.getAttribute("data-d"); paint(); }; });
+    Array.prototype.forEach.call(tms, function (b) { b.onclick = function () { pick = b.getAttribute("data-t"); paint(); }; });
+    paint();
     on("make", function () { var c = $("corner").value.trim(), n = $("name").value.trim();
-      if (!pick || !c) { $("err").textContent = T(W.needCorner); return; }
-      put(NAMEKEY, n || null); s = { id: newCode(), t: pick, c: c, n: n, at: nextAt(pick), role: "host", sent: false }; save(); render(true); }); },
+      if (!pick || !c || !ok(day, pick)) { paint(); $("err").textContent = T(W.needCorner); return; }
+      put(NAMEKEY, n || null); s = { id: newCode(), t: pick, c: c, n: n, at: atFor(day, pick), role: "host", sent: false }; save(); render(true); }); },
   send: function () { on("share", function () { share(F(W.shareText, { t: when(s), c: s.c, link: linkFor(s) }), function () { $("note").textContent = T(W.copied); }); });
     on("sent", function () { s.sent = true; save(); render(true); }); },
   invite: function () { on("yes", function () { var txt = F(W.replyText, { t: when(s), c: s.c }); s.joined = true; save(); render(true); share(txt); }); },
