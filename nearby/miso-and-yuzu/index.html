@@ -329,6 +329,7 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     guests.forEach(function (q) { if (q.dog && window.FBWorld && FBWorld.drawPet) { g.save(); g.beginPath(); g.rect(18, 14, 40, 36); g.clip(); FBWorld.drawPet(g, q.spec, 30 + Math.sin(f / 40) * 3, 57, 1, { flip: false }); g.restore(); R(13, 50, 50, 3, "#8a5a33"); R(20, 44, 6, 6, "#a8582a"); R(19, 38, 3, 6, "#4a8a44"); R(23, 36, 3, 8, "#3f7a3a"); R(26, 40, 2, 4, "#4a8a44"); } });
     if (box) { var bxx = Math.round(box.x - 12); R(bxx, FLOOR - 10, 24, 12, "#b8864a"); R(bxx, FLOOR - 10, 24, 2, "#8a5a2a"); R(bxx - 3, FLOOR - 13, 6, 4, "#c89a5a"); R(bxx + 21, FLOOR - 13, 6, 4, "#c89a5a"); R(bxx + 6, FLOOR - 5, 12, 1, "#8a5a2a"); }
     homeCats().sort(function (a, b) { return cats[a].x - cats[b].x; }).forEach(function (k) { var c = cats[k]; var img = catHD(k, c.pose, c.dir, f, { p: c.p, bell: k === "yuzu" && bell }), sc = SC / 2; g.drawImage(img, Math.round(c.x) - 4 * sc, FLOOR + (k === "yuzu" ? 3 : 1) - 60 * sc, 44 * sc, 64 * sc); if (c.pose === "box" && box) { var bf = Math.round(box.x - 12); R(bf, FLOOR - 4, 24, 6, "#b8864a"); R(bf, FLOOR - 4, 24, 1, "#8a5a2a"); } });
+    pawCard();
     guests.forEach(function (q) {
       if (q.dog || !window.FBWorld || !FBWorld.drawPet) return;
       var now2 = performance.now(); if (now2 > q.until) { q.until = now2 + 3000 + Math.random() * 5000; q.tx = Math.random() < .5 ? q.x : 6 + Math.random() * (WD - 30); }
@@ -358,9 +359,27 @@ h2{font:400 12px/1.4 var(--px);color:var(--a);margin:26px 0 12px;letter-spacing:
     if (tool === "brush") { c.pet = now + 700; purr(true); for (var i = 0; i < 3; i++) fur.push({ x: p.x, y: p.y, vx: (Math.random() - .5) * .8, vy: -Math.random() * .8, a: 1, c: CATS[k].b }); if (now - petT > 900) { petT = now; love(k, 1); mood(t(W.mood.fluff)); } }
   }
   var down = false;
+  /* today's Paw Reading card (fb_paw, drawn at the stall in town or in the app) lies on the floor under the paw of a cat at home;
+     a tap says which card. On this device only (the brief of Nov 6: traces, not buttons). */
+  var PAW = { v: null, at: 0, img: null, box: null };
+  function pawToday() { if (performance.now() - PAW.at < 3000) return PAW.v; PAW.at = performance.now(); try { var d = new Date(), dd = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(), v = JSON.parse(localStorage.getItem("fb_paw") || "null"); PAW.v = v && v.d === dd && v.i >= 0 && v.i < 54 ? v : null; } catch (e) { PAW.v = null; } return PAW.v; }
+  function pawCard() {
+    PAW.box = null; var v = pawToday(), hc = homeCats(); if (!v || !hc.length) return;
+    if (!PAW.img || PAW.img.dataset.i !== String(v.i)) { PAW.img = new Image(); PAW.img.dataset.i = String(v.i); PAW.img.src = "/nearby/paw-reading/cards/" + (v.i < 10 ? "0" : "") + v.i + ".png"; }
+    var k = hc[0], c = cats[k], x = Math.round(c.x + (c.dir < 0 ? -9 : 15)), y = FLOOR - 7;
+    R(x + 1, y + 1, 7, 9, "rgba(0,0,0,.35)"); R(x - 1, y - 1, 8, 10, "#000");
+    if (PAW.img.complete && PAW.img.naturalWidth) g.drawImage(PAW.img, x, y, 6, 8); else R(x, y, 6, 8, "#fbf3e2");
+    PAW.box = { x: x - 3, y: y - 3, w: 13, h: 15, k: k, i: v.i };
+  }
+  var PW_ = { k: ["Today's card, {c}. {n} is keeping it under a paw for you.", "今天的牌，{c}。{n}用爪子替你压着。", "今天的牌，{c}。{n}用爪子替你壓著。", "La carta de hoy, {c}. {n} te la guarda bajo la pata.", "La carta d'avui, {c}. {n} te la guarda sota la pota."],
+    miso: ["Miso", "味噌", "味噌", "Miso", "La Miso"], yuzu: ["Yuzu", "柚子", "柚子", "Yuzu", "La Yuzu"] };
+  function pawSay(b) { var li = Math.max(0, ["en", "zh", "zh-Hant", "es", "ca"].indexOf((window.FBL && FBL.get && FBL.get()) || "en"));
+    function say(c) { var tx = (PW_.k[li] || PW_.k[0]).replace("{c}", c).replace("{n}", PW_[b.k][li] || PW_[b.k][0]); try { if (window.FBG && FBG.note) FBG.note({ icon: "🔮", text: tx }); } catch (e) {} }
+    if (window.FBPaw) return say(FBPaw.cardName(FBPaw.cardOf(b.i), li)); var sc = document.createElement("script"); sc.src = "/nearby/paw-reading/paw.js"; sc.onload = function () { if (window.FBPaw) say(FBPaw.cardName(FBPaw.cardOf(b.i), li)); }; document.head.appendChild(sc); }
   cv.addEventListener("pointerdown", function (e) {
     down = true; try { cv.setPointerCapture(e.pointerId); } catch (x) {}
     var p = at(e);
+    if (PAW.box && p.x >= PAW.box.x && p.x <= PAW.box.x + PAW.box.w && p.y >= PAW.box.y && p.y <= PAW.box.y + PAW.box.h) { down = false; pawSay(PAW.box); return; }
     if (tool === "treat") { var day = new Date().toDateString(); if (S.treats.d !== day) S.treats = { d: day, n: 0 }; if (S.treats.n >= 6) { mood(t(W.mood.full)); return; } S.treats.n += 2; save(); treatsInBowl = Math.min(4, treatsInBowl + 2); meow("yuzu"); setTimeout(function () { meow("miso"); }, 300); return; }
     if (tool === "box") { box = { x: Math.max(14, Math.min(WD - 14, p.x)), cat: null }; ["miso", "yuzu"].forEach(function (k2) { cats[k2].until = 0; }); return; }
     var k = catAt(p); if (k && (tool === "pet" || tool === "brush")) { if (Math.random() < .3) meow(k); }
