@@ -55,18 +55,13 @@
     /* 04 / Services: four cards, one link each */
     .svc-grid { display:grid; gap:14px; grid-template-columns:1fr; }
     @media (min-width:720px) { .svc-grid { grid-template-columns:1fr 1fr; } }
-    .svc { display:flex; flex-direction:column; gap:8px; padding:24px; border-radius:22px; border:1px solid rgba(255,255,255,.14); color:#fff; text-decoration:none; transition:border-color .2s, background .2s; }
-    .svc:hover { border-color:rgba(255,255,255,.5); background:rgba(255,255,255,.03); }
-    .svc-n { font:400 11px 'Space Mono',monospace; color:#F2A091; }
     .svc-t { font-family:Syne,'Plus Jakarta Sans','PingFang SC',sans-serif; font-weight:700; font-size:clamp(1.25rem,2.2vw,1.5rem); line-height:1.15; letter-spacing:-.01em; }
     .svc-b { font:400 11px 'Space Mono',monospace; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.45); }
     .svc-d { font-size:14.5px; line-height:1.6; color:rgba(255,255,255,.75); margin-top:4px; }
-    .svc-best { font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-size:17px; color:rgba(255,255,255,.85); }
-    .svc-try { margin-top:auto; padding-top:10px; font:400 12px 'Space Mono',monospace; color:rgba(255,255,255,.6); }
+    .svc-try { font:400 12px 'Space Mono',monospace; color:rgba(255,255,255,.6); }
     .svc-try b { color:#fff; font-weight:700; text-decoration:underline; text-decoration-color:#E2553F; text-decoration-thickness:2px; text-underline-offset:4px; }
     .svc:hover .svc-try b { color:#F2A091; }
-    .svc-lab { display:block; margin-top:14px; padding:18px 22px; border-radius:22px; border:1px dashed rgba(255,255,255,.25); color:#fff; text-decoration:none; }
-    .svc-lab > * + * { margin-top:6px; }
+    .svc-lab { color:#fff; text-decoration:none; }
     .svc-lab:hover { border-color:rgba(255,255,255,.6); }
 
     /* Work rows */
@@ -107,6 +102,77 @@
     .bg-accent.text-white.text-\[10px\] { background:#C2412D; }
     html, body { overflow-x:clip; }
     @media (max-width:359px) { header .px-3\.5 { padding-left:.6rem; padding-right:.6rem; } header .gap-2, header .gap-3 { gap:.4rem; } header button[onclick="cycleLanguage()"] svg { display:none; } }
+
+    /* ===== Nov 6 overhaul: show, don't tell ===== */
+    .kick { display:inline-flex; align-items:center; gap:.5rem; font:400 11px 'Space Mono',monospace; letter-spacing:.18em; text-transform:uppercase; color:var(--muted,#6B6A70); }
+    .kick-l { width:1.5rem; height:1px; background:currentColor; opacity:.6; }
+    .hero > * + * { margin-top:1.6rem; }
+    .hero-d { font-size:clamp(1.05rem,1.8vw,1.3rem); line-height:1.55; color:rgba(var(--ink-rgb,23,23,26),.72); max-width:36rem; }
+    .loop { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:2.6rem !important; counter-reset:lp; }
+    .lp { display:flex; flex-direction:column; gap:10px; padding:10px 10px 12px; border-radius:20px; background:var(--white,#fff); border:1px solid #E5E2DA; transition:border-color .5s var(--ease), box-shadow .5s var(--ease), transform .5s var(--ease); }
+    .lp:not(.on) b { opacity:.55; } .lp:not(.on) { border-color:rgba(var(--ink-rgb,23,23,26),.1); border-color:color-mix(in srgb, currentColor 14%, transparent); } .lp b { transition:opacity .5s var(--ease); }
+    .lp.on { border-color:currentColor; transform:translateY(-3px); box-shadow:0 14px 30px -22px rgba(23,23,26,.5); }
+    .lp svg { width:100%; height:auto; border-radius:13px; background:#F1EEE6 radial-gradient(rgba(var(--dot-rgb,23,23,26),.1) 1px, transparent 1px) 0 0/14px 14px; }
+    .lp > span { display:flex; align-items:baseline; gap:8px; padding:0 4px; }
+    .lp i { font:normal 400 11px 'Space Mono',monospace; color:var(--accent-ink,#C2412D); }
+    .lp b { font:700 clamp(12.5px,1.6vw,16px)/1.25 Syne,'Plus Jakarta Sans','PingFang SC',sans-serif; letter-spacing:-.01em; }
+    @media (max-width:560px) { .loop { gap:6px; } .lp { padding:6px 6px 9px; border-radius:16px; gap:7px; } .lp svg { border-radius:11px; } .lp > span { flex-direction:column; gap:1px; padding:0 3px; } }
+    .strip { display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 18px; padding-top:1.4rem; border-top:1px solid #E5E2DA; font-size:13.5px; }
+    .strip > span { font:400 11px 'Space Mono',monospace; letter-spacing:.16em; text-transform:uppercase; color:var(--muted,#6B6A70); }
+    .strip b { font-weight:500; }
+    .sec-hd { display:flex; flex-direction:column; gap:.7rem; max-width:44rem; }
+    .sec-k { font:400 11px 'Space Mono',monospace; letter-spacing:.16em; text-transform:uppercase; color:var(--muted,#6B6A70); }
+    .on-dark .sec-k { color:rgba(255,255,255,.55); }
+    .sec-d { font-size:clamp(1rem,1.5vw,1.125rem); line-height:1.6; color:rgba(var(--ink-rgb,23,23,26),.68); }
+    .on-dark .sec-d { color:rgba(255,255,255,.62); }
+    .bel-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+    @media (min-width:640px) { .bel-grid { grid-template-columns:1fr 1fr; gap:12px; } }
+    @media (min-width:960px) { .bel-grid { grid-template-columns:repeat(4,1fr); } }
+    .bel { display:flex; gap:14px; align-items:flex-start; padding:18px; border-radius:20px; background:var(--white,#fff); border:1px solid #E5E2DA; }
+    @media (min-width:960px) { .bel { flex-direction:column; padding:22px; } }
+    .bel-ic { width:40px; height:40px; flex:none; color:var(--ink,#17171A); }
+    .bel h3 { font:700 16px/1.25 Syne,'Plus Jakarta Sans','PingFang SC',sans-serif; letter-spacing:-.01em; margin-bottom:5px; }
+    .bel p { font-size:13.5px; line-height:1.55; color:rgba(var(--ink-rgb,23,23,26),.66); }
+    .path { display:grid; grid-template-columns:1fr; gap:12px; position:relative; }
+    @media (min-width:760px) { .path { grid-template-columns:repeat(3,1fr); gap:16px; } .path::before { content:""; position:absolute; left:16%; right:16%; top:74px; border-top:2px dashed rgba(226,85,63,.45); z-index:0; } }
+    .st { position:relative; z-index:1; display:flex; flex-direction:column; gap:6px; }
+    .st-art { display:block; border-radius:20px; background:#F1EEE6 radial-gradient(rgba(var(--dot-rgb,23,23,26),.1) 1px, transparent 1px) 0 0/14px 14px; border:1px solid #E5E2DA; margin-bottom:8px; }
+    .st-art svg { width:100%; height:auto; display:block; }
+    .st-n { font:400 11px 'Space Mono',monospace; color:var(--accent-ink,#C2412D); }
+    .st h3 { font:700 19px/1.2 Syne,'Plus Jakarta Sans','PingFang SC',sans-serif; letter-spacing:-.01em; }
+    .st p { font-size:14px; line-height:1.55; color:rgba(var(--ink-rgb,23,23,26),.68); max-width:22rem; }
+    @media (max-width:759px) { .st { display:grid; grid-template-columns:42% 1fr; column-gap:14px; align-items:center; } .st-art { grid-row:span 3; margin:0; } .st-n, .st h3, .st p { grid-column:2; } .st h3 { font-size:17px; } .st p { font-size:13.5px; } }
+    .svc { display:flex; flex-direction:column; gap:0; padding:10px; border-radius:24px; border:1px solid rgba(255,255,255,.14); color:#fff; text-decoration:none; transition:border-color .2s, transform .3s var(--ease); }
+    .svc:hover { border-color:rgba(255,255,255,.5); transform:translateY(-3px); background:transparent; }
+    .svc-art { display:block; height:clamp(150px,18vw,184px); border-radius:16px; overflow:hidden; background:#F1EEE6; }
+    .svc-art svg { width:100%; height:100%; display:block; }
+    .svc-body { display:flex; flex-direction:column; gap:7px; padding:16px 12px 10px; flex:1; }
+    .svc-d { font-size:14px; line-height:1.6; color:rgba(255,255,255,.7); margin-top:2px; }
+    .svc-try { margin-top:auto; padding-top:8px; }
+    .svc-lab { display:flex; align-items:center; gap:18px; margin-top:4px; padding:14px; border-radius:22px; border:1px dashed rgba(255,255,255,.25); }
+    .svc-lab-t > * + * { margin-top:6px; } .svc-lab-t { display:block; min-width:0; }
+    .cg-art { width:150px; height:auto; flex:none; border-radius:14px; }
+    @media (max-width:520px) { .svc-lab { flex-direction:column; align-items:flex-start; } .cg-art { width:100%; } }
+    .contact-in { display:grid; gap:2rem; max-width:44rem; margin:0 auto; }
+    /* the drawings move a little, and stop for reduced motion */
+    .an-float { animation:anf 3.4s ease-in-out infinite alternate; }
+    @keyframes anf { to { transform:translateY(-4px); } }
+    .an-drop { animation:and 2.8s var(--ease) infinite; }
+    .an-d2 { animation-delay:.5s; }
+    @keyframes and { 0% { transform:translateY(-34px); opacity:0; } 30%, 100% { transform:none; opacity:1; } }
+    .an-say { animation:ans 2.8s ease-in-out infinite; transform-box:fill-box; transform-origin:bottom left; }
+    .an-say.an-d2 { animation-delay:1.4s; }
+    @keyframes ans { 0%, 100% { opacity:.35; transform:scale(.94); } 40%, 70% { opacity:1; transform:none; } }
+    .an-peek { animation:anp 4s ease-in-out infinite alternate; }
+    @keyframes anp { from { transform:translateX(-22px); } to { transform:none; } }
+    .an-block { transform-box:fill-box; transform-origin:center; animation:anb 3.2s var(--ease) infinite; }
+    @keyframes anb { 0% { transform:translate(10px,-40px) rotate(40deg); opacity:0; } 35%, 100% { transform:none; opacity:1; } }
+    .an-pass { animation:anpass 4.2s ease-in-out infinite; }
+    @keyframes anpass { 0% { transform:translateX(-58px); } 45%, 55% { transform:none; } 100% { transform:translateX(58px); } }
+    .an-hop { animation:anh 1.6s ease-in-out infinite; } @keyframes anh { 50% { transform:translateY(-8px); } }
+    .an-wave { transform-box:fill-box; transform-origin:center; animation:anw 1s ease-in-out infinite alternate; } @keyframes anw { to { transform:scaleY(.45); } }
+    .an-wave:nth-child(2) { animation-delay:.2s; } .an-wave:nth-child(3) { animation-delay:.4s; }
+    @media (prefers-reduced-motion: reduce) { .lp { transform:none; } .lp:not(.on) b { opacity:1; } [class*="an-"] { animation:none !important; } }
 </style>
   <script>document.documentElement.classList.add('js');</script>
 <meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
@@ -206,18 +272,14 @@ img{filter:none}
   <main id="top">
     <div class="max-w-5xl mx-auto px-4 sm:px-8">
 
-      <!-- HERO -->
-      <section class="pt-16 sm:pt-28 pb-16 sm:pb-24 space-y-8">
-        <p class="reveal inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em] text-muted">
-          <span class="w-6 h-px bg-ink/40"></span><span data-i18n="heroKicker">Independent L&D practice</span>
-        </p>
+      <!-- HERO: the line, one sentence, and the whole idea in three frames (Nov 6 overhaul: show, don't tell) -->
+      <section class="hero pt-16 sm:pt-28 pb-16 sm:pb-24">
+        <p class="reveal kick"><span class="kick-l"></span><span data-i18n="heroKicker">Independent L&amp;D practice</span></p>
         <h1 class="reveal font-syne text-[2.6rem] sm:text-7xl font-bold tracking-tight leading-[1.04] max-w-4xl" data-i18n-html="heroTitle">
           Better work starts <span class="accent-word">between</span> people.
         </h1>
-        <p class="reveal text-base sm:text-xl text-ink/75 leading-relaxed max-w-2xl" data-i18n="heroDesc">
-          We design learning that helps colleagues understand one another, get through difficult moments and find better ways of working together. Short, hands-on practice in listening, feedback and trust that ends in real conversations.
-        </p>
-        <div class="reveal flex flex-wrap items-center gap-3 pt-1">
+        <p class="reveal hero-d" data-i18n="heroDesc">Short, hands-on practice in listening, feedback and trust. It ends in real conversations.</p>
+        <div class="reveal flex flex-wrap items-center gap-3">
           <a href="#contact" class="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-ink text-white hover:bg-accent text-xs font-bold font-mono transition-colors">
             <span data-i18n="heroCta1">Book a discovery call</span><span aria-hidden="true">→</span>
           </a>
@@ -225,125 +287,107 @@ img{filter:none}
             <span data-i18n="heroCta2">See the services</span>
           </a>
         </div>
-        <div class="reveal pt-8 sm:pt-12 border-t border-line grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-6 text-sm">
-          <div class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted sm:pt-0.5" data-i18n="stripLabel">Built for</div>
-          <div class="font-medium" data-i18n="strip1">Global consultancies</div>
-          <div class="font-medium" data-i18n="strip2">Hyper-growth tech</div>
-          <div class="font-medium" data-i18n="strip3">Multinational teams</div>
-        </div>
+        <ol class="reveal loop" id="loop">
+          <li class="lp on"><svg class="" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path d="M25 106C25 81 67 81 67 106Z" fill="#17171A"/><circle cx="46" cy="60" r="12" fill="#17171A"/><circle cx="45.9" cy="59" r="1.7" fill="#F7F6F2"/><circle cx="53.1" cy="59" r="1.7" fill="#F7F6F2"/><path d="M133 106C133 81 175 81 175 106Z" fill="#E2553F"/><circle cx="154" cy="60" r="12" fill="#E2553F"/><circle cx="146.9" cy="59" r="1.7" fill="#F7F6F2"/><circle cx="154.1" cy="59" r="1.7" fill="#F7F6F2"/><rect x="12" y="104" width="176" height="7" rx="3.5" fill="#D9D3C5"/><g class="an-float"><rect x="86" y="30" width="28" height="54" rx="6" fill="#17171A"/><rect x="90" y="36" width="20" height="18" rx="3.5" fill="#E2553F"/><text x="100" y="50" text-anchor="middle" font-family="Space Mono, monospace" font-size="13" font-weight="700" fill="#fff">?</text><rect x="91" y="60" width="18" height="3" rx="1.5" fill="rgba(247,246,242,.45)"/><rect x="91" y="67" width="12" height="3" rx="1.5" fill="rgba(247,246,242,.45)"/></g></svg><span><i>1</i><b data-i18n="loop1">The screen sets it up.</b></span></li>
+          <li class="lp"><svg class="" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path d="M25 106C25 81 67 81 67 106Z" fill="#17171A"/><circle cx="46" cy="60" r="12" fill="#17171A"/><circle cx="45.9" cy="59" r="1.7" fill="#F7F6F2"/><circle cx="53.1" cy="59" r="1.7" fill="#F7F6F2"/><path d="M133 106C133 81 175 81 175 106Z" fill="#E2553F"/><circle cx="154" cy="60" r="12" fill="#E2553F"/><circle cx="146.9" cy="59" r="1.7" fill="#F7F6F2"/><circle cx="154.1" cy="59" r="1.7" fill="#F7F6F2"/><rect x="12" y="104" width="176" height="7" rx="3.5" fill="#D9D3C5"/><g class="an-drop"><rect x="66" y="98" width="30" height="7" rx="3.5" fill="#17171A"/></g><g class="an-drop an-d2"><rect x="104" y="98" width="30" height="7" rx="3.5" fill="#17171A"/></g></svg><span><i>2</i><b data-i18n="loop2">Phones go down.</b></span></li>
+          <li class="lp"><svg class="" viewBox="0 0 200 140" aria-hidden="true" focusable="false"><path d="M25 112C25 87 67 87 67 112Z" fill="#17171A"/><circle cx="46" cy="66" r="12" fill="#17171A"/><circle cx="45.9" cy="65" r="1.7" fill="#F7F6F2"/><circle cx="53.1" cy="65" r="1.7" fill="#F7F6F2"/><path d="M133 112C133 87 175 87 175 112Z" fill="#E2553F"/><circle cx="154" cy="66" r="12" fill="#E2553F"/><circle cx="146.9" cy="65" r="1.7" fill="#F7F6F2"/><circle cx="154.1" cy="65" r="1.7" fill="#F7F6F2"/><rect x="12" y="104" width="176" height="7" rx="3.5" fill="#D9D3C5"/><rect x="66" y="98" width="30" height="7" rx="3.5" fill="#17171A" opacity=".35"/><rect x="104" y="98" width="30" height="7" rx="3.5" fill="#17171A" opacity=".35"/><g class="an-say"><rect x="62" y="16" width="52" height="28" rx="12" fill="#17171A"/><path d="M72 42l-5 11 15-9z" fill="#17171A"/><rect x="72" y="25" width="28" height="4" rx="2" fill="rgba(247,246,242,.5)"/><rect x="72" y="32" width="18" height="4" rx="2" fill="rgba(247,246,242,.5)"/></g><g class="an-say an-d2"><rect x="88" y="34" width="52" height="28" rx="12" fill="#E2553F"/><path d="M128 60l5 11-15-9z" fill="#E2553F"/><rect x="98" y="43" width="30" height="4" rx="2" fill="rgba(255,255,255,.6)"/><rect x="98" y="50" width="20" height="4" rx="2" fill="rgba(255,255,255,.6)"/></g></svg><span><i>3</i><b data-i18n="loop3">People talk.</b></span></li>
+        </ol>
+        <p class="reveal strip"><span data-i18n="stripLabel">Built for</span><b data-i18n="strip1">Global consultancies</b><b data-i18n="strip2">Hyper-growth tech</b><b data-i18n="strip3">Multinational teams</b></p>
       </section>
 
-      <!-- 01 BELIEF -->
+      <!-- BELIEF: four pictures, four lines -->
       <section id="belief" class="scroll-mt-20 py-16 sm:py-24 border-t border-line space-y-10">
-        <div class="reveal grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="belLabel">01 / What we believe</span></div>
-          <div class="md:col-span-8 space-y-3">
-            <h2 class="font-syne text-3xl sm:text-4xl font-bold tracking-tight leading-[1.12]" data-i18n-html="belTitle">People are the <span class="accent-word">point</span>.</h2>
-            <p class="text-base sm:text-lg text-ink/70 leading-relaxed" data-i18n="belDesc">AI and web apps are tools. What matters is what people do with each other afterwards.</p>
-          </div>
+        <div class="reveal sec-hd">
+          <span class="sec-k" data-i18n="belLabel">What we believe</span>
+          <h2 class="font-syne text-3xl sm:text-4xl font-bold tracking-tight leading-[1.12]" data-i18n-html="belTitle">People are the <span class="accent-word">point</span>.</h2>
+          <p class="sec-d" data-i18n="belDesc">AI and web apps are tools. What matters is what people do with each other afterwards.</p>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-px bg-line border border-line rounded-3xl overflow-hidden">
-          <div class="reveal bg-white p-6 sm:p-8 space-y-2">
-            <span class="font-mono text-[11px] text-accent">01</span>
-            <h3 class="font-syne text-lg font-bold" data-i18n="b1t">Learn by doing — and have fun</h3>
-            <p class="text-sm text-ink/70 leading-relaxed" data-i18n="b1d">If you can't try it, you haven't learned it. Play lowers the stakes so people dare to practise.</p>
-          </div>
-          <div class="reveal bg-white p-6 sm:p-8 space-y-2">
-            <span class="font-mono text-[11px] text-accent">02</span>
-            <h3 class="font-syne text-lg font-bold" data-i18n="b2t">Human capabilities first</h3>
-            <p class="text-sm text-ink/70 leading-relaxed" data-i18n="b2d">In the age of AI, empathy, curiosity and trust are the differentiators. That's where we put the practice time.</p>
-          </div>
-          <div class="reveal bg-white p-6 sm:p-8 space-y-2">
-            <span class="font-mono text-[11px] text-accent">03</span>
-            <h3 class="font-syne text-lg font-bold" data-i18n="b3t">Learning is mutual</h3>
-            <p class="text-sm text-ink/70 leading-relaxed" data-i18n="b3d">Everyone teaches, everyone learns. No trainees — only partners. Sharing is caring.</p>
-          </div>
-          <div class="reveal bg-white p-6 sm:p-8 space-y-2">
-            <span class="font-mono text-[11px] text-accent">04</span>
-            <h3 class="font-syne text-lg font-bold" data-i18n="b4t">People are the end, never the means</h3>
-            <p class="text-sm text-ink/70 leading-relaxed" data-i18n="b4d">No leaderboards ranking colleagues, no surveillance analytics. Success is a sincere conversation that wouldn't have happened otherwise.</p>
-          </div>
+        <div class="bel-grid">
+          <div class="bel reveal"><svg class="bel-ic" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><rect x="7" y="7" width="26" height="26" rx="7" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="14" cy="14" r="2.4" fill="#E2553F"/><circle cx="20" cy="20" r="2.4" fill="currentColor"/><circle cx="26" cy="26" r="2.4" fill="#E2553F"/></svg><div><h3 data-i18n="b1t">Learn by doing — and have fun</h3><p data-i18n="b1d">If you can't try it, you haven't learned it. Play lowers the stakes so people dare to practise.</p></div></div>
+          <div class="bel reveal"><svg class="bel-ic" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="28" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M4 30c0-6 4-9 8-9M36 30c0-6-4-9-8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M20 35l-5.4-5.2a3.3 3.3 0 0 1 5.4-3.6 3.3 3.3 0 0 1 5.4 3.6z" fill="#E2553F"/></svg><div><h3 data-i18n="b2t">Human capabilities first</h3><p data-i18n="b2d">In the age of AI, empathy, curiosity and trust are the differentiators. That's where we put the practice time.</p></div></div>
+          <div class="bel reveal"><svg class="bel-ic" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><path d="M8 14h22M25 9l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 26H10M15 21l-5 5 5 5" fill="none" stroke="#E2553F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h3 data-i18n="b3t">Learning is mutual</h3><p data-i18n="b3d">Everyone teaches, everyone learns. No trainees — only partners. Sharing is caring.</p></div></div>
+          <div class="bel reveal"><svg class="bel-ic" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><path d="M6 33h28M8 33V23h8v10M16 33V15h8v18M24 33V26h8v7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M6 8l28 26" stroke="#E2553F" stroke-width="2.6" stroke-linecap="round"/></svg><div><h3 data-i18n="b4t">People are the end, never the means</h3><p data-i18n="b4d">No leaderboards ranking colleagues, no surveillance analytics. Success is a sincere conversation that wouldn't have happened otherwise.</p></div></div>
         </div>
       </section>
 
-      <!-- 02 APPROACH -->
+      <!-- APPROACH: three steps along one path -->
       <section id="approach" class="scroll-mt-20 py-16 sm:py-24 border-t border-line space-y-10">
-        <div class="reveal grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="appLabel">02 / Approach</span></div>
-          <h2 class="md:col-span-8 font-syne text-3xl sm:text-4xl font-bold tracking-tight" data-i18n="appTitle">Diagnose. Build. Pass it on.</h2>
+        <div class="reveal sec-hd">
+          <span class="sec-k" data-i18n="appLabel">Approach</span>
+          <h2 class="font-syne text-3xl sm:text-4xl font-bold tracking-tight" data-i18n="appTitle">Diagnose. Build. Pass it on.</h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-line border border-line rounded-3xl overflow-hidden">
-          <div class="reveal bg-white p-6 sm:p-8 space-y-3">
-            <div class="flex items-center justify-between"><span class="font-mono text-[11px] text-accent">01</span><span class="text-xl" aria-hidden="true">◎</span></div>
-            <h3 class="font-syne text-lg font-bold" data-i18n="app1Title">Diagnose</h3>
-            <p class="text-sm text-ink/70 leading-relaxed" data-i18n="app1Desc">Listen first. A request for a “communication workshop” is often a psychological-safety or role-clarity problem in disguise.</p>
-          </div>
-          <div class="reveal bg-white p-6 sm:p-8 space-y-3">
-            <div class="flex items-center justify-between"><span class="font-mono text-[11px] text-accent">02</span><span class="text-xl" aria-hidden="true">▦</span></div>
-            <h3 class="font-syne text-lg font-bold" data-i18n="app2Title">Build</h3>
-            <p class="text-sm text-ink/70 leading-relaxed" data-i18n="app2Desc">Prototype fast and test with real people. Every tool is designed to hand off — the screen sets things up, colleagues do the rest.</p>
-          </div>
-          <div class="reveal bg-white p-6 sm:p-8 space-y-3">
-            <div class="flex items-center justify-between"><span class="font-mono text-[11px] text-accent">03</span><span class="text-xl" aria-hidden="true">⇄</span></div>
-            <h3 class="font-syne text-lg font-bold" data-i18n="app3Title">Pass it on</h3>
-            <p class="text-sm text-ink/70 leading-relaxed" data-i18n="app3Desc">Every programme ends with people teaching what they learned to someone else. It's the best evidence of learning — measured alongside Kirkpatrick L1–L4.</p>
-          </div>
-        </div>
+        <ol class="path">
+          <li class="st reveal"><span class="st-art"><svg class="" viewBox="0 0 220 120" aria-hidden="true" focusable="false"><rect x="22" y="22" width="124" height="50" rx="20" fill="#17171A"/><path d="M44 70l-6 16 20-14z" fill="#17171A"/><rect x="40" y="38" width="62" height="6" rx="3" fill="rgba(247,246,242,.45)"/><rect x="40" y="50" width="40" height="6" rx="3" fill="rgba(247,246,242,.45)"/><defs><clipPath id="lens"><circle cx="140" cy="66" r="25"/></clipPath></defs><g class="an-peek"><circle cx="140" cy="66" r="25" fill="#F7F6F2"/><g clip-path="url(#lens)"><rect x="118" y="56" width="40" height="6" rx="3" fill="#E2553F"/><rect x="118" y="68" width="28" height="6" rx="3" fill="#E2553F" opacity=".6"/></g><circle cx="140" cy="66" r="25" fill="none" stroke="#17171A" stroke-width="5"/><path d="M158 84l20 20" stroke="#17171A" stroke-width="7" stroke-linecap="round"/></g></svg></span><span class="st-n">01</span><h3 data-i18n="app1Title">Diagnose</h3><p data-i18n="app1Desc">Listen first. The workshop people ask for is rarely the problem underneath.</p></li>
+          <li class="st reveal"><span class="st-art"><svg class="" viewBox="0 0 220 120" aria-hidden="true" focusable="false"><g transform="translate(74 14)"><rect x="0" y="0" width="34" height="34" rx="8" fill="#17171A"/><rect x="40" y="0" width="34" height="34" rx="8" fill="#17171A" opacity=".45"/><rect x="0" y="40" width="34" height="34" rx="8" fill="#17171A" opacity=".45"/><rect class="an-block" x="40" y="40" width="34" height="34" rx="8" fill="#E2553F"/></g><rect x="40" y="100" width="140" height="5" rx="2.5" fill="#D9D3C5"/></svg></span><span class="st-n">02</span><h3 data-i18n="app2Title">Build</h3><p data-i18n="app2Desc">Prototype fast with real people. The screen sets things up; colleagues do the rest.</p></li>
+          <li class="st reveal"><span class="st-art"><svg class="" viewBox="0 0 220 120" aria-hidden="true" focusable="false"><path d="M25 102C25 77 67 77 67 102Z" fill="#17171A"/><circle cx="46" cy="56" r="12" fill="#17171A"/><circle cx="45.9" cy="55" r="1.7" fill="#F7F6F2"/><circle cx="53.1" cy="55" r="1.7" fill="#F7F6F2"/><path d="M89 102C89 77 131 77 131 102Z" fill="#17171A"/><circle cx="110" cy="56" r="12" fill="#17171A"/><circle cx="106.4" cy="57.5" r="1.7" fill="#F7F6F2"/><circle cx="113.6" cy="57.5" r="1.7" fill="#F7F6F2"/><path d="M153 102C153 77 195 77 195 102Z" fill="#E2553F"/><circle cx="174" cy="56" r="12" fill="#E2553F"/><circle cx="166.9" cy="55" r="1.7" fill="#F7F6F2"/><circle cx="174.1" cy="55" r="1.7" fill="#F7F6F2"/><rect x="10" y="100" width="200" height="20" fill="#F7F6F2" opacity="0"/><path d="M58 30C78 8 98 8 104 24M122 24C130 8 154 8 166 30" fill="none" stroke="#E2553F" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/><g class="an-pass"><rect x="101" y="20" width="18" height="13" rx="3" fill="#E2553F"/><rect x="104" y="24" width="10" height="2" rx="1" fill="#fff"/><rect x="104" y="28" width="7" height="2" rx="1" fill="#fff"/></g></svg></span><span class="st-n">03</span><h3 data-i18n="app3Title">Pass it on</h3><p data-i18n="app3Desc">Everyone teaches what they learned to someone else. That is the evidence.</p></li>
+        </ol>
       </section>
     </div>
 
-    <!-- 03 SERVICES (dark band) -->
+    <!-- SERVICES (dark band): each one shows the tool you can try -->
     <section id="services" class="on-dark scroll-mt-16 bg-ink text-white px-4 sm:px-8 py-16 sm:py-24">
       <div class="max-w-5xl mx-auto space-y-10">
-        <div class="reveal grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-white/45" data-i18n="svcLabel">03 / Services</span></div>
-          <div class="md:col-span-8 space-y-3">
-            <h2 class="font-syne text-3xl sm:text-4xl font-bold tracking-tight" data-i18n-html="svcTitle">Four ways to <span class="accent-word">work</span> together.</h2>
-            <p class="text-sm sm:text-base text-white/60" data-i18n="svcDesc">Engage one, or combine them into a full programme. Each comes with something you can try today.</p>
-          </div>
+        <div class="reveal sec-hd">
+          <span class="sec-k" data-i18n="svcLabel">Services</span>
+          <h2 class="font-syne text-3xl sm:text-4xl font-bold tracking-tight" data-i18n-html="svcTitle">Four ways to <span class="accent-word">work</span> together.</h2>
+          <p class="sec-d" data-i18n="svcDesc">Engage one, or combine them into a full programme. Each comes with something you can try today.</p>
         </div>
-
         <div class="svc-grid">
           <a class="svc reveal" href="/tools/listen">
-            <span class="svc-n">01</span>
-            <span class="svc-t" data-i18n="s1Title">Human Skills Studio</span>
-            <span class="svc-b" data-i18n="s1Badge">Listening · empathy · repair · perspective</span>
-            <span class="svc-d" data-i18n="s1Desc">Programmes for the capabilities AI can't replace. Short, playful setups pair colleagues up — then the phone goes down and the real conversation starts.</span>
-            <span class="svc-best" data-i18n="s1Best">Best for teams working across functions, cultures — or tension.</span>
-            <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dListen">Listening Duet</b> ↗</span>
+            <span class="svc-art"><svg aria-hidden="true"  viewBox="0 0 320 190" preserveAspectRatio="xMidYMid slice">
+                <defs><pattern id="dots-l" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(23,23,26,.12)"/></pattern></defs>
+                <rect width="320" height="190" fill="url(#dots-l)"/>
+                <g class="an-say"><rect x="52" y="44" width="126" height="64" rx="22" fill="#17171A"/><path d="M78 106 l-6 18 22-16z" fill="#17171A"/>
+                  <g fill="#F7F6F2"><rect class="an-wave" x="84" y="66" width="5" height="20" rx="2.5"/><rect class="an-wave" x="96" y="60" width="5" height="32" rx="2.5"/><rect class="an-wave" x="108" y="68" width="5" height="16" rx="2.5"/></g>
+                  <rect x="124" y="70" width="36" height="5" rx="2.5" fill="rgba(247,246,242,.4)"/><rect x="124" y="80" width="24" height="5" rx="2.5" fill="rgba(247,246,242,.4)"/></g>
+                <g class="an-say an-d2"><rect x="150" y="96" width="122" height="56" rx="22" fill="#E2553F"/><path d="M246 150 l6 18 -22-16z" fill="#E2553F"/>
+                  <text x="211" y="130" text-anchor="middle" font-family="Space Mono, monospace" font-size="15" font-weight="700" fill="#fff">“so you…”</text></g>
+              </svg></span>
+            <span class="svc-body">
+              <span class="svc-t" data-i18n="s1Title">Human Skills Studio</span>
+              <span class="svc-b" data-i18n="s1Badge">Listening · empathy · repair · perspective</span>
+              <span class="svc-d" data-i18n="s1Desc">Programmes for the capabilities AI can't replace. Short, playful setups pair colleagues up — then the phone goes down and the real conversation starts.</span>
+              <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dListen">Listening Duet</b> <span aria-hidden="true">↗</span></span>
+            </span>
           </a>
           <a class="svc reveal" href="/tools/diagnose">
-            <span class="svc-n">02</span>
-            <span class="svc-t" data-i18n="s2Title">Strategic L&amp;D Advisory</span>
-            <span class="svc-b" data-i18n="s2Badge">Strategy &amp; audit</span>
-            <span class="svc-d" data-i18n="s2Desc">Curriculum architecture, learning audits and tech-stack choices — with teach-back built into every programme, so knowledge spreads person to person instead of sitting in an LMS.</span>
-            <span class="svc-best" data-i18n="s2Best">Best for CHROs and L&D leads rebuilding from the ground up.</span>
-            <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dDiagnose">Training or not?</b> ↗</span>
+            <span class="svc-art"><svg viewBox="0 0 320 190" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="d-dg" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(23,23,26,.12)"/></pattern></defs><rect width="320" height="190" fill="url(#d-dg)"/><rect x="26" y="72" width="62" height="46" rx="20" fill="#17171A"/><path d="M42 116l-5 14 18-12z" fill="#17171A"/><text x="57" y="102" text-anchor="middle" font-family="Space Mono, monospace" font-size="20" font-weight="700" fill="#fff">?</text><path d="M94 95C130 95 140 56 190 56M94 95C130 95 140 134 190 134" fill="none" stroke="#17171A" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/><g opacity=".32"><rect x="200" y="34" width="54" height="44" rx="5" fill="#17171A"/><path d="M227 38v36" stroke="#F7F6F2" stroke-width="2"/><rect x="206" y="46" width="16" height="3" rx="1.5" fill="#F7F6F2"/><rect x="206" y="54" width="12" height="3" rx="1.5" fill="#F7F6F2"/><rect x="232" y="46" width="16" height="3" rx="1.5" fill="#F7F6F2"/></g><g class="an-say"><rect x="198" y="112" width="58" height="30" rx="13" fill="#E2553F"/><path d="M210 140l-4 11 14-9z" fill="#E2553F"/><rect x="208" y="122" width="30" height="4" rx="2" fill="rgba(255,255,255,.6)"/><rect x="208" y="129" width="20" height="4" rx="2" fill="rgba(255,255,255,.6)"/></g><g class="an-say an-d2"><rect x="244" y="128" width="56" height="28" rx="12" fill="#fff" stroke="#E5E2DA" stroke-width="1.5"/><path d="M286 154l5 11-14-9z" fill="#fff" stroke="#E5E2DA" stroke-width="1.5" stroke-linejoin="round"/><rect x="254" y="138" width="30" height="4" rx="2" fill="#E5E2DA"/></g><circle class="an-run" r="5" fill="#E2553F"><animateMotion dur="3.2s" repeatCount="indefinite" path="M94 95C130 95 140 134 190 134"/></circle></svg></span>
+            <span class="svc-body">
+              <span class="svc-t" data-i18n="s2Title">Strategic L&amp;D Advisory</span>
+              <span class="svc-b" data-i18n="s2Badge">Strategy &amp; audit</span>
+              <span class="svc-d" data-i18n="s2Desc">Curriculum architecture, learning audits and tech-stack choices — with teach-back built into every programme, so knowledge spreads person to person instead of sitting in an LMS.</span>
+              <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dDiagnose">Training or not?</b> <span aria-hidden="true">↗</span></span>
+            </span>
           </a>
           <a class="svc reveal" href="/labs/coach/">
-            <span class="svc-n">03</span>
-            <span class="svc-t" data-i18n="s3Title">Executive &amp; Managerial Coaching</span>
-            <span class="svc-b" data-i18n="s3Badge">Leadership behaviour</span>
-            <span class="svc-d" data-i18n="s3Desc">One-to-one and cohort coaching grounded in applied neuroscience and deliberate practice. AI rehearsal is only the warm-up — the goal is the real conversation with your team.</span>
-            <span class="svc-best" data-i18n="s3Best">Best for new managers, leadership pipelines and teams in transition.</span>
-            <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dCoach">Coaching Co-Pilot</b> ↗</span>
+            <span class="svc-art"><svg  viewBox="0 0 320 190" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="dots-coach" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(23,23,26,.12)"/></pattern></defs><rect width="320" height="190" fill="url(#dots-coach)"/><g class="an-say"><rect x="34" y="42" width="66" height="112" rx="14" fill="#17171A"/><rect x="44" y="60" width="38" height="13" rx="6.5" fill="rgba(247,246,242,.45)"/><rect x="54" y="80" width="36" height="13" rx="6.5" fill="#E2553F"/><rect x="44" y="100" width="30" height="13" rx="6.5" fill="rgba(247,246,242,.45)"/><rect x="54" y="120" width="36" height="13" rx="6.5" fill="#E2553F" opacity=".55"/><rect x="58" y="144" width="18" height="3" rx="1.5" fill="rgba(247,246,242,.35)"/></g><g fill="none" stroke="#17171A" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 6"><path d="M110 98h26"/></g><path d="M134 92l7 6-7 6" fill="none" stroke="#17171A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><g class="an-say"><rect x="152" y="50" width="88" height="54" rx="22" fill="#17171A"/><path d="M174 102l-6 16 20-14z" fill="#17171A"/><rect x="170" y="70" width="40" height="5" rx="2.5" fill="rgba(247,246,242,.45)"/><rect x="170" y="80" width="28" height="5" rx="2.5" fill="rgba(247,246,242,.45)"/></g><g class="an-say an-d2"><rect x="206" y="96" width="88" height="54" rx="22" fill="#fff" stroke="#E5E2DA" stroke-width="1.5"/><path d="M272 148l6 16-20-14z" fill="#fff" stroke="#E5E2DA" stroke-width="1.5" stroke-linejoin="round"/><rect x="226" y="116" width="44" height="5" rx="2.5" fill="#E5E2DA"/><rect x="226" y="126" width="30" height="5" rx="2.5" fill="#E5E2DA"/></g><g transform="rotate(-32 226 100)"><rect x="198" y="90" width="56" height="20" rx="10" fill="#E2553F"/><rect x="217" y="93" width="18" height="14" rx="3" fill="rgba(255,255,255,.35)"/><g fill="rgba(255,255,255,.55)"><circle cx="206" cy="97" r="1.3"/><circle cx="206" cy="103" r="1.3"/><circle cx="246" cy="97" r="1.3"/><circle cx="246" cy="103" r="1.3"/></g></g></svg></span>
+            <span class="svc-body">
+              <span class="svc-t" data-i18n="s3Title">Executive &amp; Managerial Coaching</span>
+              <span class="svc-b" data-i18n="s3Badge">Leadership behaviour</span>
+              <span class="svc-d" data-i18n="s3Desc">One-to-one and cohort coaching grounded in applied neuroscience and deliberate practice. AI rehearsal is only the warm-up — the goal is the real conversation with your team.</span>
+              <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dCoach">Coaching Co-Pilot</b> <span aria-hidden="true">↗</span></span>
+            </span>
           </a>
           <a class="svc reveal" href="/tools/design/">
-            <span class="svc-n">04</span>
-            <span class="svc-t" data-i18n="s4Title">Simulations &amp; Story-led Media</span>
-            <span class="svc-b" data-i18n="s4Badge">Games · drama · onboarding</span>
-            <span class="svc-d" data-i18n="s4Desc">Games, branching mysteries and workplace dramas written around your company's own friction points — designed to be played and watched together, and to end with something to try with a colleague.</span>
-            <span class="svc-best" data-i18n="s4Best">Best for onboarding, innovation sprints and sales teams.</span>
-            <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dOdyssey">Design Thinking Odyssey</b> ↗</span>
+            <span class="svc-art"><svg  viewBox="0 0 320 190" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="dots-odyssey" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(23,23,26,.12)"/></pattern></defs><rect width="320" height="190" fill="url(#dots-odyssey)"/><g fill="rgba(23,23,26,.14)"><rect x="60" y="48" width="4" height="4"/><rect x="130" y="40" width="4" height="4"/><rect x="200" y="36" width="4" height="4"/><rect x="30" y="92" width="4" height="4"/><rect x="176" y="58" width="3" height="3"/></g><rect x="22" y="132" width="46" height="14" rx="4" fill="#17171A"/><text x="45" y="142.5" text-anchor="middle" font-family="Space Mono, monospace" font-size="9" font-weight="700" fill="#F7F6F2">E</text><rect x="78" y="114" width="46" height="14" rx="4" fill="#17171A"/><text x="101" y="124.5" text-anchor="middle" font-family="Space Mono, monospace" font-size="9" font-weight="700" fill="#F7F6F2">D</text><rect x="134" y="96" width="46" height="14" rx="4" fill="#17171A"/><text x="157" y="106.5" text-anchor="middle" font-family="Space Mono, monospace" font-size="9" font-weight="700" fill="#F7F6F2">I</text><rect x="190" y="78" width="46" height="14" rx="4" fill="#17171A"/><text x="213" y="88.5" text-anchor="middle" font-family="Space Mono, monospace" font-size="9" font-weight="700" fill="#F7F6F2">P</text><rect x="246" y="60" width="46" height="14" rx="4" fill="#17171A"/><text x="269" y="70.5" text-anchor="middle" font-family="Space Mono, monospace" font-size="9" font-weight="700" fill="#F7F6F2">T</text><path d="M112 96c10-22 30-26 44-10" fill="none" stroke="#E2553F" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 5"/><g class="an-hop"><rect x="93" y="98" width="16" height="16" rx="3" fill="#E2553F"/><rect x="102" y="102" width="3" height="4" fill="#fff"/></g><path d="M256 60V34" stroke="#17171A" stroke-width="2.5" stroke-linecap="round"/><path class="an-flag" d="M257 35h18l-5 7 5 7h-18z" fill="#E2553F"/></svg></span>
+            <span class="svc-body">
+              <span class="svc-t" data-i18n="s4Title">Simulations &amp; Story-led Media</span>
+              <span class="svc-b" data-i18n="s4Badge">Games · drama · onboarding</span>
+              <span class="svc-d" data-i18n="s4Desc">Games, branching mysteries and workplace dramas written around your company's own friction points — designed to be played and watched together, and to end with something to try with a colleague.</span>
+              <span class="svc-try"><span data-i18n="tryLbl">Try it in two minutes:</span> <b data-i18n="dOdyssey">Design Thinking Odyssey</b> <span aria-hidden="true">↗</span></span>
+            </span>
           </a>
         </div>
         <a href="/labs/common-ground/" class="svc-lab reveal">
-          <span class="flex flex-wrap items-center gap-2 text-[10px] font-mono uppercase tracking-[0.14em] text-white/45"><span class="px-2 py-0.5 rounded-full bg-accent text-white" data-i18n="newTag">New</span><span data-i18n="cgKicker">Lab · for a team</span></span>
-          <span class="block font-syne text-lg font-bold tracking-tight" data-i18n="cgTitle">Common Ground</span>
-          <span class="block text-sm text-white/70 leading-relaxed" data-i18n="cgShort">Your team builds a little town together, then takes one honest question to its next meeting.</span>
-          <span class="inline-block text-[11px] font-mono text-white underline decoration-accent decoration-2 underline-offset-4"><span data-i18n="cgGo">Build your team's town</span>&nbsp;<span aria-hidden="true">↗</span></span>
+          <svg class="cg-art" viewBox="0 0 170 90" aria-hidden="true" focusable="false"><rect width="170" height="90" rx="14" fill="#2A2A30"/><rect x="18" y="46" width="24" height="20" rx="2" fill="#F7F6F2"/><path d="M15 47L30 34L45 47Z" fill="#E2553F"/><rect x="27" y="55" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="56" y="38" width="24" height="20" rx="2" fill="#F7F6F2"/><path d="M53 39L68 26L83 39Z" fill="#8D8C94"/><rect x="65" y="47" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="94" y="46" width="24" height="20" rx="2" fill="#E2553F"/><path d="M91 47L106 34L121 47Z" fill="#F7F6F2"/><rect x="103" y="55" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="132" y="40" width="24" height="20" rx="2" fill="#F7F6F2"/><path d="M129 41L144 28L159 41Z" fill="#8D8C94"/><rect x="141" y="49" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="10" y="66" width="150" height="4" rx="2" fill="rgba(255,255,255,.18)"/><circle class="an-say" cx="85" cy="18" r="5" fill="#F2A091"/></svg>
+          <span class="svc-lab-t">
+            <span class="flex flex-wrap items-center gap-2 text-[10px] font-mono uppercase tracking-[0.14em] text-white/45"><span class="px-2 py-0.5 rounded-full bg-accent text-white" data-i18n="newTag">New</span><span data-i18n="cgKicker">Lab · for a team</span></span>
+            <span class="block font-syne text-lg font-bold tracking-tight" data-i18n="cgTitle">Common Ground</span>
+            <span class="block text-sm text-white/70 leading-relaxed" data-i18n="cgShort">Your team builds a little town together, then takes one honest question to its next meeting.</span>
+            <span class="inline-block text-[11px] font-mono text-white underline decoration-accent decoration-2 underline-offset-4"><span data-i18n="cgGo">Build your team's town</span>&nbsp;<span aria-hidden="true">↗</span></span>
+          </span>
         </a>
-        <a href="https://www.wei-meng.org/portfolio" target="_blank" rel="noopener noreferrer" class="reveal mt-10 inline-block text-sm font-mono text-white underline decoration-accent decoration-2 underline-offset-4 hover:text-accent transition-colors">
+        <a href="https://www.wei-meng.org/portfolio" target="_blank" rel="noopener noreferrer" class="reveal inline-block text-sm font-mono text-white underline decoration-accent decoration-2 underline-offset-4 hover:text-accent transition-colors">
           <span data-i18n="workAll">See all the work, with the story behind each one</span>&nbsp;<span aria-hidden="true">→</span>
         </a>
       </div>
@@ -353,13 +397,12 @@ img{filter:none}
 
       <!-- 04 CONTACT -->
       <section id="contact" class="scroll-mt-20 py-16 sm:py-24 border-t border-line">
-        <div class="reveal grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="contactLabel">04 / Start a project</span></div>
-          <div class="md:col-span-8 space-y-8">
-            <div class="space-y-3">
-              <h2 class="font-syne text-3xl sm:text-5xl font-bold tracking-tight leading-[1.1]" data-i18n-html="contactTitle">Let's get your people <span class="accent-word">talking</span>.</h2>
-              <p class="text-base text-ink/70" data-i18n="contactDesc">Tell me where it hurts. I read and reply to every message personally.</p>
-            </div>
+        <div class="reveal contact-in">
+          <div class="sec-hd">
+            <span class="sec-k" data-i18n="contactLabel">Start a project</span>
+            <h2 class="font-syne text-3xl sm:text-5xl font-bold tracking-tight leading-[1.1]" data-i18n-html="contactTitle">Let's get your people <span class="accent-word">talking</span>.</h2>
+            <p class="sec-d" data-i18n="contactDesc">Tell me where it hurts. I read and reply to every message personally.</p>
+          </div>
             <form id="contact-form" action="https://formspree.io/f/myezadya" method="POST" onsubmit="handleFormSubmit(event)" class="bg-white border border-line rounded-3xl p-5 sm:p-8 space-y-4">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <label class="block space-y-1.5">
@@ -386,7 +429,6 @@ img{filter:none}
                 </button>
               </div>
             </form>
-          </div>
         </div>
       </section>
     </div>
@@ -402,21 +444,21 @@ img{filter:none}
         navBelief: "Belief", navServices: "Services", navTools: "Free tools", navWork: "Portfolio ↗", navAbout: "About", navCta: "Let's talk",
         heroKicker: "Independent L&D practice",
         heroTitle: 'Better work starts <span class="accent-word">between</span> people.',
-        heroDesc: "We design learning that helps colleagues understand one another, get through difficult moments and find better ways of working together. Short, hands-on practice in listening, feedback and trust that ends in real conversations.",
+        loop1: "The screen sets it up.", loop2: "Phones go down.", loop3: "People talk.", heroDesc: "Short, hands-on practice in listening, feedback and trust. It ends in real conversations.",
         heroCta1: "Book a discovery call", heroCta2: "See the services",
         stripLabel: "Built for", strip1: "Global consultancies", strip2: "Hyper-growth tech", strip3: "Multinational teams",
-        belLabel: "01 / What we believe",
+        belLabel: "What we believe",
         belTitle: 'People are the <span class="accent-word">point</span>.',
         belDesc: "AI and web apps are tools. What matters is what people do with each other afterwards.",
         b1t: "Learn by doing — and have fun", b1d: "If you can't try it, you haven't learned it. Play lowers the stakes so people dare to practise.",
         b2t: "Human capabilities first", b2d: "In the age of AI, empathy, curiosity and trust are the differentiators. That's where we put the practice time.",
         b3t: "Learning is mutual", b3d: "Everyone teaches, everyone learns. No trainees — only partners. Sharing is caring.",
         b4t: "People are the end, never the means", b4d: "No leaderboards ranking colleagues, no surveillance analytics. Success is a sincere conversation that wouldn't have happened otherwise.",
-        appLabel: "02 / Approach", appTitle: "Diagnose. Build. Pass it on.",
-        app1Title: "Diagnose", app1Desc: "Listen first. A request for a “communication workshop” is often a psychological-safety or role-clarity problem in disguise.",
-        app2Title: "Build", app2Desc: "Prototype fast and test with real people. Every tool is designed to hand off — the screen sets things up, colleagues do the rest.",
-        app3Title: "Pass it on", app3Desc: "Every programme ends with people teaching what they learned to someone else. It's the best evidence of learning — measured alongside Kirkpatrick L1–L4.",
-        svcLabel: "03 / Services",
+        appLabel: "Approach", appTitle: "Diagnose. Build. Pass it on.",
+        app1Title: "Diagnose", app1Desc: "Listen first. The workshop people ask for is rarely the problem underneath.",
+        app2Title: "Build", app2Desc: "Prototype fast with real people. The screen sets things up; colleagues do the rest.",
+        app3Title: "Pass it on", app3Desc: "Everyone teaches what they learned to someone else. That is the evidence.",
+        svcLabel: "Services",
         svcTitle: 'Four ways to <span class="accent-word">work</span> together.',
         svcDesc: "Engage one, or combine them into a full programme. Each comes with something you can try today.", tryLbl: "Try it in two minutes:", cgShort: "Your team builds a little town together, then takes one honest question to its next meeting.",
         newTag: "New", soon: "soon",
@@ -465,7 +507,7 @@ img{filter:none}
         aboutLabel: "07 / Behind the practice", aboutTitle: "Hi, I'm Wei.",
         aboutDesc: "FREE//BUILDER is the independent practice of Wei Meng — an L&D architect and corporate coach with 8+ years in enterprise tech. I build playful tools, but I care more about what happens after them: two colleagues who finally hear each other, a team that teaches itself. The mission is simple: make the mandatory-training sigh extinct",
         aboutLink: "More about Wei",
-        contactLabel: "04 / Start a project",
+        contactLabel: "Start a project",
         contactTitle: 'Let\'s get your people <span class="accent-word">talking</span>.',
         contactDesc: "Tell me where it hurts. I read and reply to every message personally.",
         fName: "Name", fEmail: "Work email", fCompany: "Company", fHeadache: "What should people be doing differently with each other?",
@@ -483,21 +525,21 @@ img{filter:none}
         navBelief: "理念", navServices: "服务", navTools: "免费工具", navWork: "作品集 ↗", navAbout: "关于", navCta: "聊聊",
         heroKicker: "独立 L&D 咨询工作室",
         heroTitle: '更好的工作，<br class="hidden sm:inline">从人与人<span class="accent-word">之间</span>开始。',
-        heroDesc: "我们设计的学习，帮助同事理解彼此、走过艰难的时刻、找到更好的共事方式。短小、上手即练的倾听、反馈与信任练习，最终落在真实的对话里。",
+        loop1: "屏幕把场子搭好。", loop2: "手机放下。", loop3: "人开始交谈。", heroDesc: "短小、上手即练的倾听、反馈与信任练习，最后落在真实的对话里。",
         heroCta1: "预约初步沟通", heroCta2: "看看服务",
         stripLabel: "服务对象", strip1: "全球咨询公司", strip2: "高速成长的科技企业", strip3: "跨国团队",
-        belLabel: "01 / 我们的理念",
+        belLabel: "我们的理念",
         belTitle: '人，才是<span class="accent-word">重点</span>。',
         belDesc: "AI 和网页应用都只是工具。真正重要的，是人们之后彼此之间发生了什么。",
         b1t: "在做中学，玩得开心", b1d: "没上手试过，就不算学会。游戏降低了风险，人们才敢去练。",
         b2t: "人的能力优先", b2d: "在 AI 时代，共情、好奇和信任才是差异所在。我们把练习时间花在这里。",
         b3t: "学习是相互的", b3d: "人人都教，人人都学。没有学员，只有伙伴。分享即关怀。",
         b4t: "人是目的，而非手段", b4d: "不给同事排行，不做监控式分析。成功，是一场原本不会发生的真诚对话。",
-        appLabel: "02 / 方法", appTitle: "诊断。构建。传下去。",
-        app1Title: "诊断", app1Desc: "先倾听。一句“办个沟通培训”，背后往往是心理安全感或角色不清的问题。",
-        app2Title: "构建", app2Desc: "快速做原型，和真实的人一起测试。每个工具都为“交接”而设计——屏幕负责开场，同事负责接下去。",
-        app3Title: "传下去", app3Desc: "每个项目都以“把学到的教给另一个人”收尾。这是最好的学习证据——与柯氏 L1–L4 评估一并衡量。",
-        svcLabel: "03 / 服务",
+        appLabel: "方法", appTitle: "诊断。构建。传下去。",
+        app1Title: "诊断", app1Desc: "先倾听。大家要的那场培训，很少是底下真正的问题。",
+        app2Title: "构建", app2Desc: "和真实的人一起快速做原型。屏幕负责开场，同事负责接下去。",
+        app3Title: "传下去", app3Desc: "每个人把学到的教给另一个人。这就是证据。",
+        svcLabel: "服务",
         svcTitle: '四种<span class="accent-word">合作</span>方式。',
         svcDesc: "可以单独选择，也可以组合成完整项目。每一种都附带今天就能试的东西。", tryLbl: "两分钟试一试：", cgShort: "团队一起盖一座小镇，然后把一个真诚的问题带到下次会议。",
         newTag: "新", soon: "即将",
@@ -546,7 +588,7 @@ img{filter:none}
         aboutLabel: "07 / 工作室背后", aboutTitle: "你好，我是孟玮。",
         aboutDesc: "FREE//BUILDER 是孟玮的独立咨询工作室。我是一名学习体验架构师与企业教练，在企业科技领域深耕 8 年以上。我做好玩的工具，但我更在乎工具之后发生的事：两位同事终于听见了彼此，一个团队开始互相教学。使命很简单：让“又要培训”的叹气声彻底消失",
         aboutLink: "了解更多关于孟玮",
-        contactLabel: "04 / 开启项目",
+        contactLabel: "开启项目",
         contactTitle: '让你的团队<span class="accent-word">聊起来</span>。',
         contactDesc: "告诉我哪里最痛。每条留言我都会亲自阅读和回复。",
         fName: "姓名", fEmail: "工作邮箱", fCompany: "公司", fHeadache: "你希望同事之间的相处有什么不同？",
@@ -564,21 +606,21 @@ img{filter:none}
         navBelief: "Creencias", navServices: "Servicios", navTools: "Herramientas", navWork: "Portafolio ↗", navAbout: "Nosotros", navCta: "Hablemos",
         heroKicker: "Práctica independiente de L&D",
         heroTitle: 'El buen trabajo empieza <span class="accent-word">entre</span> personas.',
-        heroDesc: "Diseñamos aprendizaje que ayuda a los colegas a entenderse, atravesar momentos difíciles y encontrar mejores formas de trabajar juntos. Práctica breve de escucha, feedback y confianza que termina en conversaciones reales.",
+        loop1: "La pantalla lo prepara.", loop2: "Los móviles, abajo.", loop3: "La gente habla.", heroDesc: "Práctica breve de escucha, feedback y confianza. Termina en conversaciones reales.",
         heroCta1: "Agenda una llamada", heroCta2: "Ver los servicios",
         stripLabel: "Para", strip1: "Consultoras globales", strip2: "Tecnológicas de alto crecimiento", strip3: "Equipos multinacionales",
-        belLabel: "01 / En qué creemos",
+        belLabel: "En qué creemos",
         belTitle: 'Las personas son lo <span class="accent-word">importante</span>.',
         belDesc: "La IA y las apps son herramientas. Lo que importa es lo que las personas hacen entre sí después.",
         b1t: "Aprender haciendo, y disfrutarlo", b1d: "Si no puedes probarlo, no lo has aprendido. El juego baja el riesgo para que la gente se atreva a practicar.",
         b2t: "Primero las capacidades humanas", b2d: "En la era de la IA, la empatía, la curiosidad y la confianza marcan la diferencia. Ahí ponemos el tiempo de práctica.",
         b3t: "Aprender es mutuo", b3d: "Todos enseñan, todos aprenden. No hay alumnos, solo compañeros. Compartir es cuidar.",
         b4t: "Las personas son el fin, nunca el medio", b4d: "Sin rankings entre colegas, sin analítica de vigilancia. El éxito es una conversación sincera que no habría ocurrido de otra forma.",
-        appLabel: "02 / Enfoque", appTitle: "Diagnosticar. Construir. Transmitir.",
-        app1Title: "Diagnosticar", app1Desc: "Primero, escuchar. Un pedido de “taller de comunicación” suele ser un problema de seguridad psicológica o de claridad de roles disfrazado.",
-        app2Title: "Construir", app2Desc: "Prototipar rápido y probar con personas reales. Cada herramienta está pensada para dar el relevo: la pantalla prepara, los colegas hacen el resto.",
-        app3Title: "Transmitir", app3Desc: "Cada programa termina con las personas enseñando lo aprendido a otra persona. Es la mejor evidencia de aprendizaje, medida junto a Kirkpatrick N1–N4.",
-        svcLabel: "03 / Servicios",
+        appLabel: "Enfoque", appTitle: "Diagnosticar. Construir. Transmitir.",
+        app1Title: "Diagnosticar", app1Desc: "Primero, escuchar. El taller que se pide casi nunca es el problema de fondo.",
+        app2Title: "Construir", app2Desc: "Prototipos rápidos con gente real. La pantalla prepara; los colegas hacen el resto.",
+        app3Title: "Transmitir", app3Desc: "Cada persona enseña lo aprendido a otra. Esa es la prueba.",
+        svcLabel: "Servicios",
         svcTitle: 'Cuatro formas de <span class="accent-word">trabajar</span> juntos.',
         svcDesc: "Contrata uno o combínalos en un programa completo. Cada uno incluye algo que puedes probar hoy.", tryLbl: "Pruébalo en dos minutos:", cgShort: "Tu equipo construye un pueblito y se lleva una pregunta sincera a su próxima reunión.",
         newTag: "Nuevo", soon: "pronto",
@@ -627,7 +669,7 @@ img{filter:none}
         aboutLabel: "07 / Detrás de la práctica", aboutTitle: "Hola, soy Wei.",
         aboutDesc: "FREE//BUILDER es la práctica independiente de Wei Meng, arquitecto de L&D y coach corporativo con más de 8 años en tecnología empresarial. Creo herramientas lúdicas, pero me importa más lo que pasa después: dos colegas que por fin se escuchan, un equipo que aprende enseñándose. La misión es sencilla: extinguir el suspiro de la capacitación obligatoria",
         aboutLink: "Más sobre Wei",
-        contactLabel: "04 / Iniciar un proyecto",
+        contactLabel: "Iniciar un proyecto",
         contactTitle: 'Hagamos que tu gente <span class="accent-word">converse</span>.',
         contactDesc: "Cuéntame dónde duele. Leo y respondo cada mensaje personalmente.",
         fName: "Nombre", fEmail: "Email de trabajo", fCompany: "Empresa", fHeadache: "¿Qué deberían hacer distinto las personas entre sí?",
@@ -644,21 +686,21 @@ img{filter:none}
         navBelief: "理念", navServices: "服務", navTools: "免費工具", navWork: "作品集 ↗", navAbout: "關於", navCta: "聊聊",
         heroKicker: "獨立 L&D 諮詢工作室",
         heroTitle: "更好的工作，<br class=\"hidden sm:inline\">從人與人<span class=\"accent-word\">之間</span>開始。",
-        heroDesc: "我們設計的學習，幫助同事理解彼此、走過艱難的時刻、找到更好的共事方式。短小、上手即練的傾聽、反饋與信任練習，最終落在真實的對話裡。",
+        loop1: "螢幕把場子搭好。", loop2: "手機放下。", loop3: "人開始交談。", heroDesc: "短小、上手即練的傾聽、反饋與信任練習，最後落在真實的對話裡。",
         heroCta1: "預約初步溝通", heroCta2: "看看服務",
         stripLabel: "服務物件", strip1: "全球諮詢公司", strip2: "高速成長的科技企業", strip3: "跨國團隊",
-        belLabel: "01 / 我們的理念",
+        belLabel: "我們的理念",
         belTitle: "人，才是<span class=\"accent-word\">重點</span>。",
         belDesc: "AI 和網頁應用都只是工具。真正重要的，是人們之後彼此之間發生了什麼。",
         b1t: "在做中學，玩得開心", b1d: "沒上手試過，就不算學會。遊戲降低了風險，人們才敢去練。",
         b2t: "人的能力優先", b2d: "在 AI 時代，共情、好奇和信任才是差異所在。我們把練習時間花在這裡。",
         b3t: "學習是相互的", b3d: "人人都教，人人都學。沒有學員，只有夥伴。分享即關懷。",
         b4t: "人是目的，而非手段", b4d: "不給同事排行，不做監控式分析。成功，是一場原本不會發生的真誠對話。",
-        appLabel: "02 / 方法", appTitle: "診斷。構建。傳下去。",
-        app1Title: "診斷", app1Desc: "先傾聽。一句“辦個溝通培訓”，背後往往是心理安全感或角色不清的問題。",
-        app2Title: "構建", app2Desc: "快速做原型，和真實的人一起測試。每個工具都為“交接”而設計——螢幕負責開場，同事負責接下去。",
-        app3Title: "傳下去", app3Desc: "每個專案都以“把學到的教給另一個人”收尾。這是最好的學習證據——與柯氏 L1–L4 評估一併衡量。",
-        svcLabel: "03 / 服務",
+        appLabel: "方法", appTitle: "診斷。構建。傳下去。",
+        app1Title: "診斷", app1Desc: "先傾聽。大家要的那場培訓，很少是底下真正的問題。",
+        app2Title: "構建", app2Desc: "和真實的人一起快速做原型。螢幕負責開場，同事負責接下去。",
+        app3Title: "傳下去", app3Desc: "每個人把學到的教給另一個人。這就是證據。",
+        svcLabel: "服務",
         svcTitle: "四種<span class=\"accent-word\">合作</span>方式。",
         svcDesc: "可以單獨選擇，也可以組合成完整專案。每一種都附帶今天就能試的東西。", tryLbl: "兩分鐘試一試：", cgShort: "團隊一起蓋一座小鎮，然後把一個真誠的問題帶到下次會議。",
         newTag: "新", soon: "即將",
@@ -707,7 +749,7 @@ img{filter:none}
         aboutLabel: "07 / 工作室背後", aboutTitle: "你好，我是孟瑋。",
         aboutDesc: "FREE//BUILDER 是孟瑋的獨立諮詢工作室。我是一名學習體驗架構師與企業教練，在企業科技領域深耕 8 年以上。我做好玩的工具，但我更在乎工具之後發生的事：兩位同事終於聽見了彼此，一個團隊開始互相教學。使命很簡單：讓“又要培訓”的嘆氣聲徹底消失",
         aboutLink: "瞭解更多關於孟瑋",
-        contactLabel: "04 / 開啟專案",
+        contactLabel: "開啟專案",
         contactTitle: "讓你的團隊<span class=\"accent-word\">聊起來</span>。",
         contactDesc: "告訴我哪裡最痛。每條留言我都會親自閱讀和回覆。",
         fName: "姓名", fEmail: "工作郵箱", fCompany: "公司", fHeadache: "你希望同事之間的相處有什麼不同？",
@@ -724,21 +766,21 @@ img{filter:none}
         navBelief: "Creences", navServices: "Serveis", navTools: "Eines", navWork: "Portafoli ↗", navAbout: "Nosaltres", navCta: "Parlem-ne",
         heroKicker: "Pràctica independent de L&D",
         heroTitle: "La bona feina comença <span class=\"accent-word\">entre</span> persones.",
-        heroDesc: "Dissenyem aprenentatge que ajuda els companys a entendre's, travessar moments difícils i trobar maneres millors de treballar junts. Pràctica breu d'escolta, feedback i confiança que acaba en converses reals.",
+        loop1: "La pantalla ho prepara.", loop2: "Els mòbils, avall.", loop3: "La gent parla.", heroDesc: "Pràctica breu d'escolta, feedback i confiança. Acaba en converses reals.",
         heroCta1: "Reserva una trucada", heroCta2: "Veure els serveis",
         stripLabel: "Per a", strip1: "Consultores globals", strip2: "Tecnològiques d'alt creixement", strip3: "Equips multinacionals",
-        belLabel: "01 / En qué creemos",
+        belLabel: "En què creiem",
         belTitle: "Les persones són el que <span class=\"accent-word\">importa</span>.",
         belDesc: "La IA i les apps són eines. El que importa és el que les persones fan entre elles després.",
         b1t: "Aprendre fent, i gaudir-ne", b1d: "Si no ho pots provar, no ho has après. El joc abaixa el risc perquè la gent s'atreveixi a practicar.",
         b2t: "Primer les capacitats humanes", b2d: "En l'era de la IA, l'empatia, la curiositat i la confiança marquen la diferència. Hi posem el temps de pràctica.",
         b3t: "Aprendre és mutu", b3d: "Tothom ensenya, tothom aprèn. No hi ha alumnes, només companys. Compartir és cuidar.",
         b4t: "Les persones són el fi, mai el mitjà", b4d: "Sense rànquings entre col·legues, sense analítica de vigilància. L'èxit és una conversa sincera que no s'hauria produït d'una altra manera.",
-        appLabel: "02 / Enfoque", appTitle: "Diagnosticar. Construir. Transmetre.",
-        app1Title: "Diagnosticar", app1Desc: "Primer, escoltar. Una petició de “taller de comunicació” sol ser un problema de seguretat psicològica o de claredat de rols disfressat.",
-        app2Title: "Construir", app2Desc: "Prototipar de pressa i provar amb persones reals. Cada eina està pensada per passar el relleu: la pantalla prepara, els col·legues fan la resta.",
-        app3Title: "Transmetre", app3Desc: "Cada programa acaba amb les persones ensenyant el que han après a una altra persona. És la millor evidència d'aprenentatge, mesurada al costat de Kirkpatrick N1–N4.",
-        svcLabel: "03 / Servicios",
+        appLabel: "Enfocament", appTitle: "Diagnosticar. Construir. Transmetre.",
+        app1Title: "Diagnosticar", app1Desc: "Primer, escoltar. El taller que es demana gairebé mai no és el problema de fons.",
+        app2Title: "Construir", app2Desc: "Prototips ràpids amb gent real. La pantalla prepara; els companys fan la resta.",
+        app3Title: "Transmetre", app3Desc: "Cada persona ensenya el que ha après a una altra. Aquesta és la prova.",
+        svcLabel: "Serveis",
         svcTitle: "Quatre maneres de <span class=\"accent-word\">treballar</span> junts.",
         svcDesc: "Contracta'n un o combina'ls en un programa complet. Cadascun inclou alguna cosa que pots provar avui.", tryLbl: "Prova-ho en dos minuts:", cgShort: "El teu equip construeix un poblet i s'endú una pregunta sincera a la seva propera reunió.",
         newTag: "Nou", soon: "aviat",
@@ -787,7 +829,7 @@ img{filter:none}
         aboutLabel: "07 / Darrere de la pràctica", aboutTitle: "Hola, soc la Wei.",
         aboutDesc: "FREE//BUILDER és la pràctica independent de Wei Meng, arquitecte de L&D i coach corporatiu amb més de 8 anys en tecnologia empresarial. Creo eines lúdiques, però m'importa més el que passa després: dos col·legues que per fi s'escolten, un equip que aprèn ensenyant-se. La missió és senzilla: extingir el sospir de la formació obligatòria",
         aboutLink: "Més sobre la Wei",
-        contactLabel: "04 / Iniciar un proyecto",
+        contactLabel: "Començar un projecte",
         contactTitle: "Fem que la teva gent <span class=\"accent-word\">conversi</span>.",
         contactDesc: "Explica'm on fa mal. Llegeixo i responc cada missatge personalment.",
         fName: "Nom", fEmail: "Correu de feina", fCompany: "Empresa", fHeadache: "Què haurien de fer diferent les persones entre elles?",
@@ -808,6 +850,16 @@ img{filter:none}
     const $ = id => document.getElementById(id);
 
     /* ---------- i18n ---------- */
+
+    /* the three frames take turns (the screen sets it up → phones go down → people talk); a tap picks one */
+    (function loop() {
+      const ol = document.getElementById('loop'); if (!ol) return;
+      const lis = [...ol.children]; let i = 0, t = null;
+      const show = n => { i = n; lis.forEach((li, k) => li.classList.toggle('on', k === n)); };
+      const run = () => { clearInterval(t); if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; t = setInterval(() => show((i + 1) % lis.length), 2800); };
+      lis.forEach((li, k) => li.addEventListener('click', () => { show(k); run(); }));
+      if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? run() : clearInterval(t))).observe(ol); else run();
+    })();
     function cycleLanguage() { setLanguage(supportedLangs[(supportedLangs.indexOf(currentLang) + 1) % supportedLangs.length]); }
     function setLanguage(lang) {
       if (!translations[lang]) return;
