@@ -131,8 +131,6 @@
 
     <!-- HUD -->
     <div class="pt-4 flex flex-wrap items-center justify-end gap-x-4 gap-y-1 text-[11px] font-mono text-muted">
-      <span class="inline-flex items-center gap-1"><svg class="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 3.5-1.5 5-1.5 7.5A2.5 2.5 0 0 0 13 12c1.6 0 2.5-1.3 2.3-3C18 10.5 19 13 19 15a7 7 0 0 1-14 0c0-4 3.5-6.5 4-9 .9.8 1.5 2 1.5 3 0-2.5.5-5 1.5-7z"/></svg><span data-i18n="hudStreak">Streak</span> <b id="streak-count" class="text-ink">0</b></span>
-      <span><span data-i18n="hudMastered">Mastered</span> <b class="text-ink"><span id="mastery-count">0</span>/12</b></span>
       <button type="button" id="hud-eggs-btn" class="inline-flex items-center gap-1 hover:text-ink">
         <svg class="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>
         <span data-i18n="hudSecrets">Secrets</span> <b id="hud-eggs" class="text-ink inline-block">0/4</b>
@@ -205,7 +203,6 @@
         <div class="md:col-span-8 space-y-2">
           <h2 id="deck-title" class="font-syne text-2xl sm:text-3xl font-bold tracking-tight" data-i18n-html="deckTitle"></h2>
           <p class="text-sm text-ink/70 leading-relaxed" data-i18n="deckDesc"></p>
-          <p id="rank-line" class="text-[11px] font-mono text-muted"></p>
         </div>
       </div>
       <div id="deck-list" class="border-t border-line"></div>
@@ -215,6 +212,26 @@
           <span><span class="text-ink">○</span> <span data-ev="practitioner"></span></span><span><span class="text-accent">●</span> <span data-ev="contested"></span></span>
         </span>
         <button id="reset-btn" type="button" class="underline decoration-line underline-offset-4 hover:text-ink"></button>
+      </div>
+    </section>
+
+    <!-- MONDAY · PASS IT ON (the kit's close) -->
+    <section class="py-14 border-t border-line" aria-labelledby="pass-title">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div class="md:col-span-4"><span class="text-[11px] font-mono uppercase tracking-[0.16em] text-muted" data-i18n="passKicker"></span></div>
+        <div class="md:col-span-8 space-y-5">
+          <div class="rounded-2xl border border-dashed border-ink/20 bg-white p-4 text-sm leading-relaxed"><b class="block text-[10.5px] font-mono uppercase tracking-[0.12em] text-accent mb-1" data-i18n="monday"></b><span data-i18n="mondayTxt"></span></div>
+          <h2 id="pass-title" class="font-syne text-2xl sm:text-3xl font-bold tracking-tight" data-i18n="teachTitle"></h2>
+          <p class="text-sm text-ink/70 leading-relaxed" data-i18n="teachLead"></p>
+          <ol id="pass-steps" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></ol>
+          <div class="rounded-2xl bg-white border border-line p-4 space-y-3">
+            <label class="block"><span class="block text-[11px] font-mono uppercase tracking-[0.12em] text-muted mb-1" data-i18n="learnerName"></span><input id="pass-name" type="text" maxlength="30" autocomplete="off" class="w-full h-11 px-4 rounded-xl border border-line bg-paper focus:outline-none focus:border-ink"></label>
+            <label class="block"><span class="block text-[11px] font-mono uppercase tracking-[0.12em] text-muted mb-1" data-i18n="learned"></span><textarea id="pass-text" maxlength="280" rows="3" class="w-full px-4 py-3 rounded-xl border border-line bg-paper focus:outline-none focus:border-ink text-sm"></textarea></label>
+            <button type="button" id="pass-save" class="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-ink text-white hover:bg-accent text-xs font-mono font-bold"><span data-i18n="save"></span></button>
+          </div>
+          <div><span class="text-[11px] font-mono uppercase tracking-[0.12em] text-muted" data-i18n="chainTitle"></span><ul id="pass-chain" class="mt-2 space-y-2 text-sm"></ul><p class="text-[11px] font-mono text-muted mt-2" data-i18n="saved"></p></div>
+          <a class="inline-block text-[12px] font-mono underline decoration-accent decoration-2 underline-offset-4 hover:text-accent" href="https://www.freebuilder.net/tools/teachback">⊂⊃ Teach-Back Chain ↗</a>
+        </div>
       </div>
     </section>
 
@@ -268,6 +285,7 @@
       </div>
       <p class="text-[11px] font-mono uppercase tracking-[0.12em] text-muted mb-1" data-i18n="buyerSays"></p>
       <blockquote id="drill-line" class="font-serif italic text-2xl sm:text-3xl leading-snug mb-5"></blockquote>
+      <div id="drill-pair" class="space-y-3"></div>
       <div id="drill-options" class="space-y-2"></div>
       <div id="drill-debrief" class="hidden mt-4 rounded-2xl border p-4 text-sm leading-relaxed"></div>
       <div class="mt-5 flex items-center justify-between gap-3">
@@ -297,7 +315,6 @@
     </div>
     <div class="px-5 sm:px-7 border-b border-line flex gap-1 overflow-x-auto text-xs font-mono" role="tablist">
       <button type="button" role="tab" data-ctab="secrets" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabSecrets">Secrets</button>
-      <button type="button" role="tab" data-ctab="card" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabCard">Rep card</button>
       <button type="button" role="tab" data-ctab="build" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabBuild">Behind the build</button>
     </div>
     <div id="codex-body" class="flex-1 overflow-y-auto px-5 sm:px-7 py-5" style="padding-bottom: max(20px, env(safe-area-inset-bottom));"></div>
@@ -1132,13 +1149,15 @@
       en: {
         pageTitle: 'Sales Psychology Academy — a FREE//BUILDER lab', brand: 'Sales Psychology Academy', brandShort: 'Sales Academy', kicker: 'a FREE//BUILDER lab',
         codex: 'Field codex', hudStreak: 'Streak', hudMastered: 'Mastered', hudSecrets: 'Secrets',
-        heroKicker: 'Active-recall trainer', heroTitle: 'Turn sales psychology into <span class="accent-word">reflexes</span>.',
-        heroDesc: 'Twelve techniques, five minutes a day. Flip a card, recall the exact words, then defend them against a live objection. Cards you know come back less often; cards you miss come back sooner.',
+        /* the pair drill and the kit's close (Nov 6) */
+        practised: "practised ✓", pairHand: "Hand the phone to a colleague", pairLead: "They read the buyer's line aloud. You answer out loud, in your own words. Twenty seconds. Then they say how it landed.", pairGo: "I'm the colleague · start the clock", pairSolo: "I'm on my own", pairLive: "The clock is running. Listen; don't help.", pairAnswered: "They've answered", pairQ: "Did it land?", pairYes: "Landed", pairPartly: "Partly", pairNo: "Not yet", pairMirror: "Not a score. A mirror, between the two of you.", pairCardLine: "The card's line", passKicker: "Then", monday: "Try this on Monday", mondayTxt: "On your next real call, when the buyer pushes back, name what you heard before you answer it.", teachTitle: "Teach someone the reflex.", teachLead: "Show a colleague the three moves, then let them write, in their own words, what they'll try.", t3: ["Name what you heard", "Ask before you answer", "Then the exact words"], t3sub: ["“It sounds like budget is under real pressure.”", "one question, not a pitch", "the card's line, said calmly"], learnerName: "Their name (optional)", learnerPh: "e.g. Mei", learned: "What they'll try, in their own words", learnedPh: "Hand them the phone…", save: "Save to this phone", chainTitle: "People you've passed it on to", chainEmpty: "No one yet. Your first teach-back will appear here.", saved: "Saved on this phone only.", passSaved: "Saved on this phone.",
+        heroKicker: "Practice for pairs · five minutes a day", heroTitle: 'Turn sales psychology into <span class="accent-word">reflexes</span>.',
+        heroDesc: "Twelve techniques, five minutes a day. Flip a card, recall the exact words, then say them out loud to a colleague who plays the buyer. Cards you know come back less often; cards you miss come back sooner. Nothing is scored.",
         setTitle: "Today's set", setAll: 'All caught up', setDone: 'Set complete', setCard: 'Card {n} of {t}', setDotsAria: "Cards in today's set", done: 'done',
         again: 'Again', flip: 'Flip', flipBack: 'Flip back', good: 'Got it', keysHint: 'Space to flip · ← again · → got it · D for a drill',
-        drillKicker: 'Live objection drill · 20 seconds', drillCta: 'A buyer just pushed back. What do you say?',
+        drillKicker: "Objection drill · two people · 20 seconds", drillCta: "A buyer just pushed back. Say it out loud, to a colleague.",
         deckKicker: '01 / Your deck', deckTitle: 'Twelve techniques. <span class="accent-word">Honest</span> evidence.',
-        deckDesc: 'Every card is rated by how well the research holds up, because plenty of sales “neuroscience” doesn\'t. Bars show how well you know each one; three bars counts as mastered.',
+        deckDesc: "Every card is rated by how well the research holds up, because plenty of sales “neuroscience” doesn't. A card you have practised says so; that is all it says.",
         ev: { robust: 'Robust', mixed: 'Mixed', practitioner: 'Practitioner wisdom', contested: 'Contested' },
         reset: 'Reset progress', resetArm: 'Tap again to reset',
         ctaKicker: '02 / Make it yours', ctaTitle: 'Your products. Your objections. Your <span class="accent-word">reps</span>.',
@@ -1151,13 +1170,13 @@
         tabs: { science: 'Science', script: 'Script', trap: 'Trap', all: 'All' }, tabsAria: 'Card sections',
         sec1: '01 · The science', evidence: 'Evidence', sec2: '02 · Say it like this', recallOn: 'Recall on', recallTest: 'Test my recall', copy: 'Copy',
         sec3: '03 · The rookie trap', rookies: 'Rookies say', hears: 'What the buyer hears', peg: 'Peg',
-        blankQ: 'Blank {n}: which words go here?', blankAria: 'Blank {n}', firstTry: '{a}/{b} on the first try', plus10: ' · +10 XP', tomorrowStick: ". Flip again tomorrow and it'll stick.",
+        blankQ: 'Blank {n}: which words go here?', blankAria: 'Blank {n}', firstTry: '{a}/{b} on the first try', tomorrowStick: ". Flip again tomorrow and it'll stick.",
         st: { mastered: 'Mastered', learning: 'Learning', new: 'New' }, level: 'Level {b} of 5',
         rankLine: '{m} of 12 mastered · rank: {r} · {xp} XP', ranks: ['Rookie', 'Rapport Builder', 'Negotiator', 'Closer', 'Grandmaster'],
         z: {
           prompt: 'Card {n}: {t}. What would you actually say?', recallOff: 'Recall off. Read it once more, out loud.',
           recallStart: 'Fill each blank with the exact words. Watch for near-misses: retrieval only works if it\'s precise.',
-          notQuite: 'Close, but not the words. Picture saying it to a real buyer.', perfect: "Every word, first try. That's a reflex forming. (+10 XP)",
+          notQuite: 'Close, but not the words. Picture saying it to a real buyer.', perfect: "Every word, first try. That's a reflex forming.",
           recallDone: "Done. The ones you missed are exactly where tomorrow's practice should go.", mastered: "{t} is mastered. It'll come back in a few days to make sure.",
           solid: 'Still solid. See you in a week or two.', nice: "Nice. It'll come back tomorrow to check it stuck.",
           again: "No problem. It's back at the end of today's set. Missing it now is what makes it stick later.",
@@ -1170,13 +1189,13 @@
           fresh: 'Fresh start. Same twelve techniques, zero bad habits.',
           pratfall: 'Oof. Pratfall effect: a competent fox who trips is more likeable. You like me more now, admit it.'
         },
-        drillRight: 'Strong move. +20 XP', drillTime: "Time's up.", drillWrong: 'Not this time.', studyCard: 'Study the card: {t}',
+        drillRight: 'Strong move.', drillTime: "Time's up.", drillWrong: 'Not this time.', studyCard: 'Study the card: {t}',
         t: { masteredToast: '{t} mastered', resetToast: 'Progress reset', copied: 'Copied', copyFail: 'Copy failed: select the text instead', streak: '{n}-day streak',
              soundOn: 'Sound on', soundOff: 'Sound off', secret: 'Secret found: {t}' },
         soundAria: 'Sound', langAria: 'Switch language',
         introTag: 'Meet Ziggy', introTitle: 'Learn the words before the <span class="accent-word">buyer</span> tests you.',
-        introDesc: 'Twelve sales-psychology techniques, each rated for how well the evidence holds up. Flip, recall the exact script, then defend it in a 20-second objection drill. Four secrets are hidden along the way.',
-        introStart: "Start today's set", introContinue: 'Continue', introMeta: 'About 5 minutes a day · no sign-up · progress saves on this device',
+        introDesc: "Twelve sales-psychology techniques, each rated for how well the evidence holds up. Flip, recall the exact script, then say it out loud to a colleague playing the buyer. Four secrets are hidden along the way.",
+        introStart: "Start today's set", introContinue: 'Continue', introMeta: "About 5 minutes a day · no sign-up · nothing scored · stays on this device",
         codexKicker: 'Field archive', codexTitle: "Ziggy's Field Codex", tabSecrets: 'Secrets', tabCard: 'Rep card', tabBuild: 'Behind the build',
         eggTag: 'Secret found', eggUse: 'Use it at work', eggLocked: 'Locked secret', eggHint: 'Hint', eggResume: 'Keep going',
         cardName: 'Your name', cardNamePh: 'Type your name', cardCopy: 'Copy card', cardShare: 'Share', cardHead: 'SALES PSYCHOLOGY ACADEMY · REP CARD',
@@ -1192,13 +1211,15 @@
       zh: {
         pageTitle: '销售心理学训练营 — FREE//BUILDER 实验室', brand: '销售心理学训练营', brandShort: '销售训练营', kicker: 'FREE//BUILDER 实验室',
         codex: '实战手册', hudStreak: '连续', hudMastered: '已掌握', hudSecrets: '彩蛋',
-        heroKicker: '主动回忆训练器', heroTitle: '把销售心理学练成<span class="accent-word">条件反射</span>。',
-        heroDesc: '十二种技巧，每天五分钟。翻开卡片，回忆出准确的话术，再在实时异议中守住它。你熟悉的卡片出现得更少，答错的卡片会更快回来。',
+        /* the pair drill and the kit's close (Nov 6) */
+        practised: "练过 ✓", pairHand: "把手机递给一位同事", pairLead: "TA 把买家的话念出来。你用自己的话大声回答。二十秒。然后 TA 说说这句话落地了没有。", pairGo: "我是那位同事 · 开始计时", pairSolo: "我一个人练", pairLive: "计时中。只听，别帮忙。", pairAnswered: "TA 答完了", pairQ: "落地了吗？", pairYes: "落地了", pairPartly: "一部分", pairNo: "还没有", pairMirror: "不是分数。是你们两人之间的一面镜子。", pairCardLine: "卡片上的那句话", passKicker: "然后", monday: "周一试试这个", mondayTxt: "下一次真实通话里，买家反推时，先说出你听到了什么，再回答。", teachTitle: "把这个条件反射教给一个人。", teachLead: "给同事演示这三步，然后让 TA 用自己的话写下想尝试的做法。", t3: ["说出你听到的", "先问再答", "然后是原话"], t3sub: ["“听起来预算压力确实很大。”", "一个问题，不是推销", "卡片上的那句话，平静地说"], learnerName: "TA 的名字（可选）", learnerPh: "例如：Mei", learned: "TA 想尝试的做法（用自己的话）", learnedPh: "把手机递给 TA……", save: "保存在这部手机上", chainTitle: "你传给过的人", chainEmpty: "还没有。你的第一次“教回去”会出现在这里。", saved: "只保存在这部手机上。", passSaved: "已保存在这部手机上。",
+        heroKicker: "双人练习 · 每天五分钟", heroTitle: '把销售心理学练成<span class="accent-word">条件反射</span>。',
+        heroDesc: "十二种技巧，每天五分钟。翻开卡片，回忆出准确的话术，再对着扮演买家的同事大声说出来。熟悉的卡片出现得更少，答错的卡片会更快回来。没有任何分数。",
         setTitle: '今日练习', setAll: '全部完成', setDone: '本组完成', setCard: '第 {n} / {t} 张', setDotsAria: '今日练习的卡片', done: '已完成',
         again: '再来', flip: '翻面', flipBack: '翻回', good: '记住了', keysHint: '空格翻面 · ← 再来 · → 记住了 · D 异议演练',
-        drillKicker: '实时异议演练 · 20 秒', drillCta: '买家刚刚提出异议。你会怎么说？',
+        drillKicker: "异议演练 · 两个人 · 20 秒", drillCta: "买家刚刚提出异议。对着同事，大声说出来。",
         deckKicker: '01 / 你的卡组', deckTitle: '十二种技巧，<span class="accent-word">诚实</span>的证据。',
-        deckDesc: '每张卡片都按研究证据的可靠程度评级，因为不少销售“神经科学”经不起推敲。进度条显示你对每张卡的熟练度；三格即为掌握。',
+        deckDesc: "每张卡片都按研究证据的可靠程度评级，因为不少销售“神经科学”经不起推敲。练过的卡片会写着“练过”，仅此而已。",
         ev: { robust: '扎实', mixed: '混合', practitioner: '实践经验', contested: '有争议' },
         reset: '重置进度', resetArm: '再点一次以重置',
         ctaKicker: '02 / 为你定制', ctaTitle: '你的产品，你的异议，你的<span class="accent-word">团队</span>。',
@@ -1211,13 +1232,13 @@
         tabs: { science: '原理', script: '话术', trap: '陷阱', all: '全部' }, tabsAria: '卡片分区',
         sec1: '01 · 背后的科学', evidence: '证据', sec2: '02 · 这样说', recallOn: '回忆中', recallTest: '测试回忆', copy: '复制',
         sec3: '03 · 新手陷阱', rookies: '新手会说', hears: '买家听到的', peg: '记忆钩',
-        blankQ: '第 {n} 空：应该填哪几个字？', blankAria: '第 {n} 空', firstTry: '首次答对 {a}/{b}', plus10: ' · +10 XP', tomorrowStick: '。明天再翻一次，就会记牢。',
+        blankQ: '第 {n} 空：应该填哪几个字？', blankAria: '第 {n} 空', firstTry: '首次答对 {a}/{b}', tomorrowStick: '。明天再翻一次，就会记牢。',
         st: { mastered: '已掌握', learning: '学习中', new: '新卡' }, level: '等级 {b} / 5',
         rankLine: '已掌握 {m}/12 · 段位：{r} · {xp} XP', ranks: ['新手', '关系建立者', '谈判者', '成交高手', '宗师'],
         z: {
           prompt: '第 {n} 张：{t}。你实际会怎么说？', recallOff: '回忆已关闭。再大声读一遍。',
           recallStart: '用准确的原话填空。小心“差一点”的选项：只有精确的回忆才有效。',
-          notQuite: '接近了，但不是原话。想象你正在对真实的买家说。', perfect: '每个词都一次答对。条件反射正在形成。（+10 XP）',
+          notQuite: '接近了，但不是原话。想象你正在对真实的买家说。', perfect: '每个词都一次答对。条件反射正在形成。',
           recallDone: '完成。答错的地方，正是明天该练的重点。', mastered: '「{t}」已掌握。几天后它还会回来确认一下。',
           solid: '依然稳固。一两周后见。', nice: '不错。明天它会回来，看看你是否记牢了。',
           again: '没关系，它会排到今天这组的最后。现在答错，正是以后记牢的原因。',
@@ -1230,13 +1251,13 @@
           fresh: '重新开始。同样的十二种技巧，零坏习惯。',
           pratfall: '哎哟。出丑效应：一只能干的狐狸摔一跤，反而更讨人喜欢。承认吧，你现在更喜欢我了。'
         },
-        drillRight: '漂亮的一招。+20 XP', drillTime: '时间到。', drillWrong: '这次没选中。', studyCard: '学习这张卡：{t}',
+        drillRight: '漂亮的一招。', drillTime: '时间到。', drillWrong: '这次没选中。', studyCard: '学习这张卡：{t}',
         t: { masteredToast: '已掌握「{t}」', resetToast: '进度已重置', copied: '已复制', copyFail: '复制失败：请手动选择文字', streak: '连续 {n} 天',
              soundOn: '声音已开启', soundOff: '声音已关闭', secret: '发现彩蛋：{t}' },
         soundAria: '声音', langAria: '切换语言',
         introTag: '认识 Ziggy', introTitle: '在<span class="accent-word">买家</span>考你之前，先把话术练熟。',
-        introDesc: '十二种销售心理学技巧，每一种都按证据可靠程度评级。翻卡、回忆准确话术，再在 20 秒异议演练中守住它。途中藏着四个彩蛋。',
-        introStart: '开始今日练习', introContinue: '继续', introMeta: '每天约 5 分钟 · 无需注册 · 进度保存在本设备',
+        introDesc: "十二种销售心理学技巧，每一种都按证据可靠程度评级。翻卡、回忆准确话术，再对着扮演买家的同事大声说出来。途中藏着四个彩蛋。",
+        introStart: '开始今日练习', introContinue: '继续', introMeta: "每天约 5 分钟 · 无需注册 · 不打分 · 只留在本设备",
         codexKicker: '实战档案', codexTitle: 'Ziggy 的实战手册', tabSecrets: '彩蛋', tabCard: '销售卡', tabBuild: '设计思路',
         eggTag: '发现彩蛋', eggUse: '在工作中用起来', eggLocked: '未解锁的彩蛋', eggHint: '提示', eggResume: '继续',
         cardName: '你的名字', cardNamePh: '输入你的名字', cardCopy: '复制卡片', cardShare: '分享', cardHead: '销售心理学训练营 · 销售卡',
@@ -1252,13 +1273,15 @@
       es: {
         pageTitle: 'Academia de Psicología de Ventas — un laboratorio FREE//BUILDER', brand: 'Academia de Psicología de Ventas', brandShort: 'Academia de Ventas', kicker: 'un laboratorio FREE//BUILDER',
         codex: 'Códice', hudStreak: 'Racha', hudMastered: 'Dominadas', hudSecrets: 'Secretos',
-        heroKicker: 'Entrenador de recuerdo activo', heroTitle: 'Convierte la psicología de ventas en <span class="accent-word">reflejos</span>.',
-        heroDesc: 'Doce técnicas, cinco minutos al día. Gira una tarjeta, recuerda las palabras exactas y defiéndelas ante una objeción en directo. Las tarjetas que dominas vuelven menos; las que fallas vuelven antes.',
+        /* the pair drill and the kit's close (Nov 6) */
+        practised: "practicada ✓", pairHand: "Pásale el móvil a un colega", pairLead: "Lee en voz alta la frase del comprador. Tú respondes en voz alta, con tus palabras. Veinte segundos. Luego dice cómo ha aterrizado.", pairGo: "Soy el colega · arranca el reloj", pairSolo: "Estoy solo", pairLive: "El reloj corre. Escucha; no ayudes.", pairAnswered: "Ya ha respondido", pairQ: "¿Ha aterrizado?", pairYes: "Aterrizó", pairPartly: "En parte", pairNo: "Aún no", pairMirror: "No es una puntuación. Es un espejo, entre los dos.", pairCardLine: "La frase de la tarjeta", passKicker: "Después", monday: "Pruébalo el lunes", mondayTxt: "En tu próxima llamada real, cuando el comprador se resista, nombra lo que has oído antes de responder.", teachTitle: "Enséñale el reflejo a alguien.", teachLead: "Muéstrale a un colega los tres pasos y deja que escriba, con sus palabras, lo que probará.", t3: ["Nombra lo que oyes", "Pregunta antes de responder", "Luego, las palabras exactas"], t3sub: ["«Parece que el presupuesto está bajo presión.»", "una pregunta, no un pitch", "la frase de la tarjeta, con calma"], learnerName: "Su nombre (opcional)", learnerPh: "p. ej. Mei", learned: "Lo que probará, con sus palabras", learnedPh: "Pásale el móvil…", save: "Guardar en este móvil", chainTitle: "Personas a las que se lo transmitiste", chainEmpty: "Nadie todavía. Tu primera transmisión aparecerá aquí.", saved: "Guardado solo en este móvil.", passSaved: "Guardado en este móvil.",
+        heroKicker: "Práctica en pareja · cinco minutos al día", heroTitle: 'Convierte la psicología de ventas en <span class="accent-word">reflejos</span>.',
+        heroDesc: "Doce técnicas, cinco minutos al día. Gira una tarjeta, recuerda las palabras exactas y dilas en voz alta a un colega que hace de comprador. Las tarjetas que sabes vuelven menos; las que fallas, antes. Nada se puntúa.",
         setTitle: 'Serie de hoy', setAll: 'Todo al día', setDone: 'Serie completada', setCard: 'Tarjeta {n} de {t}', setDotsAria: 'Tarjetas de la serie de hoy', done: 'hecha',
         again: 'Otra vez', flip: 'Girar', flipBack: 'Volver', good: 'Lo tengo', keysHint: 'Espacio para girar · ← otra vez · → lo tengo · D para un simulacro',
-        drillKicker: 'Simulacro de objeción · 20 segundos', drillCta: 'Un comprador acaba de poner una objeción. ¿Qué dices?',
+        drillKicker: "Simulacro de objeción · dos personas · 20 segundos", drillCta: "Un comprador acaba de poner una objeción. Dilo en voz alta, a un colega.",
         deckKicker: '01 / Tu baraja', deckTitle: 'Doce técnicas. Evidencia <span class="accent-word">honesta</span>.',
-        deckDesc: 'Cada tarjeta se valora según lo bien que se sostiene la investigación, porque mucha «neurociencia» de ventas no aguanta. Las barras muestran cuánto dominas cada una; tres barras cuentan como dominada.',
+        deckDesc: "Cada tarjeta se valora según lo bien que se sostiene la investigación, porque mucha «neurociencia» de ventas no aguanta. Una tarjeta practicada lo dice; nada más.",
         ev: { robust: 'Sólida', mixed: 'Mixta', practitioner: 'Sabiduría práctica', contested: 'Discutida' },
         reset: 'Reiniciar progreso', resetArm: 'Toca otra vez para reiniciar',
         ctaKicker: '02 / Hazlo tuyo', ctaTitle: 'Tus productos. Tus objeciones. Tu <span class="accent-word">equipo</span>.',
@@ -1271,13 +1294,13 @@
         tabs: { science: 'Ciencia', script: 'Guion', trap: 'Trampa', all: 'Todo' }, tabsAria: 'Secciones de la tarjeta',
         sec1: '01 · La ciencia', evidence: 'Evidencia', sec2: '02 · Dilo así', recallOn: 'Recuerdo activo', recallTest: 'Pon a prueba tu memoria', copy: 'Copiar',
         sec3: '03 · La trampa del novato', rookies: 'El novato dice', hears: 'Lo que oye el comprador', peg: 'Gancho',
-        blankQ: 'Hueco {n}: ¿qué palabras van aquí?', blankAria: 'Hueco {n}', firstTry: '{a}/{b} al primer intento', plus10: ' · +10 XP', tomorrowStick: '. Gírala de nuevo mañana y se quedará.',
+        blankQ: 'Hueco {n}: ¿qué palabras van aquí?', blankAria: 'Hueco {n}', firstTry: '{a}/{b} al primer intento', tomorrowStick: '. Gírala de nuevo mañana y se quedará.',
         st: { mastered: 'Dominada', learning: 'Aprendiendo', new: 'Nueva' }, level: 'Nivel {b} de 5',
         rankLine: '{m} de 12 dominadas · rango: {r} · {xp} XP', ranks: ['Novato', 'Constructor de confianza', 'Negociador', 'Cerrador', 'Gran maestro'],
         z: {
           prompt: 'Tarjeta {n}: {t}. ¿Qué dirías de verdad?', recallOff: 'Recuerdo desactivado. Léelo una vez más, en voz alta.',
           recallStart: 'Rellena cada hueco con las palabras exactas. Ojo con los casi aciertos: recordar solo funciona si es preciso.',
-          notQuite: 'Cerca, pero no son esas palabras. Imagina que se lo dices a un comprador real.', perfect: 'Cada palabra al primer intento. Se está formando un reflejo. (+10 XP)',
+          notQuite: 'Cerca, pero no son esas palabras. Imagina que se lo dices a un comprador real.', perfect: 'Cada palabra al primer intento. Se está formando un reflejo.',
           recallDone: 'Hecho. Los que fallaste son justo donde debe ir la práctica de mañana.', mastered: '{t} dominada. Volverá en unos días para asegurarse.',
           solid: 'Sigue firme. Nos vemos en una o dos semanas.', nice: 'Bien. Volverá mañana para comprobar que se ha quedado.',
           again: 'Sin problema. Vuelve al final de la serie de hoy. Fallarla ahora es lo que hace que se quede después.',
@@ -1290,13 +1313,13 @@
           fresh: 'Empezamos de cero. Las mismas doce técnicas, cero malos hábitos.',
           pratfall: 'Uf. Efecto pratfall: un zorro competente que tropieza cae mejor. Admítelo, ahora te caigo mejor.'
         },
-        drillRight: 'Gran jugada. +20 XP', drillTime: 'Se acabó el tiempo.', drillWrong: 'Esta vez no.', studyCard: 'Estudia la tarjeta: {t}',
+        drillRight: 'Gran jugada.', drillTime: 'Se acabó el tiempo.', drillWrong: 'Esta vez no.', studyCard: 'Estudia la tarjeta: {t}',
         t: { masteredToast: '{t} dominada', resetToast: 'Progreso reiniciado', copied: 'Copiado', copyFail: 'No se pudo copiar: selecciona el texto', streak: 'Racha de {n} días',
              soundOn: 'Sonido activado', soundOff: 'Sonido desactivado', secret: 'Secreto encontrado: {t}' },
         soundAria: 'Sonido', langAria: 'Cambiar idioma',
         introTag: 'Conoce a Ziggy', introTitle: 'Aprende las palabras antes de que el <span class="accent-word">comprador</span> te ponga a prueba.',
-        introDesc: 'Doce técnicas de psicología de ventas, cada una valorada según la solidez de su evidencia. Gira, recuerda el guion exacto y defiéndelo en un simulacro de objeción de 20 segundos. Hay cuatro secretos escondidos por el camino.',
-        introStart: 'Empezar la serie de hoy', introContinue: 'Continuar', introMeta: 'Unos 5 minutos al día · sin registro · el progreso se guarda en este dispositivo',
+        introDesc: "Doce técnicas de psicología de ventas, cada una valorada según la solidez de su evidencia. Gira, recuerda el guion exacto y dilo en voz alta a un colega que hace de comprador. Cuatro secretos escondidos por el camino.",
+        introStart: 'Empezar la serie de hoy', introContinue: 'Continuar', introMeta: "Unos 5 minutos al día · sin registro · nada se puntúa · se queda en este dispositivo",
         codexKicker: 'Archivo de campo', codexTitle: 'El códice de Ziggy', tabSecrets: 'Secretos', tabCard: 'Tarjeta de vendedor', tabBuild: 'Cómo se hizo',
         eggTag: 'Secreto encontrado', eggUse: 'Úsalo en el trabajo', eggLocked: 'Secreto bloqueado', eggHint: 'Pista', eggResume: 'Seguir',
         cardName: 'Tu nombre', cardNamePh: 'Escribe tu nombre', cardCopy: 'Copiar tarjeta', cardShare: 'Compartir', cardHead: 'ACADEMIA DE PSICOLOGÍA DE VENTAS · TARJETA',
@@ -1311,13 +1334,15 @@
       }, "zh-Hant": {
         pageTitle: "銷售心理學訓練營 — FREE//BUILDER 實驗室", brand: "銷售心理學訓練營", brandShort: "銷售訓練營", kicker: "FREE//BUILDER 實驗室",
         codex: "實戰手冊", hudStreak: "連續", hudMastered: '已掌握', hudSecrets: '彩蛋',
-        heroKicker: "主動回憶訓練器", heroTitle: "把銷售心理學練成<span class=\"accent-word\">條件反射</span>。",
-        heroDesc: "十二種技巧，每天五分鐘。翻開卡片，回憶出準確的話術，再在實時異議中守住它。你熟悉的卡片出現得更少，答錯的卡片會更快回來。",
+        /* the pair drill and the kit's close (Nov 6) */
+        practised: "練過 ✓", pairHand: "把手機遞給一位同事", pairLead: "TA 把買家的話唸出來。你用自己的話大聲回答。二十秒。然後 TA 說說這句話落地了沒有。", pairGo: "我是那位同事 · 開始計時", pairSolo: "我一個人練", pairLive: "計時中。只聽，別幫忙。", pairAnswered: "TA 答完了", pairQ: "落地了嗎？", pairYes: "落地了", pairPartly: "一部分", pairNo: "還沒有", pairMirror: "不是分數。是你們兩人之間的一面鏡子。", pairCardLine: "卡片上的那句話", passKicker: "然後", monday: "週一試試這個", mondayTxt: "下一次真實通話裡，買家反推時，先說出你聽到了什麼，再回答。", teachTitle: "把這個條件反射教給一個人。", teachLead: "給同事示範這三步，然後讓 TA 用自己的話寫下想嘗試的做法。", t3: ["說出你聽到的", "先問再答", "然後是原話"], t3sub: ["「聽起來預算壓力確實很大。」", "一個問題，不是推銷", "卡片上的那句話，平靜地說"], learnerName: "TA 的名字（可選）", learnerPh: "例如：Mei", learned: "TA 想嘗試的做法（用自己的話）", learnedPh: "把手機遞給 TA……", save: "保存在這部手機上", chainTitle: "你傳給過的人", chainEmpty: "還沒有。你的第一次「教回去」會出現在這裡。", saved: "只保存在這部手機上。", passSaved: "已保存在這部手機上。",
+        heroKicker: "雙人練習 · 每天五分鐘", heroTitle: "把銷售心理學練成<span class=\"accent-word\">條件反射</span>。",
+        heroDesc: "十二種技巧，每天五分鐘。翻開卡片，回憶出準確的話術，再對著扮演買家的同事大聲說出來。熟悉的卡片出現得更少，答錯的卡片會更快回來。沒有任何分數。",
         setTitle: "今日練習", setAll: '全部完成', setDone: "本組完成", setCard: "第 {n} / {t} 張", setDotsAria: "今日練習的卡片", done: '已完成',
         again: "再來", flip: '翻面', flipBack: '翻回', good: "記住了", keysHint: "空格翻面 · ← 再來 · → 記住了 · D 異議演練",
-        drillKicker: "實時異議演練 · 20 秒", drillCta: "買家剛剛提出異議。你會怎麼說？",
+        drillKicker: "異議演練 · 兩個人 · 20 秒", drillCta: "買家剛剛提出異議。對著同事，大聲說出來。",
         deckKicker: "01 / 你的卡組", deckTitle: "十二種技巧，<span class=\"accent-word\">誠實</span>的證據。",
-        deckDesc: "每張卡片都按研究證據的可靠程度評級，因為不少銷售“神經科學”經不起推敲。進度條顯示你對每張卡的熟練度；三格即為掌握。",
+        deckDesc: "每張卡片都按研究證據的可靠程度評級，因為不少銷售「神經科學」經不起推敲。練過的卡片會寫著「練過」，僅此而已。",
         ev: { robust: "紮實", mixed: '混合', practitioner: "實踐經驗", contested: "有爭議" },
         reset: "重置進度", resetArm: "再點一次以重置",
         ctaKicker: "02 / 為你定製", ctaTitle: "你的產品，你的異議，你的<span class=\"accent-word\">團隊</span>。",
@@ -1330,13 +1355,13 @@
         tabs: { science: '原理', script: "話術", trap: '陷阱', all: '全部' }, tabsAria: "卡片分割槽",
         sec1: "01 · 背後的科學", evidence: "證據", sec2: "02 · 這樣說", recallOn: "回憶中", recallTest: "測試回憶", copy: "複製",
         sec3: '03 · 新手陷阱', rookies: "新手會說", hears: "買家聽到的", peg: "記憶鉤",
-        blankQ: "第 {n} 空：應該填哪幾個字？", blankAria: '第 {n} 空', firstTry: "首次答對 {a}/{b}", plus10: ' · +10 XP', tomorrowStick: "。明天再翻一次，就會記牢。",
+        blankQ: "第 {n} 空：應該填哪幾個字？", blankAria: '第 {n} 空', firstTry: "首次答對 {a}/{b}", tomorrowStick: "。明天再翻一次，就會記牢。",
         st: { mastered: '已掌握', learning: "學習中", new: '新卡' }, level: "等級 {b} / 5",
         rankLine: '已掌握 {m}/12 · 段位：{r} · {xp} XP', ranks: ['新手', "關係建立者", "談判者", '成交高手', "宗師"],
         z: {
           prompt: "第 {n} 張：{t}。你實際會怎麼說？", recallOff: "回憶已關閉。再大聲讀一遍。",
           recallStart: "用準確的原話填空。小心“差一點”的選項：只有精確的回憶才有效。",
-          notQuite: "接近了，但不是原話。想象你正在對真實的買家說。", perfect: "每個詞都一次答對。條件反射正在形成。（+10 XP）",
+          notQuite: "接近了，但不是原話。想象你正在對真實的買家說。", perfect: "每個詞都一次答對。條件反射正在形成。",
           recallDone: "完成。答錯的地方，正是明天該練的重點。", mastered: "「{t}」已掌握。幾天後它還會回來確認一下。",
           solid: "依然穩固。一兩週後見。", nice: "不錯。明天它會回來，看看你是否記牢了。",
           again: "沒關係，它會排到今天這組的最後。現在答錯，正是以後記牢的原因。",
@@ -1349,13 +1374,13 @@
           fresh: "重新開始。同樣的十二種技巧，零壞習慣。",
           pratfall: "哎喲。出醜效應：一隻能幹的狐狸摔一跤，反而更討人喜歡。承認吧，你現在更喜歡我了。"
         },
-        drillRight: '漂亮的一招。+20 XP', drillTime: "時間到。", drillWrong: "這次沒選中。", studyCard: "學習這張卡：{t}",
+        drillRight: '漂亮的一招。', drillTime: "時間到。", drillWrong: "這次沒選中。", studyCard: "學習這張卡：{t}",
         t: { masteredToast: '已掌握「{t}」', resetToast: "進度已重置", copied: "已複製", copyFail: "複製失敗：請手動選擇文字", streak: "連續 {n} 天",
              soundOn: "聲音已開啟", soundOff: "聲音已關閉", secret: "發現彩蛋：{t}" },
         soundAria: "聲音", langAria: "切換語言",
         introTag: "認識 Ziggy", introTitle: "在<span class=\"accent-word\">買家</span>考你之前，先把話術練熟。",
-        introDesc: "十二種銷售心理學技巧，每一種都按證據可靠程度評級。翻卡、回憶準確話術，再在 20 秒異議演練中守住它。途中藏著四個彩蛋。",
-        introStart: "開始今日練習", introContinue: "繼續", introMeta: "每天約 5 分鐘 · 無需註冊 · 進度儲存在本裝置",
+        introDesc: "十二種銷售心理學技巧，每一種都按證據可靠程度評級。翻卡、回憶準確話術，再對著扮演買家的同事大聲說出來。途中藏著四個彩蛋。",
+        introStart: "開始今日練習", introContinue: "繼續", introMeta: "每天約 5 分鐘 · 無需註冊 · 不打分 · 只留在本裝置",
         codexKicker: "實戰檔案", codexTitle: "Ziggy 的實戰手冊", tabSecrets: '彩蛋', tabCard: "銷售卡", tabBuild: "設計思路",
         eggTag: "發現彩蛋", eggUse: "在工作中用起來", eggLocked: "未解鎖的彩蛋", eggHint: '提示', eggResume: "繼續",
         cardName: '你的名字', cardNamePh: "輸入你的名字", cardCopy: "複製卡片", cardShare: '分享', cardHead: "銷售心理學訓練營 · 銷售卡",
@@ -1370,13 +1395,15 @@
       }, "ca": {
         pageTitle: "Acadèmia de Psicologia de Vendes — un laboratori FREE//BUILDER", brand: "Acadèmia de Psicologia de Vendes", brandShort: "Acadèmia de Vendes", kicker: "un laboratori FREE//BUILDER",
         codex: "Còdex", hudStreak: "Ratxa", hudMastered: "Dominades", hudSecrets: "Secrets",
-        heroKicker: "Entrenador de record actiu", heroTitle: "Converteix la psicologia de vendes en <span class=\"accent-word\">reflexos</span>.",
-        heroDesc: "Dotze tècniques, cinc minuts al dia. Gira una targeta, recorda les paraules exactes i defensa-les davant una objecció en directe. Les targetes que domines tornen menys; les que falles tornen abans.",
+        /* the pair drill and the kit's close (Nov 6) */
+        practised: "practicada ✓", pairHand: "Passa el mòbil a un company", pairLead: "Llegeix en veu alta la frase del comprador. Tu respons en veu alta, amb les teves paraules. Vint segons. Després diu com ha aterrat.", pairGo: "Soc el company · engega el rellotge", pairSolo: "Estic sol", pairLive: "El rellotge corre. Escolta; no ajudis.", pairAnswered: "Ja ha respost", pairQ: "Ha aterrat?", pairYes: "Ha aterrat", pairPartly: "En part", pairNo: "Encara no", pairMirror: "No és una puntuació. És un mirall, entre tots dos.", pairCardLine: "La frase de la targeta", passKicker: "Després", monday: "Prova-ho dilluns", mondayTxt: "A la propera trucada real, quan el comprador es resisteixi, anomena el que has sentit abans de respondre.", teachTitle: "Ensenya el reflex a algú.", teachLead: "Mostra a un company els tres passos i deixa que escrigui, amb les seves paraules, el que provarà.", t3: ["Anomena el que sents", "Pregunta abans de respondre", "Després, les paraules exactes"], t3sub: ["«Sembla que el pressupost està sota pressió.»", "una pregunta, no un pitch", "la frase de la targeta, amb calma"], learnerName: "El seu nom (opcional)", learnerPh: "p. ex. Mei", learned: "El que provarà, amb les seves paraules", learnedPh: "Passa-li el mòbil…", save: "Desar en aquest mòbil", chainTitle: "Persones a qui ho has transmès", chainEmpty: "Ningú encara. La teva primera transmissió apareixerà aquí.", saved: "Desat només en aquest mòbil.", passSaved: "Desat en aquest mòbil.",
+        heroKicker: "Pràctica en parella · cinc minuts al dia", heroTitle: "Converteix la psicologia de vendes en <span class=\"accent-word\">reflexos</span>.",
+        heroDesc: "Dotze tècniques, cinc minuts al dia. Gira una targeta, recorda les paraules exactes i digues-les en veu alta a un company que fa de comprador. Les targetes que saps tornen menys; les que falles, abans. Res no es puntua.",
         setTitle: "Sèrie d'avui", setAll: "Tot al dia", setDone: "Sèrie completada", setCard: "Targeta {n} de {t}", setDotsAria: "Targetes de la sèrie d'avui", done: "feta",
         again: "Un altre cop", flip: 'Girar', flipBack: "Tornar", good: "Ho tinc", keysHint: "Espai per girar · ← un altre cop · → ho tinc · D per a un simulacre",
-        drillKicker: "Simulacre d'objecció · 20 segons", drillCta: "Un comprador acaba de posar una objecció. Què dius?",
+        drillKicker: "Simulacre d'objecció · dues persones · 20 segons", drillCta: "Un comprador acaba de posar una objecció. Digues-ho en veu alta, a un company.",
         deckKicker: "01 / La teva baralla", deckTitle: "Dotze tècniques. Evidència <span class=\"accent-word\">honesta</span>.",
-        deckDesc: "Cada targeta es valora segons com de bé se sosté la recerca, perquè molta «neurociència» de vendes no aguanta. Les barres mostren quant domines cadascuna; tres barres compten com a dominada.",
+        deckDesc: "Cada targeta es valora segons com s'aguanta la recerca, perquè molta «neurociència» de vendes no s'aguanta. Una targeta practicada ho diu; res més.",
         ev: { robust: "Sòlida", mixed: 'Mixta', practitioner: "Saviesa pràctica", contested: 'Discutida' },
         reset: "Reiniciar el progrés", resetArm: "Toca un altre cop per reiniciar",
         ctaKicker: "02 / Fes-lo teu", ctaTitle: "Els teus productes. Les teves objeccions. El teu <span class=\"accent-word\">equip</span>.",
@@ -1389,13 +1416,13 @@
         tabs: { science: "Ciència", script: "Guió", trap: "Parany", all: "Tot" }, tabsAria: "Seccions de la targeta",
         sec1: "01 · La ciència", evidence: "Evidència", sec2: "02 · Digues-ho així", recallOn: "Record actiu", recallTest: "Posa a prova la memòria", copy: 'Copiar',
         sec3: "03 · El parany del novell", rookies: "El novell diu", hears: "El que sent el comprador", peg: "Ham",
-        blankQ: "Forat {n}: quines paraules hi van?", blankAria: "Forat {n}", firstTry: "{a}/{b} al primer intent", plus10: ' · +10 XP', tomorrowStick: ". Gira-la de nou demà i es quedarà.",
+        blankQ: "Forat {n}: quines paraules hi van?", blankAria: "Forat {n}", firstTry: "{a}/{b} al primer intent", tomorrowStick: ". Gira-la de nou demà i es quedarà.",
         st: { mastered: 'Dominada', learning: "Aprenent", new: "Nova" }, level: "Nivell {b} de 5",
         rankLine: "{m} de 12 dominades · rang: {r} · {xp} XP", ranks: ["Novell", "Constructor de confiança", 'Negociador', "Tancador", "Gran mestre"],
         z: {
           prompt: "Targeta {n}: {t}. Què diries de debò?", recallOff: "Record desactivat. Llegeix-ho un cop més, en veu alta.",
           recallStart: "Omple cada forat amb les paraules exactes. Compte amb els gairebé encerts: recordar només funciona si és precís.",
-          notQuite: "A prop, però no són aquestes paraules. Imagina que l'hi dius a un comprador real.", perfect: "Cada paraula al primer intent. S'està formant un reflex. (+10 XP)",
+          notQuite: "A prop, però no són aquestes paraules. Imagina que l'hi dius a un comprador real.", perfect: "Cada paraula al primer intent. S'està formant un reflex.",
           recallDone: "Fet. Els que has fallat són just on ha d'anar la pràctica de demà.", mastered: "{t} dominada. Tornarà d'aquí a uns dies per assegurar-se'n.",
           solid: "Continua ferma. Ens veiem d'aquí a una o dues setmanes.", nice: "Bé. Tornarà demà per comprovar que s'ha quedat.",
           again: "Cap problema. Torna al final de la sèrie d'avui. Fallar-la ara és el que fa que es quedi després.",
@@ -1408,13 +1435,13 @@
           fresh: "Comencem de zero. Les mateixes dotze tècniques, zero mals hàbits.",
           pratfall: "Uf. Efecte pratfall: una guineu competent que ensopega cau millor. Admet-ho, ara et caic millor."
         },
-        drillRight: 'Gran jugada. +20 XP', drillTime: "S'ha acabat el temps.", drillWrong: "Aquest cop no.", studyCard: "Estudia la targeta: {t}",
+        drillRight: 'Gran jugada.', drillTime: "S'ha acabat el temps.", drillWrong: "Aquest cop no.", studyCard: "Estudia la targeta: {t}",
         t: { masteredToast: '{t} dominada', resetToast: "Progrés reiniciat", copied: "Copiat", copyFail: "No s'ha pogut copiar: selecciona el text", streak: "Ratxa de {n} dies",
              soundOn: "So activat", soundOff: "So desactivat", secret: "Secret trobat: {t}" },
         soundAria: "So", langAria: "Canviar d'idioma",
         introTag: "Coneix en Ziggy", introTitle: "Aprèn les paraules abans que el <span class=\"accent-word\">comprador</span> et posi a prova.",
-        introDesc: "Dotze tècniques de psicologia de vendes, cadascuna valorada segons la solidesa de la seva evidència. Gira, recorda el guió exacte i defensa'l en un simulacre d'objecció de 20 segons. Hi ha quatre secrets amagats pel camí.",
-        introStart: "Començar la sèrie d'avui", introContinue: 'Continuar', introMeta: "Uns 5 minuts al dia · sense registre · el progrés es desa en aquest dispositiu",
+        introDesc: "Dotze tècniques de psicologia de vendes, cadascuna valorada segons la solidesa de l'evidència. Gira, recorda el guió exacte i digues-lo en veu alta a un company que fa de comprador. Quatre secrets amagats pel camí.",
+        introStart: "Començar la sèrie d'avui", introContinue: 'Continuar', introMeta: "Uns 5 minuts al dia · sense registre · res no es puntua · es queda en aquest dispositiu",
         codexKicker: "Arxiu de camp", codexTitle: "El còdex d'en Ziggy", tabSecrets: "Secrets", tabCard: "Targeta de venedor", tabBuild: "Com es va fer",
         eggTag: "Secret trobat", eggUse: "Fes-ho servir a la feina", eggLocked: "Secret bloquejat", eggHint: 'Pista', eggResume: "Continuar",
         cardName: "El teu nom", cardNamePh: "Escriu el teu nom", cardCopy: "Copiar la targeta", cardShare: 'Compartir', cardHead: "ACADÈMIA DE PSICOLOGIA DE VENDES · TARGETA",
@@ -1580,8 +1607,6 @@
     const current = () => byId(state.queue[state.pos]);
 
     function renderHeader() {
-      $('streak-count').textContent = state.streak;
-      $('mastery-count').textContent = mastered();
       $('hud-eggs').textContent = `${eggCount()}/${EGG_IDS.length}`;
       $('sound-btn').setAttribute('aria-pressed', String(state.sound));
       $('sound-btn').setAttribute('aria-label', T().soundAria);
@@ -1724,21 +1749,34 @@
       const t = T();
       $('deck-list').innerHTML = deck().map((c, i) => {
         const b = box(c.id), e = EVIDENCE[c.evidence];
-        const bars = [1, 2, 3, 4, 5].map(n => `<span class="w-3 h-1.5 rounded-full ${b >= n ? (n <= 3 ? 'bg-ink' : 'bg-accent') : 'bg-line'}"></span>`).join('');
         return `<button type="button" data-study="${c.id}" class="w-full grid grid-cols-[2rem_1fr_auto] sm:grid-cols-[3rem_1fr_9rem_6rem] items-center gap-3 py-4 border-b border-line hover:bg-white -mx-3 px-3 rounded-xl text-left transition-colors group">
           <span class="font-mono text-[11px] text-muted group-hover:text-accent">${String(i + 1).padStart(2, '0')}</span>
           <span class="min-w-0"><span class="block font-syne font-bold text-base sm:text-lg tracking-tight truncate">${esc(c.title)}</span>
             <span class="block text-[11px] font-mono text-muted truncate"><span class="${e.dot}">${c.evidence === 'practitioner' ? '○' : '●'}</span> ${esc(t.ev[c.evidence])} · ${esc(c.stage)}</span></span>
-          <span class="hidden sm:block text-[11px] font-mono uppercase tracking-[0.12em] text-muted truncate">${esc(b >= 3 ? t.st.mastered : b > 0 ? t.st.learning : t.st.new)}</span>
-          <span class="flex items-center gap-1 justify-end" aria-label="${esc(fmt(t.level, { b }))}">${bars}</span>
+          <span class="hidden sm:block"></span>
+          <span class="text-[11px] font-mono uppercase tracking-[0.12em] text-muted text-right">${b > 0 ? esc(t.practised) : ''}</span>
         </button>`;
       }).join('');
       $('deck-list').querySelectorAll('[data-study]').forEach(b => b.addEventListener('click', () => study(b.dataset.study)));
-      const m = mastered();
-      $('rank-line').textContent = fmt(t.rankLine, { m, r: rank(m), xp: state.xp });
     }
 
-    function renderAll() { renderHeader(); renderSet(); renderCard(); renderDeck(); if (state.codexOpen) renderCodex(); }
+    function renderAll() { renderHeader(); renderSet(); renderCard(); renderDeck(); renderPass(); if (state.codexOpen) renderCodex(); }
+
+    /* ─────────── Pass it on: the learner writes, in their own words; the chain stays on this phone (shared with every FREE//BUILDER tool) ─────────── */
+    const chainLoad = () => { try { return JSON.parse(localStorage.getItem('fb_teachback') || '[]'); } catch (e) { return []; } };
+    function renderPass() {
+      const t = T();
+      $('pass-steps').innerHTML = t.t3.map((x, i) => `<li class="rounded-2xl border border-line bg-white p-4"><b class="block font-mono text-[11px] text-accent">0${i + 1}</b><span class="block font-syne font-bold mt-1">${esc(x)}</span><small class="block text-[11.5px] text-muted mt-1 leading-snug">${esc(t.t3sub[i])}</small></li>`).join('');
+      $('pass-name').placeholder = t.learnerPh; $('pass-text').placeholder = t.learnedPh;
+      const chain = chainLoad().filter(c => c.demo === 'sales');
+      $('pass-chain').innerHTML = chain.length ? chain.slice().reverse().map(c => `<li class="rounded-xl border border-line bg-white px-4 py-3">${esc(c.text)}<small class="block font-mono text-[10.5px] text-muted mt-1">${c.name ? esc(c.name) + ' · ' : ''}${esc(new Date(c.at).toLocaleDateString(HTML_LANG[lang]))}</small></li>`).join('') : `<li class="text-sm text-muted">${esc(t.chainEmpty)}</li>`;
+    }
+    $('pass-save').addEventListener('click', () => {
+      const text = $('pass-text').value.trim(); if (!text) { $('pass-text').focus(); return; }
+      const chain = chainLoad(); chain.push({ demo: 'sales', name: $('pass-name').value.trim(), text, at: Date.now() });
+      try { localStorage.setItem('fb_teachback', JSON.stringify(chain)); } catch (e) {}
+      $('pass-text').value = ''; renderPass(); toast(T().passSaved); beep('good');
+    });
 
     /* ─────────── Secrets ─────────── */
     function findEgg(id) {
@@ -1805,7 +1843,7 @@
         state.activeBlank = next === -1 ? null : next;
         if (next === -1) {
           state.recallDone = true;
-          if (state.firstTry === c.keys.length) { state.xp += 10; save(); say(Z().perfect, 'happy'); beep('win'); setTimeout(() => findEgg('testing'), 700); }
+          if (state.firstTry === c.keys.length) { save(); say(Z().perfect, 'happy'); beep('win'); setTimeout(() => findEgg('testing'), 700); }
           else say(Z().recallDone, 'think');
         }
         renderCard(); renderDeck();
@@ -1817,13 +1855,7 @@
       }
     }
 
-    function touchStreak() {
-      const d = today();
-      if (state.lastDay === d) return;
-      state.streak = state.lastDay === yesterday() ? state.streak + 1 : 1;
-      state.lastDay = d;
-      if (state.streak > 1) toast(fmt(T().t.streak, { n: state.streak }));
-    }
+    function touchStreak() { state.lastDay = today(); }
 
     function rate(good) {
       const c = current(); if (!c || !state.flipped) return;
@@ -1834,7 +1866,6 @@
         const nb = Math.min(before + 1, 5);
         state.boxes[c.id] = nb;
         state.due[c.id] = Date.now() + INTERVALS[nb];
-        state.xp += 10;
         beep('good');
         if (state.missedToday.has(c.id)) egg = 'difficulty';
         if (nb === 3) { toast(fmt(T().t.masteredToast, { t: c.title })); say(fmt(Z().mastered, { t: c.title }), 'happy'); }
@@ -1851,7 +1882,7 @@
       state.pos++; state.flipped = false; resetRecall();
       const nxt = current();
       if (nxt) setTimeout(() => { if (current() === nxt && !state.flipped) say(prompt(nxt), 'neutral'); }, 1600);
-      else { say(state.xp >= 10 ? Z().setDone : Z().setDoneShort, 'happy'); beep('win'); }
+      else { say(Z().setDone, 'happy'); beep('win'); }
       renderAll();
       if (egg) findEgg(egg);
     }
@@ -1870,12 +1901,14 @@
     let drill = null, drillTimer = null, lastDrill = -1;
     function openModal(id) { const m = $(id); m.classList.remove('hidden'); m.classList.add('flex'); }
     function closeModal(id) { const m = $(id); m.classList.add('hidden'); m.classList.remove('flex'); if (id === 'drill-modal') clearInterval(drillTimer); }
-    function startDrill() {
+    function startDrill(mode) {
       const list = drills();
       let n; do { n = Math.floor(Math.random() * list.length); } while (list.length > 1 && n === lastDrill);
       lastDrill = n;
       const d = list[n];
-      drill = { d, options: shuffle(d.options), answered: false, left: 20 };
+      drill = { d, options: shuffle(d.options), answered: false, left: 20, mode: mode || 'pair' };
+      if (drill.mode === 'pair') return startPair();
+      $('drill-pair').innerHTML = '';
       $('drill-line').textContent = (/*i18n*/lang === 'zh' ? `“${d.line}”` : (lang === "zh-Hant" ? `“${d.line}”` : (/*i18n*/lang === 'es' ? `«${d.line}»` : (lang === "ca" ? `«${d.line}»` : `“${d.line}”`))));
       $('drill-debrief').classList.add('hidden');
       $('drill-next').classList.add('hidden');
@@ -1888,6 +1921,51 @@
       openModal('drill-modal');
       say(Z().drill, 'alert');
       beep('tap');
+    }
+    /* two people, one phone: a colleague reads the buyer's line aloud, you answer out loud, they say how it landed (never counted) */
+    function startPair() {
+      const t = T(), d = drill.d;
+      $('drill-line').textContent = (lang === 'zh' || lang === 'zh-Hant') ? `“${d.line}”` : (lang === 'es' || lang === 'ca') ? `«${d.line}»` : `“${d.line}”`;
+      $('drill-debrief').classList.add('hidden'); $('drill-next').classList.add('hidden'); $('drill-options').innerHTML = '';
+      drill.left = 20; tickRing();
+      $('drill-pair').innerHTML = `<p class="text-[11px] font-mono uppercase tracking-[0.12em] text-accent">${esc(t.pairHand)}</p>
+        <p class="text-sm text-ink/75 leading-relaxed">${esc(t.pairLead)}</p>
+        <div class="flex flex-wrap gap-2 pt-1">${btn(esc(t.pairGo), 'id="pair-go"')}${btn(esc(t.pairSolo), 'id="pair-solo"', false)}</div>`;
+      $('pair-go').onclick = () => {
+        $('drill-pair').innerHTML = `<p class="text-[11px] font-mono uppercase tracking-[0.12em] text-muted">${esc(t.pairLive)}</p>
+          <div class="flex flex-wrap gap-2 pt-1">${btn(esc(t.pairAnswered), 'id="pair-stop"')}</div>`;
+        $('pair-stop').onclick = () => pairJudge();
+        clearInterval(drillTimer);
+        drillTimer = setInterval(() => { drill.left--; tickRing(); if (drill.left <= 0) { clearInterval(drillTimer); pairJudge(); } }, 1000);
+        beep('tap');
+      };
+      $('pair-solo').onclick = () => { clearInterval(drillTimer); startDrill('solo'); };
+      clearInterval(drillTimer);
+      openModal('drill-modal');
+      say(Z().drill, 'alert');
+    }
+    function pairJudge() {
+      if (!drill || drill.answered) return;
+      drill.answered = true; clearInterval(drillTimer);
+      const t = T();
+      $('drill-pair').innerHTML = `<p class="font-syne font-bold">${esc(t.pairQ)}</p>
+        <div class="grid grid-cols-3 gap-2">${[['yes', t.pairYes], ['partly', t.pairPartly], ['no', t.pairNo]].map(([k, l]) => `<button type="button" data-land="${k}" class="h-11 rounded-full border border-line text-xs font-mono font-bold hover:border-ink/40">${esc(l)}</button>`).join('')}</div>`;
+      $('drill-pair').querySelectorAll('[data-land]').forEach(b => b.addEventListener('click', () => pairLanded(b.dataset.land)));
+    }
+    function pairLanded(k) {
+      const t = T(), card = byId(drill.d.card), best = drill.d.options.find(o => o.best);
+      $('drill-pair').innerHTML = `<p class="text-[11px] font-mono text-muted">${esc(t.pairMirror)}</p>`;
+      const el = $('drill-debrief');
+      el.className = `mt-4 rounded-2xl border p-4 text-sm leading-relaxed ${k === 'yes' ? 'border-moss/40 bg-moss/5' : 'border-line bg-paper/60'}`;
+      el.innerHTML = `<p class="text-[11px] font-mono uppercase tracking-[0.12em] text-muted mb-1">${esc(t.pairCardLine)}</p>
+        <p class="font-syne font-bold mb-2">${esc(best ? best.text : '')}</p>
+        <p class="text-ink/75">${esc(drill.d.debrief)}</p>
+        <button type="button" id="drill-card" class="mt-3 text-[12px] font-mono underline decoration-accent decoration-2 underline-offset-4 hover:text-accent">${esc(fmt(t.studyCard, { t: card.title }))} →</button>`;
+      el.classList.remove('hidden');
+      $('drill-card').addEventListener('click', () => { closeModal('drill-modal'); study(card.id); });
+      $('drill-next').classList.remove('hidden');
+      say(k === 'yes' ? Z().right : k === 'partly' ? Z().wrong : Z().time, k === 'yes' ? 'happy' : 'think');
+      beep(k === 'yes' ? 'win' : 'tap');
     }
     function tickRing() {
       $('drill-timer').textContent = Math.max(0, drill.left);
@@ -1912,10 +1990,8 @@
         <button type="button" id="drill-card" class="mt-3 text-[12px] font-mono underline decoration-accent decoration-2 underline-offset-4 hover:text-accent">${esc(fmt(t.studyCard, { t: card.title }))} →</button>`;
       $('drill-card').addEventListener('click', () => { closeModal('drill-modal'); study(card.id); });
       $('drill-next').classList.remove('hidden');
-      if (right) {
-        state.xp += 20; state.drillsWon++; save(); renderDeck(); beep('win'); say(Z().right, 'happy');
-        if (drill.left >= 15) findEgg('quickdraw');
-      } else { beep('miss'); say(i === -1 ? Z().time : Z().wrong, 'think'); }
+      if (right) { beep('win'); say(Z().right, 'happy'); if (drill.left >= 15) findEgg('quickdraw'); }
+      else { beep('miss'); say(i === -1 ? Z().time : Z().wrong, 'think'); }
     }
 
     /* ─────────── Dialog (intro, secret found) ─────────── */
@@ -1961,11 +2037,6 @@
       setTimeout(() => $('drawer-close').focus({ preventScroll: true }), 60);
     }
     function closeCodex() { state.codexOpen = false; $('drawer').classList.remove('open'); $('drawer-scrim').classList.remove('open'); $('drawer').setAttribute('aria-hidden', 'true'); }
-    function cardText() {
-      const t = T(), m = mastered();
-      const done = deck().filter(c => box(c.id) >= 3).map(c => '✓ ' + c.title);
-      return [t.cardHead, state.name.trim() || '—', `${t.sMastered} ${m}/12 · ${t.sRank} ${rank(m)}`, `${t.sStreak} ${state.streak} · ${t.sDrills} ${state.drillsWon} · ${t.sSecrets} ${eggCount()}/${EGG_IDS.length}`, ...done, location.href.split('#')[0]].join('\n');
-    }
     function renderCodex() {
       const t = T(), body = $('codex-body');
       document.querySelectorAll('[data-ctab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.ctab === state.codexTab)));
@@ -1984,27 +2055,6 @@
             </article>`;
         }).join('')}</div>`;
       }
-      if (state.codexTab === 'card') {
-        const m = mastered(), done = deck().filter(c => box(c.id) >= 3);
-        body.innerHTML = `<label class="block text-[11px] font-mono uppercase tracking-[0.12em] text-muted mb-1.5" for="card-name">${esc(t.cardName)}</label>
-          <input id="card-name" type="text" maxlength="40" value="${esc(state.name)}" placeholder="${esc(t.cardNamePh)}" class="w-full h-11 px-4 rounded-xl border border-line bg-white focus:outline-none focus:border-ink/40 mb-4">
-          <div class="rounded-3xl bg-ink text-white p-6 space-y-5 relative overflow-hidden">
-            <span class="absolute -right-8 -top-8 w-32 h-32 rounded-full border border-white/10"></span>
-            <div class="flex items-center justify-between gap-3"><span class="text-[10px] font-mono uppercase tracking-[0.16em] text-white/50">${esc(t.cardHead)}</span><span class="w-2 h-2 rounded-full bg-accent flex-shrink-0"></span></div>
-            <div><p class="font-syne text-2xl font-bold tracking-tight" id="card-name-out">${esc(state.name.trim() || '—')}</p><p class="text-[11px] font-mono text-white/60 mt-1">${esc(t.sRank)} · ${esc(rank(m))}</p></div>
-            <div class="grid grid-cols-4 gap-2 text-center">
-              <div><b class="block font-syne text-xl">${m}/12</b><span class="text-[10px] font-mono text-white/50">${esc(t.sMastered)}</span></div>
-              <div><b class="block font-syne text-xl">${state.streak}</b><span class="text-[10px] font-mono text-white/50">${esc(t.sStreak)}</span></div>
-              <div><b class="block font-syne text-xl">${state.drillsWon}</b><span class="text-[10px] font-mono text-white/50">${esc(t.sDrills)}</span></div>
-              <div><b class="block font-syne text-xl">${eggCount()}/${EGG_IDS.length}</b><span class="text-[10px] font-mono text-white/50">${esc(t.sSecrets)}</span></div>
-            </div>
-            <ul class="space-y-1.5 text-[12px] font-mono text-white/80 border-t border-white/10 pt-4">${done.length ? done.map(c => `<li>✓ ${esc(c.title)} <span class="text-white/40">· ${esc(c.peg)}</span></li>`).join('') : `<li class="text-white/45">${esc(t.cardEmpty)}</li>`}</ul>
-          </div>
-          <div class="flex flex-wrap gap-2 mt-4">${btn(esc(t.cardCopy), 'id="card-copy"')}${navigator.share ? btn(esc(t.cardShare) + ' ↗', 'id="card-share"', false) : ''}</div>`;
-        $('card-name').oninput = (e) => { state.name = e.target.value; $('card-name-out').textContent = state.name.trim() || '—'; save(); };
-        $('card-copy').onclick = () => copyText(cardText());
-        if ($('card-share')) $('card-share').onclick = () => navigator.share({ title: t.brand, text: cardText() }).catch(() => {});
-      }
       if (state.codexTab === 'build') {
         body.innerHTML = `<h3 class="font-syne text-xl font-bold tracking-tight mb-5">${esc(t.buildTitle)}</h3>
           <ol class="space-y-4 text-sm leading-relaxed">${t.build.map(([h, p], i) => `<li class="grid grid-cols-[2rem_1fr] gap-2"><span class="font-mono text-[11px] text-accent pt-0.5">0${i + 1}</span><div><p class="font-syne font-bold">${esc(h)}</p><p class="text-ink/70">${esc(p)}</p></div></li>`).join('')}</ol>
@@ -2021,7 +2071,7 @@
         pokes = 0;
         const z = $('ziggy'); z.classList.remove('pratfall'); void z.getBoundingClientRect(); z.classList.add('pratfall');
         say(Z().pratfall, 'happy');
-        if (!state.eggs.pratfall) { state.xp += 5; save(); renderDeck(); setTimeout(() => findEgg('pratfall'), reduce() ? 0 : 1100); }
+        if (!state.eggs.pratfall) { save(); renderDeck(); setTimeout(() => findEgg('pratfall'), reduce() ? 0 : 1100); }
         return;
       }
       say(c ? fmt(Z().peg, { p: c.peg }) : Z().comeback, 'happy');
@@ -2032,8 +2082,8 @@
     $('flip-btn').addEventListener('click', flip);
     $('again-btn').addEventListener('click', () => rate(false));
     $('good-btn').addEventListener('click', () => rate(true));
-    $('drill-btn').addEventListener('click', startDrill);
-    $('drill-next').addEventListener('click', startDrill);
+    $('drill-btn').addEventListener('click', () => startDrill('pair'));
+    $('drill-next').addEventListener('click', () => startDrill(drill && drill.mode));
     $('codex-btn').addEventListener('click', () => openCodex());
     $('hud-eggs-btn').addEventListener('click', () => openCodex('secrets'));
     $('drawer-close').addEventListener('click', closeCodex);
@@ -2072,7 +2122,7 @@
       if (e.code === 'Space' && !(e.target.closest && e.target.closest('button, a'))) { e.preventDefault(); flip(); }
       else if (e.key === 'ArrowLeft') rate(false);
       else if (e.key === 'ArrowRight') rate(true);
-      else if (e.key.toLowerCase() === 'd') startDrill();
+      else if (e.key.toLowerCase() === 'd') startDrill('pair');
     });
 
     $('year').textContent = new Date().getFullYear();
