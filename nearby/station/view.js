@@ -80,26 +80,31 @@
   }
 
   /* ---------- clouds and fog as soft sprites, re-tinted as the light changes ---------- */
-  var sprites = [], fogBlob = null, spriteKey = "";
+  var sprites = [], masks = [], fogBlob = null, spriteKey = "";
   function makeSprites() {
     var lit = mix(mix([255, 250, 244], L.low, 0.35), L.top, 0.1), shd = mix(L.mid, L.top, 0.35);
     if (WX.over > 0.5) { lit = mix(lit, [150, 156, 168], WX.over * 0.6 * (1 - P.shade[0] * 0.3)); shd = mix(shd, [70, 74, 86], WX.over * 0.6); }
     lit = mul(lit, [Math.max(0.22, L.shade[0] * 0.9 + 0.1), Math.max(0.24, L.shade[1] * 0.9 + 0.1), Math.max(0.32, L.shade[2] * 0.9 + 0.1)]);
     shd = mul(shd, [Math.max(0.2, L.shade[0]), Math.max(0.2, L.shade[1]), Math.max(0.28, L.shade[2])]);
-    var key = lit.map(Math.round).join() + shd.map(Math.round).join(); if (key === spriteKey) return; spriteKey = key;
-    sprites = [];
-    for (var v = 0; v < 6; v++) {
-      var c = document.createElement("canvas"), w = 360, h = 150; c.width = w; c.height = h; var g = c.getContext("2d");
-      try { g.filter = "blur(3px)"; } catch (e) {}
+    /* the light eases all the time: recolour only when it has moved enough to see (steps of 6), never every half second */
+    var q = function (c) { return c.map(function (x) { return Math.round(x / 6); }).join(); }, key = q(lit) + "|" + q(shd) + "|" + Math.round(WX.fog * 10); if (key === spriteKey) return; spriteKey = key;
+    if (!masks.length) for (var v = 0; v < 6; v++) {   /* the blurred shapes are made once a visit: blur is the slow part */
+      var m = document.createElement("canvas"), w = 360, h = 150; m.width = w; m.height = h; var mg = m.getContext("2d");
+      try { mg.filter = "blur(3px)"; } catch (e) {}
       for (var k = 0; k < 34; k++) {
         var u = hash(k, v + 3), px = 30 + u * (w - 60), arch = Math.sin(u * Math.PI), py = h * 0.72 - arch * h * (0.18 + hash(k, v + 9) * 0.22), r = (12 + hash(k, v + 21) * 26) * (0.5 + arch * 0.7);
-        var gr = g.createRadialGradient(px, py, 0, px, py, r);
-        gr.addColorStop(0, css(lit, 0.55)); gr.addColorStop(0.55, css(lit, 0.38)); gr.addColorStop(1, css(lit, 0));
-        g.fillStyle = gr; g.beginPath(); g.arc(px, py, r, 0, TAU); g.fill();
+        var gr = mg.createRadialGradient(px, py, 0, px, py, r);
+        gr.addColorStop(0, "rgba(255,255,255,0.55)"); gr.addColorStop(0.55, "rgba(255,255,255,0.38)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+        mg.fillStyle = gr; mg.beginPath(); mg.arc(px, py, r, 0, TAU); mg.fill();
       }
-      try { g.filter = "none"; } catch (e) {}
-      g.globalCompositeOperation = "source-atop"; var sh = g.createLinearGradient(0, h * 0.35, 0, h); sh.addColorStop(0, css(shd, 0)); sh.addColorStop(1, css(shd, 0.75)); g.fillStyle = sh; g.fillRect(0, 0, w, h);
-      sprites.push(c);
+      masks.push(m);
+    }
+    for (var v2 = 0; v2 < 6; v2++) {
+      var c = sprites[v2]; if (!c) { c = document.createElement("canvas"); c.width = 360; c.height = 150; sprites[v2] = c; }
+      var g = c.getContext("2d"), W2 = 360, H2 = 150; g.globalCompositeOperation = "copy"; g.drawImage(masks[v2], 0, 0);
+      g.globalCompositeOperation = "source-in"; g.fillStyle = css(lit, 1); g.fillRect(0, 0, W2, H2);
+      g.globalCompositeOperation = "source-atop"; var sh = g.createLinearGradient(0, H2 * 0.35, 0, H2); sh.addColorStop(0, css(shd, 0)); sh.addColorStop(1, css(shd, 0.75)); g.fillStyle = sh; g.fillRect(0, 0, W2, H2);
+      g.globalCompositeOperation = "source-over";
     }
     fogBlob = document.createElement("canvas"); fogBlob.width = 256; fogBlob.height = 96; var f = fogBlob.getContext("2d"), fc = mix(L.haze, [235, 238, 244], 0.3 * P.shade[0]);
     var fg = f.createRadialGradient(128, 48, 4, 128, 48, 128); fg.addColorStop(0, css(fc, 0.55)); fg.addColorStop(1, css(fc, 0)); f.setTransform(1, 0, 0, 0.375, 0, 30); f.fillStyle = fg; f.beginPath(); f.arc(128, 48, 128, 0, TAU); f.fill();
@@ -767,9 +772,13 @@
   rollExtras();
 
   /* ---------- the frame ---------- */
-  var lastT = 0, first = true;
+  var lastT = 0, first = true, slowN = 0;
   window.renderScene = function (now) {
-    var dt = Math.min((now - (lastFrameTime || now)) / 16.667, 3); lastFrameTime = now;
+    var dt = Math.min((now - (lastFrameTime || now)) / 16.667, 3);
+    /* a slow device: if frames come slower than ~30 a second for two seconds while the page is shown, draw at a lower resolution
+       (a soft landscape through glass loses little); a step at a time, down to 1, and never back up in the visit */
+    if (lastFrameTime && !document.hidden) { var gap = now - lastFrameTime; if (gap < 250) { slowN += gap > 34 ? 1 : -1; slowN = Math.max(0, slowN); if (slowN > 60 && dpr > 1) { slowN = 0; window.__cbDpr = Math.max(1, dpr - 0.5); try { resizeCanvas(); } catch (e) {} } } }
+    lastFrameTime = now;
     try {
       if (state.trainState === "BRAKING") { state.speed += (0 - state.speed) * 0.022 * dt; if (Math.abs(state.stationScrollOffset) < 6 && state.speed < 0.04) { state.speed = 0; state.trainState = "STOPPED"; try { onStationArrived(); } catch (e) {} } }
       else if (state.trainState === "DEPARTING") { state.speed += (1 - state.speed) * 0.018 * dt; if (state.speed > 0.96) { state.speed = 1; state.trainState = "CRUISING"; try { updateTrainStateHUD(); } catch (e) {} } }

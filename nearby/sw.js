@@ -6,6 +6,7 @@
    - the town's own scripts and styles: fresh from the network every time, the saved copy only when offline
      (serving the saved copy first meant the first open after an update ran yesterday's code)
    - other files of the town (pictures, sounds without a version): served from here, refreshed in the background
+   - the town's own scripts and styles the build stamped with ?v=<hash>: kept like the kit (a new version is a new address)
    To retire it, ship a version whose activate step unregisters (see OFF). */
 const V = 'nearby-3';   /* nearby-3: scripts and styles go to the network first (Nov 6) */
 const OFF = false;
@@ -45,13 +46,14 @@ self.addEventListener('fetch', (event) => {
     })());
     return;
   }
-  const kept = (/^\/(fbkit|fonts|vendor)\//.test(u.pathname) && (u.search.indexOf('v=') >= 0 || /^\/(fonts|vendor)\//.test(u.pathname)));
+  const kept = (/^\/(fbkit|fonts|vendor)\//.test(u.pathname) && (u.search.indexOf('v=') >= 0 || /^\/(fonts|vendor)\//.test(u.pathname)))
+    || (u.pathname.indexOf('/nearby/') === 0 && /^\?v=[0-9a-f]{8,}$/.test(u.search));   /* a town file the build stamped with its own hash: a new version is a new address */
   if (kept) {
     event.respondWith((async () => {
       const hit = await caches.match(req);
       if (hit) return hit;
       const res = await fetch(req);
-      if (res.ok && res.type === 'basic') { const c = await caches.open(KIT); c.put(req, res.clone()); if (Math.random() < .05) trim(KIT, 150); }
+      if (res.ok && res.type === 'basic') { const c = await caches.open(KIT); c.put(req, res.clone()); if (Math.random() < .05) trim(KIT, 320); }
       return res;
     })());
     return;
