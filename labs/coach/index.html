@@ -169,7 +169,7 @@ img{filter:none}
     </div>
     <div class="px-5 sm:px-7 border-b border-line flex gap-1 overflow-x-auto text-xs font-mono" role="tablist">
       <button type="button" role="tab" data-ctab="secrets" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabSecrets">Secrets</button>
-      <button type="button" role="tab" data-ctab="card" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabCard">Rep card</button>
+      <button type="button" role="tab" data-ctab="card" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabCard">Coach card</button>
       <button type="button" role="tab" data-ctab="build" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabBuild">Behind the build</button>
     </div>
     <div id="codex-body" class="flex-1 overflow-y-auto px-5 sm:px-7 py-5" style="padding-bottom: max(20px, env(safe-area-inset-bottom));"></div>
@@ -1055,7 +1055,7 @@ img{filter:none}
         heroKicker: 'Rehearsal space for managers', heroTitle: 'Tame your <span class="accent-word">advice</span> monster.',
         heroDesc: 'Run a 1:1 with a simulated direct report. They react to what you actually say: ask well and they open up; fix, rescue or judge and they shut down. Then see the replay.',
         steps: [['01', 'Pick a 1:1', 'Three people, three classic manager moments.'], ['02', 'Coach in your words', 'Choose a reply, or type your own and see how it reads.'], ['03', 'Watch the replay', 'Your ask-to-tell ratio, SCARF shifts and turning points.']],
-        outcomeLbl: 'Where it ended', outcome: { good: 'They opened up', mid: 'Partly open', poor: 'Still guarded' }, practised: 'Practised ✓', practisedShort: 'practised', realLead: 'The screen was the warm-up. Say it out loud to a colleague before the real 1:1 — five minutes is enough.', realRepair: 'Rehearse with a colleague: Repair Kit', realListen: 'Warm up your listening: Listening Duet', noRank: 'No scores here: the replay shows what each move did, so you can choose differently next time.', pickKicker: '01 / Pick a 1:1', pickTitle: "Who's on your calendar?", best: 'Best: {n}/8',
+        outcomeLbl: 'Where it ended', outcome: { good: 'They opened up', mid: 'Partly open', poor: 'Still guarded' }, practised: 'Practised ✓', practisedShort: 'practised', realLead: 'The screen was the warm-up. Say it out loud to a colleague before the real 1:1 — five minutes is enough.', realRepair: 'Rehearse with a colleague: Repair Kit', realListen: 'Warm up your listening: Listening Duet', noRank: 'No scores here: the replay shows what each move did, so you can choose differently next time.', pickKicker: '01 / Pick a 1:1', pickTitle: "Who's on your calendar?",
         kitKicker: '02 / Toolkit', kitTitle: 'Four frameworks, <span class="accent-word">zero</span> jargon.', kitDesc: 'The co-pilot draws on these during practice. Tap to expand.',
         guardKicker: '03 / Guardrails', guardTitle: 'A co-pilot needs <span class="accent-word">boundaries</span>.',
         guardDesc: 'Before anything reaches the model, a client build checks the request. Try four real-world prompts. (This preview is rule-based, so you can see exactly what it does.)',
@@ -1067,7 +1067,7 @@ img{filter:none}
         complete: '1:1 complete', seeReplay: 'See your replay', yourReply: 'Your reply', choose: 'Choose', write: 'Write my own',
         placeholder: "Type what you'd actually say. (Try “…” to stay silent.)", readsAs: 'Reads as:', sayIt: 'Say it', askCopilot: 'Ask the co-pilot', copilot: 'Co-pilot',
         pts: ['costly', 'okay', 'strong'], noteGood: 'Good move.', noteBad: 'That one cost you.', noteMid: 'Okay, but there was a better move.',
-        replay: 'Replay', score: 'Score', askTell: 'Ask : Tell', hints: 'Co-pilot hints', prevBest: 'Previous best: {n}/8', newBest: ' · new best',
+        replay: 'Replay', askTell: 'Ask : Tell', hints: 'Co-pilot hints',
         felt: '01 / How {n} felt', scarfNote: 'Left of centre: threat. Right: reward. SCARF is a practitioner lens (Rock, 2008), not a measurement.',
         theReplay: '02 / The replay', turn: 'Turn {n}', turning: 'turning point', you: 'You',
         monday: '03 / Now the real one', mondayTitle: "Your opening line for the real conversation.", mondayPh: 'e.g. “What\'s the real challenge here for you?”',
@@ -1096,7 +1096,7 @@ img{filter:none}
         heroKicker: '管理者的排练场', heroTitle: '驯服你的<span class="accent-word">建议</span>怪兽。',
         heroDesc: '和一位模拟下属进行一对一。他们会对你实际说的话作出反应：问得好，他们就敞开心扉；急着解决、拯救或评判，他们就会关上门。然后看回放。',
         steps: [['01', '选一场一对一', '三个人，三个经典的管理时刻。'], ['02', '用你的话来辅导', '选一个回复，或自己输入，看看它读起来像什么。'], ['03', '看回放', '你的“问:说”比例、SCARF 变化和转折点。']],
-        outcomeLbl: '结束时', outcome: { good: 'TA 敞开了心扉', mid: '部分敞开', poor: '仍有防备' }, practised: '已练习 ✓', practisedShort: '已练习', realLead: '屏幕只是热身。在真实的一对一之前，先对一位同事大声说一遍——五分钟就够了。', realRepair: '和同事排练：修复工具包', realListen: '先练倾听：倾听二重奏', noRank: '这里没有分数：回放会告诉你每一步带来了什么，下次你可以做出不同的选择。', pickKicker: '01 / 选一场一对一', pickTitle: '你的日程上有谁？', best: '最佳：{n}/8',
+        outcomeLbl: '结束时', outcome: { good: 'TA 敞开了心扉', mid: '部分敞开', poor: '仍有防备' }, practised: '已练习 ✓', practisedShort: '已练习', realLead: '屏幕只是热身。在真实的一对一之前，先对一位同事大声说一遍——五分钟就够了。', realRepair: '和同事排练：修复工具包', realListen: '先练倾听：倾听二重奏', noRank: '这里没有分数：回放会告诉你每一步带来了什么，下次你可以做出不同的选择。', pickKicker: '01 / 选一场一对一', pickTitle: '你的日程上有谁？',
         kitKicker: '02 / 工具箱', kitTitle: '四个框架，<span class="accent-word">零</span>术语。', kitDesc: '副驾在练习中会用到这些。点击展开。',
         guardKicker: '03 / 护栏', guardTitle: '副驾需要<span class="accent-word">边界</span>。',
         guardDesc: '在任何请求到达模型之前，客户版本都会先检查它。试试这四个真实场景的提示。（此预览基于规则，你可以清楚看到它做了什么。）',
@@ -1108,7 +1108,7 @@ img{filter:none}
         complete: '一对一完成', seeReplay: '查看回放', yourReply: '你的回复', choose: '选择', write: '自己写',
         placeholder: '输入你实际会说的话。（输入“…”表示保持沉默。）', readsAs: '读起来像：', sayIt: '说出来', askCopilot: '问问副驾', copilot: '副驾',
         pts: ['代价高', '还行', '漂亮'], noteGood: '好的一步。', noteBad: '这一步让你付出了代价。', noteMid: '还行，但有更好的做法。',
-        replay: '回放', score: '得分', askTell: '问 : 说', hints: '副驾提示', prevBest: '之前最佳：{n}/8', newBest: ' · 新纪录',
+        replay: '回放', askTell: '问 : 说', hints: '副驾提示',
         felt: '01 / {n} 的感受', scarfNote: '中线左侧：威胁。右侧：奖励。SCARF 是一个实践者视角（Rock, 2008），不是测量工具。',
         theReplay: '02 / 回放', turn: '第 {n} 轮', turning: '转折点', you: '你',
         monday: '03 / 现在，真实的那一场', mondayTitle: '为真实对话写下你的开场白。', mondayPh: '例如：“对你来说，真正的挑战是什么？”',
@@ -1137,7 +1137,7 @@ img{filter:none}
         heroKicker: 'Espacio de ensayo para mandos', heroTitle: 'Doma a tu monstruo del <span class="accent-word">consejo</span>.',
         heroDesc: 'Haz un 1:1 con un colaborador simulado. Reacciona a lo que dices de verdad: pregunta bien y se abre; arregla, rescata o juzga y se cierra. Luego mira la repetición.',
         steps: [['01', 'Elige un 1:1', 'Tres personas, tres momentos clásicos de manager.'], ['02', 'Haz coaching con tus palabras', 'Elige una respuesta o escribe la tuya y mira cómo se lee.'], ['03', 'Mira la repetición', 'Tu ratio preguntar/decir, cambios SCARF y puntos de inflexión.']],
-        outcomeLbl: 'Cómo terminó', outcome: { good: 'Se abrió', mid: 'Se abrió en parte', poor: 'Sigue a la defensiva' }, practised: 'Practicado ✓', practisedShort: 'practicado', realLead: 'La pantalla fue el calentamiento. Dilo en voz alta a un colega antes del 1:1 real: cinco minutos bastan.', realRepair: 'Ensaya con un colega: Kit de Reparación', realListen: 'Calienta la escucha: Dúo de escucha', noRank: 'Aquí no hay puntuaciones: la repetición muestra qué provocó cada paso, para que la próxima vez elijas distinto.', pickKicker: '01 / Elige un 1:1', pickTitle: '¿Quién está en tu agenda?', best: 'Mejor: {n}/8',
+        outcomeLbl: 'Cómo terminó', outcome: { good: 'Se abrió', mid: 'Se abrió en parte', poor: 'Sigue a la defensiva' }, practised: 'Practicado ✓', practisedShort: 'practicado', realLead: 'La pantalla fue el calentamiento. Dilo en voz alta a un colega antes del 1:1 real: cinco minutos bastan.', realRepair: 'Ensaya con un colega: Kit de Reparación', realListen: 'Calienta la escucha: Dúo de escucha', noRank: 'Aquí no hay puntuaciones: la repetición muestra qué provocó cada paso, para que la próxima vez elijas distinto.', pickKicker: '01 / Elige un 1:1', pickTitle: '¿Quién está en tu agenda?',
         kitKicker: '02 / Caja de herramientas', kitTitle: 'Cuatro marcos, <span class="accent-word">cero</span> jerga.', kitDesc: 'El copiloto se apoya en ellos durante la práctica. Toca para desplegar.',
         guardKicker: '03 / Barreras', guardTitle: 'Un copiloto necesita <span class="accent-word">límites</span>.',
         guardDesc: 'Antes de que nada llegue al modelo, una versión para clientes revisa la petición. Prueba cuatro peticiones reales. (Esta vista previa se basa en reglas, así que puedes ver exactamente qué hace.)',
@@ -1149,7 +1149,7 @@ img{filter:none}
         complete: '1:1 completado', seeReplay: 'Ver tu repetición', yourReply: 'Tu respuesta', choose: 'Elegir', write: 'Escribir la mía',
         placeholder: 'Escribe lo que dirías de verdad. (Prueba con «…» para quedarte en silencio.)', readsAs: 'Se lee como:', sayIt: 'Decirlo', askCopilot: 'Pregunta al copiloto', copilot: 'Copiloto',
         pts: ['cara', 'aceptable', 'fuerte'], noteGood: 'Buena jugada.', noteBad: 'Esa te ha salido cara.', noteMid: 'Aceptable, pero había una jugada mejor.',
-        replay: 'Repetición', score: 'Puntuación', askTell: 'Preguntar : Decir', hints: 'Pistas del copiloto', prevBest: 'Mejor anterior: {n}/8', newBest: ' · nuevo récord',
+        replay: 'Repetición', askTell: 'Preguntar : Decir', hints: 'Pistas del copiloto',
         felt: '01 / Cómo se sintió {n}', scarfNote: 'A la izquierda del centro: amenaza. A la derecha: recompensa. SCARF es una lente práctica (Rock, 2008), no una medición.',
         theReplay: '02 / La repetición', turn: 'Turno {n}', turning: 'punto de inflexión', you: 'Tú',
         monday: '03 / Ahora, la real', mondayTitle: 'Tu primera frase para la conversación real.', mondayPh: 'p. ej. «¿Cuál es el verdadero reto aquí para ti?»',
@@ -1177,7 +1177,7 @@ img{filter:none}
         heroKicker: "管理者的排練場", heroTitle: "馴服你的<span class=\"accent-word\">建議</span>怪獸。",
         heroDesc: "和一位模擬下屬進行一對一。他們會對你實際說的話作出反應：問得好，他們就敞開心扉；急著解決、拯救或評判，他們就會關上門。然後看回放。",
         steps: [['01', "選一場一對一", "三個人，三個經典的管理時刻。"], ['02', "用你的話來輔導", "選一個回覆，或自己輸入，看看它讀起來像什麼。"], ['03', '看回放', "你的“問:說”比例、SCARF 變化和轉折點。"]],
-        outcomeLbl: "結束時", outcome: { good: "TA 敞開了心扉", mid: "部分敞開", poor: "仍有防備" }, practised: "已練習 ✓", practisedShort: "已練習", realLead: "螢幕只是熱身。在真實的一對一之前，先對一位同事大聲說一遍——五分鐘就夠了。", realRepair: "和同事排練：修復工具包", realListen: "先練傾聽：傾聽二重奏", noRank: "這裡沒有分數：回放會告訴你每一步帶來了什麼，下次你可以做出不同的選擇。", pickKicker: "01 / 選一場一對一", pickTitle: "你的日程上有誰？", best: '最佳：{n}/8',
+        outcomeLbl: "結束時", outcome: { good: "TA 敞開了心扉", mid: "部分敞開", poor: "仍有防備" }, practised: "已練習 ✓", practisedShort: "已練習", realLead: "螢幕只是熱身。在真實的一對一之前，先對一位同事大聲說一遍——五分鐘就夠了。", realRepair: "和同事排練：修復工具包", realListen: "先練傾聽：傾聽二重奏", noRank: "這裡沒有分數：回放會告訴你每一步帶來了什麼，下次你可以做出不同的選擇。", pickKicker: "01 / 選一場一對一", pickTitle: "你的日程上有誰？",
         kitKicker: '02 / 工具箱', kitTitle: "四個框架，<span class=\"accent-word\">零</span>術語。", kitDesc: "副駕在練習中會用到這些。點選展開。",
         guardKicker: "03 / 護欄", guardTitle: "副駕需要<span class=\"accent-word\">邊界</span>。",
         guardDesc: "在任何請求到達模型之前，客戶版本都會先檢查它。試試這四個真實場景的提示。（此預覽基於規則，你可以清楚看到它做了什麼。）",
@@ -1189,7 +1189,7 @@ img{filter:none}
         complete: "一對一完成", seeReplay: "檢視回放", yourReply: "你的回覆", choose: "選擇", write: "自己寫",
         placeholder: "輸入你實際會說的話。（輸入“…”表示保持沉默。）", readsAs: "讀起來像：", sayIt: "說出來", askCopilot: "問問副駕", copilot: "副駕",
         pts: ["代價高", "還行", '漂亮'], noteGood: '好的一步。', noteBad: "這一步讓你付出了代價。", noteMid: "還行，但有更好的做法。",
-        replay: '回放', score: '得分', askTell: "問 : 說", hints: "副駕提示", prevBest: '之前最佳：{n}/8', newBest: " · 新紀錄",
+        replay: '回放', askTell: "問 : 說", hints: "副駕提示",
         felt: '01 / {n} 的感受', scarfNote: "中線左側：威脅。右側：獎勵。SCARF 是一個實踐者視角（Rock, 2008），不是測量工具。",
         theReplay: '02 / 回放', turn: "第 {n} 輪", turning: "轉折點", you: '你',
         monday: "03 / 現在，真實的那一場", mondayTitle: "為真實對話寫下你的開場白。", mondayPh: "例如：“對你來說，真正的挑戰是什麼？”",
@@ -1217,7 +1217,7 @@ img{filter:none}
         heroKicker: "Espai d'assaig per a comandaments", heroTitle: "Doma el teu monstre del <span class=\"accent-word\">consell</span>.",
         heroDesc: "Fes un 1:1 amb un col·laborador simulat. Reacciona al que dius de veritat: pregunta bé i s'obre; arregla, rescata o jutja i es tanca. Després mira la repetició.",
         steps: [['01', "Tria un 1:1", "Tres persones, tres moments clàssics de manager."], ['02', "Fes coaching amb les teves paraules", "Tria una resposta o escriu la teva i mira com es llegeix."], ['03', "Mira la repetició", "La teva ràtio preguntar/dir, canvis SCARF i punts d'inflexió."]],
-        outcomeLbl: "Com ha acabat", outcome: { good: "S'ha obert", mid: "S'ha obert en part", poor: "Continua a la defensiva" }, practised: "Practicat ✓", practisedShort: "practicat", realLead: "La pantalla ha estat l'escalfament. Digues-ho en veu alta a un col·lega abans de l'1:1 real: cinc minuts n'hi ha prou.", realRepair: "Assaja amb un col·lega: Kit de Reparació", realListen: "Escalfa l'escolta: Duo d'escolta", noRank: "Aquí no hi ha puntuacions: la repetició mostra què ha provocat cada pas, perquè la propera vegada triïs diferent.", pickKicker: "01 / Tria un 1:1", pickTitle: "Qui tens a l'agenda?", best: "Millor: {n}/8",
+        outcomeLbl: "Com ha acabat", outcome: { good: "S'ha obert", mid: "S'ha obert en part", poor: "Continua a la defensiva" }, practised: "Practicat ✓", practisedShort: "practicat", realLead: "La pantalla ha estat l'escalfament. Digues-ho en veu alta a un col·lega abans de l'1:1 real: cinc minuts n'hi ha prou.", realRepair: "Assaja amb un col·lega: Kit de Reparació", realListen: "Escalfa l'escolta: Duo d'escolta", noRank: "Aquí no hi ha puntuacions: la repetició mostra què ha provocat cada pas, perquè la propera vegada triïs diferent.", pickKicker: "01 / Tria un 1:1", pickTitle: "Qui tens a l'agenda?",
         kitKicker: "02 / Caixa d'eines", kitTitle: "Quatre marcs, <span class=\"accent-word\">zero</span> argot.", kitDesc: "El copilot s'hi recolza durant la pràctica. Toca per desplegar.",
         guardKicker: "03 / Barreres", guardTitle: "Un copilot necessita <span class=\"accent-word\">límits</span>.",
         guardDesc: "Abans que res arribi al model, una versió per a clients revisa la petició. Prova quatre peticions reals. (Aquesta previsualització es basa en regles, així que pots veure exactament què fa.)",
@@ -1229,7 +1229,7 @@ img{filter:none}
         complete: "1:1 completat", seeReplay: "Veure la teva repetició", yourReply: "La teva resposta", choose: "Triar", write: "Escriure la meva",
         placeholder: "Escriu el que diries de veritat. (Prova amb «…» per quedar-te en silenci.)", readsAs: "Es llegeix com:", sayIt: "Dir-ho", askCopilot: "Pregunta al copilot", copilot: "Copilot",
         pts: ['cara', "acceptable", "forta"], noteGood: "Bona jugada.", noteBad: "Aquesta t'ha sortit cara.", noteMid: "Acceptable, però hi havia una jugada millor.",
-        replay: "Repetició", score: "Puntuació", askTell: "Preguntar : Dir", hints: "Pistes del copilot", prevBest: "Millor anterior: {n}/8", newBest: " · rècord nou",
+        replay: "Repetició", askTell: "Preguntar : Dir", hints: "Pistes del copilot",
         felt: "01 / Com s'ha sentit {n}", scarfNote: "A l'esquerra del centre: amenaça. A la dreta: recompensa. SCARF és una lent pràctica (Rock, 2008), no una mesura.",
         theReplay: "02 / La repetició", turn: "Torn {n}", turning: "punt d'inflexió", you: "Tu",
         monday: "03 / Ara, la de veritat", mondayTitle: "La teva primera frase per a la conversa real.", mondayPh: "p. ex. «Quin és aquí el repte de veritat per a tu?»",

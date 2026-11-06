@@ -59,6 +59,19 @@
     .svc-b { font:400 11px 'Space Mono',monospace; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.45); }
     .svc-d { font-size:14.5px; line-height:1.6; color:rgba(255,255,255,.75); margin-top:4px; }
     .svc-try { font:400 12px 'Space Mono',monospace; color:rgba(255,255,255,.6); }
+    /* the drama's trailer and the cases (Nov 6): one row under the four services */
+    .svc-row { display:grid; gap:14px; grid-template-columns:1fr; margin-top:14px; }
+    @media (min-width:720px) { .svc-row { grid-template-columns:1fr 1fr; } }
+    .svc-play, .svc-cases { display:flex; align-items:center; gap:14px; padding:14px 18px 14px 14px; border-radius:22px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04); color:#fff; text-align:left; text-decoration:none; font:inherit; cursor:pointer; transition:border-color .2s, background .2s; }
+    .svc-play:hover, .svc-cases:hover { border-color:rgba(255,255,255,.45); background:rgba(255,255,255,.07); }
+    .svc-play .ring { width:44px; height:44px; border-radius:50%; background:#F2A33A; color:var(--ink,#17171A); display:grid; place-items:center; flex:none; }
+    .svc-play-t b, .svc-cases-t b { display:block; font:700 13px/1.3 'Space Mono',monospace; }
+    .svc-play-t span, .svc-cases-t span { display:block; font-size:12.5px; line-height:1.45; color:rgba(255,255,255,.6); margin-top:3px; }
+    .svc-cases { justify-content:space-between; } .svc-cases > span[aria-hidden] { font-family:'Space Mono',monospace; font-size:18px; }
+    dialog.vid { border:0; padding:0; background:transparent; max-width:min(92vw,960px); width:100%; }
+    dialog.vid::backdrop { background:rgba(23,23,26,.85); backdrop-filter:blur(6px); }
+    dialog.vid video { width:100%; border-radius:18px; background:#000; display:block; }
+    dialog.vid .x { position:absolute; top:-12px; right:-6px; width:36px; height:36px; border-radius:50%; border:0; background:var(--white,#fff); color:var(--ink,#17171A); font:700 16px/1 'Space Mono',monospace; cursor:pointer; }
     .svc-try b { color:#fff; font-weight:700; text-decoration:underline; text-decoration-color:#E2553F; text-decoration-thickness:2px; text-underline-offset:4px; }
     .svc:hover .svc-try b { color:#F2A091; }
     .svc-lab { color:#fff; text-decoration:none; }
@@ -213,6 +226,7 @@ img{filter:none}
   </div>
 
   <!-- EASTER EGG: WILL / SKILL MATRIX (triple-click the logo) -->
+  <dialog class="vid" id="vid" aria-label="Trailer"><button type="button" class="x" aria-label="Close">✕</button><video controls playsinline preload="metadata"><source src="https://media.wei-meng.org/hovercraft.mp4" type="video/mp4"></video></dialog>
   <div id="matrix-modal" class="fixed inset-0 z-50 bg-ink/80 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300" onclick="if(event.target===this)closeMatrix()" role="dialog" aria-modal="true" aria-labelledby="matrix-title">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl relative">
       <button type="button" onclick="closeMatrix()" class="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-paper text-muted hover:text-ink flex items-center justify-center font-mono text-sm" aria-label="Close">✕</button>
@@ -256,6 +270,7 @@ img{filter:none}
         <nav class="hidden lg:flex items-center gap-5 text-[13px] font-medium text-muted">
           <a href="#belief" class="hover:text-ink transition-colors" data-i18n="navBelief">Belief</a>
           <a href="#services" class="hover:text-ink transition-colors" data-i18n="navServices">Services</a>
+          <a href="/cases/" class="hover:text-ink transition-colors" data-i18n="navCases">Cases</a>
           <a href="https://www.wei-meng.org/portfolio" target="_blank" rel="noopener noreferrer" class="hover:text-ink transition-colors" data-i18n="navWork">Portfolio ↗</a>
         </nav>
         <button type="button" onclick="cycleLanguage()"
@@ -378,6 +393,16 @@ img{filter:none}
             </span>
           </a>
         </div>
+        <div class="svc-row reveal">
+          <button type="button" class="svc-play" data-play>
+            <span class="ring" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>
+            <span class="svc-play-t"><b data-i18n="dramaBtn">Corporate Survival Drama · watch the trailer</b><span data-i18n="dramaMeta">Episode 01 · 1 minute · a workplace mini-series made to be watched together, ending on a choice for the team</span></span>
+          </button>
+          <a href="/cases/" class="svc-cases">
+            <span class="svc-cases-t"><b data-i18n="casesBtn">Thirteen cases, one year, one invented company</b><span data-i18n="casesMeta">The problems buyers bring, what we build, how each ends between people, and what to expect</span></span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
         <a href="/labs/common-ground/" class="svc-lab reveal">
           <svg class="cg-art" viewBox="0 0 170 90" aria-hidden="true" focusable="false"><rect width="170" height="90" rx="14" fill="#2A2A30"/><rect x="18" y="46" width="24" height="20" rx="2" fill="#F7F6F2"/><path d="M15 47L30 34L45 47Z" fill="#E2553F"/><rect x="27" y="55" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="56" y="38" width="24" height="20" rx="2" fill="#F7F6F2"/><path d="M53 39L68 26L83 39Z" fill="#8D8C94"/><rect x="65" y="47" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="94" y="46" width="24" height="20" rx="2" fill="#E2553F"/><path d="M91 47L106 34L121 47Z" fill="#F7F6F2"/><rect x="103" y="55" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="132" y="40" width="24" height="20" rx="2" fill="#F7F6F2"/><path d="M129 41L144 28L159 41Z" fill="#8D8C94"/><rect x="141" y="49" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="10" y="66" width="150" height="4" rx="2" fill="rgba(255,255,255,.18)"/><circle class="an-say" cx="85" cy="18" r="5" fill="#F2A091"/></svg>
           <span class="svc-lab-t">
@@ -437,11 +462,16 @@ img{filter:none}
   <footer class="fbf" data-fbf-root><div class="fbf-in"><div class="fbf-row"><span class="fbf-own"><a class="fbf-lg" href="/" aria-label="FREE//BUILDER"><svg class="fb-mk" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg></a><span>© <span id="current-year">2026</span><span class="fbf-t"> FREE//BUILDER</span></span></span><nav aria-label="Footer"><span class="fbf-dot" aria-hidden="true">·</span><a href="/privacy/" data-fbf="privacy">Your privacy</a><span class="fbf-dot" aria-hidden="true">·</span><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai">AI</a> &amp; <a href="https://www.wei-meng.org/after-hours/" class="fbf-heart">♥</a></span></nav></div></div></footer>
 
   <script>
+    (function () {
+      const dlg = document.getElementById('vid'); if (!dlg || !dlg.showModal) return; const vid = dlg.querySelector('video');
+      document.querySelectorAll('[data-play]').forEach(b => b.addEventListener('click', () => { dlg.showModal(); vid.play().catch(() => {}); }));
+      dlg.querySelector('.x').addEventListener('click', () => dlg.close()); dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); }); dlg.addEventListener('close', () => vid.pause());
+    })();
     const translations = {
       en: {
         pageTitle: "FREE//BUILDER — Better work starts between people",
         brandSub: "L&D Solutions",
-        navBelief: "Belief", navServices: "Services", navTools: "Free tools", navWork: "Portfolio ↗", navAbout: "About", navCta: "Let's talk",
+        navBelief: "Belief", navServices: "Services", navCases: "Cases", dramaBtn: "Corporate Survival Drama · watch the trailer", dramaMeta: "Episode 01 · 1 minute · a workplace mini-series made to be watched together, ending on a choice for the team", casesBtn: "Thirteen cases, one year, one invented company", casesMeta: "The problems buyers bring, what we build, how each ends between people, and what to expect", navTools: "Free tools", navWork: "Portfolio ↗", navAbout: "About", navCta: "Let's talk",
         heroKicker: "Independent L&D practice",
         heroTitle: 'Better work starts <span class="accent-word">between</span> people.',
         loop1: "The screen sets it up.", loop2: "Phones go down.", loop3: "People talk.", heroDesc: "Short, hands-on practice in listening, feedback and trust. It ends in real conversations.",
@@ -522,7 +552,7 @@ img{filter:none}
       zh: {
         pageTitle: "FREE//BUILDER — 更好的工作，从人与人之间开始",
         brandSub: "学习与发展解决方案",
-        navBelief: "理念", navServices: "服务", navTools: "免费工具", navWork: "作品集 ↗", navAbout: "关于", navCta: "聊聊",
+        navBelief: "理念", navServices: "服务", navCases: "案例", dramaBtn: "职场生存剧 · 看预告片", dramaMeta: "第 1 集 · 1 分钟 · 一部为一起观看而做的职场迷你剧，每集结束在团队要做的一个选择上", casesBtn: "十三个案例，一年，一家虚构的公司", casesMeta: "买方带来的问题、我们构建什么、每一个如何在人与人之间收尾，以及可以期待什么", navTools: "免费工具", navWork: "作品集 ↗", navAbout: "关于", navCta: "聊聊",
         heroKicker: "独立 L&D 咨询工作室",
         heroTitle: '更好的工作，<br class="hidden sm:inline">从人与人<span class="accent-word">之间</span>开始。',
         loop1: "屏幕把场子搭好。", loop2: "手机放下。", loop3: "人开始交谈。", heroDesc: "短小、上手即练的倾听、反馈与信任练习，最后落在真实的对话里。",
@@ -603,7 +633,7 @@ img{filter:none}
       es: {
         pageTitle: "FREE//BUILDER — El buen trabajo empieza entre personas",
         brandSub: "Soluciones de L&D",
-        navBelief: "Creencias", navServices: "Servicios", navTools: "Herramientas", navWork: "Portafolio ↗", navAbout: "Nosotros", navCta: "Hablemos",
+        navBelief: "Creencias", navServices: "Servicios", navCases: "Casos", dramaBtn: "Drama de Supervivencia Corporativa · ver el tráiler", dramaMeta: "Episodio 01 · 1 minuto · una miniserie de oficina hecha para verse juntos, que termina en una decisión para el equipo", casesBtn: "Trece casos, un año, una empresa inventada", casesMeta: "Los problemas que traen los clientes, qué construimos, cómo termina cada uno entre personas, y qué esperar", navTools: "Herramientas", navWork: "Portafolio ↗", navAbout: "Nosotros", navCta: "Hablemos",
         heroKicker: "Práctica independiente de L&D",
         heroTitle: 'El buen trabajo empieza <span class="accent-word">entre</span> personas.',
         loop1: "La pantalla lo prepara.", loop2: "Los móviles, abajo.", loop3: "La gente habla.", heroDesc: "Práctica breve de escucha, feedback y confianza. Termina en conversaciones reales.",
@@ -683,7 +713,7 @@ img{filter:none}
       }, "zh-Hant": {
         pageTitle: "FREE//BUILDER — 更好的工作，從人與人之間開始",
         brandSub: "學習與發展解決方案",
-        navBelief: "理念", navServices: "服務", navTools: "免費工具", navWork: "作品集 ↗", navAbout: "關於", navCta: "聊聊",
+        navBelief: "理念", navServices: "服務", navCases: "案例", dramaBtn: "職場生存劇 · 看預告片", dramaMeta: "第 1 集 · 1 分鐘 · 一部為一起觀看而做的職場迷你劇，每集結束在團隊要做的一個選擇上", casesBtn: "十三個案例，一年，一家虛構的公司", casesMeta: "買方帶來的問題、我們構建什麼、每一個如何在人與人之間收尾，以及可以期待什麼", navTools: "免費工具", navWork: "作品集 ↗", navAbout: "關於", navCta: "聊聊",
         heroKicker: "獨立 L&D 諮詢工作室",
         heroTitle: "更好的工作，<br class=\"hidden sm:inline\">從人與人<span class=\"accent-word\">之間</span>開始。",
         loop1: "螢幕把場子搭好。", loop2: "手機放下。", loop3: "人開始交談。", heroDesc: "短小、上手即練的傾聽、反饋與信任練習，最後落在真實的對話裡。",
@@ -763,7 +793,7 @@ img{filter:none}
       }, "ca": {
         pageTitle: "FREE//BUILDER — La bona feina comença entre persones",
         brandSub: "Solucions de L&D",
-        navBelief: "Creences", navServices: "Serveis", navTools: "Eines", navWork: "Portafoli ↗", navAbout: "Nosaltres", navCta: "Parlem-ne",
+        navBelief: "Creences", navServices: "Serveis", navCases: "Casos", dramaBtn: "Drama de Supervivència Corporativa · veure el tràiler", dramaMeta: "Episodi 01 · 1 minut · una minisèrie d'oficina feta per veure's junts, que acaba en una decisió per a l'equip", casesBtn: "Tretze casos, un any, una empresa inventada", casesMeta: "Els problemes que porten els clients, què construïm, com acaba cadascun entre persones, i què esperar", navTools: "Eines", navWork: "Portafoli ↗", navAbout: "Nosaltres", navCta: "Parlem-ne",
         heroKicker: "Pràctica independent de L&D",
         heroTitle: "La bona feina comença <span class=\"accent-word\">entre</span> persones.",
         loop1: "La pantalla ho prepara.", loop2: "Els mòbils, avall.", loop3: "La gent parla.", heroDesc: "Pràctica breu d'escolta, feedback i confiança. Acaba en converses reals.",

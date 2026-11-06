@@ -270,7 +270,7 @@ img{filter:none}
     </div>
     <div class="px-5 sm:px-7 border-b border-line flex gap-1 overflow-x-auto text-xs font-mono" role="tablist">
       <button type="button" role="tab" data-ctab="secrets" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabSecrets">Secrets</button>
-      <button type="button" role="tab" data-ctab="card" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabCard">Rep card</button>
+      <button type="button" role="tab" data-ctab="card" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabCard">CQ passport</button>
       <button type="button" role="tab" data-ctab="build" class="codex-tab py-3 px-2.5 border-b-2" data-i18n="tabBuild">Behind the build</button>
     </div>
     <div id="codex-body" class="flex-1 overflow-y-auto px-5 sm:px-7 py-5" style="padding-bottom: max(20px, env(safe-area-inset-bottom));"></div>
@@ -798,8 +798,8 @@ img{filter:none}
         caps: { humility: 'Suspending judgement', subtext: "Reading what isn't said", flexibility: 'Adapting your style', calibration: 'Calibrating feedback', thirdCulture: 'Co-creating team norms' },
         capsShort: { humility: 'Suspending', subtext: 'Reading', flexibility: 'Adapting', calibration: 'Calibrating', thirdCulture: 'Co-creating' },
         profileKicker: '01 / Your CQ profile', profileTitle: 'Built from your <span class="accent-word">choices</span>, not your clicks.',
-        profileEmpty: 'Empty for now. Each corridor you restore moves the profile, and only for the move you chose. Plausible-but-weaker moves count for less; harmful ones count against you.',
-        profileSome: 'Based on {n} of 8 corridors. A full score means you chose the strongest move every time and looked through all three lenses. Replay any corridor to change your answer.',
+        profileEmpty: 'Empty for now. Each corridor you restore shows which lenses you reached for and which moves you chose. It is a mirror, not a mark.',
+        profileSome: 'Based on {n} of 8 corridors: the lenses you reached for and the moves you chose. Nothing is counted against you. Replay any corridor to try a different move.',
         notesKicker: '02 / Field notes', notesTitle: 'Every corridor leaves you a <span class="accent-word">line</span> to use.', notesDesc: 'Restore a corridor to keep its script. Copy them into your next 1:1 or meeting.',
         copy: 'Copy', locked: 'locked',
         ctaKicker: '03 / Make it yours', ctaTitle: 'Your offices. Your <span class="accent-word">frictions</span>.',
@@ -841,8 +841,8 @@ img{filter:none}
         caps: { humility: '暂缓评判', subtext: '读懂言外之意', flexibility: '调整风格', calibration: '校准反馈', thirdCulture: '共创团队规范' },
         capsShort: { humility: '暂缓评判', subtext: '言外之意', flexibility: '调整风格', calibration: '校准反馈', thirdCulture: '共创规范' },
         profileKicker: '01 / 你的文化智商画像', profileTitle: '由你的<span class="accent-word">选择</span>构成，而不是点击。',
-        profileEmpty: '目前还是空的。你修复的每条航线都会改变画像，而且只取决于你选择的那一步。看似合理但较弱的选择得分更少；有害的选择会扣分。',
-        profileSome: '基于 8 条航线中的 {n} 条。满分意味着你每次都选了最强的一步，并透过了全部三个视角。可随时重玩任何航线来修改答案。',
+        profileEmpty: '目前还是空的。你修复的每条航线，都会显示你用了哪些视角、选了哪一步。这是一面镜子，不是打分。',
+        profileSome: '基于 8 条航线中的 {n} 条：你用过的视角，和你选的每一步。没有任何扣分。可随时重玩任何航线，试试另一种做法。',
         notesKicker: '02 / 实战笔记', notesTitle: '每条航线都会留给你一句<span class="accent-word">可用</span>的话。', notesDesc: '修复一条航线即可保留它的话术。复制到你的下一次一对一或会议中。',
         copy: '复制', locked: '未解锁',
         ctaKicker: '03 / 为你定制', ctaTitle: '你的办公室，你们的<span class="accent-word">摩擦</span>。',
@@ -884,8 +884,8 @@ img{filter:none}
         caps: { humility: 'Suspender el juicio', subtext: 'Leer lo que no se dice', flexibility: 'Adaptar tu estilo', calibration: 'Calibrar el feedback', thirdCulture: 'Co-crear normas de equipo' },
         capsShort: { humility: 'Suspender', subtext: 'Leer', flexibility: 'Adaptar', calibration: 'Calibrar', thirdCulture: 'Co-crear' },
         profileKicker: '01 / Tu perfil CQ', profileTitle: 'Construido con tus <span class="accent-word">decisiones</span>, no con tus clics.',
-        profileEmpty: 'Vacío por ahora. Cada corredor que restauras mueve el perfil, y solo según la jugada que elegiste. Las jugadas plausibles pero más débiles cuentan menos; las dañinas restan.',
-        profileSome: 'Basado en {n} de 8 corredores. Una puntuación completa significa que elegiste la jugada más fuerte cada vez y miraste a través de las tres lentes. Repite cualquier corredor para cambiar tu respuesta.',
+        profileEmpty: 'Vacío por ahora. Cada corredor que restauras muestra qué lentes usaste y qué jugadas elegiste. Es un espejo, no una nota.',
+        profileSome: 'Basado en {n} de 8 corredores: las lentes que usaste y las jugadas que elegiste. Nada resta. Repite cualquier corredor para probar otra jugada.',
         notesKicker: '02 / Notas de campo', notesTitle: 'Cada corredor te deja una <span class="accent-word">frase</span> para usar.', notesDesc: 'Restaura un corredor para quedarte con su guion. Cópialos en tu próximo 1:1 o reunión.',
         copy: 'Copiar', locked: 'bloqueado',
         ctaKicker: '03 / Hazlo tuyo', ctaTitle: 'Tus oficinas. Tus <span class="accent-word">fricciones</span>.',
@@ -926,8 +926,8 @@ img{filter:none}
         caps: { humility: "暫緩評判", subtext: "讀懂言外之意", flexibility: "調整風格", calibration: "校準反饋", thirdCulture: "共創團隊規範" },
         capsShort: { humility: "暫緩評判", subtext: '言外之意', flexibility: "調整風格", calibration: "校準反饋", thirdCulture: "共創規範" },
         profileKicker: "01 / 你的文化智商畫像", profileTitle: "由你的<span class=\"accent-word\">選擇</span>構成，而不是點選。",
-        profileEmpty: "目前還是空的。你修復的每條航線都會改變畫像，而且只取決於你選擇的那一步。看似合理但較弱的選擇得分更少；有害的選擇會扣分。",
-        profileSome: "基於 8 條航線中的 {n} 條。滿分意味著你每次都選了最強的一步，並透過了全部三個視角。可隨時重玩任何航線來修改答案。",
+        profileEmpty: "目前還是空的。你修復的每條航線，都會顯示你用了哪些視角、選了哪一步。這是一面鏡子，不是打分。",
+        profileSome: "基於 8 條航線中的 {n} 條：你用過的視角，和你選的每一步。沒有任何扣分。可隨時重玩任何航線，試試另一種做法。",
         notesKicker: "02 / 實戰筆記", notesTitle: "每條航線都會留給你一句<span class=\"accent-word\">可用</span>的話。", notesDesc: "修復一條航線即可保留它的話術。複製到你的下一次一對一或會議中。",
         copy: "複製", locked: "未解鎖",
         ctaKicker: "03 / 為你定製", ctaTitle: "你的辦公室，你們的<span class=\"accent-word\">摩擦</span>。",
@@ -968,8 +968,8 @@ img{filter:none}
         caps: { humility: "Suspendre el judici", subtext: "Llegir el que no es diu", flexibility: "Adaptar el teu estil", calibration: 'Calibrar el feedback', thirdCulture: "Cocrear normes d'equip" },
         capsShort: { humility: "Suspendre", subtext: "Llegir", flexibility: 'Adaptar', calibration: 'Calibrar', thirdCulture: "Cocrear" },
         profileKicker: "01 / El teu perfil CQ", profileTitle: "Construït amb les teves <span class=\"accent-word\">decisions</span>, no amb els teus clics.",
-        profileEmpty: "Buit de moment. Cada corredor que restaures mou el perfil, i només segons la jugada que has triat. Les jugades plausibles però més febles compten menys; les perjudicials resten.",
-        profileSome: "Basat en {n} de 8 corredors. Una puntuació completa vol dir que vas triar la jugada més forta cada vegada i vas mirar a través de les tres lents. Repeteix qualsevol corredor per canviar la teva resposta.",
+        profileEmpty: "Buit de moment. Cada corredor que restaures mostra quines lents vas fer servir i quines jugades vas triar. És un mirall, no una nota.",
+        profileSome: "Basat en {n} de 8 corredors: les lents que vas fer servir i les jugades que vas triar. Res no resta. Repeteix qualsevol corredor per provar una altra jugada.",
         notesKicker: "02 / Notes de camp", notesTitle: "Cada corredor et deixa una <span class=\"accent-word\">frase</span> per fer servir.", notesDesc: "Restaura un corredor per quedar-te amb el seu guió. Copia'ls al teu proper 1:1 o reunió.",
         copy: 'Copiar', locked: "bloquejat",
         ctaKicker: "03 / Fes-lo teu", ctaTitle: "Les teves oficines. Les teves <span class=\"accent-word\">friccions</span>.",
