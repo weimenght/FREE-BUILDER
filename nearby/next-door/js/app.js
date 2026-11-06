@@ -25,7 +25,7 @@
       document.querySelectorAll('.room').forEach(r => r.classList.toggle('hidden', r.id !== 'room-' + room));
       SoundEngine.playClick();
       if (room === 'counter') { WeiMemory.flush(); Cats.renderAll(); }
-      if (room === 'lab') { Lab.renderControls(); Lab.renderShelf(); Lab.renderGlass(); }
+      if (room === 'lab') NDLazy.load('lab').then(() => { Lab.renderControls(); Lab.renderShelf(); Lab.renderGlass(); }, () => {});   /* the Lab's script arrives on first use (lazy.js) */
       if (room === 'wall') Wall.onEnter();
       DB.log('room', { room });
       try { history.replaceState(null, '', '#' + room); } catch (e) {}
@@ -111,7 +111,7 @@
 
       Patron.name = name;
       Bond.load();
-      Lab.loadChallenge();
+      if (typeof Lab !== 'undefined') Lab.loadChallenge();   /* otherwise lazy.js runs it when the Lab arrives */
       /* walk in at once: saying hello to the server happens behind you (it used to hold the door until the network answered) */
       Patron.enter(name).catch(() => {});
 
@@ -300,8 +300,10 @@
       const [mine, loved] = await Promise.all([DB.list('cocktails', { eq: { patron: Patron.name }, limit: 12 }), DB.list('cocktails', { limit: 30 })]);   /* the newest, never ranked */
       const seen = new Set(); let rows = mine.concat(loved).filter(r => { const k = r.id || r.name + r.patron; if (seen.has(k)) return false; seen.add(k); return true; });
       if (!rows.length) rows = SEEDS.cocktails.slice();
+      await NDLazy.load('lab').catch(() => {});   /* the garnishes live with the Lab */
+      const G = typeof GARNISHES !== 'undefined' ? GARNISHES : {};
       pane.innerHTML = '';
-      rows.forEach(r => pane.appendChild(menuItem(GARNISHES[r.garnish] && r.garnish !== 'none' ? GARNISHES[r.garnish] : '🍸', `${r.name} · ${T('lab.by')} ${r.patron}`, `${r.profile ? r.profile.abv + '% · ' : ''}${Lab.describe(r)}`, () => { toggleCodexModal(false); Lab.serveRecord(r); })));
+      rows.forEach(r => pane.appendChild(menuItem(G[r.garnish] && r.garnish !== 'none' ? G[r.garnish] : '🍸', `${r.name} · ${T('lab.by')} ${r.patron}`, `${r.profile ? r.profile.abv + '% · ' : ''}${Lab.describe(r)}`, () => { toggleCodexModal(false); Lab.serveRecord(r); })));
     }
 
     /* ---------------- Counter engine overrides ---------------- */
@@ -396,7 +398,7 @@
       const day = new Date().toDateString(), T0 = WeiPlus.today();
       let first = false; try { first = localStorage.getItem('fb_lab_day') !== day; localStorage.setItem('fb_lab_day', day); } catch (e) {}
       const ch = first ? T0.ch : pick(WeiPlus.challenges.filter(c => c.id !== T0.ch.id));
-      Lab.setChallenge(ch);
+      NDLazy.load('lab').then(() => Lab.setChallenge(ch), () => { try { localStorage.setItem('weis-challenge:' + Patron.name, ch.id); } catch (e) {} });
       setExpression('grin', 2000);
       DB.log('challenge_given', { id: ch.id });
       renderWei(`${first && T0.intro ? T0.intro + ' ' : ''}"${L(ch.ask)}" ${L(WeiPlus.challengeGiven)}`, [
@@ -507,7 +509,6 @@
       startIdleLoop();
       initEyeTracking();
       Cats.init();
-      Lab.init();
       applyLanguage(true);
       if (window.FBWorld) { updateClockHands(FBWorld.hour()); setWeather(FBWorld.weather(), false); }   // each visit: the town's hour and sky, shared by the whole neighbourhood
       else { const d = new Date(); updateClockHands(d.getHours() + d.getMinutes() / 60); setWeather('clear', false); }
