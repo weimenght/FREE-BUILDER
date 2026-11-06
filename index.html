@@ -64,7 +64,7 @@
     @media (min-width:720px) { .svc-row { grid-template-columns:1fr 1fr; } }
     .svc-play, .svc-cases { display:flex; align-items:center; gap:14px; padding:14px 18px 14px 14px; border-radius:22px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04); color:#fff; text-align:left; text-decoration:none; font:inherit; cursor:pointer; transition:border-color .2s, background .2s; }
     .svc-play:hover, .svc-cases:hover { border-color:rgba(255,255,255,.45); background:rgba(255,255,255,.07); }
-    .svc-play .ring { width:44px; height:44px; border-radius:50%; background:#F2A33A; color:var(--ink,#17171A); display:grid; place-items:center; flex:none; }
+    .svc-play .svc-ring { width:44px; height:44px; border-radius:50%; background:#F2A33A; color:var(--ink,#17171A); display:grid; place-items:center; flex:none; }
     .svc-play-t b, .svc-cases-t b { display:block; font:700 13px/1.3 'Space Mono',monospace; }
     .svc-play-t span, .svc-cases-t span { display:block; font-size:12.5px; line-height:1.45; color:rgba(255,255,255,.6); margin-top:3px; }
     .svc-cases { justify-content:space-between; } .svc-cases > span[aria-hidden] { font-family:'Space Mono',monospace; font-size:18px; }
@@ -93,6 +93,8 @@
     /* Matrix pulse */
     @keyframes ring { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(2.6); opacity: 0; } }
     .ring { animation: ring 1.8s ease-out infinite; }
+    /* the smallest phones (320 wide): the mark alone in the header, so EN and Let's talk keep their gutter */
+    @media (max-width:359px) { header .fb-brand > .leading-none { display:none; } }
 
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 10px; }
     input, textarea { font: inherit; }
@@ -395,7 +397,7 @@ img{filter:none}
         </div>
         <div class="svc-row reveal">
           <button type="button" class="svc-play" data-play>
-            <span class="ring" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>
+            <span class="svc-ring" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>
             <span class="svc-play-t"><b data-i18n="dramaBtn">Corporate Survival Drama · watch the trailer</b><span data-i18n="dramaMeta">Episode 01 · 1 minute · a workplace mini-series made to be watched together, ending on a choice for the team</span></span>
           </button>
           <a href="/cases/" class="svc-cases">
