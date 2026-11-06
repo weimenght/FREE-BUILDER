@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="game" src="/fbkit/fb.js?v=aad6eedb37"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Walk With</title>
+<meta name="description" content="Two people, one corner, twenty minutes, same clock time. Pick a time, name a corner, send one link. Then put the phone away.">
+<meta name="theme-color" content="#f6efe3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1d1814" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Walk With">
+<link rel="stylesheet" href="/fonts/g/fonts.css">
+<style>
+  /* one screen per state; warm paper by day, a lamplit street at night */
+  :root {
+    --paper:#f6efe3; --paper2:#eadcc6; --road:#cfc3b0; --ink:#3b2a20; --soft:#7b6656; --field:#fffaf2; --line:#3b2a20;
+    --clay:#d9774b; --sun:#e7b54a; --sage:#9bb08a; --sky:#7a9cc6; --skin:#f3d2b3; --blush:#e89a7a; --dot:rgba(59,42,32,.05); color-scheme:light;
+    --hand:"Caveat","Chalkboard SE","Segoe Print","Bradley Hand",ui-rounded,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    --body:"Figtree",ui-rounded,"Segoe UI",system-ui,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper:#1d1814; --paper2:#2e261f; --road:#3a3129; --ink:#f3ead8; --soft:#b9a88e; --field:#2a221c; --dot:rgba(255,255,255,.03); color-scheme:dark; } }
+  :root[data-theme="dark"] { --paper:#1d1814; --paper2:#2e261f; --road:#3a3129; --ink:#f3ead8; --soft:#b9a88e; --field:#2a221c; --dot:rgba(255,255,255,.03); color-scheme:dark; }
+  :lang(zh-Hant) { --hand:"Caveat","PingFang HK","PingFang TC","Microsoft JhengHei","Noto Sans CJK TC",sans-serif; --body:"Figtree",system-ui,"PingFang HK","PingFang TC","Microsoft JhengHei","Noto Sans CJK TC",sans-serif; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { background:var(--paper); color:var(--ink); }
+  body { font:19px/1.4 var(--body); -webkit-tap-highlight-color:transparent; background-image:radial-gradient(var(--dot) 1px, transparent 1px); background-size:6px 6px; }
+  header { max-width:380px; margin:0 auto; padding:10px 16px 0; display:flex; justify-content:flex-end; position:relative; }
+  #app { max-width:380px; margin:0 auto; padding:0 16px; }
+  .screen { min-height:calc(100vh - 44px); min-height:calc(100dvh - 44px); display:flex; flex-direction:column; justify-content:center; gap:18px; padding:16px 0 32px; animation:in .35s ease; }
+  body.bare .screen { min-height:100vh; min-height:100dvh; }
+  body.bare header, body.bare footer, body.mid footer { display:none; }
+  @keyframes in { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce) { .screen { animation:none; } }
+  h1, .hand { font-family:var(--hand); font-weight:600; }
+  h1 { font-size:44px; line-height:1.02; white-space:pre-line; }
+  html:lang(zh) h1, html:lang(zh-Hant) h1 { font-size:34px; line-height:1.3; font-weight:700; }
+  .lede { font-size:20px; color:var(--soft); }
+  .center { text-align:center; align-items:center; }
+  .scene { width:100%; height:auto; display:block; }
+  label { font-family:var(--hand); font-weight:600; font-size:27px; display:block; margin-bottom:6px; }
+  html:lang(zh) label, html:lang(zh-Hant) label { font-size:20px; font-weight:700; }
+  .times { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .chip, .btn, input { font:inherit; color:var(--ink); background:var(--field); border:2.5px solid var(--ink); border-radius:255px 14px 225px 14px/14px 225px 14px 255px; }
+  .chip { font-family:var(--hand); font-weight:600; font-size:31px; padding:8px 0; cursor:pointer; box-shadow:2px 2px 0 var(--ink); }
+  .chip[aria-pressed=true] { background:var(--sun); color:#3b2a20; box-shadow:none; transform:translate(2px,2px); }
+  input { width:100%; font-size:20px; padding:13px 14px; outline:none; }
+  input:focus { box-shadow:0 0 0 3px rgba(231,181,74,.55); }
+  input::placeholder { color:var(--soft); opacity:.7; }
+  .btn { display:block; width:100%; font-family:var(--hand); font-weight:600; font-size:33px; padding:12px 10px; cursor:pointer; background:var(--clay); color:#fffaf2; box-shadow:3px 3px 0 var(--ink); transition:transform .08s, box-shadow .08s; }
+  html:lang(zh) .btn, html:lang(zh-Hant) .btn, html:lang(zh) .chip, html:lang(zh-Hant) .chip { font-size:23px; font-weight:700; }
+  .btn:active { transform:translate(3px,3px); box-shadow:none; }
+  .btn.quiet { background:var(--field); color:var(--ink); }
+  .btn.sage { background:var(--sage); color:#3b2a20; }
+  .row { display:flex; gap:12px; width:100%; } .row .btn { flex:1; }
+  .link { background:none; border:0; font:inherit; font-size:16px; color:var(--soft); text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:8px; }
+  .faint { opacity:.5; }
+  .code { font-family:var(--hand); font-weight:600; font-size:80px; letter-spacing:.12em; line-height:1; text-align:center; padding:14px 0 6px; border:2.5px dashed var(--ink); border-radius:18px 6px 20px 8px; background:var(--field); width:100%; }
+  .big { font-family:var(--hand); font-weight:600; font-size:72px; line-height:1; }
+  .clock { font-family:var(--hand); font-weight:600; font-size:min(80px,20vw); line-height:1; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .clock small { display:block; font-size:.5em; margin-bottom:6px; color:var(--soft); }
+  .corner { font-family:var(--hand); font-weight:600; font-size:35px; line-height:1.1; word-break:break-word; }
+  html:lang(zh) .corner, html:lang(zh-Hant) .corner { font-size:26px; line-height:1.35; }
+  .mins { font-size:160px; font-weight:300; line-height:1; color:var(--soft); font-variant-numeric:tabular-nums; }
+  .note { font-size:16px; color:var(--soft); min-height:1.4em; }
+  .err { color:#b14a24; }
+  .spacer { flex:1; }
+  #langBtn { font:600 15px var(--body); color:var(--soft); background:none; border:1.5px solid currentColor; border-radius:999px; padding:4px 11px; cursor:pointer; }
+  .langmenu { position:absolute; right:16px; top:42px; z-index:5; background:var(--field); border:2px solid var(--ink); border-radius:12px; padding:6px; display:flex; flex-direction:column; box-shadow:3px 3px 0 var(--ink); }
+  .langmenu button { font:16px var(--body); color:var(--ink); background:none; border:0; text-align:left; padding:8px 12px; border-radius:8px; cursor:pointer; }
+  .langmenu button[aria-checked=true] { background:var(--paper2); }
+  footer { max-width:380px; margin:0 auto; padding:0 16px 24px; font-size:13px; color:var(--soft); text-align:center; }
+  footer a { color:inherit; }
+  #testbar { position:fixed; left:0; right:0; bottom:0; display:flex; flex-wrap:wrap; gap:6px; justify-content:center; padding:8px; background:rgba(59,42,32,.92); font:13px system-ui,sans-serif; z-index:9; }
+  #testbar[hidden] { display:none; }
+  #testbar button { font:inherit; padding:5px 9px; border-radius:6px; border:1px solid #fffaf2; background:transparent; color:#fffaf2; cursor:pointer; }
+  #testbar button.on { background:#fffaf2; color:#3b2a20; }
+  #testbar span { color:#e7b54a; align-self:center; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="wobble"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
+</svg>
+<header><button id="langBtn" type="button" aria-haspopup="menu" aria-expanded="false"><span id="langLbl">EN</span></button></header>
+<main id="app"></main>
+<footer id="foot" class="np"></footer>
+<div id="testbar" hidden></div>
+<script src="./words.js?v=1"></script>
+<script>
+(function () {
+"use strict";
+/* ---------- Walk With: two people, one corner, twenty minutes, same clock time ---------- */
+var W = window.WW_W;
+var LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LNAMES = ["English", "简体中文", "繁體中文", "Español", "Català"], SHORT = ["EN", "简中", "繁中", "ES", "CA"];
+function li() { var l = window.FBL ? FBL.get() : "en"; var i = LANGS.indexOf(l); return i < 0 ? 0 : i; }
+function T(a) { return a == null ? "" : typeof a === "string" ? a : (a[li()] || a[0]); }
+function F(a, v) { var s = T(a); for (var k in v) s = s.split("{" + k + "}").join(v[k]); return s; }
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+var KEY = "ww_v1", NAMEKEY = "ww_name";
+var TIMES = ["7:00", "12:30", "18:00", "21:00"];
+var MIN = 60000, WALK = 20 * MIN, DAY = 864e5;
+var TEST = /test/.test(location.search + location.hash);
+
+/* ---------- kept on this device; the walk itself travels in the link ---------- */
+function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function put(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
+var s = null; try { s = JSON.parse(get(KEY) || "null"); } catch (e) { s = null; }
+function save() { put(KEY, s ? JSON.stringify(s) : null); }
+
+function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+function dec(x) { try { x = x.replace(/-/g, "+").replace(/_/g, "/"); return JSON.parse(decodeURIComponent(escape(atob(x)))); } catch (e) { return null; } }
+function newCode() { var a = "ACDEFHJKMNPRTWXY3479", c = "", r = new Uint32Array(4); try { crypto.getRandomValues(r); } catch (e) { for (var i = 0; i < 4; i++) r[i] = Math.random() * 1e9; } for (var j = 0; j < 4; j++) c += a[r[j] % a.length]; return c; }
+function linkFor(w) { return location.href.split(/[?#]/)[0] + "#w=" + enc({ v: 1, id: w.id, t: w.t, c: w.c, n: w.n, at: w.at }); }
+function nextAt(tm) { var p = tm.split(":").map(Number), d = new Date(); d.setHours(p[0], p[1], 0, 0); if (d.getTime() <= Date.now() + MIN) d.setDate(d.getDate() + 1); return d.getTime(); }
+function dayLabel(at) {
+  var a = new Date(at), n = new Date(); function strip(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); }
+  var diff = Math.round((strip(a) - strip(n)) / DAY); if (diff === 0) return T(W.today); if (diff === 1) return T(W.tomorrow);
+  try { return a.toLocaleDateString(T(W.locale), { weekday: "long" }); } catch (e) { return ""; }
+}
+function when(w) { return dayLabel(w.at) + " " + w.t; }
+
+/* an invitation in the address */
+function incoming() { var m = location.hash.match(/w=([^&]+)/); if (!m) return false; var p = dec(m[1]);
+  if (p && p.id && p.at && (!s || s.id !== p.id)) { s = { id: p.id, t: p.t, c: p.c, n: p.n || "", at: p.at, role: "guest", joined: false }; save(); return true; } return false; }
+incoming();
+addEventListener("hashchange", function () { if (incoming()) render(true); });   /* a link opened in a tab where the app is already open */
+
+function reset() { s = null; save(); history.replaceState(null, "", location.pathname + location.search); render(true); }
+function walkMs() { return (s && s.walkMs) || WALK; }
+
+/* ---------- which screen ---------- */
+function screenOf() {
+  if (!s) return "home";
+  if (s.bye) return "bye";
+  var now = Date.now();
+  if (s.role === "guest" && !s.joined) return "invite";
+  if (now < s.at) return (s.role === "host" && !s.sent) ? "send" : "countdown";
+  if (s.walkStart) return now < s.walkStart + walkMs() ? "timer" : "done";
+  return now < s.at + walkMs() ? "go" : "done";
+}
+/* header (language) only where you set things up; the footer only at the start and the end; the rest is bare */
+var CHROME = { home: "", send: "mid", invite: "mid", countdown: "bare", go: "bare", timer: "bare", done: "bare", bye: "" };
+
+/* ---------- drawings: Popo, a friend and the dog ---------- */
+const CORNER=()=>`<svg class="scene" viewBox="0 0 320 230" role="img" aria-label="${esc(T(W.corner))}">
+<g filter="url(#wobble)" stroke="var(--line)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M0 197 Q120 193 232 197 L264 230 L0 230Z" fill="var(--paper2)"/>
+ <path d="M232 197 L320 197 L320 230 L264 230Z" fill="#cfc3b0"/>
+ <g fill="#fffaf2" stroke-width="1.6"><path d="M268 203 l14 0 l6 8 l-14 0z"/><path d="M290 203 l14 0 l6 8 l-14 0z"/><path d="M276 216 l14 0 l6 9 l-14 0z"/><path d="M300 216 l14 0 l5 9 l-14 0z"/></g>
+ <circle cx="37" cy="44" r="24" fill="#f7d98a" stroke="none" opacity=".45"/>
+ <path d="M34 196 L34 52 M40 196 L40 52" /><path d="M24 52 L50 52 L45 34 L29 34Z" fill="var(--sun)"/><path d="M30 196 h14"/>
+ <path d="M293 197 L293 54"/><rect x="262" y="40" width="58" height="20" rx="3" fill="var(--sage)"/><path d="M272 50 h26" stroke-width="1.6" opacity=".6"/>
+ <!-- Popo -->
+ <path d="M108 168 L106 192 M127 168 L129 192" stroke-width="5"/>
+ <ellipse cx="103" cy="194" rx="7" ry="3.5" fill="var(--line)"/><ellipse cx="132" cy="194" rx="7" ry="3.5" fill="var(--line)"/>
+ <path d="M96 120 Q118 108 140 120 L147 172 Q118 178 89 172Z" fill="var(--clay)"/>
+ <g fill="var(--paper)" stroke-width="1.4"><circle cx="118" cy="133" r="2.2"/><circle cx="118" cy="146" r="2.2"/><circle cx="118" cy="159" r="2.2"/></g>
+ <path d="M137 124 Q148 140 141 156" stroke="var(--clay)" stroke-width="9"/><path d="M137 124 Q148 140 141 156" fill="none" stroke-width="1.5" opacity=".5"/>
+ <circle cx="141" cy="159" r="4.5" fill="var(--skin)"/>
+ <path d="M141 161 Q156 176 170 182" fill="none" stroke-width="1.6" stroke-dasharray="1 0"/>
+ <path d="M99 124 Q90 141 104 142 L120 131" fill="none" stroke="var(--clay)" stroke-width="9"/>
+ <path d="M99 124 Q90 141 104 142 L120 131" fill="none" stroke-width="1.5" opacity=".5"/>
+ <circle cx="123" cy="129" r="4.5" fill="var(--skin)"/>
+ <rect x="110" y="131" width="8" height="7" rx="2" fill="var(--sun)" transform="rotate(-30 114 134)"/>
+ <circle cx="118" cy="94" r="18" fill="var(--skin)"/>
+ <path d="M100 92 Q102 74 118 74 Q134 74 136 92 Q130 82 118 82 Q106 82 100 92Z" fill="#c4bdb4"/>
+ <circle cx="118" cy="69" r="8" fill="#c4bdb4"/>
+ <g fill="none" stroke-width="1.6"><circle cx="112" cy="98" r="4.6"/><circle cx="124" cy="98" r="4.6"/><path d="M116.6 98 h2.8"/>
+ <path d="M110 99 q2 1.6 4 0 M122 99 q2 1.6 4 0" stroke-width="1.4"/><path d="M114 107 q4 1.6 8 0" stroke-width="1.6"/></g>
+ <g fill="var(--blush)" stroke="none" opacity=".55"><circle cx="106" cy="104" r="3"/><circle cx="130" cy="104" r="3"/></g>
+ <!-- dog -->
+ <path d="M146 180 q-10 -6 -6 -16" fill="none" stroke-width="3"/>
+ <path d="M150 188 v8 M160 188 v8 M168 188 v8" stroke-width="3.5"/>
+ <ellipse cx="160" cy="182" rx="17" ry="10" fill="var(--sun)"/>
+ <circle cx="176" cy="173" r="9.5" fill="var(--sun)"/>
+ <path d="M171 165 q-6 9 0 13 q4 -6 3 -12z" fill="#b8862a"/>
+ <circle cx="179" cy="171.5" r="1.6" fill="var(--line)" stroke="none"/><circle cx="185.5" cy="175" r="1.8" fill="var(--line)" stroke="none"/>
+ <path d="M168 180 q4 3 8 1" fill="none" stroke="var(--clay)" stroke-width="2.4"/>
+ <!-- friend -->
+ <path d="M192 168 L190 193 M209 168 L211 193" stroke-width="5"/>
+ <ellipse cx="187" cy="195" rx="7" ry="3.5" fill="var(--line)"/><ellipse cx="214" cy="195" rx="7" ry="3.5" fill="var(--line)"/>
+ <path d="M180 118 Q200 108 221 118 L224 171 L177 171Z" fill="var(--sky)"/>
+ <path d="M200 114 v56" stroke-width="1.6" opacity=".6"/>
+ <path d="M183 123 Q174 140 178 156" fill="none" stroke="var(--sky)" stroke-width="9"/><path d="M183 123 Q174 140 178 156" fill="none" stroke-width="1.5" opacity=".5"/>
+ <circle cx="178" cy="159" r="4.5" fill="var(--skin)"/>
+ <path d="M218 122 Q233 110 233 93" fill="none" stroke="var(--sky)" stroke-width="9"/><path d="M218 122 Q233 110 233 93" fill="none" stroke-width="1.5" opacity=".5"/>
+ <circle cx="233" cy="88" r="5" fill="var(--skin)"/>
+ <path d="M242 83 q4 4 0 9 M247 78 q7 7 0 16" fill="none" stroke-width="1.8"/>
+ <circle cx="200" cy="92" r="17" fill="var(--skin)"/>
+ <path d="M183 91 Q183 72 200 72 Q218 72 217 91 Q212 80 197 82 Q188 84 183 91Z" fill="var(--line)"/>
+ <g stroke="none" fill="var(--line)"><circle cx="194" cy="94" r="1.9"/><circle cx="206" cy="94" r="1.9"/></g>
+ <path d="M195 101 q5 4 10 0" fill="none" stroke-width="1.7"/>
+ <g fill="var(--blush)" stroke="none" opacity=".55"><circle cx="189" cy="99" r="3"/><circle cx="211" cy="99" r="3"/></g>
+</g></svg>`;
+
+const WALKING=()=>`<svg class="scene" viewBox="0 0 320 150" role="img" aria-label="${esc(T(W.walking))}">
+<g filter="url(#wobble)" stroke="var(--line)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M0 132 Q160 127 320 133 L320 150 L0 150Z" fill="var(--paper2)"/>
+ <path d="M40 132 V86" /><circle cx="40" cy="74" r="20" fill="var(--sage)"/>
+ <path d="M284 132 V92"/><circle cx="284" cy="80" r="16" fill="var(--sage)"/>
+ <!-- Popo from behind -->
+ <path d="M122 108 L118 128 M134 108 L140 127" stroke-width="4.5"/>
+ <path d="M112 74 Q128 66 144 74 L148 112 Q128 116 108 112Z" fill="var(--clay)"/>
+ <circle cx="128" cy="56" r="14" fill="#c4bdb4"/><circle cx="128" cy="39" r="6.5" fill="#c4bdb4"/>
+ <path d="M144 80 Q156 86 160 80" fill="none" stroke="var(--clay)" stroke-width="8"/>
+ <!-- friend from behind, arm linked -->
+ <path d="M176 108 L172 128 M190 108 L195 127" stroke-width="4.5"/>
+ <path d="M166 74 Q182 66 198 74 L200 112 L164 112Z" fill="var(--sky)"/>
+ <circle cx="182" cy="56" r="14" fill="var(--line)"/>
+ <path d="M168 80 Q162 86 158 82" fill="none" stroke="var(--sky)" stroke-width="8"/>
+ <!-- dog ahead -->
+ <path d="M226 124 v7 M236 124 v7 M244 124 v7" stroke-width="3"/>
+ <ellipse cx="236" cy="118" rx="14" ry="8" fill="var(--sun)"/><circle cx="250" cy="111" r="7.5" fill="var(--sun)"/>
+ <path d="M222 115 q-6 -8 -1 -14" fill="none" stroke-width="2.6"/>
+ <path d="M246 105 q-4 7 0 10 q3 -4 2 -9z" fill="#b8862a"/>
+</g></svg>`;
+
+/* ---------- screens ---------- */
+var V = {
+home: function () { return '<section class="screen">' + CORNER() +
+  '<div><h1>' + esc(T(W.app)) + '</h1><p class="lede">' + esc(T(W.lede)) + '</p></div>' +
+  '<div><label id="whenL">' + esc(T(W.pickTime)) + '</label><div class="times" role="group" aria-labelledby="whenL">' + TIMES.map(function (x) { return '<button type="button" class="chip" aria-pressed="false" data-t="' + x + '">' + x + '</button>'; }).join("") + '</div></div>' +
+  '<div><label for="corner">' + esc(T(W.whereLabel)) + '</label><input id="corner" maxlength="60" autocomplete="off" placeholder="' + esc(T(W.wherePh)) + '"></div>' +
+  '<div><label for="name">' + esc(T(W.nameLabel)) + '</label><input id="name" maxlength="30" autocomplete="given-name" placeholder="' + esc(T(W.namePh)) + '" value="' + esc(get(NAMEKEY) || "") + '"></div>' +
+  '<p class="note err" id="err" aria-live="polite"></p>' +
+  '<button type="button" class="btn" id="make">' + esc(T(W.make)) + '</button></section>'; },
+send: function () { return '<section class="screen center">' +
+  '<h1>' + esc(T(W.sendTitle)) + '</h1>' +
+  '<div class="code" aria-label="' + s.id.split("").join(" ") + '">' + s.id + '</div>' +
+  '<p class="corner">' + esc(when(s)) + '<br>' + esc(F(W.at, { c: s.c })) + '</p>' +
+  '<button type="button" class="btn" id="share">' + esc(T(W.send)) + '</button>' +
+  '<p class="note" id="note" aria-live="polite"></p>' +
+  '<button type="button" class="btn quiet" id="sent">' + esc(T(W.sent)) + '</button></section>'; },
+invite: function () { return '<section class="screen center">' +
+  '<p class="lede">' + esc(s.n ? F(W.inviteFrom, { n: s.n }) : T(W.inviteAnon)) + '</p>' +
+  '<div class="big">' + esc(s.t) + '</div>' +
+  '<p class="hand" style="font-size:28px">' + esc(dayLabel(s.at)) + '</p>' +
+  '<p class="corner">' + esc(F(W.at, { c: s.c })) + '</p>' +
+  '<p class="lede">' + esc(T(W.inviteSub)) + '</p>' +
+  '<div class="spacer"></div><button type="button" class="btn sage" id="yes">' + esc(T(W.illBeThere)) + '</button></section>'; },
+countdown: function () { return '<section class="screen center"><div class="spacer"></div>' +
+  '<div class="clock" id="clock" role="timer" aria-label="' + esc(T(W.untilWalk)) + '"></div>' +
+  '<p class="corner">' + esc(s.c) + '</p><div class="spacer"></div>' +
+  '<button type="button" class="link faint" id="cancel">' + esc(T(W.notGoing)) + '</button></section>'; },
+go: function () { return '<section class="screen center">' + WALKING() +
+  '<h1>' + esc(T(W.goTitle)) + '</h1><button type="button" class="btn quiet" id="start">' + esc(T(W.startTimer)) + '</button></section>'; },
+timer: function () { return '<section class="screen center"><div class="mins" id="mins" role="timer" aria-label="' + esc(T(W.minsLeft)) + '"></div></section>'; },
+done: function () { return '<section class="screen center"><h1>' + esc(T(W.doneTitle)) + '</h1>' +
+  '<p class="corner" style="font-size:30px">' + esc(T(W.again)) + '</p>' +
+  '<div class="row"><button type="button" class="btn sage" id="again">' + esc(T(W.yes)) + '</button><button type="button" class="btn quiet" id="nope">' + esc(T(W.no)) + '</button></div></section>'; },
+bye: function () { return '<section class="screen center">' + WALKING() +
+  '<h1>' + esc(T(W.byeTitle)) + '</h1><p class="lede">' + esc(T(W.byeSub)) + '</p>' +
+  '<div class="spacer"></div><button type="button" class="link faint" id="fresh">' + esc(T(W.newWalk)) + '</button></section>'; }
+};
+
+function on(id, fn) { var e = $(id); if (e) e.onclick = fn; }
+function share(text, onCopied) {
+  if (navigator.share) return navigator.share({ text: text }).catch(function () {});
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(function () { if (onCopied) onCopied(); }, function () { window.prompt("", text); });
+  window.prompt("", text);
+}
+var B = {
+  home: function () { var pick = null, chips = document.querySelectorAll(".chip");
+    Array.prototype.forEach.call(chips, function (b) { b.onclick = function () { Array.prototype.forEach.call(chips, function (x) { x.setAttribute("aria-pressed", "false"); }); b.setAttribute("aria-pressed", "true"); pick = b.getAttribute("data-t"); }; });
+    on("make", function () { var c = $("corner").value.trim(), n = $("name").value.trim();
+      if (!pick || !c) { $("err").textContent = T(W.needCorner); return; }
+      put(NAMEKEY, n || null); s = { id: newCode(), t: pick, c: c, n: n, at: nextAt(pick), role: "host", sent: false }; save(); render(true); }); },
+  send: function () { on("share", function () { share(F(W.shareText, { t: when(s), c: s.c, link: linkFor(s) }), function () { $("note").textContent = T(W.copied); }); });
+    on("sent", function () { s.sent = true; save(); render(true); }); },
+  invite: function () { on("yes", function () { var txt = F(W.replyText, { t: when(s), c: s.c }); s.joined = true; save(); render(true); share(txt); }); },
+  countdown: function () { on("cancel", function () { if (confirm(T(W.confirmCancel))) reset(); }); },
+  go: function () { on("start", function () { s.walkStart = Date.now(); save(); render(true); }); },
+  done: function () { on("again", function () { while (s.at <= Date.now()) s.at += 7 * DAY; s.walkStart = null; save(); render(true); });
+    on("nope", function () { s.bye = true; save(); render(true); }); },
+  bye: function () { on("fresh", reset); }
+};
+
+/* ---------- the loop: one tick a second ---------- */
+var app = $("app"), cur = null;
+function pad(n) { return String(n).padStart(2, "0"); }
+function tick() { var now = Date.now(), c = $("clock"), m = $("mins");
+  if (c && s) { var sec = Math.ceil(Math.max(0, s.at - now) / 1000), d = Math.floor(sec / 86400); sec %= 86400;
+    c.innerHTML = (d ? "<small>" + d + esc(T(W.d)) + "</small>" : "") + pad(Math.floor(sec / 3600)) + ":" + pad(Math.floor(sec % 3600 / 60)) + ":" + pad(sec % 60); }
+  if (m && s) m.textContent = Math.ceil(Math.max(0, s.walkStart + walkMs() - now) / walkMs() * 20);
+}
+function render(force) { var sc = screenOf();
+  if (sc !== cur || force) {
+    if (sc === "go" && cur === "countdown") { try { if (navigator.vibrate) navigator.vibrate(200); } catch (e) {} }   /* the one nudge: a single buzz when it's time */
+    cur = sc; document.body.className = CHROME[sc]; app.innerHTML = V[sc](); if (B[sc]) B[sc](); scrollTo(0, 0); chrome();
+  }
+  tick(); testbar();
+}
+
+/* ---------- language, footer ---------- */
+var menu = null;
+function closeLang() { if (menu) { menu.remove(); menu = null; $("langBtn").setAttribute("aria-expanded", "false"); } }
+$("langBtn").addEventListener("click", function (e) {
+  e.stopPropagation(); if (menu) return closeLang();
+  menu = document.createElement("div"); menu.className = "langmenu"; menu.setAttribute("role", "menu"); document.querySelector("header").appendChild(menu);
+  LANGS.forEach(function (l, i) { var b = document.createElement("button"); b.type = "button"; b.setAttribute("role", "menuitemradio"); b.setAttribute("aria-checked", String(i === li())); b.lang = l; b.textContent = LNAMES[i]; menu.appendChild(b);
+    b.addEventListener("click", function () { if (window.FBL) FBL.set(l); closeLang(); render(true); }); });
+  $("langBtn").setAttribute("aria-expanded", "true"); menu.querySelector("[aria-checked=true]").focus();
+});
+document.addEventListener("click", function (e) { if (menu && !menu.contains(e.target)) closeLang(); });
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLang(); });
+function chrome() {
+  var i = li(); document.documentElement.lang = LANGS[i]; document.title = T(W.app);
+  $("langLbl").textContent = SHORT[i]; $("langBtn").setAttribute("aria-label", T(W.lang) + ": " + LNAMES[i]);
+  var _k = function (k, d) { return window.FBC && FBC.W && FBC.W[k] ? FBC.t(FBC.W[k]) : d; };
+  var _x = "<span>" + esc(_k("fLink", T(W.device))) + '</span><a href="https://www.wei-meng.org/after-hours/?fbl=' + LANGS[i] + '" target="_blank" rel="noopener">' + esc(_k("fAh", T(W.ah))) + "</a>";
+  if (window.FBC && FBC.foot) FBC.foot($("foot"), { px: 1, extra: _x });   // the suite's one footer; this app's note and After hours on the line under it
+  else $("foot").innerHTML = _x;
+}
+addEventListener("fbl:lang", function () { render(true); });
+setInterval(render, 1000);
+document.addEventListener("visibilitychange", function () { if (!document.hidden) render(); });
+
+/* ---------- testing: ?test shows both roles and fast-forwards; window.WW for scripts ---------- */
+function testbar() { if (!TEST) return; var bar = $("testbar"); bar.hidden = false; document.body.style.paddingBottom = "60px";
+  var role = s && s.role;
+  bar.innerHTML = "<span>" + cur + '</span><button data-a="host" class="' + (role === "host" ? "on" : "") + '">Host</button><button data-a="guest" class="' + (role === "guest" ? "on" : "") + '">Invitee</button>' +
+    '<button data-a="soon">Start in 10s</button><button data-a="short">20s walk</button><button data-a="link">Open invite</button><button data-a="reset">Reset</button>';
+  Array.prototype.forEach.call(bar.querySelectorAll("button"), function (b) { b.onclick = function () { var a = b.getAttribute("data-a"); if (!s && a !== "reset") return;
+    if (a === "host") s.role = "host";
+    if (a === "guest") { s.role = "guest"; s.joined = !!s.joined; }
+    if (a === "soon") { s.at = Date.now() + 10000; s.walkStart = null; s.bye = false; }
+    if (a === "short") s.walkMs = s.walkMs ? null : 20000;
+    if (a === "link") { s.role = "guest"; s.joined = false; history.replaceState(null, "", linkFor(s) + "&test"); }
+    if (a === "reset") return reset();
+    save(); render(true); }; });
+}
+window.WW = { state: function () { return s; }, screen: function () { return cur; }, reset: reset };
+
+render(true);
+
+/* works offline once it has opened: a small worker keeps this app's own files (nothing else, nothing sent) */
+if ("serviceWorker" in navigator && window.isSecureContext) addEventListener("load", function () { navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(function () {}); });
+})();
+</script>
+</body>
+</html>
