@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html class="skin-fbhdr" lang="en">
 <head>
   <meta charset="utf-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=449672cabd"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -51,7 +51,7 @@
     .monday b { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink); font-weight:400; margin-bottom:2px; }
     .url { font-family:var(--mono); font-size:12px; color:var(--muted); }
     footer { text-align:center; font-family:var(--mono); font-size:11px; color:var(--muted); padding:20px 16px 40px; }
-    @media (max-width:480px) { .brand b { display:none; } .chip { padding:7px 10px; } #printBtn .t { display:none; } }
+    @media (max-width:340px) { .brand b { display:none; } .chip { padding:7px 10px; } #printBtn .t { display:none; } }
     @media (max-width:640px) { .grid2, .cols { grid-template-columns:1fr; } .demo { padding:20px; border-radius:22px; } }
     @media print {
       @page { size:A4; margin:14mm; }
@@ -94,7 +94,7 @@ html,body{background-color:var(--paper)}
 img{filter:none}
 ::selection{background:#E2553F;color:#fff}
 }
-</style></head>
+</style><style id="skin-fbhdr">html.skin-fbhdr :is(header,.top) :is(button,a):is(.chip,.rounded-lg,.rounded-full){border-radius:2px!important;height:36px!important;min-height:36px;box-sizing:border-box}html.skin-fbhdr :is(header,.top) .chip{padding-top:0!important;padding-bottom:0!important;display:inline-flex;align-items:center}@media (max-width:375px){html.skin-fbhdr :is(header,.top) .fb-brand>.leading-none,html.skin-fbhdr :is(header,.top) .brand>b{display:none!important}}</style></head>
 <body>
   <header class="top"><div class="top-in">
     <a class="brand" href="/" aria-label="FREE//BUILDER"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19"><rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg></span><b>FREE<i>//</i>BUILDER</b></a>

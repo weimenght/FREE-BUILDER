@@ -67,7 +67,7 @@
     footer { text-align:center; font-family:var(--mono); font-size:11px; color:var(--muted); padding:20px 16px 40px; }
     :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:6px; }
     @media (max-width:520px) { .steps li { grid-template-columns:1fr; gap:4px; } }
-    @media (max-width:420px) { .brand b { display:none; } .chip { padding:7px 10px; } }
+    @media (max-width:340px) { .brand b { display:none; } .chip { padding:7px 10px; } }
     @media print { .top, .cta, footer, .noprint { display:none !important; } body { background:var(--white,#fff); } .card, .steps li, .dark { break-inside:avoid; } .dark { background:var(--white,#fff); color:var(--ink); border:1px solid var(--ink); } .dark .kicker { color:var(--muted); } }
     
   
