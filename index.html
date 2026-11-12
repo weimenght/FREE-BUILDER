@@ -61,7 +61,7 @@
     .svc-try { font:400 12px 'Space Mono',monospace; color:rgba(255,255,255,.6); }
     /* the drama's trailer and the cases (Nov 6): one row under the four services */
     .svc-row { display:grid; gap:14px; grid-template-columns:1fr; margin-top:14px; }
-    @media (min-width:720px) { .svc-row { grid-template-columns:1fr 1fr; } }
+    .svc-row .svc-cases { padding:20px 22px; } .svc-cases-t b { font-size:15px; }
     .svc-play, .svc-cases { display:flex; align-items:center; gap:14px; padding:14px 18px 14px 14px; border-radius:22px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04); color:#fff; text-align:left; text-decoration:none; font:inherit; cursor:pointer; transition:border-color .2s, background .2s; }
     .svc-play:hover, .svc-cases:hover { border-color:rgba(255,255,255,.45); background:rgba(255,255,255,.07); }
     .svc-play .svc-ring { width:44px; height:44px; border-radius:50%; background:#F2A33A; color:var(--ink,#17171A); display:grid; place-items:center; flex:none; }
@@ -399,25 +399,12 @@ img{filter:none}
             </span>
           </a>
         </div>
-        <div class="svc-row reveal">
-          <button type="button" class="svc-play" data-play>
-            <span class="svc-ring" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>
-            <span class="svc-play-t"><b data-i18n="dramaBtn">Corporate Survival Drama · watch the trailer</b><span data-i18n="dramaMeta">Episode 01 · 1 minute · a workplace mini-series made to be watched together, ending on a choice for the team</span></span>
-          </button>
+        <div class="svc-row reveal"><!-- Nov 12, the owner: after the four services, only the cases (the trailer is on /cases/, Common Ground in the labs) -->
           <a href="/cases/" class="svc-cases">
             <span class="svc-cases-t"><b data-i18n="casesBtn">Thirteen cases, one year, one invented company</b><span data-i18n="casesMeta">The problems buyers bring, what we build, how each ends between people, and what to expect</span></span>
             <span aria-hidden="true">→</span>
           </a>
         </div>
-        <a href="/labs/common-ground/" class="svc-lab reveal">
-          <svg class="cg-art" viewBox="0 0 170 90" aria-hidden="true" focusable="false"><rect width="170" height="90" rx="14" fill="#2A2A30"/><rect x="18" y="46" width="24" height="20" rx="2" fill="#F7F6F2"/><path d="M15 47L30 34L45 47Z" fill="#E2553F"/><rect x="27" y="55" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="56" y="38" width="24" height="20" rx="2" fill="#F7F6F2"/><path d="M53 39L68 26L83 39Z" fill="#8D8C94"/><rect x="65" y="47" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="94" y="46" width="24" height="20" rx="2" fill="#E2553F"/><path d="M91 47L106 34L121 47Z" fill="#F7F6F2"/><rect x="103" y="55" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="132" y="40" width="24" height="20" rx="2" fill="#F7F6F2"/><path d="M129 41L144 28L159 41Z" fill="#8D8C94"/><rect x="141" y="49" width="6" height="11" rx="1" fill="#F7F6F2"/><rect x="10" y="66" width="150" height="4" rx="2" fill="rgba(255,255,255,.18)"/><circle class="an-say" cx="85" cy="18" r="5" fill="#F2A091"/></svg>
-          <span class="svc-lab-t">
-            <span class="flex flex-wrap items-center gap-2 text-[10px] font-mono uppercase tracking-[0.14em] text-white/45"><span class="px-2 py-0.5 rounded-full bg-accent text-white" data-i18n="newTag">New</span><span data-i18n="cgKicker">Lab · for a team</span></span>
-            <span class="block font-syne text-lg font-bold tracking-tight" data-i18n="cgTitle">Common Ground</span>
-            <span class="block text-sm text-white/70 leading-relaxed" data-i18n="cgShort">Your team builds a little town together, then takes one honest question to its next meeting.</span>
-            <span class="inline-block text-[11px] font-mono text-white underline decoration-accent decoration-2 underline-offset-4"><span data-i18n="cgGo">Build your team's town</span>&nbsp;<span aria-hidden="true">↗</span></span>
-          </span>
-        </a>
         <a href="https://www.wei-meng.org/portfolio" target="_blank" rel="noopener noreferrer" class="reveal inline-block text-sm font-mono text-white underline decoration-accent decoration-2 underline-offset-4 hover:text-accent transition-colors">
           <span data-i18n="workAll">See all the work, with the story behind each one</span>&nbsp;<span aria-hidden="true">→</span>
         </a>
