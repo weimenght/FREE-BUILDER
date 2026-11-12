@@ -90,6 +90,7 @@
     .pc { background:var(--white); border:1px solid var(--line); border-radius:20px; padding:18px 20px; margin-top:10px; }
     .pc .ep { font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-ink); } .pc .ep span { color:var(--muted); margin-left:10px; text-transform:none; letter-spacing:0; }
     .pc h3 { font-size:clamp(18px,2.4vw,22px); margin:6px 0 0; } .pc p { margin:8px 0 0; font-size:14.5px; color:rgba(var(--ink-rgb,23,23,26),.8); }
+    .pc { scroll-margin-top:84px; } .pc .end b { font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:400; }
     .pc .rd { display:inline-block; margin-top:10px; font-family:var(--mono); font-size:12px; font-weight:700; }
     .chips2 { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
     .cc { display:inline-flex; align-items:center; gap:6px; padding:4px 10px 4px 4px; border-radius:999px; border:1px solid var(--line); background:var(--white); font-family:var(--mono); font-size:11px; color:var(--ink); text-decoration:none; }
