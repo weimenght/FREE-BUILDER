@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dde632a0dc"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title id="page-title">Hallway Feedback — FREE//BUILDER</title>
+  <meta name="description" content="Sixty seconds of specific feedback in the minute after any small meeting: one thing that worked, one to try. The other person only says thanks and asks one question.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
+  <!-- Brand fonts load without blocking the page: where Google Fonts is slow or blocked, system fonts show instantly. -->
+  <link rel="stylesheet" href="/fonts/fonts.css">
+
+  <link rel="stylesheet" href="/fbkit/s-b871aaaa7f.css">
+<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
+:root{color-scheme:light dark}
+@media (prefers-color-scheme: dark){
+:root{--paper:#141416;--ink:#ECEBE6;--muted:#A8A7AD;--line:#303036;--grid:#26262B;--white:#1D1D21;--inkbg:#2B2B31;--inkbd:#3B3B42;--accent-ink:#F28C76;--good:#62C48F;--paper-rgb:20,20,22;--dot-rgb:255,255,255;--ink-rgb:236,235,230;--white-rgb:29,29,33;--accent-text:#F2806A;--warn-ink:#E3B25C}
+html,body{background-color:var(--paper)}
+/* primary actions read as light on dark */
+.btn.pri,.cta a.pri,.chip.pri{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.btn.pri:hover,.cta a.pri:hover,.chip.pri:hover{background:#fff!important;border-color:#fff!important}
+.btn[disabled]{opacity:.45}
+.seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.steps span.done{background:#ECEBE6}
+.curtain{border:1px solid #3B3B42}
+/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
+.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
+/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
+.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
+/* illustrations keep their light look on a plate */
+.screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
+.plate{background:#fff!important}
+.card-art~.text-ink\/60,.card-art~span .text-ink\/60{color:rgba(23,23,26,.62)!important}
+.text-accent{color:#F2806A!important}
+.bg-white\/90.text-ink,.bg-white\/90 .text-ink{color:#ECEBE6}
+img{filter:none}
+::selection{background:#E2553F;color:#fff}
+}
+</style></head>
+<body>
+  <div class="dots" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="FREE//BUILDER">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" style="overflow:visible">
+            <rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/>
+            <rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect class="last" x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/>
+          </svg>
+        </span>
+        <span class="brand-txt"><b>FREE<i>//</i>BUILDER</b><span data-t="product">Hallway Feedback</span></span>
+      </a>
+      <div class="top-actions">
+        <button class="chip" id="btn-lang" type="button" aria-label="Language" title="EN / 中文 / ES">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <b id="lang-lbl">EN</b>
+        </button>
+        <button class="chip" id="btn-sound" type="button"></button>
+        <button class="chip" id="btn-guide" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="lbl" data-t="guide">Facilitators</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="sr" data-t="product">Hallway Feedback</h1>
+    <div class="steps" id="steps" aria-hidden="true"></div>
+    <div id="stage" aria-live="polite"></div>
+  </main>
+
+  <footer class="fbf" data-fbf-root><div class="fbf-in"><div class="fbf-row"><span class="fbf-own"><a class="fbf-lg fbf-nm fbf-nm-fb" href="/" aria-label="FREE//BUILDER"><svg class="fb-mk" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg><span class="fbf-name">FREE<i>//</i>BUILDER</span></a><span class="fbf-cy"><svg class="fbf-c" viewBox="0 0 24 24" role="img" aria-label="©"><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.3 9.4a4.3 4.3 0 1 0 0 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="fbf-year">2026</span></span></span><nav aria-label="Footer"><span class="fbf-dot" aria-hidden="true">·</span><a href="/privacy/" data-fbf="privacy">Your privacy</a><span class="fbf-dot" aria-hidden="true">·</span><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai fbf-ico" aria-label="AI" title="AI" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="r-st" d="M12 7.2V4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle class="r-ant" cx="12" cy="3.4" r="1.6" fill="currentColor"/><rect x="4.6" y="7.4" width="14.8" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><g class="r-eyes"><circle cx="9.4" cy="12.8" r="1.55" fill="currentColor"/><circle cx="14.6" cy="12.8" r="1.55" fill="currentColor"/></g><path d="M10 16.4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12.2v2.6M21 12.2v2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a> &amp; <a href="https://www.after-hours.work/" class="fbf-heart fbf-ico" aria-label="♥ after hours" title="♥" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="h-b" d="M12 20.4s-7.8-4.7-7.8-10.3A4.4 4.4 0 0 1 12 7.5a4.4 4.4 0 0 1 7.8 2.6c0 5.6-7.8 10.3-7.8 10.3z" fill="currentColor"/><path class="h-s" d="M7.6 9.6a2.2 2.2 0 0 1 2.1-1.7" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round"/></svg></a></span></nav></div><span class="fbf-x" data-t="privacy">Nothing is recorded. Nothing leaves this phone.</span></div></footer>
+
+  <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="g-title">
+    <div class="panel" id="panel"></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+/* =====================================================================
+   COPY — EN / 中文 / ES (generated by build/next_tools.py)
+   ===================================================================== */
+const I18N = {
+"en": {
+"guide": "Facilitators",
+"back": "Part of FREE//BUILDER’s services ↗",
+"soundOn": "Sound on",
+"soundOff": "Sound off",
+"left": "left",
+"paused": "paused",
+"close": "Close",
+"resume": "Resume",
+"pause": "Pause",
+"start": "Start",
+"next": "Next",
+"backBtn": "Back",
+"nameA": "Person A",
+"nameB": "Person B",
+"phA": "e.g. Ana",
+"phB": "e.g. Leo",
+"copy": "Copy",
+"copied": "Copied.",
+"share": "Send it",
+"icsMade": "Calendar file made on this phone. Open it to add it.",
+"pickMax": "That’s the most you can pick.",
+"timeUp": "Time’s up. Finish your sentence.",
+"swap": "Swap",
+"again": "Practise again",
+"passOn": "Pass it on",
+"monday": "Try this on Monday",
+"teachKicker": "Pass it on",
+"learnerName": "Their name (optional)",
+"learnerPh": "e.g. Mei",
+"learned": "What they’ll try, in their own words",
+"learnedPh": "Hand them the phone…",
+"save": "Save to this phone",
+"chainTitle": "People you’ve passed it on to",
+"chainEmpty": "No one yet. Your first teach-back will appear here.",
+"saved": "Saved on this phone only.",
+"restart": "Back to the start",
+"teachbackLink": "Teach-Back Chain ↗",
+"gKicker": "Facilitator guide",
+"gWhy": "Why it works",
+"gSteps": "Running it",
+"gDebrief": "Debrief questions",
+"gNotes": "Notes",
+"passTo": "Pass the phone to {n}",
+"ready": "I’m {n}",
+"optional": "optional",
+"title": "Hallway Feedback — FREE//BUILDER",
+"product": "Hallway Feedback",
+"privacy": "Nothing is recorded. Nothing leaves this phone.",
+"introKicker": "Feedback · Pairs",
+"introTitle": "Hallway <span class=\"accent-word\">Feedback</span>",
+"introLead": "Feedback shouldn’t wait for a form. In the minute after a small meeting, give one thing that worked and one thing to try, in sixty seconds. The other person may only say thank you and ask one question. Then swap.",
+"introMeta": [
+"2 people",
+"1 phone",
+"≈ 5 minutes"
+],
+"setupTitle": "Who just came out of the meeting?",
+"setupNote": "A gives first. Then you swap.",
+"whatMeeting": "What was it?",
+"meetings": [
+"A stand-up",
+"A client call",
+"A review",
+"A 1:1",
+"Something else"
+],
+"giving": "Gives",
+"getting": "Hears",
+"buildTitle": "{a}, two sentences for {b}",
+"buildLead": "Something they did in the meeting you just left. Say what they did, not what they are.",
+"worked": "One thing that worked",
+"workedStem": "When you…, it…",
+"workedPh": "When you summed up the three options, the client decided in the room.",
+"try": "One thing to try next time",
+"tryStem": "Next time, could you…?",
+"tryPh": "Next time, could you ask Priya’s team first, before we answer?",
+"vagueT": "Make it specific",
+"vague": "“{w}” is kind but they can’t repeat it. What exactly did they do?",
+"vagueWords": [
+"great",
+"good job",
+"well done",
+"nice",
+"awesome",
+"amazing"
+],
+"toSay": "Ready to say it",
+"sayTitle": "{a}, say it to {b}. Sixty seconds.",
+"ruleB": "{b}: only listen. When {a} is done, you’ll say thank you and ask one question.",
+"said": "Said it",
+"replyTitle": "{b}, thank you and one question",
+"replyLead": "No explaining, no defending. Pick a question, or ask your own.",
+"replies": [
+"“Thank you. Can you say more about what you saw?”",
+"“Thank you. What would that look like next time?”",
+"“Thank you. When did it matter most?”"
+],
+"replyDont": "Leave out",
+"donts": [
+"“Yes, but…”",
+"“The reason was…”",
+"“Oh, it was nothing.”"
+],
+"asked": "Asked",
+"useTitle": "{b}, could you use it?",
+"uses": [
+[
+"Yes",
+"I know exactly what to keep and what to try."
+],
+[
+"Partly",
+"One of the two was clear."
+],
+[
+"Not really",
+"I’m not sure what they meant."
+]
+],
+"useHint": "{a}: what did they actually do? Say the moment, not the trait.",
+"swapTitle": "Swap",
+"swapLead": "Now {s} gives and {l} listens. Same meeting, same sixty seconds.",
+"sumTitle": "Both said it out loud",
+"toEnd": "Finish",
+"endKicker": "Feedback given",
+"endTitle": "That took less time than the meeting.",
+"endLead": "Specific, kind and right after: feedback people can use is small and frequent. Nobody had to defend anything.",
+"mondayTxt": "After your next small meeting, give one person one thing that worked, in a sentence. Leads and partners go first for a month.",
+"teachTitle": "Teach someone the sixty seconds.",
+"teachLead": "Show a colleague the three moves, then let them write, in their own words, who they’ll give it to after their next meeting.",
+"t3": [
+"One that worked",
+"One to try",
+"Thanks + one question"
+],
+"t3sub": [
+"the moment, not the trait",
+"“next time, could you…?”",
+"no defending"
+],
+"gTitle": "Running Hallway Feedback",
+"gWhyTxt": "People don’t give feedback because they never practised saying it, and don’t hear it because they’re waiting to defend. Sixty seconds right after the moment keeps it specific and small; the receiver’s rule (thank you and one question) takes defending off the table.",
+"gStepList": [
+"Pairs straight after any small meeting, standing up is fine.",
+"A writes two sentences: one that worked, one to try.",
+"A says them in sixty seconds. B says thank you and asks one question.",
+"B says whether they could use it. Swap."
+],
+"gDebriefList": [
+"Which was harder to say: what worked, or what to try?",
+"What did you want to say back, and didn’t?",
+"Which meeting this week could end like this?"
+],
+"gNotesList": [
+"Partners and leads go first for a month; nothing changes the habit faster.",
+"Nothing is saved. The sentences disappear when you leave."
+]
+},
+"zh": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服务的一部分 ↗",
+"soundOn": "声音开",
+"soundOff": "声音关",
+"left": "剩余",
+"paused": "已暂停",
+"close": "关闭",
+"resume": "继续",
+"pause": "暂停",
+"start": "开始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "复制",
+"copied": "已复制。",
+"share": "发出去",
+"icsMade": "日历文件已在这台手机上生成。打开它即可添加。",
+"pickMax": "最多只能选这么多。",
+"timeUp": "时间到。把这句话说完。",
+"swap": "交换",
+"again": "再练一次",
+"passOn": "传下去",
+"monday": "周一试试这个",
+"teachKicker": "传下去",
+"learnerName": "TA 的名字（可选）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算试什么，用 TA 自己的话",
+"learnedPh": "把手机递给 TA……",
+"save": "保存在这台手机上",
+"chainTitle": "你传给过的人",
+"chainEmpty": "还没有人。你的第一次教回去会出现在这里。",
+"saved": "只保存在这台手机上。",
+"restart": "回到开头",
+"teachbackLink": "教回去链条 ↗",
+"gKicker": "主持人指南",
+"gWhy": "为什么有效",
+"gSteps": "怎么带",
+"gDebrief": "复盘问题",
+"gNotes": "备注",
+"passTo": "把手机递给 {n}",
+"ready": "我是 {n}",
+"optional": "可选",
+"title": "走廊反馈 — FREE//BUILDER",
+"product": "走廊反馈",
+"privacy": "不做任何记录。什么都不会离开这台手机。",
+"introKicker": "反馈 · 两人",
+"introTitle": "走廊<span class=\"accent-word\">反馈</span>",
+"introLead": "反馈不该等到填表的时候。小会议结束后的那一分钟里，用六十秒说一件做得好的事、一件下次可以试试的事。对方只能说谢谢，再问一个问题。然后交换。",
+"introMeta": [
+"2 人",
+"1 部手机",
+"约 5 分钟"
+],
+"setupTitle": "谁刚开完会？",
+"setupNote": "A 先给。然后交换。",
+"whatMeeting": "刚才是什么会？",
+"meetings": [
+"站会",
+"客户电话",
+"评审",
+"一对一",
+"别的"
+],
+"giving": "给反馈",
+"getting": "听反馈",
+"buildTitle": "{a}，给 {b} 的两句话",
+"buildLead": "就在刚才那个会上 TA 做的事。说 TA 做了什么，而不是 TA 是什么样的人。",
+"worked": "一件做得好的事",
+"workedStem": "当你……的时候，……",
+"workedPh": "你把三个选项总结了一下，客户当场就做了决定。",
+"try": "下次可以试试的一件事",
+"tryStem": "下次你能不能……？",
+"tryPh": "下次能不能先问问 Priya 的团队，我们再回答？",
+"vagueT": "说具体一点",
+"vague": "“{w}”很友善，但 TA 没法照着再做一次。TA 具体做了什么？",
+"vagueWords": [
+"很好",
+"不错",
+"做得好",
+"挺好",
+"棒",
+"厉害"
+],
+"toSay": "准备好了",
+"sayTitle": "{a}，说给 {b} 听。六十秒。",
+"ruleB": "{b}：只听。{a} 说完后，你说谢谢，再问一个问题。",
+"said": "说完了",
+"replyTitle": "{b}，说谢谢，再问一个问题",
+"replyLead": "不解释，不辩解。选一个问题，或者问你自己的。",
+"replies": [
+"“谢谢。能多说说你看到了什么吗？”",
+"“谢谢。下次那会是什么样子？”",
+"“谢谢。哪个时刻最关键？”"
+],
+"replyDont": "别说",
+"donts": [
+"“是的，但是……”",
+"“原因是……”",
+"“哎呀，没什么。”"
+],
+"asked": "问完了",
+"useTitle": "{b}，这些你用得上吗？",
+"uses": [
+[
+"用得上",
+"我很清楚该保持什么、该试什么。"
+],
+[
+"一部分",
+"两句里有一句很清楚。"
+],
+[
+"不太用得上",
+"我不太确定 TA 指的是什么。"
+]
+],
+"useHint": "{a}：TA 到底做了什么？说那个时刻，而不是性格。",
+"swapTitle": "交换",
+"swapLead": "现在 {s} 来给，{l} 来听。同一个会，同样六十秒。",
+"sumTitle": "两个人都说出口了",
+"toEnd": "结束",
+"endKicker": "反馈给出去了",
+"endTitle": "比开会用的时间还短。",
+"endLead": "具体、善意、紧接着说：用得上的反馈，是小而频繁的。没有人需要为自己辩护。",
+"mondayTxt": "下一个小会议结束后，用一句话告诉一个人一件做得好的事。负责人和合伙人先做一个月。",
+"teachTitle": "教会别人这六十秒。",
+"teachLead": "给同事看这三步，再让 TA 用自己的话写下：下次开完会要给谁。",
+"t3": [
+"一件做得好的",
+"一件可以试的",
+"谢谢 + 一个问题"
+],
+"t3sub": [
+"说时刻，不说性格",
+"“下次你能不能……？”",
+"不辩解"
+],
+"gTitle": "怎么带“走廊反馈”",
+"gWhyTxt": "人们不给反馈，是因为没练过怎么说；听不进反馈，是因为正等着辩解。事情刚发生后的六十秒，让反馈保持具体、保持小；听的人只能说谢谢再问一个问题，辩解就没了位置。",
+"gStepList": [
+"任何小会议一结束就两两配对，站着也行。",
+"A 写两句话：一件做得好的，一件可以试的。",
+"A 用六十秒说出来。B 说谢谢，再问一个问题。",
+"B 说用不用得上。交换。"
+],
+"gDebriefList": [
+"哪句更难说：做得好的，还是可以试的？",
+"你当时想回嘴的是什么？你忍住了吗？",
+"这周哪个会可以这样结束？"
+],
+"gNotesList": [
+"合伙人和负责人先做一个月；没有什么比这更快改变习惯。",
+"什么都不保存。离开后那两句话就不见了。"
+]
+},
+"es": {
+"guide": "Facilitadores",
+"back": "Parte de los servicios de FREE//BUILDER ↗",
+"soundOn": "Sonido activado",
+"soundOff": "Sonido desactivado",
+"left": "restante",
+"paused": "en pausa",
+"close": "Cerrar",
+"resume": "Seguir",
+"pause": "Pausa",
+"start": "Empezar",
+"next": "Siguiente",
+"backBtn": "Atrás",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ej., Ana",
+"phB": "p. ej., Leo",
+"copy": "Copiar",
+"copied": "Copiado.",
+"share": "Enviarlo",
+"icsMade": "Archivo de calendario hecho en este móvil. Ábrelo para añadirlo.",
+"pickMax": "No puedes elegir más.",
+"timeUp": "Se acabó el tiempo. Termina la frase.",
+"swap": "Cambiar",
+"again": "Practicar otra vez",
+"passOn": "Pásalo",
+"monday": "Pruébalo el lunes",
+"teachKicker": "Pásalo",
+"learnerName": "Su nombre (opcional)",
+"learnerPh": "p. ej., Mei",
+"learned": "Lo que va a probar, con sus palabras",
+"learnedPh": "Pásale el móvil…",
+"save": "Guardar en este móvil",
+"chainTitle": "Personas a las que se lo has pasado",
+"chainEmpty": "Nadie todavía. Tu primer enseñar-de-vuelta aparecerá aquí.",
+"saved": "Guardado solo en este móvil.",
+"restart": "Volver al principio",
+"teachbackLink": "Cadena de Enseñar de Vuelta ↗",
+"gKicker": "Guía para facilitar",
+"gWhy": "Por qué funciona",
+"gSteps": "Cómo llevarlo",
+"gDebrief": "Preguntas para cerrar",
+"gNotes": "Notas",
+"passTo": "Pásale el móvil a {n}",
+"ready": "Soy {n}",
+"optional": "opcional",
+"title": "Feedback de Pasillo — FREE//BUILDER",
+"product": "Feedback de Pasillo",
+"privacy": "No se graba nada. Nada sale de este móvil.",
+"introKicker": "Feedback · En pareja",
+"introTitle": "Feedback de <span class=\"accent-word\">Pasillo</span>",
+"introLead": "El feedback no debería esperar a un formulario. En el minuto después de una reunión pequeña, di una cosa que funcionó y una que probar, en sesenta segundos. La otra persona solo puede dar las gracias y hacer una pregunta. Luego cambiáis.",
+"introMeta": [
+"2 personas",
+"1 móvil",
+"≈ 5 minutos"
+],
+"setupTitle": "¿Quién acaba de salir de la reunión?",
+"setupNote": "A da primero. Luego cambiáis.",
+"whatMeeting": "¿Qué era?",
+"meetings": [
+"Una reunión diaria",
+"Una llamada con cliente",
+"Una revisión",
+"Un 1:1",
+"Otra cosa"
+],
+"giving": "Da",
+"getting": "Escucha",
+"buildTitle": "{a}, dos frases para {b}",
+"buildLead": "Algo que hizo en la reunión de la que salís. Di lo que hizo, no cómo es.",
+"worked": "Una cosa que funcionó",
+"workedStem": "Cuando tú…, eso…",
+"workedPh": "Cuando resumiste las tres opciones, el cliente decidió allí mismo.",
+"try": "Una cosa que probar la próxima vez",
+"tryStem": "La próxima vez, ¿podrías…?",
+"tryPh": "La próxima vez, ¿podrías preguntar primero al equipo de Priya antes de responder?",
+"vagueT": "Hazlo concreto",
+"vague": "«{w}» es amable, pero no pueden repetirlo. ¿Qué hizo exactamente?",
+"vagueWords": [
+"genial",
+"buen trabajo",
+"bien hecho",
+"muy bien",
+"perfecto",
+"increíble"
+],
+"toSay": "Listo para decirlo",
+"sayTitle": "{a}, díselo a {b}. Sesenta segundos.",
+"ruleB": "{b}: solo escucha. Cuando {a} termine, darás las gracias y harás una pregunta.",
+"said": "Dicho",
+"replyTitle": "{b}, gracias y una pregunta",
+"replyLead": "Sin explicar ni defenderte. Elige una pregunta o haz la tuya.",
+"replies": [
+"«Gracias. ¿Puedes contarme más de lo que viste?»",
+"«Gracias. ¿Cómo sería eso la próxima vez?»",
+"«Gracias. ¿En qué momento importó más?»"
+],
+"replyDont": "Evita",
+"donts": [
+"«Sí, pero…»",
+"«Es que…»",
+"«Bah, no fue nada.»"
+],
+"asked": "Preguntado",
+"useTitle": "{b}, ¿te sirve?",
+"uses": [
+[
+"Sí",
+"Sé exactamente qué mantener y qué probar."
+],
+[
+"En parte",
+"Una de las dos estaba clara."
+],
+[
+"No mucho",
+"No sé bien qué quería decir."
+]
+],
+"useHint": "{a}: ¿qué hizo en realidad? Di el momento, no el rasgo.",
+"swapTitle": "Cambiad",
+"swapLead": "Ahora {s} da y {l} escucha. La misma reunión, los mismos sesenta segundos.",
+"sumTitle": "Los dos lo habéis dicho en voz alta",
+"toEnd": "Terminar",
+"endKicker": "Feedback dado",
+"endTitle": "Os ha llevado menos que la reunión.",
+"endLead": "Concreto, amable y justo después: el feedback que sirve es pequeño y frecuente. Nadie tuvo que defenderse.",
+"mondayTxt": "Después de tu próxima reunión pequeña, dile a una persona una cosa que funcionó, en una frase. Los responsables y socios van primero durante un mes.",
+"teachTitle": "Enseña a alguien los sesenta segundos.",
+"teachLead": "Enseña a un colega los tres pasos y deja que escriba con sus palabras a quién se lo dará tras su próxima reunión.",
+"t3": [
+"Una que funcionó",
+"Una que probar",
+"Gracias + una pregunta"
+],
+"t3sub": [
+"el momento, no el rasgo",
+"«la próxima vez, ¿podrías…?»",
+"sin defenderse"
+],
+"gTitle": "Cómo llevar Feedback de Pasillo",
+"gWhyTxt": "La gente no da feedback porque nunca practicó decirlo, y no lo escucha porque está esperando para defenderse. Sesenta segundos justo después mantienen el feedback concreto y pequeño; la regla de quien lo recibe (gracias y una pregunta) quita la defensa de la mesa.",
+"gStepList": [
+"Por parejas justo después de cualquier reunión pequeña; de pie vale.",
+"A escribe dos frases: una que funcionó, una que probar.",
+"A las dice en sesenta segundos. B da las gracias y hace una pregunta.",
+"B dice si le sirve. Cambiad."
+],
+"gDebriefList": [
+"¿Qué costó más decir: lo que funcionó o lo que probar?",
+"¿Qué querías responder y no dijiste?",
+"¿Qué reunión de esta semana podría acabar así?"
+],
+"gNotesList": [
+"Socios y responsables van primero durante un mes; nada cambia antes el hábito.",
+"No se guarda nada. Las frases desaparecen al salir."
+]
+}, "zh-Hant": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服務的一部分 ↗",
+"soundOn": "聲音開",
+"soundOff": "聲音關",
+"left": "剩餘",
+"paused": "已暫停",
+"close": "關閉",
+"resume": "繼續",
+"pause": "暫停",
+"start": "開始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "複製",
+"copied": "已複製。",
+"share": "發出去",
+"icsMade": "日曆檔案已在這臺手機上生成。開啟它即可新增。",
+"pickMax": "最多隻能選這麼多。",
+"timeUp": "時間到。把這句話說完。",
+"swap": "交換",
+"again": "再練一次",
+"passOn": "傳下去",
+"monday": "週一試試這個",
+"teachKicker": "傳下去",
+"learnerName": "TA 的名字（可選）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算試什麼，用 TA 自己的話",
+"learnedPh": "把手機遞給 TA……",
+"save": "儲存在這臺手機上",
+"chainTitle": "你傳給過的人",
+"chainEmpty": "還沒有人。你的第一次教回去會出現在這裡。",
+"saved": "只儲存在這臺手機上。",
+"restart": "回到開頭",
+"teachbackLink": "教回去鏈條 ↗",
+"gKicker": "主持人指南",
+"gWhy": "為什麼有效",
+"gSteps": "怎麼帶",
+"gDebrief": "覆盤問題",
+"gNotes": "備註",
+"passTo": "把手機遞給 {n}",
+"ready": "我是 {n}",
+"optional": "可選",
+"title": "走廊反饋 — FREE//BUILDER",
+"product": "走廊反饋",
+"privacy": "不做任何記錄。什麼都不會離開這臺手機。",
+"introKicker": "反饋 · 兩人",
+"introTitle": "走廊<span class=\"accent-word\">反饋</span>",
+"introLead": "反饋不該等到填表的時候。小會議結束後的那一分鐘裡，用六十秒說一件做得好的事、一件下次可以試試的事。對方只能說謝謝，再問一個問題。然後交換。",
+"introMeta": [
+"2 人",
+"1 部手機",
+"約 5 分鐘"
+],
+"setupTitle": "誰剛開完會？",
+"setupNote": "A 先給。然後交換。",
+"whatMeeting": "剛才是什麼會？",
+"meetings": [
+"站會",
+"客戶電話",
+"評審",
+"一對一",
+"別的"
+],
+"giving": "給反饋",
+"getting": "聽反饋",
+"buildTitle": "{a}，給 {b} 的兩句話",
+"buildLead": "就在剛才那個會上 TA 做的事。說 TA 做了什麼，而不是 TA 是什麼樣的人。",
+"worked": "一件做得好的事",
+"workedStem": "當你……的時候，……",
+"workedPh": "你把三個選項總結了一下，客戶當場就做了決定。",
+"try": "下次可以試試的一件事",
+"tryStem": "下次你能不能……？",
+"tryPh": "下次能不能先問問 Priya 的團隊，我們再回答？",
+"vagueT": "說具體一點",
+"vague": "“{w}”很友善，但 TA 沒法照著再做一次。TA 具體做了什麼？",
+"vagueWords": [
+"很好",
+"不錯",
+"做得好",
+"挺好",
+"棒",
+"厲害"
+],
+"toSay": "準備好了",
+"sayTitle": "{a}，說給 {b} 聽。六十秒。",
+"ruleB": "{b}：只聽。{a} 說完後，你說謝謝，再問一個問題。",
+"said": "說完了",
+"replyTitle": "{b}，說謝謝，再問一個問題",
+"replyLead": "不解釋，不辯解。選一個問題，或者問你自己的。",
+"replies": [
+"“謝謝。能多說說你看到了什麼嗎？”",
+"“謝謝。下次那會是什麼樣子？”",
+"“謝謝。哪個時刻最關鍵？”"
+],
+"replyDont": "別說",
+"donts": [
+"“是的，但是……”",
+"“原因是……”",
+"“哎呀，沒什麼。”"
+],
+"asked": "問完了",
+"useTitle": "{b}，這些你用得上嗎？",
+"uses": [
+[
+"用得上",
+"我很清楚該保持什麼、該試什麼。"
+],
+[
+"一部分",
+"兩句裡有一句很清楚。"
+],
+[
+"不太用得上",
+"我不太確定 TA 指的是什麼。"
+]
+],
+"useHint": "{a}：TA 到底做了什麼？說那個時刻，而不是性格。",
+"swapTitle": "交換",
+"swapLead": "現在 {s} 來給，{l} 來聽。同一個會，同樣六十秒。",
+"sumTitle": "兩個人都說出口了",
+"toEnd": "結束",
+"endKicker": "反饋給出去了",
+"endTitle": "比開會用的時間還短。",
+"endLead": "具體、善意、緊接著說：用得上的反饋，是小而頻繁的。沒有人需要為自己辯護。",
+"mondayTxt": "下一個小會議結束後，用一句話告訴一個人一件做得好的事。負責人和合夥人先做一個月。",
+"teachTitle": "教會別人這六十秒。",
+"teachLead": "給同事看這三步，再讓 TA 用自己的話寫下：下次開完會要給誰。",
+"t3": [
+"一件做得好的",
+"一件可以試的",
+"謝謝 + 一個問題"
+],
+"t3sub": [
+"說時刻，不說性格",
+"“下次你能不能……？”",
+"不辯解"
+],
+"gTitle": "怎麼帶“走廊反饋”",
+"gWhyTxt": "人們不給反饋，是因為沒練過怎麼說；聽不進反饋，是因為正等著辯解。事情剛發生後的六十秒，讓反饋保持具體、保持小；聽的人只能說謝謝再問一個問題，辯解就沒了位置。",
+"gStepList": [
+"任何小會議一結束就兩兩配對，站著也行。",
+"A 寫兩句話：一件做得好的，一件可以試的。",
+"A 用六十秒說出來。B 說謝謝，再問一個問題。",
+"B 說用不用得上。交換。"
+],
+"gDebriefList": [
+"哪句更難說：做得好的，還是可以試的？",
+"你當時想回嘴的是什麼？你忍住了嗎？",
+"這週哪個會可以這樣結束？"
+],
+"gNotesList": [
+"合夥人和負責人先做一個月；沒有什麼比這更快改變習慣。",
+"什麼都不儲存。離開後那兩句話就不見了。"
+]
+}, "ca": {
+"guide": "Facilitadors",
+"back": "Part dels serveis de FREE//BUILDER ↗",
+"soundOn": "So activat",
+"soundOff": "So desactivat",
+"left": "restant",
+"paused": "en pausa",
+"close": "Tancar",
+"resume": "Continuar",
+"pause": "Pausa",
+"start": "Començar",
+"next": "Següent",
+"backBtn": "Enrere",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ex., Ana",
+"phB": "p. ex., Leo",
+"copy": "Copia",
+"copied": "Copiat.",
+"share": "Envia-ho",
+"icsMade": "Fitxer de calendari fet en aquest mòbil. Obre’l per afegir-lo.",
+"pickMax": "No en pots triar més.",
+"timeUp": "S’ha acabat el temps. Acaba la frase.",
+"swap": "Canviar",
+"again": "Practicar un altre cop",
+"passOn": "Passa-ho",
+"monday": "Prova-ho dilluns",
+"teachKicker": "Passa-ho",
+"learnerName": "El seu nom (opcional)",
+"learnerPh": "p. ex., Mei",
+"learned": "El que provarà, amb les seves paraules",
+"learnedPh": "Passa-li el mòbil…",
+"save": "Desar en aquest mòbil",
+"chainTitle": "Persones a qui ho has passat",
+"chainEmpty": "Encara ningú. El teu primer ensenyar-de-tornada apareixerà aquí.",
+"saved": "Desat només en aquest mòbil.",
+"restart": "Torna al principi",
+"teachbackLink": "Cadena d'Ensenyar de Tornada ↗",
+"gKicker": "Guia per facilitar",
+"gWhy": "Per què funciona",
+"gSteps": "Com portar-ho",
+"gDebrief": "Preguntes per tancar",
+"gNotes": "Notes",
+"passTo": "Passa el mòbil a {n}",
+"ready": "Soc {n}",
+"optional": "opcional",
+"title": "Feedback de Passadís — FREE//BUILDER",
+"product": "Feedback de Passadís",
+"privacy": "No es grava res. Res no surt d'aquest mòbil.",
+"introKicker": "Feedback · En parella",
+"introTitle": "Feedback de <span class=\"accent-word\">Passadís</span>",
+"introLead": "El feedback no hauria d’esperar un formulari. En el minut després d’una reunió petita, digues una cosa que va funcionar i una per provar, en seixanta segons. L’altra persona només pot donar les gràcies i fer una pregunta. Després canvieu.",
+"introMeta": [
+"2 persones",
+"1 mòbil",
+"≈ 5 minuts"
+],
+"setupTitle": "Qui acaba de sortir de la reunió?",
+"setupNote": "A dona primer. Després canvieu.",
+"whatMeeting": "Què era?",
+"meetings": [
+"Una reunió diària",
+"Una trucada amb client",
+"Una revisió",
+"Un 1:1",
+"Una altra cosa"
+],
+"giving": "Dona",
+"getting": "Escolta",
+"buildTitle": "{a}, dues frases per a {b}",
+"buildLead": "Alguna cosa que va fer a la reunió d’on sortiu. Digues el que va fer, no com és.",
+"worked": "Una cosa que va funcionar",
+"workedStem": "Quan tu…, això…",
+"workedPh": "Quan vas resumir les tres opcions, el client va decidir allà mateix.",
+"try": "Una cosa per provar la pròxima vegada",
+"tryStem": "La pròxima vegada, podries…?",
+"tryPh": "La pròxima vegada, podries preguntar primer a l’equip de la Priya abans de respondre?",
+"vagueT": "Fes-ho concret",
+"vague": "«{w}» és amable, però no ho poden repetir. Què va fer exactament?",
+"vagueWords": [
+"genial",
+"bona feina",
+"ben fet",
+"molt bé",
+"perfecte",
+"increïble"
+],
+"toSay": "A punt per dir-ho",
+"sayTitle": "{a}, digues-ho a {b}. Seixanta segons.",
+"ruleB": "{b}: només escolta. Quan {a} acabi, donaràs les gràcies i faràs una pregunta.",
+"said": "Dit",
+"replyTitle": "{b}, gràcies i una pregunta",
+"replyLead": "Sense explicar ni defensar-te. Tria una pregunta o fes la teva.",
+"replies": [
+"«Gràcies. Em pots explicar més del que vas veure?»",
+"«Gràcies. Com seria això la pròxima vegada?»",
+"«Gràcies. En quin moment va importar més?»"
+],
+"replyDont": "Evita",
+"donts": [
+"«Sí, però…»",
+"«És que…»",
+"«Bah, no va ser res.»"
+],
+"asked": "Preguntat",
+"useTitle": "{b}, et serveix?",
+"uses": [
+[
+"Sí",
+"Sé exactament què mantenir i què provar."
+],
+[
+"En part",
+"Una de les dues era clara."
+],
+[
+"No gaire",
+"No sé ben bé què volia dir."
+]
+],
+"useHint": "{a}: què va fer en realitat? Digues el moment, no el tret.",
+"swapTitle": "Canvieu",
+"swapLead": "Ara {s} dona i {l} escolta. La mateixa reunió, els mateixos seixanta segons.",
+"sumTitle": "Tots dos ho heu dit en veu alta",
+"toEnd": "Acabar",
+"endKicker": "Feedback donat",
+"endTitle": "Us ha portat menys temps que la reunió.",
+"endLead": "Concret, amable i just després: el feedback que serveix és petit i freqüent. Ningú no s’ha hagut de defensar.",
+"mondayTxt": "Després de la teva pròxima reunió petita, digues a una persona una cosa que va funcionar, en una frase. Els responsables i socis van primer durant un mes.",
+"teachTitle": "Ensenya a algú els seixanta segons.",
+"teachLead": "Ensenya a un col·lega els tres passos i deixa que escrigui amb les seves paraules a qui li ho donarà després de la seva pròxima reunió.",
+"t3": [
+"Una que va funcionar",
+"Una per provar",
+"Gràcies + una pregunta"
+],
+"t3sub": [
+"el moment, no el tret",
+"«la pròxima vegada, podries…?»",
+"sense defensar-se"
+],
+"gTitle": "Com portar Feedback de Passadís",
+"gWhyTxt": "La gent no dona feedback perquè mai no va practicar dir-lo, i no l’escolta perquè està esperant per defensar-se. Seixanta segons just després mantenen el feedback concret i petit; la regla de qui el rep (gràcies i una pregunta) treu la defensa de la taula.",
+"gStepList": [
+"Per parelles just després de qualsevol reunió petita; dempeus ja va bé.",
+"A escriu dues frases: una que va funcionar, una per provar.",
+"A les diu en seixanta segons. B dona les gràcies i fa una pregunta.",
+"B diu si li serveix. Canvieu."
+],
+"gDebriefList": [
+"Què va costar més de dir: el que va funcionar o el que cal provar?",
+"Què volies respondre i no vas dir?",
+"Quina reunió d’aquesta setmana podria acabar així?"
+],
+"gNotesList": [
+"Socis i responsables van primer durant un mes; res no canvia abans l’hàbit.",
+"No es desa res. Les frases desapareixen quan surts."
+]
+}
+};
+/* =====================================================================
+   FB KIT · helpers (copy into every demo)
+   ===================================================================== */
+const LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LANG_LBL = { en: "EN", zh: "中文", es: "ES", "zh-Hant": "繁中", "ca": "CA" };
+let lang = "en";
+const T = () => I18N[lang];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? esc(v[k]) : m));
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* Seeded random + pairing codes: the same code on two phones gives the same scenario, no server needed. */
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function newCode(n = 6) { let s = ""; for (let i = 0; i < n; i++) s += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]; return s; }
+function seedFrom(code) { let h = 2166136261; for (const c of String(code).toUpperCase()) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+/* Sound: soft, short, optional */
+const sound = {
+  ctx: null, muted: store.get("fb_muted", false),
+  init() { if (!this.ctx) { const A = window.AudioContext || window.webkitAudioContext; if (A) this.ctx = new A(); } if (this.ctx && this.ctx.state === "suspended") this.ctx.resume(); },
+  tone(f, d = .3, g = .06, type = "sine", at = 0) {
+    if (this.muted || !this.ctx) return;
+    try { const t = this.ctx.currentTime + at, o = this.ctx.createOscillator(), a = this.ctx.createGain();
+      o.type = type; o.frequency.setValueAtTime(f, t); a.gain.setValueAtTime(.0001, t); a.gain.linearRampToValueAtTime(g, t + .02); a.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(a); a.connect(this.ctx.destination); o.start(t); o.stop(t + d + .05); } catch (e) {}
+  },
+  tap() { this.tone(520, .12, .04, "triangle"); },
+  chime() { [659.25, 880, 1318.5].forEach((f, i) => this.tone(f, 1.2, .05, "sine", i * .12)); },
+  warm() { [392, 493.88, 587.33].forEach((f, i) => this.tone(f, .9, .05, "sine", i * .1)); }
+};
+const buzz = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+
+/* Keep the screen awake while a timer runs (where supported) */
+let wakeLock = null;
+async function keepAwake(on) {
+  try {
+    if (on && "wakeLock" in navigator && !wakeLock) wakeLock = await navigator.wakeLock.request("screen");
+    if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
+  } catch (e) { wakeLock = null; }
+}
+
+/* Timer ring */
+function ringSVG() {
+  return `<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="54" fill="none" stroke-width="6"/><circle class="fg" id="ring" cx="60" cy="60" r="54" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="339.29" stroke-dashoffset="0"/></svg>`;
+}
+const timer = {
+  total: 90, left: 90, running: false, raf: 0, last: 0, onEnd: null, ended: false,
+  start(total, onEnd) { this.stop(); this.total = this.left = total; this.onEnd = onEnd; this.ended = false; this.resume(); },
+  resume() { if (this.running || this.ended) return; this.running = true; this.last = performance.now(); keepAwake(true); this.tick(); },
+  pause() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); this.paint(); },
+  stop() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); },
+  tick() {
+    if (!this.running) return;
+    const now = performance.now(); this.left = Math.max(0, this.left - (now - this.last) / 1000); this.last = now;
+    this.paint();
+    if (this.left <= 0) { this.running = false; this.ended = true; keepAwake(false); sound.chime(); buzz([60, 80, 60]); this.onEnd && this.onEnd(); return; }
+    this.raf = requestAnimationFrame(() => this.tick());
+  },
+  paint() {
+    const ring = $("ring"), num = $("tnum"), lbl = $("tlbl"), wrap = $("timer");
+    if (!ring) return;
+    ring.setAttribute("stroke-dashoffset", String(339.29 * (1 - this.left / this.total)));
+    const s = Math.ceil(this.left);
+    num.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    lbl.textContent = this.ended ? "" : (this.running ? T().left : T().paused);
+    wrap.classList.toggle("done", this.ended);
+  }
+};
+
+/* Toast */
+let toastT;
+function toast(msg) { const el = $("toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 2600); }
+
+/* Pass-the-phone curtain */
+function curtainHTML(title, lead, btnLabel, act) {
+  return `<div class="curtain">
+    <svg class="hand" viewBox="0 0 84 84" aria-hidden="true"><rect x="27" y="10" width="30" height="52" rx="7" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="42" cy="54" r="2.5" fill="#E2553F"/><path d="M14 54c6 0 10 4 13 9M70 54c-6 0-10 4-13 9" stroke="rgba(255,255,255,.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M34 72h16" stroke="#E2553F" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <h2>${title}</h2><p>${lead}</p>
+    <button class="btn pri" data-act="${act}" style="width:100%;margin-top:6px">${btnLabel} →</button></div>`;
+}
+
+
+
+/* =====================================================================
+   HALLWAY FEEDBACK (build/next_tools/hallway.js; words in hallway.py)
+   ===================================================================== */
+const APP = {
+  demo: "hallway", first: "setup",
+  flow: ["build", "say", "reply", "use"],
+  state: () => ({ names: ["", ""], meeting: 0, round: 0, worked: ["", ""], tryN: ["", ""], reply: [null, null], use: [null, null] }),
+  art() {
+    return `<svg viewBox="0 0 320 140" style="width:100%;max-width:420px;height:auto;margin:4px 0" aria-hidden="true">
+      <rect x="20" y="20" width="70" height="96" rx="4" fill="#fff" stroke="#E5E2DA" stroke-width="2"/><circle cx="78" cy="70" r="3" fill="#17171A"/>
+      <path d="M100 116h200" stroke="#E5E2DA" stroke-width="2"/>
+      <circle cx="170" cy="50" r="14" fill="#17171A"/><path d="M148 116c0-30 10-44 22-44s22 14 22 44" fill="#17171A"/>
+      <circle cx="238" cy="50" r="14" fill="#fff" stroke="#17171A" stroke-width="2"/><path d="M216 116c0-30 10-44 22-44s22 14 22 44" fill="#fff" stroke="#17171A" stroke-width="2"/>
+      <path d="M186 36q14-14 28 0" fill="none" stroke="#E2553F" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="200" y="22" text-anchor="middle" font-family="Space Mono, monospace" font-size="11" fill="#E2553F">60s</text>
+    </svg>`;
+  },
+  screens: {
+    setup(t) {
+      return `<h2>${esc(t.setupTitle)}</h2>${H.names(t)}
+        <div><span class="kicker">${esc(t.whatMeeting)}</span><div style="margin-top:8px">${H.seg("meeting", t.meetings)}</div></div>
+        <p class="note">${esc(t.setupNote)}</p>${H.next(t.next, "toBuild")}`;
+    },
+    build(t) {
+      const r = S.round;
+      return `${roles(t)}<h2>${fmt(t.buildTitle, { a: giver(), b: hearer() })}</h2><p class="lead">${esc(t.buildLead)}</p>
+        <label class="field"><span>${esc(t.worked)} · <i style="font-style:normal;text-transform:none;letter-spacing:0">${esc(t.workedStem)}</i></span><textarea data-b="worked.${r}" maxlength="200" placeholder="${esc(t.workedPh)}">${esc(S.worked[r])}</textarea></label>
+        <label class="field"><span>${esc(t.try)} · <i style="font-style:normal;text-transform:none;letter-spacing:0">${esc(t.tryStem)}</i></span><textarea data-b="tryN.${r}" maxlength="200" placeholder="${esc(t.tryPh)}">${esc(S.tryN[r])}</textarea></label>
+        <div id="vague">${vagueTip(t)}</div>
+        ${H.next(t.toSay, "toSay", { off: !ready(), id: "nextBtn" })}`;
+    },
+    say(t) {
+      const r = S.round;
+      return `${roles(t)}<h2>${fmt(t.sayTitle, { a: giver(), b: hearer() })}</h2>
+        <div class="stems"><div>${esc(S.worked[r])}</div><div>${esc(S.tryN[r])}</div></div>
+        ${H.timer(t)}
+        ${H.tip(fmt(t.ruleB, { a: giver(), b: hearer() }), "♡")}
+        ${H.next(t.said, "toReply")}`;
+    },
+    reply(t) {
+      return `${roles(t)}<h2>${fmt(t.replyTitle, { b: hearer() })}</h2><p class="lead">${esc(t.replyLead)}</p>
+        ${H.choices("reply." + S.round, t.replies.map(x => [x]))}
+        <p style="margin:0;font-size:13.5px"><span class="kicker" style="margin-right:6px">${esc(t.replyDont)}</span>${t.donts.map(a => `<s style="color:var(--muted);margin-right:10px">${esc(a)}</s>`).join("")}</p>
+        ${H.next(t.asked, "toUse")}`;
+    },
+    use(t) {
+      const u = S.use[S.round];
+      return `${roles(t)}<h2>${fmt(t.useTitle, { b: hearer() })}</h2>
+        ${H.choices("use." + S.round, t.uses)}
+        ${u > 0 ? H.tip(fmt(t.useHint, { a: giver() })) : ""}
+        ${H.next(S.round ? t.next : t.swap, "afterUse", { off: u == null })}`;
+    },
+    swap(t) { return curtainHTML(esc(t.swapTitle), fmt(t.swapLead, { s: nm(1), l: nm(0) }), esc(t.swap), "round2"); },
+    summary(t) {
+      return `<h2>${esc(t.sumTitle)}</h2>
+        <ul class="list">${[0, 1].map(r => `<li><b>${esc(nm(r))}</b><span>${esc(S.worked[r])}<small>${esc(S.tryN[r])}</small></span></li>`).join("")}</ul>
+        ${H.next(t.toEnd, "toEnd")}`;
+    }
+  },
+  acts: {
+    toBuild() { go("build"); }, toSay() { if (ready()) go("say"); }, toReply() { go("reply"); }, toUse() { go("use"); },
+    afterUse() { if (S.use[S.round] == null) return; sound.warm(); go(S.round ? "summary" : "swap"); },
+    round2() { S.round = 1; go("build"); }, toEnd() { go("end"); }
+  },
+  enter: { say() { startTimer(60); } },
+  input() { const b = $("nextBtn"); if (b) b.disabled = !ready(); const v = $("vague"); if (v) v.innerHTML = vagueTip(T()); },
+  againTo: "build", keepOnAgain: () => ({ names: [S.names[1], S.names[0]], meeting: S.meeting })
+};
+const nm = i => S.names[i].trim() || T()[i ? "nameB" : "nameA"];
+const giver = () => nm(S.round), hearer = () => nm(1 - S.round);
+const roles = t => H.roles(t.giving, giver(), t.getting, hearer());
+const ready = () => S.worked[S.round].trim().length > 5 && S.tryN[S.round].trim().length > 5;
+function vagueTip(t) {
+  const txt = (S.worked[S.round] + " " + S.tryN[S.round]).toLowerCase();
+  const w = t.vagueWords.find(v => txt.includes(v.toLowerCase()));
+  return w ? H.tip(`<b>${esc(t.vagueT)}</b>${fmt(t.vague, { w })}`) : "";
+}
+
+/* =====================================================================
+   NEXT TOOLS · engine (build/next_tools/engine.js, shared by the ten tools that were "Next")
+   A tool defines APP = { demo, flow, first, state(), screens, acts, enter, stepOf, boot, art }.
+   Markup conventions: data-act="k" → APP.acts[k] or a built-in; data-go="screen"; data-b="key" (or key.0) binds an input to S;
+   data-c="key" data-v="i" picks a choice (APP.onChoose(key, v) if it wants more than S[key] = v and a render).
+   ===================================================================== */
+const stage = $("stage");
+const fmtR = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? v[k] : m));   // for text that never becomes HTML (calendar files, shared messages)
+
+function go(screen) {
+  timer.stop();
+  S.screen = screen; render(); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  const f = APP.enter && APP.enter[screen]; if (f) f();
+}
+function paintStepsBar() {
+  const fl = APP.flow || [], cur = APP.stepOf ? APP.stepOf(S.screen) : S.screen, at = fl.indexOf(cur);
+  $("steps").innerHTML = at < 0 ? "" : fl.map((_, i) => `<span class="${i < at ? "done" : i === at ? "now" : ""}"></span>`).join("");
+}
+function render() {
+  const t = T();
+  paintStepsBar();
+  let h;
+  if (S.screen === "intro") h = introHTML(t);
+  else if (S.screen === "teach") h = teachHTML(APP.demo);
+  else if (S.screen === "end") h = endHTML(t);
+  else h = APP.screens[S.screen](t);
+  const hadFocus = stage.contains(document.activeElement);
+  const same = render.last === S.screen; render.last = S.screen;
+  stage.innerHTML = h.startsWith("<section") ? h : `<section class="screen">${h}</section>`;
+  if (same) { const sec = stage.firstElementChild; if (sec) sec.style.animation = "none"; const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume; }
+  const f = stage.querySelector("[data-focus]");
+  if (f && hadFocus) f.focus({ preventScroll: true });
+  if (APP.after) APP.after(S.screen);
+}
+
+/* ---------- small builders ---------- */
+const H = {
+  btn(label, act, o = {}) {
+    const a = o.go ? `data-go="${o.go}"` : `data-act="${act}"`;
+    return `<button class="btn${o.pri ? " pri" : ""}" ${a}${o.id ? ` id="${o.id}"` : ""}${o.off ? " disabled" : ""}${o.focus ? " data-focus" : ""}${o.attr ? " " + o.attr : ""}>${label}</button>`;
+  },
+  next(label, act, o = {}) { return `<div class="spacer"></div><div class="btns">${o.left || ""}${H.btn(esc(label) + " →", act, Object.assign({ pri: 1, focus: 1 }, o))}</div>`; },
+  field(lbl, key, o = {}) {
+    const v = esc(getP(key) || ""), ph = o.ph ? ` placeholder="${esc(o.ph)}"` : "", ml = ` maxlength="${o.max || 120}"`;
+    const inp = o.area ? `<textarea data-b="${key}"${ml}${ph}>${v}</textarea>` : `<input data-b="${key}"${ml}${ph} autocomplete="off" value="${v}"${o.type ? ` type="${o.type}"` : ""}>`;
+    return `<label class="field"><span>${esc(lbl)}</span>${inp}</label>`;
+  },
+  names(t, a = "nameA", b = "nameB") {
+    return `<div class="row2">${H.field(t[a], "names.0", { ph: t.phA, max: 20 })}${H.field(t[b], "names.1", { ph: t.phB, max: 20 })}</div>`;
+  },
+  roles(k1, n1, k2, n2) {
+    return `<div class="roles"><div class="role speak"><div class="k">${esc(k1)}</div><div class="n">${esc(n1)}</div></div><div class="role"><div class="k">${esc(k2)}</div><div class="n">${esc(n2)}</div></div></div>`;
+  },
+  choices(key, items, o = {}) {   // items: [title, sub?, mark?]
+    const cur = getP(key), multi = Array.isArray(cur);
+    return `<div class="heard">${items.map((it, i) => {
+      const on = multi ? cur.includes(i) : cur === i;
+      return `<button data-c="${key}" data-v="${i}" aria-pressed="${on}" class="${on ? "on" : ""}"><span class="e">${it[2] != null ? it[2] : `<span style="font-family:var(--mono);font-size:12px">${String(i + 1).padStart(2, "0")}</span>`}</span><span><b>${esc(it[0])}</b>${it[1] ? `<small>${esc(it[1])}</small>` : ""}</span></button>`;
+    }).join("")}</div>`;
+  },
+  seg(key, items) { const cur = getP(key); return `<div class="seg">${items.map((x, i) => `<button data-c="${key}" data-v="${i}" aria-pressed="${cur === i}">${esc(x)}</button>`).join("")}</div>`; },
+  timer(t) {
+    return `<div class="timer" id="timer">${ringSVG()}<div class="num"><b id="tnum">0:00</b><small id="tlbl"></small></div></div>
+      <div class="btns" style="justify-content:center"><button class="btn" data-act="pause" id="pauseBtn" style="flex:none;min-width:140px">${esc(t.pause)}</button></div>`;
+  },
+  tip(txt, mark = "✦") { return `<div class="tip"><i>${mark}</i><span>${txt}</span></div>`; },
+  prompt(q, meta, sm) { return `<div class="prompt${sm ? " sm" : ""}"><div class="q">${esc(q)}</div>${meta ? `<div class="meta"><span>${esc(meta)}</span></div>` : ""}</div>`; },
+  stems(list) { return `<div class="stems">${list.map(s => `<div>${esc(s)}</div>`).join("")}</div>`; },
+  kicker(s, c) { return `<span class="kicker"${c ? ` style="color:${c}"` : ""}>${esc(s)}</span>`; }
+};
+function startTimer(secs, onEnd) { timer.start(secs, onEnd || (() => toast(T().timeUp))); const pb = $("pauseBtn"); if (pb) pb.textContent = T().pause; }
+
+/* paths into S: "names.0", "agree.q" */
+function getP(p) { return String(p).split(".").reduce((o, k) => (o == null ? o : o[k]), S); }
+function setP(p, v) { const ks = String(p).split("."), last = ks.pop(); const o = ks.reduce((o, k) => o[k], S); o[last] = v; }
+
+function introHTML(t) {
+  return `<section class="screen">
+    <span class="kicker">${esc(t.introKicker)}</span><h1>${t.introTitle}</h1>
+    <p class="lead">${esc(t.introLead)}</p>
+    <div class="pills">${t.introMeta.map(m => `<span class="pill">${esc(m)}</span>`).join("")}</div>
+    ${APP.art ? APP.art() : ""}
+    ${APP.introExtra ? APP.introExtra(t) : ""}
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn pri" data-act="start" data-focus>${esc(t.start)} →</button></div>
+  </section>`;
+}
+function endHTML(t) {
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--good)">✓ ${esc(t.endKicker)}</span>
+    <h2>${esc(t.endTitle)}</h2>
+    <p class="serif">${esc(t.endLead)}</p>
+    ${APP.endExtra ? APP.endExtra(t) : ""}
+    <div class="monday"><b>${esc(t.monday)}</b>${esc(t.mondayTxt)}</div>
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn" data-act="again">↻ ${esc(t.again)}</button><button class="btn pri" data-act="teach" data-focus>${esc(t.passOn)} →</button></div>
+  </section>`;
+}
+function teachHTML(demo) {
+  const t = T(), chain = store.get("fb_teachback", []).filter(c => c.demo === demo);
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--accent-ink)">${esc(t.teachKicker)}</span>
+    <h2>${esc(t.teachTitle)}</h2>
+    <p class="lead">${esc(t.teachLead)}</p>
+    <div class="steps3">${t.t3.map((s, i) => `<div><b>0${i + 1}</b><span>${esc(s)}</span><small style="display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4">${esc(t.t3sub[i])}</small></div>`).join("")}</div>
+    <div class="card" style="display:grid;gap:12px">
+      <label class="field"><span>${esc(t.learnerName)}</span><input id="lName" maxlength="30" autocomplete="off" placeholder="${esc(t.learnerPh)}"></label>
+      <label class="field"><span>${esc(t.learned)}</span><textarea id="lText" maxlength="280" placeholder="${esc(t.learnedPh)}"></textarea></label>
+      <button class="btn pri" data-act="saveTeach" style="flex:none">${esc(t.save)}</button>
+    </div>
+    <div><span class="kicker">${esc(t.chainTitle)}</span>
+      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang))))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
+    <a class="link" href="/tools/teachback">⊂⊃ ${esc(t.teachbackLink)}</a>
+    <button class="link" data-act="restart">${esc(t.restart)}</button>
+  </section>`;
+}
+
+/* ---------- device-made things: copy, a calendar file, a link ---------- */
+function copyText(text, msg) {
+  text = String(text || "").trim(); if (!text) return;
+  const ok = () => toast(msg || T().copied);
+  const fb = () => { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (_) {} ta.remove(); ok(); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok).catch(fb); else fb();
+}
+function shareText(text, url) {
+  const data = { text: url ? text + "\n" + url : text };
+  if (navigator.share) navigator.share(data).catch(() => {}); else copyText(data.text);
+}
+const pad2 = n => String(n).padStart(2, "0");
+const icsDate = d => `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;
+const icsEsc = s => String(s || "").replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/[,;]/g, m => "\\" + m);
+/* events: [{title, desc, start: Date, mins, rrule}] → one .ics made here, nothing sent */
+function downloadICS(name, events) {
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FREE//BUILDER//tools//EN", "CALSCALE:GREGORIAN"];
+  events.forEach((e, i) => {
+    const end = new Date(e.start.getTime() + (e.mins || 15) * 60000);
+    L.push("BEGIN:VEVENT", `UID:${Date.now()}-${i}@freebuilder.net`, `DTSTAMP:${icsDate(new Date())}`, `DTSTART:${icsDate(e.start)}`, `DTEND:${icsDate(end)}`,
+      `SUMMARY:${icsEsc(e.title)}`, `DESCRIPTION:${icsEsc(e.desc)}`);
+    if (e.rrule) L.push(`RRULE:${e.rrule}`);
+    L.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(e.title)}`, "TRIGGER:-PT15M", "END:VALARM", "END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  const blob = new Blob([L.join("\r\n")], { type: "text/calendar" }), a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name + ".ics"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast(T().icsMade);
+}
+function nextWeekday(dow, h = 9, m = 0) { const d = new Date(); d.setHours(h, m, 0, 0); let add = (dow - d.getDay() + 7) % 7; if (add === 0 && d <= new Date()) add = 7; d.setDate(d.getDate() + add); return d; }
+const b64e = o => { const s = unescape(encodeURIComponent(JSON.stringify(o))); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+const b64d = s => { try { s = s.replace(/-/g, "+").replace(/_/g, "/"); return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch (e) { return null; } };
+const here = () => location.origin + location.pathname;
+const dayFmt = d => { try { return new Date(d).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang)), { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return String(d); } };
+const shuffle = (a, r = Math.random) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+const S = Object.assign({ screen: "intro" }, APP.state());
+
+/* ---------- events ---------- */
+stage.addEventListener("input", e => {
+  const b = e.target.dataset.b; if (!b) return;
+  setP(b, e.target.value);
+  if (APP.input) APP.input(b, e.target.value, e.target);
+});
+stage.addEventListener("click", e => {
+  sound.init();
+  const c = e.target.closest("[data-c]"), g = e.target.closest("[data-go]"), a = e.target.closest("[data-act]");
+  if (c) {
+    sound.tap(); const k = c.dataset.c, v = +c.dataset.v;
+    if (APP.onChoose && APP.onChoose(k, v, c) === false) return;
+    const cur = getP(k);
+    if (Array.isArray(cur)) { const i = cur.indexOf(v); if (i >= 0) cur.splice(i, 1); else if (cur.length < (APP.maxPick && APP.maxPick[k] || 99)) cur.push(v); else toast(T().pickMax); }
+    else setP(k, v);
+    render(); return;
+  }
+  if (g) { sound.tap(); go(g.dataset.go); return; }
+  if (!a) return;
+  const k = a.dataset.act; sound.tap();
+  if (APP.acts && APP.acts[k]) { APP.acts[k](a); return; }
+  switch (k) {
+    case "start": go(APP.first); break;
+    case "pause":
+      if (timer.ended) return;
+      if (timer.running) { timer.pause(); a.textContent = T().resume; } else { timer.resume(); a.textContent = T().pause; }
+      break;
+    case "again": { const keep = APP.keepOnAgain ? APP.keepOnAgain() : {}; Object.assign(S, APP.state(), keep); go(APP.againTo || APP.first); break; }
+    case "teach": go("teach"); break;
+    case "saveTeach": {
+      const text = ($("lText").value || "").trim(), name = ($("lName").value || "").trim();
+      if (!text) { $("lText").focus(); return; }
+      const chain = store.get("fb_teachback", []); chain.push({ demo: APP.demo, text, name, at: Date.now() }); store.set("fb_teachback", chain.slice(-50));
+      sound.warm(); toast(T().saved); render(); break; }
+    case "restart": Object.assign(S, { screen: "intro" }, APP.state()); go("intro"); break;
+    case "copy": { const el = $(a.dataset.from); copyText(el ? (el.value != null && el.tagName !== "DIV" ? el.value : el.innerText) : a.dataset.text); break; }
+  }
+});
+window.__app = { S, go, render, timer, APP };
+if (APP.boot) APP.boot();
+
+/* ---------- facilitator guide ---------- */
+const drawer = $("drawer");
+function openGuide() {
+  const t = T();
+  $("panel").innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+      <div><span class="kicker">${esc(t.gKicker)}</span><h3 id="g-title">${esc(t.gTitle)}</h3></div>
+      <button class="x" data-close aria-label="${esc(t.close)}">✕</button>
+    </div>
+    <h4>${esc(t.gWhy)}</h4><p>${esc(t.gWhyTxt)}</p>
+    <h4>${esc(t.gSteps)}</h4><ol>${t.gStepList.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    <h4>${esc(t.gDebrief)}</h4><ul>${t.gDebriefList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>
+    <h4>${esc(t.gNotes)}</h4><ul>${t.gNotesList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>`;
+  drawer.classList.add("show");
+  setTimeout(() => drawer.querySelector("[data-close]").focus({ preventScroll: true }), 60);
+}
+function closeGuide() { drawer.classList.remove("show"); $("btn-guide").focus({ preventScroll: true }); }
+drawer.addEventListener("click", e => { if (e.target === drawer || e.target.closest("[data-close]")) closeGuide(); });
+$("btn-guide").addEventListener("click", openGuide);
+window.addEventListener("keydown", e => { if (e.key === "Escape" && drawer.classList.contains("show")) closeGuide(); });
+
+/* ---------- language + sound ---------- */
+function paintSound() {
+  const b = $("btn-sound"), t = T();
+  b.innerHTML = sound.muted
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  b.setAttribute("aria-label", sound.muted ? t.soundOff : t.soundOn); b.title = b.getAttribute("aria-label");
+}
+$("btn-sound").addEventListener("click", () => { sound.muted = !sound.muted; store.set("fb_muted", sound.muted); sound.init(); paintSound(); if (!sound.muted) sound.tap(); });
+
+function applyLang(l) {
+  lang = LANGS.includes(l) ? l : "en";
+  document.documentElement.lang = (/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang));
+  document.title = T().title;
+  $("lang-lbl").textContent = LANG_LBL[lang];
+  $("btn-guide").setAttribute("aria-label", T().guide); drawer.setAttribute("aria-label", T().guide);
+  document.querySelectorAll("[data-t]").forEach(el => { const v = T()[el.dataset.t]; if (typeof v === "string") el.textContent = v; });
+  paintSound();
+  render();               // the clock object survives a re-render
+  timer.paint();
+  const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume;
+  if (drawer.classList.contains("show")) openGuide();
+  try { localStorage.setItem("wm_preferred_lang", lang); localStorage.setItem("wm_cases_lang", lang); } catch (e) {}
+}
+$("btn-lang").addEventListener("click", () => applyLang(LANGS[(LANGS.indexOf(lang) + 1) % LANGS.length]));
+window.FBL_SET = l => applyLang(l); window.FBL_GET = () => lang;
+
+/* ---------- boot ---------- */
+let saved = null;
+try { saved = localStorage.getItem("wm_preferred_lang") || localStorage.getItem("wm_cases_lang"); } catch (e) {}
+const nav = (navigator.language || "").toLowerCase();
+applyLang(LANGS.includes(saved) ? saved : nav.startsWith("zh") ? "zh" : nav.startsWith("es") ? "es" : "en");
+document.addEventListener("visibilitychange", () => { if (!document.hidden && timer.running) keepAwake(true); });
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {}); // offline cache
+})();
+</script>
+<script src="/fbkit/pass.js?v=758a7441b7" defer></script>
+</body>
+</html>

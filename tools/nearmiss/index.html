@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dde632a0dc"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title id="page-title">Near-Miss Wall — FREE//BUILDER</title>
+  <meta name="description" content="A near-miss wall for the toolbox talk: the supervisor goes first, the phone goes round, nobody asks who, and the crew changes one thing today.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
+  <!-- Brand fonts load without blocking the page: where Google Fonts is slow or blocked, system fonts show instantly. -->
+  <link rel="stylesheet" href="/fonts/fonts.css">
+
+  <link rel="stylesheet" href="/fbkit/s-b871aaaa7f.css">
+<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
+:root{color-scheme:light dark}
+@media (prefers-color-scheme: dark){
+:root{--paper:#141416;--ink:#ECEBE6;--muted:#A8A7AD;--line:#303036;--grid:#26262B;--white:#1D1D21;--inkbg:#2B2B31;--inkbd:#3B3B42;--accent-ink:#F28C76;--good:#62C48F;--paper-rgb:20,20,22;--dot-rgb:255,255,255;--ink-rgb:236,235,230;--white-rgb:29,29,33;--accent-text:#F2806A;--warn-ink:#E3B25C}
+html,body{background-color:var(--paper)}
+/* primary actions read as light on dark */
+.btn.pri,.cta a.pri,.chip.pri{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.btn.pri:hover,.cta a.pri:hover,.chip.pri:hover{background:#fff!important;border-color:#fff!important}
+.btn[disabled]{opacity:.45}
+.seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.steps span.done{background:#ECEBE6}
+.curtain{border:1px solid #3B3B42}
+/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
+.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
+/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
+.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
+/* illustrations keep their light look on a plate */
+.screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
+.plate{background:#fff!important}
+.card-art~.text-ink\/60,.card-art~span .text-ink\/60{color:rgba(23,23,26,.62)!important}
+.text-accent{color:#F2806A!important}
+.bg-white\/90.text-ink,.bg-white\/90 .text-ink{color:#ECEBE6}
+img{filter:none}
+::selection{background:#E2553F;color:#fff}
+}
+</style></head>
+<body>
+  <div class="dots" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="FREE//BUILDER">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" style="overflow:visible">
+            <rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/>
+            <rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect class="last" x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/>
+          </svg>
+        </span>
+        <span class="brand-txt"><b>FREE<i>//</i>BUILDER</b><span data-t="product">Near-Miss Wall</span></span>
+      </a>
+      <div class="top-actions">
+        <button class="chip" id="btn-lang" type="button" aria-label="Language" title="EN / 中文 / ES">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <b id="lang-lbl">EN</b>
+        </button>
+        <button class="chip" id="btn-sound" type="button"></button>
+        <button class="chip" id="btn-guide" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="lbl" data-t="guide">Facilitators</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="sr" data-t="product">Near-Miss Wall</h1>
+    <div class="steps" id="steps" aria-hidden="true"></div>
+    <div id="stage" aria-live="polite"></div>
+  </main>
+
+  <footer class="fbf" data-fbf-root><div class="fbf-in"><div class="fbf-row"><span class="fbf-own"><a class="fbf-lg fbf-nm fbf-nm-fb" href="/" aria-label="FREE//BUILDER"><svg class="fb-mk" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg><span class="fbf-name">FREE<i>//</i>BUILDER</span></a><span class="fbf-cy"><svg class="fbf-c" viewBox="0 0 24 24" role="img" aria-label="©"><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.3 9.4a4.3 4.3 0 1 0 0 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="fbf-year">2026</span></span></span><nav aria-label="Footer"><span class="fbf-dot" aria-hidden="true">·</span><a href="/privacy/" data-fbf="privacy">Your privacy</a><span class="fbf-dot" aria-hidden="true">·</span><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai fbf-ico" aria-label="AI" title="AI" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="r-st" d="M12 7.2V4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle class="r-ant" cx="12" cy="3.4" r="1.6" fill="currentColor"/><rect x="4.6" y="7.4" width="14.8" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><g class="r-eyes"><circle cx="9.4" cy="12.8" r="1.55" fill="currentColor"/><circle cx="14.6" cy="12.8" r="1.55" fill="currentColor"/></g><path d="M10 16.4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12.2v2.6M21 12.2v2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a> &amp; <a href="https://www.after-hours.work/" class="fbf-heart fbf-ico" aria-label="♥ after hours" title="♥" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="h-b" d="M12 20.4s-7.8-4.7-7.8-10.3A4.4 4.4 0 0 1 12 7.5a4.4 4.4 0 0 1 7.8 2.6c0 5.6-7.8 10.3-7.8 10.3z" fill="currentColor"/><path class="h-s" d="M7.6 9.6a2.2 2.2 0 0 1 2.1-1.7" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round"/></svg></a></span></nav></div><span class="fbf-x" data-t="privacy">Never who. The wall stays on this phone until you clear it.</span></div></footer>
+
+  <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="g-title">
+    <div class="panel" id="panel"></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+/* =====================================================================
+   COPY — EN / 中文 / ES (generated by build/next_tools.py)
+   ===================================================================== */
+const I18N = {
+"en": {
+"guide": "Facilitators",
+"back": "Part of FREE//BUILDER’s services ↗",
+"soundOn": "Sound on",
+"soundOff": "Sound off",
+"left": "left",
+"paused": "paused",
+"close": "Close",
+"resume": "Resume",
+"pause": "Pause",
+"start": "Start",
+"next": "Next",
+"backBtn": "Back",
+"nameA": "Person A",
+"nameB": "Person B",
+"phA": "e.g. Ana",
+"phB": "e.g. Leo",
+"copy": "Copy",
+"copied": "Copied.",
+"share": "Send it",
+"icsMade": "Calendar file made on this phone. Open it to add it.",
+"pickMax": "That’s the most you can pick.",
+"timeUp": "Time’s up. Finish your sentence.",
+"swap": "Swap",
+"again": "Practise again",
+"passOn": "Pass it on",
+"monday": "Try this on Monday",
+"teachKicker": "Pass it on",
+"learnerName": "Their name (optional)",
+"learnerPh": "e.g. Mei",
+"learned": "What they’ll try, in their own words",
+"learnedPh": "Hand them the phone…",
+"save": "Save to this phone",
+"chainTitle": "People you’ve passed it on to",
+"chainEmpty": "No one yet. Your first teach-back will appear here.",
+"saved": "Saved on this phone only.",
+"restart": "Back to the start",
+"teachbackLink": "Teach-Back Chain ↗",
+"gKicker": "Facilitator guide",
+"gWhy": "Why it works",
+"gSteps": "Running it",
+"gDebrief": "Debrief questions",
+"gNotes": "Notes",
+"passTo": "Pass the phone to {n}",
+"ready": "I’m {n}",
+"optional": "optional",
+"title": "Near-Miss Wall — FREE//BUILDER",
+"product": "Near-Miss Wall",
+"privacy": "Never who. The wall stays on this phone until you clear it.",
+"introKicker": "Safety · The toolbox talk",
+"introTitle": "Near-Miss <span class=\"accent-word\">Wall</span>",
+"introLead": "The near-miss nobody reports is the accident that’s still coming. The supervisor pins the first one, their own. Then the phone goes round: what nearly happened, where, what would have stopped it. Never who. The crew changes one thing today.",
+"introMeta": [
+"A crew",
+"1 phone, passed round",
+"≈ 10 minutes"
+],
+"openWall": "Open today’s wall ({n})",
+"setupTitle": "Before the talk",
+"crew": "Crew or site",
+"crewPh": "e.g. Line 3, early shift",
+"lead": "Supervisor",
+"leadPh": "e.g. Sam",
+"leadNote": "The supervisor goes first, with a near-miss of their own. The wall opens after that.",
+"leadTitle": "{n}, yours first",
+"leadLead": "A near-miss of your own, recent and real. Going first is what makes it safe for everyone else.",
+"addTitle": "What nearly happened?",
+"addLead": "No names. Nobody will ask who.",
+"kind": "Kind",
+"kinds": [
+"Slip or trip",
+"Lifting",
+"Vehicles",
+"Tools",
+"Electrical",
+"Other"
+],
+"what": "What nearly happened",
+"whatPh": "A pallet slid off the forks on the ramp",
+"where": "Where",
+"wherePh": "Loading bay 2",
+"stop": "What would have stopped it",
+"stopPh": "Strapping before the ramp, not after",
+"pin": "Pin it",
+"nothing": "Nothing today",
+"passTitle": "Pinned. Pass it on.",
+"passLead": "Hand the phone to the next person. Their screen starts empty.",
+"nextPerson": "Next person",
+"allDone": "Everyone’s had a turn",
+"wallTitle": "The wall",
+"wallLead": "Read them out. Then pick one to act on today. Just one.",
+"leadCard": "Supervisor’s",
+"empty": "Nothing on the wall yet.",
+"pickOne": "Act on this one",
+"actTitle": "One change, today",
+"actLead": "Small enough to do before the shift ends.",
+"actWhat": "Today we’ll…",
+"actWhatPh": "Strap every load before the ramp; sign on the ramp by 10:00",
+"actWho": "Who owns it (a role, not a name)",
+"actWhoPh": "Shift lead",
+"toThanks": "Agreed",
+"thanksTitle": "{n}, one more thing",
+"thanksLead": "Thank the people who spoke, out loud, in front of the crew. Not who wrote what: that they spoke.",
+"thanksStem": "“Thank you for telling us. This is how we get home in one piece.”",
+"thanked": "Said it",
+"today": "Today’s change",
+"owner": "Owner",
+"copyWall": "Copy the wall for the shift log",
+"clear": "Clear the wall",
+"clearSure": "Tap again to clear every card from this phone.",
+"cleared": "Cleared.",
+"logHead": "Near-miss wall · {c} · {d}",
+"endKicker": "Wall done",
+"endTitle": "Someone said it, and something changed.",
+"endLead": "The senior person went first, nobody asked who, and one change happens before the shift ends. That is how near-misses start getting reported.",
+"mondayTxt": "Open the next toolbox talk with a near-miss of your own, before anyone else speaks.",
+"teachTitle": "Teach another supervisor.",
+"teachLead": "Show them the three moves, then let them write the near-miss they’ll open with.",
+"t3": [
+"Go first",
+"Never who",
+"One change today"
+],
+"t3sub": [
+"your own near-miss",
+"what, where, what stops it",
+"and thank them for speaking"
+],
+"gTitle": "Running the Near-Miss Wall",
+"gWhyTxt": "Silence is a learned reading of consequences. When the most senior person shows their own near-miss first, and the only question afterwards is “what would have stopped it?”, the reading changes: speaking up costs nothing and something gets fixed.",
+"gStepList": [
+"At the start of the toolbox talk, the supervisor pins their own near-miss.",
+"The phone goes round. Each person pins one or taps Nothing today.",
+"Read the wall aloud. Pick one, agree a change for today and the role that owns it.",
+"The supervisor thanks the crew for speaking. Copy the wall to the shift log if you keep one."
+],
+"gDebriefList": [
+"What made it easier to pin one today?",
+"Which near-miss on the wall have we all seen before?",
+"What happens to a report after it’s made, and does the crew hear back?"
+],
+"gNotesList": [
+"No names are asked for or stored. The wall lives on this phone only and clears with one button.",
+"This is practice for the conversation; it doesn’t replace your site’s reporting system."
+]
+},
+"zh": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服务的一部分 ↗",
+"soundOn": "声音开",
+"soundOff": "声音关",
+"left": "剩余",
+"paused": "已暂停",
+"close": "关闭",
+"resume": "继续",
+"pause": "暂停",
+"start": "开始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "复制",
+"copied": "已复制。",
+"share": "发出去",
+"icsMade": "日历文件已在这台手机上生成。打开它即可添加。",
+"pickMax": "最多只能选这么多。",
+"timeUp": "时间到。把这句话说完。",
+"swap": "交换",
+"again": "再练一次",
+"passOn": "传下去",
+"monday": "周一试试这个",
+"teachKicker": "传下去",
+"learnerName": "TA 的名字（可选）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算试什么，用 TA 自己的话",
+"learnedPh": "把手机递给 TA……",
+"save": "保存在这台手机上",
+"chainTitle": "你传给过的人",
+"chainEmpty": "还没有人。你的第一次教回去会出现在这里。",
+"saved": "只保存在这台手机上。",
+"restart": "回到开头",
+"teachbackLink": "教回去链条 ↗",
+"gKicker": "主持人指南",
+"gWhy": "为什么有效",
+"gSteps": "怎么带",
+"gDebrief": "复盘问题",
+"gNotes": "备注",
+"passTo": "把手机递给 {n}",
+"ready": "我是 {n}",
+"optional": "可选",
+"title": "险情墙 — FREE//BUILDER",
+"product": "险情墙",
+"privacy": "从不问是谁。墙只留在这台手机上，直到你清空它。",
+"introKicker": "安全 · 班前会",
+"introTitle": "险情<span class=\"accent-word\">墙</span>",
+"introLead": "没人上报的险情，就是还没到来的事故。班组长先贴第一张，写自己的。然后手机传一圈：差点发生了什么、在哪里、什么能挡住它。从不问是谁。今天全班组改一件事。",
+"introMeta": [
+"一个班组",
+"1 部手机，传一圈",
+"约 10 分钟"
+],
+"openWall": "打开今天的墙（{n}）",
+"setupTitle": "开会之前",
+"crew": "班组或现场",
+"crewPh": "例如：3 号线早班",
+"lead": "班组长",
+"leadPh": "例如 Sam",
+"leadNote": "班组长先来，写一次自己的险情。之后墙才打开。",
+"leadTitle": "{n}，先写你自己的",
+"leadLead": "一次你自己的险情，最近的、真实的。你先写，别人才敢写。",
+"addTitle": "差点发生了什么？",
+"addLead": "不写名字。没人会问是谁。",
+"kind": "类型",
+"kinds": [
+"滑倒或绊倒",
+"搬抬",
+"车辆",
+"工具",
+"电",
+"其他"
+],
+"what": "差点发生了什么",
+"whatPh": "一个托盘在坡道上从叉车上滑了下来",
+"where": "在哪里",
+"wherePh": "2 号装卸区",
+"stop": "什么能挡住它",
+"stopPh": "上坡道之前就捆好，不是之后",
+"pin": "贴上去",
+"nothing": "今天没有",
+"passTitle": "贴好了。传下去。",
+"passLead": "把手机递给下一个人。TA 的屏幕是空白的。",
+"nextPerson": "下一个人",
+"allDone": "每个人都轮过了",
+"wallTitle": "这面墙",
+"wallLead": "把它们念出来。然后选一张今天就动手。只选一张。",
+"leadCard": "班组长的",
+"empty": "墙上还没有东西。",
+"pickOne": "就处理这张",
+"actTitle": "一个改变，就在今天",
+"actLead": "小到下班前就能做完。",
+"actWhat": "今天我们会……",
+"actWhatPh": "每一件货上坡道前都捆好；10 点前在坡道挂上提示牌",
+"actWho": "谁负责（写岗位，不写名字）",
+"actWhoPh": "值班长",
+"toThanks": "定了",
+"thanksTitle": "{n}，还有一件事",
+"thanksLead": "当着全班组的面，大声感谢说出来的人。不是感谢谁写了什么，而是感谢他们说了。",
+"thanksStem": "“谢谢你们说出来。这就是我们平平安安回家的办法。”",
+"thanked": "说了",
+"today": "今天的改变",
+"owner": "负责",
+"copyWall": "复制这面墙，写进交班记录",
+"clear": "清空这面墙",
+"clearSure": "再点一次，清空这台手机上的所有卡片。",
+"cleared": "已清空。",
+"logHead": "险情墙 · {c} · {d}",
+"endKicker": "这面墙完成了",
+"endTitle": "有人说了，有些东西就变了。",
+"endLead": "资深的人先开口，没人问是谁，下班前就有一个改变。险情就是这样开始被上报的。",
+"mondayTxt": "下一次班前会，在任何人开口之前，先讲一次你自己的险情。",
+"teachTitle": "教给另一位班组长。",
+"teachLead": "给 TA 看这三步，再让 TA 写下自己准备用来开场的那次险情。",
+"t3": [
+"你先来",
+"从不问是谁",
+"今天改一件事"
+],
+"t3sub": [
+"你自己的险情",
+"什么、在哪、什么能挡住",
+"再感谢他们说出来"
+],
+"gTitle": "怎么带“险情墙”",
+"gWhyTxt": "沉默是对后果的习得判断。当最资深的人先讲出自己的险情，而之后唯一的问题是“什么能挡住它？”，这个判断就会改变：说出来不付出代价，还能把事情修好。",
+"gStepList": [
+"班前会一开始，班组长先贴自己的险情。",
+"手机传一圈。每人贴一张，或者点“今天没有”。",
+"把墙上的念出来。选一张，定下今天的改变和负责的岗位。",
+"班组长感谢大家说出来。如果有交班记录，把墙复制进去。"
+],
+"gDebriefList": [
+"今天是什么让人更容易贴出来？",
+"墙上哪一次险情我们其实都见过？",
+"上报之后会发生什么？班组会听到回音吗？"
+],
+"gNotesList": [
+"不问名字，也不存名字。墙只在这台手机上，一个按钮就能清空。",
+"这是在练习那场对话，不替代现场的正式上报系统。"
+]
+},
+"es": {
+"guide": "Facilitadores",
+"back": "Parte de los servicios de FREE//BUILDER ↗",
+"soundOn": "Sonido activado",
+"soundOff": "Sonido desactivado",
+"left": "restante",
+"paused": "en pausa",
+"close": "Cerrar",
+"resume": "Seguir",
+"pause": "Pausa",
+"start": "Empezar",
+"next": "Siguiente",
+"backBtn": "Atrás",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ej., Ana",
+"phB": "p. ej., Leo",
+"copy": "Copiar",
+"copied": "Copiado.",
+"share": "Enviarlo",
+"icsMade": "Archivo de calendario hecho en este móvil. Ábrelo para añadirlo.",
+"pickMax": "No puedes elegir más.",
+"timeUp": "Se acabó el tiempo. Termina la frase.",
+"swap": "Cambiar",
+"again": "Practicar otra vez",
+"passOn": "Pásalo",
+"monday": "Pruébalo el lunes",
+"teachKicker": "Pásalo",
+"learnerName": "Su nombre (opcional)",
+"learnerPh": "p. ej., Mei",
+"learned": "Lo que va a probar, con sus palabras",
+"learnedPh": "Pásale el móvil…",
+"save": "Guardar en este móvil",
+"chainTitle": "Personas a las que se lo has pasado",
+"chainEmpty": "Nadie todavía. Tu primer enseñar-de-vuelta aparecerá aquí.",
+"saved": "Guardado solo en este móvil.",
+"restart": "Volver al principio",
+"teachbackLink": "Cadena de Enseñar de Vuelta ↗",
+"gKicker": "Guía para facilitar",
+"gWhy": "Por qué funciona",
+"gSteps": "Cómo llevarlo",
+"gDebrief": "Preguntas para cerrar",
+"gNotes": "Notas",
+"passTo": "Pásale el móvil a {n}",
+"ready": "Soy {n}",
+"optional": "opcional",
+"title": "Muro de Casi-Accidentes — FREE//BUILDER",
+"product": "Muro de Casi-Accidentes",
+"privacy": "Nunca quién. El muro se queda en este móvil hasta que lo borres.",
+"introKicker": "Seguridad · La charla de seguridad",
+"introTitle": "Muro de <span class=\"accent-word\">Casi-Accidentes</span>",
+"introLead": "El casi-accidente que nadie reporta es el accidente que aún está por llegar. La persona supervisora clava la primera nota, la suya. Luego el móvil da la vuelta: qué casi pasó, dónde, qué lo habría evitado. Nunca quién. La cuadrilla cambia una cosa hoy.",
+"introMeta": [
+"Una cuadrilla",
+"1 móvil que pasa de mano en mano",
+"≈ 10 minutos"
+],
+"openWall": "Abrir el muro de hoy ({n})",
+"setupTitle": "Antes de la charla",
+"crew": "Cuadrilla u obra",
+"crewPh": "p. ej., Línea 3, turno de mañana",
+"lead": "Supervisor/a",
+"leadPh": "p. ej., Sam",
+"leadNote": "La persona supervisora va primero, con un casi-accidente suyo. El muro se abre después.",
+"leadTitle": "{n}, primero el tuyo",
+"leadLead": "Un casi-accidente tuyo, reciente y real. Ir primero es lo que lo hace seguro para los demás.",
+"addTitle": "¿Qué casi pasó?",
+"addLead": "Sin nombres. Nadie preguntará quién.",
+"kind": "Tipo",
+"kinds": [
+"Resbalón o tropiezo",
+"Carga",
+"Vehículos",
+"Herramientas",
+"Eléctrico",
+"Otro"
+],
+"what": "Qué casi pasó",
+"whatPh": "Un palé se resbaló de las horquillas en la rampa",
+"where": "Dónde",
+"wherePh": "Muelle de carga 2",
+"stop": "Qué lo habría evitado",
+"stopPh": "Flejar antes de la rampa, no después",
+"pin": "Clavarlo",
+"nothing": "Nada hoy",
+"passTitle": "Clavado. Pásalo.",
+"passLead": "Pásale el móvil a la siguiente persona. Su pantalla empieza vacía.",
+"nextPerson": "Siguiente persona",
+"allDone": "Todos han tenido su turno",
+"wallTitle": "El muro",
+"wallLead": "Leedlas en voz alta. Luego elegid una para actuar hoy. Solo una.",
+"leadCard": "De la supervisión",
+"empty": "Todavía no hay nada en el muro.",
+"pickOne": "Actuar sobre esta",
+"actTitle": "Un cambio, hoy",
+"actLead": "Lo bastante pequeño para hacerlo antes de acabar el turno.",
+"actWhat": "Hoy vamos a…",
+"actWhatPh": "Flejar cada carga antes de la rampa; cartel en la rampa antes de las 10:00",
+"actWho": "Quién se encarga (un puesto, no un nombre)",
+"actWhoPh": "Jefe de turno",
+"toThanks": "Acordado",
+"thanksTitle": "{n}, una cosa más",
+"thanksLead": "Da las gracias en voz alta, delante de la cuadrilla, a quienes hablaron. No a quién escribió qué: a que hablaron.",
+"thanksStem": "«Gracias por contarlo. Así es como volvemos a casa enteros.»",
+"thanked": "Dicho",
+"today": "El cambio de hoy",
+"owner": "Responsable",
+"copyWall": "Copiar el muro para el parte del turno",
+"clear": "Borrar el muro",
+"clearSure": "Toca otra vez para borrar todas las notas de este móvil.",
+"cleared": "Borrado.",
+"logHead": "Muro de casi-accidentes · {c} · {d}",
+"endKicker": "Muro hecho",
+"endTitle": "Alguien lo dijo y algo cambió.",
+"endLead": "La persona con más rango fue primero, nadie preguntó quién y un cambio ocurre antes de acabar el turno. Así se empiezan a reportar los casi-accidentes.",
+"mondayTxt": "Abre la próxima charla de seguridad con un casi-accidente tuyo, antes de que hable nadie.",
+"teachTitle": "Enséñaselo a otra persona supervisora.",
+"teachLead": "Enséñale los tres pasos y deja que escriba el casi-accidente con el que abrirá.",
+"t3": [
+"Ve primero",
+"Nunca quién",
+"Un cambio hoy"
+],
+"t3sub": [
+"tu propio casi-accidente",
+"qué, dónde, qué lo evita",
+"y gracias por hablar"
+],
+"gTitle": "Cómo llevar el Muro de Casi-Accidentes",
+"gWhyTxt": "El silencio es una lectura aprendida de las consecuencias. Cuando la persona con más rango enseña primero su propio casi-accidente, y la única pregunta después es «¿qué lo habría evitado?», la lectura cambia: hablar no cuesta nada y algo se arregla.",
+"gStepList": [
+"Al empezar la charla, la persona supervisora clava su propio casi-accidente.",
+"El móvil da la vuelta. Cada persona clava uno o toca Nada hoy.",
+"Leed el muro en voz alta. Elegid una, acordad un cambio para hoy y el puesto responsable.",
+"La persona supervisora da las gracias por hablar. Copiad el muro al parte del turno si lo tenéis."
+],
+"gDebriefList": [
+"¿Qué hizo más fácil clavar uno hoy?",
+"¿Qué casi-accidente del muro hemos visto todos antes?",
+"¿Qué pasa con un reporte después, y la cuadrilla recibe respuesta?"
+],
+"gNotesList": [
+"No se piden ni se guardan nombres. El muro vive solo en este móvil y se borra con un botón.",
+"Es práctica para la conversación; no sustituye el sistema de reporte de la obra."
+]
+}, "zh-Hant": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服務的一部分 ↗",
+"soundOn": "聲音開",
+"soundOff": "聲音關",
+"left": "剩餘",
+"paused": "已暫停",
+"close": "關閉",
+"resume": "繼續",
+"pause": "暫停",
+"start": "開始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "複製",
+"copied": "已複製。",
+"share": "發出去",
+"icsMade": "日曆檔案已在這臺手機上生成。開啟它即可新增。",
+"pickMax": "最多隻能選這麼多。",
+"timeUp": "時間到。把這句話說完。",
+"swap": "交換",
+"again": "再練一次",
+"passOn": "傳下去",
+"monday": "週一試試這個",
+"teachKicker": "傳下去",
+"learnerName": "TA 的名字（可選）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算試什麼，用 TA 自己的話",
+"learnedPh": "把手機遞給 TA……",
+"save": "儲存在這臺手機上",
+"chainTitle": "你傳給過的人",
+"chainEmpty": "還沒有人。你的第一次教回去會出現在這裡。",
+"saved": "只儲存在這臺手機上。",
+"restart": "回到開頭",
+"teachbackLink": "教回去鏈條 ↗",
+"gKicker": "主持人指南",
+"gWhy": "為什麼有效",
+"gSteps": "怎麼帶",
+"gDebrief": "覆盤問題",
+"gNotes": "備註",
+"passTo": "把手機遞給 {n}",
+"ready": "我是 {n}",
+"optional": "可選",
+"title": "險情牆 — FREE//BUILDER",
+"product": "險情牆",
+"privacy": "從不問是誰。牆只留在這臺手機上，直到你清空它。",
+"introKicker": "安全 · 班前會",
+"introTitle": "險情<span class=\"accent-word\">牆</span>",
+"introLead": "沒人上報的險情，就是還沒到來的事故。班組長先貼第一張，寫自己的。然後手機傳一圈：差點發生了什麼、在哪裡、什麼能擋住它。從不問是誰。今天全班組改一件事。",
+"introMeta": [
+"一個班組",
+"1 部手機，傳一圈",
+"約 10 分鐘"
+],
+"openWall": "開啟今天的牆（{n}）",
+"setupTitle": "開會之前",
+"crew": "班組或現場",
+"crewPh": "例如：3 號線早班",
+"lead": "班組長",
+"leadPh": "例如 Sam",
+"leadNote": "班組長先來，寫一次自己的險情。之後牆才打開。",
+"leadTitle": "{n}，先寫你自己的",
+"leadLead": "一次你自己的險情，最近的、真實的。你先寫，別人才敢寫。",
+"addTitle": "差點發生了什麼？",
+"addLead": "不寫名字。沒人會問是誰。",
+"kind": "型別",
+"kinds": [
+"滑倒或絆倒",
+"搬抬",
+"車輛",
+"工具",
+"電",
+"其他"
+],
+"what": "差點發生了什麼",
+"whatPh": "一個托盤在坡道上從叉車上滑了下來",
+"where": "在哪裡",
+"wherePh": "2 號裝卸區",
+"stop": "什麼能擋住它",
+"stopPh": "上坡道之前就捆好，不是之後",
+"pin": "貼上去",
+"nothing": "今天沒有",
+"passTitle": "貼好了。傳下去。",
+"passLead": "把手機遞給下一個人。TA 的螢幕是空白的。",
+"nextPerson": "下一個人",
+"allDone": "每個人都輪過了",
+"wallTitle": "這面牆",
+"wallLead": "把它們念出來。然後選一張今天就動手。只選一張。",
+"leadCard": "班組長的",
+"empty": "牆上還沒有東西。",
+"pickOne": "就處理這張",
+"actTitle": "一個改變，就在今天",
+"actLead": "小到下班前就能做完。",
+"actWhat": "今天我們會……",
+"actWhatPh": "每一件貨上坡道前都捆好；10 點前在坡道掛上提示牌",
+"actWho": "誰負責（寫崗位，不寫名字）",
+"actWhoPh": "值班長",
+"toThanks": "定了",
+"thanksTitle": "{n}，還有一件事",
+"thanksLead": "當著全班組的面，大聲感謝說出來的人。不是感謝誰寫了什麼，而是感謝他們說了。",
+"thanksStem": "“謝謝你們說出來。這就是我們平平安安回家的辦法。”",
+"thanked": "說了",
+"today": "今天的改變",
+"owner": "負責",
+"copyWall": "複製這面牆，寫進交班記錄",
+"clear": "清空這面牆",
+"clearSure": "再點一次，清空這臺手機上的所有卡片。",
+"cleared": "已清空。",
+"logHead": "險情牆 · {c} · {d}",
+"endKicker": "這面牆完成了",
+"endTitle": "有人說了，有些東西就變了。",
+"endLead": "資深的人先開口，沒人問是誰，下班前就有一個改變。險情就是這樣開始被上報的。",
+"mondayTxt": "下一次班前會，在任何人開口之前，先講一次你自己的險情。",
+"teachTitle": "教給另一位班組長。",
+"teachLead": "給 TA 看這三步，再讓 TA 寫下自己準備用來開場的那次險情。",
+"t3": [
+"你先來",
+"從不問是誰",
+"今天改一件事"
+],
+"t3sub": [
+"你自己的險情",
+"什麼、在哪、什麼能擋住",
+"再感謝他們說出來"
+],
+"gTitle": "怎麼帶“險情牆”",
+"gWhyTxt": "沉默是對後果的習得判斷。當最資深的人先講出自己的險情，而之後唯一的問題是“什麼能擋住它？”，這個判斷就會改變：說出來不付出代價，還能把事情修好。",
+"gStepList": [
+"班前會一開始，班組長先貼自己的險情。",
+"手機傳一圈。每人貼一張，或者點“今天沒有”。",
+"把牆上的念出來。選一張，定下今天的改變和負責的崗位。",
+"班組長感謝大家說出來。如果有交班記錄，把牆複製進去。"
+],
+"gDebriefList": [
+"今天是什麼讓人更容易貼出來？",
+"牆上哪一次險情我們其實都見過？",
+"上報之後會發生什麼？班組會聽到迴音嗎？"
+],
+"gNotesList": [
+"不問名字，也不存名字。牆只在這臺手機上，一個按鈕就能清空。",
+"這是在練習那場對話，不替代現場的正式上報系統。"
+]
+}, "ca": {
+"guide": "Facilitadors",
+"back": "Part dels serveis de FREE//BUILDER ↗",
+"soundOn": "So activat",
+"soundOff": "So desactivat",
+"left": "restant",
+"paused": "en pausa",
+"close": "Tancar",
+"resume": "Continuar",
+"pause": "Pausa",
+"start": "Començar",
+"next": "Següent",
+"backBtn": "Enrere",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ex., Ana",
+"phB": "p. ex., Leo",
+"copy": "Copia",
+"copied": "Copiat.",
+"share": "Envia-ho",
+"icsMade": "Fitxer de calendari fet en aquest mòbil. Obre’l per afegir-lo.",
+"pickMax": "No en pots triar més.",
+"timeUp": "S’ha acabat el temps. Acaba la frase.",
+"swap": "Canviar",
+"again": "Practicar un altre cop",
+"passOn": "Passa-ho",
+"monday": "Prova-ho dilluns",
+"teachKicker": "Passa-ho",
+"learnerName": "El seu nom (opcional)",
+"learnerPh": "p. ex., Mei",
+"learned": "El que provarà, amb les seves paraules",
+"learnedPh": "Passa-li el mòbil…",
+"save": "Desar en aquest mòbil",
+"chainTitle": "Persones a qui ho has passat",
+"chainEmpty": "Encara ningú. El teu primer ensenyar-de-tornada apareixerà aquí.",
+"saved": "Desat només en aquest mòbil.",
+"restart": "Torna al principi",
+"teachbackLink": "Cadena d'Ensenyar de Tornada ↗",
+"gKicker": "Guia per facilitar",
+"gWhy": "Per què funciona",
+"gSteps": "Com portar-ho",
+"gDebrief": "Preguntes per tancar",
+"gNotes": "Notes",
+"passTo": "Passa el mòbil a {n}",
+"ready": "Soc {n}",
+"optional": "opcional",
+"title": "Mur de Gairebé-Accidents — FREE//BUILDER",
+"product": "Mur de Gairebé-Accidents",
+"privacy": "Mai qui. El mur es queda en aquest mòbil fins que l’esborris.",
+"introKicker": "Seguretat · La xerrada de seguretat",
+"introTitle": "Mur de <span class=\"accent-word\">Gairebé-Accidents</span>",
+"introLead": "El gairebé-accident que ningú no reporta és l’accident que encara ha d’arribar. La persona supervisora clava la primera nota, la seva. Després el mòbil fa la volta: què gairebé va passar, on, què ho hauria evitat. Mai qui. La colla canvia una cosa avui.",
+"introMeta": [
+"Una colla",
+"1 mòbil que passa de mà en mà",
+"≈ 10 minuts"
+],
+"openWall": "Obre el mur d’avui ({n})",
+"setupTitle": "Abans de la xerrada",
+"crew": "Colla o obra",
+"crewPh": "p. ex., Línia 3, torn de matí",
+"lead": "Supervisor/a",
+"leadPh": "p. ex., Sam",
+"leadNote": "La persona supervisora va primer, amb un gairebé-accident seu. El mur s’obre després.",
+"leadTitle": "{n}, primer el teu",
+"leadLead": "Un gairebé-accident teu, recent i real. Anar primer és el que el fa segur per als altres.",
+"addTitle": "Què gairebé va passar?",
+"addLead": "Sense noms. Ningú no preguntarà qui.",
+"kind": "Tipus",
+"kinds": [
+"Relliscada o ensopegada",
+"Càrrega",
+"Vehicles",
+"Eines",
+"Elèctric",
+"Altres"
+],
+"what": "Què gairebé va passar",
+"whatPh": "Un palet va relliscar de les forquilles a la rampa",
+"where": "On",
+"wherePh": "Moll de càrrega 2",
+"stop": "Què ho hauria evitat",
+"stopPh": "Lligar abans de la rampa, no després",
+"pin": "Clava-la",
+"nothing": "Res avui",
+"passTitle": "Clavada. Passa-ho.",
+"passLead": "Passa el mòbil a la persona següent. La seva pantalla comença buida.",
+"nextPerson": "Persona següent",
+"allDone": "Tothom ha tingut el seu torn",
+"wallTitle": "El mur",
+"wallLead": "Llegiu-les en veu alta. Després trieu-ne una per actuar avui. Només una.",
+"leadCard": "De la supervisió",
+"empty": "Encara no hi ha res al mur.",
+"pickOne": "Actuar sobre aquesta",
+"actTitle": "Un canvi, avui",
+"actLead": "Prou petit per fer-lo abans d’acabar el torn.",
+"actWhat": "Avui farem…",
+"actWhatPh": "Lligar cada càrrega abans de la rampa; cartell a la rampa abans de les 10:00",
+"actWho": "Qui se n’encarrega (un lloc, no un nom)",
+"actWhoPh": "Cap de torn",
+"toThanks": "Acordat",
+"thanksTitle": "{n}, una cosa més",
+"thanksLead": "Dona les gràcies en veu alta, davant de la colla, a qui va parlar. No a qui va escriure què: a que van parlar.",
+"thanksStem": "«Gràcies per explicar-ho. Així és com tornem a casa sencers.»",
+"thanked": "Dit",
+"today": "El canvi d’avui",
+"owner": "Responsable",
+"copyWall": "Copia el mur per al part del torn",
+"clear": "Esborra el mur",
+"clearSure": "Toca un altre cop per esborrar totes les notes d’aquest mòbil.",
+"cleared": "Esborrat.",
+"logHead": "Mur de gairebé-accidents · {c} · {d}",
+"endKicker": "Mur fet",
+"endTitle": "Algú ho va dir i alguna cosa va canviar.",
+"endLead": "La persona amb més rang va anar primer, ningú no va preguntar qui i un canvi passa abans d’acabar el torn. Així es comencen a reportar els gairebé-accidents.",
+"mondayTxt": "Obre la pròxima xerrada de seguretat amb un gairebé-accident teu, abans que parli ningú.",
+"teachTitle": "Ensenya-ho a una altra persona supervisora.",
+"teachLead": "Ensenya-li els tres passos i deixa que escrigui el gairebé-accident amb què obrirà.",
+"t3": [
+"Ves primer",
+"Mai qui",
+"Un canvi avui"
+],
+"t3sub": [
+"el teu propi gairebé-accident",
+"què, on, què ho evita",
+"i gràcies per parlar"
+],
+"gTitle": "Com portar el Mur de Gairebé-Accidents",
+"gWhyTxt": "El silenci és una lectura apresa de les conseqüències. Quan la persona amb més rang ensenya primer el seu propi gairebé-accident, i l’única pregunta després és «què ho hauria evitat?», la lectura canvia: parlar no costa res i alguna cosa s’arregla.",
+"gStepList": [
+"En començar la xerrada, la persona supervisora clava el seu propi gairebé-accident.",
+"El mòbil fa la volta. Cada persona en clava un o toca Res avui.",
+"Llegiu el mur en veu alta. Trieu-ne una, acordeu un canvi per avui i el lloc responsable.",
+"La persona supervisora dona les gràcies per parlar. Copieu el mur al part del torn si en teniu."
+],
+"gDebriefList": [
+"Què va fer més fàcil clavar-ne un avui?",
+"Quin gairebé-accident del mur hem vist tots abans?",
+"Què passa amb un report després, i la colla rep resposta?"
+],
+"gNotesList": [
+"No es demanen ni es desen noms. El mur només viu en aquest mòbil i s’esborra amb un botó.",
+"És pràctica per a la conversa; no substitueix el sistema de report de l’obra."
+]
+}
+};
+/* =====================================================================
+   FB KIT · helpers (copy into every demo)
+   ===================================================================== */
+const LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LANG_LBL = { en: "EN", zh: "中文", es: "ES", "zh-Hant": "繁中", "ca": "CA" };
+let lang = "en";
+const T = () => I18N[lang];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? esc(v[k]) : m));
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* Seeded random + pairing codes: the same code on two phones gives the same scenario, no server needed. */
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function newCode(n = 6) { let s = ""; for (let i = 0; i < n; i++) s += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]; return s; }
+function seedFrom(code) { let h = 2166136261; for (const c of String(code).toUpperCase()) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+/* Sound: soft, short, optional */
+const sound = {
+  ctx: null, muted: store.get("fb_muted", false),
+  init() { if (!this.ctx) { const A = window.AudioContext || window.webkitAudioContext; if (A) this.ctx = new A(); } if (this.ctx && this.ctx.state === "suspended") this.ctx.resume(); },
+  tone(f, d = .3, g = .06, type = "sine", at = 0) {
+    if (this.muted || !this.ctx) return;
+    try { const t = this.ctx.currentTime + at, o = this.ctx.createOscillator(), a = this.ctx.createGain();
+      o.type = type; o.frequency.setValueAtTime(f, t); a.gain.setValueAtTime(.0001, t); a.gain.linearRampToValueAtTime(g, t + .02); a.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(a); a.connect(this.ctx.destination); o.start(t); o.stop(t + d + .05); } catch (e) {}
+  },
+  tap() { this.tone(520, .12, .04, "triangle"); },
+  chime() { [659.25, 880, 1318.5].forEach((f, i) => this.tone(f, 1.2, .05, "sine", i * .12)); },
+  warm() { [392, 493.88, 587.33].forEach((f, i) => this.tone(f, .9, .05, "sine", i * .1)); }
+};
+const buzz = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+
+/* Keep the screen awake while a timer runs (where supported) */
+let wakeLock = null;
+async function keepAwake(on) {
+  try {
+    if (on && "wakeLock" in navigator && !wakeLock) wakeLock = await navigator.wakeLock.request("screen");
+    if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
+  } catch (e) { wakeLock = null; }
+}
+
+/* Timer ring */
+function ringSVG() {
+  return `<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="54" fill="none" stroke-width="6"/><circle class="fg" id="ring" cx="60" cy="60" r="54" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="339.29" stroke-dashoffset="0"/></svg>`;
+}
+const timer = {
+  total: 90, left: 90, running: false, raf: 0, last: 0, onEnd: null, ended: false,
+  start(total, onEnd) { this.stop(); this.total = this.left = total; this.onEnd = onEnd; this.ended = false; this.resume(); },
+  resume() { if (this.running || this.ended) return; this.running = true; this.last = performance.now(); keepAwake(true); this.tick(); },
+  pause() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); this.paint(); },
+  stop() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); },
+  tick() {
+    if (!this.running) return;
+    const now = performance.now(); this.left = Math.max(0, this.left - (now - this.last) / 1000); this.last = now;
+    this.paint();
+    if (this.left <= 0) { this.running = false; this.ended = true; keepAwake(false); sound.chime(); buzz([60, 80, 60]); this.onEnd && this.onEnd(); return; }
+    this.raf = requestAnimationFrame(() => this.tick());
+  },
+  paint() {
+    const ring = $("ring"), num = $("tnum"), lbl = $("tlbl"), wrap = $("timer");
+    if (!ring) return;
+    ring.setAttribute("stroke-dashoffset", String(339.29 * (1 - this.left / this.total)));
+    const s = Math.ceil(this.left);
+    num.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    lbl.textContent = this.ended ? "" : (this.running ? T().left : T().paused);
+    wrap.classList.toggle("done", this.ended);
+  }
+};
+
+/* Toast */
+let toastT;
+function toast(msg) { const el = $("toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 2600); }
+
+/* Pass-the-phone curtain */
+function curtainHTML(title, lead, btnLabel, act) {
+  return `<div class="curtain">
+    <svg class="hand" viewBox="0 0 84 84" aria-hidden="true"><rect x="27" y="10" width="30" height="52" rx="7" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="42" cy="54" r="2.5" fill="#E2553F"/><path d="M14 54c6 0 10 4 13 9M70 54c-6 0-10 4-13 9" stroke="rgba(255,255,255,.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M34 72h16" stroke="#E2553F" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <h2>${title}</h2><p>${lead}</p>
+    <button class="btn pri" data-act="${act}" style="width:100%;margin-top:6px">${btnLabel} →</button></div>`;
+}
+
+
+
+/* =====================================================================
+   NEAR-MISS WALL (build/next_tools/nearmiss.js; words in nearmiss.py)
+   ===================================================================== */
+const WALL_KEY = "fb_nearmiss";
+const blankCard = () => ({ k: null, what: "", where: "", stop: "" });
+const APP = {
+  demo: "nearmiss", first: "setup",
+  flow: ["lead", "add", "wall", "act", "thanks"],
+  stepOf: s => (s === "pass" ? "add" : s),
+  state: () => { const w = store.get(WALL_KEY, null), today = new Date().toDateString();
+    const keep = w && w.day === today ? w : null;
+    return { crew: keep ? keep.crew : "", lead: keep ? keep.lead : "", cards: keep ? keep.cards : [], card: blankCard(), pick: keep && keep.act ? keep.act.i : null, act: keep && keep.act ? keep.act : { what: "", who: "" }, sure: false }; },
+  art() {
+    return `<svg viewBox="0 0 320 140" style="width:100%;max-width:420px;height:auto;margin:4px 0" aria-hidden="true">
+      <rect x="30" y="14" width="260" height="112" rx="10" fill="#fff" stroke="#E5E2DA" stroke-width="2"/>
+      <rect x="48" y="30" width="62" height="44" rx="4" fill="#FFF8D9" stroke="#EADFAE" transform="rotate(-3 79 52)"/>
+      <rect x="128" y="34" width="62" height="44" rx="4" fill="#E8F3EC" stroke="#C9E2D2" transform="rotate(2 159 56)"/>
+      <rect x="208" y="28" width="62" height="44" rx="4" fill="#FCE9E5" stroke="#F3CFC6" transform="rotate(-2 239 50)"/>
+      <path d="M58 46h40M58 56h30M138 50h40M138 60h26M218 44h40M218 54h34" stroke="#17171A" stroke-width="2.5" stroke-linecap="round" opacity=".6"/>
+      <path d="M150 104l10-18 10 18z" fill="#F2A33A" stroke="#17171A" stroke-width="2" stroke-linejoin="round"/><path d="M160 93v5M160 101v.5" stroke="#17171A" stroke-width="2" stroke-linecap="round"/>
+    </svg>`;
+  },
+  introExtra(t) { return S.cards.length ? `<button class="link" data-act="openWall">${fmt(t.openWall, { n: S.cards.length })}</button>` : ""; },
+  screens: {
+    setup(t) {
+      return `<h2>${esc(t.setupTitle)}</h2>
+        ${H.field(t.crew, "crew", { ph: t.crewPh, max: 40 })}${H.field(t.lead, "lead", { ph: t.leadPh, max: 24 })}
+        <p class="note">${esc(t.leadNote)}</p>${H.next(t.next, "toLead")}`;
+    },
+    lead(t) { return `<h2>${fmt(t.leadTitle, { n: leadName() })}</h2><p class="lead">${esc(t.leadLead)}</p>${cardForm(t)}${H.next(t.pin, "pin", { off: !cardOk(), id: "nextBtn" })}`; },
+    add(t) {
+      return `<h2>${esc(t.addTitle)}</h2><p class="lead">${esc(t.addLead)}</p>${cardForm(t)}
+        <div class="spacer"></div><div class="btns"><button class="btn" data-act="nothing">${esc(t.nothing)}</button>${H.btn(esc(t.pin) + " →", "pin", { pri: 1, off: !cardOk(), id: "nextBtn" })}</div>`;
+    },
+    pass(t) {
+      return `${curtainHTML(esc(t.passTitle), esc(t.passLead), esc(t.nextPerson), "nextPerson")}
+        <button class="link" data-act="toWall">${esc(t.allDone)} →</button>`;
+    },
+    wall(t) {
+      return `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><h2>${esc(t.wallTitle)}</h2><span class="count">${esc(S.crew)}</span></div>
+        <p class="lead">${esc(t.wallLead)}</p>
+        ${S.cards.length ? `<div class="wall">${S.cards.map((c, i) => `<button class="pinned" data-c="pick" data-v="${i}" aria-pressed="${S.pick === i}">${cardHTML(t, c)}</button>`).join("")}</div>` : `<p class="note">${esc(t.empty)}</p>`}
+        <button class="link" data-act="moreCards">+ ${esc(t.nextPerson)}</button>
+        ${H.next(t.pickOne, "toAct", { off: S.pick == null })}`;
+    },
+    act(t) {
+      return `<h2>${esc(t.actTitle)}</h2><div class="pinned">${cardHTML(t, S.cards[S.pick])}</div>
+        <p class="lead">${esc(t.actLead)}</p>
+        ${H.field(t.actWhat, "act.what", { ph: t.actWhatPh, max: 160, area: 1 })}${H.field(t.actWho, "act.who", { ph: t.actWhoPh, max: 40 })}
+        ${H.next(t.toThanks, "toThanks", { off: !actOk(), id: "nextBtn" })}`;
+    },
+    thanks(t) {
+      return `<h2>${fmt(t.thanksTitle, { n: leadName() })}</h2><p class="lead">${esc(t.thanksLead)}</p>
+        <div class="stems"><div>${esc(t.thanksStem)}</div></div>
+        <div class="doc"><div class="row"><span>${esc(t.today)}</span><b>${esc(S.act.what)}</b></div><div class="row"><span>${esc(t.owner)}</span><b>${esc(S.act.who)}</b></div></div>
+        <div class="btns"><button class="btn" data-act="copyLog">⧉ ${esc(t.copyWall)}</button><button class="btn" data-act="clear">${esc(S.sure ? t.clearSure : t.clear)}</button></div>
+        ${H.next(t.thanked, "toEnd")}`;
+    }
+  },
+  acts: {
+    openWall() { go("wall"); },
+    toLead() { save(); go(S.cards.some(c => c.lead) ? "pass" : "lead"); },
+    pin() { if (!cardOk()) return; const c = Object.assign({}, S.card, { lead: S.screen === "lead" }); S.cards.push(c); S.card = blankCard(); save(); sound.warm(); buzz(30); go("pass"); },
+    nothing() { S.card = blankCard(); go("pass"); },
+    nextPerson() { S.card = blankCard(); go("add"); },
+    moreCards() { go("pass"); },
+    toWall() { go("wall"); },
+    toAct() { if (S.pick != null) go("act"); },
+    toThanks() { if (!actOk()) return; S.act.i = S.pick; save(); sound.warm(); go("thanks"); },
+    copyLog() { const t = T(); copyText([fmtR(t.logHead, { c: S.crew || "—", d: new Date().toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang))) })]
+      .concat(S.cards.map((c, i) => `${i + 1}. [${c.k != null ? t.kinds[c.k] : t.kinds[5]}] ${c.what} · ${c.where} → ${c.stop}`))
+      .concat(["", `${t.today}: ${S.act.what} (${S.act.who})`]).join("\n")); },
+    clear(a) { if (!S.sure) { S.sure = true; a.textContent = T().clearSure; return; }
+      store.set(WALL_KEY, null); Object.assign(S, APP.state(), { sure: false }); toast(T().cleared); go("intro"); },
+    toEnd() { go("end"); }
+  },
+  input() { const b = $("nextBtn"); if (b) b.disabled = S.screen === "act" ? !actOk() : !cardOk(); if (S.screen === "setup") save(); },
+  againTo: "wall", keepOnAgain: () => ({})
+};
+const leadName = () => S.lead.trim() || T().lead;
+const cardOk = () => S.card.what.trim().length > 3;
+const actOk = () => S.act.what.trim().length > 3 && S.act.who.trim().length > 1;
+function save() { store.set(WALL_KEY, { day: new Date().toDateString(), crew: S.crew, lead: S.lead, cards: S.cards, act: S.act && S.act.i != null ? S.act : null }); }
+function cardForm(t) {
+  return `<div><span class="kicker">${esc(t.kind)}</span><div style="margin-top:8px">${H.seg("card.k", t.kinds)}</div></div>
+    ${H.field(t.what, "card.what", { ph: t.whatPh, max: 160, area: 1 })}
+    ${H.field(t.where, "card.where", { ph: t.wherePh, max: 60 })}${H.field(t.stop, "card.stop", { ph: t.stopPh, max: 120 })}`;
+}
+function cardHTML(t, c) {
+  return `<small>${esc(c.k != null ? t.kinds[c.k] : t.kinds[5])}${c.lead ? " · " + esc(t.leadCard) : ""}${c.where ? " · " + esc(c.where) : ""}</small>${esc(c.what)}${c.stop ? `<span style="display:block;margin-top:6px;color:var(--good)">→ ${esc(c.stop)}</span>` : ""}`;
+}
+
+/* =====================================================================
+   NEXT TOOLS · engine (build/next_tools/engine.js, shared by the ten tools that were "Next")
+   A tool defines APP = { demo, flow, first, state(), screens, acts, enter, stepOf, boot, art }.
+   Markup conventions: data-act="k" → APP.acts[k] or a built-in; data-go="screen"; data-b="key" (or key.0) binds an input to S;
+   data-c="key" data-v="i" picks a choice (APP.onChoose(key, v) if it wants more than S[key] = v and a render).
+   ===================================================================== */
+const stage = $("stage");
+const fmtR = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? v[k] : m));   // for text that never becomes HTML (calendar files, shared messages)
+
+function go(screen) {
+  timer.stop();
+  S.screen = screen; render(); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  const f = APP.enter && APP.enter[screen]; if (f) f();
+}
+function paintStepsBar() {
+  const fl = APP.flow || [], cur = APP.stepOf ? APP.stepOf(S.screen) : S.screen, at = fl.indexOf(cur);
+  $("steps").innerHTML = at < 0 ? "" : fl.map((_, i) => `<span class="${i < at ? "done" : i === at ? "now" : ""}"></span>`).join("");
+}
+function render() {
+  const t = T();
+  paintStepsBar();
+  let h;
+  if (S.screen === "intro") h = introHTML(t);
+  else if (S.screen === "teach") h = teachHTML(APP.demo);
+  else if (S.screen === "end") h = endHTML(t);
+  else h = APP.screens[S.screen](t);
+  const hadFocus = stage.contains(document.activeElement);
+  const same = render.last === S.screen; render.last = S.screen;
+  stage.innerHTML = h.startsWith("<section") ? h : `<section class="screen">${h}</section>`;
+  if (same) { const sec = stage.firstElementChild; if (sec) sec.style.animation = "none"; const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume; }
+  const f = stage.querySelector("[data-focus]");
+  if (f && hadFocus) f.focus({ preventScroll: true });
+  if (APP.after) APP.after(S.screen);
+}
+
+/* ---------- small builders ---------- */
+const H = {
+  btn(label, act, o = {}) {
+    const a = o.go ? `data-go="${o.go}"` : `data-act="${act}"`;
+    return `<button class="btn${o.pri ? " pri" : ""}" ${a}${o.id ? ` id="${o.id}"` : ""}${o.off ? " disabled" : ""}${o.focus ? " data-focus" : ""}${o.attr ? " " + o.attr : ""}>${label}</button>`;
+  },
+  next(label, act, o = {}) { return `<div class="spacer"></div><div class="btns">${o.left || ""}${H.btn(esc(label) + " →", act, Object.assign({ pri: 1, focus: 1 }, o))}</div>`; },
+  field(lbl, key, o = {}) {
+    const v = esc(getP(key) || ""), ph = o.ph ? ` placeholder="${esc(o.ph)}"` : "", ml = ` maxlength="${o.max || 120}"`;
+    const inp = o.area ? `<textarea data-b="${key}"${ml}${ph}>${v}</textarea>` : `<input data-b="${key}"${ml}${ph} autocomplete="off" value="${v}"${o.type ? ` type="${o.type}"` : ""}>`;
+    return `<label class="field"><span>${esc(lbl)}</span>${inp}</label>`;
+  },
+  names(t, a = "nameA", b = "nameB") {
+    return `<div class="row2">${H.field(t[a], "names.0", { ph: t.phA, max: 20 })}${H.field(t[b], "names.1", { ph: t.phB, max: 20 })}</div>`;
+  },
+  roles(k1, n1, k2, n2) {
+    return `<div class="roles"><div class="role speak"><div class="k">${esc(k1)}</div><div class="n">${esc(n1)}</div></div><div class="role"><div class="k">${esc(k2)}</div><div class="n">${esc(n2)}</div></div></div>`;
+  },
+  choices(key, items, o = {}) {   // items: [title, sub?, mark?]
+    const cur = getP(key), multi = Array.isArray(cur);
+    return `<div class="heard">${items.map((it, i) => {
+      const on = multi ? cur.includes(i) : cur === i;
+      return `<button data-c="${key}" data-v="${i}" aria-pressed="${on}" class="${on ? "on" : ""}"><span class="e">${it[2] != null ? it[2] : `<span style="font-family:var(--mono);font-size:12px">${String(i + 1).padStart(2, "0")}</span>`}</span><span><b>${esc(it[0])}</b>${it[1] ? `<small>${esc(it[1])}</small>` : ""}</span></button>`;
+    }).join("")}</div>`;
+  },
+  seg(key, items) { const cur = getP(key); return `<div class="seg">${items.map((x, i) => `<button data-c="${key}" data-v="${i}" aria-pressed="${cur === i}">${esc(x)}</button>`).join("")}</div>`; },
+  timer(t) {
+    return `<div class="timer" id="timer">${ringSVG()}<div class="num"><b id="tnum">0:00</b><small id="tlbl"></small></div></div>
+      <div class="btns" style="justify-content:center"><button class="btn" data-act="pause" id="pauseBtn" style="flex:none;min-width:140px">${esc(t.pause)}</button></div>`;
+  },
+  tip(txt, mark = "✦") { return `<div class="tip"><i>${mark}</i><span>${txt}</span></div>`; },
+  prompt(q, meta, sm) { return `<div class="prompt${sm ? " sm" : ""}"><div class="q">${esc(q)}</div>${meta ? `<div class="meta"><span>${esc(meta)}</span></div>` : ""}</div>`; },
+  stems(list) { return `<div class="stems">${list.map(s => `<div>${esc(s)}</div>`).join("")}</div>`; },
+  kicker(s, c) { return `<span class="kicker"${c ? ` style="color:${c}"` : ""}>${esc(s)}</span>`; }
+};
+function startTimer(secs, onEnd) { timer.start(secs, onEnd || (() => toast(T().timeUp))); const pb = $("pauseBtn"); if (pb) pb.textContent = T().pause; }
+
+/* paths into S: "names.0", "agree.q" */
+function getP(p) { return String(p).split(".").reduce((o, k) => (o == null ? o : o[k]), S); }
+function setP(p, v) { const ks = String(p).split("."), last = ks.pop(); const o = ks.reduce((o, k) => o[k], S); o[last] = v; }
+
+function introHTML(t) {
+  return `<section class="screen">
+    <span class="kicker">${esc(t.introKicker)}</span><h1>${t.introTitle}</h1>
+    <p class="lead">${esc(t.introLead)}</p>
+    <div class="pills">${t.introMeta.map(m => `<span class="pill">${esc(m)}</span>`).join("")}</div>
+    ${APP.art ? APP.art() : ""}
+    ${APP.introExtra ? APP.introExtra(t) : ""}
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn pri" data-act="start" data-focus>${esc(t.start)} →</button></div>
+  </section>`;
+}
+function endHTML(t) {
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--good)">✓ ${esc(t.endKicker)}</span>
+    <h2>${esc(t.endTitle)}</h2>
+    <p class="serif">${esc(t.endLead)}</p>
+    ${APP.endExtra ? APP.endExtra(t) : ""}
+    <div class="monday"><b>${esc(t.monday)}</b>${esc(t.mondayTxt)}</div>
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn" data-act="again">↻ ${esc(t.again)}</button><button class="btn pri" data-act="teach" data-focus>${esc(t.passOn)} →</button></div>
+  </section>`;
+}
+function teachHTML(demo) {
+  const t = T(), chain = store.get("fb_teachback", []).filter(c => c.demo === demo);
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--accent-ink)">${esc(t.teachKicker)}</span>
+    <h2>${esc(t.teachTitle)}</h2>
+    <p class="lead">${esc(t.teachLead)}</p>
+    <div class="steps3">${t.t3.map((s, i) => `<div><b>0${i + 1}</b><span>${esc(s)}</span><small style="display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4">${esc(t.t3sub[i])}</small></div>`).join("")}</div>
+    <div class="card" style="display:grid;gap:12px">
+      <label class="field"><span>${esc(t.learnerName)}</span><input id="lName" maxlength="30" autocomplete="off" placeholder="${esc(t.learnerPh)}"></label>
+      <label class="field"><span>${esc(t.learned)}</span><textarea id="lText" maxlength="280" placeholder="${esc(t.learnedPh)}"></textarea></label>
+      <button class="btn pri" data-act="saveTeach" style="flex:none">${esc(t.save)}</button>
+    </div>
+    <div><span class="kicker">${esc(t.chainTitle)}</span>
+      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang))))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
+    <a class="link" href="/tools/teachback">⊂⊃ ${esc(t.teachbackLink)}</a>
+    <button class="link" data-act="restart">${esc(t.restart)}</button>
+  </section>`;
+}
+
+/* ---------- device-made things: copy, a calendar file, a link ---------- */
+function copyText(text, msg) {
+  text = String(text || "").trim(); if (!text) return;
+  const ok = () => toast(msg || T().copied);
+  const fb = () => { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (_) {} ta.remove(); ok(); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok).catch(fb); else fb();
+}
+function shareText(text, url) {
+  const data = { text: url ? text + "\n" + url : text };
+  if (navigator.share) navigator.share(data).catch(() => {}); else copyText(data.text);
+}
+const pad2 = n => String(n).padStart(2, "0");
+const icsDate = d => `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;
+const icsEsc = s => String(s || "").replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/[,;]/g, m => "\\" + m);
+/* events: [{title, desc, start: Date, mins, rrule}] → one .ics made here, nothing sent */
+function downloadICS(name, events) {
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FREE//BUILDER//tools//EN", "CALSCALE:GREGORIAN"];
+  events.forEach((e, i) => {
+    const end = new Date(e.start.getTime() + (e.mins || 15) * 60000);
+    L.push("BEGIN:VEVENT", `UID:${Date.now()}-${i}@freebuilder.net`, `DTSTAMP:${icsDate(new Date())}`, `DTSTART:${icsDate(e.start)}`, `DTEND:${icsDate(end)}`,
+      `SUMMARY:${icsEsc(e.title)}`, `DESCRIPTION:${icsEsc(e.desc)}`);
+    if (e.rrule) L.push(`RRULE:${e.rrule}`);
+    L.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(e.title)}`, "TRIGGER:-PT15M", "END:VALARM", "END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  const blob = new Blob([L.join("\r\n")], { type: "text/calendar" }), a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name + ".ics"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast(T().icsMade);
+}
+function nextWeekday(dow, h = 9, m = 0) { const d = new Date(); d.setHours(h, m, 0, 0); let add = (dow - d.getDay() + 7) % 7; if (add === 0 && d <= new Date()) add = 7; d.setDate(d.getDate() + add); return d; }
+const b64e = o => { const s = unescape(encodeURIComponent(JSON.stringify(o))); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+const b64d = s => { try { s = s.replace(/-/g, "+").replace(/_/g, "/"); return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch (e) { return null; } };
+const here = () => location.origin + location.pathname;
+const dayFmt = d => { try { return new Date(d).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang)), { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return String(d); } };
+const shuffle = (a, r = Math.random) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+const S = Object.assign({ screen: "intro" }, APP.state());
+
+/* ---------- events ---------- */
+stage.addEventListener("input", e => {
+  const b = e.target.dataset.b; if (!b) return;
+  setP(b, e.target.value);
+  if (APP.input) APP.input(b, e.target.value, e.target);
+});
+stage.addEventListener("click", e => {
+  sound.init();
+  const c = e.target.closest("[data-c]"), g = e.target.closest("[data-go]"), a = e.target.closest("[data-act]");
+  if (c) {
+    sound.tap(); const k = c.dataset.c, v = +c.dataset.v;
+    if (APP.onChoose && APP.onChoose(k, v, c) === false) return;
+    const cur = getP(k);
+    if (Array.isArray(cur)) { const i = cur.indexOf(v); if (i >= 0) cur.splice(i, 1); else if (cur.length < (APP.maxPick && APP.maxPick[k] || 99)) cur.push(v); else toast(T().pickMax); }
+    else setP(k, v);
+    render(); return;
+  }
+  if (g) { sound.tap(); go(g.dataset.go); return; }
+  if (!a) return;
+  const k = a.dataset.act; sound.tap();
+  if (APP.acts && APP.acts[k]) { APP.acts[k](a); return; }
+  switch (k) {
+    case "start": go(APP.first); break;
+    case "pause":
+      if (timer.ended) return;
+      if (timer.running) { timer.pause(); a.textContent = T().resume; } else { timer.resume(); a.textContent = T().pause; }
+      break;
+    case "again": { const keep = APP.keepOnAgain ? APP.keepOnAgain() : {}; Object.assign(S, APP.state(), keep); go(APP.againTo || APP.first); break; }
+    case "teach": go("teach"); break;
+    case "saveTeach": {
+      const text = ($("lText").value || "").trim(), name = ($("lName").value || "").trim();
+      if (!text) { $("lText").focus(); return; }
+      const chain = store.get("fb_teachback", []); chain.push({ demo: APP.demo, text, name, at: Date.now() }); store.set("fb_teachback", chain.slice(-50));
+      sound.warm(); toast(T().saved); render(); break; }
+    case "restart": Object.assign(S, { screen: "intro" }, APP.state()); go("intro"); break;
+    case "copy": { const el = $(a.dataset.from); copyText(el ? (el.value != null && el.tagName !== "DIV" ? el.value : el.innerText) : a.dataset.text); break; }
+  }
+});
+window.__app = { S, go, render, timer, APP };
+if (APP.boot) APP.boot();
+
+/* ---------- facilitator guide ---------- */
+const drawer = $("drawer");
+function openGuide() {
+  const t = T();
+  $("panel").innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+      <div><span class="kicker">${esc(t.gKicker)}</span><h3 id="g-title">${esc(t.gTitle)}</h3></div>
+      <button class="x" data-close aria-label="${esc(t.close)}">✕</button>
+    </div>
+    <h4>${esc(t.gWhy)}</h4><p>${esc(t.gWhyTxt)}</p>
+    <h4>${esc(t.gSteps)}</h4><ol>${t.gStepList.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    <h4>${esc(t.gDebrief)}</h4><ul>${t.gDebriefList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>
+    <h4>${esc(t.gNotes)}</h4><ul>${t.gNotesList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>`;
+  drawer.classList.add("show");
+  setTimeout(() => drawer.querySelector("[data-close]").focus({ preventScroll: true }), 60);
+}
+function closeGuide() { drawer.classList.remove("show"); $("btn-guide").focus({ preventScroll: true }); }
+drawer.addEventListener("click", e => { if (e.target === drawer || e.target.closest("[data-close]")) closeGuide(); });
+$("btn-guide").addEventListener("click", openGuide);
+window.addEventListener("keydown", e => { if (e.key === "Escape" && drawer.classList.contains("show")) closeGuide(); });
+
+/* ---------- language + sound ---------- */
+function paintSound() {
+  const b = $("btn-sound"), t = T();
+  b.innerHTML = sound.muted
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  b.setAttribute("aria-label", sound.muted ? t.soundOff : t.soundOn); b.title = b.getAttribute("aria-label");
+}
+$("btn-sound").addEventListener("click", () => { sound.muted = !sound.muted; store.set("fb_muted", sound.muted); sound.init(); paintSound(); if (!sound.muted) sound.tap(); });
+
+function applyLang(l) {
+  lang = LANGS.includes(l) ? l : "en";
+  document.documentElement.lang = (/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang));
+  document.title = T().title;
+  $("lang-lbl").textContent = LANG_LBL[lang];
+  $("btn-guide").setAttribute("aria-label", T().guide); drawer.setAttribute("aria-label", T().guide);
+  document.querySelectorAll("[data-t]").forEach(el => { const v = T()[el.dataset.t]; if (typeof v === "string") el.textContent = v; });
+  paintSound();
+  render();               // the clock object survives a re-render
+  timer.paint();
+  const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume;
+  if (drawer.classList.contains("show")) openGuide();
+  try { localStorage.setItem("wm_preferred_lang", lang); localStorage.setItem("wm_cases_lang", lang); } catch (e) {}
+}
+$("btn-lang").addEventListener("click", () => applyLang(LANGS[(LANGS.indexOf(lang) + 1) % LANGS.length]));
+window.FBL_SET = l => applyLang(l); window.FBL_GET = () => lang;
+
+/* ---------- boot ---------- */
+let saved = null;
+try { saved = localStorage.getItem("wm_preferred_lang") || localStorage.getItem("wm_cases_lang"); } catch (e) {}
+const nav = (navigator.language || "").toLowerCase();
+applyLang(LANGS.includes(saved) ? saved : nav.startsWith("zh") ? "zh" : nav.startsWith("es") ? "es" : "en");
+document.addEventListener("visibilitychange", () => { if (!document.hidden && timer.running) keepAwake(true); });
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {}); // offline cache
+})();
+</script>
+<script src="/fbkit/pass.js?v=758a7441b7" defer></script>
+</body>
+</html>

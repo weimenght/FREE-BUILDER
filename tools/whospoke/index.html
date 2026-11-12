@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dde632a0dc"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title id="page-title">Who Spoke — FREE//BUILDER</title>
+  <meta name="description" content="Count airtime on the call by office, never by name, and let the office that spoke least open the next one.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
+  <!-- Brand fonts load without blocking the page: where Google Fonts is slow or blocked, system fonts show instantly. -->
+  <link rel="stylesheet" href="/fonts/fonts.css">
+
+  <link rel="stylesheet" href="/fbkit/s-b871aaaa7f.css">
+<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
+:root{color-scheme:light dark}
+@media (prefers-color-scheme: dark){
+:root{--paper:#141416;--ink:#ECEBE6;--muted:#A8A7AD;--line:#303036;--grid:#26262B;--white:#1D1D21;--inkbg:#2B2B31;--inkbd:#3B3B42;--accent-ink:#F28C76;--good:#62C48F;--paper-rgb:20,20,22;--dot-rgb:255,255,255;--ink-rgb:236,235,230;--white-rgb:29,29,33;--accent-text:#F2806A;--warn-ink:#E3B25C}
+html,body{background-color:var(--paper)}
+/* primary actions read as light on dark */
+.btn.pri,.cta a.pri,.chip.pri{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.btn.pri:hover,.cta a.pri:hover,.chip.pri:hover{background:#fff!important;border-color:#fff!important}
+.btn[disabled]{opacity:.45}
+.seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.steps span.done{background:#ECEBE6}
+.curtain{border:1px solid #3B3B42}
+/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
+.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
+/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
+.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
+/* illustrations keep their light look on a plate */
+.screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
+.plate{background:#fff!important}
+.card-art~.text-ink\/60,.card-art~span .text-ink\/60{color:rgba(23,23,26,.62)!important}
+.text-accent{color:#F2806A!important}
+.bg-white\/90.text-ink,.bg-white\/90 .text-ink{color:#ECEBE6}
+img{filter:none}
+::selection{background:#E2553F;color:#fff}
+}
+</style></head>
+<body>
+  <div class="dots" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="FREE//BUILDER">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" style="overflow:visible">
+            <rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/>
+            <rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect class="last" x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/>
+          </svg>
+        </span>
+        <span class="brand-txt"><b>FREE<i>//</i>BUILDER</b><span data-t="product">Who Spoke</span></span>
+      </a>
+      <div class="top-actions">
+        <button class="chip" id="btn-lang" type="button" aria-label="Language" title="EN / 中文 / ES">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <b id="lang-lbl">EN</b>
+        </button>
+        <button class="chip" id="btn-sound" type="button"></button>
+        <button class="chip" id="btn-guide" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="lbl" data-t="guide">Facilitators</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="sr" data-t="product">Who Spoke</h1>
+    <div class="steps" id="steps" aria-hidden="true"></div>
+    <div id="stage" aria-live="polite"></div>
+  </main>
+
+  <footer class="fbf" data-fbf-root><div class="fbf-in"><div class="fbf-row"><span class="fbf-own"><a class="fbf-lg fbf-nm fbf-nm-fb" href="/" aria-label="FREE//BUILDER"><svg class="fb-mk" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg><span class="fbf-name">FREE<i>//</i>BUILDER</span></a><span class="fbf-cy"><svg class="fbf-c" viewBox="0 0 24 24" role="img" aria-label="©"><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.3 9.4a4.3 4.3 0 1 0 0 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="fbf-year">2026</span></span></span><nav aria-label="Footer"><span class="fbf-dot" aria-hidden="true">·</span><a href="/privacy/" data-fbf="privacy">Your privacy</a><span class="fbf-dot" aria-hidden="true">·</span><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai fbf-ico" aria-label="AI" title="AI" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="r-st" d="M12 7.2V4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle class="r-ant" cx="12" cy="3.4" r="1.6" fill="currentColor"/><rect x="4.6" y="7.4" width="14.8" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><g class="r-eyes"><circle cx="9.4" cy="12.8" r="1.55" fill="currentColor"/><circle cx="14.6" cy="12.8" r="1.55" fill="currentColor"/></g><path d="M10 16.4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12.2v2.6M21 12.2v2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a> &amp; <a href="https://www.after-hours.work/" class="fbf-heart fbf-ico" aria-label="♥ after hours" title="♥" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="h-b" d="M12 20.4s-7.8-4.7-7.8-10.3A4.4 4.4 0 0 1 12 7.5a4.4 4.4 0 0 1 7.8 2.6c0 5.6-7.8 10.3-7.8 10.3z" fill="currentColor"/><path class="h-s" d="M7.6 9.6a2.2 2.2 0 0 1 2.1-1.7" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round"/></svg></a></span></nav></div><span class="fbf-x" data-t="privacy">By office, never by name. Nothing leaves this screen.</span></div></footer>
+
+  <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="g-title">
+    <div class="panel" id="panel"></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+/* =====================================================================
+   COPY — EN / 中文 / ES (generated by build/next_tools.py)
+   ===================================================================== */
+const I18N = {
+"en": {
+"guide": "Facilitators",
+"back": "Part of FREE//BUILDER’s services ↗",
+"soundOn": "Sound on",
+"soundOff": "Sound off",
+"left": "left",
+"paused": "paused",
+"close": "Close",
+"resume": "Resume",
+"pause": "Pause",
+"start": "Start",
+"next": "Next",
+"backBtn": "Back",
+"nameA": "Person A",
+"nameB": "Person B",
+"phA": "e.g. Ana",
+"phB": "e.g. Leo",
+"copy": "Copy",
+"copied": "Copied.",
+"share": "Send it",
+"icsMade": "Calendar file made on this phone. Open it to add it.",
+"pickMax": "That’s the most you can pick.",
+"timeUp": "Time’s up. Finish your sentence.",
+"swap": "Swap",
+"again": "Practise again",
+"passOn": "Pass it on",
+"monday": "Try this on Monday",
+"teachKicker": "Pass it on",
+"learnerName": "Their name (optional)",
+"learnerPh": "e.g. Mei",
+"learned": "What they’ll try, in their own words",
+"learnedPh": "Hand them the phone…",
+"save": "Save to this phone",
+"chainTitle": "People you’ve passed it on to",
+"chainEmpty": "No one yet. Your first teach-back will appear here.",
+"saved": "Saved on this phone only.",
+"restart": "Back to the start",
+"teachbackLink": "Teach-Back Chain ↗",
+"gKicker": "Facilitator guide",
+"gWhy": "Why it works",
+"gSteps": "Running it",
+"gDebrief": "Debrief questions",
+"gNotes": "Notes",
+"passTo": "Pass the phone to {n}",
+"ready": "I’m {n}",
+"optional": "optional",
+"title": "Who Spoke — FREE//BUILDER",
+"product": "Who Spoke",
+"privacy": "By office, never by name. Nothing leaves this screen.",
+"introKicker": "Across offices · The Monday call",
+"introTitle": "Who <span class=\"accent-word\">Spoke</span>",
+"introLead": "Offices misread each other partly because one of them does all the talking. Whoever runs the call taps the office that’s speaking. Afterwards you see the talk by office next to the people by office, and the office that spoke least opens the next call.",
+"introMeta": [
+"Whoever runs the call",
+"1 screen",
+"The length of the call"
+],
+"setupTitle": "Which offices are on the call?",
+"setupLead": "Two to six. People on the call is optional; it lets you compare talk with headcount.",
+"office": "Office",
+"people": "People",
+"defaults": [
+"Barcelona",
+"Bengaluru",
+"Remote"
+],
+"addOffice": "+ Office",
+"remove": "Remove",
+"toCall": "Start the call",
+"liveTitle": "Tap whoever’s speaking",
+"liveLead": "Tap again for silence. Switch as the voice moves.",
+"silence": "Silence",
+"elapsed": "Call",
+"endCall": "End the call",
+"resTitle": "Who spoke",
+"resLead": "Bars are the share of talk. The red line is the share of people, where you gave it.",
+"talk": "{p}% of the talk",
+"ppl": "{p}% of the people",
+"least": "{o} spoke least",
+"leastLead": "Not a judgement on anyone: a structure to change. Let {o} open the next call.",
+"inviteLine": "Next Monday, {o} opens the call: ten minutes on what you’re seeing, before anyone else.",
+"copyInvite": "Copy the line for the invite",
+"tooShort": "Under a minute of talk: run it on a real call.",
+"endKicker": "Call counted",
+"endTitle": "Airtime is a structure, not a personality.",
+"endLead": "Counted by office, nobody is blamed and the pattern is plain. Change who opens, and the call changes.",
+"mondayTxt": "Let the office that spoke least open the next call, and count again.",
+"teachTitle": "Teach whoever runs another call.",
+"teachLead": "Show them the three moves, then let them write which call they’ll count first.",
+"t3": [
+"Count by office",
+"Compare with people",
+"Least opens next"
+],
+"t3sub": [
+"never by name",
+"talk vs headcount",
+"ten minutes first"
+],
+"gTitle": "Running Who Spoke",
+"gWhyTxt": "Most friction between offices is two reasonable people with half the story each, plus who can afford to speak. Counting airtime by office makes the pattern visible without making it about anyone; giving the quietest office the opening changes it.",
+"gStepList": [
+"Tell the call you’re counting by office, never by name.",
+"Tap the office that’s speaking; tap again for silence.",
+"At the end, share the bars on screen for one minute. No comments on people.",
+"Put the opening line in the next invite."
+],
+"gDebriefList": [
+"What did the bars show that nobody said?",
+"What makes it costly to speak from the quieter office?",
+"Which decisions got reopened after the last call, and by whom?"
+],
+"gNotesList": [
+"Only office names and people counts are kept on this device, for the next call.",
+"Leave it open on a second screen; nothing is sent anywhere."
+]
+},
+"zh": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服务的一部分 ↗",
+"soundOn": "声音开",
+"soundOff": "声音关",
+"left": "剩余",
+"paused": "已暂停",
+"close": "关闭",
+"resume": "继续",
+"pause": "暂停",
+"start": "开始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "复制",
+"copied": "已复制。",
+"share": "发出去",
+"icsMade": "日历文件已在这台手机上生成。打开它即可添加。",
+"pickMax": "最多只能选这么多。",
+"timeUp": "时间到。把这句话说完。",
+"swap": "交换",
+"again": "再练一次",
+"passOn": "传下去",
+"monday": "周一试试这个",
+"teachKicker": "传下去",
+"learnerName": "TA 的名字（可选）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算试什么，用 TA 自己的话",
+"learnedPh": "把手机递给 TA……",
+"save": "保存在这台手机上",
+"chainTitle": "你传给过的人",
+"chainEmpty": "还没有人。你的第一次教回去会出现在这里。",
+"saved": "只保存在这台手机上。",
+"restart": "回到开头",
+"teachbackLink": "教回去链条 ↗",
+"gKicker": "主持人指南",
+"gWhy": "为什么有效",
+"gSteps": "怎么带",
+"gDebrief": "复盘问题",
+"gNotes": "备注",
+"passTo": "把手机递给 {n}",
+"ready": "我是 {n}",
+"optional": "可选",
+"title": "谁在说话 — FREE//BUILDER",
+"product": "谁在说话",
+"privacy": "按办公室统计，从不按名字。什么都不会离开这块屏幕。",
+"introKicker": "跨办公室 · 周一电话会",
+"introTitle": "谁在<span class=\"accent-word\">说话</span>",
+"introLead": "各地办公室互相误读，部分原因是总有一个办公室包揽了发言。主持电话会的人点一下正在说话的办公室。会后你会看到各办公室的发言占比和人数占比并排摆着，发言最少的办公室来开下一次会。",
+"introMeta": [
+"主持电话会的人",
+"1 块屏幕",
+"和电话会一样长"
+],
+"setupTitle": "电话会上有哪些办公室？",
+"setupLead": "二到六个。电话会上的人数可填可不填；填了就能把发言和人数做对比。",
+"office": "办公室",
+"people": "人数",
+"defaults": [
+"巴塞罗那",
+"班加罗尔",
+"远程"
+],
+"addOffice": "+ 办公室",
+"remove": "移除",
+"toCall": "开始电话会",
+"liveTitle": "谁在说话就点谁",
+"liveLead": "再点一次就是没人说话。声音换到哪里就点哪里。",
+"silence": "安静",
+"elapsed": "通话",
+"endCall": "结束电话会",
+"resTitle": "谁说了话",
+"resLead": "条形是发言占比。红线是人数占比（如果你填了）。",
+"talk": "发言 {p}%",
+"ppl": "人数 {p}%",
+"least": "{o} 说得最少",
+"leastLead": "这不是在评判谁，而是一个可以改的结构。下次让 {o} 来开场。",
+"inviteLine": "下周一由 {o} 开场：先花十分钟讲你们看到的情况，其他人再说。",
+"copyInvite": "复制这句话，放进会议邀请",
+"tooShort": "发言不到一分钟：在真实的电话会上再用一次。",
+"endKicker": "电话会统计完了",
+"endTitle": "发言时间是结构问题，不是性格问题。",
+"endLead": "按办公室统计，没有人被指责，规律一目了然。换一个人开场，电话会就变了。",
+"mondayTxt": "让发言最少的办公室开下一次会，然后再统计一次。",
+"teachTitle": "教给另一个电话会的主持人。",
+"teachLead": "给 TA 看这三步，再让 TA 写下先统计哪一个电话会。",
+"t3": [
+"按办公室统计",
+"和人数对比",
+"最少的下次开场"
+],
+"t3sub": [
+"从不按名字",
+"发言对人数",
+"先讲十分钟"
+],
+"gTitle": "怎么带“谁在说话”",
+"gWhyTxt": "办公室之间大多数的摩擦，是两个讲理的人各握着半个故事，再加上谁说得起话。按办公室统计发言时间，能让规律显现，又不针对任何人；把开场交给最安静的办公室，就能改变它。",
+"gStepList": [
+"告诉大家：按办公室统计，从不按名字。",
+"点正在说话的办公室；再点一次表示安静。",
+"结束时，把条形图在屏幕上共享一分钟。不评论任何人。",
+"把开场的那句话放进下一次会议邀请。"
+],
+"gDebriefList": [
+"条形图显示了什么没人说出口的东西？",
+"在安静的那个办公室，开口的代价是什么？",
+"上次会后哪些决定被重新打开了？被谁？"
+],
+"gNotesList": [
+"这台设备上只保存办公室名称和人数，留给下一次电话会。",
+"可以开在第二块屏幕上；什么都不会被发送。"
+]
+},
+"es": {
+"guide": "Facilitadores",
+"back": "Parte de los servicios de FREE//BUILDER ↗",
+"soundOn": "Sonido activado",
+"soundOff": "Sonido desactivado",
+"left": "restante",
+"paused": "en pausa",
+"close": "Cerrar",
+"resume": "Seguir",
+"pause": "Pausa",
+"start": "Empezar",
+"next": "Siguiente",
+"backBtn": "Atrás",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ej., Ana",
+"phB": "p. ej., Leo",
+"copy": "Copiar",
+"copied": "Copiado.",
+"share": "Enviarlo",
+"icsMade": "Archivo de calendario hecho en este móvil. Ábrelo para añadirlo.",
+"pickMax": "No puedes elegir más.",
+"timeUp": "Se acabó el tiempo. Termina la frase.",
+"swap": "Cambiar",
+"again": "Practicar otra vez",
+"passOn": "Pásalo",
+"monday": "Pruébalo el lunes",
+"teachKicker": "Pásalo",
+"learnerName": "Su nombre (opcional)",
+"learnerPh": "p. ej., Mei",
+"learned": "Lo que va a probar, con sus palabras",
+"learnedPh": "Pásale el móvil…",
+"save": "Guardar en este móvil",
+"chainTitle": "Personas a las que se lo has pasado",
+"chainEmpty": "Nadie todavía. Tu primer enseñar-de-vuelta aparecerá aquí.",
+"saved": "Guardado solo en este móvil.",
+"restart": "Volver al principio",
+"teachbackLink": "Cadena de Enseñar de Vuelta ↗",
+"gKicker": "Guía para facilitar",
+"gWhy": "Por qué funciona",
+"gSteps": "Cómo llevarlo",
+"gDebrief": "Preguntas para cerrar",
+"gNotes": "Notas",
+"passTo": "Pásale el móvil a {n}",
+"ready": "Soy {n}",
+"optional": "opcional",
+"title": "Quién Habló — FREE//BUILDER",
+"product": "Quién Habló",
+"privacy": "Por oficina, nunca por nombre. Nada sale de esta pantalla.",
+"introKicker": "Entre oficinas · La llamada del lunes",
+"introTitle": "Quién <span class=\"accent-word\">Habló</span>",
+"introLead": "Las oficinas se malinterpretan en parte porque una de ellas habla todo el rato. Quien lleva la llamada toca la oficina que está hablando. Después veis el tiempo de palabra por oficina junto a las personas por oficina, y la que menos habló abre la próxima llamada.",
+"introMeta": [
+"Quien lleva la llamada",
+"1 pantalla",
+"Lo que dure la llamada"
+],
+"setupTitle": "¿Qué oficinas están en la llamada?",
+"setupLead": "De dos a seis. Las personas en la llamada son opcionales; permiten comparar palabra y número.",
+"office": "Oficina",
+"people": "Personas",
+"defaults": [
+"Barcelona",
+"Bengaluru",
+"En remoto"
+],
+"addOffice": "+ Oficina",
+"remove": "Quitar",
+"toCall": "Empezar la llamada",
+"liveTitle": "Toca quien esté hablando",
+"liveLead": "Toca otra vez para silencio. Cambia cuando cambie la voz.",
+"silence": "Silencio",
+"elapsed": "Llamada",
+"endCall": "Terminar la llamada",
+"resTitle": "Quién habló",
+"resLead": "Las barras son la parte de palabra. La línea roja es la parte de personas, si la diste.",
+"talk": "{p} % de la palabra",
+"ppl": "{p} % de las personas",
+"least": "{o} habló menos",
+"leastLead": "No es un juicio sobre nadie: es una estructura que cambiar. Que {o} abra la próxima llamada.",
+"inviteLine": "El lunes que viene {o} abre la llamada: diez minutos sobre lo que estáis viendo, antes que nadie.",
+"copyInvite": "Copiar la frase para la invitación",
+"tooShort": "Menos de un minuto de palabra: úsalo en una llamada real.",
+"endKicker": "Llamada contada",
+"endTitle": "El tiempo de palabra es una estructura, no una personalidad.",
+"endLead": "Contado por oficina, nadie es culpable y el patrón queda claro. Cambia quién abre y la llamada cambia.",
+"mondayTxt": "Que la oficina que menos habló abra la próxima llamada, y volved a contar.",
+"teachTitle": "Enséñaselo a quien lleve otra llamada.",
+"teachLead": "Enséñale los tres pasos y deja que escriba qué llamada contará primero.",
+"t3": [
+"Cuenta por oficina",
+"Compara con personas",
+"La que menos, abre"
+],
+"t3sub": [
+"nunca por nombre",
+"palabra frente a número",
+"diez minutos primero"
+],
+"gTitle": "Cómo llevar Quién Habló",
+"gWhyTxt": "Casi toda la fricción entre oficinas son dos personas razonables con media historia cada una, más quién puede permitirse hablar. Contar el tiempo de palabra por oficina hace visible el patrón sin señalar a nadie; dar la apertura a la oficina más callada lo cambia.",
+"gStepList": [
+"Di en la llamada que contáis por oficina, nunca por nombre.",
+"Toca la oficina que habla; toca otra vez para silencio.",
+"Al final, compartid las barras un minuto en pantalla. Sin comentarios sobre personas.",
+"Poned la frase de apertura en la próxima invitación."
+],
+"gDebriefList": [
+"¿Qué mostraron las barras que nadie dijo?",
+"¿Qué hace costoso hablar desde la oficina más callada?",
+"¿Qué decisiones se reabrieron tras la última llamada, y desde dónde?"
+],
+"gNotesList": [
+"En este dispositivo solo se guardan los nombres de oficina y el número de personas, para la próxima llamada.",
+"Déjalo abierto en una segunda pantalla; no se envía nada."
+]
+}, "zh-Hant": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服務的一部分 ↗",
+"soundOn": "聲音開",
+"soundOff": "聲音關",
+"left": "剩餘",
+"paused": "已暫停",
+"close": "關閉",
+"resume": "繼續",
+"pause": "暫停",
+"start": "開始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "複製",
+"copied": "已複製。",
+"share": "發出去",
+"icsMade": "日曆檔案已在這臺手機上生成。開啟它即可新增。",
+"pickMax": "最多隻能選這麼多。",
+"timeUp": "時間到。把這句話說完。",
+"swap": "交換",
+"again": "再練一次",
+"passOn": "傳下去",
+"monday": "週一試試這個",
+"teachKicker": "傳下去",
+"learnerName": "TA 的名字（可選）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算試什麼，用 TA 自己的話",
+"learnedPh": "把手機遞給 TA……",
+"save": "儲存在這臺手機上",
+"chainTitle": "你傳給過的人",
+"chainEmpty": "還沒有人。你的第一次教回去會出現在這裡。",
+"saved": "只儲存在這臺手機上。",
+"restart": "回到開頭",
+"teachbackLink": "教回去鏈條 ↗",
+"gKicker": "主持人指南",
+"gWhy": "為什麼有效",
+"gSteps": "怎麼帶",
+"gDebrief": "覆盤問題",
+"gNotes": "備註",
+"passTo": "把手機遞給 {n}",
+"ready": "我是 {n}",
+"optional": "可選",
+"title": "誰在說話 — FREE//BUILDER",
+"product": "誰在說話",
+"privacy": "按辦公室統計，從不按名字。什麼都不會離開這塊螢幕。",
+"introKicker": "跨辦公室 · 週一電話會",
+"introTitle": "誰在<span class=\"accent-word\">說話</span>",
+"introLead": "各地辦公室互相誤讀，部分原因是總有一個辦公室包攬了發言。主持電話會的人點一下正在說話的辦公室。會後你會看到各辦公室的發言佔比和人數佔比並排擺著，發言最少的辦公室來開下一次會。",
+"introMeta": [
+"主持電話會的人",
+"1 塊螢幕",
+"和電話會一樣長"
+],
+"setupTitle": "電話會上有哪些辦公室？",
+"setupLead": "二到六個。電話會上的人數可填可不填；填了就能把發言和人數做對比。",
+"office": "辦公室",
+"people": "人數",
+"defaults": [
+"巴塞羅那",
+"班加羅爾",
+"遠端"
+],
+"addOffice": "+ 辦公室",
+"remove": "移除",
+"toCall": "開始電話會",
+"liveTitle": "誰在說話就點誰",
+"liveLead": "再點一次就是沒人說話。聲音換到哪裡就點哪裡。",
+"silence": "安靜",
+"elapsed": "通話",
+"endCall": "結束電話會",
+"resTitle": "誰說了話",
+"resLead": "條形是發言佔比。紅線是人數佔比（如果你填了）。",
+"talk": "發言 {p}%",
+"ppl": "人數 {p}%",
+"least": "{o} 說得最少",
+"leastLead": "這不是在評判誰，而是一個可以改的結構。下次讓 {o} 來開場。",
+"inviteLine": "下週一由 {o} 開場：先花十分鐘講你們看到的情況，其他人再說。",
+"copyInvite": "複製這句話，放進會議邀請",
+"tooShort": "發言不到一分鐘：在真實的電話會上再用一次。",
+"endKicker": "電話會統計完了",
+"endTitle": "發言時間是結構問題，不是性格問題。",
+"endLead": "按辦公室統計，沒有人被指責，規律一目瞭然。換一個人開場，電話會就變了。",
+"mondayTxt": "讓發言最少的辦公室開下一次會，然後再統計一次。",
+"teachTitle": "教給另一個電話會的主持人。",
+"teachLead": "給 TA 看這三步，再讓 TA 寫下先統計哪一個電話會。",
+"t3": [
+"按辦公室統計",
+"和人數對比",
+"最少的下次開場"
+],
+"t3sub": [
+"從不按名字",
+"發言對人數",
+"先講十分鐘"
+],
+"gTitle": "怎麼帶“誰在說話”",
+"gWhyTxt": "辦公室之間大多數的摩擦，是兩個講理的人各握著半個故事，再加上誰說得起話。按辦公室統計發言時間，能讓規律顯現，又不針對任何人；把開場交給最安靜的辦公室，就能改變它。",
+"gStepList": [
+"告訴大家：按辦公室統計，從不按名字。",
+"點正在說話的辦公室；再點一次表示安靜。",
+"結束時，把條形圖在螢幕上共享一分鐘。不評論任何人。",
+"把開場的那句話放進下一次會議邀請。"
+],
+"gDebriefList": [
+"條形圖顯示了什麼沒人說出口的東西？",
+"在安靜的那個辦公室，開口的代價是什麼？",
+"上次會後哪些決定被重新打開了？被誰？"
+],
+"gNotesList": [
+"這臺裝置上只儲存辦公室名稱和人數，留給下一次電話會。",
+"可以開在第二塊螢幕上；什麼都不會被髮送。"
+]
+}, "ca": {
+"guide": "Facilitadors",
+"back": "Part dels serveis de FREE//BUILDER ↗",
+"soundOn": "So activat",
+"soundOff": "So desactivat",
+"left": "restant",
+"paused": "en pausa",
+"close": "Tancar",
+"resume": "Continuar",
+"pause": "Pausa",
+"start": "Començar",
+"next": "Següent",
+"backBtn": "Enrere",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ex., Ana",
+"phB": "p. ex., Leo",
+"copy": "Copia",
+"copied": "Copiat.",
+"share": "Envia-ho",
+"icsMade": "Fitxer de calendari fet en aquest mòbil. Obre’l per afegir-lo.",
+"pickMax": "No en pots triar més.",
+"timeUp": "S’ha acabat el temps. Acaba la frase.",
+"swap": "Canviar",
+"again": "Practicar un altre cop",
+"passOn": "Passa-ho",
+"monday": "Prova-ho dilluns",
+"teachKicker": "Passa-ho",
+"learnerName": "El seu nom (opcional)",
+"learnerPh": "p. ex., Mei",
+"learned": "El que provarà, amb les seves paraules",
+"learnedPh": "Passa-li el mòbil…",
+"save": "Desar en aquest mòbil",
+"chainTitle": "Persones a qui ho has passat",
+"chainEmpty": "Encara ningú. El teu primer ensenyar-de-tornada apareixerà aquí.",
+"saved": "Desat només en aquest mòbil.",
+"restart": "Torna al principi",
+"teachbackLink": "Cadena d'Ensenyar de Tornada ↗",
+"gKicker": "Guia per facilitar",
+"gWhy": "Per què funciona",
+"gSteps": "Com portar-ho",
+"gDebrief": "Preguntes per tancar",
+"gNotes": "Notes",
+"passTo": "Passa el mòbil a {n}",
+"ready": "Soc {n}",
+"optional": "opcional",
+"title": "Qui Va Parlar — FREE//BUILDER",
+"product": "Qui Va Parlar",
+"privacy": "Per oficina, mai per nom. Res no surt d’aquesta pantalla.",
+"introKicker": "Entre oficines · La trucada de dilluns",
+"introTitle": "Qui Va <span class=\"accent-word\">Parlar</span>",
+"introLead": "Les oficines es malinterpreten en part perquè una d’elles parla tota l’estona. Qui porta la trucada toca l’oficina que està parlant. Després veieu el temps de paraula per oficina al costat de les persones per oficina, i la que menys va parlar obre la pròxima trucada.",
+"introMeta": [
+"Qui porta la trucada",
+"1 pantalla",
+"El que duri la trucada"
+],
+"setupTitle": "Quines oficines són a la trucada?",
+"setupLead": "De dues a sis. Les persones a la trucada són opcionals; permeten comparar paraula i nombre.",
+"office": "Oficina",
+"people": "Persones",
+"defaults": [
+"Barcelona",
+"Bengaluru",
+"En remot"
+],
+"addOffice": "+ Oficina",
+"remove": "Treure",
+"toCall": "Comença la trucada",
+"liveTitle": "Toca qui estigui parlant",
+"liveLead": "Toca un altre cop per al silenci. Canvia quan canviï la veu.",
+"silence": "Silenci",
+"elapsed": "Trucada",
+"endCall": "Acaba la trucada",
+"resTitle": "Qui va parlar",
+"resLead": "Les barres són la part de paraula. La línia vermella és la part de persones, si la vas donar.",
+"talk": "{p} % de la paraula",
+"ppl": "{p} % de les persones",
+"least": "{o} va parlar menys",
+"leastLead": "No és un judici sobre ningú: és una estructura per canviar. Que {o} obri la pròxima trucada.",
+"inviteLine": "Dilluns que ve {o} obre la trucada: deu minuts sobre el que esteu veient, abans que ningú.",
+"copyInvite": "Copia la frase per a la invitació",
+"tooShort": "Menys d’un minut de paraula: fes-ho servir en una trucada real.",
+"endKicker": "Trucada comptada",
+"endTitle": "El temps de paraula és una estructura, no una personalitat.",
+"endLead": "Comptat per oficina, ningú no és culpable i el patró queda clar. Canvia qui obre i la trucada canvia.",
+"mondayTxt": "Que l’oficina que menys va parlar obri la pròxima trucada, i torneu a comptar.",
+"teachTitle": "Ensenya-ho a qui porti una altra trucada.",
+"teachLead": "Ensenya-li els tres passos i deixa que escrigui quina trucada comptarà primer.",
+"t3": [
+"Compta per oficina",
+"Compara amb persones",
+"La que menys, obre"
+],
+"t3sub": [
+"mai per nom",
+"paraula davant de nombre",
+"deu minuts primer"
+],
+"gTitle": "Com portar Qui Va Parlar",
+"gWhyTxt": "Gairebé tota la fricció entre oficines són dues persones raonables amb mitja història cadascuna, més qui es pot permetre parlar. Comptar el temps de paraula per oficina fa visible el patró sense assenyalar ningú; donar l’obertura a l’oficina més callada el canvia.",
+"gStepList": [
+"Digues a la trucada que compteu per oficina, mai per nom.",
+"Toca l’oficina que parla; toca un altre cop per al silenci.",
+"Al final, compartiu les barres un minut a la pantalla. Sense comentaris sobre persones.",
+"Poseu la frase d’obertura a la pròxima invitació."
+],
+"gDebriefList": [
+"Què van mostrar les barres que ningú no va dir?",
+"Què fa costós parlar des de l’oficina més callada?",
+"Quines decisions es van reobrir després de l’última trucada, i des d’on?"
+],
+"gNotesList": [
+"En aquest dispositiu només es desen els noms d’oficina i el nombre de persones, per a la pròxima trucada.",
+"Deixa-ho obert en una segona pantalla; no s’envia res."
+]
+}
+};
+/* =====================================================================
+   FB KIT · helpers (copy into every demo)
+   ===================================================================== */
+const LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LANG_LBL = { en: "EN", zh: "中文", es: "ES", "zh-Hant": "繁中", "ca": "CA" };
+let lang = "en";
+const T = () => I18N[lang];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? esc(v[k]) : m));
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* Seeded random + pairing codes: the same code on two phones gives the same scenario, no server needed. */
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function newCode(n = 6) { let s = ""; for (let i = 0; i < n; i++) s += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]; return s; }
+function seedFrom(code) { let h = 2166136261; for (const c of String(code).toUpperCase()) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+/* Sound: soft, short, optional */
+const sound = {
+  ctx: null, muted: store.get("fb_muted", false),
+  init() { if (!this.ctx) { const A = window.AudioContext || window.webkitAudioContext; if (A) this.ctx = new A(); } if (this.ctx && this.ctx.state === "suspended") this.ctx.resume(); },
+  tone(f, d = .3, g = .06, type = "sine", at = 0) {
+    if (this.muted || !this.ctx) return;
+    try { const t = this.ctx.currentTime + at, o = this.ctx.createOscillator(), a = this.ctx.createGain();
+      o.type = type; o.frequency.setValueAtTime(f, t); a.gain.setValueAtTime(.0001, t); a.gain.linearRampToValueAtTime(g, t + .02); a.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(a); a.connect(this.ctx.destination); o.start(t); o.stop(t + d + .05); } catch (e) {}
+  },
+  tap() { this.tone(520, .12, .04, "triangle"); },
+  chime() { [659.25, 880, 1318.5].forEach((f, i) => this.tone(f, 1.2, .05, "sine", i * .12)); },
+  warm() { [392, 493.88, 587.33].forEach((f, i) => this.tone(f, .9, .05, "sine", i * .1)); }
+};
+const buzz = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+
+/* Keep the screen awake while a timer runs (where supported) */
+let wakeLock = null;
+async function keepAwake(on) {
+  try {
+    if (on && "wakeLock" in navigator && !wakeLock) wakeLock = await navigator.wakeLock.request("screen");
+    if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
+  } catch (e) { wakeLock = null; }
+}
+
+/* Timer ring */
+function ringSVG() {
+  return `<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="54" fill="none" stroke-width="6"/><circle class="fg" id="ring" cx="60" cy="60" r="54" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="339.29" stroke-dashoffset="0"/></svg>`;
+}
+const timer = {
+  total: 90, left: 90, running: false, raf: 0, last: 0, onEnd: null, ended: false,
+  start(total, onEnd) { this.stop(); this.total = this.left = total; this.onEnd = onEnd; this.ended = false; this.resume(); },
+  resume() { if (this.running || this.ended) return; this.running = true; this.last = performance.now(); keepAwake(true); this.tick(); },
+  pause() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); this.paint(); },
+  stop() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); },
+  tick() {
+    if (!this.running) return;
+    const now = performance.now(); this.left = Math.max(0, this.left - (now - this.last) / 1000); this.last = now;
+    this.paint();
+    if (this.left <= 0) { this.running = false; this.ended = true; keepAwake(false); sound.chime(); buzz([60, 80, 60]); this.onEnd && this.onEnd(); return; }
+    this.raf = requestAnimationFrame(() => this.tick());
+  },
+  paint() {
+    const ring = $("ring"), num = $("tnum"), lbl = $("tlbl"), wrap = $("timer");
+    if (!ring) return;
+    ring.setAttribute("stroke-dashoffset", String(339.29 * (1 - this.left / this.total)));
+    const s = Math.ceil(this.left);
+    num.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    lbl.textContent = this.ended ? "" : (this.running ? T().left : T().paused);
+    wrap.classList.toggle("done", this.ended);
+  }
+};
+
+/* Toast */
+let toastT;
+function toast(msg) { const el = $("toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 2600); }
+
+/* Pass-the-phone curtain */
+function curtainHTML(title, lead, btnLabel, act) {
+  return `<div class="curtain">
+    <svg class="hand" viewBox="0 0 84 84" aria-hidden="true"><rect x="27" y="10" width="30" height="52" rx="7" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="42" cy="54" r="2.5" fill="#E2553F"/><path d="M14 54c6 0 10 4 13 9M70 54c-6 0-10 4-13 9" stroke="rgba(255,255,255,.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M34 72h16" stroke="#E2553F" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <h2>${title}</h2><p>${lead}</p>
+    <button class="btn pri" data-act="${act}" style="width:100%;margin-top:6px">${btnLabel} →</button></div>`;
+}
+
+
+
+/* =====================================================================
+   WHO SPOKE (build/next_tools/whospoke.js; words in whospoke.py)
+   ===================================================================== */
+const WS_KEY = "fb_whospoke";
+const APP = {
+  demo: "whospoke", first: "setup",
+  flow: ["setup", "live", "result"],
+  state: () => { const s = store.get(WS_KEY, null); return { offices: s && s.length >= 2 ? s.map(o => ({ n: o.n, p: o.p })) : null, t: [], cur: null, since: 0, start: 0 }; },
+  art() {
+    return `<svg viewBox="0 0 320 140" style="width:100%;max-width:420px;height:auto;margin:4px 0" aria-hidden="true">
+      <g font-family="Space Mono, monospace" font-size="11" fill="#6B6A70">
+        <text x="40" y="34">BCN</text><text x="40" y="70">BLR</text><text x="40" y="106">REMOTE</text></g>
+      <rect x="100" y="24" width="180" height="14" rx="7" fill="#E5E2DA"/><rect x="100" y="24" width="150" height="14" rx="7" fill="#17171A"/>
+      <rect x="100" y="60" width="180" height="14" rx="7" fill="#E5E2DA"/><rect x="100" y="60" width="38" height="14" rx="7" fill="#17171A"/>
+      <rect x="100" y="96" width="180" height="14" rx="7" fill="#E5E2DA"/><rect x="100" y="96" width="60" height="14" rx="7" fill="#17171A"/>
+      <path d="M190 18v26M220 54v26M160 90v26" stroke="#E2553F" stroke-width="2.5"/>
+    </svg>`;
+  },
+  screens: {
+    setup(t) {
+      const o = offices();
+      return `<h2>${esc(t.setupTitle)}</h2><p class="lead">${esc(t.setupLead)}</p>
+        <div style="display:grid;gap:8px">${o.map((x, i) => `<div style="display:grid;grid-template-columns:1fr 84px auto;gap:8px;align-items:end">
+          ${H.field(i ? "" : t.office, `offices.${i}.n`, { max: 24 })}${H.field(i ? "" : t.people, `offices.${i}.p`, { max: 4, type: "number" })}
+          <button class="x" data-act="rm" data-i="${i}" aria-label="${esc(t.remove)}" ${o.length <= 2 ? "disabled style=\"opacity:.3\"" : ""}>✕</button></div>`).join("")}</div>
+        ${o.length < 6 ? `<button class="btn" data-act="add" style="flex:none;align-self:flex-start;min-height:40px">${esc(t.addOffice)}</button>` : ""}
+        ${H.next(t.toCall, "toLive", { off: !namesOk(), id: "nextBtn" })}`;
+    },
+    live(t) {
+      const o = offices();
+      return `<h2>${esc(t.liveTitle)}</h2><p class="note">${esc(t.liveLead)}</p>
+        <div class="office-grid">${o.map((x, i) => `<button class="office${S.cur === i ? " live" : ""}" data-act="speak" data-i="${i}"><b>${esc(x.n)}</b><span id="ot${i}">${clock(spent(i))}</span></button>`).join("")}</div>
+        <div class="doc"><div class="row"><span>${esc(S.cur == null ? t.silence : o[S.cur].n)}</span><b id="elapsed">${esc(t.elapsed)} ${clock(Date.now() - S.start)}</b></div></div>
+        ${H.next(t.endCall, "toResult")}`;
+    },
+    result(t) {
+      const o = offices(), tot = o.reduce((a, _, i) => a + spent(i), 0) || 1, ppl = o.reduce((a, x) => a + (+x.p || 0), 0);
+      const share = o.map((_, i) => Math.round(100 * spent(i) / tot)), least = o.reduce((m, _, i) => (spent(i) < spent(m) ? i : m), 0);
+      return `<h2>${esc(t.resTitle)}</h2><p class="lead">${esc(t.resLead)}</p>
+        <div class="bars">${o.map((x, i) => { const pp = ppl && +x.p ? Math.round(100 * +x.p / ppl) : null; return `<div class="bar"><div class="bar-top"><b>${esc(x.n)}</b><span>${fmt(t.talk, { p: share[i] })}${pp != null ? " · " + fmt(t.ppl, { p: pp }) : ""}</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${share[i]}%"></div>${pp != null ? `<div class="bar-ppl" style="left:calc(${pp}% - 1px)"></div>` : ""}</div></div>`; }).join("")}</div>
+        ${tot < 60000 ? `<p class="note">${esc(t.tooShort)}</p>` : ""}
+        <div class="card" style="display:grid;gap:10px"><h3 style="margin:0;font-family:var(--syne);font-size:20px">${fmt(t.least, { o: o[least].n })}</h3>
+          <p class="note">${fmt(t.leastLead, { o: o[least].n })}</p>
+          <div class="sentence" id="inv">${esc(fmtR(t.inviteLine, { o: o[least].n }))}</div>
+          <button class="btn" data-act="copy" data-from="inv" style="flex:none">⧉ ${esc(t.copyInvite)}</button></div>
+        ${H.next(t.next, "toEnd")}`;
+    }
+  },
+  acts: {
+    add() { offices().push({ n: "", p: "" }); render(); },
+    rm(a) { const o = offices(); if (o.length > 2) { o.splice(+a.dataset.i, 1); keep(); render(); } },
+    toLive() { if (!namesOk()) return; S.offices = offices().filter(x => x.n.trim()).map(x => ({ n: x.n.trim(), p: x.p })); keep(); S.t = S.offices.map(() => 0); S.cur = null; S.start = Date.now(); go("live"); },
+    speak(a) {
+      const i = +a.dataset.i; stopCur();
+      if (S.cur !== i) { S.cur = i; S.since = Date.now(); buzz(15); } else S.cur = null;
+      document.querySelectorAll(".office").forEach((b, j) => b.classList.toggle("live", j === S.cur));
+      const lbl = document.querySelector(".doc .row span"); if (lbl) lbl.textContent = S.cur == null ? T().silence : offices()[S.cur].n;
+    },
+    toResult() { stopCur(); S.cur = null; keepAwake(false); sound.warm(); go("result"); },
+    toEnd() { go("end"); }
+  },
+  enter: { live() { keepAwake(true); clearInterval(APP.iv); APP.iv = setInterval(tick, 250); }, result() { clearInterval(APP.iv); }, end() { clearInterval(APP.iv); } },
+  input(k) { if (/^offices\.\d+\.n$/.test(k)) { const b = $("nextBtn"); if (b) b.disabled = !namesOk(); } keep(); },
+  againTo: "setup", keepOnAgain: () => ({})
+};
+function offices() { if (!S.offices) S.offices = T().defaults.map(n => ({ n, p: "" })); return S.offices; }
+const namesOk = () => offices().filter(x => String(x.n).trim()).length >= 2;
+const keep = () => store.set(WS_KEY, offices().filter(x => String(x.n).trim()).map(x => ({ n: String(x.n).trim(), p: x.p })));
+const spent = i => (S.t[i] || 0) + (S.cur === i ? Date.now() - S.since : 0);
+function stopCur() { if (S.cur != null) { S.t[S.cur] = (S.t[S.cur] || 0) + Date.now() - S.since; S.since = Date.now(); } }
+const clock = ms => { const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+function tick() {
+  if (S.screen !== "live") { clearInterval(APP.iv); return; }
+  offices().forEach((_, i) => { const el = $("ot" + i); if (el) el.textContent = clock(spent(i)); });
+  const e = $("elapsed"); if (e) e.textContent = T().elapsed + " " + clock(Date.now() - S.start);
+}
+
+/* =====================================================================
+   NEXT TOOLS · engine (build/next_tools/engine.js, shared by the ten tools that were "Next")
+   A tool defines APP = { demo, flow, first, state(), screens, acts, enter, stepOf, boot, art }.
+   Markup conventions: data-act="k" → APP.acts[k] or a built-in; data-go="screen"; data-b="key" (or key.0) binds an input to S;
+   data-c="key" data-v="i" picks a choice (APP.onChoose(key, v) if it wants more than S[key] = v and a render).
+   ===================================================================== */
+const stage = $("stage");
+const fmtR = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? v[k] : m));   // for text that never becomes HTML (calendar files, shared messages)
+
+function go(screen) {
+  timer.stop();
+  S.screen = screen; render(); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  const f = APP.enter && APP.enter[screen]; if (f) f();
+}
+function paintStepsBar() {
+  const fl = APP.flow || [], cur = APP.stepOf ? APP.stepOf(S.screen) : S.screen, at = fl.indexOf(cur);
+  $("steps").innerHTML = at < 0 ? "" : fl.map((_, i) => `<span class="${i < at ? "done" : i === at ? "now" : ""}"></span>`).join("");
+}
+function render() {
+  const t = T();
+  paintStepsBar();
+  let h;
+  if (S.screen === "intro") h = introHTML(t);
+  else if (S.screen === "teach") h = teachHTML(APP.demo);
+  else if (S.screen === "end") h = endHTML(t);
+  else h = APP.screens[S.screen](t);
+  const hadFocus = stage.contains(document.activeElement);
+  const same = render.last === S.screen; render.last = S.screen;
+  stage.innerHTML = h.startsWith("<section") ? h : `<section class="screen">${h}</section>`;
+  if (same) { const sec = stage.firstElementChild; if (sec) sec.style.animation = "none"; const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume; }
+  const f = stage.querySelector("[data-focus]");
+  if (f && hadFocus) f.focus({ preventScroll: true });
+  if (APP.after) APP.after(S.screen);
+}
+
+/* ---------- small builders ---------- */
+const H = {
+  btn(label, act, o = {}) {
+    const a = o.go ? `data-go="${o.go}"` : `data-act="${act}"`;
+    return `<button class="btn${o.pri ? " pri" : ""}" ${a}${o.id ? ` id="${o.id}"` : ""}${o.off ? " disabled" : ""}${o.focus ? " data-focus" : ""}${o.attr ? " " + o.attr : ""}>${label}</button>`;
+  },
+  next(label, act, o = {}) { return `<div class="spacer"></div><div class="btns">${o.left || ""}${H.btn(esc(label) + " →", act, Object.assign({ pri: 1, focus: 1 }, o))}</div>`; },
+  field(lbl, key, o = {}) {
+    const v = esc(getP(key) || ""), ph = o.ph ? ` placeholder="${esc(o.ph)}"` : "", ml = ` maxlength="${o.max || 120}"`;
+    const inp = o.area ? `<textarea data-b="${key}"${ml}${ph}>${v}</textarea>` : `<input data-b="${key}"${ml}${ph} autocomplete="off" value="${v}"${o.type ? ` type="${o.type}"` : ""}>`;
+    return `<label class="field"><span>${esc(lbl)}</span>${inp}</label>`;
+  },
+  names(t, a = "nameA", b = "nameB") {
+    return `<div class="row2">${H.field(t[a], "names.0", { ph: t.phA, max: 20 })}${H.field(t[b], "names.1", { ph: t.phB, max: 20 })}</div>`;
+  },
+  roles(k1, n1, k2, n2) {
+    return `<div class="roles"><div class="role speak"><div class="k">${esc(k1)}</div><div class="n">${esc(n1)}</div></div><div class="role"><div class="k">${esc(k2)}</div><div class="n">${esc(n2)}</div></div></div>`;
+  },
+  choices(key, items, o = {}) {   // items: [title, sub?, mark?]
+    const cur = getP(key), multi = Array.isArray(cur);
+    return `<div class="heard">${items.map((it, i) => {
+      const on = multi ? cur.includes(i) : cur === i;
+      return `<button data-c="${key}" data-v="${i}" aria-pressed="${on}" class="${on ? "on" : ""}"><span class="e">${it[2] != null ? it[2] : `<span style="font-family:var(--mono);font-size:12px">${String(i + 1).padStart(2, "0")}</span>`}</span><span><b>${esc(it[0])}</b>${it[1] ? `<small>${esc(it[1])}</small>` : ""}</span></button>`;
+    }).join("")}</div>`;
+  },
+  seg(key, items) { const cur = getP(key); return `<div class="seg">${items.map((x, i) => `<button data-c="${key}" data-v="${i}" aria-pressed="${cur === i}">${esc(x)}</button>`).join("")}</div>`; },
+  timer(t) {
+    return `<div class="timer" id="timer">${ringSVG()}<div class="num"><b id="tnum">0:00</b><small id="tlbl"></small></div></div>
+      <div class="btns" style="justify-content:center"><button class="btn" data-act="pause" id="pauseBtn" style="flex:none;min-width:140px">${esc(t.pause)}</button></div>`;
+  },
+  tip(txt, mark = "✦") { return `<div class="tip"><i>${mark}</i><span>${txt}</span></div>`; },
+  prompt(q, meta, sm) { return `<div class="prompt${sm ? " sm" : ""}"><div class="q">${esc(q)}</div>${meta ? `<div class="meta"><span>${esc(meta)}</span></div>` : ""}</div>`; },
+  stems(list) { return `<div class="stems">${list.map(s => `<div>${esc(s)}</div>`).join("")}</div>`; },
+  kicker(s, c) { return `<span class="kicker"${c ? ` style="color:${c}"` : ""}>${esc(s)}</span>`; }
+};
+function startTimer(secs, onEnd) { timer.start(secs, onEnd || (() => toast(T().timeUp))); const pb = $("pauseBtn"); if (pb) pb.textContent = T().pause; }
+
+/* paths into S: "names.0", "agree.q" */
+function getP(p) { return String(p).split(".").reduce((o, k) => (o == null ? o : o[k]), S); }
+function setP(p, v) { const ks = String(p).split("."), last = ks.pop(); const o = ks.reduce((o, k) => o[k], S); o[last] = v; }
+
+function introHTML(t) {
+  return `<section class="screen">
+    <span class="kicker">${esc(t.introKicker)}</span><h1>${t.introTitle}</h1>
+    <p class="lead">${esc(t.introLead)}</p>
+    <div class="pills">${t.introMeta.map(m => `<span class="pill">${esc(m)}</span>`).join("")}</div>
+    ${APP.art ? APP.art() : ""}
+    ${APP.introExtra ? APP.introExtra(t) : ""}
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn pri" data-act="start" data-focus>${esc(t.start)} →</button></div>
+  </section>`;
+}
+function endHTML(t) {
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--good)">✓ ${esc(t.endKicker)}</span>
+    <h2>${esc(t.endTitle)}</h2>
+    <p class="serif">${esc(t.endLead)}</p>
+    ${APP.endExtra ? APP.endExtra(t) : ""}
+    <div class="monday"><b>${esc(t.monday)}</b>${esc(t.mondayTxt)}</div>
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn" data-act="again">↻ ${esc(t.again)}</button><button class="btn pri" data-act="teach" data-focus>${esc(t.passOn)} →</button></div>
+  </section>`;
+}
+function teachHTML(demo) {
+  const t = T(), chain = store.get("fb_teachback", []).filter(c => c.demo === demo);
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--accent-ink)">${esc(t.teachKicker)}</span>
+    <h2>${esc(t.teachTitle)}</h2>
+    <p class="lead">${esc(t.teachLead)}</p>
+    <div class="steps3">${t.t3.map((s, i) => `<div><b>0${i + 1}</b><span>${esc(s)}</span><small style="display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4">${esc(t.t3sub[i])}</small></div>`).join("")}</div>
+    <div class="card" style="display:grid;gap:12px">
+      <label class="field"><span>${esc(t.learnerName)}</span><input id="lName" maxlength="30" autocomplete="off" placeholder="${esc(t.learnerPh)}"></label>
+      <label class="field"><span>${esc(t.learned)}</span><textarea id="lText" maxlength="280" placeholder="${esc(t.learnedPh)}"></textarea></label>
+      <button class="btn pri" data-act="saveTeach" style="flex:none">${esc(t.save)}</button>
+    </div>
+    <div><span class="kicker">${esc(t.chainTitle)}</span>
+      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang))))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
+    <a class="link" href="/tools/teachback">⊂⊃ ${esc(t.teachbackLink)}</a>
+    <button class="link" data-act="restart">${esc(t.restart)}</button>
+  </section>`;
+}
+
+/* ---------- device-made things: copy, a calendar file, a link ---------- */
+function copyText(text, msg) {
+  text = String(text || "").trim(); if (!text) return;
+  const ok = () => toast(msg || T().copied);
+  const fb = () => { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (_) {} ta.remove(); ok(); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok).catch(fb); else fb();
+}
+function shareText(text, url) {
+  const data = { text: url ? text + "\n" + url : text };
+  if (navigator.share) navigator.share(data).catch(() => {}); else copyText(data.text);
+}
+const pad2 = n => String(n).padStart(2, "0");
+const icsDate = d => `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;
+const icsEsc = s => String(s || "").replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/[,;]/g, m => "\\" + m);
+/* events: [{title, desc, start: Date, mins, rrule}] → one .ics made here, nothing sent */
+function downloadICS(name, events) {
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FREE//BUILDER//tools//EN", "CALSCALE:GREGORIAN"];
+  events.forEach((e, i) => {
+    const end = new Date(e.start.getTime() + (e.mins || 15) * 60000);
+    L.push("BEGIN:VEVENT", `UID:${Date.now()}-${i}@freebuilder.net`, `DTSTAMP:${icsDate(new Date())}`, `DTSTART:${icsDate(e.start)}`, `DTEND:${icsDate(end)}`,
+      `SUMMARY:${icsEsc(e.title)}`, `DESCRIPTION:${icsEsc(e.desc)}`);
+    if (e.rrule) L.push(`RRULE:${e.rrule}`);
+    L.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(e.title)}`, "TRIGGER:-PT15M", "END:VALARM", "END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  const blob = new Blob([L.join("\r\n")], { type: "text/calendar" }), a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name + ".ics"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast(T().icsMade);
+}
+function nextWeekday(dow, h = 9, m = 0) { const d = new Date(); d.setHours(h, m, 0, 0); let add = (dow - d.getDay() + 7) % 7; if (add === 0 && d <= new Date()) add = 7; d.setDate(d.getDate() + add); return d; }
+const b64e = o => { const s = unescape(encodeURIComponent(JSON.stringify(o))); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+const b64d = s => { try { s = s.replace(/-/g, "+").replace(/_/g, "/"); return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch (e) { return null; } };
+const here = () => location.origin + location.pathname;
+const dayFmt = d => { try { return new Date(d).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang)), { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return String(d); } };
+const shuffle = (a, r = Math.random) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+const S = Object.assign({ screen: "intro" }, APP.state());
+
+/* ---------- events ---------- */
+stage.addEventListener("input", e => {
+  const b = e.target.dataset.b; if (!b) return;
+  setP(b, e.target.value);
+  if (APP.input) APP.input(b, e.target.value, e.target);
+});
+stage.addEventListener("click", e => {
+  sound.init();
+  const c = e.target.closest("[data-c]"), g = e.target.closest("[data-go]"), a = e.target.closest("[data-act]");
+  if (c) {
+    sound.tap(); const k = c.dataset.c, v = +c.dataset.v;
+    if (APP.onChoose && APP.onChoose(k, v, c) === false) return;
+    const cur = getP(k);
+    if (Array.isArray(cur)) { const i = cur.indexOf(v); if (i >= 0) cur.splice(i, 1); else if (cur.length < (APP.maxPick && APP.maxPick[k] || 99)) cur.push(v); else toast(T().pickMax); }
+    else setP(k, v);
+    render(); return;
+  }
+  if (g) { sound.tap(); go(g.dataset.go); return; }
+  if (!a) return;
+  const k = a.dataset.act; sound.tap();
+  if (APP.acts && APP.acts[k]) { APP.acts[k](a); return; }
+  switch (k) {
+    case "start": go(APP.first); break;
+    case "pause":
+      if (timer.ended) return;
+      if (timer.running) { timer.pause(); a.textContent = T().resume; } else { timer.resume(); a.textContent = T().pause; }
+      break;
+    case "again": { const keep = APP.keepOnAgain ? APP.keepOnAgain() : {}; Object.assign(S, APP.state(), keep); go(APP.againTo || APP.first); break; }
+    case "teach": go("teach"); break;
+    case "saveTeach": {
+      const text = ($("lText").value || "").trim(), name = ($("lName").value || "").trim();
+      if (!text) { $("lText").focus(); return; }
+      const chain = store.get("fb_teachback", []); chain.push({ demo: APP.demo, text, name, at: Date.now() }); store.set("fb_teachback", chain.slice(-50));
+      sound.warm(); toast(T().saved); render(); break; }
+    case "restart": Object.assign(S, { screen: "intro" }, APP.state()); go("intro"); break;
+    case "copy": { const el = $(a.dataset.from); copyText(el ? (el.value != null && el.tagName !== "DIV" ? el.value : el.innerText) : a.dataset.text); break; }
+  }
+});
+window.__app = { S, go, render, timer, APP };
+if (APP.boot) APP.boot();
+
+/* ---------- facilitator guide ---------- */
+const drawer = $("drawer");
+function openGuide() {
+  const t = T();
+  $("panel").innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+      <div><span class="kicker">${esc(t.gKicker)}</span><h3 id="g-title">${esc(t.gTitle)}</h3></div>
+      <button class="x" data-close aria-label="${esc(t.close)}">✕</button>
+    </div>
+    <h4>${esc(t.gWhy)}</h4><p>${esc(t.gWhyTxt)}</p>
+    <h4>${esc(t.gSteps)}</h4><ol>${t.gStepList.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    <h4>${esc(t.gDebrief)}</h4><ul>${t.gDebriefList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>
+    <h4>${esc(t.gNotes)}</h4><ul>${t.gNotesList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>`;
+  drawer.classList.add("show");
+  setTimeout(() => drawer.querySelector("[data-close]").focus({ preventScroll: true }), 60);
+}
+function closeGuide() { drawer.classList.remove("show"); $("btn-guide").focus({ preventScroll: true }); }
+drawer.addEventListener("click", e => { if (e.target === drawer || e.target.closest("[data-close]")) closeGuide(); });
+$("btn-guide").addEventListener("click", openGuide);
+window.addEventListener("keydown", e => { if (e.key === "Escape" && drawer.classList.contains("show")) closeGuide(); });
+
+/* ---------- language + sound ---------- */
+function paintSound() {
+  const b = $("btn-sound"), t = T();
+  b.innerHTML = sound.muted
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  b.setAttribute("aria-label", sound.muted ? t.soundOff : t.soundOn); b.title = b.getAttribute("aria-label");
+}
+$("btn-sound").addEventListener("click", () => { sound.muted = !sound.muted; store.set("fb_muted", sound.muted); sound.init(); paintSound(); if (!sound.muted) sound.tap(); });
+
+function applyLang(l) {
+  lang = LANGS.includes(l) ? l : "en";
+  document.documentElement.lang = (/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang));
+  document.title = T().title;
+  $("lang-lbl").textContent = LANG_LBL[lang];
+  $("btn-guide").setAttribute("aria-label", T().guide); drawer.setAttribute("aria-label", T().guide);
+  document.querySelectorAll("[data-t]").forEach(el => { const v = T()[el.dataset.t]; if (typeof v === "string") el.textContent = v; });
+  paintSound();
+  render();               // the clock object survives a re-render
+  timer.paint();
+  const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume;
+  if (drawer.classList.contains("show")) openGuide();
+  try { localStorage.setItem("wm_preferred_lang", lang); localStorage.setItem("wm_cases_lang", lang); } catch (e) {}
+}
+$("btn-lang").addEventListener("click", () => applyLang(LANGS[(LANGS.indexOf(lang) + 1) % LANGS.length]));
+window.FBL_SET = l => applyLang(l); window.FBL_GET = () => lang;
+
+/* ---------- boot ---------- */
+let saved = null;
+try { saved = localStorage.getItem("wm_preferred_lang") || localStorage.getItem("wm_cases_lang"); } catch (e) {}
+const nav = (navigator.language || "").toLowerCase();
+applyLang(LANGS.includes(saved) ? saved : nav.startsWith("zh") ? "zh" : nav.startsWith("es") ? "es" : "en");
+document.addEventListener("visibilitychange", () => { if (!document.hidden && timer.running) keepAwake(true); });
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {}); // offline cache
+})();
+</script>
+<script src="/fbkit/pass.js?v=758a7441b7" defer></script>
+</body>
+</html>

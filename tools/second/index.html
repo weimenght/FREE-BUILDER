@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dde632a0dc"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title id="page-title">Second Opinion — FREE//BUILDER</title>
+  <meta name="description" content="Practise asking for and giving a second opinion before something goes out: the senior person asks first, three questions, Go / Wait / Stop.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
+  <!-- Brand fonts load without blocking the page: where Google Fonts is slow or blocked, system fonts show instantly. -->
+  <link rel="stylesheet" href="/fonts/fonts.css">
+
+  <link rel="stylesheet" href="/fbkit/s-b871aaaa7f.css">
+<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
+:root{color-scheme:light dark}
+@media (prefers-color-scheme: dark){
+:root{--paper:#141416;--ink:#ECEBE6;--muted:#A8A7AD;--line:#303036;--grid:#26262B;--white:#1D1D21;--inkbg:#2B2B31;--inkbd:#3B3B42;--accent-ink:#F28C76;--good:#62C48F;--paper-rgb:20,20,22;--dot-rgb:255,255,255;--ink-rgb:236,235,230;--white-rgb:29,29,33;--accent-text:#F2806A;--warn-ink:#E3B25C}
+html,body{background-color:var(--paper)}
+/* primary actions read as light on dark */
+.btn.pri,.cta a.pri,.chip.pri{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.btn.pri:hover,.cta a.pri:hover,.chip.pri:hover{background:#fff!important;border-color:#fff!important}
+.btn[disabled]{opacity:.45}
+.seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.steps span.done{background:#ECEBE6}
+.curtain{border:1px solid #3B3B42}
+/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
+.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
+/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
+.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
+/* illustrations keep their light look on a plate */
+.screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
+.plate{background:#fff!important}
+.card-art~.text-ink\/60,.card-art~span .text-ink\/60{color:rgba(23,23,26,.62)!important}
+.text-accent{color:#F2806A!important}
+.bg-white\/90.text-ink,.bg-white\/90 .text-ink{color:#ECEBE6}
+img{filter:none}
+::selection{background:#E2553F;color:#fff}
+}
+</style></head>
+<body>
+  <div class="dots" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="FREE//BUILDER">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" style="overflow:visible">
+            <rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/>
+            <rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect class="last" x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/>
+          </svg>
+        </span>
+        <span class="brand-txt"><b>FREE<i>//</i>BUILDER</b><span data-t="product">Second Opinion</span></span>
+      </a>
+      <div class="top-actions">
+        <button class="chip" id="btn-lang" type="button" aria-label="Language" title="EN / 中文 / ES">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <b id="lang-lbl">EN</b>
+        </button>
+        <button class="chip" id="btn-sound" type="button"></button>
+        <button class="chip" id="btn-guide" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="lbl" data-t="guide">Facilitators</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="sr" data-t="product">Second Opinion</h1>
+    <div class="steps" id="steps" aria-hidden="true"></div>
+    <div id="stage" aria-live="polite"></div>
+  </main>
+
+  <footer class="fbf" data-fbf-root><div class="fbf-in"><div class="fbf-row"><span class="fbf-own"><a class="fbf-lg fbf-nm fbf-nm-fb" href="/" aria-label="FREE//BUILDER"><svg class="fb-mk" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg><span class="fbf-name">FREE<i>//</i>BUILDER</span></a><span class="fbf-cy"><svg class="fbf-c" viewBox="0 0 24 24" role="img" aria-label="©"><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.3 9.4a4.3 4.3 0 1 0 0 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="fbf-year">2026</span></span></span><nav aria-label="Footer"><span class="fbf-dot" aria-hidden="true">·</span><a href="/privacy/" data-fbf="privacy">Your privacy</a><span class="fbf-dot" aria-hidden="true">·</span><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai fbf-ico" aria-label="AI" title="AI" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="r-st" d="M12 7.2V4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle class="r-ant" cx="12" cy="3.4" r="1.6" fill="currentColor"/><rect x="4.6" y="7.4" width="14.8" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><g class="r-eyes"><circle cx="9.4" cy="12.8" r="1.55" fill="currentColor"/><circle cx="14.6" cy="12.8" r="1.55" fill="currentColor"/></g><path d="M10 16.4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12.2v2.6M21 12.2v2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a> &amp; <a href="https://www.after-hours.work/" class="fbf-heart fbf-ico" aria-label="♥ after hours" title="♥" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="h-b" d="M12 20.4s-7.8-4.7-7.8-10.3A4.4 4.4 0 0 1 12 7.5a4.4 4.4 0 0 1 7.8 2.6c0 5.6-7.8 10.3-7.8 10.3z" fill="currentColor"/><path class="h-s" d="M7.6 9.6a2.2 2.2 0 0 1 2.1-1.7" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round"/></svg></a></span></nav></div><span class="fbf-x" data-t="privacy">Made-up cards. Nothing is recorded or sent.</span></div></footer>
+
+  <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="g-title">
+    <div class="panel" id="panel"></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+/* =====================================================================
+   COPY — EN / 中文 / ES (generated by build/next_tools.py)
+   ===================================================================== */
+const I18N = {
+"en": {
+"guide": "Facilitators",
+"back": "Part of FREE//BUILDER’s services ↗",
+"soundOn": "Sound on",
+"soundOff": "Sound off",
+"left": "left",
+"paused": "paused",
+"close": "Close",
+"resume": "Resume",
+"pause": "Pause",
+"start": "Start",
+"next": "Next",
+"backBtn": "Back",
+"nameA": "Person A",
+"nameB": "Person B",
+"phA": "e.g. Ana",
+"phB": "e.g. Leo",
+"copy": "Copy",
+"copied": "Copied.",
+"share": "Send it",
+"icsMade": "Calendar file made on this phone. Open it to add it.",
+"pickMax": "That’s the most you can pick.",
+"timeUp": "Time’s up. Finish your sentence.",
+"swap": "Swap",
+"again": "Practise again",
+"passOn": "Pass it on",
+"monday": "Try this on Monday",
+"teachKicker": "Pass it on",
+"learnerName": "Their name (optional)",
+"learnerPh": "e.g. Mei",
+"learned": "What they’ll try, in their own words",
+"learnedPh": "Hand them the phone…",
+"save": "Save to this phone",
+"chainTitle": "People you’ve passed it on to",
+"chainEmpty": "No one yet. Your first teach-back will appear here.",
+"saved": "Saved on this phone only.",
+"restart": "Back to the start",
+"teachbackLink": "Teach-Back Chain ↗",
+"gKicker": "Facilitator guide",
+"gWhy": "Why it works",
+"gSteps": "Running it",
+"gDebrief": "Debrief questions",
+"gNotes": "Notes",
+"passTo": "Pass the phone to {n}",
+"ready": "I’m {n}",
+"optional": "optional",
+"title": "Second Opinion — FREE//BUILDER",
+"product": "Second Opinion",
+"privacy": "Made-up cards. Nothing is recorded or sent.",
+"introKicker": "Speaking up · The desk",
+"introTitle": "Second <span class=\"accent-word\">Opinion</span>",
+"introLead": "Checking a senior colleague’s number feels like an accusation, so people don’t. Make it a habit instead: the senior person asks first, “Second opinion?”, the other asks three plain questions and says Go, Wait or Stop. Each card has one slip in it.",
+"introMeta": [
+"2 people, senior asks first",
+"1 phone",
+"≈ 8 minutes"
+],
+"setupTitle": "Who’s on the desk?",
+"maker": "Asks (more senior)",
+"checker": "Checks",
+"makerK": "Asks",
+"checkerK": "Checks",
+"setupNote": "The more senior person asks first. That’s the whole point.",
+"cMakerT": "{m}, your card",
+"cMakerL": "{c}, look away. {m} reads something about to go out.",
+"cardTitle": "About to go out",
+"cardLead": "Read it once. Then ask {c} for a second opinion, out loud, in this order:",
+"script": [
+"“Second opinion?”",
+"What it is, and the number",
+"Why it’s right",
+"What worries me"
+],
+"readIt": "I’ve read it",
+"cCheckT": "Phone to {c}",
+"cCheckL": "{m} keeps the details in their head and asks out loud. {c} gets the questions.",
+"checkTitle": "{c}, ask these three",
+"qs": [
+"“Read me the number back.”",
+"“What would make this wrong?”",
+"“What happens if we wait ten minutes?”"
+],
+"verdict": "Then say one:",
+"verdicts": [
+[
+"Go",
+"it holds"
+],
+[
+"Wait",
+"check one thing"
+],
+[
+"Stop",
+"something’s off"
+]
+],
+"reveal": "Show the card",
+"revealTitle": "The slip",
+"said": "{c} said: {v}",
+"slipLbl": "The slip",
+"revealQ": "Whether it was caught or not: what helped the question get asked?",
+"thanksStem": "{m}, say it back: “Thanks for checking.”",
+"swapTitle": "Swap",
+"swapLead": "Now {s} asks and {l} checks. A new card.",
+"phraseTitle": "Your desk’s phrase",
+"phraseLead": "Agree the words anyone can say, to anyone, before something goes out.",
+"phrases": [
+"Second opinion?",
+"Can I read it back?",
+"Two minutes before it goes?"
+],
+"ownPhrase": "Or your own",
+"toEnd": "That’s ours",
+"phraseCopy": "From today, anyone on this desk can say “{p}” to anyone, before anything goes out.",
+"cards": [
+{
+"t": "Supplier payment",
+"rows": [
+[
+"Supplier",
+"Garcia Logistics"
+],
+[
+"Invoice",
+"€4,820.00"
+],
+[
+"Payment",
+"€48,200.00"
+],
+[
+"Send",
+"Today, 16:00"
+]
+],
+"slip": 2,
+"why": "The payment is ten times the invoice: one zero too many."
+},
+{
+"t": "Price to a client",
+"rows": [
+[
+"Client",
+"Nordwind"
+],
+[
+"Agreed last week",
+"12.40 per unit"
+],
+[
+"In the email",
+"14.20 per unit"
+],
+[
+"Volume",
+"8,000 units"
+]
+],
+"slip": 2,
+"why": "Two digits swapped: 12.40 became 14.20."
+},
+{
+"t": "Currency trade",
+"rows": [
+[
+"Client asked to",
+"Sell USD, buy EUR"
+],
+[
+"Order on screen",
+"Buy USD, sell EUR"
+],
+[
+"Amount",
+"USD 2,000,000"
+],
+[
+"Settles",
+"In two business days"
+]
+],
+"slip": 1,
+"why": "The order is the wrong way round: buy instead of sell."
+},
+{
+"t": "Figure for the board",
+"rows": [
+[
+"Slide",
+"Q3 revenue growth"
+],
+[
+"Finance table",
+"+1.2% on Q2"
+],
+[
+"On the slide",
+"+12% on Q2"
+],
+[
+"Presented",
+"Thursday, 9:00"
+]
+],
+"slip": 2,
+"why": "The decimal point is gone: 1.2% became 12%."
+},
+{
+"t": "Contract to sign",
+"rows": [
+[
+"Client",
+"Nordwand GmbH"
+],
+[
+"In the contract",
+"Nordwind GmbH"
+],
+[
+"Term",
+"24 months"
+],
+[
+"Signs",
+"Sam, MD"
+]
+],
+"slip": 1,
+"why": "The client’s name is spelled wrong: Nordwind, not Nordwand."
+},
+{
+"t": "Meeting invite to 40 people",
+"rows": [
+[
+"Meeting",
+"All-hands, Bengaluru + Barcelona"
+],
+[
+"Time",
+"17:30 Barcelona"
+],
+[
+"That is",
+"22:00 in Bengaluru"
+],
+[
+"Length",
+"60 minutes"
+]
+],
+"slip": 2,
+"why": "22:00 is the middle of the evening for half the room; nobody checked the other office."
+}
+],
+"sumTitle": "Both asked, both checked",
+"endKicker": "Second opinions practised",
+"endTitle": "Checking is a habit, not an accusation.",
+"endLead": "The senior person asked first, so asking is safe. Three plain questions and three plain answers; nobody had to be brave.",
+"mondayTxt": "Ask for one second opinion before something of yours goes out this week, out loud, to someone more junior.",
+"teachTitle": "Teach the desk next to yours.",
+"teachLead": "Show them the three moves, then let them write who they’ll ask first.",
+"t3": [
+"Senior asks first",
+"Three questions",
+"Go · Wait · Stop"
+],
+"t3sub": [
+"“second opinion?”",
+"read back, wrong if, wait",
+"then “thanks for checking”"
+],
+"gTitle": "Running Second Opinion",
+"gWhyTxt": "On a desk the cost of a slip is high and the cost of speaking up feels higher. When the senior person asks for the check, and the check is three fixed questions with three fixed answers, checking stops being personal. The made-up slips let people practise catching one without anyone being wrong.",
+"gStepList": [
+"Pairs, the more senior person asks first.",
+"The asker reads a card privately, then asks out loud: “Second opinion?”, the number, why, what worries me.",
+"The checker asks the three questions in 90 seconds and says Go, Wait or Stop.",
+"Show the slip, say thanks for checking, swap. Agree the desk’s phrase."
+],
+"gDebriefList": [
+"Which question found the slip, or would have?",
+"What would stop you asking this for real tomorrow?",
+"Who on the desk should hear the senior people ask first?"
+],
+"gNotesList": [
+"The cards are invented and stay in the page; nothing about your real work is entered.",
+"Asking first matters more than catching the slip. Don’t keep count."
+]
+},
+"zh": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服务的一部分 ↗",
+"soundOn": "声音开",
+"soundOff": "声音关",
+"left": "剩余",
+"paused": "已暂停",
+"close": "关闭",
+"resume": "继续",
+"pause": "暂停",
+"start": "开始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "复制",
+"copied": "已复制。",
+"share": "发出去",
+"icsMade": "日历文件已在这台手机上生成。打开它即可添加。",
+"pickMax": "最多只能选这么多。",
+"timeUp": "时间到。把这句话说完。",
+"swap": "交换",
+"again": "再练一次",
+"passOn": "传下去",
+"monday": "周一试试这个",
+"teachKicker": "传下去",
+"learnerName": "TA 的名字（可选）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算试什么，用 TA 自己的话",
+"learnedPh": "把手机递给 TA……",
+"save": "保存在这台手机上",
+"chainTitle": "你传给过的人",
+"chainEmpty": "还没有人。你的第一次教回去会出现在这里。",
+"saved": "只保存在这台手机上。",
+"restart": "回到开头",
+"teachbackLink": "教回去链条 ↗",
+"gKicker": "主持人指南",
+"gWhy": "为什么有效",
+"gSteps": "怎么带",
+"gDebrief": "复盘问题",
+"gNotes": "备注",
+"passTo": "把手机递给 {n}",
+"ready": "我是 {n}",
+"optional": "可选",
+"title": "再确认一下 — FREE//BUILDER",
+"product": "再确认一下",
+"privacy": "卡片都是编的。不记录，不发送。",
+"introKicker": "敢于开口 · 交易台",
+"introTitle": "再<span class=\"accent-word\">确认一下</span>",
+"introLead": "核对资深同事的数字，感觉像是在指责，所以大家都不做。不如把它变成习惯：资深的人先问“再确认一下？”，另一个人问三个简单的问题，然后说“可以”“等一下”或“停”。每张卡里都藏着一个小错。",
+"introMeta": [
+"2 人，资深的先问",
+"1 部手机",
+"约 8 分钟"
+],
+"setupTitle": "谁在台上？",
+"maker": "提问的人（更资深）",
+"checker": "核对的人",
+"makerK": "请人核对",
+"checkerK": "核对",
+"setupNote": "更资深的人先问。重点就在这里。",
+"cMakerT": "{m}，这是你的卡",
+"cMakerL": "{c}，先别看。{m} 要读一件马上要发出去的东西。",
+"cardTitle": "马上要发出去",
+"cardLead": "读一遍。然后大声请 {c} 再确认一下，按这个顺序：",
+"script": [
+"“再确认一下？”",
+"这是什么，数字是多少",
+"为什么是对的",
+"我担心什么"
+],
+"readIt": "我读完了",
+"cCheckT": "把手机给 {c}",
+"cCheckL": "{m} 把内容记在脑子里，大声提出请求。{c} 拿到问题。",
+"checkTitle": "{c}，问这三个问题",
+"qs": [
+"“把那个数字再念一遍给我听。”",
+"“什么情况下这会是错的？”",
+"“如果我们等十分钟，会怎样？”"
+],
+"verdict": "然后说其中一个：",
+"verdicts": [
+[
+"可以",
+"没问题"
+],
+[
+"等一下",
+"查一件事"
+],
+[
+"停",
+"有地方不对"
+]
+],
+"reveal": "亮出卡片",
+"revealTitle": "那个小错",
+"said": "{c} 说的是：{v}",
+"slipLbl": "小错在这里",
+"revealQ": "不管有没有发现：是什么让这个问题问得出口？",
+"thanksStem": "{m}，回一句：“谢谢你帮我看。”",
+"swapTitle": "交换",
+"swapLead": "现在 {s} 来问，{l} 来核对。换一张新卡。",
+"phraseTitle": "你们台上的那句话",
+"phraseLead": "约定一句话：东西发出去之前，谁都可以对谁说。",
+"phrases": [
+"再确认一下？",
+"我念一遍给你听？",
+"发之前给两分钟？"
+],
+"ownPhrase": "或者你们自己的",
+"toEnd": "就这句",
+"phraseCopy": "从今天起，东西发出去之前，台上任何人都可以对任何人说“{p}”。",
+"cards": [
+{
+"t": "供应商付款",
+"rows": [
+[
+"供应商",
+"Garcia 物流"
+],
+[
+"发票金额",
+"€4,820.00"
+],
+[
+"付款金额",
+"€48,200.00"
+],
+[
+"发送",
+"今天 16:00"
+]
+],
+"slip": 2,
+"why": "付款金额是发票的十倍：多了一个零。"
+},
+{
+"t": "给客户的报价",
+"rows": [
+[
+"客户",
+"Nordwind"
+],
+[
+"上周谈好的",
+"每件 12.40"
+],
+[
+"邮件里写的",
+"每件 14.20"
+],
+[
+"数量",
+"8,000 件"
+]
+],
+"slip": 2,
+"why": "两个数字调换了：12.40 变成了 14.20。"
+},
+{
+"t": "外汇交易",
+"rows": [
+[
+"客户要求",
+"卖美元，买欧元"
+],
+[
+"屏幕上的指令",
+"买美元，卖欧元"
+],
+[
+"金额",
+"2,000,000 美元"
+],
+[
+"交割",
+"两个工作日后"
+]
+],
+"slip": 1,
+"why": "指令方向反了：应该卖，却成了买。"
+},
+{
+"t": "给董事会的数字",
+"rows": [
+[
+"幻灯片",
+"第三季度营收增长"
+],
+[
+"财务表",
+"比第二季度 +1.2%"
+],
+[
+"幻灯片上",
+"比第二季度 +12%"
+],
+[
+"汇报时间",
+"周四 9:00"
+]
+],
+"slip": 2,
+"why": "小数点丢了：1.2% 变成了 12%。"
+},
+{
+"t": "要签的合同",
+"rows": [
+[
+"客户",
+"Nordwand GmbH"
+],
+[
+"合同上写的",
+"Nordwind GmbH"
+],
+[
+"期限",
+"24 个月"
+],
+[
+"签字人",
+"Sam，总监"
+]
+],
+"slip": 1,
+"why": "客户名字拼错了：写成了 Nordwind，应该是 Nordwand。"
+},
+{
+"t": "发给 40 人的会议邀请",
+"rows": [
+[
+"会议",
+"全员大会，班加罗尔 + 巴塞罗那"
+],
+[
+"时间",
+"巴塞罗那 17:30"
+],
+[
+"也就是",
+"班加罗尔 22:00"
+],
+[
+"时长",
+"60 分钟"
+]
+],
+"slip": 2,
+"why": "22:00 对一半的人来说已是深夜；没人替另一个办公室想一想。"
+}
+],
+"sumTitle": "两个人都问了，也都核对了",
+"endKicker": "“再确认一下”练过了",
+"endTitle": "核对是一种习惯，不是一种指责。",
+"endLead": "资深的人先问了，所以开口是安全的。三个简单的问题，三个简单的回答；没有人需要鼓起勇气。",
+"mondayTxt": "这周你有东西要发出去之前，大声请一位比你资历浅的人再确认一下。",
+"teachTitle": "教给隔壁的台子。",
+"teachLead": "给他们看这三步，再让他们写下第一个要请谁来核对。",
+"t3": [
+"资深的先问",
+"三个问题",
+"可以 · 等一下 · 停"
+],
+"t3sub": [
+"“再确认一下？”",
+"复述、何时会错、等一等",
+"然后“谢谢你帮我看”"
+],
+"gTitle": "怎么带“再确认一下”",
+"gWhyTxt": "在交易台上，出错的代价很高，而开口的代价感觉更高。当资深的人主动请人核对，而核对就是三个固定的问题加三个固定的回答，核对就不再是针对个人。编出来的小错，让大家可以练习发现错误，而不让任何人出丑。",
+"gStepList": [
+"两人一组，更资深的人先问。",
+"提问的人私下读卡，然后大声说：“再确认一下？”、数字、理由、担心。",
+"核对的人在 90 秒内问三个问题，然后说“可以”“等一下”或“停”。",
+"亮出小错，说声谢谢，交换。约定台上的那句话。"
+],
+"gDebriefList": [
+"哪个问题发现了小错，或者本可以发现？",
+"明天真要这样问的话，什么会拦住你？",
+"台上谁最需要听到资深的人先问？"
+],
+"gNotesList": [
+"卡片都是编的，只在页面里；不输入任何真实工作内容。",
+"先开口问，比发现小错更重要。不要计数。"
+]
+},
+"es": {
+"guide": "Facilitadores",
+"back": "Parte de los servicios de FREE//BUILDER ↗",
+"soundOn": "Sonido activado",
+"soundOff": "Sonido desactivado",
+"left": "restante",
+"paused": "en pausa",
+"close": "Cerrar",
+"resume": "Seguir",
+"pause": "Pausa",
+"start": "Empezar",
+"next": "Siguiente",
+"backBtn": "Atrás",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ej., Ana",
+"phB": "p. ej., Leo",
+"copy": "Copiar",
+"copied": "Copiado.",
+"share": "Enviarlo",
+"icsMade": "Archivo de calendario hecho en este móvil. Ábrelo para añadirlo.",
+"pickMax": "No puedes elegir más.",
+"timeUp": "Se acabó el tiempo. Termina la frase.",
+"swap": "Cambiar",
+"again": "Practicar otra vez",
+"passOn": "Pásalo",
+"monday": "Pruébalo el lunes",
+"teachKicker": "Pásalo",
+"learnerName": "Su nombre (opcional)",
+"learnerPh": "p. ej., Mei",
+"learned": "Lo que va a probar, con sus palabras",
+"learnedPh": "Pásale el móvil…",
+"save": "Guardar en este móvil",
+"chainTitle": "Personas a las que se lo has pasado",
+"chainEmpty": "Nadie todavía. Tu primer enseñar-de-vuelta aparecerá aquí.",
+"saved": "Guardado solo en este móvil.",
+"restart": "Volver al principio",
+"teachbackLink": "Cadena de Enseñar de Vuelta ↗",
+"gKicker": "Guía para facilitar",
+"gWhy": "Por qué funciona",
+"gSteps": "Cómo llevarlo",
+"gDebrief": "Preguntas para cerrar",
+"gNotes": "Notas",
+"passTo": "Pásale el móvil a {n}",
+"ready": "Soy {n}",
+"optional": "opcional",
+"title": "Segunda Opinión — FREE//BUILDER",
+"product": "Segunda Opinión",
+"privacy": "Tarjetas inventadas. No se graba ni se envía nada.",
+"introKicker": "Hablar claro · La mesa",
+"introTitle": "Segunda <span class=\"accent-word\">Opinión</span>",
+"introLead": "Revisar la cifra de un colega senior parece una acusación, así que nadie lo hace. Conviértelo en costumbre: la persona senior pregunta primero «¿Segunda opinión?», la otra hace tres preguntas sencillas y dice Adelante, Espera o Alto. Cada tarjeta tiene un desliz.",
+"introMeta": [
+"2 personas, la senior pregunta primero",
+"1 móvil",
+"≈ 8 minutos"
+],
+"setupTitle": "¿Quién está en la mesa?",
+"maker": "Pide (más senior)",
+"checker": "Revisa",
+"makerK": "Pide",
+"checkerK": "Revisa",
+"setupNote": "La persona más senior pide primero. Esa es la clave.",
+"cMakerT": "{m}, tu tarjeta",
+"cMakerL": "{c}, no mires. {m} lee algo que está a punto de salir.",
+"cardTitle": "A punto de salir",
+"cardLead": "Léela una vez. Luego pide a {c} una segunda opinión, en voz alta, en este orden:",
+"script": [
+"«¿Segunda opinión?»",
+"Qué es y la cifra",
+"Por qué está bien",
+"Qué me preocupa"
+],
+"readIt": "La he leído",
+"cCheckT": "El móvil a {c}",
+"cCheckL": "{m} se queda con los detalles en la cabeza y pide en voz alta. {c} recibe las preguntas.",
+"checkTitle": "{c}, haz estas tres",
+"qs": [
+"«Léeme la cifra otra vez.»",
+"«¿Qué haría que esto estuviera mal?»",
+"«¿Qué pasa si esperamos diez minutos?»"
+],
+"verdict": "Luego di una:",
+"verdicts": [
+[
+"Adelante",
+"se sostiene"
+],
+[
+"Espera",
+"mira una cosa"
+],
+[
+"Alto",
+"algo falla"
+]
+],
+"reveal": "Mostrar la tarjeta",
+"revealTitle": "El desliz",
+"said": "{c} dijo: {v}",
+"slipLbl": "El desliz",
+"revealQ": "Se detectara o no: ¿qué ayudó a que se hiciera la pregunta?",
+"thanksStem": "{m}, devuélvelo: «Gracias por revisarlo.»",
+"swapTitle": "Cambiad",
+"swapLead": "Ahora {s} pide y {l} revisa. Una tarjeta nueva.",
+"phraseTitle": "La frase de vuestra mesa",
+"phraseLead": "Acordad las palabras que cualquiera puede decir a cualquiera antes de que algo salga.",
+"phrases": [
+"¿Segunda opinión?",
+"¿Te lo leo otra vez?",
+"¿Dos minutos antes de enviarlo?"
+],
+"ownPhrase": "O la vuestra",
+"toEnd": "Esa es la nuestra",
+"phraseCopy": "Desde hoy, cualquiera de esta mesa puede decir «{p}» a cualquiera antes de que salga algo.",
+"cards": [
+{
+"t": "Pago a proveedor",
+"rows": [
+[
+"Proveedor",
+"Garcia Logística"
+],
+[
+"Factura",
+"4.820,00 €"
+],
+[
+"Pago",
+"48.200,00 €"
+],
+[
+"Enviar",
+"Hoy, 16:00"
+]
+],
+"slip": 2,
+"why": "El pago es diez veces la factura: un cero de más."
+},
+{
+"t": "Precio a un cliente",
+"rows": [
+[
+"Cliente",
+"Nordwind"
+],
+[
+"Acordado la semana pasada",
+"12,40 por unidad"
+],
+[
+"En el correo",
+"14,20 por unidad"
+],
+[
+"Volumen",
+"8.000 unidades"
+]
+],
+"slip": 2,
+"why": "Dos cifras cambiadas: 12,40 se volvió 14,20."
+},
+{
+"t": "Operación de divisas",
+"rows": [
+[
+"El cliente pidió",
+"Vender USD, comprar EUR"
+],
+[
+"Orden en pantalla",
+"Comprar USD, vender EUR"
+],
+[
+"Importe",
+"2.000.000 USD"
+],
+[
+"Liquida",
+"En dos días hábiles"
+]
+],
+"slip": 1,
+"why": "La orden está al revés: comprar en vez de vender."
+},
+{
+"t": "Cifra para el consejo",
+"rows": [
+[
+"Diapositiva",
+"Crecimiento de ingresos T3"
+],
+[
+"Tabla de finanzas",
+"+1,2 % sobre T2"
+],
+[
+"En la diapositiva",
+"+12 % sobre T2"
+],
+[
+"Se presenta",
+"Jueves, 9:00"
+]
+],
+"slip": 2,
+"why": "Se perdió la coma: 1,2 % se volvió 12 %."
+},
+{
+"t": "Contrato para firmar",
+"rows": [
+[
+"Cliente",
+"Nordwand GmbH"
+],
+[
+"En el contrato",
+"Nordwind GmbH"
+],
+[
+"Duración",
+"24 meses"
+],
+[
+"Firma",
+"Sam, director"
+]
+],
+"slip": 1,
+"why": "El nombre del cliente está mal: Nordwind, no Nordwand."
+},
+{
+"t": "Invitación a 40 personas",
+"rows": [
+[
+"Reunión",
+"Reunión general, Bengaluru + Barcelona"
+],
+[
+"Hora",
+"17:30 Barcelona"
+],
+[
+"Es decir",
+"22:00 en Bengaluru"
+],
+[
+"Duración",
+"60 minutos"
+]
+],
+"slip": 2,
+"why": "Las 22:00 son de noche para media sala; nadie pensó en la otra oficina."
+}
+],
+"sumTitle": "Los dos pedisteis y revisasteis",
+"endKicker": "Segundas opiniones practicadas",
+"endTitle": "Revisar es una costumbre, no una acusación.",
+"endLead": "La persona senior pidió primero, así que pedir es seguro. Tres preguntas sencillas y tres respuestas sencillas; nadie tuvo que ser valiente.",
+"mondayTxt": "Pide una segunda opinión antes de que algo tuyo salga esta semana, en voz alta, a alguien más junior.",
+"teachTitle": "Enséñaselo a la mesa de al lado.",
+"teachLead": "Enséñales los tres pasos y deja que escriban a quién pedirán primero.",
+"t3": [
+"La senior pide primero",
+"Tres preguntas",
+"Adelante · Espera · Alto"
+],
+"t3sub": [
+"«¿segunda opinión?»",
+"releer, qué fallaría, esperar",
+"y «gracias por revisarlo»"
+],
+"gTitle": "Cómo llevar Segunda Opinión",
+"gWhyTxt": "En una mesa, el coste de un desliz es alto y el de hablar parece más alto. Cuando la persona senior pide la revisión, y la revisión son tres preguntas fijas con tres respuestas fijas, revisar deja de ser personal. Los deslices inventados permiten practicar sin que nadie se equivoque de verdad.",
+"gStepList": [
+"Por parejas, la persona más senior pide primero.",
+"Quien pide lee una tarjeta a solas y luego pide en voz alta: «¿Segunda opinión?», la cifra, por qué, qué le preocupa.",
+"Quien revisa hace las tres preguntas en 90 segundos y dice Adelante, Espera o Alto.",
+"Mostrad el desliz, gracias por revisar, cambiad. Acordad la frase de la mesa."
+],
+"gDebriefList": [
+"¿Qué pregunta encontró el desliz, o lo habría encontrado?",
+"¿Qué te frenaría de pedirlo de verdad mañana?",
+"¿Quién de la mesa debería oír a los seniors pedir primero?"
+],
+"gNotesList": [
+"Las tarjetas son inventadas y viven en la página; no se introduce nada de vuestro trabajo real.",
+"Pedir primero importa más que encontrar el desliz. No llevéis la cuenta."
+]
+}, "zh-Hant": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服務的一部分 ↗",
+"soundOn": "聲音開",
+"soundOff": "聲音關",
+"left": "剩餘",
+"paused": "已暫停",
+"close": "關閉",
+"resume": "繼續",
+"pause": "暫停",
+"start": "開始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "複製",
+"copied": "已複製。",
+"share": "發出去",
+"icsMade": "日曆檔案已在這臺手機上生成。開啟它即可新增。",
+"pickMax": "最多隻能選這麼多。",
+"timeUp": "時間到。把這句話說完。",
+"swap": "交換",
+"again": "再練一次",
+"passOn": "傳下去",
+"monday": "週一試試這個",
+"teachKicker": "傳下去",
+"learnerName": "TA 的名字（可選）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算試什麼，用 TA 自己的話",
+"learnedPh": "把手機遞給 TA……",
+"save": "儲存在這臺手機上",
+"chainTitle": "你傳給過的人",
+"chainEmpty": "還沒有人。你的第一次教回去會出現在這裡。",
+"saved": "只儲存在這臺手機上。",
+"restart": "回到開頭",
+"teachbackLink": "教回去鏈條 ↗",
+"gKicker": "主持人指南",
+"gWhy": "為什麼有效",
+"gSteps": "怎麼帶",
+"gDebrief": "覆盤問題",
+"gNotes": "備註",
+"passTo": "把手機遞給 {n}",
+"ready": "我是 {n}",
+"optional": "可選",
+"title": "再確認一下 — FREE//BUILDER",
+"product": "再確認一下",
+"privacy": "卡片都是編的。不記錄，不傳送。",
+"introKicker": "敢於開口 · 交易臺",
+"introTitle": "再<span class=\"accent-word\">確認一下</span>",
+"introLead": "核對資深同事的數字，感覺像是在指責，所以大家都不做。不如把它變成習慣：資深的人先問“再確認一下？”，另一個人問三個簡單的問題，然後說“可以”“等一下”或“停”。每張卡里都藏著一個小錯。",
+"introMeta": [
+"2 人，資深的先問",
+"1 部手機",
+"約 8 分鐘"
+],
+"setupTitle": "誰在臺上？",
+"maker": "提問的人（更資深）",
+"checker": "核對的人",
+"makerK": "請人核對",
+"checkerK": "核對",
+"setupNote": "更資深的人先問。重點就在這裡。",
+"cMakerT": "{m}，這是你的卡",
+"cMakerL": "{c}，先別看。{m} 要讀一件馬上要發出去的東西。",
+"cardTitle": "馬上要發出去",
+"cardLead": "讀一遍。然後大聲請 {c} 再確認一下，按這個順序：",
+"script": [
+"“再確認一下？”",
+"這是什麼，數字是多少",
+"為什麼是對的",
+"我擔心什麼"
+],
+"readIt": "我讀完了",
+"cCheckT": "把手機給 {c}",
+"cCheckL": "{m} 把內容記在腦子裡，大聲提出請求。{c} 拿到問題。",
+"checkTitle": "{c}，問這三個問題",
+"qs": [
+"“把那個數字再念一遍給我聽。”",
+"“什麼情況下這會是錯的？”",
+"“如果我們等十分鐘，會怎樣？”"
+],
+"verdict": "然後說其中一個：",
+"verdicts": [
+[
+"可以",
+"沒問題"
+],
+[
+"等一下",
+"查一件事"
+],
+[
+"停",
+"有地方不對"
+]
+],
+"reveal": "亮出卡片",
+"revealTitle": "那個小錯",
+"said": "{c} 說的是：{v}",
+"slipLbl": "小錯在這裡",
+"revealQ": "不管有沒有發現：是什麼讓這個問題問得出口？",
+"thanksStem": "{m}，回一句：“謝謝你幫我看。”",
+"swapTitle": "交換",
+"swapLead": "現在 {s} 來問，{l} 來核對。換一張新卡。",
+"phraseTitle": "你們臺上的那句話",
+"phraseLead": "約定一句話：東西發出去之前，誰都可以對誰說。",
+"phrases": [
+"再確認一下？",
+"我念一遍給你聽？",
+"發之前給兩分鐘？"
+],
+"ownPhrase": "或者你們自己的",
+"toEnd": "就這句",
+"phraseCopy": "從今天起，東西發出去之前，臺上任何人都可以對任何人說“{p}”。",
+"cards": [
+{
+"t": "供應商付款",
+"rows": [
+[
+"供應商",
+"Garcia 物流"
+],
+[
+"發票金額",
+"€4,820.00"
+],
+[
+"付款金額",
+"€48,200.00"
+],
+[
+"傳送",
+"今天 16:00"
+]
+],
+"slip": 2,
+"why": "付款金額是發票的十倍：多了一個零。"
+},
+{
+"t": "給客戶的報價",
+"rows": [
+[
+"客戶",
+"Nordwind"
+],
+[
+"上週談好的",
+"每件 12.40"
+],
+[
+"郵件裡寫的",
+"每件 14.20"
+],
+[
+"數量",
+"8,000 件"
+]
+],
+"slip": 2,
+"why": "兩個數字調換了：12.40 變成了 14.20。"
+},
+{
+"t": "外匯交易",
+"rows": [
+[
+"客戶要求",
+"賣美元，買歐元"
+],
+[
+"螢幕上的指令",
+"買美元，賣歐元"
+],
+[
+"金額",
+"2,000,000 美元"
+],
+[
+"交割",
+"兩個工作日後"
+]
+],
+"slip": 1,
+"why": "指令方向反了：應該賣，卻成了買。"
+},
+{
+"t": "給董事會的數字",
+"rows": [
+[
+"幻燈片",
+"第三季度營收增長"
+],
+[
+"財務表",
+"比第二季度 +1.2%"
+],
+[
+"幻燈片上",
+"比第二季度 +12%"
+],
+[
+"彙報時間",
+"週四 9:00"
+]
+],
+"slip": 2,
+"why": "小數點丟了：1.2% 變成了 12%。"
+},
+{
+"t": "要籤的合同",
+"rows": [
+[
+"客戶",
+"Nordwand GmbH"
+],
+[
+"合同上寫的",
+"Nordwind GmbH"
+],
+[
+"期限",
+"24 個月"
+],
+[
+"簽字人",
+"Sam，總監"
+]
+],
+"slip": 1,
+"why": "客戶名字拼錯了：寫成了 Nordwind，應該是 Nordwand。"
+},
+{
+"t": "發給 40 人的會議邀請",
+"rows": [
+[
+"會議",
+"全員大會，班加羅爾 + 巴塞羅那"
+],
+[
+"時間",
+"巴塞羅那 17:30"
+],
+[
+"也就是",
+"班加羅爾 22:00"
+],
+[
+"時長",
+"60 分鐘"
+]
+],
+"slip": 2,
+"why": "22:00 對一半的人來說已是深夜；沒人替另一個辦公室想一想。"
+}
+],
+"sumTitle": "兩個人都問了，也都核對了",
+"endKicker": "“再確認一下”練過了",
+"endTitle": "核對是一種習慣，不是一種指責。",
+"endLead": "資深的人先問了，所以開口是安全的。三個簡單的問題，三個簡單的回答；沒有人需要鼓起勇氣。",
+"mondayTxt": "這週你有東西要發出去之前，大聲請一位比你資歷淺的人再確認一下。",
+"teachTitle": "教給隔壁的臺子。",
+"teachLead": "給他們看這三步，再讓他們寫下第一個要請誰來核對。",
+"t3": [
+"資深的先問",
+"三個問題",
+"可以 · 等一下 · 停"
+],
+"t3sub": [
+"“再確認一下？”",
+"複述、何時會錯、等一等",
+"然後“謝謝你幫我看”"
+],
+"gTitle": "怎麼帶“再確認一下”",
+"gWhyTxt": "在交易臺上，出錯的代價很高，而開口的代價感覺更高。當資深的人主動請人核對，而核對就是三個固定的問題加三個固定的回答，核對就不再是針對個人。編出來的小錯，讓大家可以練習發現錯誤，而不讓任何人出醜。",
+"gStepList": [
+"兩人一組，更資深的人先問。",
+"提問的人私下讀卡，然後大聲說：“再確認一下？”、數字、理由、擔心。",
+"核對的人在 90 秒內問三個問題，然後說“可以”“等一下”或“停”。",
+"亮出小錯，說聲謝謝，交換。約定臺上的那句話。"
+],
+"gDebriefList": [
+"哪個問題發現了小錯，或者本可以發現？",
+"明天真要這樣問的話，什麼會攔住你？",
+"臺上誰最需要聽到資深的人先問？"
+],
+"gNotesList": [
+"卡片都是編的，只在頁面裡；不輸入任何真實工作內容。",
+"先開口問，比發現小錯更重要。不要計數。"
+]
+}, "ca": {
+"guide": "Facilitadors",
+"back": "Part dels serveis de FREE//BUILDER ↗",
+"soundOn": "So activat",
+"soundOff": "So desactivat",
+"left": "restant",
+"paused": "en pausa",
+"close": "Tancar",
+"resume": "Continuar",
+"pause": "Pausa",
+"start": "Començar",
+"next": "Següent",
+"backBtn": "Enrere",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ex., Ana",
+"phB": "p. ex., Leo",
+"copy": "Copia",
+"copied": "Copiat.",
+"share": "Envia-ho",
+"icsMade": "Fitxer de calendari fet en aquest mòbil. Obre’l per afegir-lo.",
+"pickMax": "No en pots triar més.",
+"timeUp": "S’ha acabat el temps. Acaba la frase.",
+"swap": "Canviar",
+"again": "Practicar un altre cop",
+"passOn": "Passa-ho",
+"monday": "Prova-ho dilluns",
+"teachKicker": "Passa-ho",
+"learnerName": "El seu nom (opcional)",
+"learnerPh": "p. ex., Mei",
+"learned": "El que provarà, amb les seves paraules",
+"learnedPh": "Passa-li el mòbil…",
+"save": "Desar en aquest mòbil",
+"chainTitle": "Persones a qui ho has passat",
+"chainEmpty": "Encara ningú. El teu primer ensenyar-de-tornada apareixerà aquí.",
+"saved": "Desat només en aquest mòbil.",
+"restart": "Torna al principi",
+"teachbackLink": "Cadena d'Ensenyar de Tornada ↗",
+"gKicker": "Guia per facilitar",
+"gWhy": "Per què funciona",
+"gSteps": "Com portar-ho",
+"gDebrief": "Preguntes per tancar",
+"gNotes": "Notes",
+"passTo": "Passa el mòbil a {n}",
+"ready": "Soc {n}",
+"optional": "opcional",
+"title": "Segona Opinió — FREE//BUILDER",
+"product": "Segona Opinió",
+"privacy": "Targetes inventades. No es grava ni s’envia res.",
+"introKicker": "Parlar clar · La taula",
+"introTitle": "Segona <span class=\"accent-word\">Opinió</span>",
+"introLead": "Revisar la xifra d’un col·lega sènior sembla una acusació, així que ningú no ho fa. Converteix-ho en costum: la persona sènior pregunta primer «Segona opinió?», l’altra fa tres preguntes senzilles i diu Endavant, Espera o Atura. Cada targeta té un error.",
+"introMeta": [
+"2 persones, la sènior pregunta primer",
+"1 mòbil",
+"≈ 8 minuts"
+],
+"setupTitle": "Qui és a la taula?",
+"maker": "Demana (més sènior)",
+"checker": "Revisa",
+"makerK": "Demana",
+"checkerK": "Revisa",
+"setupNote": "La persona més sènior demana primer. Aquesta és la clau.",
+"cMakerT": "{m}, la teva targeta",
+"cMakerL": "{c}, no miris. {m} llegeix una cosa que està a punt de sortir.",
+"cardTitle": "A punt de sortir",
+"cardLead": "Llegeix-la una vegada. Després demana a {c} una segona opinió, en veu alta, en aquest ordre:",
+"script": [
+"«Segona opinió?»",
+"Què és i la xifra",
+"Per què està bé",
+"Què em preocupa"
+],
+"readIt": "L’he llegida",
+"cCheckT": "El mòbil a {c}",
+"cCheckL": "{m} es queda els detalls al cap i demana en veu alta. {c} rep les preguntes.",
+"checkTitle": "{c}, fes aquestes tres",
+"qs": [
+"«Llegeix-me la xifra un altre cop.»",
+"«Què faria que això estigués malament?»",
+"«Què passa si esperem deu minuts?»"
+],
+"verdict": "Després digues-ne una:",
+"verdicts": [
+[
+"Endavant",
+"s’aguanta"
+],
+[
+"Espera",
+"mira una cosa"
+],
+[
+"Alt",
+"alguna cosa falla"
+]
+],
+"reveal": "Mostra la targeta",
+"revealTitle": "L’error",
+"said": "{c} va dir: {v}",
+"slipLbl": "L’error",
+"revealQ": "Es detectés o no: què va ajudar que es fes la pregunta?",
+"thanksStem": "{m}, torna-ho: «Gràcies per revisar-ho.»",
+"swapTitle": "Canvieu",
+"swapLead": "Ara {s} demana i {l} revisa. Una targeta nova.",
+"phraseTitle": "La frase de la vostra taula",
+"phraseLead": "Acordeu les paraules que qualsevol pot dir a qualsevol abans que alguna cosa surti.",
+"phrases": [
+"Segona opinió?",
+"T’ho torno a llegir?",
+"Dos minuts abans d’enviar-ho?"
+],
+"ownPhrase": "O la vostra",
+"toEnd": "Aquesta és la nostra",
+"phraseCopy": "Des d’avui, qualsevol d’aquesta taula pot dir «{p}» a qualsevol abans que surti res.",
+"cards": [
+{
+"t": "Pagament a proveïdor",
+"rows": [
+[
+"Proveïdor",
+"Garcia Logística"
+],
+[
+"Factura",
+"4.820,00 €"
+],
+[
+"Pagament",
+"48.200,00 €"
+],
+[
+"Enviar",
+"Avui, 16:00"
+]
+],
+"slip": 2,
+"why": "El pagament és deu vegades la factura: un zero de més."
+},
+{
+"t": "Preu a un client",
+"rows": [
+[
+"Client",
+"Nordwind"
+],
+[
+"Acordat la setmana passada",
+"12,40 per unitat"
+],
+[
+"Al correu",
+"14,20 per unitat"
+],
+[
+"Volum",
+"8.000 unitats"
+]
+],
+"slip": 2,
+"why": "Dues xifres canviades: 12,40 es va tornar 14,20."
+},
+{
+"t": "Operació de divises",
+"rows": [
+[
+"El client va demanar",
+"Vendre USD, comprar EUR"
+],
+[
+"Ordre a la pantalla",
+"Comprar USD, vendre EUR"
+],
+[
+"Import",
+"2.000.000 USD"
+],
+[
+"Liquida",
+"En dos dies feiners"
+]
+],
+"slip": 1,
+"why": "L’ordre està al revés: comprar en lloc de vendre."
+},
+{
+"t": "Xifra per al consell",
+"rows": [
+[
+"Diapositiva",
+"Creixement d’ingressos T3"
+],
+[
+"Taula de finances",
+"+1,2 % sobre T2"
+],
+[
+"A la diapositiva",
+"+12 % sobre T2"
+],
+[
+"Es presenta",
+"Dijous, 9:00"
+]
+],
+"slip": 2,
+"why": "S’ha perdut la coma: 1,2 % es va tornar 12 %."
+},
+{
+"t": "Contracte per signar",
+"rows": [
+[
+"Client",
+"Nordwand GmbH"
+],
+[
+"Al contracte",
+"Nordwind GmbH"
+],
+[
+"Durada",
+"24 mesos"
+],
+[
+"Signa",
+"Sam, director"
+]
+],
+"slip": 1,
+"why": "El nom del client està malament: Nordwind, no Nordwand."
+},
+{
+"t": "Invitació a 40 persones",
+"rows": [
+[
+"Reunió",
+"Reunió general, Bengaluru + Barcelona"
+],
+[
+"Hora",
+"17:30 Barcelona"
+],
+[
+"És a dir",
+"22:00 a Bengaluru"
+],
+[
+"Durada",
+"60 minuts"
+]
+],
+"slip": 2,
+"why": "Les 22:00 són de nit per a mitja sala; ningú no va pensar en l’altra oficina."
+}
+],
+"sumTitle": "Tots dos vau demanar i revisar",
+"endKicker": "Segones opinions practicades",
+"endTitle": "Revisar és un costum, no una acusació.",
+"endLead": "La persona sènior va demanar primer, així que demanar és segur. Tres preguntes senzilles i tres respostes senzilles; ningú no va haver de ser valent.",
+"mondayTxt": "Demana una segona opinió abans que alguna cosa teva surti aquesta setmana, en veu alta, a algú més júnior.",
+"teachTitle": "Ensenya-ho a la taula del costat.",
+"teachLead": "Ensenya’ls els tres passos i deixa que escriguin a qui demanaran primer.",
+"t3": [
+"La sènior demana primer",
+"Tres preguntes",
+"Endavant · Espera · Atura"
+],
+"t3sub": [
+"«segona opinió?»",
+"rellegir, què fallaria, esperar",
+"i «gràcies per revisar-ho»"
+],
+"gTitle": "Com portar Segona Opinió",
+"gWhyTxt": "En una taula, el cost d’un error és alt i el de parlar sembla més alt. Quan la persona sènior demana la revisió, i la revisió són tres preguntes fixes amb tres respostes fixes, revisar deixa de ser personal. Els errors inventats permeten practicar sense que ningú s’equivoqui de debò.",
+"gStepList": [
+"Per parelles, la persona més sènior demana primer.",
+"Qui demana llegeix una targeta sol i després demana en veu alta: «Segona opinió?», la xifra, per què, què el preocupa.",
+"Qui revisa fa les tres preguntes en 90 segons i diu Endavant, Espera o Atura.",
+"Mostreu l’error, gràcies per revisar, canvieu. Acordeu la frase de la taula."
+],
+"gDebriefList": [
+"Quina pregunta va trobar l’error, o l’hauria trobat?",
+"Què t’aturaria de demanar-ho de debò demà?",
+"Qui de la taula hauria de sentir els sèniors demanar primer?"
+],
+"gNotesList": [
+"Les targetes són inventades i viuen a la pàgina; no s’hi introdueix res de la vostra feina real.",
+"Demanar primer importa més que trobar l’error. No porteu el compte."
+]
+}
+};
+/* =====================================================================
+   FB KIT · helpers (copy into every demo)
+   ===================================================================== */
+const LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LANG_LBL = { en: "EN", zh: "中文", es: "ES", "zh-Hant": "繁中", "ca": "CA" };
+let lang = "en";
+const T = () => I18N[lang];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? esc(v[k]) : m));
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* Seeded random + pairing codes: the same code on two phones gives the same scenario, no server needed. */
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function newCode(n = 6) { let s = ""; for (let i = 0; i < n; i++) s += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]; return s; }
+function seedFrom(code) { let h = 2166136261; for (const c of String(code).toUpperCase()) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+/* Sound: soft, short, optional */
+const sound = {
+  ctx: null, muted: store.get("fb_muted", false),
+  init() { if (!this.ctx) { const A = window.AudioContext || window.webkitAudioContext; if (A) this.ctx = new A(); } if (this.ctx && this.ctx.state === "suspended") this.ctx.resume(); },
+  tone(f, d = .3, g = .06, type = "sine", at = 0) {
+    if (this.muted || !this.ctx) return;
+    try { const t = this.ctx.currentTime + at, o = this.ctx.createOscillator(), a = this.ctx.createGain();
+      o.type = type; o.frequency.setValueAtTime(f, t); a.gain.setValueAtTime(.0001, t); a.gain.linearRampToValueAtTime(g, t + .02); a.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(a); a.connect(this.ctx.destination); o.start(t); o.stop(t + d + .05); } catch (e) {}
+  },
+  tap() { this.tone(520, .12, .04, "triangle"); },
+  chime() { [659.25, 880, 1318.5].forEach((f, i) => this.tone(f, 1.2, .05, "sine", i * .12)); },
+  warm() { [392, 493.88, 587.33].forEach((f, i) => this.tone(f, .9, .05, "sine", i * .1)); }
+};
+const buzz = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+
+/* Keep the screen awake while a timer runs (where supported) */
+let wakeLock = null;
+async function keepAwake(on) {
+  try {
+    if (on && "wakeLock" in navigator && !wakeLock) wakeLock = await navigator.wakeLock.request("screen");
+    if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
+  } catch (e) { wakeLock = null; }
+}
+
+/* Timer ring */
+function ringSVG() {
+  return `<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="54" fill="none" stroke-width="6"/><circle class="fg" id="ring" cx="60" cy="60" r="54" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="339.29" stroke-dashoffset="0"/></svg>`;
+}
+const timer = {
+  total: 90, left: 90, running: false, raf: 0, last: 0, onEnd: null, ended: false,
+  start(total, onEnd) { this.stop(); this.total = this.left = total; this.onEnd = onEnd; this.ended = false; this.resume(); },
+  resume() { if (this.running || this.ended) return; this.running = true; this.last = performance.now(); keepAwake(true); this.tick(); },
+  pause() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); this.paint(); },
+  stop() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); },
+  tick() {
+    if (!this.running) return;
+    const now = performance.now(); this.left = Math.max(0, this.left - (now - this.last) / 1000); this.last = now;
+    this.paint();
+    if (this.left <= 0) { this.running = false; this.ended = true; keepAwake(false); sound.chime(); buzz([60, 80, 60]); this.onEnd && this.onEnd(); return; }
+    this.raf = requestAnimationFrame(() => this.tick());
+  },
+  paint() {
+    const ring = $("ring"), num = $("tnum"), lbl = $("tlbl"), wrap = $("timer");
+    if (!ring) return;
+    ring.setAttribute("stroke-dashoffset", String(339.29 * (1 - this.left / this.total)));
+    const s = Math.ceil(this.left);
+    num.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    lbl.textContent = this.ended ? "" : (this.running ? T().left : T().paused);
+    wrap.classList.toggle("done", this.ended);
+  }
+};
+
+/* Toast */
+let toastT;
+function toast(msg) { const el = $("toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 2600); }
+
+/* Pass-the-phone curtain */
+function curtainHTML(title, lead, btnLabel, act) {
+  return `<div class="curtain">
+    <svg class="hand" viewBox="0 0 84 84" aria-hidden="true"><rect x="27" y="10" width="30" height="52" rx="7" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="42" cy="54" r="2.5" fill="#E2553F"/><path d="M14 54c6 0 10 4 13 9M70 54c-6 0-10 4-13 9" stroke="rgba(255,255,255,.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M34 72h16" stroke="#E2553F" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <h2>${title}</h2><p>${lead}</p>
+    <button class="btn pri" data-act="${act}" style="width:100%;margin-top:6px">${btnLabel} →</button></div>`;
+}
+
+
+
+/* =====================================================================
+   SECOND OPINION (build/next_tools/second.js; words in second.py)
+   ===================================================================== */
+const APP = {
+  demo: "second", first: "setup",
+  flow: ["card", "check", "reveal"],
+  stepOf: s => ({ cMaker: "card", cCheck: "check" }[s] || s),
+  state: () => { const order = shuffle([0, 1, 2, 3, 4, 5]); return { names: ["", ""], round: 0, order, verdict: [null, null], phrase: 0, ownP: "" }; },
+  art() {
+    return `<svg viewBox="0 0 320 140" style="width:100%;max-width:420px;height:auto;margin:4px 0" aria-hidden="true">
+      <rect x="60" y="22" width="200" height="96" rx="12" fill="#fff" stroke="#E5E2DA" stroke-width="2"/>
+      <path d="M80 46h70M80 66h50M80 86h60" stroke="#17171A" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+      <text x="236" y="71" text-anchor="end" font-family="Space Mono, monospace" font-size="15" fill="#17171A">48,200</text>
+      <ellipse cx="214" cy="66" rx="34" ry="16" fill="none" stroke="#E2553F" stroke-width="2.5"/>
+      <circle cx="248" cy="104" r="12" fill="#2F8A5C"/><path d="M242 104l4 4 8-8" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>`;
+  },
+  screens: {
+    setup(t) { return `<h2>${esc(t.setupTitle)}</h2><div class="row2">${H.field(t.maker, "names.0", { ph: t.phA, max: 20 })}${H.field(t.checker, "names.1", { ph: t.phB, max: 20 })}</div><p class="note">${esc(t.setupNote)}</p>${H.next(t.next, "toMaker")}`; },
+    cMaker(t) { return curtainHTML(fmt(t.cMakerT, { m: maker() }), fmt(t.cMakerL, { m: maker(), c: checker() }), fmt(t.ready, { n: maker() }), "toCard"); },
+    card(t) {
+      return `${roles(t)}<span class="kicker">${esc(t.cardTitle)}</span>${docHTML(card(), -1)}
+        <p class="lead">${fmt(t.cardLead, { c: checker() })}</p>
+        <ul class="list">${t.script.map((s, i) => `<li><b>0${i + 1}</b><span>${esc(s)}</span></li>`).join("")}</ul>
+        ${H.next(t.readIt, "toCheckC")}`;
+    },
+    cCheck(t) { return curtainHTML(fmt(t.cCheckT, { c: checker() }), fmt(t.cCheckL, { m: maker(), c: checker() }), fmt(t.ready, { n: checker() }), "toCheck"); },
+    check(t) {
+      return `${roles(t)}<h2>${fmt(t.checkTitle, { c: checker() })}</h2>
+        ${H.stems(t.qs)}${H.timer(t)}
+        <span class="kicker">${esc(t.verdict)}</span>
+        <div class="three">${t.verdicts.map((v, i) => `<button data-c="verdict.${S.round}" data-v="${i}" aria-pressed="${S.verdict[S.round] === i}">${esc(v[0])}<small>${esc(v[1])}</small></button>`).join("")}</div>
+        ${H.next(t.reveal, "toReveal", { off: S.verdict[S.round] == null })}`;
+    },
+    reveal(t) {
+      const c = card();
+      return `<h2>${esc(t.revealTitle)}</h2>
+        <p class="note">${fmt(t.said, { c: checker(), v: t.verdicts[S.verdict[S.round]][0] })}</p>
+        ${docHTML(c, c.slip)}
+        <div class="slip"><b>${esc(t.slipLbl)}</b>${esc(c.why)}</div>
+        <p class="lead">${esc(t.revealQ)}</p>
+        ${H.tip(fmt(t.thanksStem, { m: maker() }), "♡")}
+        ${H.next(S.round ? t.next : t.swap, "afterReveal")}`;
+    },
+    swap(t) { return curtainHTML(esc(t.swapTitle), fmt(t.swapLead, { s: nm(1), l: nm(0) }), esc(t.swap), "round2"); },
+    phrase(t) {
+      return `<h2>${esc(t.phraseTitle)}</h2><p class="lead">${esc(t.phraseLead)}</p>
+        ${H.choices("phrase", t.phrases.map(p => ["“" + p + "”"]))}
+        ${H.field(t.ownPhrase, "ownP", { max: 60 })}
+        <div class="sentence" id="phraseOut">${esc(fmtR(t.phraseCopy, { p: phrase() }))}</div>
+        <div class="btns"><button class="btn" data-act="copy" data-from="phraseOut">⧉ ${esc(t.copy)}</button></div>
+        ${H.next(t.toEnd, "toEnd")}`;
+    }
+  },
+  acts: {
+    toMaker() { go("cMaker"); }, toCard() { go("card"); }, toCheckC() { go("cCheck"); }, toCheck() { go("check"); },
+    toReveal() { if (S.verdict[S.round] == null) return; sound.chime(); go("reveal"); },
+    afterReveal() { go(S.round ? "phrase" : "swap"); },
+    round2() { S.round = 1; go("cMaker"); }, toEnd() { go("end"); }
+  },
+  enter: { check() { startTimer(90); } },
+  onChoose(k) { if (k === "phrase") S.ownP = ""; },
+  input(k) { if (k === "ownP") { const o = $("phraseOut"); if (o) o.textContent = fmtR(T().phraseCopy, { p: phrase() }); } },
+  againTo: "cMaker", keepOnAgain: () => ({ names: S.names.slice() })
+};
+const nm = i => S.names[i].trim() || T()[i ? "checker" : "maker"].split(" (")[0].split("（")[0];
+const maker = () => nm(S.round), checker = () => nm(1 - S.round);
+const roles = t => H.roles(t.makerK, maker(), t.checkerK, checker());
+const card = () => T().cards[S.order[S.round]];
+const phrase = () => S.ownP.trim() || T().phrases[S.phrase];
+function docHTML(c, slip) {
+  return `<div class="doc"><b style="font-family:var(--syne);font-size:18px">${esc(c.t)}</b>${c.rows.map((r, i) => `<div class="row"${i === slip ? ' style="background:#FCE9E5;border-radius:10px;padding:8px;margin:-4px -8px;border-bottom:0"' : ""}><span>${esc(r[0])}</span><b>${esc(r[1])}</b></div>`).join("")}</div>`;
+}
+
+/* =====================================================================
+   NEXT TOOLS · engine (build/next_tools/engine.js, shared by the ten tools that were "Next")
+   A tool defines APP = { demo, flow, first, state(), screens, acts, enter, stepOf, boot, art }.
+   Markup conventions: data-act="k" → APP.acts[k] or a built-in; data-go="screen"; data-b="key" (or key.0) binds an input to S;
+   data-c="key" data-v="i" picks a choice (APP.onChoose(key, v) if it wants more than S[key] = v and a render).
+   ===================================================================== */
+const stage = $("stage");
+const fmtR = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? v[k] : m));   // for text that never becomes HTML (calendar files, shared messages)
+
+function go(screen) {
+  timer.stop();
+  S.screen = screen; render(); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  const f = APP.enter && APP.enter[screen]; if (f) f();
+}
+function paintStepsBar() {
+  const fl = APP.flow || [], cur = APP.stepOf ? APP.stepOf(S.screen) : S.screen, at = fl.indexOf(cur);
+  $("steps").innerHTML = at < 0 ? "" : fl.map((_, i) => `<span class="${i < at ? "done" : i === at ? "now" : ""}"></span>`).join("");
+}
+function render() {
+  const t = T();
+  paintStepsBar();
+  let h;
+  if (S.screen === "intro") h = introHTML(t);
+  else if (S.screen === "teach") h = teachHTML(APP.demo);
+  else if (S.screen === "end") h = endHTML(t);
+  else h = APP.screens[S.screen](t);
+  const hadFocus = stage.contains(document.activeElement);
+  const same = render.last === S.screen; render.last = S.screen;
+  stage.innerHTML = h.startsWith("<section") ? h : `<section class="screen">${h}</section>`;
+  if (same) { const sec = stage.firstElementChild; if (sec) sec.style.animation = "none"; const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume; }
+  const f = stage.querySelector("[data-focus]");
+  if (f && hadFocus) f.focus({ preventScroll: true });
+  if (APP.after) APP.after(S.screen);
+}
+
+/* ---------- small builders ---------- */
+const H = {
+  btn(label, act, o = {}) {
+    const a = o.go ? `data-go="${o.go}"` : `data-act="${act}"`;
+    return `<button class="btn${o.pri ? " pri" : ""}" ${a}${o.id ? ` id="${o.id}"` : ""}${o.off ? " disabled" : ""}${o.focus ? " data-focus" : ""}${o.attr ? " " + o.attr : ""}>${label}</button>`;
+  },
+  next(label, act, o = {}) { return `<div class="spacer"></div><div class="btns">${o.left || ""}${H.btn(esc(label) + " →", act, Object.assign({ pri: 1, focus: 1 }, o))}</div>`; },
+  field(lbl, key, o = {}) {
+    const v = esc(getP(key) || ""), ph = o.ph ? ` placeholder="${esc(o.ph)}"` : "", ml = ` maxlength="${o.max || 120}"`;
+    const inp = o.area ? `<textarea data-b="${key}"${ml}${ph}>${v}</textarea>` : `<input data-b="${key}"${ml}${ph} autocomplete="off" value="${v}"${o.type ? ` type="${o.type}"` : ""}>`;
+    return `<label class="field"><span>${esc(lbl)}</span>${inp}</label>`;
+  },
+  names(t, a = "nameA", b = "nameB") {
+    return `<div class="row2">${H.field(t[a], "names.0", { ph: t.phA, max: 20 })}${H.field(t[b], "names.1", { ph: t.phB, max: 20 })}</div>`;
+  },
+  roles(k1, n1, k2, n2) {
+    return `<div class="roles"><div class="role speak"><div class="k">${esc(k1)}</div><div class="n">${esc(n1)}</div></div><div class="role"><div class="k">${esc(k2)}</div><div class="n">${esc(n2)}</div></div></div>`;
+  },
+  choices(key, items, o = {}) {   // items: [title, sub?, mark?]
+    const cur = getP(key), multi = Array.isArray(cur);
+    return `<div class="heard">${items.map((it, i) => {
+      const on = multi ? cur.includes(i) : cur === i;
+      return `<button data-c="${key}" data-v="${i}" aria-pressed="${on}" class="${on ? "on" : ""}"><span class="e">${it[2] != null ? it[2] : `<span style="font-family:var(--mono);font-size:12px">${String(i + 1).padStart(2, "0")}</span>`}</span><span><b>${esc(it[0])}</b>${it[1] ? `<small>${esc(it[1])}</small>` : ""}</span></button>`;
+    }).join("")}</div>`;
+  },
+  seg(key, items) { const cur = getP(key); return `<div class="seg">${items.map((x, i) => `<button data-c="${key}" data-v="${i}" aria-pressed="${cur === i}">${esc(x)}</button>`).join("")}</div>`; },
+  timer(t) {
+    return `<div class="timer" id="timer">${ringSVG()}<div class="num"><b id="tnum">0:00</b><small id="tlbl"></small></div></div>
+      <div class="btns" style="justify-content:center"><button class="btn" data-act="pause" id="pauseBtn" style="flex:none;min-width:140px">${esc(t.pause)}</button></div>`;
+  },
+  tip(txt, mark = "✦") { return `<div class="tip"><i>${mark}</i><span>${txt}</span></div>`; },
+  prompt(q, meta, sm) { return `<div class="prompt${sm ? " sm" : ""}"><div class="q">${esc(q)}</div>${meta ? `<div class="meta"><span>${esc(meta)}</span></div>` : ""}</div>`; },
+  stems(list) { return `<div class="stems">${list.map(s => `<div>${esc(s)}</div>`).join("")}</div>`; },
+  kicker(s, c) { return `<span class="kicker"${c ? ` style="color:${c}"` : ""}>${esc(s)}</span>`; }
+};
+function startTimer(secs, onEnd) { timer.start(secs, onEnd || (() => toast(T().timeUp))); const pb = $("pauseBtn"); if (pb) pb.textContent = T().pause; }
+
+/* paths into S: "names.0", "agree.q" */
+function getP(p) { return String(p).split(".").reduce((o, k) => (o == null ? o : o[k]), S); }
+function setP(p, v) { const ks = String(p).split("."), last = ks.pop(); const o = ks.reduce((o, k) => o[k], S); o[last] = v; }
+
+function introHTML(t) {
+  return `<section class="screen">
+    <span class="kicker">${esc(t.introKicker)}</span><h1>${t.introTitle}</h1>
+    <p class="lead">${esc(t.introLead)}</p>
+    <div class="pills">${t.introMeta.map(m => `<span class="pill">${esc(m)}</span>`).join("")}</div>
+    ${APP.art ? APP.art() : ""}
+    ${APP.introExtra ? APP.introExtra(t) : ""}
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn pri" data-act="start" data-focus>${esc(t.start)} →</button></div>
+  </section>`;
+}
+function endHTML(t) {
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--good)">✓ ${esc(t.endKicker)}</span>
+    <h2>${esc(t.endTitle)}</h2>
+    <p class="serif">${esc(t.endLead)}</p>
+    ${APP.endExtra ? APP.endExtra(t) : ""}
+    <div class="monday"><b>${esc(t.monday)}</b>${esc(t.mondayTxt)}</div>
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn" data-act="again">↻ ${esc(t.again)}</button><button class="btn pri" data-act="teach" data-focus>${esc(t.passOn)} →</button></div>
+  </section>`;
+}
+function teachHTML(demo) {
+  const t = T(), chain = store.get("fb_teachback", []).filter(c => c.demo === demo);
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--accent-ink)">${esc(t.teachKicker)}</span>
+    <h2>${esc(t.teachTitle)}</h2>
+    <p class="lead">${esc(t.teachLead)}</p>
+    <div class="steps3">${t.t3.map((s, i) => `<div><b>0${i + 1}</b><span>${esc(s)}</span><small style="display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4">${esc(t.t3sub[i])}</small></div>`).join("")}</div>
+    <div class="card" style="display:grid;gap:12px">
+      <label class="field"><span>${esc(t.learnerName)}</span><input id="lName" maxlength="30" autocomplete="off" placeholder="${esc(t.learnerPh)}"></label>
+      <label class="field"><span>${esc(t.learned)}</span><textarea id="lText" maxlength="280" placeholder="${esc(t.learnedPh)}"></textarea></label>
+      <button class="btn pri" data-act="saveTeach" style="flex:none">${esc(t.save)}</button>
+    </div>
+    <div><span class="kicker">${esc(t.chainTitle)}</span>
+      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang))))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
+    <a class="link" href="/tools/teachback">⊂⊃ ${esc(t.teachbackLink)}</a>
+    <button class="link" data-act="restart">${esc(t.restart)}</button>
+  </section>`;
+}
+
+/* ---------- device-made things: copy, a calendar file, a link ---------- */
+function copyText(text, msg) {
+  text = String(text || "").trim(); if (!text) return;
+  const ok = () => toast(msg || T().copied);
+  const fb = () => { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (_) {} ta.remove(); ok(); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok).catch(fb); else fb();
+}
+function shareText(text, url) {
+  const data = { text: url ? text + "\n" + url : text };
+  if (navigator.share) navigator.share(data).catch(() => {}); else copyText(data.text);
+}
+const pad2 = n => String(n).padStart(2, "0");
+const icsDate = d => `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;
+const icsEsc = s => String(s || "").replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/[,;]/g, m => "\\" + m);
+/* events: [{title, desc, start: Date, mins, rrule}] → one .ics made here, nothing sent */
+function downloadICS(name, events) {
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FREE//BUILDER//tools//EN", "CALSCALE:GREGORIAN"];
+  events.forEach((e, i) => {
+    const end = new Date(e.start.getTime() + (e.mins || 15) * 60000);
+    L.push("BEGIN:VEVENT", `UID:${Date.now()}-${i}@freebuilder.net`, `DTSTAMP:${icsDate(new Date())}`, `DTSTART:${icsDate(e.start)}`, `DTEND:${icsDate(end)}`,
+      `SUMMARY:${icsEsc(e.title)}`, `DESCRIPTION:${icsEsc(e.desc)}`);
+    if (e.rrule) L.push(`RRULE:${e.rrule}`);
+    L.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(e.title)}`, "TRIGGER:-PT15M", "END:VALARM", "END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  const blob = new Blob([L.join("\r\n")], { type: "text/calendar" }), a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name + ".ics"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast(T().icsMade);
+}
+function nextWeekday(dow, h = 9, m = 0) { const d = new Date(); d.setHours(h, m, 0, 0); let add = (dow - d.getDay() + 7) % 7; if (add === 0 && d <= new Date()) add = 7; d.setDate(d.getDate() + add); return d; }
+const b64e = o => { const s = unescape(encodeURIComponent(JSON.stringify(o))); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+const b64d = s => { try { s = s.replace(/-/g, "+").replace(/_/g, "/"); return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch (e) { return null; } };
+const here = () => location.origin + location.pathname;
+const dayFmt = d => { try { return new Date(d).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang)), { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return String(d); } };
+const shuffle = (a, r = Math.random) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+const S = Object.assign({ screen: "intro" }, APP.state());
+
+/* ---------- events ---------- */
+stage.addEventListener("input", e => {
+  const b = e.target.dataset.b; if (!b) return;
+  setP(b, e.target.value);
+  if (APP.input) APP.input(b, e.target.value, e.target);
+});
+stage.addEventListener("click", e => {
+  sound.init();
+  const c = e.target.closest("[data-c]"), g = e.target.closest("[data-go]"), a = e.target.closest("[data-act]");
+  if (c) {
+    sound.tap(); const k = c.dataset.c, v = +c.dataset.v;
+    if (APP.onChoose && APP.onChoose(k, v, c) === false) return;
+    const cur = getP(k);
+    if (Array.isArray(cur)) { const i = cur.indexOf(v); if (i >= 0) cur.splice(i, 1); else if (cur.length < (APP.maxPick && APP.maxPick[k] || 99)) cur.push(v); else toast(T().pickMax); }
+    else setP(k, v);
+    render(); return;
+  }
+  if (g) { sound.tap(); go(g.dataset.go); return; }
+  if (!a) return;
+  const k = a.dataset.act; sound.tap();
+  if (APP.acts && APP.acts[k]) { APP.acts[k](a); return; }
+  switch (k) {
+    case "start": go(APP.first); break;
+    case "pause":
+      if (timer.ended) return;
+      if (timer.running) { timer.pause(); a.textContent = T().resume; } else { timer.resume(); a.textContent = T().pause; }
+      break;
+    case "again": { const keep = APP.keepOnAgain ? APP.keepOnAgain() : {}; Object.assign(S, APP.state(), keep); go(APP.againTo || APP.first); break; }
+    case "teach": go("teach"); break;
+    case "saveTeach": {
+      const text = ($("lText").value || "").trim(), name = ($("lName").value || "").trim();
+      if (!text) { $("lText").focus(); return; }
+      const chain = store.get("fb_teachback", []); chain.push({ demo: APP.demo, text, name, at: Date.now() }); store.set("fb_teachback", chain.slice(-50));
+      sound.warm(); toast(T().saved); render(); break; }
+    case "restart": Object.assign(S, { screen: "intro" }, APP.state()); go("intro"); break;
+    case "copy": { const el = $(a.dataset.from); copyText(el ? (el.value != null && el.tagName !== "DIV" ? el.value : el.innerText) : a.dataset.text); break; }
+  }
+});
+window.__app = { S, go, render, timer, APP };
+if (APP.boot) APP.boot();
+
+/* ---------- facilitator guide ---------- */
+const drawer = $("drawer");
+function openGuide() {
+  const t = T();
+  $("panel").innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+      <div><span class="kicker">${esc(t.gKicker)}</span><h3 id="g-title">${esc(t.gTitle)}</h3></div>
+      <button class="x" data-close aria-label="${esc(t.close)}">✕</button>
+    </div>
+    <h4>${esc(t.gWhy)}</h4><p>${esc(t.gWhyTxt)}</p>
+    <h4>${esc(t.gSteps)}</h4><ol>${t.gStepList.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    <h4>${esc(t.gDebrief)}</h4><ul>${t.gDebriefList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>
+    <h4>${esc(t.gNotes)}</h4><ul>${t.gNotesList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>`;
+  drawer.classList.add("show");
+  setTimeout(() => drawer.querySelector("[data-close]").focus({ preventScroll: true }), 60);
+}
+function closeGuide() { drawer.classList.remove("show"); $("btn-guide").focus({ preventScroll: true }); }
+drawer.addEventListener("click", e => { if (e.target === drawer || e.target.closest("[data-close]")) closeGuide(); });
+$("btn-guide").addEventListener("click", openGuide);
+window.addEventListener("keydown", e => { if (e.key === "Escape" && drawer.classList.contains("show")) closeGuide(); });
+
+/* ---------- language + sound ---------- */
+function paintSound() {
+  const b = $("btn-sound"), t = T();
+  b.innerHTML = sound.muted
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  b.setAttribute("aria-label", sound.muted ? t.soundOff : t.soundOn); b.title = b.getAttribute("aria-label");
+}
+$("btn-sound").addEventListener("click", () => { sound.muted = !sound.muted; store.set("fb_muted", sound.muted); sound.init(); paintSound(); if (!sound.muted) sound.tap(); });
+
+function applyLang(l) {
+  lang = LANGS.includes(l) ? l : "en";
+  document.documentElement.lang = (/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang));
+  document.title = T().title;
+  $("lang-lbl").textContent = LANG_LBL[lang];
+  $("btn-guide").setAttribute("aria-label", T().guide); drawer.setAttribute("aria-label", T().guide);
+  document.querySelectorAll("[data-t]").forEach(el => { const v = T()[el.dataset.t]; if (typeof v === "string") el.textContent = v; });
+  paintSound();
+  render();               // the clock object survives a re-render
+  timer.paint();
+  const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume;
+  if (drawer.classList.contains("show")) openGuide();
+  try { localStorage.setItem("wm_preferred_lang", lang); localStorage.setItem("wm_cases_lang", lang); } catch (e) {}
+}
+$("btn-lang").addEventListener("click", () => applyLang(LANGS[(LANGS.indexOf(lang) + 1) % LANGS.length]));
+window.FBL_SET = l => applyLang(l); window.FBL_GET = () => lang;
+
+/* ---------- boot ---------- */
+let saved = null;
+try { saved = localStorage.getItem("wm_preferred_lang") || localStorage.getItem("wm_cases_lang"); } catch (e) {}
+const nav = (navigator.language || "").toLowerCase();
+applyLang(LANGS.includes(saved) ? saved : nav.startsWith("zh") ? "zh" : nav.startsWith("es") ? "es" : "en");
+document.addEventListener("visibilitychange", () => { if (!document.hidden && timer.running) keepAwake(true); });
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {}); // offline cache
+})();
+</script>
+<script src="/fbkit/pass.js?v=758a7441b7" defer></script>
+</body>
+</html>

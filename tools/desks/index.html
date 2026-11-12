@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dde632a0dc"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title id="page-title">Three Desks — FREE//BUILDER</title>
+  <meta name="description" content="Three functions rebuild one delay: private briefs, one shared timeline, fact or story, and the handoff rewritten as who needs what by when, and why.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
+  <!-- Brand fonts load without blocking the page: where Google Fonts is slow or blocked, system fonts show instantly. -->
+  <link rel="stylesheet" href="/fonts/fonts.css">
+
+  <link rel="stylesheet" href="/fbkit/s-b871aaaa7f.css">
+<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
+:root{color-scheme:light dark}
+@media (prefers-color-scheme: dark){
+:root{--paper:#141416;--ink:#ECEBE6;--muted:#A8A7AD;--line:#303036;--grid:#26262B;--white:#1D1D21;--inkbg:#2B2B31;--inkbd:#3B3B42;--accent-ink:#F28C76;--good:#62C48F;--paper-rgb:20,20,22;--dot-rgb:255,255,255;--ink-rgb:236,235,230;--white-rgb:29,29,33;--accent-text:#F2806A;--warn-ink:#E3B25C}
+html,body{background-color:var(--paper)}
+/* primary actions read as light on dark */
+.btn.pri,.cta a.pri,.chip.pri{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.btn.pri:hover,.cta a.pri:hover,.chip.pri:hover{background:#fff!important;border-color:#fff!important}
+.btn[disabled]{opacity:.45}
+.seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.steps span.done{background:#ECEBE6}
+.curtain{border:1px solid #3B3B42}
+/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
+.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
+/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
+.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
+/* illustrations keep their light look on a plate */
+.screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
+.plate{background:#fff!important}
+.card-art~.text-ink\/60,.card-art~span .text-ink\/60{color:rgba(23,23,26,.62)!important}
+.text-accent{color:#F2806A!important}
+.bg-white\/90.text-ink,.bg-white\/90 .text-ink{color:#ECEBE6}
+img{filter:none}
+::selection{background:#E2553F;color:#fff}
+}
+</style></head>
+<body>
+  <div class="dots" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="FREE//BUILDER">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" style="overflow:visible">
+            <rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/>
+            <rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect class="last" x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/>
+          </svg>
+        </span>
+        <span class="brand-txt"><b>FREE<i>//</i>BUILDER</b><span data-t="product">Three Desks</span></span>
+      </a>
+      <div class="top-actions">
+        <button class="chip" id="btn-lang" type="button" aria-label="Language" title="EN / 中文 / ES">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <b id="lang-lbl">EN</b>
+        </button>
+        <button class="chip" id="btn-sound" type="button"></button>
+        <button class="chip" id="btn-guide" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="lbl" data-t="guide">Facilitators</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="sr" data-t="product">Three Desks</h1>
+    <div class="steps" id="steps" aria-hidden="true"></div>
+    <div id="stage" aria-live="polite"></div>
+  </main>
+
+  <footer class="fbf" data-fbf-root><div class="fbf-in"><div class="fbf-row"><span class="fbf-own"><a class="fbf-lg fbf-nm fbf-nm-fb" href="/" aria-label="FREE//BUILDER"><svg class="fb-mk" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg><span class="fbf-name">FREE<i>//</i>BUILDER</span></a><span class="fbf-cy"><svg class="fbf-c" viewBox="0 0 24 24" role="img" aria-label="©"><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.3 9.4a4.3 4.3 0 1 0 0 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="fbf-year">2026</span></span></span><nav aria-label="Footer"><span class="fbf-dot" aria-hidden="true">·</span><a href="/privacy/" data-fbf="privacy">Your privacy</a><span class="fbf-dot" aria-hidden="true">·</span><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai fbf-ico" aria-label="AI" title="AI" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="r-st" d="M12 7.2V4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle class="r-ant" cx="12" cy="3.4" r="1.6" fill="currentColor"/><rect x="4.6" y="7.4" width="14.8" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><g class="r-eyes"><circle cx="9.4" cy="12.8" r="1.55" fill="currentColor"/><circle cx="14.6" cy="12.8" r="1.55" fill="currentColor"/></g><path d="M10 16.4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12.2v2.6M21 12.2v2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a> &amp; <a href="https://www.after-hours.work/" class="fbf-heart fbf-ico" aria-label="♥ after hours" title="♥" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="h-b" d="M12 20.4s-7.8-4.7-7.8-10.3A4.4 4.4 0 0 1 12 7.5a4.4 4.4 0 0 1 7.8 2.6c0 5.6-7.8 10.3-7.8 10.3z" fill="currentColor"/><path class="h-s" d="M7.6 9.6a2.2 2.2 0 0 1 2.1-1.7" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round"/></svg></a></span></nav></div><span class="fbf-x" data-t="privacy">A made-up delay, then one of yours. Nothing leaves this phone.</span></div></footer>
+
+  <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="g-title">
+    <div class="panel" id="panel"></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+/* =====================================================================
+   COPY — EN / 中文 / ES (generated by build/next_tools.py)
+   ===================================================================== */
+const I18N = {
+"en": {
+"guide": "Facilitators",
+"back": "Part of FREE//BUILDER’s services ↗",
+"soundOn": "Sound on",
+"soundOff": "Sound off",
+"left": "left",
+"paused": "paused",
+"close": "Close",
+"resume": "Resume",
+"pause": "Pause",
+"start": "Start",
+"next": "Next",
+"backBtn": "Back",
+"nameA": "Person A",
+"nameB": "Person B",
+"phA": "e.g. Ana",
+"phB": "e.g. Leo",
+"copy": "Copy",
+"copied": "Copied.",
+"share": "Send it",
+"icsMade": "Calendar file made on this phone. Open it to add it.",
+"pickMax": "That’s the most you can pick.",
+"timeUp": "Time’s up. Finish your sentence.",
+"swap": "Swap",
+"again": "Practise again",
+"passOn": "Pass it on",
+"monday": "Try this on Monday",
+"teachKicker": "Pass it on",
+"learnerName": "Their name (optional)",
+"learnerPh": "e.g. Mei",
+"learned": "What they’ll try, in their own words",
+"learnedPh": "Hand them the phone…",
+"save": "Save to this phone",
+"chainTitle": "People you’ve passed it on to",
+"chainEmpty": "No one yet. Your first teach-back will appear here.",
+"saved": "Saved on this phone only.",
+"restart": "Back to the start",
+"teachbackLink": "Teach-Back Chain ↗",
+"gKicker": "Facilitator guide",
+"gWhy": "Why it works",
+"gSteps": "Running it",
+"gDebrief": "Debrief questions",
+"gNotes": "Notes",
+"passTo": "Pass the phone to {n}",
+"ready": "I’m {n}",
+"optional": "optional",
+"title": "Three Desks — FREE//BUILDER",
+"product": "Three Desks",
+"privacy": "A made-up delay, then one of yours. Nothing leaves this phone.",
+"introKicker": "Across functions · Three people",
+"introTitle": "Three <span class=\"accent-word\">Desks</span>",
+"introLead": "Every function thinks the other one is the blocker. Three of you rebuild one delay: each reads a private brief, then you see one timeline together, sort what was seen from what was added, and rewrite the handoff that broke.",
+"introMeta": [
+"3 people, 3 functions",
+"1 phone",
+"≈ 20 minutes"
+],
+"case": "The September launch slipped three weeks.",
+"setupTitle": "Who sits at which desk?",
+"desks": [
+"Product",
+"Delivery",
+"People"
+],
+"deskPh": [
+"e.g. Tomás",
+"e.g. Priya",
+"e.g. Nadia"
+],
+"setupNote": "Play a desk that isn’t your own if you can. It’s easier to see.",
+"cDeskT": "{d} desk: {n}",
+"cDeskL": "Only {n} reads this. Everyone else, look away.",
+"briefK": "Your brief · only you see this",
+"briefTitle": "What {d} knew",
+"waiting": "What you were waiting for",
+"feel": "How it felt from your desk",
+"gotIt": "Got it, pass it on",
+"briefs": [
+{
+"ev": [
+"2 June: we sent the final spec to Delivery.",
+"20 June: customer tests changed the checkout screen. We said so in the stand-up."
+],
+"wait": "A build to test with customers by 15 July.",
+"feel": "Delivery ignored our change and built the old screen."
+},
+{
+"ev": [
+"3 June: the spec arrived without the payment rules.",
+"21 June: someone mentioned a checkout change on the call. No ticket, so we kept building."
+],
+"wait": "The payment rules from Product, asked for on 3 June.",
+"feel": "Product keeps changing its mind and never writes it down."
+},
+{
+"ev": [
+"10 June: we asked for a demo build to make the support team’s training.",
+"1 July: training booked for 26 August, 40 agents. Moving it means paying the trainer."
+],
+"wait": "A build to film the training videos by 1 August.",
+"feel": "Nobody tells us anything until it’s too late."
+}
+],
+"tlTitle": "One timeline, for the first time",
+"tlLead": "Read it aloud, in order. Each desk says what it was waiting for at that moment.",
+"timeline": [
+{
+"d": "2 Jun",
+"k": 0,
+"t": "Final spec sent to Delivery."
+},
+{
+"d": "3 Jun",
+"k": 1,
+"t": "Spec arrives without payment rules. Delivery asks for them."
+},
+{
+"d": "10 Jun",
+"k": 2,
+"t": "People asks for a demo build for training."
+},
+{
+"d": "20 Jun",
+"k": 0,
+"t": "Checkout changes after customer tests; said in a stand-up."
+},
+{
+"d": "21 Jun",
+"k": 1,
+"t": "Delivery hears a mention, no ticket; keeps building the old screen."
+},
+{
+"d": "1 Jul",
+"k": 2,
+"t": "Training booked for 26 August."
+},
+{
+"d": "15 Jul",
+"k": 0,
+"t": "No build to test. Product is told the old screen is coming."
+},
+{
+"d": "1 Aug",
+"k": 2,
+"t": "No build to film the training. Launch moves three weeks."
+}
+],
+"sortTitle": "Fact or story?",
+"sortLead": "Things people said about the delay. A fact is something someone saw. A story is something someone added.",
+"fs": [
+"Fact",
+"Story"
+],
+"check": "Check our sort",
+"statements": [
+{
+"t": "“Delivery ignored the checkout change.”",
+"a": 1,
+"w": "They heard a mention with no ticket; “ignored” is what Product added."
+},
+{
+"t": "“The spec arrived without the payment rules.”",
+"a": 0,
+"w": "Delivery saw it and asked on 3 June."
+},
+{
+"t": "“Product keeps changing its mind.”",
+"a": 1,
+"w": "One change, after customer tests. “Keeps” is added."
+},
+{
+"t": "“Training is booked for 26 August.”",
+"a": 0,
+"w": "It’s in the booking."
+},
+{
+"t": "“HR always asks too late.”",
+"a": 1,
+"w": "People asked on 10 June, before anyone else knew there was a problem."
+},
+{
+"t": "“The checkout change was only said in a stand-up; there was no ticket.”",
+"a": 0,
+"w": "Both Product and Delivery say so."
+},
+{
+"t": "“Bengaluru doesn’t care about the launch date.”",
+"a": 1,
+"w": "Nobody saw that. They were waiting for the payment rules."
+},
+{
+"t": "“Delivery has been waiting for the payment rules since June.”",
+"a": 0,
+"w": "Asked for on 3 June; still not sent."
+}
+],
+"sortDone": "A story isn’t a lie. It’s what we fill the gap with when we can’t see the other desk.",
+"hoTitle": "Rewrite the handoff that broke",
+"hoLead": "20 June: the checkout change, said in a stand-up. Write it as a request the other desk can act on.",
+"hoF": [
+"Who needs it",
+"What",
+"By when",
+"Because"
+],
+"hoPh": [
+"Delivery",
+"the new checkout screen as a ticket, with the payment rules",
+"24 June",
+"they’re building the old one now"
+],
+"useExample": "Use the example",
+"hoSent": "{a} needs {b} by {c} because {d}.",
+"realTitle": "Now one of yours",
+"realLead": "A real handoff between your desks, the same four parts. Copy it into wherever requests live.",
+"endKicker": "Delay rebuilt",
+"endTitle": "Nobody was the blocker. The handoff was.",
+"endLead": "Each desk had half the story and filled the rest with a guess. One timeline, the fact-or-story sort and a request with a “because” in it do more than any workshop on collaboration.",
+"mondayTxt": "Write your next request to another team as: [function] needs [thing] by [when] because [reason].",
+"teachTitle": "Teach another team the sentence.",
+"teachLead": "Show them the three moves, then let them write their own request the new way.",
+"t3": [
+"Private briefs",
+"One timeline",
+"Needs, by, because"
+],
+"t3sub": [
+"each desk’s half",
+"then fact or story",
+"the request format"
+],
+"gTitle": "Running Three Desks",
+"gWhyTxt": "Cross-functional blame is usually facts and stories mixed across desks: nobody knows what the others were waiting for. Private briefs make the missing halves real; seeing one timeline together replaces the guesses; the sort names the guessing; the request format stops the next one.",
+"gStepList": [
+"Three people, ideally from three functions, each playing a desk.",
+"Each reads their brief alone and passes the phone on.",
+"Read the shared timeline aloud; each desk says what it was waiting for.",
+"Sort the eight sentences, check, then rewrite the broken handoff and one real one."
+],
+"gDebriefList": [
+"Which story did your own desk tell, and what was it filling in?",
+"Where do requests between your teams live now, and do they have a “because”?",
+"Which real delay should we rebuild this way next?"
+],
+"gNotesList": [
+"The delay is invented. For a real one, give each desk ten minutes to write their own brief first.",
+"Nothing is saved; copy the request where your team keeps them."
+]
+},
+"zh": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服务的一部分 ↗",
+"soundOn": "声音开",
+"soundOff": "声音关",
+"left": "剩余",
+"paused": "已暂停",
+"close": "关闭",
+"resume": "继续",
+"pause": "暂停",
+"start": "开始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "复制",
+"copied": "已复制。",
+"share": "发出去",
+"icsMade": "日历文件已在这台手机上生成。打开它即可添加。",
+"pickMax": "最多只能选这么多。",
+"timeUp": "时间到。把这句话说完。",
+"swap": "交换",
+"again": "再练一次",
+"passOn": "传下去",
+"monday": "周一试试这个",
+"teachKicker": "传下去",
+"learnerName": "TA 的名字（可选）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算试什么，用 TA 自己的话",
+"learnedPh": "把手机递给 TA……",
+"save": "保存在这台手机上",
+"chainTitle": "你传给过的人",
+"chainEmpty": "还没有人。你的第一次教回去会出现在这里。",
+"saved": "只保存在这台手机上。",
+"restart": "回到开头",
+"teachbackLink": "教回去链条 ↗",
+"gKicker": "主持人指南",
+"gWhy": "为什么有效",
+"gSteps": "怎么带",
+"gDebrief": "复盘问题",
+"gNotes": "备注",
+"passTo": "把手机递给 {n}",
+"ready": "我是 {n}",
+"optional": "可选",
+"title": "三张桌子 — FREE//BUILDER",
+"product": "三张桌子",
+"privacy": "先是一次编出来的延误，再是你们自己的。什么都不会离开这台手机。",
+"introKicker": "跨部门 · 三人",
+"introTitle": "三张<span class=\"accent-word\">桌子</span>",
+"introLead": "每个部门都觉得是别的部门在拖后腿。你们三个人一起重建一次延误：各自读一份私密说明，然后一起看同一条时间线，把看到的和添上去的分开，再改写那次出问题的交接。",
+"introMeta": [
+"3 人，3 个部门",
+"1 部手机",
+"约 20 分钟"
+],
+"case": "九月的上线推迟了三周。",
+"setupTitle": "谁坐哪张桌子？",
+"desks": [
+"产品",
+"交付",
+"人力"
+],
+"deskPh": [
+"例如 Tomás",
+"例如 Priya",
+"例如 Nadia"
+],
+"setupNote": "如果可以，坐一张不是自己部门的桌子。这样更容易看清。",
+"cDeskT": "{d}的桌子：{n}",
+"cDeskL": "只有 {n} 看。其他人别看。",
+"briefK": "你的说明 · 只有你能看到",
+"briefTitle": "{d}知道什么",
+"waiting": "你们在等什么",
+"feel": "从你的桌子看，感觉如何",
+"gotIt": "记住了，传下去",
+"briefs": [
+{
+"ev": [
+"6 月 2 日：我们把最终需求发给了交付。",
+"6 月 20 日：用户测试后改了结账页面。我们在站会上说了。"
+],
+"wait": "7 月 15 日前拿到一个能给用户测试的版本。",
+"feel": "交付无视了我们的修改，还在做旧页面。"
+},
+{
+"ev": [
+"6 月 3 日：需求到了，但没有付款规则。",
+"6 月 21 日：电话会上有人提到结账要改。没有工单，所以我们继续做。"
+],
+"wait": "产品那边的付款规则，6 月 3 日就要过。",
+"feel": "产品老是变来变去，还从不写下来。"
+},
+{
+"ev": [
+"6 月 10 日：我们要了一个演示版本，用来做客服团队的培训。",
+"7 月 1 日：培训定在 8 月 26 日，40 名客服。改期要付讲师费。"
+],
+"wait": "8 月 1 日前拿到一个版本，用来录培训视频。",
+"feel": "不到来不及的时候，没人告诉我们任何事。"
+}
+],
+"tlTitle": "第一次，同一条时间线",
+"tlLead": "按顺序大声念出来。每张桌子说说当时自己在等什么。",
+"timeline": [
+{
+"d": "6/2",
+"k": 0,
+"t": "最终需求发给交付。"
+},
+{
+"d": "6/3",
+"k": 1,
+"t": "需求到了，缺付款规则。交付去要。"
+},
+{
+"d": "6/10",
+"k": 2,
+"t": "人力要一个演示版本做培训。"
+},
+{
+"d": "6/20",
+"k": 0,
+"t": "用户测试后结账页面改了；在站会上说了。"
+},
+{
+"d": "6/21",
+"k": 1,
+"t": "交付听到一句，没有工单；继续做旧页面。"
+},
+{
+"d": "7/1",
+"k": 2,
+"t": "培训定在 8 月 26 日。"
+},
+{
+"d": "7/15",
+"k": 0,
+"t": "没有可测试的版本。产品得知做的是旧页面。"
+},
+{
+"d": "8/1",
+"k": 2,
+"t": "没有版本可以录培训。上线推迟三周。"
+}
+],
+"sortTitle": "事实，还是故事？",
+"sortLead": "大家对这次延误说过的话。事实是有人亲眼看到的。故事是有人自己添上去的。",
+"fs": [
+"事实",
+"故事"
+],
+"check": "核对一下",
+"statements": [
+{
+"t": "“交付无视了结账页面的修改。”",
+"a": 1,
+"w": "他们只听到一句，没有工单；“无视”是产品添上去的。"
+},
+{
+"t": "“需求到的时候没有付款规则。”",
+"a": 0,
+"w": "交付看到了，6 月 3 日就问了。"
+},
+{
+"t": "“产品老是变来变去。”",
+"a": 1,
+"w": "只改了一次，还是用户测试之后改的。“老是”是添上去的。"
+},
+{
+"t": "“培训定在 8 月 26 日。”",
+"a": 0,
+"w": "预订记录上写着。"
+},
+{
+"t": "“人力总是问得太晚。”",
+"a": 1,
+"w": "人力 6 月 10 日就问了，那时别人都还不知道有问题。"
+},
+{
+"t": "“结账修改只在站会上说过，没有工单。”",
+"a": 0,
+"w": "产品和交付都这么说。"
+},
+{
+"t": "“班加罗尔根本不在乎上线日期。”",
+"a": 1,
+"w": "没人看到这一点。他们在等付款规则。"
+},
+{
+"t": "“交付从六月起就一直在等付款规则。”",
+"a": 0,
+"w": "6 月 3 日要过；到现在还没发。"
+}
+],
+"sortDone": "故事不是谎言。它是我们看不见另一张桌子时，用来填空的东西。",
+"hoTitle": "改写那次出问题的交接",
+"hoLead": "6 月 20 日：结账修改，只在站会上说了一句。把它写成另一张桌子能照着做的请求。",
+"hoF": [
+"谁需要",
+"需要什么",
+"什么时候之前",
+"因为"
+],
+"hoPh": [
+"交付",
+"新结账页面的工单，附上付款规则",
+"6 月 24 日",
+"他们现在还在做旧的"
+],
+"useExample": "用这个例子",
+"hoSent": "{a}需要{b}，{c}之前，因为{d}。",
+"realTitle": "现在写一个你们自己的",
+"realLead": "你们几张桌子之间一次真实的交接，同样四个部分。复制到你们平时放请求的地方。",
+"endKicker": "延误重建完了",
+"endTitle": "没有谁在拖后腿。是交接出了问题。",
+"endLead": "每张桌子只握着半个故事，剩下的靠猜。一条时间线、一次事实与故事的分拣、一个带“因为”的请求，比任何协作培训都管用。",
+"mondayTxt": "下一次给别的团队提请求，写成：某部门需要某物，某时之前，因为某原因。",
+"teachTitle": "把这句话教给另一个团队。",
+"teachLead": "给他们看这三步，再让他们用新写法写一个自己的请求。",
+"t3": [
+"私密说明",
+"一条时间线",
+"需要、之前、因为"
+],
+"t3sub": [
+"每张桌子的一半",
+"再分事实和故事",
+"请求的格式"
+],
+"gTitle": "怎么带“三张桌子”",
+"gWhyTxt": "跨部门的互相指责，通常是事实和故事在几张桌子之间混在了一起：谁也不知道别人在等什么。私密说明让缺失的那一半变得真实；一起看一条时间线，取代了各自的猜测；分拣让猜测被说出来；请求格式防止下一次。",
+"gStepList": [
+"三个人，最好来自三个部门，各坐一张桌子。",
+"每人独自读完说明，再把手机传下去。",
+"大声念出共同的时间线；每张桌子说说自己在等什么。",
+"把八句话分好，核对，然后改写那次出问题的交接，再写一个真实的。"
+],
+"gDebriefList": [
+"你自己的桌子讲了哪个故事？它在填补什么空白？",
+"你们团队之间的请求现在放在哪里？里面有“因为”吗？",
+"下一次我们该用这种方式重建哪一次真实的延误？"
+],
+"gNotesList": [
+"这次延误是编的。如果要做真实的，先给每张桌子十分钟写自己的说明。",
+"什么都不保存；把请求复制到团队平时存放的地方。"
+]
+},
+"es": {
+"guide": "Facilitadores",
+"back": "Parte de los servicios de FREE//BUILDER ↗",
+"soundOn": "Sonido activado",
+"soundOff": "Sonido desactivado",
+"left": "restante",
+"paused": "en pausa",
+"close": "Cerrar",
+"resume": "Seguir",
+"pause": "Pausa",
+"start": "Empezar",
+"next": "Siguiente",
+"backBtn": "Atrás",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ej., Ana",
+"phB": "p. ej., Leo",
+"copy": "Copiar",
+"copied": "Copiado.",
+"share": "Enviarlo",
+"icsMade": "Archivo de calendario hecho en este móvil. Ábrelo para añadirlo.",
+"pickMax": "No puedes elegir más.",
+"timeUp": "Se acabó el tiempo. Termina la frase.",
+"swap": "Cambiar",
+"again": "Practicar otra vez",
+"passOn": "Pásalo",
+"monday": "Pruébalo el lunes",
+"teachKicker": "Pásalo",
+"learnerName": "Su nombre (opcional)",
+"learnerPh": "p. ej., Mei",
+"learned": "Lo que va a probar, con sus palabras",
+"learnedPh": "Pásale el móvil…",
+"save": "Guardar en este móvil",
+"chainTitle": "Personas a las que se lo has pasado",
+"chainEmpty": "Nadie todavía. Tu primer enseñar-de-vuelta aparecerá aquí.",
+"saved": "Guardado solo en este móvil.",
+"restart": "Volver al principio",
+"teachbackLink": "Cadena de Enseñar de Vuelta ↗",
+"gKicker": "Guía para facilitar",
+"gWhy": "Por qué funciona",
+"gSteps": "Cómo llevarlo",
+"gDebrief": "Preguntas para cerrar",
+"gNotes": "Notas",
+"passTo": "Pásale el móvil a {n}",
+"ready": "Soy {n}",
+"optional": "opcional",
+"title": "Tres Mesas — FREE//BUILDER",
+"product": "Tres Mesas",
+"privacy": "Un retraso inventado y luego uno vuestro. Nada sale de este móvil.",
+"introKicker": "Entre funciones · Tres personas",
+"introTitle": "Tres <span class=\"accent-word\">Mesas</span>",
+"introLead": "Cada función cree que la otra es el bloqueo. Los tres reconstruís un retraso: cada uno lee un informe privado, luego veis una línea de tiempo juntos, separáis lo que se vio de lo que se añadió y reescribís el traspaso que falló.",
+"introMeta": [
+"3 personas, 3 funciones",
+"1 móvil",
+"≈ 20 minutos"
+],
+"case": "El lanzamiento de septiembre se retrasó tres semanas.",
+"setupTitle": "¿Quién se sienta en cada mesa?",
+"desks": [
+"Producto",
+"Entrega",
+"Personas"
+],
+"deskPh": [
+"p. ej., Tomás",
+"p. ej., Priya",
+"p. ej., Nadia"
+],
+"setupNote": "Si podéis, jugad una mesa que no sea la vuestra. Se ve mejor.",
+"cDeskT": "Mesa de {d}: {n}",
+"cDeskL": "Solo {n} lee esto. Los demás, no miréis.",
+"briefK": "Tu informe · solo lo ves tú",
+"briefTitle": "Lo que sabía {d}",
+"waiting": "Lo que esperabais",
+"feel": "Cómo se vivió desde tu mesa",
+"gotIt": "Entendido, pásalo",
+"briefs": [
+{
+"ev": [
+"2 de junio: enviamos la especificación final a Entrega.",
+"20 de junio: las pruebas con clientes cambiaron la pantalla de pago. Lo dijimos en la reunión diaria."
+],
+"wait": "Una versión para probar con clientes antes del 15 de julio.",
+"feel": "Entrega ignoró nuestro cambio y construyó la pantalla vieja."
+},
+{
+"ev": [
+"3 de junio: la especificación llegó sin las reglas de pago.",
+"21 de junio: alguien mencionó un cambio en el pago en la llamada. Sin ticket, seguimos construyendo."
+],
+"wait": "Las reglas de pago de Producto, pedidas el 3 de junio.",
+"feel": "Producto cambia de idea y nunca lo escribe."
+},
+{
+"ev": [
+"10 de junio: pedimos una versión de demostración para preparar la formación del equipo de soporte.",
+"1 de julio: formación reservada para el 26 de agosto, 40 agentes. Moverla supone pagar al formador."
+],
+"wait": "Una versión para grabar los vídeos de formación antes del 1 de agosto.",
+"feel": "Nadie nos cuenta nada hasta que es tarde."
+}
+],
+"tlTitle": "Una línea de tiempo, por primera vez",
+"tlLead": "Leedla en voz alta, en orden. Cada mesa dice qué esperaba en ese momento.",
+"timeline": [
+{
+"d": "2 jun",
+"k": 0,
+"t": "Especificación final enviada a Entrega."
+},
+{
+"d": "3 jun",
+"k": 1,
+"t": "Llega sin reglas de pago. Entrega las pide."
+},
+{
+"d": "10 jun",
+"k": 2,
+"t": "Personas pide una versión de demostración para la formación."
+},
+{
+"d": "20 jun",
+"k": 0,
+"t": "El pago cambia tras pruebas con clientes; se dice en la reunión diaria."
+},
+{
+"d": "21 jun",
+"k": 1,
+"t": "Entrega oye una mención, sin ticket; sigue con la pantalla vieja."
+},
+{
+"d": "1 jul",
+"k": 2,
+"t": "Formación reservada para el 26 de agosto."
+},
+{
+"d": "15 jul",
+"k": 0,
+"t": "No hay versión para probar. Producto se entera de que llega la pantalla vieja."
+},
+{
+"d": "1 ago",
+"k": 2,
+"t": "No hay versión para grabar la formación. El lanzamiento se mueve tres semanas."
+}
+],
+"sortTitle": "¿Hecho o historia?",
+"sortLead": "Cosas que se dijeron sobre el retraso. Un hecho es algo que alguien vio. Una historia es algo que alguien añadió.",
+"fs": [
+"Hecho",
+"Historia"
+],
+"check": "Comprobar",
+"statements": [
+{
+"t": "«Entrega ignoró el cambio del pago.»",
+"a": 1,
+"w": "Oyeron una mención sin ticket; «ignoró» lo añadió Producto."
+},
+{
+"t": "«La especificación llegó sin las reglas de pago.»",
+"a": 0,
+"w": "Entrega lo vio y lo pidió el 3 de junio."
+},
+{
+"t": "«Producto cambia de idea constantemente.»",
+"a": 1,
+"w": "Un cambio, tras pruebas con clientes. «Constantemente» es añadido."
+},
+{
+"t": "«La formación está reservada para el 26 de agosto.»",
+"a": 0,
+"w": "Está en la reserva."
+},
+{
+"t": "«RR. HH. siempre pide tarde.»",
+"a": 1,
+"w": "Personas pidió el 10 de junio, antes de que nadie supiera que había un problema."
+},
+{
+"t": "«El cambio del pago solo se dijo en una reunión; no hubo ticket.»",
+"a": 0,
+"w": "Lo dicen Producto y Entrega."
+},
+{
+"t": "«A Bengaluru no le importa la fecha de lanzamiento.»",
+"a": 1,
+"w": "Nadie vio eso. Esperaban las reglas de pago."
+},
+{
+"t": "«Entrega lleva esperando las reglas de pago desde junio.»",
+"a": 0,
+"w": "Pedidas el 3 de junio; aún sin enviar."
+}
+],
+"sortDone": "Una historia no es una mentira. Es con lo que llenamos el hueco cuando no vemos la otra mesa.",
+"hoTitle": "Reescribid el traspaso que falló",
+"hoLead": "20 de junio: el cambio del pago, dicho en una reunión. Escribidlo como una petición con la que la otra mesa pueda actuar.",
+"hoF": [
+"Quién lo necesita",
+"Qué",
+"Para cuándo",
+"Porque"
+],
+"hoPh": [
+"Entrega",
+"la nueva pantalla de pago como ticket, con las reglas de pago",
+"24 de junio",
+"ahora están construyendo la vieja"
+],
+"useExample": "Usar el ejemplo",
+"hoSent": "{a} necesita {b} para {c} porque {d}.",
+"realTitle": "Ahora uno vuestro",
+"realLead": "Un traspaso real entre vuestras mesas, las mismas cuatro partes. Copiadlo donde viven las peticiones.",
+"endKicker": "Retraso reconstruido",
+"endTitle": "Nadie era el bloqueo. Lo era el traspaso.",
+"endLead": "Cada mesa tenía media historia y rellenó el resto con una suposición. Una línea de tiempo, la criba hecho-o-historia y una petición con un «porque» hacen más que cualquier taller de colaboración.",
+"mondayTxt": "Escribe tu próxima petición a otro equipo así: [función] necesita [cosa] para [cuándo] porque [razón].",
+"teachTitle": "Enseña la frase a otro equipo.",
+"teachLead": "Enséñales los tres pasos y deja que escriban su propia petición de la nueva manera.",
+"t3": [
+"Informes privados",
+"Una línea de tiempo",
+"Necesita, para, porque"
+],
+"t3sub": [
+"la mitad de cada mesa",
+"y luego hecho o historia",
+"el formato de petición"
+],
+"gTitle": "Cómo llevar Tres Mesas",
+"gWhyTxt": "La culpa entre funciones suele ser hechos e historias mezclados entre mesas: nadie sabe qué esperaban los demás. Los informes privados hacen reales las mitades que faltan; ver una línea de tiempo juntos sustituye las suposiciones; la criba las nombra; el formato de petición evita la siguiente.",
+"gStepList": [
+"Tres personas, idealmente de tres funciones, cada una en una mesa.",
+"Cada una lee su informe a solas y pasa el móvil.",
+"Leed la línea de tiempo en voz alta; cada mesa dice qué esperaba.",
+"Clasificad las ocho frases, comprobad, y reescribid el traspaso roto y uno real."
+],
+"gDebriefList": [
+"¿Qué historia contó vuestra mesa y qué hueco llenaba?",
+"¿Dónde viven hoy las peticiones entre vuestros equipos, y tienen un «porque»?",
+"¿Qué retraso real deberíamos reconstruir así la próxima vez?"
+],
+"gNotesList": [
+"El retraso es inventado. Para uno real, dad a cada mesa diez minutos para escribir su propio informe.",
+"No se guarda nada; copiad la petición donde vuestro equipo las guarda."
+]
+}, "zh-Hant": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服務的一部分 ↗",
+"soundOn": "聲音開",
+"soundOff": "聲音關",
+"left": "剩餘",
+"paused": "已暫停",
+"close": "關閉",
+"resume": "繼續",
+"pause": "暫停",
+"start": "開始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "複製",
+"copied": "已複製。",
+"share": "發出去",
+"icsMade": "日曆檔案已在這臺手機上生成。開啟它即可新增。",
+"pickMax": "最多隻能選這麼多。",
+"timeUp": "時間到。把這句話說完。",
+"swap": "交換",
+"again": "再練一次",
+"passOn": "傳下去",
+"monday": "週一試試這個",
+"teachKicker": "傳下去",
+"learnerName": "TA 的名字（可選）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算試什麼，用 TA 自己的話",
+"learnedPh": "把手機遞給 TA……",
+"save": "儲存在這臺手機上",
+"chainTitle": "你傳給過的人",
+"chainEmpty": "還沒有人。你的第一次教回去會出現在這裡。",
+"saved": "只儲存在這臺手機上。",
+"restart": "回到開頭",
+"teachbackLink": "教回去鏈條 ↗",
+"gKicker": "主持人指南",
+"gWhy": "為什麼有效",
+"gSteps": "怎麼帶",
+"gDebrief": "覆盤問題",
+"gNotes": "備註",
+"passTo": "把手機遞給 {n}",
+"ready": "我是 {n}",
+"optional": "可選",
+"title": "三張桌子 — FREE//BUILDER",
+"product": "三張桌子",
+"privacy": "先是一次編出來的延誤，再是你們自己的。什麼都不會離開這臺手機。",
+"introKicker": "跨部門 · 三人",
+"introTitle": "三張<span class=\"accent-word\">桌子</span>",
+"introLead": "每個部門都覺得是別的部門在拖後腿。你們三個人一起重建一次延誤：各自讀一份私密說明，然後一起看同一條時間線，把看到的和添上去的分開，再改寫那次出問題的交接。",
+"introMeta": [
+"3 人，3 個部門",
+"1 部手機",
+"約 20 分鐘"
+],
+"case": "九月的上線推遲了三週。",
+"setupTitle": "誰坐哪張桌子？",
+"desks": [
+"產品",
+"交付",
+"人力"
+],
+"deskPh": [
+"例如 Tomás",
+"例如 Priya",
+"例如 Nadia"
+],
+"setupNote": "如果可以，坐一張不是自己部門的桌子。這樣更容易看清。",
+"cDeskT": "{d}的桌子：{n}",
+"cDeskL": "只有 {n} 看。其他人別看。",
+"briefK": "你的說明 · 只有你能看到",
+"briefTitle": "{d}知道什麼",
+"waiting": "你們在等什麼",
+"feel": "從你的桌子看，感覺如何",
+"gotIt": "記住了，傳下去",
+"briefs": [
+{
+"ev": [
+"6 月 2 日：我們把最終需求發給了交付。",
+"6 月 20 日：使用者測試後改了結賬頁面。我們在站會上說了。"
+],
+"wait": "7 月 15 日前拿到一個能給使用者測試的版本。",
+"feel": "交付無視了我們的修改，還在做舊頁面。"
+},
+{
+"ev": [
+"6 月 3 日：需求到了，但沒有付款規則。",
+"6 月 21 日：電話會上有人提到結賬要改。沒有工單，所以我們繼續做。"
+],
+"wait": "產品那邊的付款規則，6 月 3 日就要過。",
+"feel": "產品老是變來變去，還從不寫下來。"
+},
+{
+"ev": [
+"6 月 10 日：我們要了一個演示版本，用來做客服團隊的培訓。",
+"7 月 1 日：培訓定在 8 月 26 日，40 名客服。改期要付講師費。"
+],
+"wait": "8 月 1 日前拿到一個版本，用來錄培訓影片。",
+"feel": "不到來不及的時候，沒人告訴我們任何事。"
+}
+],
+"tlTitle": "第一次，同一條時間線",
+"tlLead": "按順序大聲念出來。每張桌子說說當時自己在等什麼。",
+"timeline": [
+{
+"d": "6/2",
+"k": 0,
+"t": "最終需求發給交付。"
+},
+{
+"d": "6/3",
+"k": 1,
+"t": "需求到了，缺付款規則。交付去要。"
+},
+{
+"d": "6/10",
+"k": 2,
+"t": "人力要一個演示版本做培訓。"
+},
+{
+"d": "6/20",
+"k": 0,
+"t": "使用者測試後結賬頁面改了；在站會上說了。"
+},
+{
+"d": "6/21",
+"k": 1,
+"t": "交付聽到一句，沒有工單；繼續做舊頁面。"
+},
+{
+"d": "7/1",
+"k": 2,
+"t": "培訓定在 8 月 26 日。"
+},
+{
+"d": "7/15",
+"k": 0,
+"t": "沒有可測試的版本。產品得知做的是舊頁面。"
+},
+{
+"d": "8/1",
+"k": 2,
+"t": "沒有版本可以錄培訓。上線推遲三週。"
+}
+],
+"sortTitle": "事實，還是故事？",
+"sortLead": "大家對這次延誤說過的話。事實是有人親眼看到的。故事是有人自己添上去的。",
+"fs": [
+"事實",
+"故事"
+],
+"check": "核對一下",
+"statements": [
+{
+"t": "“交付無視了結賬頁面的修改。”",
+"a": 1,
+"w": "他們只聽到一句，沒有工單；“無視”是產品添上去的。"
+},
+{
+"t": "“需求到的時候沒有付款規則。”",
+"a": 0,
+"w": "交付看到了，6 月 3 日就問了。"
+},
+{
+"t": "“產品老是變來變去。”",
+"a": 1,
+"w": "只改了一次，還是使用者測試之後改的。“老是”是添上去的。"
+},
+{
+"t": "“培訓定在 8 月 26 日。”",
+"a": 0,
+"w": "預訂記錄上寫著。"
+},
+{
+"t": "“人力總是問得太晚。”",
+"a": 1,
+"w": "人力 6 月 10 日就問了，那時別人都還不知道有問題。"
+},
+{
+"t": "“結賬修改只在站會上說過，沒有工單。”",
+"a": 0,
+"w": "產品和交付都這麼說。"
+},
+{
+"t": "“班加羅爾根本不在乎上線日期。”",
+"a": 1,
+"w": "沒人看到這一點。他們在等付款規則。"
+},
+{
+"t": "“交付從六月起就一直在等付款規則。”",
+"a": 0,
+"w": "6 月 3 日要過；到現在還沒發。"
+}
+],
+"sortDone": "故事不是謊言。它是我們看不見另一張桌子時，用來填空的東西。",
+"hoTitle": "改寫那次出問題的交接",
+"hoLead": "6 月 20 日：結賬修改，只在站會上說了一句。把它寫成另一張桌子能照著做的請求。",
+"hoF": [
+"誰需要",
+"需要什麼",
+"什麼時候之前",
+"因為"
+],
+"hoPh": [
+"交付",
+"新結賬頁面的工單，附上付款規則",
+"6 月 24 日",
+"他們現在還在做舊的"
+],
+"useExample": "用這個例子",
+"hoSent": "{a}需要{b}，{c}之前，因為{d}。",
+"realTitle": "現在寫一個你們自己的",
+"realLead": "你們幾張桌子之間一次真實的交接，同樣四個部分。複製到你們平時放請求的地方。",
+"endKicker": "延誤重建完了",
+"endTitle": "沒有誰在拖後腿。是交接出了問題。",
+"endLead": "每張桌子只握著半個故事，剩下的靠猜。一條時間線、一次事實與故事的分揀、一個帶“因為”的請求，比任何協作培訓都管用。",
+"mondayTxt": "下一次給別的團隊提請求，寫成：某部門需要某物，某時之前，因為某原因。",
+"teachTitle": "把這句話教給另一個團隊。",
+"teachLead": "給他們看這三步，再讓他們用新寫法寫一個自己的請求。",
+"t3": [
+"私密說明",
+"一條時間線",
+"需要、之前、因為"
+],
+"t3sub": [
+"每張桌子的一半",
+"再分事實和故事",
+"請求的格式"
+],
+"gTitle": "怎麼帶“三張桌子”",
+"gWhyTxt": "跨部門的互相指責，通常是事實和故事在幾張桌子之間混在了一起：誰也不知道別人在等什麼。私密說明讓缺失的那一半變得真實；一起看一條時間線，取代了各自的猜測；分揀讓猜測被說出來；請求格式防止下一次。",
+"gStepList": [
+"三個人，最好來自三個部門，各坐一張桌子。",
+"每人獨自讀完說明，再把手機傳下去。",
+"大聲念出共同的時間線；每張桌子說說自己在等什麼。",
+"把八句話分好，核對，然後改寫那次出問題的交接，再寫一個真實的。"
+],
+"gDebriefList": [
+"你自己的桌子講了哪個故事？它在填補什麼空白？",
+"你們團隊之間的請求現在放在哪裡？裡面有“因為”嗎？",
+"下一次我們該用這種方式重建哪一次真實的延誤？"
+],
+"gNotesList": [
+"這次延誤是編的。如果要做真實的，先給每張桌子十分鐘寫自己的說明。",
+"什麼都不儲存；把請求複製到團隊平時存放的地方。"
+]
+}, "ca": {
+"guide": "Facilitadors",
+"back": "Part dels serveis de FREE//BUILDER ↗",
+"soundOn": "So activat",
+"soundOff": "So desactivat",
+"left": "restant",
+"paused": "en pausa",
+"close": "Tancar",
+"resume": "Continuar",
+"pause": "Pausa",
+"start": "Començar",
+"next": "Següent",
+"backBtn": "Enrere",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ex., Ana",
+"phB": "p. ex., Leo",
+"copy": "Copia",
+"copied": "Copiat.",
+"share": "Envia-ho",
+"icsMade": "Fitxer de calendari fet en aquest mòbil. Obre’l per afegir-lo.",
+"pickMax": "No en pots triar més.",
+"timeUp": "S’ha acabat el temps. Acaba la frase.",
+"swap": "Canviar",
+"again": "Practicar un altre cop",
+"passOn": "Passa-ho",
+"monday": "Prova-ho dilluns",
+"teachKicker": "Passa-ho",
+"learnerName": "El seu nom (opcional)",
+"learnerPh": "p. ex., Mei",
+"learned": "El que provarà, amb les seves paraules",
+"learnedPh": "Passa-li el mòbil…",
+"save": "Desar en aquest mòbil",
+"chainTitle": "Persones a qui ho has passat",
+"chainEmpty": "Encara ningú. El teu primer ensenyar-de-tornada apareixerà aquí.",
+"saved": "Desat només en aquest mòbil.",
+"restart": "Torna al principi",
+"teachbackLink": "Cadena d'Ensenyar de Tornada ↗",
+"gKicker": "Guia per facilitar",
+"gWhy": "Per què funciona",
+"gSteps": "Com portar-ho",
+"gDebrief": "Preguntes per tancar",
+"gNotes": "Notes",
+"passTo": "Passa el mòbil a {n}",
+"ready": "Soc {n}",
+"optional": "opcional",
+"title": "Tres Taules — FREE//BUILDER",
+"product": "Tres Taules",
+"privacy": "Un retard inventat i després un de vostre. Res no surt d’aquest mòbil.",
+"introKicker": "Entre funcions · Tres persones",
+"introTitle": "Tres <span class=\"accent-word\">Taules</span>",
+"introLead": "Cada funció creu que l’altra és el bloqueig. Tots tres reconstruïu un retard: cadascú llegeix un informe privat, després veieu una línia de temps junts, separeu el que es va veure del que es va afegir i reescriviu el traspàs que va fallar.",
+"introMeta": [
+"3 persones, 3 funcions",
+"1 mòbil",
+"≈ 20 minuts"
+],
+"case": "El llançament de setembre es va endarrerir tres setmanes.",
+"setupTitle": "Qui seu a cada taula?",
+"desks": [
+"Producte",
+"Lliurament",
+"Persones"
+],
+"deskPh": [
+"p. ex., Tomás",
+"p. ex., Priya",
+"p. ex., Nadia"
+],
+"setupNote": "Si podeu, jugueu una taula que no sigui la vostra. Es veu millor.",
+"cDeskT": "Taula de {d}: {n}",
+"cDeskL": "Només {n} llegeix això. Els altres, no mireu.",
+"briefK": "El teu informe · només el veus tu",
+"briefTitle": "El que sabia {d}",
+"waiting": "El que esperàveu",
+"feel": "Com es va viure des de la teva taula",
+"gotIt": "Entès, passa-ho",
+"briefs": [
+{
+"ev": [
+"2 de juny: vam enviar l’especificació final a Lliurament.",
+"20 de juny: les proves amb clients van canviar la pantalla de pagament. Ho vam dir a la reunió diària."
+],
+"wait": "Una versió per provar amb clients abans del 15 de juliol.",
+"feel": "Lliurament va ignorar el nostre canvi i va construir la pantalla vella."
+},
+{
+"ev": [
+"3 de juny: l’especificació va arribar sense les regles de pagament.",
+"21 de juny: algú va esmentar un canvi al pagament a la trucada. Sense tiquet, vam continuar construint."
+],
+"wait": "Les regles de pagament de Producte, demanades el 3 de juny.",
+"feel": "Producte canvia d’idea i mai no ho escriu."
+},
+{
+"ev": [
+"10 de juny: vam demanar una versió de demostració per preparar la formació de l’equip de suport.",
+"1 de juliol: formació reservada per al 26 d’agost, 40 agents. Moure-la vol dir pagar el formador."
+],
+"wait": "Una versió per gravar els vídeos de formació abans de l’1 d’agost.",
+"feel": "Ningú no ens explica res fins que és tard."
+}
+],
+"tlTitle": "Una línia de temps, per primera vegada",
+"tlLead": "Llegiu-la en veu alta, en ordre. Cada taula diu què esperava en aquell moment.",
+"timeline": [
+{
+"d": "2 juny",
+"k": 0,
+"t": "Especificació final enviada a Lliurament."
+},
+{
+"d": "3 juny",
+"k": 1,
+"t": "Arriba sense regles de pagament. Lliurament les demana."
+},
+{
+"d": "10 juny",
+"k": 2,
+"t": "Persones demana una versió de demostració per a la formació."
+},
+{
+"d": "20 juny",
+"k": 0,
+"t": "El pagament canvia després de proves amb clients; es diu a la reunió diària."
+},
+{
+"d": "21 juny",
+"k": 1,
+"t": "Lliurament sent una menció, sense tiquet; continua amb la pantalla vella."
+},
+{
+"d": "1 jul.",
+"k": 2,
+"t": "Formació reservada per al 26 d’agost."
+},
+{
+"d": "15 jul.",
+"k": 0,
+"t": "No hi ha versió per provar. Producte s’assabenta que arriba la pantalla vella."
+},
+{
+"d": "1 ag.",
+"k": 2,
+"t": "No hi ha versió per gravar la formació. El llançament es mou tres setmanes."
+}
+],
+"sortTitle": "Fet o història?",
+"sortLead": "Coses que es van dir sobre el retard. Un fet és una cosa que algú va veure. Una història és una cosa que algú va afegir.",
+"fs": [
+"Fet",
+"Història"
+],
+"check": "Comprovar",
+"statements": [
+{
+"t": "«Lliurament va ignorar el canvi del pagament.»",
+"a": 1,
+"w": "Van sentir una menció sense tiquet; «va ignorar» ho va afegir Producte."
+},
+{
+"t": "«L’especificació va arribar sense les regles de pagament.»",
+"a": 0,
+"w": "Lliurament ho va veure i ho va demanar el 3 de juny."
+},
+{
+"t": "«Producte canvia d’idea constantment.»",
+"a": 1,
+"w": "Un canvi, després de proves amb clients. «Constantment» és afegit."
+},
+{
+"t": "«La formació està reservada per al 26 d’agost.»",
+"a": 0,
+"w": "És a la reserva."
+},
+{
+"t": "«RH sempre demana tard.»",
+"a": 1,
+"w": "Persones va demanar el 10 de juny, abans que ningú sabés que hi havia un problema."
+},
+{
+"t": "«El canvi del pagament només es va dir en una reunió; no hi va haver tiquet.»",
+"a": 0,
+"w": "Ho diuen Producte i Lliurament."
+},
+{
+"t": "«A Bengaluru no li importa la data de llançament.»",
+"a": 1,
+"w": "Ningú no va veure això. Esperaven les regles de pagament."
+},
+{
+"t": "«Lliurament espera les regles de pagament des del juny.»",
+"a": 0,
+"w": "Demanades el 3 de juny; encara sense enviar."
+}
+],
+"sortDone": "Una història no és una mentida. És amb què omplim el buit quan no veiem l’altra taula.",
+"hoTitle": "Reescriviu el traspàs que va fallar",
+"hoLead": "20 de juny: el canvi del pagament, dit en una reunió. Escriviu-lo com una petició amb què l’altra taula pugui actuar.",
+"hoF": [
+"Qui ho necessita",
+"Què",
+"Per a quan",
+"Perquè"
+],
+"hoPh": [
+"Lliurament",
+"la nova pantalla de pagament com a tiquet, amb les regles de pagament",
+"24 de juny",
+"ara estan construint la vella"
+],
+"useExample": "Fes servir l’exemple",
+"hoSent": "{a} necessita {b} per a {c} perquè {d}.",
+"realTitle": "Ara un de vostre",
+"realLead": "Un traspàs real entre les vostres taules, les mateixes quatre parts. Copieu-lo on viuen les peticions.",
+"endKicker": "Retard reconstruït",
+"endTitle": "Ningú no era el bloqueig. Ho era el traspàs.",
+"endLead": "Cada taula tenia mitja història i va omplir la resta amb una suposició. Una línia de temps, el garbell fet-o-història i una petició amb un «perquè» fan més que qualsevol taller de col·laboració.",
+"mondayTxt": "Escriu la teva pròxima petició a un altre equip així: [funció] necessita [cosa] per a [quan] perquè [raó].",
+"teachTitle": "Ensenya la frase a un altre equip.",
+"teachLead": "Ensenya’ls els tres passos i deixa que escriguin la seva pròpia petició de la nova manera.",
+"t3": [
+"Informes privats",
+"Una línia de temps",
+"Necessita, per a, perquè"
+],
+"t3sub": [
+"la meitat de cada taula",
+"i després fet o història",
+"el format de petició"
+],
+"gTitle": "Com portar Tres Taules",
+"gWhyTxt": "La culpa entre funcions sol ser fets i històries barrejats entre taules: ningú no sap què esperaven els altres. Els informes privats fan reals les meitats que falten; veure una línia de temps junts substitueix les suposicions; el garbell les anomena; el format de petició evita la següent.",
+"gStepList": [
+"Tres persones, idealment de tres funcions, cadascuna en una taula.",
+"Cadascuna llegeix el seu informe sola i passa el mòbil.",
+"Llegiu la línia de temps en veu alta; cada taula diu què esperava.",
+"Classifiqueu les vuit frases, comproveu, i reescriviu el traspàs trencat i un de real."
+],
+"gDebriefList": [
+"Quina història va explicar la vostra taula i quin buit omplia?",
+"On viuen avui les peticions entre els vostres equips, i tenen un «perquè»?",
+"Quin retard real hauríem de reconstruir així la pròxima vegada?"
+],
+"gNotesList": [
+"El retard és inventat. Per a un de real, doneu a cada taula deu minuts per escriure el seu propi informe.",
+"No es desa res; copieu la petició on el vostre equip les guarda."
+]
+}
+};
+/* =====================================================================
+   FB KIT · helpers (copy into every demo)
+   ===================================================================== */
+const LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LANG_LBL = { en: "EN", zh: "中文", es: "ES", "zh-Hant": "繁中", "ca": "CA" };
+let lang = "en";
+const T = () => I18N[lang];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? esc(v[k]) : m));
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* Seeded random + pairing codes: the same code on two phones gives the same scenario, no server needed. */
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function newCode(n = 6) { let s = ""; for (let i = 0; i < n; i++) s += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]; return s; }
+function seedFrom(code) { let h = 2166136261; for (const c of String(code).toUpperCase()) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+/* Sound: soft, short, optional */
+const sound = {
+  ctx: null, muted: store.get("fb_muted", false),
+  init() { if (!this.ctx) { const A = window.AudioContext || window.webkitAudioContext; if (A) this.ctx = new A(); } if (this.ctx && this.ctx.state === "suspended") this.ctx.resume(); },
+  tone(f, d = .3, g = .06, type = "sine", at = 0) {
+    if (this.muted || !this.ctx) return;
+    try { const t = this.ctx.currentTime + at, o = this.ctx.createOscillator(), a = this.ctx.createGain();
+      o.type = type; o.frequency.setValueAtTime(f, t); a.gain.setValueAtTime(.0001, t); a.gain.linearRampToValueAtTime(g, t + .02); a.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(a); a.connect(this.ctx.destination); o.start(t); o.stop(t + d + .05); } catch (e) {}
+  },
+  tap() { this.tone(520, .12, .04, "triangle"); },
+  chime() { [659.25, 880, 1318.5].forEach((f, i) => this.tone(f, 1.2, .05, "sine", i * .12)); },
+  warm() { [392, 493.88, 587.33].forEach((f, i) => this.tone(f, .9, .05, "sine", i * .1)); }
+};
+const buzz = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+
+/* Keep the screen awake while a timer runs (where supported) */
+let wakeLock = null;
+async function keepAwake(on) {
+  try {
+    if (on && "wakeLock" in navigator && !wakeLock) wakeLock = await navigator.wakeLock.request("screen");
+    if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
+  } catch (e) { wakeLock = null; }
+}
+
+/* Timer ring */
+function ringSVG() {
+  return `<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="54" fill="none" stroke-width="6"/><circle class="fg" id="ring" cx="60" cy="60" r="54" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="339.29" stroke-dashoffset="0"/></svg>`;
+}
+const timer = {
+  total: 90, left: 90, running: false, raf: 0, last: 0, onEnd: null, ended: false,
+  start(total, onEnd) { this.stop(); this.total = this.left = total; this.onEnd = onEnd; this.ended = false; this.resume(); },
+  resume() { if (this.running || this.ended) return; this.running = true; this.last = performance.now(); keepAwake(true); this.tick(); },
+  pause() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); this.paint(); },
+  stop() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); },
+  tick() {
+    if (!this.running) return;
+    const now = performance.now(); this.left = Math.max(0, this.left - (now - this.last) / 1000); this.last = now;
+    this.paint();
+    if (this.left <= 0) { this.running = false; this.ended = true; keepAwake(false); sound.chime(); buzz([60, 80, 60]); this.onEnd && this.onEnd(); return; }
+    this.raf = requestAnimationFrame(() => this.tick());
+  },
+  paint() {
+    const ring = $("ring"), num = $("tnum"), lbl = $("tlbl"), wrap = $("timer");
+    if (!ring) return;
+    ring.setAttribute("stroke-dashoffset", String(339.29 * (1 - this.left / this.total)));
+    const s = Math.ceil(this.left);
+    num.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    lbl.textContent = this.ended ? "" : (this.running ? T().left : T().paused);
+    wrap.classList.toggle("done", this.ended);
+  }
+};
+
+/* Toast */
+let toastT;
+function toast(msg) { const el = $("toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 2600); }
+
+/* Pass-the-phone curtain */
+function curtainHTML(title, lead, btnLabel, act) {
+  return `<div class="curtain">
+    <svg class="hand" viewBox="0 0 84 84" aria-hidden="true"><rect x="27" y="10" width="30" height="52" rx="7" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="42" cy="54" r="2.5" fill="#E2553F"/><path d="M14 54c6 0 10 4 13 9M70 54c-6 0-10 4-13 9" stroke="rgba(255,255,255,.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M34 72h16" stroke="#E2553F" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <h2>${title}</h2><p>${lead}</p>
+    <button class="btn pri" data-act="${act}" style="width:100%;margin-top:6px">${btnLabel} →</button></div>`;
+}
+
+
+
+/* =====================================================================
+   THREE DESKS (build/next_tools/desks.js; words in desks.py)
+   ===================================================================== */
+const DC = ["#17171A", "#E2553F", "#2F8A5C"];   // one colour per desk
+const APP = {
+  demo: "desks", first: "setup",
+  flow: ["brief", "timeline", "sort", "handoff", "real"],
+  stepOf: s => (/^(c|brief)\d$/.test(s) ? "brief" : s),
+  state: () => ({ names: ["", "", ""], sort: [null, null, null, null, null, null, null, null], checked: false, ho: ["", "", "", ""], real: ["", "", "", ""] }),
+  art() {
+    return `<svg viewBox="0 0 320 140" style="width:100%;max-width:420px;height:auto;margin:4px 0" aria-hidden="true">
+      ${[0, 1, 2].map(i => `<rect x="${24 + i * 100}" y="86" width="72" height="10" rx="3" fill="${DC[i]}"/><rect x="${32 + i * 100}" y="96" width="6" height="26" fill="${DC[i]}"/><rect x="${82 + i * 100}" y="96" width="6" height="26" fill="${DC[i]}"/><rect x="${40 + i * 100}" y="62" width="40" height="22" rx="3" fill="#fff" stroke="#E5E2DA" stroke-width="2"/>`).join("")}
+      <path d="M30 30H290" stroke="#E5E2DA" stroke-width="3" stroke-linecap="round"/>
+      ${[50, 90, 130, 170, 210, 250].map((x, j) => `<circle cx="${x}" cy="30" r="6" fill="${DC[j % 3]}"/>`).join("")}
+    </svg>`;
+  },
+  screens: {
+    setup(t) {
+      return `<h2>${esc(t.setupTitle)}</h2>${H.prompt(t.case, "", 1)}
+        ${t.desks.map((d, i) => `<label class="field"><span style="color:${DC[i]}">● ${esc(d)}</span><input data-b="names.${i}" maxlength="20" autocomplete="off" placeholder="${esc(t.deskPh[i])}" value="${esc(S.names[i])}"></label>`).join("")}
+        <p class="note">${esc(t.setupNote)}</p>${H.next(t.next, "toDesk", { attr: 'data-i="0"' })}`;
+    },
+    timeline(t) {
+      return `<h2>${esc(t.tlTitle)}</h2><p class="lead">${esc(t.tlLead)}</p>
+        <ul class="tl">${t.timeline.map(e => `<li style="--dc:${DC[e.k]}"><b>${esc(e.d)}</b><span><small style="color:${DC[e.k]}">${esc(t.desks[e.k])} · ${esc(dn(e.k))}</small>${esc(e.t)}</span></li>`).join("")}</ul>
+        <div class="doc">${t.briefs.map((b, i) => `<div class="row"><span style="color:${DC[i]}">${esc(t.desks[i])}</span><b style="font-weight:500;max-width:70%">${esc(b.wait)}</b></div>`).join("")}</div>
+        ${H.next(t.next, "toSort")}`;
+    },
+    sort(t) {
+      const all = S.sort.every(v => v != null);
+      return `<h2>${esc(t.sortTitle)}</h2><p class="lead">${esc(t.sortLead)}</p>
+        <div style="display:grid;gap:8px">${t.statements.map((s, i) => {
+          const v = S.sort[i], cls = S.checked ? (v === s.a ? " right" : " wrong") : "";
+          return `<div class="sort-row${cls}"><p>${esc(s.t)}</p><div class="tf">${t.fs.map((f, j) => `<button data-c="sort.${i}" data-v="${j}" aria-pressed="${v === j}">${esc(f)}</button>`).join("")}</div>
+            ${S.checked ? `<span class="why">${v === s.a ? "✓" : "→ " + esc(t.fs[s.a]) + "."} ${esc(s.w)}</span>` : ""}</div>`; }).join("")}</div>
+        ${S.checked ? H.tip(esc(t.sortDone), "♡") : ""}
+        ${S.checked ? H.next(t.next, "toHandoff") : H.next(t.check, "check", { off: !all })}`;
+    },
+    handoff(t) { return `<h2>${esc(t.hoTitle)}</h2><p class="lead">${esc(t.hoLead)}</p>${hoForm(t, "ho", true)}<button class="link" data-act="example">${esc(t.useExample)}</button>${H.next(t.next, "toReal", { off: !full("ho"), id: "nextBtn" })}`; },
+    real(t) {
+      return `<h2>${esc(t.realTitle)}</h2><p class="lead">${esc(t.realLead)}</p>${hoForm(t, "real", false)}
+        <button class="btn" data-act="copyReal" style="flex:none">⧉ ${esc(t.copy)}</button>${H.next(t.next, "toEnd")}`;
+    }
+  },
+  acts: {
+    toDesk(a) { go("c" + (a.dataset.i || 0)); },
+    toSort() { go("sort"); },
+    check() { if (S.sort.some(v => v == null)) return; S.checked = true; sound.chime(); render(); },
+    toHandoff() { go("handoff"); },
+    example() { S.ho = T().hoPh.slice(); render(); }, toReal() { if (full("ho")) go("real"); },
+    copyReal() { if (!full("real")) { toast("…"); return; } copyText(sentence(T(), "real")); },
+    toEnd() { go("end"); }
+  },
+  onChoose() { if (S.checked) return false; },
+  input(k) { const b = $("nextBtn"); if (b && S.screen === "handoff") b.disabled = !full("ho"); const o = $("sent"); if (o) o.innerHTML = sentenceHTML(T(), S.screen === "handoff" ? "ho" : "real"); },
+  againTo: "c0", keepOnAgain: () => ({ names: S.names.slice() })
+};
+// the six screens of the three briefs: c0 brief0 c1 brief1 c2 brief2
+[0, 1, 2].forEach(i => {
+  APP.screens["c" + i] = t => curtainHTML(fmt(t.cDeskT, { d: t.desks[i], n: dn(i) }), fmt(t.cDeskL, { n: dn(i) }), fmt(t.ready, { n: dn(i) }), "brief" + i);
+  APP.screens["brief" + i] = t => {
+    const b = t.briefs[i];
+    return `<span class="kicker" style="color:${DC[i]}">● ${esc(t.briefK)}</span><h2>${fmt(t.briefTitle, { d: t.desks[i] })}</h2>${H.prompt(t.case, "", 1)}
+      <ul class="list">${b.ev.map(e => `<li><b style="color:${DC[i]};font-size:14px">●</b><span>${esc(e)}</span></li>`).join("")}</ul>
+      <div class="doc"><div class="row"><span>${esc(t.waiting)}</span><b style="font-weight:500;max-width:62%">${esc(b.wait)}</b></div><div class="row"><span>${esc(t.feel)}</span><b style="font-weight:500;max-width:62%;font-style:italic">“${esc(b.feel)}”</b></div></div>
+      ${H.next(t.gotIt, i < 2 ? "toDesk" : "toTimeline", { attr: `data-i="${i + 1}"` })}`;
+  };
+  APP.acts["brief" + i] = () => go("brief" + i);
+});
+APP.acts.toTimeline = () => { sound.warm(); go("timeline"); };
+const dn = i => S.names[i].trim() || T().desks[i];
+const full = k => S[k].every(v => v.trim());
+const sentence = (t, k) => fmtR(t.hoSent, { a: S[k][0].trim(), b: S[k][1].trim(), c: S[k][2].trim(), d: S[k][3].trim() });
+function sentenceHTML(t, k) {
+  const v = j => S[k][j].trim() ? `<u>${esc(S[k][j].trim())}</u>` : `<span class="gap">[${esc(t.hoF[j])}]</span>`;
+  return t.hoSent.replace(/\{([abcd])\}/g, (m, x) => v("abcd".indexOf(x)));
+}
+function hoForm(t, k, ph) {
+  return `${t.hoF.map((f, j) => H.field(f, `${k}.${j}`, { ph: ph ? t.hoPh[j] : "", max: 120 })).join("")}<div class="sentence" id="sent">${sentenceHTML(t, k)}</div>`;
+}
+
+/* =====================================================================
+   NEXT TOOLS · engine (build/next_tools/engine.js, shared by the ten tools that were "Next")
+   A tool defines APP = { demo, flow, first, state(), screens, acts, enter, stepOf, boot, art }.
+   Markup conventions: data-act="k" → APP.acts[k] or a built-in; data-go="screen"; data-b="key" (or key.0) binds an input to S;
+   data-c="key" data-v="i" picks a choice (APP.onChoose(key, v) if it wants more than S[key] = v and a render).
+   ===================================================================== */
+const stage = $("stage");
+const fmtR = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? v[k] : m));   // for text that never becomes HTML (calendar files, shared messages)
+
+function go(screen) {
+  timer.stop();
+  S.screen = screen; render(); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  const f = APP.enter && APP.enter[screen]; if (f) f();
+}
+function paintStepsBar() {
+  const fl = APP.flow || [], cur = APP.stepOf ? APP.stepOf(S.screen) : S.screen, at = fl.indexOf(cur);
+  $("steps").innerHTML = at < 0 ? "" : fl.map((_, i) => `<span class="${i < at ? "done" : i === at ? "now" : ""}"></span>`).join("");
+}
+function render() {
+  const t = T();
+  paintStepsBar();
+  let h;
+  if (S.screen === "intro") h = introHTML(t);
+  else if (S.screen === "teach") h = teachHTML(APP.demo);
+  else if (S.screen === "end") h = endHTML(t);
+  else h = APP.screens[S.screen](t);
+  const hadFocus = stage.contains(document.activeElement);
+  const same = render.last === S.screen; render.last = S.screen;
+  stage.innerHTML = h.startsWith("<section") ? h : `<section class="screen">${h}</section>`;
+  if (same) { const sec = stage.firstElementChild; if (sec) sec.style.animation = "none"; const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume; }
+  const f = stage.querySelector("[data-focus]");
+  if (f && hadFocus) f.focus({ preventScroll: true });
+  if (APP.after) APP.after(S.screen);
+}
+
+/* ---------- small builders ---------- */
+const H = {
+  btn(label, act, o = {}) {
+    const a = o.go ? `data-go="${o.go}"` : `data-act="${act}"`;
+    return `<button class="btn${o.pri ? " pri" : ""}" ${a}${o.id ? ` id="${o.id}"` : ""}${o.off ? " disabled" : ""}${o.focus ? " data-focus" : ""}${o.attr ? " " + o.attr : ""}>${label}</button>`;
+  },
+  next(label, act, o = {}) { return `<div class="spacer"></div><div class="btns">${o.left || ""}${H.btn(esc(label) + " →", act, Object.assign({ pri: 1, focus: 1 }, o))}</div>`; },
+  field(lbl, key, o = {}) {
+    const v = esc(getP(key) || ""), ph = o.ph ? ` placeholder="${esc(o.ph)}"` : "", ml = ` maxlength="${o.max || 120}"`;
+    const inp = o.area ? `<textarea data-b="${key}"${ml}${ph}>${v}</textarea>` : `<input data-b="${key}"${ml}${ph} autocomplete="off" value="${v}"${o.type ? ` type="${o.type}"` : ""}>`;
+    return `<label class="field"><span>${esc(lbl)}</span>${inp}</label>`;
+  },
+  names(t, a = "nameA", b = "nameB") {
+    return `<div class="row2">${H.field(t[a], "names.0", { ph: t.phA, max: 20 })}${H.field(t[b], "names.1", { ph: t.phB, max: 20 })}</div>`;
+  },
+  roles(k1, n1, k2, n2) {
+    return `<div class="roles"><div class="role speak"><div class="k">${esc(k1)}</div><div class="n">${esc(n1)}</div></div><div class="role"><div class="k">${esc(k2)}</div><div class="n">${esc(n2)}</div></div></div>`;
+  },
+  choices(key, items, o = {}) {   // items: [title, sub?, mark?]
+    const cur = getP(key), multi = Array.isArray(cur);
+    return `<div class="heard">${items.map((it, i) => {
+      const on = multi ? cur.includes(i) : cur === i;
+      return `<button data-c="${key}" data-v="${i}" aria-pressed="${on}" class="${on ? "on" : ""}"><span class="e">${it[2] != null ? it[2] : `<span style="font-family:var(--mono);font-size:12px">${String(i + 1).padStart(2, "0")}</span>`}</span><span><b>${esc(it[0])}</b>${it[1] ? `<small>${esc(it[1])}</small>` : ""}</span></button>`;
+    }).join("")}</div>`;
+  },
+  seg(key, items) { const cur = getP(key); return `<div class="seg">${items.map((x, i) => `<button data-c="${key}" data-v="${i}" aria-pressed="${cur === i}">${esc(x)}</button>`).join("")}</div>`; },
+  timer(t) {
+    return `<div class="timer" id="timer">${ringSVG()}<div class="num"><b id="tnum">0:00</b><small id="tlbl"></small></div></div>
+      <div class="btns" style="justify-content:center"><button class="btn" data-act="pause" id="pauseBtn" style="flex:none;min-width:140px">${esc(t.pause)}</button></div>`;
+  },
+  tip(txt, mark = "✦") { return `<div class="tip"><i>${mark}</i><span>${txt}</span></div>`; },
+  prompt(q, meta, sm) { return `<div class="prompt${sm ? " sm" : ""}"><div class="q">${esc(q)}</div>${meta ? `<div class="meta"><span>${esc(meta)}</span></div>` : ""}</div>`; },
+  stems(list) { return `<div class="stems">${list.map(s => `<div>${esc(s)}</div>`).join("")}</div>`; },
+  kicker(s, c) { return `<span class="kicker"${c ? ` style="color:${c}"` : ""}>${esc(s)}</span>`; }
+};
+function startTimer(secs, onEnd) { timer.start(secs, onEnd || (() => toast(T().timeUp))); const pb = $("pauseBtn"); if (pb) pb.textContent = T().pause; }
+
+/* paths into S: "names.0", "agree.q" */
+function getP(p) { return String(p).split(".").reduce((o, k) => (o == null ? o : o[k]), S); }
+function setP(p, v) { const ks = String(p).split("."), last = ks.pop(); const o = ks.reduce((o, k) => o[k], S); o[last] = v; }
+
+function introHTML(t) {
+  return `<section class="screen">
+    <span class="kicker">${esc(t.introKicker)}</span><h1>${t.introTitle}</h1>
+    <p class="lead">${esc(t.introLead)}</p>
+    <div class="pills">${t.introMeta.map(m => `<span class="pill">${esc(m)}</span>`).join("")}</div>
+    ${APP.art ? APP.art() : ""}
+    ${APP.introExtra ? APP.introExtra(t) : ""}
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn pri" data-act="start" data-focus>${esc(t.start)} →</button></div>
+  </section>`;
+}
+function endHTML(t) {
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--good)">✓ ${esc(t.endKicker)}</span>
+    <h2>${esc(t.endTitle)}</h2>
+    <p class="serif">${esc(t.endLead)}</p>
+    ${APP.endExtra ? APP.endExtra(t) : ""}
+    <div class="monday"><b>${esc(t.monday)}</b>${esc(t.mondayTxt)}</div>
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn" data-act="again">↻ ${esc(t.again)}</button><button class="btn pri" data-act="teach" data-focus>${esc(t.passOn)} →</button></div>
+  </section>`;
+}
+function teachHTML(demo) {
+  const t = T(), chain = store.get("fb_teachback", []).filter(c => c.demo === demo);
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--accent-ink)">${esc(t.teachKicker)}</span>
+    <h2>${esc(t.teachTitle)}</h2>
+    <p class="lead">${esc(t.teachLead)}</p>
+    <div class="steps3">${t.t3.map((s, i) => `<div><b>0${i + 1}</b><span>${esc(s)}</span><small style="display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4">${esc(t.t3sub[i])}</small></div>`).join("")}</div>
+    <div class="card" style="display:grid;gap:12px">
+      <label class="field"><span>${esc(t.learnerName)}</span><input id="lName" maxlength="30" autocomplete="off" placeholder="${esc(t.learnerPh)}"></label>
+      <label class="field"><span>${esc(t.learned)}</span><textarea id="lText" maxlength="280" placeholder="${esc(t.learnedPh)}"></textarea></label>
+      <button class="btn pri" data-act="saveTeach" style="flex:none">${esc(t.save)}</button>
+    </div>
+    <div><span class="kicker">${esc(t.chainTitle)}</span>
+      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang))))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
+    <a class="link" href="/tools/teachback">⊂⊃ ${esc(t.teachbackLink)}</a>
+    <button class="link" data-act="restart">${esc(t.restart)}</button>
+  </section>`;
+}
+
+/* ---------- device-made things: copy, a calendar file, a link ---------- */
+function copyText(text, msg) {
+  text = String(text || "").trim(); if (!text) return;
+  const ok = () => toast(msg || T().copied);
+  const fb = () => { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (_) {} ta.remove(); ok(); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok).catch(fb); else fb();
+}
+function shareText(text, url) {
+  const data = { text: url ? text + "\n" + url : text };
+  if (navigator.share) navigator.share(data).catch(() => {}); else copyText(data.text);
+}
+const pad2 = n => String(n).padStart(2, "0");
+const icsDate = d => `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;
+const icsEsc = s => String(s || "").replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/[,;]/g, m => "\\" + m);
+/* events: [{title, desc, start: Date, mins, rrule}] → one .ics made here, nothing sent */
+function downloadICS(name, events) {
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FREE//BUILDER//tools//EN", "CALSCALE:GREGORIAN"];
+  events.forEach((e, i) => {
+    const end = new Date(e.start.getTime() + (e.mins || 15) * 60000);
+    L.push("BEGIN:VEVENT", `UID:${Date.now()}-${i}@freebuilder.net`, `DTSTAMP:${icsDate(new Date())}`, `DTSTART:${icsDate(e.start)}`, `DTEND:${icsDate(end)}`,
+      `SUMMARY:${icsEsc(e.title)}`, `DESCRIPTION:${icsEsc(e.desc)}`);
+    if (e.rrule) L.push(`RRULE:${e.rrule}`);
+    L.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(e.title)}`, "TRIGGER:-PT15M", "END:VALARM", "END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  const blob = new Blob([L.join("\r\n")], { type: "text/calendar" }), a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name + ".ics"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast(T().icsMade);
+}
+function nextWeekday(dow, h = 9, m = 0) { const d = new Date(); d.setHours(h, m, 0, 0); let add = (dow - d.getDay() + 7) % 7; if (add === 0 && d <= new Date()) add = 7; d.setDate(d.getDate() + add); return d; }
+const b64e = o => { const s = unescape(encodeURIComponent(JSON.stringify(o))); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+const b64d = s => { try { s = s.replace(/-/g, "+").replace(/_/g, "/"); return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch (e) { return null; } };
+const here = () => location.origin + location.pathname;
+const dayFmt = d => { try { return new Date(d).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang)), { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return String(d); } };
+const shuffle = (a, r = Math.random) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+const S = Object.assign({ screen: "intro" }, APP.state());
+
+/* ---------- events ---------- */
+stage.addEventListener("input", e => {
+  const b = e.target.dataset.b; if (!b) return;
+  setP(b, e.target.value);
+  if (APP.input) APP.input(b, e.target.value, e.target);
+});
+stage.addEventListener("click", e => {
+  sound.init();
+  const c = e.target.closest("[data-c]"), g = e.target.closest("[data-go]"), a = e.target.closest("[data-act]");
+  if (c) {
+    sound.tap(); const k = c.dataset.c, v = +c.dataset.v;
+    if (APP.onChoose && APP.onChoose(k, v, c) === false) return;
+    const cur = getP(k);
+    if (Array.isArray(cur)) { const i = cur.indexOf(v); if (i >= 0) cur.splice(i, 1); else if (cur.length < (APP.maxPick && APP.maxPick[k] || 99)) cur.push(v); else toast(T().pickMax); }
+    else setP(k, v);
+    render(); return;
+  }
+  if (g) { sound.tap(); go(g.dataset.go); return; }
+  if (!a) return;
+  const k = a.dataset.act; sound.tap();
+  if (APP.acts && APP.acts[k]) { APP.acts[k](a); return; }
+  switch (k) {
+    case "start": go(APP.first); break;
+    case "pause":
+      if (timer.ended) return;
+      if (timer.running) { timer.pause(); a.textContent = T().resume; } else { timer.resume(); a.textContent = T().pause; }
+      break;
+    case "again": { const keep = APP.keepOnAgain ? APP.keepOnAgain() : {}; Object.assign(S, APP.state(), keep); go(APP.againTo || APP.first); break; }
+    case "teach": go("teach"); break;
+    case "saveTeach": {
+      const text = ($("lText").value || "").trim(), name = ($("lName").value || "").trim();
+      if (!text) { $("lText").focus(); return; }
+      const chain = store.get("fb_teachback", []); chain.push({ demo: APP.demo, text, name, at: Date.now() }); store.set("fb_teachback", chain.slice(-50));
+      sound.warm(); toast(T().saved); render(); break; }
+    case "restart": Object.assign(S, { screen: "intro" }, APP.state()); go("intro"); break;
+    case "copy": { const el = $(a.dataset.from); copyText(el ? (el.value != null && el.tagName !== "DIV" ? el.value : el.innerText) : a.dataset.text); break; }
+  }
+});
+window.__app = { S, go, render, timer, APP };
+if (APP.boot) APP.boot();
+
+/* ---------- facilitator guide ---------- */
+const drawer = $("drawer");
+function openGuide() {
+  const t = T();
+  $("panel").innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+      <div><span class="kicker">${esc(t.gKicker)}</span><h3 id="g-title">${esc(t.gTitle)}</h3></div>
+      <button class="x" data-close aria-label="${esc(t.close)}">✕</button>
+    </div>
+    <h4>${esc(t.gWhy)}</h4><p>${esc(t.gWhyTxt)}</p>
+    <h4>${esc(t.gSteps)}</h4><ol>${t.gStepList.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    <h4>${esc(t.gDebrief)}</h4><ul>${t.gDebriefList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>
+    <h4>${esc(t.gNotes)}</h4><ul>${t.gNotesList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>`;
+  drawer.classList.add("show");
+  setTimeout(() => drawer.querySelector("[data-close]").focus({ preventScroll: true }), 60);
+}
+function closeGuide() { drawer.classList.remove("show"); $("btn-guide").focus({ preventScroll: true }); }
+drawer.addEventListener("click", e => { if (e.target === drawer || e.target.closest("[data-close]")) closeGuide(); });
+$("btn-guide").addEventListener("click", openGuide);
+window.addEventListener("keydown", e => { if (e.key === "Escape" && drawer.classList.contains("show")) closeGuide(); });
+
+/* ---------- language + sound ---------- */
+function paintSound() {
+  const b = $("btn-sound"), t = T();
+  b.innerHTML = sound.muted
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  b.setAttribute("aria-label", sound.muted ? t.soundOff : t.soundOn); b.title = b.getAttribute("aria-label");
+}
+$("btn-sound").addEventListener("click", () => { sound.muted = !sound.muted; store.set("fb_muted", sound.muted); sound.init(); paintSound(); if (!sound.muted) sound.tap(); });
+
+function applyLang(l) {
+  lang = LANGS.includes(l) ? l : "en";
+  document.documentElement.lang = (/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang));
+  document.title = T().title;
+  $("lang-lbl").textContent = LANG_LBL[lang];
+  $("btn-guide").setAttribute("aria-label", T().guide); drawer.setAttribute("aria-label", T().guide);
+  document.querySelectorAll("[data-t]").forEach(el => { const v = T()[el.dataset.t]; if (typeof v === "string") el.textContent = v; });
+  paintSound();
+  render();               // the clock object survives a re-render
+  timer.paint();
+  const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume;
+  if (drawer.classList.contains("show")) openGuide();
+  try { localStorage.setItem("wm_preferred_lang", lang); localStorage.setItem("wm_cases_lang", lang); } catch (e) {}
+}
+$("btn-lang").addEventListener("click", () => applyLang(LANGS[(LANGS.indexOf(lang) + 1) % LANGS.length]));
+window.FBL_SET = l => applyLang(l); window.FBL_GET = () => lang;
+
+/* ---------- boot ---------- */
+let saved = null;
+try { saved = localStorage.getItem("wm_preferred_lang") || localStorage.getItem("wm_cases_lang"); } catch (e) {}
+const nav = (navigator.language || "").toLowerCase();
+applyLang(LANGS.includes(saved) ? saved : nav.startsWith("zh") ? "zh" : nav.startsWith("es") ? "es" : "en");
+document.addEventListener("visibilitychange", () => { if (!document.hidden && timer.running) keepAwake(true); });
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {}); // offline cache
+})();
+</script>
+<script src="/fbkit/pass.js?v=758a7441b7" defer></script>
+</body>
+</html>

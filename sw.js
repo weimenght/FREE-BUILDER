@@ -3,7 +3,7 @@
  * Fonts and vendor scripts: cache first. Nothing about the people using the demos is stored here. */
 const VERSION = "fb-2026-11-06p";
 // Launchpad (1.3 MB) is cached when first opened, not up front.
-const PAGES = ["tools/listen", "tools/questions", "tools/thanks", "tools/swap", "tools/repair", "tools/teachback", "tools/discovery", "tools/room", "tools/design", "guide", "labs/coach", "labs/cq", "tools/diagnose", "tools/cost", "notes/adapted", "notes/ai", "kit", "tools/twotruths", "tools/prompt", "tools/museum", "tools/manual", "tools/dial", "tools/decide", "programmes/the-ask", "programmes/the-room-goes-quiet", "programmes/new-people-new-tools", "programmes/after-the-cut", "cases"].map(n => `/${n}/`).concat(["/"]);
+const PAGES = ["tools/listen", "tools/questions", "tools/thanks", "tools/swap", "tools/repair", "tools/teachback", "tools/discovery", "tools/room", "tools/design", "guide", "labs/coach", "labs/cq", "tools/diagnose", "tools/cost", "notes/adapted", "notes/ai", "kit", "tools/twotruths", "tools/prompt", "tools/museum", "tools/manual", "tools/dial", "tools/decide", "tools/first", "tools/hallway", "tools/nearmiss", "tools/second", "tools/whospoke", "tools/desks", "tools/day30", "tools/showme", "tools/handover", "tools/truenow", "programmes/the-ask", "programmes/the-room-goes-quiet", "programmes/new-people-new-tools", "programmes/after-the-cut", "cases"].map(n => `/${n}/`).concat(["/"]);
 const FONTS = [
   "/fonts/fonts.css",
   "/fonts/syne-latin-600-normal.woff2", "/fonts/syne-latin-700-normal.woff2", "/fonts/syne-latin-800-normal.woff2",

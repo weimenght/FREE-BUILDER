@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dde632a0dc"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title id="page-title">First 1:1 — FREE//BUILDER</title>
+  <meta name="description" content="Rehearse a first 1:1 that isn't a stand-up: their list first, ask before you fix, and one opening question in both calendars.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
+  <!-- Brand fonts load without blocking the page: where Google Fonts is slow or blocked, system fonts show instantly. -->
+  <link rel="stylesheet" href="/fonts/fonts.css">
+
+  <link rel="stylesheet" href="/fbkit/s-b871aaaa7f.css">
+<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
+:root{color-scheme:light dark}
+@media (prefers-color-scheme: dark){
+:root{--paper:#141416;--ink:#ECEBE6;--muted:#A8A7AD;--line:#303036;--grid:#26262B;--white:#1D1D21;--inkbg:#2B2B31;--inkbd:#3B3B42;--accent-ink:#F28C76;--good:#62C48F;--paper-rgb:20,20,22;--dot-rgb:255,255,255;--ink-rgb:236,235,230;--white-rgb:29,29,33;--accent-text:#F2806A;--warn-ink:#E3B25C}
+html,body{background-color:var(--paper)}
+/* primary actions read as light on dark */
+.btn.pri,.cta a.pri,.chip.pri{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.btn.pri:hover,.cta a.pri:hover,.chip.pri:hover{background:#fff!important;border-color:#fff!important}
+.btn[disabled]{opacity:.45}
+.seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.steps span.done{background:#ECEBE6}
+.curtain{border:1px solid #3B3B42}
+/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
+.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
+/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
+.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
+/* illustrations keep their light look on a plate */
+.screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
+.plate{background:#fff!important}
+.card-art~.text-ink\/60,.card-art~span .text-ink\/60{color:rgba(23,23,26,.62)!important}
+.text-accent{color:#F2806A!important}
+.bg-white\/90.text-ink,.bg-white\/90 .text-ink{color:#ECEBE6}
+img{filter:none}
+::selection{background:#E2553F;color:#fff}
+}
+</style></head>
+<body>
+  <div class="dots" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="FREE//BUILDER">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" style="overflow:visible">
+            <rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/>
+            <rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect class="last" x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/>
+          </svg>
+        </span>
+        <span class="brand-txt"><b>FREE<i>//</i>BUILDER</b><span data-t="product">First 1:1</span></span>
+      </a>
+      <div class="top-actions">
+        <button class="chip" id="btn-lang" type="button" aria-label="Language" title="EN / 中文 / ES">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <b id="lang-lbl">EN</b>
+        </button>
+        <button class="chip" id="btn-sound" type="button"></button>
+        <button class="chip" id="btn-guide" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="lbl" data-t="guide">Facilitators</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="sr" data-t="product">First 1:1</h1>
+    <div class="steps" id="steps" aria-hidden="true"></div>
+    <div id="stage" aria-live="polite"></div>
+  </main>
+
+  <footer class="fbf" data-fbf-root><div class="fbf-in"><div class="fbf-row"><span class="fbf-own"><a class="fbf-lg fbf-nm fbf-nm-fb" href="/" aria-label="FREE//BUILDER"><svg class="fb-mk" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg><span class="fbf-name">FREE<i>//</i>BUILDER</span></a><span class="fbf-cy"><svg class="fbf-c" viewBox="0 0 24 24" role="img" aria-label="©"><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.3 9.4a4.3 4.3 0 1 0 0 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="fbf-year">2026</span></span></span><nav aria-label="Footer"><span class="fbf-dot" aria-hidden="true">·</span><a href="/privacy/" data-fbf="privacy">Your privacy</a><span class="fbf-dot" aria-hidden="true">·</span><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai fbf-ico" aria-label="AI" title="AI" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="r-st" d="M12 7.2V4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle class="r-ant" cx="12" cy="3.4" r="1.6" fill="currentColor"/><rect x="4.6" y="7.4" width="14.8" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><g class="r-eyes"><circle cx="9.4" cy="12.8" r="1.55" fill="currentColor"/><circle cx="14.6" cy="12.8" r="1.55" fill="currentColor"/></g><path d="M10 16.4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12.2v2.6M21 12.2v2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a> &amp; <a href="https://www.after-hours.work/" class="fbf-heart fbf-ico" aria-label="♥ after hours" title="♥" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="h-b" d="M12 20.4s-7.8-4.7-7.8-10.3A4.4 4.4 0 0 1 12 7.5a4.4 4.4 0 0 1 7.8 2.6c0 5.6-7.8 10.3-7.8 10.3z" fill="currentColor"/><path class="h-s" d="M7.6 9.6a2.2 2.2 0 0 1 2.1-1.7" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round"/></svg></a></span></nav></div><span class="fbf-x" data-t="privacy">Nothing is recorded. Your agreement lives in a link.</span></div></footer>
+
+  <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="g-title">
+    <div class="panel" id="panel"></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+/* =====================================================================
+   COPY — EN / 中文 / ES (generated by build/next_tools.py)
+   ===================================================================== */
+const I18N = {
+"en": {
+"guide": "Facilitators",
+"back": "Part of FREE//BUILDER’s services ↗",
+"soundOn": "Sound on",
+"soundOff": "Sound off",
+"left": "left",
+"paused": "paused",
+"close": "Close",
+"resume": "Resume",
+"pause": "Pause",
+"start": "Start",
+"next": "Next",
+"backBtn": "Back",
+"nameA": "Person A",
+"nameB": "Person B",
+"phA": "e.g. Ana",
+"phB": "e.g. Leo",
+"copy": "Copy",
+"copied": "Copied.",
+"share": "Send it",
+"icsMade": "Calendar file made on this phone. Open it to add it.",
+"pickMax": "That’s the most you can pick.",
+"timeUp": "Time’s up. Finish your sentence.",
+"swap": "Swap",
+"again": "Practise again",
+"passOn": "Pass it on",
+"monday": "Try this on Monday",
+"teachKicker": "Pass it on",
+"learnerName": "Their name (optional)",
+"learnerPh": "e.g. Mei",
+"learned": "What they’ll try, in their own words",
+"learnedPh": "Hand them the phone…",
+"save": "Save to this phone",
+"chainTitle": "People you’ve passed it on to",
+"chainEmpty": "No one yet. Your first teach-back will appear here.",
+"saved": "Saved on this phone only.",
+"restart": "Back to the start",
+"teachbackLink": "Teach-Back Chain ↗",
+"gKicker": "Facilitator guide",
+"gWhy": "Why it works",
+"gSteps": "Running it",
+"gDebrief": "Debrief questions",
+"gNotes": "Notes",
+"passTo": "Pass the phone to {n}",
+"ready": "I’m {n}",
+"optional": "optional",
+"title": "First 1:1 — FREE//BUILDER",
+"product": "First 1:1",
+"privacy": "Nothing is recorded. Your agreement lives in a link.",
+"introKicker": "New managers · Pairs",
+"introTitle": "First <span class=\"accent-word\">1:1</span>",
+"introLead": "A 1:1 is their meeting, not a status update. Do your first one here with one real person: their list comes first, you ask before you fix, and you leave with one opening question in both calendars.",
+"introMeta": [
+"A manager + one report",
+"1 phone",
+"≈ 15 minutes"
+],
+"setupTitle": "Who’s meeting?",
+"mgr": "Manager",
+"rep": "Report",
+"howOften": "How often will you meet?",
+"often": [
+"Every week",
+"Every two weeks"
+],
+"whichDay": "Which day?",
+"days": [
+"Mon",
+"Tue",
+"Wed",
+"Thu",
+"Fri"
+],
+"atTime": "Time",
+"cReportT": "{r} goes first",
+"cReportL": "{m}, hand the phone over and look away for a minute. {r} writes the list for this meeting.",
+"listTitle": "{r}, what do you want to talk about?",
+"listLead": "Pick up to three. This is your meeting.",
+"topics": [
+[
+"How I’m doing",
+"what’s going well, what isn’t"
+],
+[
+"What’s in my way",
+"a blocker, a process, a person"
+],
+[
+"What I want to learn",
+"a skill, a project, a stretch"
+],
+[
+"How we work together",
+"how you like to be told things"
+],
+[
+"Something outside work",
+"only what you want to share"
+]
+],
+"ownTopic": "Or your own",
+"ownPh": "e.g. the Bengaluru handover",
+"cMgrT": "Back to {m}",
+"cMgrL": "{r}, hand the phone back. {m}: their list is your agenda.",
+"openTitle": "{m}, here’s {r}’s list.",
+"openLead": "Start with their first item. Pick a way to open it:",
+"openers": [
+"“Where do you want to start?”",
+"“Tell me more about {x}.”",
+"“What would make this week better?”"
+],
+"rules": "Ask, don’t fix",
+"rulesTxt": "Ask two questions before you suggest anything. {r} holds the bell.",
+"toTalk": "Start the 1:1",
+"talkTitle": "Your 1:1, eight minutes",
+"bell": "Fixing it",
+"bellSub": "{r}: tap when {m} jumps to a solution",
+"bellToast": "Ask first: “What have you tried?”",
+"rang": "The bell rang. That’s the practice.",
+"endTalk": "We’re done",
+"checkTitle": "{r}, did that feel like your meeting?",
+"checks": [
+[
+"Yes",
+"I talked about what I wanted."
+],
+[
+"Partly",
+"We drifted to updates."
+],
+[
+"Not yet",
+"It was mostly {m}."
+]
+],
+"checkNext": [
+"Then keep that opening question.",
+"Pick an opening question that keeps it theirs.",
+"Next time {m} asks, then waits. Pick the question together."
+],
+"agreeTitle": "One opening question, every time",
+"agreeLead": "Pick it together, or write your own. It opens every 1:1 from now on.",
+"qs": [
+"What’s on your mind this week?",
+"What’s one thing I could do to help?",
+"What’s going well, and what isn’t?",
+"Where do you want to start?"
+],
+"ownQ": "Our own question",
+"ownQPh": "e.g. What did you learn this week?",
+"toMade": "Keep it",
+"madeKicker": "Your agreement",
+"madeTitle": "{m} and {r}",
+"madeEvery": "{o}, {d} at {h}",
+"opens": "Every 1:1 opens with",
+"addCal": "📅 Add to both calendars",
+"sendLink": "↗ Send the link to {r}",
+"linkMsg": "Our 1:1, and the question we open with:",
+"calTitle": "1:1 · {m} & {r}",
+"calDesc": "Open with: {q}\nTheir list first. Ask before you fix.",
+"linkNote": "The link holds the agreement. Nothing is stored anywhere else.",
+"fromLink": "Opened from your link",
+"practise": "Practise a 1:1",
+"endKicker": "First 1:1 done",
+"endTitle": "It was their meeting.",
+"endLead": "Their list first, your questions before your answers, and one question you both start with. That’s most of what a good 1:1 is.",
+"mondayTxt": "Open your next 1:1 with the agreed question, then let them talk for two minutes before you say anything.",
+"teachTitle": "Show another new manager.",
+"teachLead": "Walk them through the three moves, then let them write what they’ll do in their next 1:1.",
+"t3": [
+"Their list first",
+"Ask, don’t fix",
+"One opening question"
+],
+"t3sub": [
+"it’s their meeting",
+"two questions first",
+"in both calendars"
+],
+"gTitle": "Running First 1:1",
+"gWhyTxt": "Most new managers were promoted for solving things, so they solve. Letting the report write the list first hands the meeting back; the bell makes “telling” visible in the moment, without a score; one agreed opening question keeps the next twenty meetings theirs.",
+"gStepList": [
+"Do it before the first real 1:1, with the real report. A warm-up on the Coaching Co-Pilot first is optional.",
+"The report writes the list alone; the manager looks away.",
+"Eight minutes on the first item. The report taps the bell when the manager starts solving.",
+"Agree the opening question and the rhythm, add it to both calendars, send the link."
+],
+"gDebriefList": [
+"When did the bell ring, and what was the question that would have worked instead?",
+"What did the report’s list tell you that a status update wouldn’t?",
+"Where will status updates go now, so they don’t take the 1:1?"
+],
+"gNotesList": [
+"The agreement lives only in the link and the calendar file, both made on the phone.",
+"The bell counts nothing. It’s a nudge, not a score."
+]
+},
+"zh": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服务的一部分 ↗",
+"soundOn": "声音开",
+"soundOff": "声音关",
+"left": "剩余",
+"paused": "已暂停",
+"close": "关闭",
+"resume": "继续",
+"pause": "暂停",
+"start": "开始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "复制",
+"copied": "已复制。",
+"share": "发出去",
+"icsMade": "日历文件已在这台手机上生成。打开它即可添加。",
+"pickMax": "最多只能选这么多。",
+"timeUp": "时间到。把这句话说完。",
+"swap": "交换",
+"again": "再练一次",
+"passOn": "传下去",
+"monday": "周一试试这个",
+"teachKicker": "传下去",
+"learnerName": "TA 的名字（可选）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算试什么，用 TA 自己的话",
+"learnedPh": "把手机递给 TA……",
+"save": "保存在这台手机上",
+"chainTitle": "你传给过的人",
+"chainEmpty": "还没有人。你的第一次教回去会出现在这里。",
+"saved": "只保存在这台手机上。",
+"restart": "回到开头",
+"teachbackLink": "教回去链条 ↗",
+"gKicker": "主持人指南",
+"gWhy": "为什么有效",
+"gSteps": "怎么带",
+"gDebrief": "复盘问题",
+"gNotes": "备注",
+"passTo": "把手机递给 {n}",
+"ready": "我是 {n}",
+"optional": "可选",
+"title": "第一次一对一 — FREE//BUILDER",
+"product": "第一次一对一",
+"privacy": "不做任何记录。你们的约定只存在一个链接里。",
+"introKicker": "新经理 · 两人",
+"introTitle": "第一次<span class=\"accent-word\">一对一</span>",
+"introLead": "一对一是对方的会，不是进度汇报。和一位真实的下属在这里开第一场：先看 TA 的清单，先问再解决，最后带着一个写进两人日历的开场问题离开。",
+"introMeta": [
+"一位经理 + 一位下属",
+"1 部手机",
+"约 15 分钟"
+],
+"setupTitle": "谁和谁见面？",
+"mgr": "经理",
+"rep": "下属",
+"howOften": "多久见一次？",
+"often": [
+"每周",
+"每两周"
+],
+"whichDay": "哪一天？",
+"days": [
+"周一",
+"周二",
+"周三",
+"周四",
+"周五"
+],
+"atTime": "时间",
+"cReportT": "{r} 先来",
+"cReportL": "{m}，把手机递过去，先别看。{r} 来写这场会要聊什么。",
+"listTitle": "{r}，你想聊什么？",
+"listLead": "最多选三项。这是你的会。",
+"topics": [
+[
+"我做得怎么样",
+"哪些顺利，哪些不顺"
+],
+[
+"什么在挡我的路",
+"一个卡点、一个流程、一个人"
+],
+[
+"我想学什么",
+"一项技能、一个项目、一次挑战"
+],
+[
+"我们怎么合作",
+"你希望别人怎样告诉你事情"
+],
+[
+"工作以外的事",
+"只说你愿意说的"
+]
+],
+"ownTopic": "或者你自己的",
+"ownPh": "例如：和班加罗尔团队的交接",
+"cMgrT": "交回给 {m}",
+"cMgrL": "{r}，把手机还回去。{m}：TA 的清单就是你的议程。",
+"openTitle": "{m}，这是 {r} 的清单。",
+"openLead": "从 TA 的第一项开始。选一种开场方式：",
+"openers": [
+"“你想从哪里开始？”",
+"“多说说{x}。”",
+"“什么能让这周好一点？”"
+],
+"rules": "先问，别急着解决",
+"rulesTxt": "提任何建议之前，先问两个问题。铃铛在 {r} 手里。",
+"toTalk": "开始一对一",
+"talkTitle": "你们的一对一，八分钟",
+"bell": "在解决了",
+"bellSub": "{r}：当 {m} 跳到给方案时，点一下",
+"bellToast": "先问：“你试过什么？”",
+"rang": "铃响了。这就是练习。",
+"endTalk": "我们聊完了",
+"checkTitle": "{r}，刚才那感觉像是你的会吗？",
+"checks": [
+[
+"是",
+"我聊了我想聊的。"
+],
+[
+"一部分",
+"后来变成了汇报进度。"
+],
+[
+"还没有",
+"大多是 {m} 在说。"
+]
+],
+"checkNext": [
+"那就把这个开场问题留下来。",
+"选一个能让会议留在 TA 手里的开场问题。",
+"下次 {m} 先问，再等。一起选这个问题。"
+],
+"agreeTitle": "一个开场问题，每次都用",
+"agreeLead": "一起选一个，或者自己写。从今往后，每次一对一都从它开始。",
+"qs": [
+"这周你在想什么？",
+"我能帮上的一件事是什么？",
+"哪些顺利，哪些不顺？",
+"你想从哪里开始？"
+],
+"ownQ": "我们自己的问题",
+"ownQPh": "例如：这周你学到了什么？",
+"toMade": "留下它",
+"madeKicker": "你们的约定",
+"madeTitle": "{m} 和 {r}",
+"madeEvery": "{o}，{d} {h}",
+"opens": "每次一对一都这样开场",
+"addCal": "📅 加进两人的日历",
+"sendLink": "↗ 把链接发给 {r}",
+"linkMsg": "我们的一对一，以及我们的开场问题：",
+"calTitle": "一对一 · {m} & {r}",
+"calDesc": "开场问题：{q}\n先看 TA 的清单。先问，再解决。",
+"linkNote": "链接里存着这份约定，别处什么都不存。",
+"fromLink": "从你们的链接打开",
+"practise": "练一次一对一",
+"endKicker": "第一次一对一完成了",
+"endTitle": "那是 TA 的会。",
+"endLead": "先看 TA 的清单，先问再答，再加一个你们都从它开始的问题。好的一对一，大半就是这些。",
+"mondayTxt": "下一次一对一用约定的问题开场，然后先让 TA 说两分钟，你再开口。",
+"teachTitle": "教给另一位新经理。",
+"teachLead": "带 TA 走一遍这三步，再让 TA 写下下次一对一要怎么做。",
+"t3": [
+"先看 TA 的清单",
+"先问，别急着解决",
+"一个开场问题"
+],
+"t3sub": [
+"这是 TA 的会",
+"先问两个问题",
+"写进两人的日历"
+],
+"gTitle": "怎么带“第一次一对一”",
+"gWhyTxt": "大多数新经理是因为会解决问题才被提拔的，所以他们习惯直接解决。先让下属写清单，就把会还给了 TA；铃铛让“告诉”在当下被看见，却不打分；一个约定好的开场问题，让之后二十场会都还是 TA 的。",
+"gStepList": [
+"在第一场真正的一对一之前做，和真正的下属一起。先在教练副驾上热身是可选的。",
+"下属独自写清单；经理先别看。",
+"第一项聊八分钟。经理开始给方案时，下属点铃。",
+"约定开场问题和节奏，加进两人的日历，把链接发出去。"
+],
+"gDebriefList": [
+"铃是什么时候响的？换成哪个问题会更好？",
+"下属的清单告诉了你哪些进度汇报不会说的事？",
+"进度汇报以后放到哪里，才不会占掉一对一？"
+],
+"gNotesList": [
+"约定只存在链接和日历文件里，两者都在手机上生成。",
+"铃铛什么都不计数。它是提醒，不是分数。"
+]
+},
+"es": {
+"guide": "Facilitadores",
+"back": "Parte de los servicios de FREE//BUILDER ↗",
+"soundOn": "Sonido activado",
+"soundOff": "Sonido desactivado",
+"left": "restante",
+"paused": "en pausa",
+"close": "Cerrar",
+"resume": "Seguir",
+"pause": "Pausa",
+"start": "Empezar",
+"next": "Siguiente",
+"backBtn": "Atrás",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ej., Ana",
+"phB": "p. ej., Leo",
+"copy": "Copiar",
+"copied": "Copiado.",
+"share": "Enviarlo",
+"icsMade": "Archivo de calendario hecho en este móvil. Ábrelo para añadirlo.",
+"pickMax": "No puedes elegir más.",
+"timeUp": "Se acabó el tiempo. Termina la frase.",
+"swap": "Cambiar",
+"again": "Practicar otra vez",
+"passOn": "Pásalo",
+"monday": "Pruébalo el lunes",
+"teachKicker": "Pásalo",
+"learnerName": "Su nombre (opcional)",
+"learnerPh": "p. ej., Mei",
+"learned": "Lo que va a probar, con sus palabras",
+"learnedPh": "Pásale el móvil…",
+"save": "Guardar en este móvil",
+"chainTitle": "Personas a las que se lo has pasado",
+"chainEmpty": "Nadie todavía. Tu primer enseñar-de-vuelta aparecerá aquí.",
+"saved": "Guardado solo en este móvil.",
+"restart": "Volver al principio",
+"teachbackLink": "Cadena de Enseñar de Vuelta ↗",
+"gKicker": "Guía para facilitar",
+"gWhy": "Por qué funciona",
+"gSteps": "Cómo llevarlo",
+"gDebrief": "Preguntas para cerrar",
+"gNotes": "Notas",
+"passTo": "Pásale el móvil a {n}",
+"ready": "Soy {n}",
+"optional": "opcional",
+"title": "Primer 1:1 — FREE//BUILDER",
+"product": "Primer 1:1",
+"privacy": "No se graba nada. Vuestro acuerdo vive en un enlace.",
+"introKicker": "Jefes nuevos · En pareja",
+"introTitle": "Primer <span class=\"accent-word\">1:1</span>",
+"introLead": "Un 1:1 es su reunión, no un informe de estado. Haz aquí el primero con una persona real: primero su lista, preguntas antes de arreglar, y salís con una pregunta de apertura en las dos agendas.",
+"introMeta": [
+"Un jefe + una persona del equipo",
+"1 móvil",
+"≈ 15 minutos"
+],
+"setupTitle": "¿Quién se reúne?",
+"mgr": "Jefe/a",
+"rep": "Persona del equipo",
+"howOften": "¿Cada cuánto os veréis?",
+"often": [
+"Cada semana",
+"Cada dos semanas"
+],
+"whichDay": "¿Qué día?",
+"days": [
+"lun",
+"mar",
+"mié",
+"jue",
+"vie"
+],
+"atTime": "Hora",
+"cReportT": "Empieza {r}",
+"cReportL": "{m}, pásale el móvil y no mires un minuto. {r} escribe la lista de esta reunión.",
+"listTitle": "{r}, ¿de qué quieres hablar?",
+"listLead": "Elige hasta tres. Es tu reunión.",
+"topics": [
+[
+"Cómo lo estoy haciendo",
+"lo que va bien y lo que no"
+],
+[
+"Qué me frena",
+"un bloqueo, un proceso, una persona"
+],
+[
+"Qué quiero aprender",
+"una habilidad, un proyecto, un reto"
+],
+[
+"Cómo trabajamos juntos",
+"cómo prefieres que te digan las cosas"
+],
+[
+"Algo fuera del trabajo",
+"solo lo que quieras contar"
+]
+],
+"ownTopic": "O uno tuyo",
+"ownPh": "p. ej., el traspaso con Bengaluru",
+"cMgrT": "Vuelve a {m}",
+"cMgrL": "{r}, devuelve el móvil. {m}: su lista es tu agenda.",
+"openTitle": "{m}, esta es la lista de {r}.",
+"openLead": "Empieza por su primer punto. Elige cómo abrirlo:",
+"openers": [
+"«¿Por dónde quieres empezar?»",
+"«Cuéntame más de {x}.»",
+"«¿Qué haría mejor esta semana?»"
+],
+"rules": "Pregunta, no arregles",
+"rulesTxt": "Haz dos preguntas antes de proponer nada. {r} tiene la campana.",
+"toTalk": "Empezar el 1:1",
+"talkTitle": "Vuestro 1:1, ocho minutos",
+"bell": "Lo está arreglando",
+"bellSub": "{r}: toca cuando {m} salte a una solución",
+"bellToast": "Primero pregunta: «¿Qué has probado?»",
+"rang": "Ha sonado la campana. Eso es practicar.",
+"endTalk": "Hemos terminado",
+"checkTitle": "{r}, ¿te ha parecido tu reunión?",
+"checks": [
+[
+"Sí",
+"Hablé de lo que quería."
+],
+[
+"En parte",
+"Acabamos en el estado de las cosas."
+],
+[
+"Todavía no",
+"Habló sobre todo {m}."
+]
+],
+"checkNext": [
+"Entonces quedaos con esa pregunta de apertura.",
+"Elegid una pregunta que la mantenga suya.",
+"La próxima vez {m} pregunta y espera. Elegid la pregunta juntos."
+],
+"agreeTitle": "Una pregunta de apertura, siempre",
+"agreeLead": "Elegidla juntos o escribid la vuestra. Abrirá cada 1:1 a partir de ahora.",
+"qs": [
+"¿Qué tienes en la cabeza esta semana?",
+"¿Qué es una cosa que podría hacer para ayudarte?",
+"¿Qué va bien y qué no?",
+"¿Por dónde quieres empezar?"
+],
+"ownQ": "Nuestra propia pregunta",
+"ownQPh": "p. ej., ¿Qué has aprendido esta semana?",
+"toMade": "Guardarla",
+"madeKicker": "Vuestro acuerdo",
+"madeTitle": "{m} y {r}",
+"madeEvery": "{o}, {d} a las {h}",
+"opens": "Cada 1:1 empieza con",
+"addCal": "📅 Añadir a las dos agendas",
+"sendLink": "↗ Enviar el enlace a {r}",
+"linkMsg": "Nuestro 1:1 y la pregunta con la que empezamos:",
+"calTitle": "1:1 · {m} y {r}",
+"calDesc": "Empezad con: {q}\nPrimero su lista. Pregunta antes de arreglar.",
+"linkNote": "El enlace guarda el acuerdo. No se guarda en ningún otro sitio.",
+"fromLink": "Abierto desde vuestro enlace",
+"practise": "Practicar un 1:1",
+"endKicker": "Primer 1:1 hecho",
+"endTitle": "Fue su reunión.",
+"endLead": "Primero su lista, tus preguntas antes que tus respuestas y una pregunta con la que empezáis los dos. Eso es casi todo un buen 1:1.",
+"mondayTxt": "Abre tu próximo 1:1 con la pregunta acordada y deja que hable dos minutos antes de decir nada.",
+"teachTitle": "Enséñaselo a otro jefe nuevo.",
+"teachLead": "Repasa con él o ella los tres pasos y deja que escriba qué hará en su próximo 1:1.",
+"t3": [
+"Primero su lista",
+"Pregunta, no arregles",
+"Una pregunta de apertura"
+],
+"t3sub": [
+"es su reunión",
+"dos preguntas antes",
+"en las dos agendas"
+],
+"gTitle": "Cómo llevar Primer 1:1",
+"gWhyTxt": "La mayoría de los jefes nuevos fueron ascendidos por resolver cosas, así que resuelven. Que la otra persona escriba la lista primero le devuelve la reunión; la campana hace visible el «decir» en el momento, sin puntuar; una pregunta de apertura acordada mantiene suyas las veinte reuniones siguientes.",
+"gStepList": [
+"Hacedlo antes del primer 1:1 real, con la persona real. Calentar antes en el Copiloto es opcional.",
+"La persona del equipo escribe la lista a solas; el jefe no mira.",
+"Ocho minutos con el primer punto. La persona toca la campana cuando el jefe se pone a resolver.",
+"Acordad la pregunta y el ritmo, añadidlo a las dos agendas y enviad el enlace."
+],
+"gDebriefList": [
+"¿Cuándo sonó la campana y qué pregunta habría funcionado en su lugar?",
+"¿Qué te dijo su lista que un informe de estado no te habría dicho?",
+"¿Dónde irán ahora los informes de estado para que no se coman el 1:1?"
+],
+"gNotesList": [
+"El acuerdo vive solo en el enlace y en el archivo de calendario, ambos hechos en el móvil.",
+"La campana no cuenta nada. Es un empujón, no una nota."
+]
+}, "zh-Hant": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服務的一部分 ↗",
+"soundOn": "聲音開",
+"soundOff": "聲音關",
+"left": "剩餘",
+"paused": "已暫停",
+"close": "關閉",
+"resume": "繼續",
+"pause": "暫停",
+"start": "開始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "複製",
+"copied": "已複製。",
+"share": "發出去",
+"icsMade": "日曆檔案已在這臺手機上生成。開啟它即可新增。",
+"pickMax": "最多隻能選這麼多。",
+"timeUp": "時間到。把這句話說完。",
+"swap": "交換",
+"again": "再練一次",
+"passOn": "傳下去",
+"monday": "週一試試這個",
+"teachKicker": "傳下去",
+"learnerName": "TA 的名字（可選）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算試什麼，用 TA 自己的話",
+"learnedPh": "把手機遞給 TA……",
+"save": "儲存在這臺手機上",
+"chainTitle": "你傳給過的人",
+"chainEmpty": "還沒有人。你的第一次教回去會出現在這裡。",
+"saved": "只儲存在這臺手機上。",
+"restart": "回到開頭",
+"teachbackLink": "教回去鏈條 ↗",
+"gKicker": "主持人指南",
+"gWhy": "為什麼有效",
+"gSteps": "怎麼帶",
+"gDebrief": "覆盤問題",
+"gNotes": "備註",
+"passTo": "把手機遞給 {n}",
+"ready": "我是 {n}",
+"optional": "可選",
+"title": "第一次一對一 — FREE//BUILDER",
+"product": "第一次一對一",
+"privacy": "不做任何記錄。你們的約定只存在一個連結裡。",
+"introKicker": "新經理 · 兩人",
+"introTitle": "第一次<span class=\"accent-word\">一對一</span>",
+"introLead": "一對一是對方的會，不是進度彙報。和一位真實的下屬在這裡開第一場：先看 TA 的清單，先問再解決，最後帶著一個寫進兩人日曆的開場問題離開。",
+"introMeta": [
+"一位經理 + 一位下屬",
+"1 部手機",
+"約 15 分鐘"
+],
+"setupTitle": "誰和誰見面？",
+"mgr": "經理",
+"rep": "下屬",
+"howOften": "多久見一次？",
+"often": [
+"每週",
+"每兩週"
+],
+"whichDay": "哪一天？",
+"days": [
+"週一",
+"週二",
+"週三",
+"週四",
+"週五"
+],
+"atTime": "時間",
+"cReportT": "{r} 先來",
+"cReportL": "{m}，把手機遞過去，先別看。{r} 來寫這場會要聊什麼。",
+"listTitle": "{r}，你想聊什麼？",
+"listLead": "最多選三項。這是你的會。",
+"topics": [
+[
+"我做得怎麼樣",
+"哪些順利，哪些不順"
+],
+[
+"什麼在擋我的路",
+"一個卡點、一個流程、一個人"
+],
+[
+"我想學什麼",
+"一項技能、一個專案、一次挑戰"
+],
+[
+"我們怎麼合作",
+"你希望別人怎樣告訴你事情"
+],
+[
+"工作以外的事",
+"只說你願意說的"
+]
+],
+"ownTopic": "或者你自己的",
+"ownPh": "例如：和班加羅爾團隊的交接",
+"cMgrT": "交回給 {m}",
+"cMgrL": "{r}，把手機還回去。{m}：TA 的清單就是你的議程。",
+"openTitle": "{m}，這是 {r} 的清單。",
+"openLead": "從 TA 的第一項開始。選一種開場方式：",
+"openers": [
+"“你想從哪裡開始？”",
+"“多說說{x}。”",
+"“什麼能讓這週好一點？”"
+],
+"rules": "先問，別急著解決",
+"rulesTxt": "提任何建議之前，先問兩個問題。鈴鐺在 {r} 手裡。",
+"toTalk": "開始一對一",
+"talkTitle": "你們的一對一，八分鐘",
+"bell": "在解決了",
+"bellSub": "{r}：當 {m} 跳到給方案時，點一下",
+"bellToast": "先問：“你試過什麼？”",
+"rang": "鈴響了。這就是練習。",
+"endTalk": "我們聊完了",
+"checkTitle": "{r}，剛才那感覺像是你的會嗎？",
+"checks": [
+[
+"是",
+"我聊了我想聊的。"
+],
+[
+"一部分",
+"後來變成了彙報進度。"
+],
+[
+"還沒有",
+"大多是 {m} 在說。"
+]
+],
+"checkNext": [
+"那就把這個開場問題留下來。",
+"選一個能讓會議留在 TA 手裡的開場問題。",
+"下次 {m} 先問，再等。一起選這個問題。"
+],
+"agreeTitle": "一個開場問題，每次都用",
+"agreeLead": "一起選一個，或者自己寫。從今往後，每次一對一都從它開始。",
+"qs": [
+"這週你在想什麼？",
+"我能幫上的一件事是什麼？",
+"哪些順利，哪些不順？",
+"你想從哪裡開始？"
+],
+"ownQ": "我們自己的問題",
+"ownQPh": "例如：這週你學到了什麼？",
+"toMade": "留下它",
+"madeKicker": "你們的約定",
+"madeTitle": "{m} 和 {r}",
+"madeEvery": "{o}，{d} {h}",
+"opens": "每次一對一都這樣開場",
+"addCal": "📅 加進兩人的日曆",
+"sendLink": "↗ 把連結發給 {r}",
+"linkMsg": "我們的一對一，以及我們的開場問題：",
+"calTitle": "一對一 · {m} & {r}",
+"calDesc": "開場問題：{q}\n先看 TA 的清單。先問，再解決。",
+"linkNote": "連結裡存著這份約定，別處什麼都不存。",
+"fromLink": "從你們的連結開啟",
+"practise": "練一次一對一",
+"endKicker": "第一次一對一完成了",
+"endTitle": "那是 TA 的會。",
+"endLead": "先看 TA 的清單，先問再答，再加一個你們都從它開始的問題。好的一對一，大半就是這些。",
+"mondayTxt": "下一次一對一用約定的問題開場，然後先讓 TA 說兩分鐘，你再開口。",
+"teachTitle": "教給另一位新經理。",
+"teachLead": "帶 TA 走一遍這三步，再讓 TA 寫下下次一對一要怎麼做。",
+"t3": [
+"先看 TA 的清單",
+"先問，別急著解決",
+"一個開場問題"
+],
+"t3sub": [
+"這是 TA 的會",
+"先問兩個問題",
+"寫進兩人的日曆"
+],
+"gTitle": "怎麼帶“第一次一對一”",
+"gWhyTxt": "大多數新經理是因為會解決問題才被提拔的，所以他們習慣直接解決。先讓下屬寫清單，就把會還給了 TA；鈴鐺讓“告訴”在當下被看見，卻不打分；一個約定好的開場問題，讓之後二十場會都還是 TA 的。",
+"gStepList": [
+"在第一場真正的一對一之前做，和真正的下屬一起。先在教練副駕上熱身是可選的。",
+"下屬獨自寫清單；經理先別看。",
+"第一項聊八分鐘。經理開始給方案時，下屬點鈴。",
+"約定開場問題和節奏，加進兩人的日曆，把連結發出去。"
+],
+"gDebriefList": [
+"鈴是什麼時候響的？換成哪個問題會更好？",
+"下屬的清單告訴了你哪些進度彙報不會說的事？",
+"進度彙報以後放到哪裡，才不會佔掉一對一？"
+],
+"gNotesList": [
+"約定只存在連結和日曆檔案裡，兩者都在手機上生成。",
+"鈴鐺什麼都不計數。它是提醒，不是分數。"
+]
+}, "ca": {
+"guide": "Facilitadors",
+"back": "Part dels serveis de FREE//BUILDER ↗",
+"soundOn": "So activat",
+"soundOff": "So desactivat",
+"left": "restant",
+"paused": "en pausa",
+"close": "Tancar",
+"resume": "Continuar",
+"pause": "Pausa",
+"start": "Començar",
+"next": "Següent",
+"backBtn": "Enrere",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ex., Ana",
+"phB": "p. ex., Leo",
+"copy": "Copia",
+"copied": "Copiat.",
+"share": "Envia-ho",
+"icsMade": "Fitxer de calendari fet en aquest mòbil. Obre’l per afegir-lo.",
+"pickMax": "No en pots triar més.",
+"timeUp": "S’ha acabat el temps. Acaba la frase.",
+"swap": "Canviar",
+"again": "Practicar un altre cop",
+"passOn": "Passa-ho",
+"monday": "Prova-ho dilluns",
+"teachKicker": "Passa-ho",
+"learnerName": "El seu nom (opcional)",
+"learnerPh": "p. ex., Mei",
+"learned": "El que provarà, amb les seves paraules",
+"learnedPh": "Passa-li el mòbil…",
+"save": "Desar en aquest mòbil",
+"chainTitle": "Persones a qui ho has passat",
+"chainEmpty": "Encara ningú. El teu primer ensenyar-de-tornada apareixerà aquí.",
+"saved": "Desat només en aquest mòbil.",
+"restart": "Torna al principi",
+"teachbackLink": "Cadena d'Ensenyar de Tornada ↗",
+"gKicker": "Guia per facilitar",
+"gWhy": "Per què funciona",
+"gSteps": "Com portar-ho",
+"gDebrief": "Preguntes per tancar",
+"gNotes": "Notes",
+"passTo": "Passa el mòbil a {n}",
+"ready": "Soc {n}",
+"optional": "opcional",
+"title": "Primer 1:1 — FREE//BUILDER",
+"product": "Primer 1:1",
+"privacy": "No es grava res. El vostre acord viu en un enllaç.",
+"introKicker": "Caps nous · En parella",
+"introTitle": "Primer <span class=\"accent-word\">1:1</span>",
+"introLead": "Un 1:1 és la seva reunió, no un informe d’estat. Fes aquí el primer amb una persona real: primer la seva llista, preguntes abans d’arreglar, i sortiu amb una pregunta d’obertura a les dues agendes.",
+"introMeta": [
+"Un cap + una persona de l’equip",
+"1 mòbil",
+"≈ 15 minuts"
+],
+"setupTitle": "Qui es reuneix?",
+"mgr": "Cap",
+"rep": "Persona de l’equip",
+"howOften": "Cada quant us veureu?",
+"often": [
+"Cada setmana",
+"Cada dues setmanes"
+],
+"whichDay": "Quin dia?",
+"days": [
+"dl.",
+"dt.",
+"dc.",
+"dj.",
+"dv."
+],
+"atTime": "Hora",
+"cReportT": "Comença {r}",
+"cReportL": "{m}, passa-li el mòbil i no miris un minut. {r} escriu la llista d’aquesta reunió.",
+"listTitle": "{r}, de què vols parlar?",
+"listLead": "Tria’n fins a tres. És la teva reunió.",
+"topics": [
+[
+"Com ho estic fent",
+"el que va bé i el que no"
+],
+[
+"Què m’atura",
+"un bloqueig, un procés, una persona"
+],
+[
+"Què vull aprendre",
+"una habilitat, un projecte, un repte"
+],
+[
+"Com treballem junts",
+"com prefereixes que et diguin les coses"
+],
+[
+"Alguna cosa fora de la feina",
+"només el que vulguis explicar"
+]
+],
+"ownTopic": "O un de teu",
+"ownPh": "p. ex., el traspàs amb Bengaluru",
+"cMgrT": "Torna a {m}",
+"cMgrL": "{r}, torna el mòbil. {m}: la seva llista és la teva agenda.",
+"openTitle": "{m}, aquesta és la llista de {r}.",
+"openLead": "Comença pel seu primer punt. Tria com obrir-lo:",
+"openers": [
+"«Per on vols començar?»",
+"«Explica’m més de {x}.»",
+"«Què faria millor aquesta setmana?»"
+],
+"rules": "Pregunta, no arreglis",
+"rulesTxt": "Fes dues preguntes abans de proposar res. {r} té la campana.",
+"toTalk": "Comença l’1:1",
+"talkTitle": "El vostre 1:1, vuit minuts",
+"bell": "Ho està arreglant",
+"bellSub": "{r}: toca quan {m} salti a una solució",
+"bellToast": "Primer pregunta: «Què has provat?»",
+"rang": "Ha sonat la campana. Això és practicar.",
+"endTalk": "Hem acabat",
+"checkTitle": "{r}, t’ha semblat la teva reunió?",
+"checks": [
+[
+"Sí",
+"Vaig parlar del que volia."
+],
+[
+"En part",
+"Vam acabar parlant de l’estat de les coses."
+],
+[
+"Encara no",
+"Va parlar sobretot {m}."
+]
+],
+"checkNext": [
+"Aleshores quedeu-vos aquesta pregunta d’obertura.",
+"Trieu una pregunta que la mantingui seva.",
+"La pròxima vegada {m} pregunta i espera. Trieu la pregunta junts."
+],
+"agreeTitle": "Una pregunta d’obertura, sempre",
+"agreeLead": "Trieu-la junts o escriviu la vostra. Obrirà cada 1:1 a partir d’ara.",
+"qs": [
+"Què tens al cap aquesta setmana?",
+"Quina és una cosa que podria fer per ajudar-te?",
+"Què va bé i què no?",
+"Per on vols començar?"
+],
+"ownQ": "La nostra pròpia pregunta",
+"ownQPh": "p. ex., Què has après aquesta setmana?",
+"toMade": "Desa-la",
+"madeKicker": "El vostre acord",
+"madeTitle": "{m} i {r}",
+"madeEvery": "{o}, {d} a les {h}",
+"opens": "Cada 1:1 comença amb",
+"addCal": "📅 Afegeix a les dues agendes",
+"sendLink": "↗ Envia l’enllaç a {r}",
+"linkMsg": "El nostre 1:1 i la pregunta amb què comencem:",
+"calTitle": "1:1 · {m} i {r}",
+"calDesc": "Comenceu amb: {q}\nPrimer la seva llista. Pregunta abans d’arreglar.",
+"linkNote": "L’enllaç guarda l’acord. No es desa enlloc més.",
+"fromLink": "Obert des del vostre enllaç",
+"practise": "Practica un 1:1",
+"endKicker": "Primer 1:1 fet",
+"endTitle": "Va ser la seva reunió.",
+"endLead": "Primer la seva llista, les teves preguntes abans que les teves respostes i una pregunta amb què comenceu tots dos. Això és gairebé tot un bon 1:1.",
+"mondayTxt": "Obre el teu pròxim 1:1 amb la pregunta acordada i deixa que parli dos minuts abans de dir res.",
+"teachTitle": "Ensenya-ho a un altre cap nou.",
+"teachLead": "Repassa amb ell o ella els tres passos i deixa que escrigui què farà al seu pròxim 1:1.",
+"t3": [
+"Primer la seva llista",
+"Pregunta, no arreglis",
+"Una pregunta d’obertura"
+],
+"t3sub": [
+"és la seva reunió",
+"dues preguntes abans",
+"a les dues agendes"
+],
+"gTitle": "Com portar Primer 1:1",
+"gWhyTxt": "La majoria dels caps nous van ser ascendits per resoldre coses, així que resolen. Que l’altra persona escrigui la llista primer li torna la reunió; la campana fa visible el «dir» en el moment, sense puntuar; una pregunta d’obertura acordada manté seves les vint reunions següents.",
+"gStepList": [
+"Feu-ho abans del primer 1:1 real, amb la persona real. Escalfar abans al Copilot és opcional.",
+"La persona de l’equip escriu la llista sola; el cap no mira.",
+"Vuit minuts amb el primer punt. La persona toca la campana quan el cap es posa a resoldre.",
+"Acordeu la pregunta i el ritme, afegiu-ho a les dues agendes i envieu l’enllaç."
+],
+"gDebriefList": [
+"Quan va sonar la campana i quina pregunta hauria funcionat en lloc d’això?",
+"Què et va dir la seva llista que un informe d’estat no t’hauria dit?",
+"On aniran ara els informes d’estat perquè no es mengin l’1:1?"
+],
+"gNotesList": [
+"L’acord només viu a l’enllaç i al fitxer de calendari, tots dos fets al mòbil.",
+"La campana no compta res. És un cop de colze, no una nota."
+]
+}
+};
+/* =====================================================================
+   FB KIT · helpers (copy into every demo)
+   ===================================================================== */
+const LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LANG_LBL = { en: "EN", zh: "中文", es: "ES", "zh-Hant": "繁中", "ca": "CA" };
+let lang = "en";
+const T = () => I18N[lang];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? esc(v[k]) : m));
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* Seeded random + pairing codes: the same code on two phones gives the same scenario, no server needed. */
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function newCode(n = 6) { let s = ""; for (let i = 0; i < n; i++) s += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]; return s; }
+function seedFrom(code) { let h = 2166136261; for (const c of String(code).toUpperCase()) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+/* Sound: soft, short, optional */
+const sound = {
+  ctx: null, muted: store.get("fb_muted", false),
+  init() { if (!this.ctx) { const A = window.AudioContext || window.webkitAudioContext; if (A) this.ctx = new A(); } if (this.ctx && this.ctx.state === "suspended") this.ctx.resume(); },
+  tone(f, d = .3, g = .06, type = "sine", at = 0) {
+    if (this.muted || !this.ctx) return;
+    try { const t = this.ctx.currentTime + at, o = this.ctx.createOscillator(), a = this.ctx.createGain();
+      o.type = type; o.frequency.setValueAtTime(f, t); a.gain.setValueAtTime(.0001, t); a.gain.linearRampToValueAtTime(g, t + .02); a.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(a); a.connect(this.ctx.destination); o.start(t); o.stop(t + d + .05); } catch (e) {}
+  },
+  tap() { this.tone(520, .12, .04, "triangle"); },
+  chime() { [659.25, 880, 1318.5].forEach((f, i) => this.tone(f, 1.2, .05, "sine", i * .12)); },
+  warm() { [392, 493.88, 587.33].forEach((f, i) => this.tone(f, .9, .05, "sine", i * .1)); }
+};
+const buzz = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+
+/* Keep the screen awake while a timer runs (where supported) */
+let wakeLock = null;
+async function keepAwake(on) {
+  try {
+    if (on && "wakeLock" in navigator && !wakeLock) wakeLock = await navigator.wakeLock.request("screen");
+    if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
+  } catch (e) { wakeLock = null; }
+}
+
+/* Timer ring */
+function ringSVG() {
+  return `<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="54" fill="none" stroke-width="6"/><circle class="fg" id="ring" cx="60" cy="60" r="54" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="339.29" stroke-dashoffset="0"/></svg>`;
+}
+const timer = {
+  total: 90, left: 90, running: false, raf: 0, last: 0, onEnd: null, ended: false,
+  start(total, onEnd) { this.stop(); this.total = this.left = total; this.onEnd = onEnd; this.ended = false; this.resume(); },
+  resume() { if (this.running || this.ended) return; this.running = true; this.last = performance.now(); keepAwake(true); this.tick(); },
+  pause() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); this.paint(); },
+  stop() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); },
+  tick() {
+    if (!this.running) return;
+    const now = performance.now(); this.left = Math.max(0, this.left - (now - this.last) / 1000); this.last = now;
+    this.paint();
+    if (this.left <= 0) { this.running = false; this.ended = true; keepAwake(false); sound.chime(); buzz([60, 80, 60]); this.onEnd && this.onEnd(); return; }
+    this.raf = requestAnimationFrame(() => this.tick());
+  },
+  paint() {
+    const ring = $("ring"), num = $("tnum"), lbl = $("tlbl"), wrap = $("timer");
+    if (!ring) return;
+    ring.setAttribute("stroke-dashoffset", String(339.29 * (1 - this.left / this.total)));
+    const s = Math.ceil(this.left);
+    num.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    lbl.textContent = this.ended ? "" : (this.running ? T().left : T().paused);
+    wrap.classList.toggle("done", this.ended);
+  }
+};
+
+/* Toast */
+let toastT;
+function toast(msg) { const el = $("toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 2600); }
+
+/* Pass-the-phone curtain */
+function curtainHTML(title, lead, btnLabel, act) {
+  return `<div class="curtain">
+    <svg class="hand" viewBox="0 0 84 84" aria-hidden="true"><rect x="27" y="10" width="30" height="52" rx="7" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="42" cy="54" r="2.5" fill="#E2553F"/><path d="M14 54c6 0 10 4 13 9M70 54c-6 0-10 4-13 9" stroke="rgba(255,255,255,.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M34 72h16" stroke="#E2553F" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <h2>${title}</h2><p>${lead}</p>
+    <button class="btn pri" data-act="${act}" style="width:100%;margin-top:6px">${btnLabel} →</button></div>`;
+}
+
+
+
+/* =====================================================================
+   FIRST 1:1 (build/next_tools/first.js; words in first.py)
+   ===================================================================== */
+const APP = {
+  demo: "first", first: "setup",
+  flow: ["setup", "list", "open", "talk", "check", "agree"],
+  stepOf: s => ({ cReport: "list", cMgr: "open" }[s] || s),
+  state: () => ({ names: ["", ""], often: 0, day: 1, time: "10:00", topics: [], own: "", opener: 0, rang: 0, check: null, q: null, ownQ: "", link: false }),
+  maxPick: { topics: 3 },
+  art() {
+    return `<svg viewBox="0 0 320 140" style="width:100%;max-width:420px;height:auto;margin:4px 0" aria-hidden="true">
+      <rect x="40" y="96" width="240" height="10" rx="5" fill="#E5E2DA"/>
+      <circle cx="96" cy="52" r="18" fill="#17171A"/><path d="M66 96c0-18 13-28 30-28s30 10 30 28" fill="#17171A"/>
+      <circle cx="224" cy="52" r="18" fill="#fff" stroke="#17171A" stroke-width="2"/><path d="M194 96c0-18 13-28 30-28s30 10 30 28" fill="#fff" stroke="#17171A" stroke-width="2"/>
+      <rect x="140" y="30" width="40" height="52" rx="6" fill="#fff" stroke="#E5E2DA" stroke-width="2"/>
+      <path d="M149 44h22M149 54h22M149 64h14" stroke="#E2553F" stroke-width="3" stroke-linecap="round"/>
+      <path d="M190 40c8-6 16-8 24-6" fill="none" stroke="#E2553F" stroke-width="2" stroke-dasharray="4 4"/>
+    </svg>`;
+  },
+  screens: {
+    setup(t) {
+      return `<h2>${esc(t.setupTitle)}</h2>
+        <div class="row2">${H.field(t.mgr, "names.0", { ph: t.phA, max: 20 })}${H.field(t.rep, "names.1", { ph: t.phB, max: 20 })}</div>
+        <div><span class="kicker">${esc(t.howOften)}</span><div style="margin-top:8px">${H.seg("often", t.often)}</div></div>
+        <div class="datein"><div><span class="kicker">${esc(t.whichDay)}</span><div style="margin-top:8px">${H.seg("day", t.days)}</div></div>
+          ${H.field(t.atTime, "time", { type: "time", max: 5 })}</div>
+        ${H.next(t.next, "toReport")}`;
+    },
+    cReport(t) { return curtainHTML(fmt(t.cReportT, { r: rn() }), fmt(t.cReportL, { r: rn(), m: mn() }), fmt(t.ready, { n: rn() }), "toList"); },
+    list(t) {
+      return `<h2>${fmt(t.listTitle, { r: rn() })}</h2><p class="lead">${esc(t.listLead)}</p>
+        ${H.choices("topics", t.topics.map(x => [x[0], x[1]]))}
+        ${H.field(t.ownTopic, "own", { ph: t.ownPh, max: 80 })}
+        ${H.next(t.next, "toMgr", { off: !hasList(), id: "nextBtn" })}`;
+    },
+    cMgr(t) { return curtainHTML(fmt(t.cMgrT, { m: mn() }), fmt(t.cMgrL, { r: rn(), m: mn() }), fmt(t.ready, { n: mn() }), "toOpen"); },
+    open(t) {
+      const items = listItems(t);
+      return `${H.roles(t.mgr, mn(), t.rep, rn())}
+        <h2>${fmt(t.openTitle, { m: mn(), r: rn() })}</h2>
+        <ul class="list">${items.map((x, i) => `<li><b>0${i + 1}</b><span>${esc(x)}</span></li>`).join("")}</ul>
+        <p class="lead">${esc(t.openLead)}</p>
+        ${H.choices("opener", t.openers.map(o => [fmt(o, { x: items[0] })]))}
+        ${H.tip(`<b>${esc(t.rules)}</b>${fmt(t.rulesTxt, { r: rn() })}`)}
+        ${H.next(t.toTalk, "toTalk")}`;
+    },
+    talk(t) {
+      return `${H.roles(t.mgr, mn(), t.rep, rn())}
+        <h2>${esc(t.talkTitle)}</h2>
+        ${H.prompt(fmt(t.openers[S.opener], { x: listItems(t)[0] }), listItems(t).join(" · "))}
+        ${H.timer(t)}
+        <button class="bell" data-act="bell" id="bell">🔔 ${esc(t.bell)}<small>${fmt(t.bellSub, { r: rn(), m: mn() })}</small></button>
+        ${S.rang ? `<p class="note" style="text-align:center">${esc(t.rang)}</p>` : ""}
+        ${H.next(t.endTalk, "toCheck")}`;
+    },
+    check(t) {
+      return `<h2>${fmt(t.checkTitle, { r: rn() })}</h2>
+        ${H.choices("check", t.checks.map(c => [c[0], fmt(c[1], { m: mn() })]), {})}
+        ${S.check != null ? H.tip(fmt(t.checkNext[S.check], { m: mn() }), "♡") : ""}
+        ${H.next(t.next, "toAgree", { off: S.check == null })}`;
+    },
+    agree(t) {
+      return `<h2>${esc(t.agreeTitle)}</h2><p class="lead">${esc(t.agreeLead)}</p>
+        ${H.choices("q", t.qs.map(q => [q]))}
+        ${H.field(t.ownQ, "ownQ", { ph: t.ownQPh, max: 120 })}
+        ${H.next(t.toMade, "toMade", { off: !question(), id: "nextBtn" })}`;
+    },
+    made(t) {
+      const a = S.agree || agreement();
+      return `${S.link ? H.kicker(t.fromLink, "var(--good)") : H.kicker(t.madeKicker)}
+        <h2>${fmt(t.madeTitle, { m: a.m || t.mgr, r: a.r || t.rep })}</h2>
+        <div class="doc"><div class="row"><span>${esc(t.howOften)}</span><b>${fmt(t.madeEvery, { o: t.often[a.o], d: t.days[a.d], h: a.h })}</b></div></div>
+        <div><span class="kicker">${esc(t.opens)}</span><p class="big-q" style="margin-top:8px">“${esc(a.q)}”</p></div>
+        <div class="btns"><button class="btn" data-act="cal">${esc(t.addCal)}</button><button class="btn" data-act="send">${fmt(t.sendLink, { r: a.r || t.rep })}</button></div>
+        <p class="note">${esc(t.linkNote)}</p>
+        <div class="spacer"></div>
+        <div class="btns">${S.link ? `<button class="btn" data-act="practise">${esc(t.practise)}</button>` : ""}<button class="btn pri" data-act="toEnd" data-focus>${esc(t.next)} →</button></div>`;
+    }
+  },
+  acts: {
+    toReport() { go("cReport"); }, toList() { go("list"); }, toMgr() { if (hasList()) go("cMgr"); }, toOpen() { go("open"); },
+    toTalk() { go("talk"); }, toCheck() { go("check"); }, toAgree() { if (S.check != null) go("agree"); },
+    toMade() { if (!question()) return; S.agree = agreement(); sound.warm(); go("made"); },
+    toEnd() { go("end"); },
+    bell(el) { S.rang++; sound.tone(880, 1.4, .07, "sine"); sound.tone(1320, 1, .03, "sine", .02); buzz(40); toast(T().bellToast); el.classList.add("rung"); setTimeout(() => el.classList.remove("rung"), 600);
+      if (S.rang === 1) { const n = document.createElement("p"); n.className = "note"; n.style.textAlign = "center"; n.textContent = T().rang; el.after(n); } },
+    cal() { const t = T(), a = S.agree, [hh, mm] = (a.h || "10:00").split(":").map(Number);
+      downloadICS("first-1-1", [{ title: fmtR(t.calTitle, { m: a.m || t.mgr, r: a.r || t.rep }), desc: fmtR(t.calDesc, { q: a.q }),
+        start: nextWeekday(a.d + 1, hh || 10, mm || 0), mins: 30, rrule: a.o ? "FREQ=WEEKLY;INTERVAL=2" : "FREQ=WEEKLY" }]); },
+    send() { const t = T(), a = S.agree; shareText(`${t.linkMsg} “${a.q}”`, here() + "#a=" + b64e(a)); },
+    practise() { history.replaceState(null, "", here()); Object.assign(S, APP.state()); go("setup"); }
+  },
+  enter: { talk() { startTimer(480, () => toast(T().timeUp)); } },
+  onChoose(k) { if (k === "q") S.ownQ = ""; },
+  input(k, v) {
+    if (k === "own") { const b = $("nextBtn"); if (b) b.disabled = !hasList(); }
+    if (k === "ownQ") { if (v.trim()) { S.q = null; document.querySelectorAll('[data-c="q"]').forEach(b => { b.classList.remove("on"); b.setAttribute("aria-pressed", "false"); }); } const b = $("nextBtn"); if (b) b.disabled = !question(); }
+  },
+  boot() {
+    const m = location.hash.match(/[#&]a=([^&]+)/); if (!m) return;
+    const a = b64d(m[1]); if (!a || !a.q) return;
+    a.o = a.o ? 1 : 0; a.d = Math.min(4, Math.max(0, +a.d || 0)); a.h = /^\d\d:\d\d$/.test(a.h) ? a.h : "10:00";
+    S.agree = a; S.link = true; S.screen = "made";
+  },
+  againTo: "setup", keepOnAgain: () => ({ names: S.names.slice() })
+};
+const mn = () => S.names[0].trim() || T().mgr, rn = () => S.names[1].trim() || T().rep;
+const hasList = () => S.topics.length > 0 || S.own.trim().length > 2;
+const listItems = t => S.topics.slice().sort((a, b) => a - b).map(i => t.topics[i][0]).concat(S.own.trim() ? [S.own.trim()] : []);
+const question = () => S.ownQ.trim() || (S.q != null ? T().qs[S.q] : "");
+const agreement = () => ({ m: S.names[0].trim(), r: S.names[1].trim(), o: S.often, d: S.day, h: S.time || "10:00", q: question() });
+
+/* =====================================================================
+   NEXT TOOLS · engine (build/next_tools/engine.js, shared by the ten tools that were "Next")
+   A tool defines APP = { demo, flow, first, state(), screens, acts, enter, stepOf, boot, art }.
+   Markup conventions: data-act="k" → APP.acts[k] or a built-in; data-go="screen"; data-b="key" (or key.0) binds an input to S;
+   data-c="key" data-v="i" picks a choice (APP.onChoose(key, v) if it wants more than S[key] = v and a render).
+   ===================================================================== */
+const stage = $("stage");
+const fmtR = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? v[k] : m));   // for text that never becomes HTML (calendar files, shared messages)
+
+function go(screen) {
+  timer.stop();
+  S.screen = screen; render(); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  const f = APP.enter && APP.enter[screen]; if (f) f();
+}
+function paintStepsBar() {
+  const fl = APP.flow || [], cur = APP.stepOf ? APP.stepOf(S.screen) : S.screen, at = fl.indexOf(cur);
+  $("steps").innerHTML = at < 0 ? "" : fl.map((_, i) => `<span class="${i < at ? "done" : i === at ? "now" : ""}"></span>`).join("");
+}
+function render() {
+  const t = T();
+  paintStepsBar();
+  let h;
+  if (S.screen === "intro") h = introHTML(t);
+  else if (S.screen === "teach") h = teachHTML(APP.demo);
+  else if (S.screen === "end") h = endHTML(t);
+  else h = APP.screens[S.screen](t);
+  const hadFocus = stage.contains(document.activeElement);
+  const same = render.last === S.screen; render.last = S.screen;
+  stage.innerHTML = h.startsWith("<section") ? h : `<section class="screen">${h}</section>`;
+  if (same) { const sec = stage.firstElementChild; if (sec) sec.style.animation = "none"; const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume; }
+  const f = stage.querySelector("[data-focus]");
+  if (f && hadFocus) f.focus({ preventScroll: true });
+  if (APP.after) APP.after(S.screen);
+}
+
+/* ---------- small builders ---------- */
+const H = {
+  btn(label, act, o = {}) {
+    const a = o.go ? `data-go="${o.go}"` : `data-act="${act}"`;
+    return `<button class="btn${o.pri ? " pri" : ""}" ${a}${o.id ? ` id="${o.id}"` : ""}${o.off ? " disabled" : ""}${o.focus ? " data-focus" : ""}${o.attr ? " " + o.attr : ""}>${label}</button>`;
+  },
+  next(label, act, o = {}) { return `<div class="spacer"></div><div class="btns">${o.left || ""}${H.btn(esc(label) + " →", act, Object.assign({ pri: 1, focus: 1 }, o))}</div>`; },
+  field(lbl, key, o = {}) {
+    const v = esc(getP(key) || ""), ph = o.ph ? ` placeholder="${esc(o.ph)}"` : "", ml = ` maxlength="${o.max || 120}"`;
+    const inp = o.area ? `<textarea data-b="${key}"${ml}${ph}>${v}</textarea>` : `<input data-b="${key}"${ml}${ph} autocomplete="off" value="${v}"${o.type ? ` type="${o.type}"` : ""}>`;
+    return `<label class="field"><span>${esc(lbl)}</span>${inp}</label>`;
+  },
+  names(t, a = "nameA", b = "nameB") {
+    return `<div class="row2">${H.field(t[a], "names.0", { ph: t.phA, max: 20 })}${H.field(t[b], "names.1", { ph: t.phB, max: 20 })}</div>`;
+  },
+  roles(k1, n1, k2, n2) {
+    return `<div class="roles"><div class="role speak"><div class="k">${esc(k1)}</div><div class="n">${esc(n1)}</div></div><div class="role"><div class="k">${esc(k2)}</div><div class="n">${esc(n2)}</div></div></div>`;
+  },
+  choices(key, items, o = {}) {   // items: [title, sub?, mark?]
+    const cur = getP(key), multi = Array.isArray(cur);
+    return `<div class="heard">${items.map((it, i) => {
+      const on = multi ? cur.includes(i) : cur === i;
+      return `<button data-c="${key}" data-v="${i}" aria-pressed="${on}" class="${on ? "on" : ""}"><span class="e">${it[2] != null ? it[2] : `<span style="font-family:var(--mono);font-size:12px">${String(i + 1).padStart(2, "0")}</span>`}</span><span><b>${esc(it[0])}</b>${it[1] ? `<small>${esc(it[1])}</small>` : ""}</span></button>`;
+    }).join("")}</div>`;
+  },
+  seg(key, items) { const cur = getP(key); return `<div class="seg">${items.map((x, i) => `<button data-c="${key}" data-v="${i}" aria-pressed="${cur === i}">${esc(x)}</button>`).join("")}</div>`; },
+  timer(t) {
+    return `<div class="timer" id="timer">${ringSVG()}<div class="num"><b id="tnum">0:00</b><small id="tlbl"></small></div></div>
+      <div class="btns" style="justify-content:center"><button class="btn" data-act="pause" id="pauseBtn" style="flex:none;min-width:140px">${esc(t.pause)}</button></div>`;
+  },
+  tip(txt, mark = "✦") { return `<div class="tip"><i>${mark}</i><span>${txt}</span></div>`; },
+  prompt(q, meta, sm) { return `<div class="prompt${sm ? " sm" : ""}"><div class="q">${esc(q)}</div>${meta ? `<div class="meta"><span>${esc(meta)}</span></div>` : ""}</div>`; },
+  stems(list) { return `<div class="stems">${list.map(s => `<div>${esc(s)}</div>`).join("")}</div>`; },
+  kicker(s, c) { return `<span class="kicker"${c ? ` style="color:${c}"` : ""}>${esc(s)}</span>`; }
+};
+function startTimer(secs, onEnd) { timer.start(secs, onEnd || (() => toast(T().timeUp))); const pb = $("pauseBtn"); if (pb) pb.textContent = T().pause; }
+
+/* paths into S: "names.0", "agree.q" */
+function getP(p) { return String(p).split(".").reduce((o, k) => (o == null ? o : o[k]), S); }
+function setP(p, v) { const ks = String(p).split("."), last = ks.pop(); const o = ks.reduce((o, k) => o[k], S); o[last] = v; }
+
+function introHTML(t) {
+  return `<section class="screen">
+    <span class="kicker">${esc(t.introKicker)}</span><h1>${t.introTitle}</h1>
+    <p class="lead">${esc(t.introLead)}</p>
+    <div class="pills">${t.introMeta.map(m => `<span class="pill">${esc(m)}</span>`).join("")}</div>
+    ${APP.art ? APP.art() : ""}
+    ${APP.introExtra ? APP.introExtra(t) : ""}
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn pri" data-act="start" data-focus>${esc(t.start)} →</button></div>
+  </section>`;
+}
+function endHTML(t) {
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--good)">✓ ${esc(t.endKicker)}</span>
+    <h2>${esc(t.endTitle)}</h2>
+    <p class="serif">${esc(t.endLead)}</p>
+    ${APP.endExtra ? APP.endExtra(t) : ""}
+    <div class="monday"><b>${esc(t.monday)}</b>${esc(t.mondayTxt)}</div>
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn" data-act="again">↻ ${esc(t.again)}</button><button class="btn pri" data-act="teach" data-focus>${esc(t.passOn)} →</button></div>
+  </section>`;
+}
+function teachHTML(demo) {
+  const t = T(), chain = store.get("fb_teachback", []).filter(c => c.demo === demo);
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--accent-ink)">${esc(t.teachKicker)}</span>
+    <h2>${esc(t.teachTitle)}</h2>
+    <p class="lead">${esc(t.teachLead)}</p>
+    <div class="steps3">${t.t3.map((s, i) => `<div><b>0${i + 1}</b><span>${esc(s)}</span><small style="display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4">${esc(t.t3sub[i])}</small></div>`).join("")}</div>
+    <div class="card" style="display:grid;gap:12px">
+      <label class="field"><span>${esc(t.learnerName)}</span><input id="lName" maxlength="30" autocomplete="off" placeholder="${esc(t.learnerPh)}"></label>
+      <label class="field"><span>${esc(t.learned)}</span><textarea id="lText" maxlength="280" placeholder="${esc(t.learnedPh)}"></textarea></label>
+      <button class="btn pri" data-act="saveTeach" style="flex:none">${esc(t.save)}</button>
+    </div>
+    <div><span class="kicker">${esc(t.chainTitle)}</span>
+      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang))))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
+    <a class="link" href="/tools/teachback">⊂⊃ ${esc(t.teachbackLink)}</a>
+    <button class="link" data-act="restart">${esc(t.restart)}</button>
+  </section>`;
+}
+
+/* ---------- device-made things: copy, a calendar file, a link ---------- */
+function copyText(text, msg) {
+  text = String(text || "").trim(); if (!text) return;
+  const ok = () => toast(msg || T().copied);
+  const fb = () => { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (_) {} ta.remove(); ok(); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok).catch(fb); else fb();
+}
+function shareText(text, url) {
+  const data = { text: url ? text + "\n" + url : text };
+  if (navigator.share) navigator.share(data).catch(() => {}); else copyText(data.text);
+}
+const pad2 = n => String(n).padStart(2, "0");
+const icsDate = d => `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;
+const icsEsc = s => String(s || "").replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/[,;]/g, m => "\\" + m);
+/* events: [{title, desc, start: Date, mins, rrule}] → one .ics made here, nothing sent */
+function downloadICS(name, events) {
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FREE//BUILDER//tools//EN", "CALSCALE:GREGORIAN"];
+  events.forEach((e, i) => {
+    const end = new Date(e.start.getTime() + (e.mins || 15) * 60000);
+    L.push("BEGIN:VEVENT", `UID:${Date.now()}-${i}@freebuilder.net`, `DTSTAMP:${icsDate(new Date())}`, `DTSTART:${icsDate(e.start)}`, `DTEND:${icsDate(end)}`,
+      `SUMMARY:${icsEsc(e.title)}`, `DESCRIPTION:${icsEsc(e.desc)}`);
+    if (e.rrule) L.push(`RRULE:${e.rrule}`);
+    L.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(e.title)}`, "TRIGGER:-PT15M", "END:VALARM", "END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  const blob = new Blob([L.join("\r\n")], { type: "text/calendar" }), a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name + ".ics"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast(T().icsMade);
+}
+function nextWeekday(dow, h = 9, m = 0) { const d = new Date(); d.setHours(h, m, 0, 0); let add = (dow - d.getDay() + 7) % 7; if (add === 0 && d <= new Date()) add = 7; d.setDate(d.getDate() + add); return d; }
+const b64e = o => { const s = unescape(encodeURIComponent(JSON.stringify(o))); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+const b64d = s => { try { s = s.replace(/-/g, "+").replace(/_/g, "/"); return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch (e) { return null; } };
+const here = () => location.origin + location.pathname;
+const dayFmt = d => { try { return new Date(d).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang)), { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return String(d); } };
+const shuffle = (a, r = Math.random) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+const S = Object.assign({ screen: "intro" }, APP.state());
+
+/* ---------- events ---------- */
+stage.addEventListener("input", e => {
+  const b = e.target.dataset.b; if (!b) return;
+  setP(b, e.target.value);
+  if (APP.input) APP.input(b, e.target.value, e.target);
+});
+stage.addEventListener("click", e => {
+  sound.init();
+  const c = e.target.closest("[data-c]"), g = e.target.closest("[data-go]"), a = e.target.closest("[data-act]");
+  if (c) {
+    sound.tap(); const k = c.dataset.c, v = +c.dataset.v;
+    if (APP.onChoose && APP.onChoose(k, v, c) === false) return;
+    const cur = getP(k);
+    if (Array.isArray(cur)) { const i = cur.indexOf(v); if (i >= 0) cur.splice(i, 1); else if (cur.length < (APP.maxPick && APP.maxPick[k] || 99)) cur.push(v); else toast(T().pickMax); }
+    else setP(k, v);
+    render(); return;
+  }
+  if (g) { sound.tap(); go(g.dataset.go); return; }
+  if (!a) return;
+  const k = a.dataset.act; sound.tap();
+  if (APP.acts && APP.acts[k]) { APP.acts[k](a); return; }
+  switch (k) {
+    case "start": go(APP.first); break;
+    case "pause":
+      if (timer.ended) return;
+      if (timer.running) { timer.pause(); a.textContent = T().resume; } else { timer.resume(); a.textContent = T().pause; }
+      break;
+    case "again": { const keep = APP.keepOnAgain ? APP.keepOnAgain() : {}; Object.assign(S, APP.state(), keep); go(APP.againTo || APP.first); break; }
+    case "teach": go("teach"); break;
+    case "saveTeach": {
+      const text = ($("lText").value || "").trim(), name = ($("lName").value || "").trim();
+      if (!text) { $("lText").focus(); return; }
+      const chain = store.get("fb_teachback", []); chain.push({ demo: APP.demo, text, name, at: Date.now() }); store.set("fb_teachback", chain.slice(-50));
+      sound.warm(); toast(T().saved); render(); break; }
+    case "restart": Object.assign(S, { screen: "intro" }, APP.state()); go("intro"); break;
+    case "copy": { const el = $(a.dataset.from); copyText(el ? (el.value != null && el.tagName !== "DIV" ? el.value : el.innerText) : a.dataset.text); break; }
+  }
+});
+window.__app = { S, go, render, timer, APP };
+if (APP.boot) APP.boot();
+
+/* ---------- facilitator guide ---------- */
+const drawer = $("drawer");
+function openGuide() {
+  const t = T();
+  $("panel").innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+      <div><span class="kicker">${esc(t.gKicker)}</span><h3 id="g-title">${esc(t.gTitle)}</h3></div>
+      <button class="x" data-close aria-label="${esc(t.close)}">✕</button>
+    </div>
+    <h4>${esc(t.gWhy)}</h4><p>${esc(t.gWhyTxt)}</p>
+    <h4>${esc(t.gSteps)}</h4><ol>${t.gStepList.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    <h4>${esc(t.gDebrief)}</h4><ul>${t.gDebriefList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>
+    <h4>${esc(t.gNotes)}</h4><ul>${t.gNotesList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>`;
+  drawer.classList.add("show");
+  setTimeout(() => drawer.querySelector("[data-close]").focus({ preventScroll: true }), 60);
+}
+function closeGuide() { drawer.classList.remove("show"); $("btn-guide").focus({ preventScroll: true }); }
+drawer.addEventListener("click", e => { if (e.target === drawer || e.target.closest("[data-close]")) closeGuide(); });
+$("btn-guide").addEventListener("click", openGuide);
+window.addEventListener("keydown", e => { if (e.key === "Escape" && drawer.classList.contains("show")) closeGuide(); });
+
+/* ---------- language + sound ---------- */
+function paintSound() {
+  const b = $("btn-sound"), t = T();
+  b.innerHTML = sound.muted
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  b.setAttribute("aria-label", sound.muted ? t.soundOff : t.soundOn); b.title = b.getAttribute("aria-label");
+}
+$("btn-sound").addEventListener("click", () => { sound.muted = !sound.muted; store.set("fb_muted", sound.muted); sound.init(); paintSound(); if (!sound.muted) sound.tap(); });
+
+function applyLang(l) {
+  lang = LANGS.includes(l) ? l : "en";
+  document.documentElement.lang = (/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang));
+  document.title = T().title;
+  $("lang-lbl").textContent = LANG_LBL[lang];
+  $("btn-guide").setAttribute("aria-label", T().guide); drawer.setAttribute("aria-label", T().guide);
+  document.querySelectorAll("[data-t]").forEach(el => { const v = T()[el.dataset.t]; if (typeof v === "string") el.textContent = v; });
+  paintSound();
+  render();               // the clock object survives a re-render
+  timer.paint();
+  const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume;
+  if (drawer.classList.contains("show")) openGuide();
+  try { localStorage.setItem("wm_preferred_lang", lang); localStorage.setItem("wm_cases_lang", lang); } catch (e) {}
+}
+$("btn-lang").addEventListener("click", () => applyLang(LANGS[(LANGS.indexOf(lang) + 1) % LANGS.length]));
+window.FBL_SET = l => applyLang(l); window.FBL_GET = () => lang;
+
+/* ---------- boot ---------- */
+let saved = null;
+try { saved = localStorage.getItem("wm_preferred_lang") || localStorage.getItem("wm_cases_lang"); } catch (e) {}
+const nav = (navigator.language || "").toLowerCase();
+applyLang(LANGS.includes(saved) ? saved : nav.startsWith("zh") ? "zh" : nav.startsWith("es") ? "es" : "en");
+document.addEventListener("visibilitychange", () => { if (!document.hidden && timer.running) keepAwake(true); });
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {}); // offline cache
+})();
+</script>
+<script src="/fbkit/pass.js?v=758a7441b7" defer></script>
+</body>
+</html>

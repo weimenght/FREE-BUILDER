@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=dde632a0dc"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title id="page-title">Handover Duet — FREE//BUILDER</title>
+  <meta name="description" content="The first 90 seconds of a shift handover, practised: say the worry before the list, hear it played back, and check the worry landed.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2317171A'/%3E%3Crect x='7' y='7' width='8' height='8' rx='2' fill='%23fff'/%3E%3Crect x='17' y='7' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='7' y='17' width='8' height='8' rx='2' fill='%23fff' opacity='.55'/%3E%3Crect x='17' y='17' width='8' height='8' rx='2' fill='%23E2553F'/%3E%3C/svg%3E">
+  <!-- Brand fonts load without blocking the page: where Google Fonts is slow or blocked, system fonts show instantly. -->
+  <link rel="stylesheet" href="/fonts/fonts.css">
+
+  <link rel="stylesheet" href="/fbkit/s-b871aaaa7f.css">
+<meta name="theme-color" content="#F7F6F2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)"><style id="fb-dark">
+:root{color-scheme:light dark}
+@media (prefers-color-scheme: dark){
+:root{--paper:#141416;--ink:#ECEBE6;--muted:#A8A7AD;--line:#303036;--grid:#26262B;--white:#1D1D21;--inkbg:#2B2B31;--inkbd:#3B3B42;--accent-ink:#F28C76;--good:#62C48F;--paper-rgb:20,20,22;--dot-rgb:255,255,255;--ink-rgb:236,235,230;--white-rgb:29,29,33;--accent-text:#F2806A;--warn-ink:#E3B25C}
+html,body{background-color:var(--paper)}
+/* primary actions read as light on dark */
+.btn.pri,.cta a.pri,.chip.pri{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.btn.pri:hover,.cta a.pri:hover,.chip.pri:hover{background:#fff!important;border-color:#fff!important}
+.btn[disabled]{opacity:.45}
+.seg button[aria-pressed="true"],.chip[aria-pressed="true"]{background:#ECEBE6!important;border-color:#ECEBE6!important;color:#141416!important}
+.steps span.done{background:#ECEBE6}
+.curtain{border:1px solid #3B3B42}
+/* light mock-ups (the Frontline chat phone) keep their light look: restore the light tokens inside */
+.phone{--ink:#17171A;--muted:#6B6A70;--line:#E5E2DA;--grid:#ECEAE4;--white:#fff;--paper:#F7F6F2;--white-rgb:255,255,255;--paper-rgb:247,246,242;--ink-rgb:23,23,26;color:#17171A}
+/* reversed (near-white) buttons and selected chips: everything inside takes their dark text, so nothing can turn white on white */
+.btn.pri *,.cta a.pri *,.chip.pri *,.seg button[aria-pressed="true"] *,.chip[aria-pressed="true"] *{color:inherit!important}
+/* illustrations keep their light look on a plate */
+.screen>svg,.plate,.card-art{background:#EFECE4;border-radius:18px}
+.plate{background:#fff!important}
+.card-art~.text-ink\/60,.card-art~span .text-ink\/60{color:rgba(23,23,26,.62)!important}
+.text-accent{color:#F2806A!important}
+.bg-white\/90.text-ink,.bg-white\/90 .text-ink{color:#ECEBE6}
+img{filter:none}
+::selection{background:#E2553F;color:#fff}
+}
+</style></head>
+<body>
+  <div class="dots" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="FREE//BUILDER">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" style="overflow:visible">
+            <rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".55"/>
+            <rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".55"/><rect class="last" x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/>
+          </svg>
+        </span>
+        <span class="brand-txt"><b>FREE<i>//</i>BUILDER</b><span data-t="product">Handover Duet</span></span>
+      </a>
+      <div class="top-actions">
+        <button class="chip" id="btn-lang" type="button" aria-label="Language" title="EN / 中文 / ES">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          <b id="lang-lbl">EN</b>
+        </button>
+        <button class="chip" id="btn-sound" type="button"></button>
+        <button class="chip" id="btn-guide" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>
+          <span class="lbl" data-t="guide">Facilitators</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="sr" data-t="product">Handover Duet</h1>
+    <div class="steps" id="steps" aria-hidden="true"></div>
+    <div id="stage" aria-live="polite"></div>
+  </main>
+
+  <footer class="fbf" data-fbf-root><div class="fbf-in"><div class="fbf-row"><span class="fbf-own"><a class="fbf-lg fbf-nm fbf-nm-fb" href="/" aria-label="FREE//BUILDER"><svg class="fb-mk" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#E2553F"/></svg><span class="fbf-name">FREE<i>//</i>BUILDER</span></a><span class="fbf-cy"><svg class="fbf-c" viewBox="0 0 24 24" role="img" aria-label="©"><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.3 9.4a4.3 4.3 0 1 0 0 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="fbf-year">2026</span></span></span><nav aria-label="Footer"><span class="fbf-dot" aria-hidden="true">·</span><a href="/privacy/" data-fbf="privacy">Your privacy</a><span class="fbf-dot" aria-hidden="true">·</span><span data-fbf="made">Made with <a href="/notes/ai-use/" class="fbf-ai fbf-ico" aria-label="AI" title="AI" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="r-st" d="M12 7.2V4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle class="r-ant" cx="12" cy="3.4" r="1.6" fill="currentColor"/><rect x="4.6" y="7.4" width="14.8" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><g class="r-eyes"><circle cx="9.4" cy="12.8" r="1.55" fill="currentColor"/><circle cx="14.6" cy="12.8" r="1.55" fill="currentColor"/></g><path d="M10 16.4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12.2v2.6M21 12.2v2.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a> &amp; <a href="https://www.after-hours.work/" class="fbf-heart fbf-ico" aria-label="♥ after hours" title="♥" data-fb-emoji><svg viewBox="0 0 24 24" aria-hidden="true"><path class="h-b" d="M12 20.4s-7.8-4.7-7.8-10.3A4.4 4.4 0 0 1 12 7.5a4.4 4.4 0 0 1 7.8 2.6c0 5.6-7.8 10.3-7.8 10.3z" fill="currentColor"/><path class="h-s" d="M7.6 9.6a2.2 2.2 0 0 1 2.1-1.7" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round"/></svg></a></span></nav></div><span class="fbf-x" data-t="privacy">Made-up shifts. Nothing is recorded.</span></div></footer>
+
+  <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="g-title">
+    <div class="panel" id="panel"></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+/* =====================================================================
+   COPY — EN / 中文 / ES (generated by build/next_tools.py)
+   ===================================================================== */
+const I18N = {
+"en": {
+"guide": "Facilitators",
+"back": "Part of FREE//BUILDER’s services ↗",
+"soundOn": "Sound on",
+"soundOff": "Sound off",
+"left": "left",
+"paused": "paused",
+"close": "Close",
+"resume": "Resume",
+"pause": "Pause",
+"start": "Start",
+"next": "Next",
+"backBtn": "Back",
+"nameA": "Person A",
+"nameB": "Person B",
+"phA": "e.g. Ana",
+"phB": "e.g. Leo",
+"copy": "Copy",
+"copied": "Copied.",
+"share": "Send it",
+"icsMade": "Calendar file made on this phone. Open it to add it.",
+"pickMax": "That’s the most you can pick.",
+"timeUp": "Time’s up. Finish your sentence.",
+"swap": "Swap",
+"again": "Practise again",
+"passOn": "Pass it on",
+"monday": "Try this on Monday",
+"teachKicker": "Pass it on",
+"learnerName": "Their name (optional)",
+"learnerPh": "e.g. Mei",
+"learned": "What they’ll try, in their own words",
+"learnedPh": "Hand them the phone…",
+"save": "Save to this phone",
+"chainTitle": "People you’ve passed it on to",
+"chainEmpty": "No one yet. Your first teach-back will appear here.",
+"saved": "Saved on this phone only.",
+"restart": "Back to the start",
+"teachbackLink": "Teach-Back Chain ↗",
+"gKicker": "Facilitator guide",
+"gWhy": "Why it works",
+"gSteps": "Running it",
+"gDebrief": "Debrief questions",
+"gNotes": "Notes",
+"passTo": "Pass the phone to {n}",
+"ready": "I’m {n}",
+"optional": "optional",
+"title": "Handover Duet — FREE//BUILDER",
+"product": "Handover Duet",
+"privacy": "Made-up shifts. Nothing is recorded.",
+"introKicker": "Shift change · Pairs",
+"introTitle": "Handover <span class=\"accent-word\">Duet</span>",
+"introLead": "Handover errors look like documentation problems; they’re listening problems. The incoming shift hears a list and misses the worry. Practise the first 90 seconds: the worry first, in one sentence, then the list; the incoming person plays it back; did they get the worry?",
+"introMeta": [
+"Outgoing + incoming",
+"1 phone",
+"≈ 6 minutes"
+],
+"setupTitle": "Who’s handing over?",
+"out": "Outgoing",
+"inc": "Incoming",
+"where": "Where?",
+"settings": [
+"A production line",
+"A hospital ward",
+"A service desk",
+"A building site"
+],
+"cOutT": "{o} reads the shift",
+"cOutL": "{i}, look away. {o} gets the end-of-shift card.",
+"cardK": "End of your shift",
+"theList": "The list",
+"theWorry": "What worries you",
+"rule": "Say the worry first, in one sentence. Then the list. 90 seconds.",
+"stem": "“The thing I’m worried about is…”",
+"toTalk": "Hand over",
+"talkTitle": "{o}, hand over to {i}",
+"done": "Handed over",
+"cInT": "Phone to {i}",
+"cInL": "{o}, hand the phone over. {i} plays it back.",
+"backTitle": "{i}, play it back",
+"backLead": "Out loud, to {o}: the worry, then the list. Then tap what the worry was.",
+"backStem": "“So the thing to watch is… and the rest is…”",
+"whichQ": "What was {o} worried about?",
+"toCheck": "Show {o}",
+"checkTitle": "{o}, did they get the worry?",
+"picked": "{i} picked",
+"actual": "Your worry",
+"checks": [
+[
+"Yes",
+"They’d act on it first."
+],
+[
+"Partly",
+"They heard it, but as one item among many."
+],
+[
+"No",
+"It got lost in the list."
+]
+],
+"checkHint": "Next time: the worry first, then pause. Let them say it back before the list.",
+"swapTitle": "Swap",
+"swapLead": "Now {s} hands over to {l}. A new shift.",
+"realTitle": "Your real handover today",
+"realLead": "Optional, and only for you. The one sentence you’ll start with. Nothing is saved.",
+"realPh": "“The thing I’m worried about tonight is…”",
+"cards": [
+[
+{
+"items": [
+"Line 2 running at full speed",
+"Order 4471 packed and on the dock",
+"Forklift 3 charging until 22:00",
+"New labels arrived, in stores",
+"Two agency staff on tonight"
+],
+"worry": "The guard on line 2’s cutter is cracked; it’s holding, but watch it.",
+"ws": "Line 2’s cutter guard is cracked"
+},
+{
+"items": [
+"Shift target met",
+"Maintenance booked for Thursday",
+"Bins emptied",
+"Quality check passed at 16:00",
+"Spare gloves in the blue cabinet"
+],
+"worry": "The new starter on packing hasn’t done the lockout training yet.",
+"ws": "New packer not lockout-trained"
+}
+],
+[
+{
+"items": [
+"Bed 4 discharged at 15:00",
+"Bed 6 bloods sent",
+"Two admissions expected tonight",
+"Pharmacy delivery checked in",
+"Family meeting for bed 2 on Friday"
+],
+"worry": "Bed 9 is quieter than this morning; I’m not happy with it, check on him first.",
+"ws": "Bed 9 quieter than this morning"
+},
+{
+"items": [
+"All obs done at 18:00",
+"Bed 3 going home tomorrow",
+"Linen cupboard restocked",
+"Student nurse with you tonight",
+"Drug round done"
+],
+"worry": "Bed 7’s daughter says he’s been confused since lunch; it isn’t like him.",
+"ws": "Bed 7 confused since lunch"
+}
+],
+[
+{
+"items": [
+"Queue at 14 tickets",
+"Password resets all done",
+"Printer on floor 3 fixed",
+"Two laptops ready for new starters",
+"Knowledge base updated"
+],
+"worry": "Three people have reported odd login emails today; it might be phishing.",
+"ws": "Odd login emails, maybe phishing"
+},
+{
+"items": [
+"VPN stable all day",
+"Ticket 882 waiting on the vendor",
+"Monitors delivered to Barcelona",
+"Weekly report sent",
+"On-call phone charged"
+],
+"worry": "The backup failed last night and I couldn’t find out why.",
+"ws": "Last night’s backup failed"
+}
+],
+[
+{
+"items": [
+"Second floor slab poured",
+"Scaffold inspected this morning",
+"Skip collected",
+"Electricians on site from 7:00",
+"Delivery of blocks at 9:00"
+],
+"worry": "Wind is forecast at 50 km/h after midday; the crane may need to stop.",
+"ws": "Wind may stop the crane after midday"
+},
+{
+"items": [
+"Roof membrane finished",
+"Site office tidied",
+"New fire extinguishers fitted",
+"Plumber back on Monday",
+"Toolbox talk done"
+],
+"worry": "The edge protection on the east side was moved for a delivery and not put back.",
+"ws": "East edge protection not put back"
+}
+]
+],
+"endKicker": "Handovers practised",
+"endTitle": "The worry went first.",
+"endLead": "Nothing changed in the paperwork. What changed is the order: the worry before the list, and hearing it back before the shift begins.",
+"mondayTxt": "Start your next real handover with “The thing I’m worried about is…”, then ask them to say it back.",
+"teachTitle": "Teach the next shift.",
+"teachLead": "Show them the three moves, then let them write the first sentence of their next handover.",
+"t3": [
+"Worry first",
+"Play it back",
+"Did it land?"
+],
+"t3sub": [
+"one sentence",
+"worry, then list",
+"ask, don’t assume"
+],
+"gTitle": "Running Handover Duet",
+"gWhyTxt": "Handover errors keep appearing because the incoming person hears a list and can’t tell what the outgoing person is worried about. Saying the worry first, and hearing it played back, fixes the listening without adding a form. It fits inside the handover you already do.",
+"gStepList": [
+"Pairs, one phone, the setting closest to your work.",
+"Outgoing reads the card, then hands over in 90 seconds: worry first, then the list.",
+"Incoming plays it back and picks the worry from four lines.",
+"Outgoing says whether the worry landed. Swap with a new shift."
+],
+"gDebriefList": [
+"How did the list sound different once the worry came first?",
+"What made it hard to say a worry you couldn’t prove?",
+"Where in our real handover would this fit tomorrow?"
+],
+"gNotesList": [
+"Nothing is recorded, on purpose: this is about the conversation, not the log.",
+"A sister episode takes the same move to a hospital ward; the ward cards are here too."
+]
+},
+"zh": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服务的一部分 ↗",
+"soundOn": "声音开",
+"soundOff": "声音关",
+"left": "剩余",
+"paused": "已暂停",
+"close": "关闭",
+"resume": "继续",
+"pause": "暂停",
+"start": "开始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "复制",
+"copied": "已复制。",
+"share": "发出去",
+"icsMade": "日历文件已在这台手机上生成。打开它即可添加。",
+"pickMax": "最多只能选这么多。",
+"timeUp": "时间到。把这句话说完。",
+"swap": "交换",
+"again": "再练一次",
+"passOn": "传下去",
+"monday": "周一试试这个",
+"teachKicker": "传下去",
+"learnerName": "TA 的名字（可选）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算试什么，用 TA 自己的话",
+"learnedPh": "把手机递给 TA……",
+"save": "保存在这台手机上",
+"chainTitle": "你传给过的人",
+"chainEmpty": "还没有人。你的第一次教回去会出现在这里。",
+"saved": "只保存在这台手机上。",
+"restart": "回到开头",
+"teachbackLink": "教回去链条 ↗",
+"gKicker": "主持人指南",
+"gWhy": "为什么有效",
+"gSteps": "怎么带",
+"gDebrief": "复盘问题",
+"gNotes": "备注",
+"passTo": "把手机递给 {n}",
+"ready": "我是 {n}",
+"optional": "可选",
+"title": "交接二重奏 — FREE//BUILDER",
+"product": "交接二重奏",
+"privacy": "班次都是编的。不做任何记录。",
+"introKicker": "交接班 · 两人",
+"introTitle": "交接<span class=\"accent-word\">二重奏</span>",
+"introLead": "交接出错看上去像是记录问题，其实是倾听问题。接班的人听到一张清单，却漏掉了那份担心。练习头 90 秒：先用一句话说担心，再说清单；接班的人复述一遍；TA 听到你的担心了吗？",
+"introMeta": [
+"交班 + 接班",
+"1 部手机",
+"约 6 分钟"
+],
+"setupTitle": "谁在交接？",
+"out": "交班",
+"inc": "接班",
+"where": "在哪里？",
+"settings": [
+"生产线",
+"医院病区",
+"服务台",
+"工地"
+],
+"cOutT": "{o} 来读这个班",
+"cOutL": "{i}，先别看。{o} 拿到交班卡。",
+"cardK": "你这个班结束了",
+"theList": "清单",
+"theWorry": "你担心的事",
+"rule": "先用一句话说担心。再说清单。90 秒。",
+"stem": "“我担心的是……”",
+"toTalk": "开始交接",
+"talkTitle": "{o}，交接给 {i}",
+"done": "交接完了",
+"cInT": "把手机给 {i}",
+"cInL": "{o}，把手机递过去。{i} 来复述。",
+"backTitle": "{i}，复述一遍",
+"backLead": "大声说给 {o} 听：先说担心，再说清单。然后点出担心的是什么。",
+"backStem": "“所以要盯着的是……其他的是……”",
+"whichQ": "{o} 担心的是什么？",
+"toCheck": "给 {o} 看",
+"checkTitle": "{o}，TA 听到你的担心了吗？",
+"picked": "{i} 选的",
+"actual": "你的担心",
+"checks": [
+[
+"听到了",
+"TA 会先处理它。"
+],
+[
+"一部分",
+"TA 听到了，但当成了清单里的普通一项。"
+],
+[
+"没有",
+"它淹没在清单里了。"
+]
+],
+"checkHint": "下次：先说担心，停一下。让 TA 复述完，再说清单。",
+"swapTitle": "交换",
+"swapLead": "现在 {s} 交接给 {l}。换一个新班次。",
+"realTitle": "你今天真正的交接",
+"realLead": "可选，只给你自己。你开场要说的那一句。什么都不保存。",
+"realPh": "“今晚我担心的是……”",
+"cards": [
+[
+{
+"items": [
+"2 号线全速运行",
+"4471 号订单已打包，在码头",
+"3 号叉车充电到 22:00",
+"新标签到了，在仓库",
+"今晚有两名派遣工"
+],
+"worry": "2 号线切刀的护罩裂了；还撑得住，但要盯着。",
+"ws": "2 号线切刀护罩裂了"
+},
+{
+"items": [
+"本班目标已完成",
+"维修排在周四",
+"垃圾桶已清空",
+"16:00 质检通过",
+"备用手套在蓝色柜子里"
+],
+"worry": "包装岗的新人还没做上锁挂牌培训。",
+"ws": "包装新人没做上锁培训"
+}
+],
+[
+{
+"items": [
+"4 床 15:00 出院",
+"6 床血样已送检",
+"今晚预计两个入院",
+"药房送药已签收",
+"2 床家属会谈定在周五"
+],
+"worry": "9 床比早上安静多了；我不放心，先去看他。",
+"ws": "9 床比早上安静多了"
+},
+{
+"items": [
+"18:00 所有生命体征已测",
+"3 床明天回家",
+"床单柜已补货",
+"今晚有实习护士跟你",
+"发药已完成"
+],
+"worry": "7 床的女儿说他午饭后就有点糊涂；他平时不这样。",
+"ws": "7 床午饭后有点糊涂"
+}
+],
+[
+{
+"items": [
+"队列里 14 个工单",
+"密码重置全部完成",
+"3 楼打印机修好了",
+"给新人的两台笔记本准备好了",
+"知识库已更新"
+],
+"worry": "今天有三个人报告收到奇怪的登录邮件；可能是钓鱼。",
+"ws": "奇怪的登录邮件，可能是钓鱼"
+},
+{
+"items": [
+"VPN 全天稳定",
+"882 号工单在等供应商",
+"显示器已送到巴塞罗那",
+"周报已发",
+"值班电话已充电"
+],
+"worry": "昨晚备份失败了，我没查出原因。",
+"ws": "昨晚的备份失败了"
+}
+],
+[
+{
+"items": [
+"二层楼板浇筑完成",
+"脚手架今早已检查",
+"废料箱已运走",
+"电工 7:00 到场",
+"砌块 9:00 送到"
+],
+"worry": "预报中午后风速 50 公里；塔吊可能要停。",
+"ws": "午后大风可能要停塔吊"
+},
+{
+"items": [
+"屋面防水层完成",
+"工地办公室整理好了",
+"新灭火器已安装",
+"水管工周一回来",
+"班前会已开"
+],
+"worry": "东侧的临边防护为了送货挪开了，没装回去。",
+"ws": "东侧临边防护没装回"
+}
+]
+],
+"endKicker": "交接练过了",
+"endTitle": "担心先说了。",
+"endLead": "记录本一个字都没改。改的是顺序：先说担心再说清单，并且在开工前听对方复述一遍。",
+"mondayTxt": "下一次真正交接时，用“我担心的是……”开头，然后请对方复述一遍。",
+"teachTitle": "教给下一个班。",
+"teachLead": "给他们看这三步，再让他们写下下一次交接的第一句话。",
+"t3": [
+"先说担心",
+"复述一遍",
+"听到了吗？"
+],
+"t3sub": [
+"一句话",
+"先担心，后清单",
+"问一句，别假设"
+],
+"gTitle": "怎么带“交接二重奏”",
+"gWhyTxt": "交接错误反复出现，是因为接班的人听到一张清单，却分不出交班的人在担心什么。先说担心、再听对方复述，不用多填一张表就把倾听修好了。它就放在你们本来就有的交接里。",
+"gStepList": [
+"两人一组，一部手机，选最接近你们工作的场景。",
+"交班的人读卡，然后在 90 秒内交接：先说担心，再说清单。",
+"接班的人复述，再从四句话里选出那份担心。",
+"交班的人说担心有没有传到。换一个新班次再交换。"
+],
+"gDebriefList": [
+"先说了担心之后，清单听起来有什么不一样？",
+"说出一个你证明不了的担心，难在哪里？",
+"明天在我们真实的交接里，这放在哪里合适？"
+],
+"gNotesList": [
+"故意什么都不记录：重点是对话，不是记录。",
+"有一集姊妹篇把同样的做法搬到了医院病区；病区的卡片这里也有。"
+]
+},
+"es": {
+"guide": "Facilitadores",
+"back": "Parte de los servicios de FREE//BUILDER ↗",
+"soundOn": "Sonido activado",
+"soundOff": "Sonido desactivado",
+"left": "restante",
+"paused": "en pausa",
+"close": "Cerrar",
+"resume": "Seguir",
+"pause": "Pausa",
+"start": "Empezar",
+"next": "Siguiente",
+"backBtn": "Atrás",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ej., Ana",
+"phB": "p. ej., Leo",
+"copy": "Copiar",
+"copied": "Copiado.",
+"share": "Enviarlo",
+"icsMade": "Archivo de calendario hecho en este móvil. Ábrelo para añadirlo.",
+"pickMax": "No puedes elegir más.",
+"timeUp": "Se acabó el tiempo. Termina la frase.",
+"swap": "Cambiar",
+"again": "Practicar otra vez",
+"passOn": "Pásalo",
+"monday": "Pruébalo el lunes",
+"teachKicker": "Pásalo",
+"learnerName": "Su nombre (opcional)",
+"learnerPh": "p. ej., Mei",
+"learned": "Lo que va a probar, con sus palabras",
+"learnedPh": "Pásale el móvil…",
+"save": "Guardar en este móvil",
+"chainTitle": "Personas a las que se lo has pasado",
+"chainEmpty": "Nadie todavía. Tu primer enseñar-de-vuelta aparecerá aquí.",
+"saved": "Guardado solo en este móvil.",
+"restart": "Volver al principio",
+"teachbackLink": "Cadena de Enseñar de Vuelta ↗",
+"gKicker": "Guía para facilitar",
+"gWhy": "Por qué funciona",
+"gSteps": "Cómo llevarlo",
+"gDebrief": "Preguntas para cerrar",
+"gNotes": "Notas",
+"passTo": "Pásale el móvil a {n}",
+"ready": "Soy {n}",
+"optional": "opcional",
+"title": "Dúo de Relevo — FREE//BUILDER",
+"product": "Dúo de Relevo",
+"privacy": "Turnos inventados. No se graba nada.",
+"introKicker": "Cambio de turno · En pareja",
+"introTitle": "Dúo de <span class=\"accent-word\">Relevo</span>",
+"introLead": "Los errores de relevo parecen problemas de documentación; son de escucha. El turno entrante oye una lista y se pierde la preocupación. Practicad los primeros 90 segundos: la preocupación primero, en una frase, luego la lista; quien entra lo repite; ¿captó la preocupación?",
+"introMeta": [
+"Sale + entra",
+"1 móvil",
+"≈ 6 minutos"
+],
+"setupTitle": "¿Quién hace el relevo?",
+"out": "Sale",
+"inc": "Entra",
+"where": "¿Dónde?",
+"settings": [
+"Una línea de producción",
+"Una planta de hospital",
+"Un servicio de soporte",
+"Una obra"
+],
+"cOutT": "{o} lee el turno",
+"cOutL": "{i}, no mires. {o} recibe la tarjeta de fin de turno.",
+"cardK": "Fin de tu turno",
+"theList": "La lista",
+"theWorry": "Lo que te preocupa",
+"rule": "Di la preocupación primero, en una frase. Luego la lista. 90 segundos.",
+"stem": "«Lo que me preocupa es…»",
+"toTalk": "Hacer el relevo",
+"talkTitle": "{o}, haz el relevo a {i}",
+"done": "Relevo hecho",
+"cInT": "El móvil a {i}",
+"cInL": "{o}, pásale el móvil. {i} lo repite.",
+"backTitle": "{i}, repítelo",
+"backLead": "En voz alta, a {o}: la preocupación y luego la lista. Luego toca cuál era la preocupación.",
+"backStem": "«Entonces, lo que hay que vigilar es… y el resto es…»",
+"whichQ": "¿Qué preocupaba a {o}?",
+"toCheck": "Enseñárselo a {o}",
+"checkTitle": "{o}, ¿captó la preocupación?",
+"picked": "{i} eligió",
+"actual": "Tu preocupación",
+"checks": [
+[
+"Sí",
+"Actuaría sobre eso primero."
+],
+[
+"En parte",
+"Lo oyó, pero como un punto más."
+],
+[
+"No",
+"Se perdió en la lista."
+]
+],
+"checkHint": "La próxima vez: la preocupación primero y una pausa. Que la repita antes de la lista.",
+"swapTitle": "Cambiad",
+"swapLead": "Ahora {s} hace el relevo a {l}. Un turno nuevo.",
+"realTitle": "Tu relevo real de hoy",
+"realLead": "Opcional, y solo para ti. La frase con la que empezarás. No se guarda nada.",
+"realPh": "«Lo que me preocupa esta noche es…»",
+"cards": [
+[
+{
+"items": [
+"Línea 2 a plena velocidad",
+"Pedido 4471 embalado y en el muelle",
+"Carretilla 3 cargando hasta las 22:00",
+"Etiquetas nuevas llegadas, en almacén",
+"Dos temporales esta noche"
+],
+"worry": "La protección de la cortadora de la línea 2 está agrietada; aguanta, pero vigílala.",
+"ws": "Protección de la cortadora 2 agrietada"
+},
+{
+"items": [
+"Objetivo del turno cumplido",
+"Mantenimiento reservado el jueves",
+"Contenedores vaciados",
+"Control de calidad superado a las 16:00",
+"Guantes de repuesto en el armario azul"
+],
+"worry": "La persona nueva de embalaje aún no ha hecho la formación de bloqueo.",
+"ws": "Nuevo de embalaje sin formación de bloqueo"
+}
+],
+[
+{
+"items": [
+"Cama 4 alta a las 15:00",
+"Analítica de la cama 6 enviada",
+"Dos ingresos previstos esta noche",
+"Pedido de farmacia recibido",
+"Reunión con la familia de la cama 2 el viernes"
+],
+"worry": "La cama 9 está más callada que esta mañana; no me gusta, mírala primero.",
+"ws": "Cama 9 más callada que esta mañana"
+},
+{
+"items": [
+"Constantes hechas a las 18:00",
+"Cama 3 se va mañana",
+"Armario de ropa repuesto",
+"Estudiante de enfermería contigo esta noche",
+"Ronda de medicación hecha"
+],
+"worry": "La hija de la cama 7 dice que está confuso desde la comida; no es propio de él.",
+"ws": "Cama 7 confusa desde la comida"
+}
+],
+[
+{
+"items": [
+"Cola en 14 tickets",
+"Restablecimientos de contraseña hechos",
+"Impresora de la planta 3 arreglada",
+"Dos portátiles listos para incorporaciones",
+"Base de conocimiento actualizada"
+],
+"worry": "Hoy tres personas han reportado correos raros de inicio de sesión; puede ser phishing.",
+"ws": "Correos de acceso raros, quizá phishing"
+},
+{
+"items": [
+"VPN estable todo el día",
+"Ticket 882 esperando al proveedor",
+"Monitores entregados en Barcelona",
+"Informe semanal enviado",
+"Teléfono de guardia cargado"
+],
+"worry": "La copia de seguridad falló anoche y no supe por qué.",
+"ws": "Falló la copia de anoche"
+}
+],
+[
+{
+"items": [
+"Forjado de la segunda planta hormigonado",
+"Andamio revisado esta mañana",
+"Contenedor recogido",
+"Electricistas en obra desde las 7:00",
+"Entrega de bloques a las 9:00"
+],
+"worry": "Se prevé viento de 50 km/h a partir del mediodía; puede que haya que parar la grúa.",
+"ws": "El viento puede parar la grúa"
+},
+{
+"items": [
+"Membrana de cubierta terminada",
+"Caseta de obra ordenada",
+"Extintores nuevos instalados",
+"El fontanero vuelve el lunes",
+"Charla de seguridad hecha"
+],
+"worry": "La protección de borde del lado este se movió para una entrega y no se volvió a poner.",
+"ws": "Protección de borde este sin reponer"
+}
+]
+],
+"endKicker": "Relevos practicados",
+"endTitle": "La preocupación fue primero.",
+"endLead": "No cambió nada en los papeles. Cambió el orden: la preocupación antes de la lista, y oírla de vuelta antes de empezar el turno.",
+"mondayTxt": "Empieza tu próximo relevo real con «Lo que me preocupa es…» y pide que te lo repitan.",
+"teachTitle": "Enséñaselo al siguiente turno.",
+"teachLead": "Enséñales los tres pasos y deja que escriban la primera frase de su próximo relevo.",
+"t3": [
+"Preocupación primero",
+"Repetirla",
+"¿Llegó?"
+],
+"t3sub": [
+"una frase",
+"preocupación y lista",
+"pregunta, no supongas"
+],
+"gTitle": "Cómo llevar Dúo de Relevo",
+"gWhyTxt": "Los errores de relevo se repiten porque quien entra oye una lista y no distingue qué preocupa a quien sale. Decir la preocupación primero, y oírla repetida, arregla la escucha sin añadir un formulario. Cabe dentro del relevo que ya hacéis.",
+"gStepList": [
+"Por parejas, un móvil, el escenario más cercano a vuestro trabajo.",
+"Quien sale lee la tarjeta y hace el relevo en 90 segundos: preocupación y luego lista.",
+"Quien entra lo repite y elige la preocupación entre cuatro líneas.",
+"Quien sale dice si la preocupación llegó. Cambiad con un turno nuevo."
+],
+"gDebriefList": [
+"¿Cómo sonó distinta la lista con la preocupación delante?",
+"¿Qué hizo difícil decir una preocupación que no podías demostrar?",
+"¿Dónde encajaría esto mañana en nuestro relevo real?"
+],
+"gNotesList": [
+"No se graba nada, a propósito: se trata de la conversación, no del registro.",
+"Un episodio hermano lleva el mismo gesto a una planta de hospital; las tarjetas de planta también están aquí."
+]
+}, "zh-Hant": {
+"guide": "主持人",
+"back": "FREE//BUILDER 服務的一部分 ↗",
+"soundOn": "聲音開",
+"soundOff": "聲音關",
+"left": "剩餘",
+"paused": "已暫停",
+"close": "關閉",
+"resume": "繼續",
+"pause": "暫停",
+"start": "開始",
+"next": "下一步",
+"backBtn": "返回",
+"nameA": "A",
+"nameB": "B",
+"phA": "例如 Ana",
+"phB": "例如 Leo",
+"copy": "複製",
+"copied": "已複製。",
+"share": "發出去",
+"icsMade": "日曆檔案已在這臺手機上生成。開啟它即可新增。",
+"pickMax": "最多隻能選這麼多。",
+"timeUp": "時間到。把這句話說完。",
+"swap": "交換",
+"again": "再練一次",
+"passOn": "傳下去",
+"monday": "週一試試這個",
+"teachKicker": "傳下去",
+"learnerName": "TA 的名字（可選）",
+"learnerPh": "例如 Mei",
+"learned": "TA 打算試什麼，用 TA 自己的話",
+"learnedPh": "把手機遞給 TA……",
+"save": "儲存在這臺手機上",
+"chainTitle": "你傳給過的人",
+"chainEmpty": "還沒有人。你的第一次教回去會出現在這裡。",
+"saved": "只儲存在這臺手機上。",
+"restart": "回到開頭",
+"teachbackLink": "教回去鏈條 ↗",
+"gKicker": "主持人指南",
+"gWhy": "為什麼有效",
+"gSteps": "怎麼帶",
+"gDebrief": "覆盤問題",
+"gNotes": "備註",
+"passTo": "把手機遞給 {n}",
+"ready": "我是 {n}",
+"optional": "可選",
+"title": "交接二重奏 — FREE//BUILDER",
+"product": "交接二重奏",
+"privacy": "班次都是編的。不做任何記錄。",
+"introKicker": "交接班 · 兩人",
+"introTitle": "交接<span class=\"accent-word\">二重奏</span>",
+"introLead": "交接出錯看上去像是記錄問題，其實是傾聽問題。接班的人聽到一張清單，卻漏掉了那份擔心。練習頭 90 秒：先用一句話說擔心，再說清單；接班的人複述一遍；TA 聽到你的擔心了嗎？",
+"introMeta": [
+"交班 + 接班",
+"1 部手機",
+"約 6 分鐘"
+],
+"setupTitle": "誰在交接？",
+"out": "交班",
+"inc": "接班",
+"where": "在哪裡？",
+"settings": [
+"生產線",
+"醫院病區",
+"服務檯",
+"工地"
+],
+"cOutT": "{o} 來讀這個班",
+"cOutL": "{i}，先別看。{o} 拿到交班卡。",
+"cardK": "你這個班結束了",
+"theList": "清單",
+"theWorry": "你擔心的事",
+"rule": "先用一句話說擔心。再說清單。90 秒。",
+"stem": "“我擔心的是……”",
+"toTalk": "開始交接",
+"talkTitle": "{o}，交接給 {i}",
+"done": "交接完了",
+"cInT": "把手機給 {i}",
+"cInL": "{o}，把手機遞過去。{i} 來復述。",
+"backTitle": "{i}，複述一遍",
+"backLead": "大聲說給 {o} 聽：先說擔心，再說清單。然後點出擔心的是什麼。",
+"backStem": "“所以要盯著的是……其他的是……”",
+"whichQ": "{o} 擔心的是什麼？",
+"toCheck": "給 {o} 看",
+"checkTitle": "{o}，TA 聽到你的擔心了嗎？",
+"picked": "{i} 選的",
+"actual": "你的擔心",
+"checks": [
+[
+"聽到了",
+"TA 會先處理它。"
+],
+[
+"一部分",
+"TA 聽到了，但當成了清單裡的普通一項。"
+],
+[
+"沒有",
+"它淹沒在清單裡了。"
+]
+],
+"checkHint": "下次：先說擔心，停一下。讓 TA 複述完，再說清單。",
+"swapTitle": "交換",
+"swapLead": "現在 {s} 交接給 {l}。換一個新班次。",
+"realTitle": "你今天真正的交接",
+"realLead": "可選，只給你自己。你開場要說的那一句。什麼都不儲存。",
+"realPh": "“今晚我擔心的是……”",
+"cards": [
+[
+{
+"items": [
+"2 號線全速執行",
+"4471 號訂單已打包，在碼頭",
+"3 號叉車充電到 22:00",
+"新標籤到了，在倉庫",
+"今晚有兩名派遣工"
+],
+"worry": "2 號線切刀的護罩裂了；還撐得住，但要盯著。",
+"ws": "2 號線切刀護罩裂了"
+},
+{
+"items": [
+"本班目標已完成",
+"維修排在週四",
+"垃圾桶已清空",
+"16:00 質檢通過",
+"備用手套在藍色櫃子裡"
+],
+"worry": "包裝崗的新人還沒做上鎖掛牌培訓。",
+"ws": "包裝新人沒做上鎖培訓"
+}
+],
+[
+{
+"items": [
+"4 床 15:00 出院",
+"6 床血樣已送檢",
+"今晚預計兩個入院",
+"藥房送藥已簽收",
+"2 床家屬會談定在週五"
+],
+"worry": "9 床比早上安靜多了；我不放心，先去看他。",
+"ws": "9 床比早上安靜多了"
+},
+{
+"items": [
+"18:00 所有生命體徵已測",
+"3 床明天回家",
+"床單櫃已補貨",
+"今晚有實習護士跟你",
+"發藥已完成"
+],
+"worry": "7 床的女兒說他午飯後就有點糊塗；他平時不這樣。",
+"ws": "7 床午飯後有點糊塗"
+}
+],
+[
+{
+"items": [
+"佇列裡 14 個工單",
+"密碼重置全部完成",
+"3 樓印表機修好了",
+"給新人的兩臺筆記本準備好了",
+"知識庫已更新"
+],
+"worry": "今天有三個人報告收到奇怪的登入郵件；可能是釣魚。",
+"ws": "奇怪的登入郵件，可能是釣魚"
+},
+{
+"items": [
+"VPN 全天穩定",
+"882 號工單在等供應商",
+"顯示器已送到巴塞羅那",
+"週報已發",
+"值班電話已充電"
+],
+"worry": "昨晚備份失敗了，我沒查出原因。",
+"ws": "昨晚的備份失敗了"
+}
+],
+[
+{
+"items": [
+"二層樓板澆築完成",
+"腳手架今早已檢查",
+"廢料箱已運走",
+"電工 7:00 到場",
+"砌塊 9:00 送到"
+],
+"worry": "預報中午後風速 50 公里；塔吊可能要停。",
+"ws": "午後大風可能要停塔吊"
+},
+{
+"items": [
+"屋面防水層完成",
+"工地辦公室整理好了",
+"新滅火器已安裝",
+"水管工週一回來",
+"班前會已開"
+],
+"worry": "東側的臨邊防護為了送貨挪開了，沒裝回去。",
+"ws": "東側臨邊防護沒裝回"
+}
+]
+],
+"endKicker": "交接練過了",
+"endTitle": "擔心先說了。",
+"endLead": "記錄本一個字都沒改。改的是順序：先說擔心再說清單，並且在開工前聽對方複述一遍。",
+"mondayTxt": "下一次真正交接時，用“我擔心的是……”開頭，然後請對方複述一遍。",
+"teachTitle": "教給下一個班。",
+"teachLead": "給他們看這三步，再讓他們寫下下一次交接的第一句話。",
+"t3": [
+"先說擔心",
+"複述一遍",
+"聽到了嗎？"
+],
+"t3sub": [
+"一句話",
+"先擔心，後清單",
+"問一句，別假設"
+],
+"gTitle": "怎麼帶“交接二重奏”",
+"gWhyTxt": "交接錯誤反覆出現，是因為接班的人聽到一張清單，卻分不出交班的人在擔心什麼。先說擔心、再聽對方複述，不用多填一張表就把傾聽修好了。它就放在你們本來就有的交接裡。",
+"gStepList": [
+"兩人一組，一部手機，選最接近你們工作的場景。",
+"交班的人讀卡，然後在 90 秒內交接：先說擔心，再說清單。",
+"接班的人複述，再從四句話裡選出那份擔心。",
+"交班的人說擔心有沒有傳到。換一個新班次再交換。"
+],
+"gDebriefList": [
+"先說了擔心之後，清單聽起來有什麼不一樣？",
+"說出一個你證明不了的擔心，難在哪裡？",
+"明天在我們真實的交接裡，這放在哪裡合適？"
+],
+"gNotesList": [
+"故意什麼都不記錄：重點是對話，不是記錄。",
+"有一集姊妹篇把同樣的做法搬到了醫院病區；病區的卡片這裡也有。"
+]
+}, "ca": {
+"guide": "Facilitadors",
+"back": "Part dels serveis de FREE//BUILDER ↗",
+"soundOn": "So activat",
+"soundOff": "So desactivat",
+"left": "restant",
+"paused": "en pausa",
+"close": "Tancar",
+"resume": "Continuar",
+"pause": "Pausa",
+"start": "Començar",
+"next": "Següent",
+"backBtn": "Enrere",
+"nameA": "Persona A",
+"nameB": "Persona B",
+"phA": "p. ex., Ana",
+"phB": "p. ex., Leo",
+"copy": "Copia",
+"copied": "Copiat.",
+"share": "Envia-ho",
+"icsMade": "Fitxer de calendari fet en aquest mòbil. Obre’l per afegir-lo.",
+"pickMax": "No en pots triar més.",
+"timeUp": "S’ha acabat el temps. Acaba la frase.",
+"swap": "Canviar",
+"again": "Practicar un altre cop",
+"passOn": "Passa-ho",
+"monday": "Prova-ho dilluns",
+"teachKicker": "Passa-ho",
+"learnerName": "El seu nom (opcional)",
+"learnerPh": "p. ex., Mei",
+"learned": "El que provarà, amb les seves paraules",
+"learnedPh": "Passa-li el mòbil…",
+"save": "Desar en aquest mòbil",
+"chainTitle": "Persones a qui ho has passat",
+"chainEmpty": "Encara ningú. El teu primer ensenyar-de-tornada apareixerà aquí.",
+"saved": "Desat només en aquest mòbil.",
+"restart": "Torna al principi",
+"teachbackLink": "Cadena d'Ensenyar de Tornada ↗",
+"gKicker": "Guia per facilitar",
+"gWhy": "Per què funciona",
+"gSteps": "Com portar-ho",
+"gDebrief": "Preguntes per tancar",
+"gNotes": "Notes",
+"passTo": "Passa el mòbil a {n}",
+"ready": "Soc {n}",
+"optional": "opcional",
+"title": "Duet de Relleu — FREE//BUILDER",
+"product": "Duet de Relleu",
+"privacy": "Torns inventats. No es grava res.",
+"introKicker": "Canvi de torn · En parella",
+"introTitle": "Duet de <span class=\"accent-word\">Relleu</span>",
+"introLead": "Els errors de relleu semblen problemes de documentació; són d’escolta. El torn entrant sent una llista i es perd la preocupació. Practiqueu els primers 90 segons: la preocupació primer, en una frase, després la llista; qui entra ho repeteix; va captar la preocupació?",
+"introMeta": [
+"Surt + entra",
+"1 mòbil",
+"≈ 6 minuts"
+],
+"setupTitle": "Qui fa el relleu?",
+"out": "Surt",
+"inc": "Entra",
+"where": "On?",
+"settings": [
+"Una línia de producció",
+"Una planta d’hospital",
+"Un servei de suport",
+"Una obra"
+],
+"cOutT": "{o} llegeix el torn",
+"cOutL": "{i}, no miris. {o} rep la targeta de fi de torn.",
+"cardK": "Fi del teu torn",
+"theList": "La llista",
+"theWorry": "El que et preocupa",
+"rule": "Digues la preocupació primer, en una frase. Després la llista. 90 segons.",
+"stem": "«El que em preocupa és…»",
+"toTalk": "Fes el relleu",
+"talkTitle": "{o}, fes el relleu a {i}",
+"done": "Relleu fet",
+"cInT": "El mòbil a {i}",
+"cInL": "{o}, passa-li el mòbil. {i} ho repeteix.",
+"backTitle": "{i}, repeteix-ho",
+"backLead": "En veu alta, a {o}: la preocupació i després la llista. Després toca quina era la preocupació.",
+"backStem": "«Aleshores, el que cal vigilar és… i la resta és…»",
+"whichQ": "Què preocupava {o}?",
+"toCheck": "Ensenya-ho a {o}",
+"checkTitle": "{o}, va captar la preocupació?",
+"picked": "{i} va triar",
+"actual": "La teva preocupació",
+"checks": [
+[
+"Sí",
+"Hi actuaria primer."
+],
+[
+"En part",
+"Ho va sentir, però com un punt més."
+],
+[
+"No",
+"Es va perdre a la llista."
+]
+],
+"checkHint": "La pròxima vegada: la preocupació primer i una pausa. Que la repeteixi abans de la llista.",
+"swapTitle": "Canvieu",
+"swapLead": "Ara {s} fa el relleu a {l}. Un torn nou.",
+"realTitle": "El teu relleu real d’avui",
+"realLead": "Opcional, i només per a tu. La frase amb què començaràs. No es desa res.",
+"realPh": "«El que em preocupa aquesta nit és…»",
+"cards": [
+[
+{
+"items": [
+"Línia 2 a tota velocitat",
+"Comanda 4471 embalada i al moll",
+"Carretó 3 carregant fins a les 22:00",
+"Etiquetes noves arribades, al magatzem",
+"Dos temporals aquesta nit"
+],
+"worry": "La protecció de la talladora de la línia 2 està esquerdada; aguanta, però vigila-la.",
+"ws": "Protecció de la talladora 2 esquerdada"
+},
+{
+"items": [
+"Objectiu del torn complert",
+"Manteniment reservat dijous",
+"Contenidors buidats",
+"Control de qualitat superat a les 16:00",
+"Guants de recanvi a l’armari blau"
+],
+"worry": "La persona nova d’embalatge encara no ha fet la formació de bloqueig.",
+"ws": "Nou d’embalatge sense formació de bloqueig"
+}
+],
+[
+{
+"items": [
+"Llit 4 alta a les 15:00",
+"Analítica del llit 6 enviada",
+"Dos ingressos previstos aquesta nit",
+"Comanda de farmàcia rebuda",
+"Reunió amb la família del llit 2 divendres"
+],
+"worry": "El llit 9 està més callat que aquest matí; no m’agrada, mira’l primer.",
+"ws": "Llit 9 més callat que aquest matí"
+},
+{
+"items": [
+"Constants fetes a les 18:00",
+"Llit 3 marxa demà",
+"Armari de roba reposat",
+"Estudiant d’infermeria amb tu aquesta nit",
+"Ronda de medicació feta"
+],
+"worry": "La filla del llit 7 diu que està confós des de dinar; no és propi d’ell.",
+"ws": "Llit 7 confós des de dinar"
+}
+],
+[
+{
+"items": [
+"Cua en 14 tiquets",
+"Restabliments de contrasenya fets",
+"Impressora de la planta 3 arreglada",
+"Dos portàtils a punt per a incorporacions",
+"Base de coneixement actualitzada"
+],
+"worry": "Avui tres persones han reportat correus estranys d’inici de sessió; pot ser pesca.",
+"ws": "Correus d’accés estranys, potser pesca"
+},
+{
+"items": [
+"VPN estable tot el dia",
+"Tiquet 882 esperant el proveïdor",
+"Monitors lliurats a Barcelona",
+"Informe setmanal enviat",
+"Telèfon de guàrdia carregat"
+],
+"worry": "La còpia de seguretat va fallar ahir a la nit i no vaig saber per què.",
+"ws": "Va fallar la còpia d’ahir a la nit"
+}
+],
+[
+{
+"items": [
+"Forjat de la segona planta formigonat",
+"Bastida revisada aquest matí",
+"Contenidor recollit",
+"Electricistes a l’obra des de les 7:00",
+"Lliurament de blocs a les 9:00"
+],
+"worry": "Es preveu vent de 50 km/h a partir del migdia; potser caldrà aturar la grua.",
+"ws": "El vent pot aturar la grua"
+},
+{
+"items": [
+"Membrana de coberta acabada",
+"Caseta d’obra endreçada",
+"Extintors nous instal·lats",
+"El lampista torna dilluns",
+"Xerrada de seguretat feta"
+],
+"worry": "La protecció de vora del costat est es va moure per a un lliurament i no es va tornar a posar.",
+"ws": "Protecció de vora est sense reposar"
+}
+]
+],
+"endKicker": "Relleus practicats",
+"endTitle": "La preocupació va anar primer.",
+"endLead": "No va canviar res als papers. Va canviar l’ordre: la preocupació abans de la llista, i sentir-la de tornada abans de començar el torn.",
+"mondayTxt": "Comença el teu pròxim relleu real amb «El que em preocupa és…» i demana que t’ho repeteixin.",
+"teachTitle": "Ensenya-ho al torn següent.",
+"teachLead": "Ensenya’ls els tres passos i deixa que escriguin la primera frase del seu pròxim relleu.",
+"t3": [
+"Preocupació primer",
+"Repetir-la",
+"Va arribar?"
+],
+"t3sub": [
+"una frase",
+"preocupació i llista",
+"pregunta, no suposis"
+],
+"gTitle": "Com portar Duet de Relleu",
+"gWhyTxt": "Els errors de relleu es repeteixen perquè qui entra sent una llista i no distingeix què preocupa qui surt. Dir la preocupació primer, i sentir-la repetida, arregla l’escolta sense afegir cap formulari. Cap dins del relleu que ja feu.",
+"gStepList": [
+"Per parelles, un mòbil, l’escenari més proper a la vostra feina.",
+"Qui surt llegeix la targeta i fa el relleu en 90 segons: preocupació i després llista.",
+"Qui entra ho repeteix i tria la preocupació entre quatre línies.",
+"Qui surt diu si la preocupació va arribar. Canvieu amb un torn nou."
+],
+"gDebriefList": [
+"Com va sonar diferent la llista amb la preocupació davant?",
+"Què va fer difícil dir una preocupació que no podies demostrar?",
+"On encaixaria això demà en el nostre relleu real?"
+],
+"gNotesList": [
+"No es grava res, expressament: es tracta de la conversa, no del registre.",
+"Un episodi germà porta el mateix gest a una planta d’hospital; les targetes de planta també són aquí."
+]
+}
+};
+/* =====================================================================
+   FB KIT · helpers (copy into every demo)
+   ===================================================================== */
+const LANGS = ["en", "zh", "zh-Hant", "es", "ca"], LANG_LBL = { en: "EN", zh: "中文", es: "ES", "zh-Hant": "繁中", "ca": "CA" };
+let lang = "en";
+const T = () => I18N[lang];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? esc(v[k]) : m));
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* Seeded random + pairing codes: the same code on two phones gives the same scenario, no server needed. */
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function newCode(n = 6) { let s = ""; for (let i = 0; i < n; i++) s += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]; return s; }
+function seedFrom(code) { let h = 2166136261; for (const c of String(code).toUpperCase()) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+/* Sound: soft, short, optional */
+const sound = {
+  ctx: null, muted: store.get("fb_muted", false),
+  init() { if (!this.ctx) { const A = window.AudioContext || window.webkitAudioContext; if (A) this.ctx = new A(); } if (this.ctx && this.ctx.state === "suspended") this.ctx.resume(); },
+  tone(f, d = .3, g = .06, type = "sine", at = 0) {
+    if (this.muted || !this.ctx) return;
+    try { const t = this.ctx.currentTime + at, o = this.ctx.createOscillator(), a = this.ctx.createGain();
+      o.type = type; o.frequency.setValueAtTime(f, t); a.gain.setValueAtTime(.0001, t); a.gain.linearRampToValueAtTime(g, t + .02); a.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(a); a.connect(this.ctx.destination); o.start(t); o.stop(t + d + .05); } catch (e) {}
+  },
+  tap() { this.tone(520, .12, .04, "triangle"); },
+  chime() { [659.25, 880, 1318.5].forEach((f, i) => this.tone(f, 1.2, .05, "sine", i * .12)); },
+  warm() { [392, 493.88, 587.33].forEach((f, i) => this.tone(f, .9, .05, "sine", i * .1)); }
+};
+const buzz = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+
+/* Keep the screen awake while a timer runs (where supported) */
+let wakeLock = null;
+async function keepAwake(on) {
+  try {
+    if (on && "wakeLock" in navigator && !wakeLock) wakeLock = await navigator.wakeLock.request("screen");
+    if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; }
+  } catch (e) { wakeLock = null; }
+}
+
+/* Timer ring */
+function ringSVG() {
+  return `<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="54" fill="none" stroke-width="6"/><circle class="fg" id="ring" cx="60" cy="60" r="54" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="339.29" stroke-dashoffset="0"/></svg>`;
+}
+const timer = {
+  total: 90, left: 90, running: false, raf: 0, last: 0, onEnd: null, ended: false,
+  start(total, onEnd) { this.stop(); this.total = this.left = total; this.onEnd = onEnd; this.ended = false; this.resume(); },
+  resume() { if (this.running || this.ended) return; this.running = true; this.last = performance.now(); keepAwake(true); this.tick(); },
+  pause() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); this.paint(); },
+  stop() { this.running = false; cancelAnimationFrame(this.raf); keepAwake(false); },
+  tick() {
+    if (!this.running) return;
+    const now = performance.now(); this.left = Math.max(0, this.left - (now - this.last) / 1000); this.last = now;
+    this.paint();
+    if (this.left <= 0) { this.running = false; this.ended = true; keepAwake(false); sound.chime(); buzz([60, 80, 60]); this.onEnd && this.onEnd(); return; }
+    this.raf = requestAnimationFrame(() => this.tick());
+  },
+  paint() {
+    const ring = $("ring"), num = $("tnum"), lbl = $("tlbl"), wrap = $("timer");
+    if (!ring) return;
+    ring.setAttribute("stroke-dashoffset", String(339.29 * (1 - this.left / this.total)));
+    const s = Math.ceil(this.left);
+    num.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    lbl.textContent = this.ended ? "" : (this.running ? T().left : T().paused);
+    wrap.classList.toggle("done", this.ended);
+  }
+};
+
+/* Toast */
+let toastT;
+function toast(msg) { const el = $("toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 2600); }
+
+/* Pass-the-phone curtain */
+function curtainHTML(title, lead, btnLabel, act) {
+  return `<div class="curtain">
+    <svg class="hand" viewBox="0 0 84 84" aria-hidden="true"><rect x="27" y="10" width="30" height="52" rx="7" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="42" cy="54" r="2.5" fill="#E2553F"/><path d="M14 54c6 0 10 4 13 9M70 54c-6 0-10 4-13 9" stroke="rgba(255,255,255,.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M34 72h16" stroke="#E2553F" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <h2>${title}</h2><p>${lead}</p>
+    <button class="btn pri" data-act="${act}" style="width:100%;margin-top:6px">${btnLabel} →</button></div>`;
+}
+
+
+
+/* =====================================================================
+   HANDOVER DUET (build/next_tools/handover.js; words in handover.py)
+   ===================================================================== */
+const APP = {
+  demo: "handover", first: "setup",
+  flow: ["card", "talk", "back", "check"],
+  stepOf: s => ({ cOut: "card", cIn: "back" }[s] || s),
+  state: () => ({ names: ["", ""], setting: 0, round: 0, first: Math.random() < .5 ? 0 : 1, opts: [], pick: [null, null], landed: [null, null], real: "" }),
+  art() {
+    return `<svg viewBox="0 0 320 140" style="width:100%;max-width:420px;height:auto;margin:4px 0" aria-hidden="true">
+      <circle cx="90" cy="48" r="16" fill="#17171A"/><path d="M60 120c0-30 13-46 30-46s30 16 30 46" fill="#17171A"/>
+      <circle cx="230" cy="48" r="16" fill="#fff" stroke="#17171A" stroke-width="2"/><path d="M200 120c0-30 13-46 30-46s30 16 30 46" fill="#fff" stroke="#17171A" stroke-width="2"/>
+      <rect x="132" y="44" width="56" height="16" rx="8" fill="#E2553F"/><text x="160" y="56" text-anchor="middle" font-family="Space Mono, monospace" font-size="10" fill="#fff">!</text>
+      <path d="M140 72h40M140 82h32M140 92h36" stroke="#E5E2DA" stroke-width="3" stroke-linecap="round"/>
+      <path d="M124 30q36-22 72 0" fill="none" stroke="#E2553F" stroke-width="2" stroke-dasharray="4 4"/>
+    </svg>`;
+  },
+  screens: {
+    setup(t) {
+      return `<h2>${esc(t.setupTitle)}</h2><div class="row2">${H.field(t.out, "names.0", { ph: t.phA, max: 20 })}${H.field(t.inc, "names.1", { ph: t.phB, max: 20 })}</div>
+        <div><span class="kicker">${esc(t.where)}</span><div style="margin-top:8px">${H.seg("setting", t.settings)}</div></div>${H.next(t.next, "toOut")}`;
+    },
+    cOut(t) { return curtainHTML(fmt(t.cOutT, { o: outN() }), fmt(t.cOutL, { o: outN(), i: inN() }), fmt(t.ready, { n: outN() }), "toCard"); },
+    card(t) {
+      const c = card();
+      return `${roles(t)}${H.kicker(t.cardK + " · " + t.settings[S.setting])}
+        <div class="slip"><b>${esc(t.theWorry)}</b>${esc(c.worry)}</div>
+        <div><span class="kicker">${esc(t.theList)}</span><ul class="list" style="margin-top:8px">${c.items.map((x, i) => `<li><b>0${i + 1}</b><span>${esc(x)}</span></li>`).join("")}</ul></div>
+        ${H.tip(`<b>${esc(t.rule)}</b>${esc(t.stem)}`)}${H.next(t.toTalk, "toTalk")}`;
+    },
+    talk(t) {
+      const c = card();
+      return `${roles(t)}<h2>${fmt(t.talkTitle, { o: outN(), i: inN() })}</h2>
+        <div class="slip"><b>${esc(t.theWorry)}</b>${esc(c.worry)}</div>${H.timer(t)}
+        <p class="note">${c.items.map(esc).join(" · ")}</p>${H.next(t.done, "toIn")}`;
+    },
+    cIn(t) { return curtainHTML(fmt(t.cInT, { i: inN() }), fmt(t.cInL, { o: outN(), i: inN() }), fmt(t.ready, { n: inN() }), "toBack"); },
+    back(t) {
+      return `${roles(t)}<h2>${fmt(t.backTitle, { i: inN() })}</h2><p class="lead">${fmt(t.backLead, { o: outN() })}</p>
+        ${H.stems([t.backStem])}<span class="kicker">${fmt(t.whichQ, { o: outN() })}</span>
+        ${H.choices("pick." + S.round, S.opts.map(o => [optT(o)]))}${H.next(fmtR(t.toCheck, { o: outN() }), "toCheck", { off: S.pick[S.round] == null })}`;
+    },
+    check(t) {
+      const p = S.opts[S.pick[S.round]], l = S.landed[S.round];
+      return `${roles(t)}<h2>${fmt(t.checkTitle, { o: outN() })}</h2>
+        <div class="doc"><div class="row"><span>${fmt(t.picked, { i: inN() })}</span><b style="font-weight:500;max-width:65%">${esc(p.w ? card().worry : optT(p))}</b></div><div class="row"><span>${esc(t.actual)}</span><b style="font-weight:500;max-width:65%">${esc(card().worry)}</b></div></div>
+        ${H.choices("landed." + S.round, t.checks)}${l > 0 ? H.tip(esc(t.checkHint)) : ""}
+        ${H.next(S.round ? t.next : t.swap, "afterCheck", { off: l == null })}`;
+    },
+    swap(t) { return curtainHTML(esc(t.swapTitle), fmt(t.swapLead, { s: nm(1), l: nm(0) }), esc(t.swap), "round2"); },
+    real(t) {
+      return `<h2>${esc(t.realTitle)}</h2><p class="lead">${esc(t.realLead)}</p>
+        <label class="field"><textarea data-b="real" maxlength="200" placeholder="${esc(t.realPh)}">${esc(S.real)}</textarea></label>
+        <button class="btn" data-act="copyReal" style="flex:none">⧉ ${esc(t.copy)}</button>${H.next(t.next, "toEnd")}`;
+    }
+  },
+  acts: {
+    toOut() { go("cOut"); }, toCard() { go("card"); }, toTalk() { go("talk"); }, toIn() { go("cIn"); },
+    toBack() { const c = card(); S.opts = shuffle([{ w: 1 }].concat(shuffle([0, 1, 2, 3, 4]).slice(0, 3).map(i => ({ i, w: 0 })))); S.pick[S.round] = null; go("back"); },
+    toCheck() { if (S.pick[S.round] == null) return; S.opts[S.pick[S.round]].w ? sound.warm() : sound.tap(); go("check"); },
+    afterCheck() { if (S.landed[S.round] == null) return; go(S.round ? "real" : "swap"); },
+    round2() { S.round = 1; go("cOut"); },
+    copyReal() { copyText(S.real); S.real = ""; },
+    toEnd() { S.real = ""; go("end"); }
+  },
+  enter: { talk() { startTimer(90); } },
+  againTo: "cOut", keepOnAgain: () => ({ names: [S.names[1], S.names[0]], setting: S.setting, first: 1 - S.first })
+};
+const nm = i => S.names[i].trim() || T()[i ? "inc" : "out"];
+const outN = () => nm(S.round), inN = () => nm(1 - S.round);
+const roles = t => H.roles(t.out, outN(), t.inc, inN());
+const card = () => T().cards[S.setting][(S.first + S.round) % 2];
+const optT = o => (o.w ? card().ws : card().items[o.i]);
+
+/* =====================================================================
+   NEXT TOOLS · engine (build/next_tools/engine.js, shared by the ten tools that were "Next")
+   A tool defines APP = { demo, flow, first, state(), screens, acts, enter, stepOf, boot, art }.
+   Markup conventions: data-act="k" → APP.acts[k] or a built-in; data-go="screen"; data-b="key" (or key.0) binds an input to S;
+   data-c="key" data-v="i" picks a choice (APP.onChoose(key, v) if it wants more than S[key] = v and a render).
+   ===================================================================== */
+const stage = $("stage");
+const fmtR = (s, v = {}) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? v[k] : m));   // for text that never becomes HTML (calendar files, shared messages)
+
+function go(screen) {
+  timer.stop();
+  S.screen = screen; render(); window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  const f = APP.enter && APP.enter[screen]; if (f) f();
+}
+function paintStepsBar() {
+  const fl = APP.flow || [], cur = APP.stepOf ? APP.stepOf(S.screen) : S.screen, at = fl.indexOf(cur);
+  $("steps").innerHTML = at < 0 ? "" : fl.map((_, i) => `<span class="${i < at ? "done" : i === at ? "now" : ""}"></span>`).join("");
+}
+function render() {
+  const t = T();
+  paintStepsBar();
+  let h;
+  if (S.screen === "intro") h = introHTML(t);
+  else if (S.screen === "teach") h = teachHTML(APP.demo);
+  else if (S.screen === "end") h = endHTML(t);
+  else h = APP.screens[S.screen](t);
+  const hadFocus = stage.contains(document.activeElement);
+  const same = render.last === S.screen; render.last = S.screen;
+  stage.innerHTML = h.startsWith("<section") ? h : `<section class="screen">${h}</section>`;
+  if (same) { const sec = stage.firstElementChild; if (sec) sec.style.animation = "none"; const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume; }
+  const f = stage.querySelector("[data-focus]");
+  if (f && hadFocus) f.focus({ preventScroll: true });
+  if (APP.after) APP.after(S.screen);
+}
+
+/* ---------- small builders ---------- */
+const H = {
+  btn(label, act, o = {}) {
+    const a = o.go ? `data-go="${o.go}"` : `data-act="${act}"`;
+    return `<button class="btn${o.pri ? " pri" : ""}" ${a}${o.id ? ` id="${o.id}"` : ""}${o.off ? " disabled" : ""}${o.focus ? " data-focus" : ""}${o.attr ? " " + o.attr : ""}>${label}</button>`;
+  },
+  next(label, act, o = {}) { return `<div class="spacer"></div><div class="btns">${o.left || ""}${H.btn(esc(label) + " →", act, Object.assign({ pri: 1, focus: 1 }, o))}</div>`; },
+  field(lbl, key, o = {}) {
+    const v = esc(getP(key) || ""), ph = o.ph ? ` placeholder="${esc(o.ph)}"` : "", ml = ` maxlength="${o.max || 120}"`;
+    const inp = o.area ? `<textarea data-b="${key}"${ml}${ph}>${v}</textarea>` : `<input data-b="${key}"${ml}${ph} autocomplete="off" value="${v}"${o.type ? ` type="${o.type}"` : ""}>`;
+    return `<label class="field"><span>${esc(lbl)}</span>${inp}</label>`;
+  },
+  names(t, a = "nameA", b = "nameB") {
+    return `<div class="row2">${H.field(t[a], "names.0", { ph: t.phA, max: 20 })}${H.field(t[b], "names.1", { ph: t.phB, max: 20 })}</div>`;
+  },
+  roles(k1, n1, k2, n2) {
+    return `<div class="roles"><div class="role speak"><div class="k">${esc(k1)}</div><div class="n">${esc(n1)}</div></div><div class="role"><div class="k">${esc(k2)}</div><div class="n">${esc(n2)}</div></div></div>`;
+  },
+  choices(key, items, o = {}) {   // items: [title, sub?, mark?]
+    const cur = getP(key), multi = Array.isArray(cur);
+    return `<div class="heard">${items.map((it, i) => {
+      const on = multi ? cur.includes(i) : cur === i;
+      return `<button data-c="${key}" data-v="${i}" aria-pressed="${on}" class="${on ? "on" : ""}"><span class="e">${it[2] != null ? it[2] : `<span style="font-family:var(--mono);font-size:12px">${String(i + 1).padStart(2, "0")}</span>`}</span><span><b>${esc(it[0])}</b>${it[1] ? `<small>${esc(it[1])}</small>` : ""}</span></button>`;
+    }).join("")}</div>`;
+  },
+  seg(key, items) { const cur = getP(key); return `<div class="seg">${items.map((x, i) => `<button data-c="${key}" data-v="${i}" aria-pressed="${cur === i}">${esc(x)}</button>`).join("")}</div>`; },
+  timer(t) {
+    return `<div class="timer" id="timer">${ringSVG()}<div class="num"><b id="tnum">0:00</b><small id="tlbl"></small></div></div>
+      <div class="btns" style="justify-content:center"><button class="btn" data-act="pause" id="pauseBtn" style="flex:none;min-width:140px">${esc(t.pause)}</button></div>`;
+  },
+  tip(txt, mark = "✦") { return `<div class="tip"><i>${mark}</i><span>${txt}</span></div>`; },
+  prompt(q, meta, sm) { return `<div class="prompt${sm ? " sm" : ""}"><div class="q">${esc(q)}</div>${meta ? `<div class="meta"><span>${esc(meta)}</span></div>` : ""}</div>`; },
+  stems(list) { return `<div class="stems">${list.map(s => `<div>${esc(s)}</div>`).join("")}</div>`; },
+  kicker(s, c) { return `<span class="kicker"${c ? ` style="color:${c}"` : ""}>${esc(s)}</span>`; }
+};
+function startTimer(secs, onEnd) { timer.start(secs, onEnd || (() => toast(T().timeUp))); const pb = $("pauseBtn"); if (pb) pb.textContent = T().pause; }
+
+/* paths into S: "names.0", "agree.q" */
+function getP(p) { return String(p).split(".").reduce((o, k) => (o == null ? o : o[k]), S); }
+function setP(p, v) { const ks = String(p).split("."), last = ks.pop(); const o = ks.reduce((o, k) => o[k], S); o[last] = v; }
+
+function introHTML(t) {
+  return `<section class="screen">
+    <span class="kicker">${esc(t.introKicker)}</span><h1>${t.introTitle}</h1>
+    <p class="lead">${esc(t.introLead)}</p>
+    <div class="pills">${t.introMeta.map(m => `<span class="pill">${esc(m)}</span>`).join("")}</div>
+    ${APP.art ? APP.art() : ""}
+    ${APP.introExtra ? APP.introExtra(t) : ""}
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn pri" data-act="start" data-focus>${esc(t.start)} →</button></div>
+  </section>`;
+}
+function endHTML(t) {
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--good)">✓ ${esc(t.endKicker)}</span>
+    <h2>${esc(t.endTitle)}</h2>
+    <p class="serif">${esc(t.endLead)}</p>
+    ${APP.endExtra ? APP.endExtra(t) : ""}
+    <div class="monday"><b>${esc(t.monday)}</b>${esc(t.mondayTxt)}</div>
+    <div class="spacer"></div>
+    <div class="btns"><button class="btn" data-act="again">↻ ${esc(t.again)}</button><button class="btn pri" data-act="teach" data-focus>${esc(t.passOn)} →</button></div>
+  </section>`;
+}
+function teachHTML(demo) {
+  const t = T(), chain = store.get("fb_teachback", []).filter(c => c.demo === demo);
+  return `<section class="screen">
+    <span class="kicker" style="color:var(--accent-ink)">${esc(t.teachKicker)}</span>
+    <h2>${esc(t.teachTitle)}</h2>
+    <p class="lead">${esc(t.teachLead)}</p>
+    <div class="steps3">${t.t3.map((s, i) => `<div><b>0${i + 1}</b><span>${esc(s)}</span><small style="display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4">${esc(t.t3sub[i])}</small></div>`).join("")}</div>
+    <div class="card" style="display:grid;gap:12px">
+      <label class="field"><span>${esc(t.learnerName)}</span><input id="lName" maxlength="30" autocomplete="off" placeholder="${esc(t.learnerPh)}"></label>
+      <label class="field"><span>${esc(t.learned)}</span><textarea id="lText" maxlength="280" placeholder="${esc(t.learnedPh)}"></textarea></label>
+      <button class="btn pri" data-act="saveTeach" style="flex:none">${esc(t.save)}</button>
+    </div>
+    <div><span class="kicker">${esc(t.chainTitle)}</span>
+      <ul class="chain" style="margin-top:10px">${chain.length ? chain.slice().reverse().map(c => `<li>${esc(c.text)}<small>${c.name ? esc(c.name) + " · " : ""}${esc(new Date(c.at).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang))))}</small></li>`).join("") : `<li style="color:var(--muted)">${esc(t.chainEmpty)}</li>`}</ul></div>
+    <a class="link" href="/tools/teachback">⊂⊃ ${esc(t.teachbackLink)}</a>
+    <button class="link" data-act="restart">${esc(t.restart)}</button>
+  </section>`;
+}
+
+/* ---------- device-made things: copy, a calendar file, a link ---------- */
+function copyText(text, msg) {
+  text = String(text || "").trim(); if (!text) return;
+  const ok = () => toast(msg || T().copied);
+  const fb = () => { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (_) {} ta.remove(); ok(); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok).catch(fb); else fb();
+}
+function shareText(text, url) {
+  const data = { text: url ? text + "\n" + url : text };
+  if (navigator.share) navigator.share(data).catch(() => {}); else copyText(data.text);
+}
+const pad2 = n => String(n).padStart(2, "0");
+const icsDate = d => `${d.getFullYear()}${pad2(d.getMonth() + 1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;
+const icsEsc = s => String(s || "").replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/[,;]/g, m => "\\" + m);
+/* events: [{title, desc, start: Date, mins, rrule}] → one .ics made here, nothing sent */
+function downloadICS(name, events) {
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//FREE//BUILDER//tools//EN", "CALSCALE:GREGORIAN"];
+  events.forEach((e, i) => {
+    const end = new Date(e.start.getTime() + (e.mins || 15) * 60000);
+    L.push("BEGIN:VEVENT", `UID:${Date.now()}-${i}@freebuilder.net`, `DTSTAMP:${icsDate(new Date())}`, `DTSTART:${icsDate(e.start)}`, `DTEND:${icsDate(end)}`,
+      `SUMMARY:${icsEsc(e.title)}`, `DESCRIPTION:${icsEsc(e.desc)}`);
+    if (e.rrule) L.push(`RRULE:${e.rrule}`);
+    L.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(e.title)}`, "TRIGGER:-PT15M", "END:VALARM", "END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  const blob = new Blob([L.join("\r\n")], { type: "text/calendar" }), a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name + ".ics"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast(T().icsMade);
+}
+function nextWeekday(dow, h = 9, m = 0) { const d = new Date(); d.setHours(h, m, 0, 0); let add = (dow - d.getDay() + 7) % 7; if (add === 0 && d <= new Date()) add = 7; d.setDate(d.getDate() + add); return d; }
+const b64e = o => { const s = unescape(encodeURIComponent(JSON.stringify(o))); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+const b64d = s => { try { s = s.replace(/-/g, "+").replace(/_/g, "/"); return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch (e) { return null; } };
+const here = () => location.origin + location.pathname;
+const dayFmt = d => { try { return new Date(d).toLocaleDateString((/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang)), { weekday: "short", day: "numeric", month: "short" }); } catch (e) { return String(d); } };
+const shuffle = (a, r = Math.random) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+const S = Object.assign({ screen: "intro" }, APP.state());
+
+/* ---------- events ---------- */
+stage.addEventListener("input", e => {
+  const b = e.target.dataset.b; if (!b) return;
+  setP(b, e.target.value);
+  if (APP.input) APP.input(b, e.target.value, e.target);
+});
+stage.addEventListener("click", e => {
+  sound.init();
+  const c = e.target.closest("[data-c]"), g = e.target.closest("[data-go]"), a = e.target.closest("[data-act]");
+  if (c) {
+    sound.tap(); const k = c.dataset.c, v = +c.dataset.v;
+    if (APP.onChoose && APP.onChoose(k, v, c) === false) return;
+    const cur = getP(k);
+    if (Array.isArray(cur)) { const i = cur.indexOf(v); if (i >= 0) cur.splice(i, 1); else if (cur.length < (APP.maxPick && APP.maxPick[k] || 99)) cur.push(v); else toast(T().pickMax); }
+    else setP(k, v);
+    render(); return;
+  }
+  if (g) { sound.tap(); go(g.dataset.go); return; }
+  if (!a) return;
+  const k = a.dataset.act; sound.tap();
+  if (APP.acts && APP.acts[k]) { APP.acts[k](a); return; }
+  switch (k) {
+    case "start": go(APP.first); break;
+    case "pause":
+      if (timer.ended) return;
+      if (timer.running) { timer.pause(); a.textContent = T().resume; } else { timer.resume(); a.textContent = T().pause; }
+      break;
+    case "again": { const keep = APP.keepOnAgain ? APP.keepOnAgain() : {}; Object.assign(S, APP.state(), keep); go(APP.againTo || APP.first); break; }
+    case "teach": go("teach"); break;
+    case "saveTeach": {
+      const text = ($("lText").value || "").trim(), name = ($("lName").value || "").trim();
+      if (!text) { $("lText").focus(); return; }
+      const chain = store.get("fb_teachback", []); chain.push({ demo: APP.demo, text, name, at: Date.now() }); store.set("fb_teachback", chain.slice(-50));
+      sound.warm(); toast(T().saved); render(); break; }
+    case "restart": Object.assign(S, { screen: "intro" }, APP.state()); go("intro"); break;
+    case "copy": { const el = $(a.dataset.from); copyText(el ? (el.value != null && el.tagName !== "DIV" ? el.value : el.innerText) : a.dataset.text); break; }
+  }
+});
+window.__app = { S, go, render, timer, APP };
+if (APP.boot) APP.boot();
+
+/* ---------- facilitator guide ---------- */
+const drawer = $("drawer");
+function openGuide() {
+  const t = T();
+  $("panel").innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+      <div><span class="kicker">${esc(t.gKicker)}</span><h3 id="g-title">${esc(t.gTitle)}</h3></div>
+      <button class="x" data-close aria-label="${esc(t.close)}">✕</button>
+    </div>
+    <h4>${esc(t.gWhy)}</h4><p>${esc(t.gWhyTxt)}</p>
+    <h4>${esc(t.gSteps)}</h4><ol>${t.gStepList.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    <h4>${esc(t.gDebrief)}</h4><ul>${t.gDebriefList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>
+    <h4>${esc(t.gNotes)}</h4><ul>${t.gNotesList.map(s => `<li>${esc(s)}</li>`).join("")}</ul>`;
+  drawer.classList.add("show");
+  setTimeout(() => drawer.querySelector("[data-close]").focus({ preventScroll: true }), 60);
+}
+function closeGuide() { drawer.classList.remove("show"); $("btn-guide").focus({ preventScroll: true }); }
+drawer.addEventListener("click", e => { if (e.target === drawer || e.target.closest("[data-close]")) closeGuide(); });
+$("btn-guide").addEventListener("click", openGuide);
+window.addEventListener("keydown", e => { if (e.key === "Escape" && drawer.classList.contains("show")) closeGuide(); });
+
+/* ---------- language + sound ---------- */
+function paintSound() {
+  const b = $("btn-sound"), t = T();
+  b.innerHTML = sound.muted
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  b.setAttribute("aria-label", sound.muted ? t.soundOff : t.soundOn); b.title = b.getAttribute("aria-label");
+}
+$("btn-sound").addEventListener("click", () => { sound.muted = !sound.muted; store.set("fb_muted", sound.muted); sound.init(); paintSound(); if (!sound.muted) sound.tap(); });
+
+function applyLang(l) {
+  lang = LANGS.includes(l) ? l : "en";
+  document.documentElement.lang = (/*i18n*/lang === "zh" ? "zh-CN" : (lang === "zh-Hant" ? "zh-TW" : lang));
+  document.title = T().title;
+  $("lang-lbl").textContent = LANG_LBL[lang];
+  $("btn-guide").setAttribute("aria-label", T().guide); drawer.setAttribute("aria-label", T().guide);
+  document.querySelectorAll("[data-t]").forEach(el => { const v = T()[el.dataset.t]; if (typeof v === "string") el.textContent = v; });
+  paintSound();
+  render();               // the clock object survives a re-render
+  timer.paint();
+  const pb = $("pauseBtn"); if (pb && !timer.running && !timer.ended) pb.textContent = T().resume;
+  if (drawer.classList.contains("show")) openGuide();
+  try { localStorage.setItem("wm_preferred_lang", lang); localStorage.setItem("wm_cases_lang", lang); } catch (e) {}
+}
+$("btn-lang").addEventListener("click", () => applyLang(LANGS[(LANGS.indexOf(lang) + 1) % LANGS.length]));
+window.FBL_SET = l => applyLang(l); window.FBL_GET = () => lang;
+
+/* ---------- boot ---------- */
+let saved = null;
+try { saved = localStorage.getItem("wm_preferred_lang") || localStorage.getItem("wm_cases_lang"); } catch (e) {}
+const nav = (navigator.language || "").toLowerCase();
+applyLang(LANGS.includes(saved) ? saved : nav.startsWith("zh") ? "zh" : nav.startsWith("es") ? "es" : "en");
+document.addEventListener("visibilitychange", () => { if (!document.hidden && timer.running) keepAwake(true); });
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {}); // offline cache
+})();
+</script>
+<script src="/fbkit/pass.js?v=758a7441b7" defer></script>
+</body>
+</html>
