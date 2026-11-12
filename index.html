@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=c702856c86"></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=e6c4d02f9d"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="page-title">FREE//BUILDER — Better work starts between people</title>
   <meta name="description" content="FREE//BUILDER is an independent L&D practice. Playful, hands-on programmes for the human skills AI can't replace — designed to end in real conversations between colleagues.">
@@ -161,6 +161,10 @@
     .svc:hover { border-color:rgba(255,255,255,.5); transform:translateY(-3px); background:transparent; }
     .svc-art { display:block; height:clamp(150px,18vw,184px); border-radius:16px; overflow:hidden; background:#F1EEE6; }
     .svc-art svg { width:100%; height:100%; display:block; }
+    .svc-art .egg-q { cursor:help; transform-box:fill-box; transform-origin:center; transition:transform .25s; }
+    .svc-art:hover text.egg-q { animation:eggQ 1.6s ease-in-out infinite; }
+    @keyframes eggQ { 0%,70%,100% { transform:rotate(0) } 78% { transform:rotate(-14deg) } 86% { transform:rotate(10deg) } 94% { transform:rotate(-4deg) } }
+    @media (prefers-reduced-motion:reduce) { .svc-art:hover text.egg-q { animation:none } }
     .svc-body { display:flex; flex-direction:column; gap:7px; padding:16px 12px 10px; flex:1; }
     .svc-d { font-size:14px; line-height:1.6; color:rgba(255,255,255,.7); margin-top:2px; }
     .svc-try { margin-top:auto; padding-top:8px; }
@@ -928,14 +932,23 @@ img{filter:none}
       clicks++;
       clearTimeout(clickTimer);
       if (clicks >= 3) {
-        e.preventDefault(); clicks = 0;
-        const m = $('matrix-modal');
-        m.classList.remove('hidden'); m.classList.add('flex');
-        requestAnimationFrame(() => m.classList.remove('opacity-0'));
+        e.preventDefault(); clicks = 0; openMatrix();
       } else {
         clickTimer = setTimeout(() => { clicks = 0; }, 600);
       }
     }
+    function openMatrix() {
+      const m = $('matrix-modal');
+      m.classList.remove('hidden'); m.classList.add('flex');
+      requestAnimationFrame(() => m.classList.remove('opacity-0'));
+    }
+    /* the big question mark in a service drawing is a door too (Nov 9, the owner): tap it and the skill/will matrix opens */
+    document.querySelectorAll('.svc-art text').forEach(tx => {
+      if (tx.textContent.trim() !== '?' || tx.getAttribute('font-size') !== '20') return;
+      const g = tx.previousElementSibling && tx.previousElementSibling.previousElementSibling;   // the bubble and its tail
+      [tx, g, g && g.nextElementSibling].forEach(el => { if (!el) return; el.classList.add('egg-q'); el.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); openMatrix(); }); });
+      tx.closest('svg').style.pointerEvents = 'auto';
+    });
     function closeMatrix() {
       const m = $('matrix-modal');
       if (m.classList.contains('hidden')) return;
