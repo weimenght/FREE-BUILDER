@@ -441,7 +441,6 @@ window.FB_EMO={
  "🐾 Where's your spot, Mantou?": "🐾🐕📍❓",
  "🐟 Where do you two go?": "🐟🐈‍⬛🐈📍❓",
  "*dries his hands* My day off? I lie in the grass at Lie Back. Or I take the train nowhere and watch the window.": "👓🙌 → ☁️🌿😌 · 🚉🪟👀",
- "Late Light, obviously. Or Same Song, when nobody's wrecked the queue. Don't tell Popo.": "🎧 · 💿 · 🤫👵🏻",
  "*runs to the door with his ball* Woof! *the Plaza, where the pigeons are. Or the pasture: sheep!*": "🐕🎾🚪 → ⛲🐦 · 🐑❗",
  "*Miso sits by the door, staring down the lake path. Yuzu licks her lips.* Meow.": "🐈‍⬛🚪👀🛶 · 🐈👅",
  "🧹 Delete my things from the server": "🧹🗑️📦☁️",
@@ -629,5 +628,6 @@ window.FB_EMO={
  "Popo ties the bell back on Yuzu's collar with a double knot. \"Now it stays lah.\" Ting! Miso pretends not to care, then headbutts your hand. You're a friend of the cats now.": "👵🏻🔔🪢🪢 → 🐈 · 🔒 · 🔔🎶! 🐈‍⬛😼 → 🤕✋ · 🫵💖🐈‍⬛🐈",
  "On the lowest shelf behind the counter: a blue biscuit tin with no biscuits in it. A note is taped to the lid in Popo's hand: \"Popo's things. Not for sewing. (Yes, Wei, I mean you lah.)\" Inside, an old menu: Popo's Noodles, since 1979. Before it was Next Door, this was her shop. The rest of the tin is scattered around town.": "🍸⬇️ 🥫🔵🍪❌ · 👵🏻📝 → 👓🚫 · 📜🍜 1979 · 🥫🧩 → 🏘️",
  "Tucked behind the timetable on platform two: a ticket, Marseille to Barcelona, third class, 1968. On the back, in pencil: \"19 years old. One suitcase. One jar of salt lemons. No Catalan. I cry until Girona lor. Then I eat one lemon and stop.\" Popo came a very long way to get here.": "🚉2️⃣ 🎟️ 1968 · 🧳🫙🍋 · 😭 → 🍋 → 🙂 · 👵🏻 → 🌍 → 🏘️",
- "Wei pours those. I'm nineteen: legal here, not in New York, and Wei goes by New York. Coffee, tea, or something without?": "🍸 → 👓 · 1️⃣9️⃣ · 🇪🇸✅ 🗽🚫 · ☕ / 🍵 / 🚫🍸❓"
+ "Wei pours those. I'm nineteen: legal here, not in New York, and Wei goes by New York. Coffee, tea, or something without?": "🍸 → 👓 · 1️⃣9️⃣ · 🇪🇸✅ 🗽🚫 · ☕ / 🍵 / 🚫🍸❓",
+ "Same Song, obviously, when nobody's wrecked the queue. Or Mended, it's quiet in there. Don't tell Popo.": "💿 · 🍵🤫 · 🤫👵🏻"
 };
