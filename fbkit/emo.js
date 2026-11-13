@@ -629,5 +629,19 @@ window.FB_EMO={
  "On the lowest shelf behind the counter: a blue biscuit tin with no biscuits in it. A note is taped to the lid in Popo's hand: \"Popo's things. Not for sewing. (Yes, Wei, I mean you lah.)\" Inside, an old menu: Popo's Noodles, since 1979. Before it was Next Door, this was her shop. The rest of the tin is scattered around town.": "🍸⬇️ 🥫🔵🍪❌ · 👵🏻📝 → 👓🚫 · 📜🍜 1979 · 🥫🧩 → 🏘️",
  "Tucked behind the timetable on platform two: a ticket, Marseille to Barcelona, third class, 1968. On the back, in pencil: \"19 years old. One suitcase. One jar of salt lemons. No Catalan. I cry until Girona lor. Then I eat one lemon and stop.\" Popo came a very long way to get here.": "🚉2️⃣ 🎟️ 1968 · 🧳🫙🍋 · 😭 → 🍋 → 🙂 · 👵🏻 → 🌍 → 🏘️",
  "Wei pours those. I'm nineteen: legal here, not in New York, and Wei goes by New York. Coffee, tea, or something without?": "🍸 → 👓 · 1️⃣9️⃣ · 🇪🇸✅ 🗽🚫 · ☕ / 🍵 / 🚫🍸❓",
- "Same Song, obviously, when nobody's wrecked the queue. Or Mended, it's quiet in there. Don't tell Popo.": "💿 · 🍵🤫 · 🤫👵🏻"
+ "Same Song, obviously, when nobody's wrecked the queue. Or Mended, it's quiet in there. Don't tell Popo.": "💿 · 🍵🤫 · 🤫👵🏻",
+ "Popo's box of cards": "👵🏻📦✉️",
+ "Turn one over": "↻✉️",
+ "Then write one, for real": "✍️✉️📮",
+ "Popo's box of postcards, sixty years of them.": "👵🏻📦✉️✉️✉️",
+ "Popo's fridge": "👵🏻🧊📌",
+ "Who's bringing what": "❓🎁",
+ "Josep's chair stays": "🪑🕰️",
+ "Popo and her sister": "👵🏻📞👵🏻",
+ "Two clocks, one hour": "🕑🕘",
+ "Sit in the empty chair": "🪑🕯️",
+ "Hold a side, walk up to the cabin": "👆🚶🌲🛖",
+ "Popo's fridge: the family's own invitations.": "👵🏻🧊📌✉️",
+ "The family's table for two far apart: Sunday noodles, three minutes.": "🍜📞🍜 · ⏱️3",
+ "The Sunday path up to Popo's cabin.": "🌲🚶➡️🛖"
 };
