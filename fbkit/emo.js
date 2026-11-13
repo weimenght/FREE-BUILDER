@@ -262,7 +262,6 @@ window.FB_EMO={
  "Miss someone? Same. Book a table at Two Candles and send them the link. Then actually call them.": "💞🌍❓ · 🕯️🔗 → 📞",
  "*doesn't look up from her phone* …one sec.": "📱 … ☝️",
  "*puts the phone face down* Okay, okay. I'm here. What's up?": "📱🔽 · 👋 · ❓",
- "Wei pours those. I'm sixteen, not stupid. Coffee, tea, or something without?": "🍸 → 👓 · 1️⃣6️⃣ · ☕ / 🍵 / 🚫🍸❓",
  "Wei's travelling": "👓✈️",
  "Wei's asleep": "👓😴",
  "*sneezes* Pollen. Ugh. The stall at {p} has peonies though. Buy your mom some.": "🤧🌸 · {p} 💐 → 👩",
@@ -629,5 +628,6 @@ window.FB_EMO={
  "You stay long time in town already. Good, good. But before next place, listen to Popo ah:": "👵🏻👍⏳ · 👂👵🏻",
  "Popo ties the bell back on Yuzu's collar with a double knot. \"Now it stays lah.\" Ting! Miso pretends not to care, then headbutts your hand. You're a friend of the cats now.": "👵🏻🔔🪢🪢 → 🐈 · 🔒 · 🔔🎶! 🐈‍⬛😼 → 🤕✋ · 🫵💖🐈‍⬛🐈",
  "On the lowest shelf behind the counter: a blue biscuit tin with no biscuits in it. A note is taped to the lid in Popo's hand: \"Popo's things. Not for sewing. (Yes, Wei, I mean you lah.)\" Inside, an old menu: Popo's Noodles, since 1979. Before it was Next Door, this was her shop. The rest of the tin is scattered around town.": "🍸⬇️ 🥫🔵🍪❌ · 👵🏻📝 → 👓🚫 · 📜🍜 1979 · 🥫🧩 → 🏘️",
- "Tucked behind the timetable on platform two: a ticket, Marseille to Barcelona, third class, 1968. On the back, in pencil: \"19 years old. One suitcase. One jar of salt lemons. No Catalan. I cry until Girona lor. Then I eat one lemon and stop.\" Popo came a very long way to get here.": "🚉2️⃣ 🎟️ 1968 · 🧳🫙🍋 · 😭 → 🍋 → 🙂 · 👵🏻 → 🌍 → 🏘️"
+ "Tucked behind the timetable on platform two: a ticket, Marseille to Barcelona, third class, 1968. On the back, in pencil: \"19 years old. One suitcase. One jar of salt lemons. No Catalan. I cry until Girona lor. Then I eat one lemon and stop.\" Popo came a very long way to get here.": "🚉2️⃣ 🎟️ 1968 · 🧳🫙🍋 · 😭 → 🍋 → 🙂 · 👵🏻 → 🌍 → 🏘️",
+ "Wei pours those. I'm nineteen: legal here, not in New York, and Wei goes by New York. Coffee, tea, or something without?": "🍸 → 👓 · 1️⃣9️⃣ · 🇪🇸✅ 🗽🚫 · ☕ / 🍵 / 🚫🍸❓"
 };
