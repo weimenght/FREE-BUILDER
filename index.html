@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="skin-fb skin-fbhdr scroll-smooth">
 <head>
-  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=657b7686c4"></script>
+  <meta charset="UTF-8"><meta name="referrer" content="same-origin" data-fbr><script data-fbl data-mode="full" src="/fbkit/fb.js?v=3cb9096605"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="page-title">FREE//BUILDER — Better work starts between people</title>
   <meta name="description" content="FREE//BUILDER is an independent L&D practice. Playful, hands-on programmes for the human skills AI can't replace — designed to end in real conversations between colleagues.">
@@ -16,6 +16,14 @@
     :root { --paper:#F7F6F2; --ink:#17171A; --accent:#E2553F; --ease:cubic-bezier(0.23,1,0.32,1); }
     body { background-color: var(--paper); color: var(--ink); -webkit-tap-highlight-color: transparent; }
 
+    /* one at a time (Nov 13, the owner: "to avoid info influx… all appear one by one smoothly, with a nice pause designed on the density of the content"):
+       in the frames, the beliefs, the approach and the services each card comes in after the one before has had time to be taken in,
+       and inside a card the picture comes first, then the words */
+    html.js .rv { opacity:0; translate:0 14px; transition:opacity .75s var(--ease), translate .75s var(--ease); }
+    html.js .rv.in { opacity:1; translate:none; }
+    html.js .rv .rv-p { opacity:0; translate:0 8px; transition:opacity .6s var(--ease) calc(var(--k,0) * 130ms), translate .6s var(--ease) calc(var(--k,0) * 130ms); }
+    html.js .rv.in .rv-p { opacity:1; translate:none; }
+    @media (prefers-reduced-motion: reduce) { html.js .rv, html.js .rv .rv-p { opacity:1; translate:none; transition:none; } }
     html.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
     html.js .reveal.in { opacity: 1; transform: none; }
 
@@ -62,6 +70,16 @@
     /* the drama's trailer and the cases (Nov 6): one row under the four services */
     .svc-row { display:grid; gap:14px; grid-template-columns:1fr; margin-top:14px; }
     .svc-row .svc-cases { padding:20px 22px; } .svc-cases-t b { font-size:15px; }
+    /* the cases card (Nov 13): a buyer's sentence turns over every few seconds, a tick for each of the thirteen, then the way in */
+    .svc-cases#svc-cases { display:grid; grid-template-columns:minmax(0,1fr); justify-content:stretch; gap:14px; align-items:stretch; padding:22px 24px; }
+    .svc-cases-q { display:grid; min-height:3.1em; }
+    .svc-cases-q .cq { grid-area:1/1; align-self:end; font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-weight:500; letter-spacing:-.005em; font-size:clamp(18px,2.2vw,23px); line-height:1.35; color:rgba(255,255,255,.92); opacity:0; transform:translateY(4px); transition:opacity .7s ease, transform .7s ease; }
+    .svc-cases-q .cq.on { opacity:1; transform:none; }
+    .svc-cases-ticks { display:flex; gap:4px; } .svc-cases-ticks i { flex:1; max-width:22px; height:2px; background:rgba(255,255,255,.18); transition:background .5s; } .svc-cases-ticks i.on { background:#E2553F; }
+    .svc-cases-f { display:flex; align-items:flex-end; justify-content:space-between; gap:12px 20px; flex-wrap:wrap; padding-top:12px; border-top:1px solid rgba(255,255,255,.12); }
+    .svc-cases-go { font:700 13px/1 'Space Mono',monospace; white-space:nowrap; padding-bottom:2px; border-bottom:2px solid #E2553F; transition:color .2s; }
+    .svc-cases#svc-cases:hover .svc-cases-go, .svc-cases#svc-cases:focus-visible .svc-cases-go { color:#F28C76; }
+    @media (prefers-reduced-motion:reduce) { .svc-cases-q .cq { transition:none; transform:none; } }
     .svc-play, .svc-cases { display:flex; align-items:center; gap:14px; padding:14px 18px 14px 14px; border-radius:22px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04); color:#fff; text-align:left; text-decoration:none; font:inherit; cursor:pointer; transition:border-color .2s, background .2s; }
     .svc-play:hover, .svc-cases:hover { border-color:rgba(255,255,255,.45); background:rgba(255,255,255,.07); }
     .svc-play .svc-ring { width:44px; height:44px; border-radius:50%; background:#F2A33A; color:var(--ink,#17171A); display:grid; place-items:center; flex:none; }
@@ -400,9 +418,10 @@ img{filter:none}
           </a>
         </div>
         <div class="svc-row reveal"><!-- Nov 12, the owner: after the four services, only the cases (the trailer is on /cases/, Common Ground in the labs) -->
-          <a href="/cases/" class="svc-cases">
-            <span class="svc-cases-t"><b data-i18n="casesBtn">Thirteen cases, one year, one invented company</b><span data-i18n="casesMeta">The problems people bring us, and how each one ended</span></span>
-            <span aria-hidden="true">→</span>
+          <a href="/cases/" class="svc-cases" id="svc-cases"><!-- Nov 13, the owner: guide buyers to the thirteen, elegantly: their own words turn over quietly, one at a time -->
+            <span class="svc-cases-q" aria-hidden="true"><span class="cq on" data-i18n="casesQ1">“Someone has asked for a training.”</span><span class="cq" data-i18n="casesQ2">“We promoted our best engineers; now they run 1:1s like stand-ups.”</span><span class="cq" data-i18n="casesQ3">“Feedback happens once a year, in a form.”</span><span class="cq" data-i18n="casesQ4">“Nobody says anything in the meeting, then everything in the corridor.”</span><span class="cq" data-i18n="casesQ5">“Our offices misread each other.”</span><span class="cq" data-i18n="casesQ6">“Decisions get made in the meeting and remade in the car park.”</span><span class="cq" data-i18n="casesQ7">“Every function thinks the other one is the blocker.”</span><span class="cq" data-i18n="casesQ8">“Onboarding is a handbook and a deck.”</span><span class="cq" data-i18n="casesQ9">“We bought the AI licences; usage is 20%.”</span><span class="cq" data-i18n="casesQ10">“Reps pitch too early and freeze on objections.”</span><span class="cq" data-i18n="casesQ11">“We ran innovation training. Nothing left the room.”</span><span class="cq" data-i18n="casesQ12">“Handover errors keep showing up in incident reports.”</span><span class="cq" data-i18n="casesQ13">“The team has gone quiet since the restructure.”</span></span>
+            <span class="svc-cases-ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="svc-cases-f"><span class="svc-cases-t"><b data-i18n="casesBtn">Thirteen cases, one year, one invented company</b><span data-i18n="casesMeta">The problems people bring us, and how each one ended</span></span><span class="svc-cases-go"><span data-i18n="casesGo">Find yours</span> →</span></span>
           </a>
         </div>
         <a href="https://www.wei-meng.org/portfolio" target="_blank" rel="noopener noreferrer" class="reveal inline-block text-sm font-mono text-white underline decoration-accent decoration-2 underline-offset-4 hover:text-accent transition-colors">
@@ -465,7 +484,7 @@ img{filter:none}
       en: {
         pageTitle: "FREE//BUILDER — Better work starts between people",
         brandSub: "L&D Solutions",
-        navBelief: "Belief", navServices: "Services", navCases: "Cases", dramaBtn: "Corporate Survival Drama · watch the trailer", dramaMeta: "Episode 01 · 1 minute · a workplace mini-series made to be watched together, ending on a choice for the team", casesBtn: "Thirteen cases, one year, one invented company", casesMeta: "The problems people bring us, and how each one ended", navTools: "Free tools", navWork: "Portfolio ↗", navAbout: "About", navCta: "Let's talk",
+        navBelief: "Belief", navServices: "Services", navCases: "Cases", dramaBtn: "Corporate Survival Drama · watch the trailer", dramaMeta: "Episode 01 · 1 minute · a workplace mini-series made to be watched together, ending on a choice for the team", casesBtn: "Thirteen cases, one year, one invented company", casesGo: "Find yours", casesQ1: "“Someone has asked for a training.”", casesQ2: "“We promoted our best engineers; now they run 1:1s like stand-ups.”", casesQ3: "“Feedback happens once a year, in a form.”", casesQ4: "“Nobody says anything in the meeting, then everything in the corridor.”", casesQ5: "“Our offices misread each other.”", casesQ6: "“Decisions get made in the meeting and remade in the car park.”", casesQ7: "“Every function thinks the other one is the blocker.”", casesQ8: "“Onboarding is a handbook and a deck.”", casesQ9: "“We bought the AI licences; usage is 20%.”", casesQ10: "“Reps pitch too early and freeze on objections.”", casesQ11: "“We ran innovation training. Nothing left the room.”", casesQ12: "“Handover errors keep showing up in incident reports.”", casesQ13: "“The team has gone quiet since the restructure.”", casesMeta: "The problems people bring us, and how each one ended", navTools: "Free tools", navWork: "Portfolio ↗", navAbout: "About", navCta: "Let's talk",
         heroKicker: "Independent L&D practice",
         heroTitle: 'Better work starts <span class="accent-word">between</span> people.',
         loop1: "The screen sets it up.", loop2: "Phones go down.", loop3: "People talk.", heroDesc: "Short, hands-on practice in listening, feedback and trust. It ends in real conversations.",
@@ -547,7 +566,7 @@ img{filter:none}
       zh: {
         pageTitle: "FREE//BUILDER — 更好的工作，从人与人之间开始",
         brandSub: "学习与发展解决方案",
-        navBelief: "理念", navServices: "服务", navCases: "案例", dramaBtn: "职场生存剧 · 看预告片", dramaMeta: "第 1 集 · 1 分钟 · 一部为一起观看而做的职场迷你剧，每集结束在团队要做的一个选择上", casesBtn: "十三个案例，一年，一家虚构的公司", casesMeta: "人们带给我们的难题，以及每一个最后怎样了", navTools: "免费工具", navWork: "作品集 ↗", navAbout: "关于", navCta: "聊聊",
+        navBelief: "理念", navServices: "服务", navCases: "案例", dramaBtn: "职场生存剧 · 看预告片", dramaMeta: "第 1 集 · 1 分钟 · 一部为一起观看而做的职场迷你剧，每集结束在团队要做的一个选择上", casesBtn: "十三个案例，一年，一家虚构的公司", casesGo: "找找你的那一个", casesQ1: "“有人提了一个培训需求。”", casesQ2: "“我们把最好的工程师提成了经理，现在一对一开得像站会。”", casesQ3: "“反馈一年一次，填在表格里。”", casesQ4: "“会上没人说话，走廊里什么都说。”", casesQ5: "“我们的各地办公室老是误读彼此。”", casesQ6: "“决定在会上做，在停车场里重做。”", casesQ7: "“每个部门都觉得另一个部门在拖后腿。”", casesQ8: "“入职就是一本手册加一套幻灯片。”", casesQ9: "“AI 许可证买了，使用率 20%。”", casesQ10: "“销售推销得太早，遇到异议就卡住。”", casesQ11: "“我们办了创新培训。什么都没走出那间屋子。”", casesQ12: "“交接错误不断出现在事故报告里。”", casesQ13: "“重组之后，团队安静了。”", casesMeta: "人们带给我们的难题，以及每一个最后怎样了", navTools: "免费工具", navWork: "作品集 ↗", navAbout: "关于", navCta: "聊聊",
         heroKicker: "独立 L&D 咨询工作室",
         heroTitle: '更好的工作，<br class="hidden sm:inline">从人与人<span class="accent-word">之间</span>开始。',
         loop1: "屏幕把场子搭好。", loop2: "手机放下。", loop3: "人开始交谈。", heroDesc: "短小、上手即练的倾听、反馈与信任练习，最后落在真实的对话里。",
@@ -624,12 +643,12 @@ img{filter:none}
         toastSynapse: "好奇心已解锁。分享给身边的人吧。",
         matrixTag: "隐藏诊断", matrixTitle: "诊断完成。", matrixWill: "意愿", matrixSkill: "能力",
         matrixMarker: "你 · 高意愿，高能力", matrixDesc: "剧情反转：你一直都在右上象限。现在，去告诉一位同事，他也是。",
-        footerBy: "Wei Meng 的独立工作室"
+        footerBy: "孟玮的独立工作室"
       },
       es: {
         pageTitle: "FREE//BUILDER — El buen trabajo empieza entre personas",
         brandSub: "Soluciones de L&D",
-        navBelief: "Creencias", navServices: "Servicios", navCases: "Casos", dramaBtn: "Drama de Supervivencia Corporativa · ver el tráiler", dramaMeta: "Episodio 01 · 1 minuto · una miniserie de oficina hecha para verse juntos, que termina en una decisión para el equipo", casesBtn: "Trece casos, un año, una empresa inventada", casesMeta: "Los problemas que nos trae la gente, y cómo terminó cada uno", navTools: "Herramientas", navWork: "Portafolio ↗", navAbout: "Nosotros", navCta: "Hablemos",
+        navBelief: "Creencias", navServices: "Servicios", navCases: "Casos", dramaBtn: "Drama de Supervivencia Corporativa · ver el tráiler", dramaMeta: "Episodio 01 · 1 minuto · una miniserie de oficina hecha para verse juntos, que termina en una decisión para el equipo", casesBtn: "Trece casos, un año, una empresa inventada", casesGo: "Encuentra el tuyo", casesQ1: "«Alguien ha pedido una formación.»", casesQ2: "«Ascendimos a nuestros mejores ingenieros; ahora llevan los 1:1 como reuniones de estado.»", casesQ3: "«El feedback ocurre una vez al año, en un formulario.»", casesQ4: "«Nadie dice nada en la reunión, y luego todo en el pasillo.»", casesQ5: "«Nuestras oficinas se malinterpretan.»", casesQ6: "«Las decisiones se toman en la reunión y se rehacen en el aparcamiento.»", casesQ7: "«Cada función cree que la otra es el bloqueo.»", casesQ8: "«La incorporación es un manual y una presentación.»", casesQ9: "«Compramos las licencias de IA; el uso es del 20 %.»", casesQ10: "«Los comerciales venden demasiado pronto y se bloquean ante las objeciones.»", casesQ11: "«Hicimos formación en innovación. Nada salió de la sala.»", casesQ12: "«Los errores de relevo siguen apareciendo en los informes de incidentes.»", casesQ13: "«El equipo se ha callado desde la reestructuración.»", casesMeta: "Los problemas que nos trae la gente, y cómo terminó cada uno", navTools: "Herramientas", navWork: "Portafolio ↗", navAbout: "Nosotros", navCta: "Hablemos",
         heroKicker: "Práctica independiente de L&D",
         heroTitle: 'El buen trabajo empieza <span class="accent-word">entre</span> personas.',
         loop1: "La pantalla lo prepara.", loop2: "Los móviles, abajo.", loop3: "La gente habla.", heroDesc: "Práctica breve de escucha, feedback y confianza. Termina en conversaciones reales.",
@@ -710,7 +729,7 @@ img{filter:none}
       }, "zh-Hant": {
         pageTitle: "FREE//BUILDER — 更好的工作，從人與人之間開始",
         brandSub: "學習與發展解決方案",
-        navBelief: "理念", navServices: "服務", navCases: "案例", dramaBtn: "職場生存劇 · 看預告片", dramaMeta: "第 1 集 · 1 分鐘 · 一部為一起觀看而做的職場迷你劇，每集結束在團隊要做的一個選擇上", casesBtn: "十三個案例，一年，一家虛構的公司", casesMeta: "人們帶給我們的難題，以及每一個最後怎樣了", navTools: "免費工具", navWork: "作品集 ↗", navAbout: "關於", navCta: "聊聊",
+        navBelief: "理念", navServices: "服務", navCases: "案例", dramaBtn: "職場生存劇 · 看預告片", dramaMeta: "第 1 集 · 1 分鐘 · 一部為一起觀看而做的職場迷你劇，每集結束在團隊要做的一個選擇上", casesBtn: "十三個案例，一年，一家虛構的公司", casesGo: "找找你的那一個", casesQ1: "“有人提了一個培訓需求。”", casesQ2: "“我們把最好的工程師提成了經理，現在一對一開得像站會。”", casesQ3: "“反饋一年一次，填在表格裡。”", casesQ4: "“會上沒人說話，走廊裡什麼都說。”", casesQ5: "“我們的各地辦公室老是誤讀彼此。”", casesQ6: "“決定在會上做，在停車場裡重做。”", casesQ7: "“每個部門都覺得另一個部門在拖後腿。”", casesQ8: "“入職就是一本手冊加一套幻燈片。”", casesQ9: "“AI 許可證買了，使用率 20%。”", casesQ10: "“銷售推銷得太早，遇到異議就卡住。”", casesQ11: "“我們辦了創新培訓。什麼都沒走出那間屋子。”", casesQ12: "“交接錯誤不斷出現在事故報告裡。”", casesQ13: "“重組之後，團隊安靜了。”", casesMeta: "人們帶給我們的難題，以及每一個最後怎樣了", navTools: "免費工具", navWork: "作品集 ↗", navAbout: "關於", navCta: "聊聊",
         heroKicker: "獨立 L&D 諮詢工作室",
         heroTitle: "更好的工作，<br class=\"hidden sm:inline\">從人與人<span class=\"accent-word\">之間</span>開始。",
         loop1: "螢幕把場子搭好。", loop2: "手機放下。", loop3: "人開始交談。", heroDesc: "短小、上手即練的傾聽、反饋與信任練習，最後落在真實的對話裡。",
@@ -787,11 +806,11 @@ img{filter:none}
         toastSynapse: "好奇心已解鎖。分享給身邊的人吧。",
         matrixTag: "隱藏診斷", matrixTitle: "診斷完成。", matrixWill: "意願", matrixSkill: "能力",
         matrixMarker: "你 · 高意願，高能力", matrixDesc: "劇情反轉：你一直都在右上象限。現在，去告訴一位同事，他也是。",
-        footerBy: "Wei Meng 的獨立工作室"
+        footerBy: "孟瑋的獨立工作室"
       }, "ca": {
         pageTitle: "FREE//BUILDER — La bona feina comença entre persones",
         brandSub: "Solucions de L&D",
-        navBelief: "Creences", navServices: "Serveis", navCases: "Casos", dramaBtn: "Drama de Supervivència Corporativa · veure el tràiler", dramaMeta: "Episodi 01 · 1 minut · una minisèrie d'oficina feta per veure's junts, que acaba en una decisió per a l'equip", casesBtn: "Tretze casos, un any, una empresa inventada", casesMeta: "Els problemes que ens porta la gent, i com va acabar cadascun", navTools: "Eines", navWork: "Portafoli ↗", navAbout: "Nosaltres", navCta: "Parlem-ne",
+        navBelief: "Creences", navServices: "Serveis", navCases: "Casos", dramaBtn: "Drama de Supervivència Corporativa · veure el tràiler", dramaMeta: "Episodi 01 · 1 minut · una minisèrie d'oficina feta per veure's junts, que acaba en una decisió per a l'equip", casesBtn: "Tretze casos, un any, una empresa inventada", casesGo: "Troba el teu", casesQ1: "«Algú ha demanat una formació.»", casesQ2: "«Vam ascendir els nostres millors enginyers; ara porten els 1:1 com reunions d'estat.»", casesQ3: "«El feedback passa un cop l'any, en un formulari.»", casesQ4: "«Ningú no diu res a la reunió, i després tot al passadís.»", casesQ5: "«Les nostres oficines es malinterpreten.»", casesQ6: "«Les decisions es prenen a la reunió i es refan a l'aparcament.»", casesQ7: "«Cada funció creu que l'altra és el bloqueig.»", casesQ8: "«La incorporació és un manual i una presentació.»", casesQ9: "«Vam comprar les llicències d'IA; l'ús és del 20 %.»", casesQ10: "«Els comercials venen massa aviat i es bloquegen davant les objeccions.»", casesQ11: "«Vam fer formació en innovació. Res no va sortir de la sala.»", casesQ12: "«Els errors de relleu continuen apareixent als informes d'incidents.»", casesQ13: "«L'equip ha callat des de la reestructuració.»", casesMeta: "Els problemes que ens porta la gent, i com va acabar cadascun", navTools: "Eines", navWork: "Portafoli ↗", navAbout: "Nosaltres", navCta: "Parlem-ne",
         heroKicker: "Pràctica independent de L&D",
         heroTitle: "La bona feina comença <span class=\"accent-word\">entre</span> persones.",
         loop1: "La pantalla ho prepara.", loop2: "Els mòbils, avall.", loop3: "La gent parla.", heroDesc: "Pràctica breu d'escolta, feedback i confiança. Acaba en converses reals.",
@@ -962,8 +981,23 @@ img{filter:none}
 
     /* ---------- Reveal ---------- */
     (function reveal() {
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches, IO = 'IntersectionObserver' in window;
+      /* groups whose cards come one by one; each waits as long as the card before takes to read (a picture counts a little too) */
+      const words = el => { const t = (el.innerText || el.textContent || '').trim(); return t.split(/\s+/).filter(Boolean).length + (t.match(/[\u3400-\u9fff]/g) || []).length / 2.2 + (el.querySelector('svg') ? 5 : 0); };
+      const pause = el => Math.max(420, Math.min(1150, 300 + words(el) * 17));
+      const parts = it => { const out = []; [...it.children].forEach(c => { if (c.classList.contains('svc-body') || (c.tagName === 'DIV' && !c.querySelector(':scope > svg') && c.children.length > 1)) out.push(...c.children); else out.push(c); }); return out; };
+      const groups = [...document.querySelectorAll('#loop, .bel-grid, ol.path, .svc-grid')];
+      groups.forEach(g => {
+        const items = [...g.children];
+        items.forEach(it => { it.classList.remove('reveal'); it.classList.add('rv'); parts(it).forEach((p, k) => { p.classList.add('rv-p'); p.style.setProperty('--k', k); }); });
+        g.classList.remove('reveal');
+        const go = () => { let t = 0; items.forEach(it => { setTimeout(() => it.classList.add('in'), t); t += pause(it); }); };
+        if (still || !IO) { items.forEach(it => it.classList.add('in')); return; }
+        const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); go(); } }, { threshold: 0.18 });
+        io.observe(g);
+      });
       const els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+      if (!IO) { els.forEach(e => e.classList.add('in')); return; }
       const io = new IntersectionObserver(entries => {
         entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
       }, { threshold: 0.1 });
@@ -980,6 +1014,20 @@ img{filter:none}
       const b = (navigator.language || '').toLowerCase();
       setLanguage(b.startsWith('zh') ? 'zh' : b.startsWith('es') ? 'es' : 'en');
     })();
+  </script>
+
+  <script>
+  /* the cases card: one buyer's sentence at a time, quietly; still for reduced motion, paused while the pointer or focus is on it or the page is hidden */
+  (function () {
+    var a = document.getElementById('svc-cases'); if (!a) return;
+    var q = a.querySelectorAll('.cq'), t = a.querySelectorAll('.svc-cases-ticks i'), n = q.length, i = Math.floor(Math.random() * n), hold = false;
+    function show(k) { for (var j = 0; j < n; j++) { q[j].classList.toggle('on', j === k); if (t[j]) t[j].classList.toggle('on', j === k); } }
+    show(i);
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    ['mouseenter', 'focus'].forEach(function (e) { a.addEventListener(e, function () { hold = true; }); });
+    ['mouseleave', 'blur'].forEach(function (e) { a.addEventListener(e, function () { hold = false; }); });
+    setInterval(function () { if (hold || document.hidden) return; i = (i + 1) % n; show(i); }, 4200);
+  })();
   </script>
 </body>
 </html>
