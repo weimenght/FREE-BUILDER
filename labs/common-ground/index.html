@@ -384,7 +384,7 @@ var PR = window.CG_PRACTICES || [], BYK = {}; PR.forEach(function (p) { BYK[p.k]
 var PLAIN = {}; (window.CG_PLAIN || []).forEach(function (p) { PLAIN[p.k] = p; });
 var THEMES = window.CG_THEMES || {}, TOOLS = window.CG_TOOLS || {}, HOUSE = window.CG_HOUSE || {};
 var KINDS = ["listen", "feedback", "trust", "together", "plain"];
-function pname(k) { return FW.name ? FW.name(k, LANGS[li()]) : k; }
+function pname(k) { if (!(FW.PLACES && FW.PLACES[k]) || /^(jukebox|kintsugi|fortune)$/.test(k)) return "";   /* only places still in town get named (Same Song, Mended, the stall and the retired ones are gone, Nov 14) */ return FW.name ? FW.name(k, LANGS[li()]) : k; }
 function label(p) { return p.k === "house" ? F(W.houseOf, { n: p.nm || "?" }) : BYK[p.k] ? T(BYK[p.k].t) : PLAIN[p.k] ? T(PLAIN[p.k].n) : p.k; }
 
 /* ---------------- the town as data ----------------
